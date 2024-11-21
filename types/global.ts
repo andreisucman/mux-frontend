@@ -60,3 +60,9 @@ export enum SexEnum {
   MALE = "male",
   FEMALE = "female",
 }
+
+export enum TypeEnum {
+  HEAD = "head",
+  BODY = "body",
+  HEALTH = "health",
+}

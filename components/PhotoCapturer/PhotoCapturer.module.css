@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  border-radius: rem(16);
+  height: 75vh;
+  max-height: rem(600);
+  overflow: hidden;
+
+  & video {
+    flex: 1;
+    object-fit: contain;
+    background-color: var(--mantine-color-dark-6);
+  }
+}
+
+.buttonGroup {
+  position: absolute;
+  left: rem(16);
+  right: rem(16);
+  top: rem(16);
+  z-index: 1;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+  animation-delay: 1s;
+}
+
+@keyframes fadeIn {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  90% {
+    opacity: 0.9;
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+  }
+}

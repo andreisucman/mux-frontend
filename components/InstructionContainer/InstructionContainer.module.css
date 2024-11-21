@@ -1,0 +1,19 @@
+.container {
+  position: relative;
+  flex: 1;
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: rem(16);
+  gap: rem(8);
+}
+
+.meta {
+  gap: rem(6);
+}
+
+.note {
+  margin-top: rem(8);
+  gap: rem(8);
+  flex-wrap: nowrap;
+  align-items: top;
+}

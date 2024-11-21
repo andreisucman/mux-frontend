@@ -1,0 +1,23 @@
+.container {
+  position: relative;
+  flex: 1;
+  max-width: clamp(100px, 40vw, 175px);
+  align-self: center;
+}
+
+.deleteIcon {
+  position: absolute;
+  top: rem(8);
+  right: rem(8);
+  z-index: 1;
+}
+
+.image {
+  inset: 0;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  border-radius: rem(16);
+  object-fit: cover;
+}

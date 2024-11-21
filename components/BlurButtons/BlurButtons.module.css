@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  flex-wrap: nowrap;
+  gap: rem(12);
+}
+
+.checkbox {
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  border-radius: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border: 1px solid var(--mantine-color-dark-5);
+  padding: rem(8) 0 rem(8) rem(16);
+}
+
+.labelGroup {
+  gap: rem(8);
+}

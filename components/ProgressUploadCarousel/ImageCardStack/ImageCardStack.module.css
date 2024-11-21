@@ -1,0 +1,15 @@
+.container {
+  position: relative;
+  width: rem(300);
+  height: rem(300);
+}
+
+.image {
+  border-radius: rem(16);
+
+  position: absolute;
+  object-fit: cover;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+}
