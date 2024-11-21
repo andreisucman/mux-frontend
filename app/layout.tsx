@@ -1,12 +1,13 @@
 import "@/styles/mantine.css";
-import "@mantine/carousel/styles.layer.css";
-import "@mantine/dates/styles.layer.css";
+import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
 import "@/styles/global.css";
 
 import React, { Suspense } from "react";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
+import { NavigationProgress } from "@mantine/nprogress";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
 import UserContextProvider from "@/context/UserContext";
@@ -18,7 +19,11 @@ export const metadata = {
   description: "Become five star all around!",
 };
 
-export default function RootLayout({ children }: { children: any }) {
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -44,6 +49,7 @@ export default function RootLayout({ children }: { children: any }) {
               <>
                 <UserContextProvider>
                   <Header />
+                  <NavigationProgress />
                 </UserContextProvider>
                 <Stack className={classes.container}>{children}</Stack>
               </>

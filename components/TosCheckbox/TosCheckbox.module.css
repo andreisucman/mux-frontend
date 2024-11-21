@@ -1,0 +1,20 @@
+.container {
+  padding: rem(8) rem(16);
+  border: rem(1) solid transparent;
+  border-radius: rem(16);
+  align-items: center;
+}
+
+.highlightTos {
+  border: rem(1) solid var(--mantine-color-brand-7);
+}
+
+.text {
+  display: inline-block;
+  font-weight: 600;
+  font-size: rem(14);
+}
+
+.pointer {
+  cursor: "pointer";
+}
