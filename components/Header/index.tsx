@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { IconBooks, IconRocket, IconTargetArrow } from "@tabler/icons-react";
+import { IconBooks, IconRocket, IconScan, IconStar, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import GlowingButton from "@/components/GlowingButton";
@@ -40,21 +40,39 @@ function Header() {
           <Group className={classes.navigation}>
             <ActionIcon
               variant="default"
-              visibleFrom="xs"
+              visibleFrom={status === "authenticated" ? undefined : "xs"}
               onClick={() => router.push("/")}
               className={classes.button}
-              aria-label="solutions page button"
+              aria-label="results page button"
             >
               <IconTargetArrow stroke={1.25} className="icon icon__large" />
             </ActionIcon>
             <ActionIcon
               variant="default"
               visibleFrom="xs"
-              onClick={() => router.push("/styles")}
+              onClick={() => router.push("/reviews")}
               className={classes.button}
-              aria-label="analyze style button"
+              aria-label="reviews button"
+            >
+              <IconStar stroke={1.25} className="icon icon__large" />
+            </ActionIcon>
+            <ActionIcon
+              variant="default"
+              visibleFrom="xs"
+              onClick={() => router.push("/solutions")}
+              className={classes.button}
+              aria-label="solutions button"
             >
               <IconBooks stroke={1.25} className="icon icon__large" />
+            </ActionIcon>
+            <ActionIcon
+              variant="default"
+              visibleFrom={status === "authenticated" ? undefined : "xs"}
+              onClick={() => router.push("/scan")}
+              className={classes.button}
+              aria-label="solutions button"
+            >
+              <IconScan stroke={1.25} className="icon icon__large" />
             </ActionIcon>
             <GlowingButton
               text="Start"
