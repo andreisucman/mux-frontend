@@ -1,0 +1,12 @@
+.container {
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+  background-color: alpha(var(--mantine-color-dark-8), 0.5);
+  border-radius: rem(16);
+  max-height: rem(600);
+  margin:auto;
+  width: 100%;
+}

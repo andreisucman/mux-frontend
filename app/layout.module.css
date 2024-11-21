@@ -1,6 +1,6 @@
 .container {
   flex: 1;
-  padding: rem(16);
+  padding: rem(32) rem(16);
   max-width: rem(740);
   width: 100%;
   margin: auto;

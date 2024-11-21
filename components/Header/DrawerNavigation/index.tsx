@@ -150,7 +150,7 @@ export default function DrawerNavigation() {
 
   return (
     <Stack className={classes.container}>
-      <Divider/>
+      <Divider />
       {defaultNavigation.map((link, index) => (
         <LinkRow
           key={index}
@@ -173,10 +173,12 @@ export default function DrawerNavigation() {
         </>
       )}
       <Stack className={classes.footer}>
-        <UnstyledButton className={classes.signOutButton} onClick={handleSignOut}>
-          <IconDoorExit className="icon" stroke={1.25} />
-          Sign out
-        </UnstyledButton>
+        {status === "authenticated" && (
+          <UnstyledButton className={classes.signOutButton} onClick={handleSignOut}>
+            <IconDoorExit className="icon" stroke={1.25} />
+            Sign out
+          </UnstyledButton>
+        )}
         {legalLinks.map((link, index) => (
           <LinkRow
             key={index}

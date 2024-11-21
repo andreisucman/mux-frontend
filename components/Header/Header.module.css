@@ -20,8 +20,8 @@
 }
 
 .button {
-  min-width: rem(40);
-  min-height: rem(40);
+  min-width: rem(36);
+  min-height: rem(36);
 }
 
 .drawerContent,

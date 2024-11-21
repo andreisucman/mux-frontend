@@ -11,6 +11,7 @@ export default function AffixButton() {
       <Transition transition="slide-up" mounted={scroll.y > 0}>
         {(transitionStyles) => (
           <Button
+            variant="default"
             leftSection={<IconArrowUp style={{ width: rem(16), height: rem(16) }} />}
             aria-label="scroll to top button"
             style={transitionStyles}

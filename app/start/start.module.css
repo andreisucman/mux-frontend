@@ -1,7 +1,6 @@
 .content {
   max-height: rem(600);
   overflow-y: auto;
-  border-radius: rem(16);
 
   @media (max-width: $mantine-breakpoint-sm) {
     max-height: rem(60vh);

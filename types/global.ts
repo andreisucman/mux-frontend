@@ -3,7 +3,6 @@ export type DefaultUserType = {
   fingerprint: number;
   tosAccepted: boolean;
   specialConsiderations: string;
-  demographics: { sex: SexEnum } | null;
 };
 
 export type HeadValuePartsBoolean = {
@@ -12,19 +11,21 @@ export type HeadValuePartsBoolean = {
   parts: { name: string; value: boolean }[];
 }[];
 
+type ClubBioType = {
+  intro: string;
+  philosophy: string;
+  style: string;
+  tips: string;
+  about: string;
+  questions: { asking: string; question: string }[];
+};
+
 export type ClubDataType = {
   trackedUserId: string;
   name: string;
   avatar: { [key: string]: any };
   isActive: boolean;
-  bio: {
-    intro: string;
-    philosophy: string;
-    style: string;
-    tips: string;
-    about: string;
-    questions: { asking: string; question: string }[];
-  };
+  bio: ClubBioType;
   payouts: {
     connectId: string;
     rewardEarned: number;
@@ -40,14 +41,7 @@ export type ClubUserType = {
   _id: string;
   avatar: { [key: string]: any };
   name: string;
-  bio: {
-    intro: string;
-    philosophy: string;
-    style: string;
-    tips: string;
-    about: string;
-    questions: { asking: string; question: string }[];
-  };
+  bio: ClubBioType;
   scores: {
     headCurrentScore: number;
     headTotalProgress: number;
@@ -57,6 +51,7 @@ export type ClubUserType = {
 };
 
 export interface UserDataType extends DefaultUserType {
+  _id?: string;
   email: string | null;
   club: ClubDataType | null;
 }

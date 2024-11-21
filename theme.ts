@@ -75,9 +75,9 @@ export const theme = createTheme({
     textWrap: "wrap",
     sizes: {
       h1: { fontSize: rem(32) },
-      h2: { fontSize: rem(28) },
-      h3: { fontSize: rem(24) },
-      h4: { fontSize: rem(20) },
+      h2: { fontSize: rem(24) },
+      h3: { fontSize: rem(20) },
+      h4: { fontSize: rem(18) },
     },
   },
   cursorType: "pointer",

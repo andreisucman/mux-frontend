@@ -1,36 +1,40 @@
 import React from "react";
 import Link from "next/link";
-import { rem, Text } from "@mantine/core";
+import { rem, Stack, Text, Title } from "@mantine/core";
 
-export default function ClubLegalBody() {
+type Props = {
+  addTitle?: boolean;
+};
+
+export default function ClubLegalBody({ addTitle }: Props) {
   return (
     <>
-      <h1>Club Terms</h1>
+      {addTitle && <Title order={1}>Club Terms</Title>}
       <Text size="sm" c="dimmed">
         Last updated: September 12, 2024
       </Text>
-      <div>
+      <Stack>
         <Text mt={0}>
           {`Welcome to the "Club", an optional service available on our platform
           that allows users to interact with others, share content, and earn
           rewards based on the number of followers.`}
         </Text>
-        <p>
+        <Text>
           {`By joining the Club, you agree to these supplementary Terms of Service
           ("Club Terms"), which complement and expand on our platform's{" "}
           ${(<Link href={`/legal/terms`}>General Terms of Service</Link>)}
           ("General TOS"). Where conflicts arise, these Club Terms take
           precedence over the General TOS for matters relating specifically to
           the Club.`}
-        </p>
-        <p>
+        </Text>
+        <Text>
           Please read these Club Terms carefully before joining. By accessing or using the Club
           features, you agree to be bound by these terms and all related policies.
-        </p>
-      </div>
-      <div>
-        <h2>1. Eligibility to Join the Club</h2>
-        <p>To join the Club, you must:</p>
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>1. Eligibility to Join the Club</Title>
+        <Text>To join the Club, you must:</Text>
         <ol>
           <li>
             Be a registered user of the platform, in compliance with our{" "}
@@ -51,11 +55,11 @@ export default function ClubLegalBody() {
           </li>
           <li>Purchase the Club or Full plans.</li>
         </ol>
-      </div>
-      <div>
-        <h2>2. Membership in the Club</h2>
-        <p>By joining the Club, you gain access to the following features:</p>
-        <h3>1. Profile Visibility & Sharing:</h3>
+      </Stack>
+      <Stack>
+        <Title order={2}>2. Membership in the Club</Title>
+        <Text>By joining the Club, you gain access to the following features:</Text>
+        <Title order={3}>1. Profile Visibility & Sharing:</Title>
         <ul>
           <li>
             As a Club member, you will provide two distinct types of content to the Club members:
@@ -75,7 +79,7 @@ export default function ClubLegalBody() {
             </ul>
           </li>
         </ul>
-        <h3>2. Follower Interaction:</h3>
+        <Title order={3}>2. Follower Interaction:</Title>
         <ul>
           <li>
             Users can follow (a.k.a. peek) and unfollow you freely without your explicit approval.
@@ -86,7 +90,7 @@ export default function ClubLegalBody() {
           </li>
           <li>You can hide from or display your private content to your followers at any time.</li>
         </ul>
-        <h3>3. Income from Followers:</h3>
+        <Title order={3}>3. Income from Followers:</Title>
         <ul>
           <li>
             You will earn 25% of the Peek license subscription fee for each user that follows you in
@@ -97,27 +101,27 @@ export default function ClubLegalBody() {
             and withholding taxes in accordance with your local tax laws.
           </li>
         </ul>
-      </div>
-      <div>
-        <h2>3. Content and Privacy</h2>
-        <h3>1. Ownership of Content:</h3>
-        <p>
+      </Stack>
+      <Stack>
+        <Title order={2}>3. Content and Privacy</Title>
+        <Title order={3}>1. Ownership of Content:</Title>
+        <Text>
           You retain ownership of the content you upload to the platform, including Daily Task
           Completion Proof data and Progress Images. However, by uploading content, you grant us a
           non-exclusive, worldwide, royalty-free license to use, distribute, display, and modify
           your content for the purpose of operating the platform and promoting Club services. This
           license is revocable upon your departure from the Club, except for any content already
           shared with the public or followers.
-        </p>
-        <h3>2. Data Security:</h3>
-        <p>
+        </Text>
+        <Title order={3}>2. Data Security:</Title>
+        <Text>
           We employ commercially reasonable security measures, such as encryption, to protect your
           personal data and content. However, we cannot guarantee the complete security of
           information transmitted through the platform. By uploading content, you acknowledge and
           accept the risk of potential unauthorized access or misuse, though we strive to prevent
           this from happening.
-        </p>
-        <h3>3. User-Generated Content:</h3>
+        </Text>
+        <Title order={3}>3. User-Generated Content:</Title>
         <ul>
           <li>
             As a Club member, you are responsible for the content you upload, ensuring it adheres to
@@ -135,7 +139,7 @@ export default function ClubLegalBody() {
             followers is strictly prohibited and may result in penalties or removal from the Club.
           </li>
         </ul>
-        <h3>4. Privacy of Content:</h3>
+        <Title order={3}>4. Privacy of Content:</Title>
         <ul>
           <li>
             <strong>Public Content (Daily Task Completion Proof image and videos):</strong> is
@@ -150,29 +154,30 @@ export default function ClubLegalBody() {
             sharing of private content is a violation of these terms and may lead to penalties.
           </li>
         </ul>
-        <h3>5. Leaving the Club:</h3>
-        <p>
-          {`You can leave the Club at any time by visiting your Settings page
-          at
-          ${(<a href="http://www.maxyouout.com/settings">www.maxyouout.com/settings</a>)}
-          and clicking the "Leave Club" button.`}
-        </p>
-        <p>
+        <Title order={3}>5. Leaving the Club:</Title>
+        <Text>
+          You can leave the Club at any time by visiting your Settings page at
+          <Link href="/settings" style={{ display: "inline-block" }}>
+            www.maxyouout.com/settings
+          </Link>
+          and clicking the "Leave Club" button.
+        </Text>
+        <Text>
           Once you leave the Club, all content you have uploaded will immediately become private.
           Followers will lose access to your private content, and public content will no longer be
           visible to general users.
-        </p>
-      </div>
-      <div>
-        <h2>4. Payment Terms</h2>
-        <h3>1. Stripe Fees:</h3>
-        <p>
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>4. Payment Terms</Title>
+        <Title order={3}>1. Stripe Fees:</Title>
+        <Text>
           All payments to Club members will be processed through Stripe Connect. Stripe may deduct
           its processing fees from your earnings, in accordance with their terms and fee structure.
           We do not control Stripe&apos;s processing times, and payments may take several business
           days to reflect in your bank account after they are initiated.
-        </p>
-        <h3>2. Earnings from Followers:</h3>
+        </Text>
+        <Title order={3}>2. Earnings from Followers:</Title>
         <ul>
           <li>
             You will receive 25% of the app&apos;s subscription fee for each user who follows you.
@@ -184,14 +189,14 @@ export default function ClubLegalBody() {
             to Stripe&apos;s processing times and terms.
           </li>
         </ul>
-        <h3>3. Payment Schedule:</h3>
+        <Title order={3}>3. Payment Schedule:</Title>
         <ul>
           <li>Payouts will be processed on a monthly basis.</li>
           <li>
             You are responsible for ensuring your banking information remains current and accurate.
           </li>
         </ul>
-        <h3>4. Taxes and Withholdings:</h3>
+        <Title order={3}>4. Taxes and Withholdings:</Title>
         <ul>
           <li>
             You are responsible for reporting and paying any applicable taxes on earnings from the
@@ -202,78 +207,78 @@ export default function ClubLegalBody() {
             the Stripe Connect onboarding process.
           </li>
         </ul>
-      </div>
-      <div>
-        <h2>5. Termination of Membership</h2>
-        <h3>1. Content Backup and Retention:</h3>
-        <p>
+      </Stack>
+      <Stack>
+        <Title order={2}>5. Termination of Membership</Title>
+        <Title order={3}>1. Content Backup and Retention:</Title>
+        <Text>
           Upon termination of your Club membership, all of your content will become private. All
           access to your private data (if provided) will be revoked. Your daily task completion
           proof will no longer be visible to general users.
-        </p>
-      </div>
-      <div>
-        <h2>6. Club Participation Guidelines</h2>
-        <h3>1. Prohibited Activities:</h3>
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>6. Club Participation Guidelines</Title>
+        <Title order={3}>1. Prohibited Activities:</Title>
         <ul>
           <li>Sharing or distributing other members&apos; content.</li>
           <li>Uploading misleading, false, or offensive content.</li>
           <li>Engaging in harassment or any form of abusive behavior.</li>
           <li>Engaging in fraudulent activities to increase payouts.</li>
         </ul>
-        <h3>2. Prohibited Content:</h3>
-        <p>
+        <Title order={3}>2. Prohibited Content:</Title>
+        <Text>
           You may not upload content that includes nudity, sexually explicit material, illegal
           activities, hate speech, or any content that violates the rights of others. For a full
-          list of prohibited content, please refer to our <a href={`/legal/terms`}>General TOS</a>.
-          We reserve the right to remove content that violates these guidelines without prior
-          notice.
-        </p>
-        <h3>3. Reporting Mechanism:</h3>
-        <p>
+          list of prohibited content, please refer to our{" "}
+          <Link href={`/legal/terms`}>General TOS</Link>. We reserve the right to remove content
+          that violates these guidelines without prior notice.
+        </Text>
+        <Title order={3}>3. Reporting Mechanism:</Title>
+        <Text>
           If you encounter any inappropriate content or behavior, you may report it by emailing
           support@maxyouout.com. We will review and take appropriate action, which may include
           suspending or terminating the violator&apos;s account.
-        </p>
-      </div>
-      <div>
-        <h2>7. Changes to Club Terms</h2>
-        <p>
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>7. Changes to Club Terms</Title>
+        <Text>
           We may revise these Club Terms from time to time. Any changes will be effective when
           posted on our website or sent to you via email. Continued participation in the Club after
           changes are posted constitutes acceptance of those changes.
-        </p>
-      </div>
-      <div>
-        <h2>8. Limitation of Liability</h2>
-        <p>
-          In addition to the limitations outlined in our <a href={`/legal/terms`}>General TOS</a>,
-          we are not responsible for any unauthorized use or access to your content by third
-          parties, including followers who may violate these terms by sharing or misusing your
-          images or videos.
-        </p>
-      </div>
-      <div>
-        <h2>9. Governing Law</h2>
-        <h3>1. International Compliance:</h3>
-        <p>
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>8. Limitation of Liability</Title>
+        <Text>
+          In addition to the limitations outlined in our{" "}
+          <Link href={`/legal/terms`}>General TOS</Link>, we are not responsible for any
+          unauthorized use or access to your content by third parties, including followers who may
+          violate these terms by sharing or misusing your images or videos.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>9. Governing Law</Title>
+        <Title order={3}>1. International Compliance:</Title>
+        <Text>
           Users are responsible for ensuring that their participation in the Club, including the
           sharing of content and receipt of income, complies with the laws and regulations of their
           country of residence. This includes reporting and paying taxes on earnings where
           applicable.
-        </p>
-        <p>
+        </Text>
+        <Text>
           These Club Terms are governed by the same laws and dispute resolution provisions as
-          outlined in the <a href={`/legal/terms`}>General TOS</a>.
-        </p>
-      </div>
-      <div style={{ marginBottom: rem(32) }}>
-        <h2>10. Contact Us</h2>
-        <p>
+          outlined in the <Link href={`/legal/terms`}>General TOS</Link>.
+        </Text>
+      </Stack>
+      <Stack style={{ marginBottom: rem(32) }}>
+        <Title order={2}>10. Contact Us</Title>
+        <Text>
           If you have any questions regarding these Club Terms, please contact us at
           info@maxyouout.com.
-        </p>
-      </div>
+        </Text>
+      </Stack>
     </>
   );
 }
