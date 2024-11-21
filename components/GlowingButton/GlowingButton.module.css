@@ -1,0 +1,48 @@
+.container {
+  position: relative;
+  border-radius: rem(16);
+  flex: 1;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem(6);
+
+  position: relative;
+  width: unset;
+  font-size: rem(16);
+  height: rem(38);
+  padding: 0 rem(16);
+
+  font-weight: 600;
+  border-radius: rem(16);
+  background-color: var(--mantine-color-brand-7);
+  color: var(--mantine-color-white);
+
+  z-index: 1;
+
+  &:hover {
+    background-color: var(--mantine-color-brand-8);
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: var(--mantine-color-dark-6);
+  color: var(--mantine-color-dark-3);
+  border: rem(1) solid var(--mantine-color-dark-5);
+}
+
+.disabled::before,
+.disabled::after {
+  animation: none;
+  opacity: 0;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}

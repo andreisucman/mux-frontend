@@ -1,0 +1,18 @@
+* {
+  scrollbar-width: thin;
+  scrollbar-color: alpha(var(--mantine-color-dark-6), 0.5) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: rem(8);
+  height: rem(8);
+}
+
+*::-webkit-scrollbar-track {
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  box-shadow: 0 0 rem(8) rem(4) alpha(var(--mantine-color-dark-9), 0.1);
+  border-radius: rem(100);
+}

@@ -1,0 +1,21 @@
+.container {
+  gap: 0;
+}
+
+.header {
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: rem(8);
+}
+
+.child {
+  padding-left: rem(30);
+  margin-top: rem(8);
+  font-size: rem(14);
+}

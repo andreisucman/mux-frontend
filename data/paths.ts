@@ -1,0 +1,30 @@
+export const requireAuthPaths = [
+  "/chat",
+  "/guru",
+  "/explain",
+  "/progress",
+  "/routine",
+  "/upload-progress",
+  "/upload-proof",
+  "/reports",
+  "/club",
+  "/club/join",
+  "/club/profile",
+  "/club/registraion",
+  "/club/progress",
+  "/club/reports",
+  "/club/about/routine",
+  "/club/about",
+];
+
+export const preventFetchingPaths = [
+  "/style-scan",
+  "/auth",
+  "/start",
+  "/start/scan",
+  "/wait",
+  "/sort-concerns",
+  "/considerations",
+  "/start/select-gender",
+  "/start/select-style",
+];
