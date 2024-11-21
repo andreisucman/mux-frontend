@@ -97,7 +97,7 @@ function Header() {
           body: classes.drawerBody,
         }}
       >
-        <DrawerNavigation status={status} />
+        <DrawerNavigation />
       </Drawer>
     </>
   );

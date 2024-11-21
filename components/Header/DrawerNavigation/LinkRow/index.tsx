@@ -4,7 +4,7 @@ import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Collapse, Group, Stack } from "@mantine/core";
 import classes from "./LinkRow.module.css";
 
-type NavigationLinkType = {
+export type NavigationLinkType = {
   title: string;
   icon?: React.ReactNode;
   path: string;

@@ -1,4 +1,4 @@
-import getCookieValue from "../helpers/getCookieValue";
+import { getCookieValue } from "@/helpers/cookies";
 
 type Props<T> = {
   endpoint: string;
