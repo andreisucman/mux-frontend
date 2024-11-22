@@ -2,10 +2,13 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
+import SelectPartsCheckboxes from "@/components/ProgressUploadCarousel/SelectPartsCheckboxes";
+import UploadCard from "@/components/UploadCard";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { UploadPartsChoicesContext } from "@/context/UploadPartsChoicesContext";
@@ -17,9 +20,6 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
 import { delayExecution } from "@/helpers/utils";
 import { SexEnum, TypeEnum, UserDataType } from "@/types/global";
-import { exampleProgressImages } from "../../data/exampleImages";
-import UploadCard from "@/components/UploadCard";
-import SelectPartsCheckboxes from "@/components/ProgressUploadCarousel/SelectPartsCheckboxes";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
 import { ProgressRequirementType } from "./types";
 
@@ -53,74 +53,12 @@ export default function ProgressUploadCarousel({ requirements }: Props) {
 
   const type = requirements?.[0]?.type;
 
-  const slides = requirements
-    .map((item, index) => {
-      if (!userDetails) return;
-      if (!showFace && ["front", "right", "left"].includes(item.position)) return;
-      if (!showMouth && item.position === "mouth") return;
-      if (!showScalp && item.position === "scalp") return;
-
-      const blurredImage =
-        blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
-
-      const sex = userDetails.demographics?.sex || "male";
-      const exampleImage =
-        exampleProgressImages[sex as "male" | "female"]?.[item?.type]?.[
-          item?.position as "front" | "left" | "right"
-        ];
-
-      return (
-        <Carousel.Slide key={index}>
-          <UploadCard
-            sex={sex}
-            eyesBlurredUrl={eyesBlurredUrl}
-            faceBlurredUrl={faceBlurredUrl}
-            exampleImage={exampleImage}
-            isLoading={isLoading}
-            progress={progress}
-            type={item.type}
-            originalUrl={originalUrl}
-            instruction={item.instruction}
-            uploadResponse={uploadResponse}
-            localUrl={localUrl}
-            handleUpload={() =>
-              handleUpload({
-                sex: sex as SexEnum,
-                url: originalUrl,
-                type: item.type as TypeEnum,
-                part: item.part as PartEnum,
-                position: item.position,
-                blurType: blurType as BlurTypeEnum,
-                blurredImage,
-              })
-            }
-            setOriginalUrl={setOriginalUrl}
-            setLocalUrl={setLocalUrl}
-            onBlurClick={({ originalUrl, blurType }) =>
-              onBlurImageClick({
-                originalUrl,
-                eyesBlurredUrl,
-                faceBlurredUrl,
-                blurType,
-                setEyesBlurredUrl,
-                setFaceBlurredUrl,
-                setLocalUrl,
-              })
-            }
-            handleDelete={handleDelete}
-          />
-        </Carousel.Slide>
-      );
-    })
-    .filter(Boolean);
-
+  const { toAnalyze, _id: userId } = userDetails || {};
   const nothingToScan =
-    userDetails?.toAnalyze[type].length === 0 && !showFace && !showMouth && !showScalp;
+    toAnalyze && toAnalyze[type].length === 0 && !showFace && !showMouth && !showScalp;
 
-  const somethingToScan =
-    slides.length === 0 && userDetails && userDetails?.toAnalyze?.[type]?.length > 0;
+  const uploadedParts = toAnalyze && toAnalyze[type];
 
-  const uploadedParts = userDetails?.toAnalyze[type];
   const distinctUploadedParts = [
     ...new Set(uploadedParts?.map((obj) => obj.part).filter(Boolean)),
   ] as string[];
@@ -233,12 +171,71 @@ export default function ProgressUploadCarousel({ requirements }: Props) {
     [userDetails, setUserDetails]
   );
 
-  function handleDelete() {
+  const handleDelete = useCallback(() => {
     setLocalUrl("");
     setOriginalUrl("");
     setEyesBlurredUrl("");
     setFaceBlurredUrl("");
-  }
+  }, []);
+
+  const slides = requirements
+    .map((item, index) => {
+      if (!userDetails) return;
+      if (!showFace && ["front", "right", "left"].includes(item.position)) return;
+      if (!showMouth && item.position === "mouth") return;
+      if (!showScalp && item.position === "scalp") return;
+
+      const blurredImage =
+        blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
+
+      const { demographics } = userDetails || {};
+      const { sex } = demographics || { sex: "male" };
+
+      return (
+        <Carousel.Slide key={index}>
+          <UploadCard
+            sex={sex}
+            eyesBlurredUrl={eyesBlurredUrl}
+            faceBlurredUrl={faceBlurredUrl}
+            isLoading={isLoading}
+            progress={progress}
+            type={item.type}
+            originalUrl={originalUrl}
+            instruction={item.instruction}
+            uploadResponse={uploadResponse}
+            localUrl={localUrl}
+            handleUpload={() =>
+              handleUpload({
+                sex: sex as SexEnum,
+                url: originalUrl,
+                type: item.type as TypeEnum,
+                part: item.part as PartEnum,
+                position: item.position,
+                blurType: blurType as BlurTypeEnum,
+                blurredImage,
+              })
+            }
+            setOriginalUrl={setOriginalUrl}
+            setLocalUrl={setLocalUrl}
+            onBlurClick={({ originalUrl, blurType }) =>
+              onBlurImageClick({
+                originalUrl,
+                eyesBlurredUrl,
+                faceBlurredUrl,
+                blurType,
+                setEyesBlurredUrl,
+                setFaceBlurredUrl,
+                setLocalUrl,
+              })
+            }
+            handleDelete={handleDelete}
+          />
+        </Carousel.Slide>
+      );
+    })
+    .filter(Boolean);
+
+  const somethingToScan = slides.length === 0 && toAnalyze && toAnalyze?.[type]?.length > 0;
 
   return (
     <Stack flex={1}>
@@ -268,11 +265,13 @@ export default function ProgressUploadCarousel({ requirements }: Props) {
         </Carousel>
       )}
 
-      {nothingToScan && <OverlayWithText icon="🤷‍♂️" text="Nothing to scan" />}
+      {nothingToScan && (
+        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
+      )}
       {somethingToScan && (
         <StartPartialScanOverlay
           type={type as TypeEnum}
-          userId={userDetails?._id}
+          userId={userId}
           distinctUploadedParts={distinctUploadedParts}
         />
       )}

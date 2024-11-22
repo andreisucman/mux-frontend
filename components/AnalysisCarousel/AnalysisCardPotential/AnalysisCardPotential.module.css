@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-radius: rem(16);
+  height: 100%;
+  gap: 0;
+}
+
+.wrapper {
+  gap: 0;
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+}

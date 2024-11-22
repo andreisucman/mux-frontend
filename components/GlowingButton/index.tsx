@@ -33,7 +33,7 @@ function GlowingButton({
       <div
         className={cs(classes.button, classes.gradient, {
           gradientSpin: addGradient,
-          disabled,
+          [classes.disabled]: disabled,
         })}
         style={overlayStyles ? overlayStyles : {}}
       />

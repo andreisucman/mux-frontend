@@ -3,20 +3,19 @@
 }
 
 .footer {
-  font-size: rem(14);
   margin-top: auto;
 }
 
 .copyright {
-  font-size: rem(12);
+  font-size: var(--mantine-font-size-xs);
   color: var(--mantine-color-dimmed);
 }
 
-.signOutButton {
+.signOutButton,
+.signInButton {
   display: flex;
   align-items: center;
   gap: rem(8);
-  font-size: rem(14);
 
   &:hover {
     color: white;

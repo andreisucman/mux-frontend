@@ -1,6 +1,7 @@
 import "@/styles/mantine.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
+import '@mantine/nprogress/styles.css';
 import "@/styles/global.css";
 
 import React, { Suspense } from "react";

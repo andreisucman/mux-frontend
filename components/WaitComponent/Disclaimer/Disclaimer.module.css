@@ -1,0 +1,19 @@
+.container {
+  margin: rem(8) 0 0;
+  gap: rem(8);
+  align-items: center;
+  padding: 0 rem(32);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: rem(8);
+}
+
+.text {
+  max-width: rem(800);
+  text-align: center;
+  font-size: var(--mantine-font-size-sm);
+}

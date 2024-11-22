@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   flex: 1;
 }
 
@@ -17,7 +17,7 @@
   padding: 0 rem(16);
 
   font-weight: 600;
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   background-color: var(--mantine-color-brand-7);
   color: var(--mantine-color-white);
 

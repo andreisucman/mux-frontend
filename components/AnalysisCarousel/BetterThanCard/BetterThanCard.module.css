@@ -1,0 +1,10 @@
+.container {
+  flex: 1;
+  gap: rem(8);
+}
+
+.title {
+  text-align: left;
+  width: 100%;
+  font-size: var(--mantine-font-size-sm);
+}

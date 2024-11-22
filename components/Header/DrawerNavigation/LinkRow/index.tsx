@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from "react";
-import Link from "next/link";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import { Collapse, Group, Stack } from "@mantine/core";
+import { Collapse, Group, Stack, UnstyledButton } from "@mantine/core";
 import classes from "./LinkRow.module.css";
 
 export type NavigationLinkType = {
@@ -15,9 +14,10 @@ type Props = {
   linkClicked: string;
   link: NavigationLinkType;
   handleClickLink: (path: string) => void;
+  handleNavigate: (path: string) => void;
 };
 
-function LinkRow({ linkClicked, handleClickLink, link }: Props) {
+function LinkRow({ linkClicked, handleClickLink, handleNavigate, link }: Props) {
   const active = linkClicked === link.path;
 
   const chevron = useMemo(
@@ -33,18 +33,22 @@ function LinkRow({ linkClicked, handleClickLink, link }: Props) {
   return (
     <Stack className={classes.container}>
       <Group className={classes.header} onClick={() => handleClickLink(link.path)}>
-        <Link className={classes.link} href={link.path} onClick={(e) => e.stopPropagation()}>
+        <UnstyledButton className={classes.link} onClick={() => handleNavigate(link.path)}>
           {link.icon}
           {link.title}
-        </Link>
+        </UnstyledButton>
         {link.children && chevron}
       </Group>
       {link.children && (
         <Collapse in={linkClicked === link.path}>
           {link.children.map((child, index) => (
-            <Link key={index} href={child.path} className={`${classes.link} ${classes.child}`}>
+            <UnstyledButton
+              key={index}
+              onClick={() => handleNavigate(link.path)}
+              className={`${classes.link} ${classes.child}`}
+            >
               {child.title}
-            </Link>
+            </UnstyledButton>
           ))}
         </Collapse>
       )}

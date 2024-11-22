@@ -1,0 +1,13 @@
+.container {
+  flex: 1;
+  gap: 0;
+}
+
+.row {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}
+
+.vertical {
+  flex-direction: column;
+}

@@ -5,8 +5,20 @@
 .content {
   flex: 1;
   background-color: alpha(var(--mantine-color-dark-8), 0.5);
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   max-height: rem(600);
-  margin:auto;
+  margin: auto;
   width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: rem(18);
+  text-align: center;
+}
+
+.button {
+  width: 100%;
+  max-width: rem(250);
 }

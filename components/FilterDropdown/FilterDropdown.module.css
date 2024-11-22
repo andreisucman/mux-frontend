@@ -1,0 +1,40 @@
+.control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  max-width: rem(200);
+  height: rem(34);
+  width: 100%;
+
+  padding: 0 rem(8);
+  border-radius: var(--mantine-radius-md);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  background-color: var(--mantine-color-dark-6);
+
+  &[data-expanded] {
+    background-color: var(--mantine-color-dark-5);
+  }
+
+  &:hover {
+    background-color: var(--mantine-color-dark-5);
+  }
+}
+
+.label {
+  font-size: var(--mantine-font-size-sm);
+}
+
+.icon {
+  transform: rotate(0deg);
+
+  [data-expanded] & {
+    transform: rotate(180deg);
+  }
+}
+
+.itemSection {
+  & span {
+    display: flex;
+  }
+}

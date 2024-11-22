@@ -4,4 +4,8 @@
   max-width: rem(740);
   width: 100%;
   margin: auto;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: rem(24) rem(16);
+  }
 }

@@ -3,24 +3,22 @@
   height: 100%;
 }
 
-.imageRow {
-  width: 100%;
-  justify-content: center;
-  min-height: 36vh;
-  flex: 1;
-}
-
 .imageCell {
   gap: rem(8);
   flex: 1;
   height: 100%;
+  width: 100%;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  min-height: 33vh;
+  overflow: hidden;
 }
 
 .centralContent {
   width: 100%;
   align-items: center;
   justify-content: center;
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   padding: rem(16);
   flex: 1;
   border: rem(1) solid var(--mantine-color-dark-5);
@@ -38,6 +36,12 @@
 .buttonGroup {
   width: 100%;
   margin-bottom: rem(24);
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .secondary {

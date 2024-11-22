@@ -1,0 +1,9 @@
+.container {
+  flex: 1;
+  gap: rem(8);
+}
+
+.wrapper {
+  flex: 1;
+  gap: rem(12);
+}

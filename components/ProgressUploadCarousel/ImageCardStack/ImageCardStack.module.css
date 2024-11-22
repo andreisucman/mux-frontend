@@ -5,7 +5,7 @@
 }
 
 .image {
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
 
   position: absolute;
   object-fit: cover;

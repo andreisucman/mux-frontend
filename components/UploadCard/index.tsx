@@ -1,22 +1,14 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
-import {
-  ActionIcon,
-  Button,
-  Group,
-  Progress,
-  rem,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Button, Group, Progress, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import InstructionContainer from "@/components/InstructionContainer";
+import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
 
@@ -37,7 +29,6 @@ type Props = {
   latestStyleImage?: string;
   isLoading?: boolean;
   instruction: string;
-  exampleImage?: string;
   uploadResponse: string;
   customButtonStyles?: { [key: string]: any };
   customContentStyles?: { [key: string]: any };
@@ -57,7 +48,6 @@ export default function UploadCard({
   progress,
   isLoading,
   instruction,
-  exampleImage,
   eyesBlurredUrl,
   faceBlurredUrl,
   latestStyleImage,
@@ -78,45 +68,40 @@ export default function UploadCard({
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
     !localUrl;
 
-  async function loadLocally(base64string: string) {
-    if (!base64string) return;
-    modals.closeAll();
+  const loadLocally = useCallback(
+    async (base64string: string) => {
+      if (!base64string) return;
+      modals.closeAll();
 
-    // const fileUrl = URL.createObjectURL(file);
-    setLocalUrl(base64string);
-    setOriginalUrl(base64string);
+      setLocalUrl(base64string);
+      setOriginalUrl(base64string);
 
-    if (blurType === "original") return;
-    setIsBlurLoading(true);
+      if (blurType === "original") return;
+      setIsBlurLoading(true);
 
-    await onBlurClick({
-      originalUrl: base64string,
-      blurType: blurType as "eyes",
-    });
+      await onBlurClick({
+        originalUrl: base64string,
+        blurType: blurType as "eyes",
+      });
 
-    setIsBlurLoading(false);
-  }
+      setIsBlurLoading(false);
+    },
+    [blurType]
+  );
 
-  function openPhotoCapturer() {
+  const openPhotoCapturer = useCallback(() => {
     modals.openContextModal({
       modal: "general",
       centered: true,
 
       title: (
-        <Group>
+        <Group gap={8}>
           <IconCamera className={classes.icon} /> <Text fw={600}>Take a photo</Text>
         </Group>
       ),
       innerProps: <PhotoCapturer handleCapture={loadLocally} />,
     });
-  }
-
-  async function onClickWrapper(blurType: "face" | "eyes") {
-    setIsBlurLoading(true);
-    console.log("originalUrl, blurType", originalUrl, blurType);
-    await onBlurClick({ originalUrl, blurType });
-    setIsBlurLoading(false);
-  }
+  }, [loadLocally]);
 
   return (
     <Stack className={classes.container}>
@@ -132,26 +117,13 @@ export default function UploadCard({
         className={classes.centralContent}
         style={customContentStyles ? customContentStyles : {}}
       >
-        <Group className={classes.imageRow}>
-          {exampleImage && (
-            <Stack className={classes.imageCell}>
-              <Text size="xs" c="dimmed">
-                Example:
-              </Text>
-              <ImageDisplayContainer image={exampleImage} />
-            </Stack>
-          )}
-          <Stack className={classes.imageCell}>
-            <Text size="xs" c="dimmed">
-              Uploaded:
-            </Text>
-            <ImageDisplayContainer
-              handleDelete={handleDelete}
-              image={localUrl || latestStyleImage}
-              isLoadingOverlay={isBlurLoading}
-            />
-          </Stack>
-        </Group>
+        <Stack className={classes.imageCell}>
+          <ImageDisplayContainer
+            handleDelete={handleDelete}
+            image={localUrl || latestStyleImage}
+            isLoadingOverlay={isBlurLoading}
+          />
+        </Stack>
         {isLoading && (
           <Stack className={classes.uploadingStack}>
             <Text size="sm" c="dimmed">
@@ -172,14 +144,23 @@ export default function UploadCard({
               style={customButtonStyles ? customButtonStyles : {}}
             >
               {!localUrl && (
-                <Button onClick={openPhotoCapturer} disabled={isLoading} variant={"default"}>
-                  <IconCamera className="icon" />
+                <Button
+                  className={classes.button}
+                  onClick={openPhotoCapturer}
+                  disabled={isLoading}
+                  variant={"default"}
+                >
+                  <IconCamera className="icon" style={{ marginRight: rem(8) }} />
                   Take a photo
                 </Button>
               )}
               {localUrl && (
-                <Button disabled={disableUpload || isLoading} onClick={handleUpload}>
-                  <IconUpload className="icon" />
+                <Button
+                  className={classes.button}
+                  disabled={disableUpload || isLoading}
+                  onClick={handleUpload}
+                >
+                  <IconUpload className="icon" style={{ marginRight: rem(8) }} />
                   Upload
                 </Button>
               )}

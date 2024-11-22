@@ -1,0 +1,42 @@
+.root {
+  transform: translateY(40%);
+  padding-bottom: rem(80);
+}
+
+.inner {
+  position: relative;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  opacity: 0.75;
+  color: var(--mantine-color-dark-6);
+}
+
+.content {
+  padding-top: rem(120);
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding-top: rem(120);
+  }
+}
+
+.title {
+  text-align: center;
+  font-weight: 800;
+  font-size: rem(38);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: rem(32);
+  }
+}
+
+.description {
+  max-width: rem(540);
+  margin: auto;
+  margin-top: var(--mantine-spacing-xl);
+  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+}

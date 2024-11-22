@@ -1,7 +1,7 @@
 .container {
   padding: rem(8) rem(16);
   border: rem(1) solid transparent;
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   align-items: center;
 }
 
@@ -12,7 +12,7 @@
 .text {
   display: inline-block;
   font-weight: 600;
-  font-size: rem(14);
+  font-size: var(--mantine-font-size-sm);
 }
 
 .pointer {

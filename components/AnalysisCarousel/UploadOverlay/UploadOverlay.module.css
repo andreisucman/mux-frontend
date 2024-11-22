@@ -1,0 +1,14 @@
+.container {
+  position: relative;
+  background-color: var(--mantine-color-dark-8);
+  border-radius: var(--mantine-radius-lg);
+
+  opacity: 0;
+  z-index: 3;
+  flex: 1;
+}
+
+.button {
+  margin: auto;
+  z-index: 2;
+}

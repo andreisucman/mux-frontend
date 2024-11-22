@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   IconBooks,
+  IconDoorEnter,
   IconDoorExit,
   IconLicense,
   IconRotateDot,
@@ -12,6 +13,7 @@ import {
   IconTargetArrow,
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
+import { nprogress } from "@mantine/nprogress";
 import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
@@ -87,7 +89,10 @@ const legalLinks = [
   },
 ];
 
-export default function DrawerNavigation() {
+type Props = {
+  closeDrawer: () => void;
+};
+export default function DrawerNavigation({ closeDrawer }: Props) {
   const router = useRouter();
   const { status, userDetails, setUserDetails, setStatus } = useContext(UserContext);
   const [linkClicked, setLinkClicked] = useState("");
@@ -100,6 +105,12 @@ export default function DrawerNavigation() {
     [linkClicked]
   );
 
+  const handleNavigate = (path: string) => {
+    router.push(path);
+    nprogress.start();
+    closeDrawer();
+  };
+
   const handleSignOut = useCallback(async () => {
     router.replace("/");
     clearCookies();
@@ -107,6 +118,10 @@ export default function DrawerNavigation() {
     setStatus("unauthenticated");
     setUserDetails(null);
   }, []);
+
+  const handleClickSignIn = () => {
+    router.push("/auth");
+  };
 
   const finalAuthenticatedNavigation = useMemo(() => {
     const { payouts } = userDetails?.club || {};
@@ -157,6 +172,7 @@ export default function DrawerNavigation() {
           link={link}
           linkClicked={linkClicked}
           handleClickLink={handleClickLink}
+          handleNavigate={handleNavigate}
         />
       ))}
       {status === "authenticated" && (
@@ -168,6 +184,7 @@ export default function DrawerNavigation() {
               link={link}
               linkClicked={linkClicked}
               handleClickLink={handleClickLink}
+              handleNavigate={handleNavigate}
             />
           ))}
         </>
@@ -179,12 +196,19 @@ export default function DrawerNavigation() {
             Sign out
           </UnstyledButton>
         )}
+        {status !== "authenticated" && (
+          <UnstyledButton className={classes.signInButton} onClick={handleClickSignIn}>
+            <IconDoorEnter className="icon" stroke={1.25} />
+            Sign in
+          </UnstyledButton>
+        )}
         {legalLinks.map((link, index) => (
           <LinkRow
             key={index}
             link={link}
             linkClicked={linkClicked}
             handleClickLink={handleClickLink}
+            handleNavigate={handleNavigate}
           />
         ))}
         <Text className={classes.copyright}>&copy; {year} Max You Out. All rights reserved</Text>

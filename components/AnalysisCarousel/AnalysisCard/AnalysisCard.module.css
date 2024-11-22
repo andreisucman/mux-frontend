@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-radius: var(--mantine-radius-lg);
+  height: 100%;
+  gap: rem(8);
+}
+
+.wrapper {
+  flex: 1;
+  gap: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  
+  /* place-items: center; */
+  /* justify-content: center; */
+  /* align-content: center; */
+  /* grid-template-columns: 1fr; */
+  /* flex: 1; */
+}
+
+.doubleGrid {
+  grid-template-columns: 1fr 1fr;
+}
+
+
+.tripleGrid {
+  grid-template-columns: 1fr 1fr 1fr;
+}

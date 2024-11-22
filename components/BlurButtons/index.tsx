@@ -28,6 +28,12 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
       <Checkbox
         checked={blurType === "eyes"}
         className={classes.checkbox}
+        classNames={{
+          body: classes.body,
+          label: classes.label,
+          labelWrapper: classes.labelWrapper,
+          root: classes.root,
+        }}
         label={
           <Group className={classes.labelGroup}>
             <IconEyeOff className="icon" /> Blur eyes
@@ -35,14 +41,16 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
         }
         disabled={disabled}
         onChange={(e) => handleChange(e.currentTarget.checked, "eyes")}
-        styles={{
-          labelWrapper: { width: "100%" },
-          root: { width: "100%" },
-        }}
       />
       <Checkbox
         checked={blurType === "face"}
         className={classes.checkbox}
+        classNames={{
+          body: classes.body,
+          label: classes.label,
+          labelWrapper: classes.labelWrapper,
+          root: classes.root,
+        }}
         label={
           <Group className={classes.labelGroup}>
             <IconMoodOff className="icon" /> Blur face
@@ -50,10 +58,6 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
         }
         disabled={disabled}
         onChange={(e) => handleChange(e.currentTarget.checked, "face")}
-        styles={{
-          labelWrapper: { width: "100%" },
-          root: { width: "100%" },
-        }}
       />
     </Group>
   );

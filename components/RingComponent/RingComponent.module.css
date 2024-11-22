@@ -1,0 +1,16 @@
+.container {
+  position: relative;
+  align-items: center;
+  gap: 0;
+}
+
+.label {
+  font-weight: 600;
+  text-align: center;
+}
+
+.actionIcon {
+  position: absolute;
+  right: 0;
+  top: 0;
+}

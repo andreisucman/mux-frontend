@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useContext } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { IconBooks, IconRocket, IconScan, IconStar, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -13,6 +13,7 @@ import classes from "./Header.module.css";
 
 function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
   const { status, userDetails } = useContext(UserContext);
   const { email } = userDetails || {};
@@ -32,12 +33,22 @@ function Header() {
     router.push(url);
   }, [status, email]);
 
+  const hideStartButton = pathname.startsWith("/start");
+
   return (
     <>
       <header className={classes.container}>
         <div className={classes.wrapper}>
           <Logo />
           <Group className={classes.navigation}>
+            {status !== "authenticated" && !hideStartButton && (
+              <GlowingButton
+                text="Start"
+                disabled={pathname.startsWith("/start")}
+                icon={<IconRocket stroke={1.5} className="icon icon__large" />}
+                onClick={handleAppRedirect}
+              />
+            )}
             <ActionIcon
               variant="default"
               visibleFrom={status === "authenticated" ? undefined : "xs"}
@@ -50,20 +61,20 @@ function Header() {
             <ActionIcon
               variant="default"
               visibleFrom="xs"
-              onClick={() => router.push("/reviews")}
-              className={classes.button}
-              aria-label="reviews button"
-            >
-              <IconStar stroke={1.25} className="icon icon__large" />
-            </ActionIcon>
-            <ActionIcon
-              variant="default"
-              visibleFrom="xs"
               onClick={() => router.push("/solutions")}
               className={classes.button}
               aria-label="solutions button"
             >
               <IconBooks stroke={1.25} className="icon icon__large" />
+            </ActionIcon>
+            <ActionIcon
+              variant="default"
+              visibleFrom="xs"
+              onClick={() => router.push("/reviews")}
+              className={classes.button}
+              aria-label="reviews button"
+            >
+              <IconStar stroke={1.25} className="icon icon__large" />
             </ActionIcon>
             <ActionIcon
               variant="default"
@@ -74,11 +85,6 @@ function Header() {
             >
               <IconScan stroke={1.25} className="icon icon__large" />
             </ActionIcon>
-            <GlowingButton
-              text="Start"
-              icon={<IconRocket stroke={1.5} className="icon icon__large" />}
-              onClick={handleAppRedirect}
-            />
 
             <Burger onClick={toggle} />
           </Group>
@@ -98,7 +104,7 @@ function Header() {
           body: classes.drawerBody,
         }}
       >
-        <DrawerNavigation />
+        <DrawerNavigation closeDrawer={close} />
       </Drawer>
     </>
   );

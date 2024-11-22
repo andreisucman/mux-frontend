@@ -114,14 +114,15 @@ export default function PhotoCapturer({ handleCapture }: Props) {
           <Button
             variant="default"
             onClick={flipCamera}
+            className={classes.button}
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
           >
             <IconRefresh className="icon" />
           </Button>
         )}
-        <Button onClick={capturePhoto}>
-          <IconCamera className="icon" />
+        <Button onClick={capturePhoto} className={classes.button}>
+          <IconCamera className="icon" style={{marginRight: rem(8)}} />
           Take the photo
         </Button>
       </Group>

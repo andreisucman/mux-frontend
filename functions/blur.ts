@@ -1,6 +1,6 @@
 import React from "react";
-import callTheServer from "./callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
+import callTheServer from "./callTheServer";
 import uploadToSpaces from "./uploadToSpaces";
 
 type OnBlurClickProps = {
@@ -66,6 +66,7 @@ export async function onBlurImageClick({
   setFaceBlurredUrl,
   setEyesBlurredUrl,
 }: OnBlurClickProps) {
+  if (!originalUrl) return;
   try {
     if (blurType === "face") {
       if (!faceBlurredUrl) {
@@ -97,9 +98,7 @@ export async function onBlurImageClick({
     }
   } catch (err) {
     console.log("Error in onBlurImageClick: ", err);
-    openErrorModal({
-      description: "Please retry and inform us if the error persists.",
-    });
+    openErrorModal();
   }
 }
 
@@ -164,9 +163,7 @@ export async function onBlurVideoClick({
       setIsBlurLoading(false);
     }
   } catch (err) {
-    console.log("Error in onBlurImageClick: ", err);
-    openErrorModal({
-      description: "Please retry and inform us if the error persists.",
-    });
+    console.log("Error in onBlurVideoClick: ", err);
+    openErrorModal();
   }
 }

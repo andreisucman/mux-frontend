@@ -2,12 +2,11 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import { IconArrowRight, IconLicense } from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import getBrowserFingerprint from "get-browser-fingerprint";
-import { Button, Stack } from "@mantine/core";
+import { Button, Stack, Title } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
-import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -25,7 +24,7 @@ export default function StartIndexPage() {
   const [tosAccepted, setTosAccepted] = useState(false);
 
   const startTheFlow = useCallback(async () => {
-    const { _id } = userDetails || {};
+    const { _id: userId } = userDetails || {};
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     try {
@@ -36,7 +35,7 @@ export default function StartIndexPage() {
         endpoint: "startTheFlow",
         method: "POST",
         body: {
-          userId: _id,
+          userId,
           tosAccepted,
           timeZone,
           fingerprint,
@@ -59,6 +58,7 @@ export default function StartIndexPage() {
         router.push("/start/scan");
       }
     } catch (err) {
+      openErrorModal();
       console.log("Error in startTheFlow: ", err);
       setIsLoading(false);
     }
@@ -66,7 +66,7 @@ export default function StartIndexPage() {
 
   return (
     <Stack className={classes.container}>
-      <PageHeader name="Review the Terms" icon={<IconLicense className="icon icon__title" />} />
+      <Title order={1}>Review the Terms</Title>
       <Stack className={classes.content}>
         <TermsLegalBody />
       </Stack>
