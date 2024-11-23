@@ -1,0 +1,10 @@
+.container {
+  position: relative;
+  overflow: auto;
+  flex: 1;
+}
+
+.wrapper {
+  position: absolute;
+  inset: 0;
+}

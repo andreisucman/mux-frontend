@@ -1,3 +1,4 @@
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import callTheServer from "./callTheServer";
 
 type State = {
@@ -6,7 +7,12 @@ type State = {
   trackedUserId?: string;
 };
 
-export default async function signIn(state?: State) {
+type Props = {
+  state?: State;
+  router: AppRouterInstance;
+};
+
+export default async function signIn({ state, router }: Props) {
   try {
     let url = "authorize";
 
@@ -20,8 +26,8 @@ export default async function signIn(state?: State) {
       method: "GET",
     });
 
-    if (response?.status === 200) {
-      window.location.href = response.message;
+    if (response.status === 200) {
+      router.push(response.message);
     }
   } catch (err) {
     console.log("Error in signIn: ", err);

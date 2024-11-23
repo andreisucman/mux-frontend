@@ -10,7 +10,7 @@ import {
   IconStar,
   IconTarget,
   IconTargetArrow,
-  IconTrophy
+  IconTrophy,
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";

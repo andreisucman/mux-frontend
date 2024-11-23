@@ -1,0 +1,17 @@
+.container {
+  flex: 1;
+  gap: rem(8);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  padding: rem(16);
+}
+
+.title {
+  text-align: left;
+  width: 100%;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.wrapper {
+  flex: 1;
+}

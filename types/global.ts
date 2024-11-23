@@ -144,10 +144,20 @@ export type HigherThanType = {
   health: { overall: number; health: number };
 };
 
+export type UserConcernType = {
+  name: string;
+  type: TypeEnum;
+  part: PartEnum;
+  explanation: string;
+  importance: number;
+  isDisabled: boolean;
+};
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email: string | null;
   club: ClubDataType | null;
+  concerns: UserConcernType[];
   requiredProgress: {
     head: ProgressRequirement[] | null;
     body: ProgressRequirement[] | null;

@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useMemo } from "react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
+import ConcernsCard from "@/components/AnalysisCarousel//ConcernsCard";
 import AnalysisCard from "@/components/AnalysisCarousel/AnalysisCard";
 import AnalysisCardPotential from "@/components/AnalysisCarousel/AnalysisCardPotential";
 import BetterThanCard from "@/components/AnalysisCarousel/BetterThanCard";
@@ -1092,11 +1093,40 @@ const fakePotentiallyHigherThan = {
   },
 };
 
+const fakeConcerns = [
+  {
+    name: "ungroomed_facial_hair",
+    explanation:
+      "Your beard appears full and may benefit from grooming to achieve a more defined shape.",
+    part: "face",
+    importance: 1,
+    isDisabled: false,
+    type: "head",
+  },
+  {
+    name: "teeth_discoloration",
+    explanation: "Your teeth appear to have a yellowish tint, indicating discoloration.",
+    part: "mouth",
+    importance: 1,
+    isDisabled: false,
+    type: "head",
+  },
+  {
+    name: "alopecia_areata",
+    explanation: "You have noticeable thinning or patchy hair loss on the top of your scalp.",
+    part: "scalp",
+    importance: 1,
+    isDisabled: false,
+    type: "head",
+  },
+];
+
 export default function AnalysisCarousel({ type }: Props) {
   const { status, userDetails } = useContext(UserContext);
   const {
     _id: userId,
     demographics,
+    // concerns,
     // potential,
     // latestProgress,
     latestStyleAnalysis,
@@ -1110,6 +1140,7 @@ export default function AnalysisCarousel({ type }: Props) {
   const potential = fakePotential;
   const currentlyHigherThan = fakeCurrentlyHigherThan;
   const potentiallyHigherThan = fakePotentiallyHigherThan;
+  const concerns = fakeConcerns;
 
   const progressRecord = latestProgress?.[type as "head"];
   const potentialRecord = potential?.[type as "head"];
@@ -1172,7 +1203,19 @@ export default function AnalysisCarousel({ type }: Props) {
       </Carousel.Slide>
     );
 
-    const slides = [analysisCard, analysisPotentialCard, currentBetterCard, potentialBetterCard];
+    const concernsCard = (
+      <Carousel.Slide key={"concernsCard"}>
+        {concerns && <ConcernsCard concerns={concerns} title="Areas of improvement" type={type} />}
+      </Carousel.Slide>
+    );
+
+    const slides = [
+      analysisCard,
+      analysisPotentialCard,
+      currentBetterCard,
+      potentialBetterCard,
+      concernsCard,
+    ];
 
     return slides;
   }, [
@@ -1180,6 +1223,7 @@ export default function AnalysisCarousel({ type }: Props) {
     typeof potentialRecord,
     typeof currentlyHigherThan,
     typeof potentiallyHigherThan,
+    typeof concerns,
     userId,
     status,
     type,

@@ -12,14 +12,20 @@ export function getRingColor(score: number, isPotential?: boolean) {
       : "green.9";
 }
 export function calculateCircleRadius(rectWidth: number, rectHeight: number, numCircles: number) {
-  // Try to find the optimal number of rows and columns that fit the circles
   let circlesPerRow = Math.ceil(Math.sqrt(numCircles * (rectWidth / rectHeight)));
   let circlesPerCol = Math.ceil(numCircles / circlesPerRow);
 
-  // Calculate the maximum diameter based on the rectangle's width and height
   const diameterWidth = rectWidth / circlesPerRow;
   const diameterHeight = rectHeight / circlesPerCol;
 
-  // The final diameter is the minimum of the two to ensure circles fit
   return Math.min(diameterWidth, diameterHeight);
+}
+
+export function normalizeString(string: string) {
+  if (!string) return "";
+  const normalized = string
+    .split(/[\s_]+/)
+    .join(" ")
+    .toLowerCase();
+  return normalized[0].toUpperCase() + normalized.slice(1);
 }
