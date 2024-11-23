@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  align-items: center;
+  border-radius: rem(16);
+  height: 100%;
+  flex: 1;
+  gap: rem(8);
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+}

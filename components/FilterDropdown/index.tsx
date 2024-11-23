@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { IconChevronDown } from "@tabler/icons-react";
 import { Group, Menu, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./FilterDropdown.module.css";
 
 type ItemType = {
@@ -11,16 +13,34 @@ type ItemType = {
 };
 
 type Props = {
+  filterType: string;
+  addToQuery?: boolean;
   data: ItemType[];
   defaultSelected?: ItemType;
   onSelectCallback?: (item: ItemType) => void;
 };
 
-export default function FilterDropdown({ data, defaultSelected, onSelectCallback }: Props) {
+export default function FilterDropdown({
+  data,
+  addToQuery,
+  filterType,
+  defaultSelected,
+  onSelectCallback,
+}: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [opened, { open, close }] = useDisclosure(false);
   const [selected, setSelected] = useState(defaultSelected || data[0]);
 
   function handleSelect(item: ItemType) {
+    if (addToQuery) {
+      const newQuery = modifyQuery({
+        params: [{ name: filterType, value: item.value, action: "replace" }],
+      });
+
+      router.replace(`/${pathname}?${newQuery}`);
+    }
+    
     setSelected(item);
 
     if (onSelectCallback) onSelectCallback(item);

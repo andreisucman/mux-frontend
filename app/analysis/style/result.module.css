@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  flex: 1;
+}
+
+.image {
+  margin: auto;
+  max-width: rem(250);
+  max-height: rem(250);
+  object-fit: contain;
+}
+
+.button {
+  flex: 1;
+  padding: 0;
+}
+
+.buttonGroup {
+  flex: 0 1;
+}

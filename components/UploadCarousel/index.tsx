@@ -146,7 +146,7 @@ export default function UploadCarousel({
 
   return (
     <Stack flex={1}>
-      {type === "head" && (
+      {type === "head" && !isStyle && (
         <SelectPartsCheckboxes
           distinctUploadedParts={distinctUploadedParts}
           showMouth={mouthExists && showMouth}
@@ -174,7 +174,7 @@ export default function UploadCarousel({
       {nothingToScan && (
         <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
       )}
-      {somethingToScan && (
+      {somethingToScan && !isStyle && (
         <StartPartialScanOverlay
           type={type as TypeEnum}
           userId={userId}

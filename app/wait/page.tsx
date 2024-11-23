@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -9,7 +9,7 @@ import { UserContext } from "@/context/UserContext";
 
 export const runtime = "edge";
 
-export default function StartWait() {
+export default function WaitPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
@@ -18,12 +18,23 @@ export default function StartWait() {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
-  const job = searchParams.get("job") || "progress";
+  const redirect = searchParams.get("redirect") || `/analysis?type=${finalType}`;
+  const finalRedirect = decodeURIComponent(redirect);
+
+  const hideDisclaimer = useMemo(() => {
+    const path = finalRedirect.split("?").shift();
+    return path !== "/analysis";
+  }, [finalRedirect]);
 
   const onComplete = useCallback(() => {
-    const path = job === "progress" ? `/analysis` : `/analysis/style`;
-    router.replace(`${path}?type=${finalType}`);
-  }, [finalType]);
+    try {
+      if (finalRedirect.startsWith("/") && !finalRedirect.includes("javascript:")) {
+        router.replace(finalRedirect);
+      }
+    } catch (e) {
+      console.error("Invalid redirect URL", e);
+    }
+  }, [finalType, typeof router]);
 
   useEffect(() => {
     if (userId) return;
@@ -33,10 +44,10 @@ export default function StartWait() {
   return (
     <Stack flex={1}>
       <WaitComponent
-        type={type as string}
+        operationKey={type}
         onComplete={onComplete}
         errorRedirectUrl="/start"
-        hideDisclaimer={job === "style"}
+        hideDisclaimer={hideDisclaimer}
         customWrapperStyles={
           isMobile ? { transform: "translateY(-5%)" } : { transform: "translateY(-25%)" }
         }

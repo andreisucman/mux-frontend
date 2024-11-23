@@ -13,7 +13,7 @@ import Disclaimer from "./Disclaimer";
 import classes from "./WaitComponent.module.css";
 
 type Props = {
-  type: string;
+  operationKey: string;
   errorRedirectUrl: string;
   hideDisclaimer?: boolean;
   onComplete: (args?: any) => void;
@@ -22,7 +22,7 @@ type Props = {
 };
 
 function WaitComponent({
-  type,
+  operationKey,
   errorRedirectUrl,
   hideDisclaimer,
   customContainerStyles,
@@ -42,7 +42,7 @@ function WaitComponent({
 
         const response = await callTheServer({
           endpoint: `checkAnalysisCompletion`,
-          body: { userId, type },
+          body: { userId, operationKey },
           method: "POST",
         });
 
@@ -54,7 +54,7 @@ function WaitComponent({
           } else if (jobProgress >= 100) {
             setProgress(100);
 
-            saveToLocalStorage("runningAnalyses", { [type]: false }, "add");
+            saveToLocalStorage("runningAnalyses", { [operationKey]: false }, "add");
             clearInterval(intervalId);
 
             await delayExecution(1000);
@@ -69,7 +69,6 @@ function WaitComponent({
         } else {
           clearInterval(intervalId);
           openErrorModal({
-            title: "🚨 An error occurred",
             description: response.error,
             onClose: () => router.push(errorRedirectUrl),
           });
@@ -79,26 +78,25 @@ function WaitComponent({
         clearInterval(intervalId);
       }
     },
-    [userId, type]
+    [userId, operationKey]
   );
 
   useEffect(() => {
     if (!userId) return;
-    let intervalId: NodeJS.Timeout;
     const updateInterval = 3000;
 
-    saveToLocalStorage("runningAnalyses", { [type]: true }, "add");
+    saveToLocalStorage("runningAnalyses", { [operationKey]: true }, "add");
 
-    intervalId = setInterval(() => {
+    const intervalId = setInterval(() => {
       checkAnalysisCompletion(intervalId);
     }, updateInterval);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [userId, type]);
+  }, [userId, operationKey]);
 
-  const description = !progress ? "Loading..." : `Analyzing your ${type}`;
+  const description = !progress ? "Loading..." : `Analyzing your data`;
 
   return (
     <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>

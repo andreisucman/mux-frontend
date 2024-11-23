@@ -1,0 +1,6 @@
+.icon {
+  font-size: var(--mantine-font-size-xl);
+  max-width: rem(20);
+  white-space: wrap;
+  margin-right: rem(4);
+}

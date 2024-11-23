@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { onComplete } from "./events";
 
@@ -10,9 +10,5 @@ function HandleOnCompleteChild() {
 }
 
 export function HandleOnComplete() {
-  return (
-    <Suspense>
-      <HandleOnCompleteChild />
-    </Suspense>
-  );
+  return <HandleOnCompleteChild />;
 }

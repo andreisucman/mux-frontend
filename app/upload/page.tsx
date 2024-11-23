@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack, Title } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
@@ -12,6 +12,8 @@ import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum, UserDataType } from "@/types/global";
 import { HandleUploadProgressProps } from "./types";
+import UploadPageHeading from "./UploadPageHeading";
+import classes from "./upload.module.css";
 
 export const runtime = "edge";
 
@@ -123,15 +125,15 @@ export default function UploadProgress() {
   useShallowEffect(() => {
     if (!userId) return;
     if (typeRequiredProgress && typeRequiredProgress.length === 0) {
-      router.push(`/wait?type=${finalType}&job=progress`);
+      router.push(`/wait?type=${finalType}`);
     }
   }, [typeRequiredProgress?.length, userId]);
 
   return (
     <>
       {userId && typeRequiredProgress?.length !== 0 ? (
-        <Stack flex={1}>
-          <Title order={1}>Scan your {finalType}</Title>
+        <Stack className={classes.container}>
+          <UploadPageHeading type={finalType as TypeEnum} />
           <UploadCarousel
             requirements={typeRequiredProgress || []}
             type={type as TypeEnum}
@@ -149,7 +151,7 @@ export default function UploadProgress() {
           />
         </Stack>
       ) : (
-        <Stack flex={1} justify="center" align="center">
+        <Stack className={classes.loaderWrapper}>
           <Loader type="oval" size={32} />
         </Stack>
       )}

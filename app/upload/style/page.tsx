@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Stack, Title } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -11,6 +11,7 @@ import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum, UserDataType } from "@/types/global";
+import UploadPageHeading from "../UploadPageHeading";
 import { styleRequirements } from "./styleRequirements";
 import { HandleUploadStyleProps } from "./types";
 
@@ -79,7 +80,7 @@ export default function UploadStyle() {
                 _id: response.message,
               }));
 
-              router.push(`/wait?type=${finalType}&job=style`);
+              router.push(`/wait?type=${finalType}&redirect`);
             } else {
               setProgress(0);
               openErrorModal({
@@ -99,9 +100,8 @@ export default function UploadStyle() {
 
   return (
     <Stack flex={1}>
-      <Title order={1}>Scan your {finalType}</Title>
+      <UploadPageHeading type={type as TypeEnum} />
       <UploadCarousel
-        isStyle={true}
         latestStyleImage={mainUrl?.url}
         requirements={styleRequirements?.[finalType as "head" | "body"] || []}
         type={type as TypeEnum}
@@ -116,6 +116,7 @@ export default function UploadStyle() {
         setEyesBlurredUrl={setEyesBlurredUrl}
         setFaceBlurredUrl={setFaceBlurredUrl}
         handleUpload={handleUpload}
+        isStyle
       />
     </Stack>
   );
