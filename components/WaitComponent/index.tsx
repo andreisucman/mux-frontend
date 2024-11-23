@@ -15,6 +15,7 @@ import classes from "./WaitComponent.module.css";
 type Props = {
   type: string;
   errorRedirectUrl: string;
+  hideDisclaimer?: boolean;
   onComplete: (args?: any) => void;
   customContainerStyles?: { [key: string]: any };
   customWrapperStyles?: { [key: string]: any };
@@ -23,9 +24,10 @@ type Props = {
 function WaitComponent({
   type,
   errorRedirectUrl,
-  onComplete,
+  hideDisclaimer,
   customContainerStyles,
   customWrapperStyles,
+  onComplete,
 }: Props) {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -106,7 +108,7 @@ function WaitComponent({
         <Text c="dimmed" size="sm">
           {description} {progress && <span>({progress}%)</span>}
         </Text>
-        <Disclaimer />
+        {!hideDisclaimer && <Disclaimer />}
       </Stack>
     </Stack>
   );

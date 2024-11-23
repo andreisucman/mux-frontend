@@ -17,15 +17,18 @@ export default function StartWait() {
 
   const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type") || "head";
+  const finalType = type === "health" ? "head" : type;
+  const job = searchParams.get("job") || "progress";
+
+  const onComplete = useCallback(() => {
+    const path = job === "progress" ? `/analysis` : `/analysis/style`;
+    router.replace(`${path}?type=${finalType}`);
+  }, [finalType]);
 
   useEffect(() => {
     if (userId) return;
     if (!userId) router.replace("/");
-  }, [type, userId]);
-
-  const onComplete = useCallback(() => {
-    router.replace(`/start/analysis?type=${type}`);
-  }, [type]);
+  }, [userId]);
 
   return (
     <Stack flex={1}>
@@ -33,6 +36,7 @@ export default function StartWait() {
         type={type as string}
         onComplete={onComplete}
         errorRedirectUrl="/start"
+        hideDisclaimer={job === "style"}
         customWrapperStyles={
           isMobile ? { transform: "translateY(-5%)" } : { transform: "translateY(-25%)" }
         }

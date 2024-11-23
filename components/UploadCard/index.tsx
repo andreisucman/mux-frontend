@@ -29,7 +29,6 @@ type Props = {
   latestStyleImage?: string;
   isLoading?: boolean;
   instruction: string;
-  uploadResponse: string;
   customButtonStyles?: { [key: string]: any };
   customContentStyles?: { [key: string]: any };
   setOriginalUrl: React.Dispatch<React.SetStateAction<string>>;

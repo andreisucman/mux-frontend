@@ -1,13 +1,10 @@
 import React from "react";
-import BlurChoicesProvider from "@/context/BlurChoicesContext";
-import UploadPartsChoicesProvider from "@/context/UploadPartsChoicesContext";
+import UserContextProvider from "@/context/UserContext";
 
-type Props = { children: React.ReactNode };
+type Props = {
+  children: React.ReactNode;
+};
 
-export default function ScanLayout({ children }: Props) {
-  return (
-    <BlurChoicesProvider>
-      <UploadPartsChoicesProvider>{children}</UploadPartsChoicesProvider>
-    </BlurChoicesProvider>
-  );
+export default function StartLayout({ children }: Props) {
+  return <UserContextProvider>{children}</UserContextProvider>;
 }

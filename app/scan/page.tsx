@@ -1,44 +1,32 @@
 "use client";
 
-import React, { useContext } from "react";
-import { Loader, Stack, Title } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
-import ProgressUploadCarousel from "@/components/ProgressUploadCarousel";
+import React, { useCallback, useContext, useState } from "react";
+import { IconArrowRight } from "@tabler/icons-react";
+import getBrowserFingerprint from "get-browser-fingerprint";
+import { Button, Stack, Title } from "@mantine/core";
+import { nprogress } from "@mantine/nprogress";
+import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
+import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
+import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import modifyQuery from "@/helpers/modifyQuery";
+import openErrorModal from "@/helpers/openErrorModal";
+import { UserDataType } from "@/types/global";
+import classes from "./start.module.css";
 
 export const runtime = "edge";
 
-export default function StartScan() {
+export default function StartIndexPage() {
   const router = useRouter();
-  const { userDetails } = useContext(UserContext);
-
-  const { requiredProgress } = userDetails || {};
-  const { head: requirementsHead } = requiredProgress || {};
-
-  useShallowEffect(() => {
-    if (!userDetails) return;
-    if (requirementsHead && requirementsHead.length === 0) {
-      const query = modifyQuery({
-        params: [{ name: "job", value: "analysis", action: "replace" }],
-      });
-      router.push(`/u/wait?${query}`);
-    }
-  }, [requirementsHead?.length, userDetails]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { userDetails, setUserDetails } = useContext(UserContext);
+  const [highlightTos, setHighlightTos] = useState(false);
+  const [tosAccepted, setTosAccepted] = useState(false);
 
   return (
-    <>
-      {userDetails && requirementsHead?.length !== 0 ? (
-        <Stack flex={1}>
-          <Title order={1}>Scan your head</Title>
-          <ProgressUploadCarousel requirements={requirementsHead || []} />
-        </Stack>
-      ) : (
-        <Stack flex={1} justify="center" align="center">
-          <Loader type="oval" size={32} />
-        </Stack>
-      )}
-    </>
+    <Stack className={classes.container}>
+      <Title order={1}>Scan yourself</Title>
+      <Stack className={classes.content}></Stack>
+    </Stack>
   );
 }

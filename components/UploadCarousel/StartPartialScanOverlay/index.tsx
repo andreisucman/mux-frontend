@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import { IconDental, IconMoodEmpty, IconWhirl } from "@tabler/icons-react";
 import { Button, Group, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import ImageCardStack from "@/components/ProgressUploadCarousel/ImageCardStack";
+import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
