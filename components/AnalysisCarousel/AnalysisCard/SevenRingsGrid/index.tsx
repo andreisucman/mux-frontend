@@ -1,42 +1,59 @@
 import React, { useMemo } from "react";
-import cn from "classnames";
 import { Stack } from "@mantine/core";
 import { CircleObjectType } from "@/components/AnalysisCarousel/AnalysisCard";
 import RingComponent from "@/components/RingComponent";
-import { calculateCircleRadius, getRingColor } from "@/helpers/utils";
+import { calculateCircleRadius } from "@/helpers/utils";
 import classes from "./SevenRingsGrid.module.css";
 
 type Props = {
+  overallContent: CircleObjectType;
   ringObjects: CircleObjectType[];
   containerWidth: number;
   containerHeight: number;
-  averageScore: number;
   isMobile: boolean;
+  explanations?: { [key: string]: string };
+  openExplanationModal?: (object: { values: CircleObjectType; explanation: string }) => void;
 };
 
 export default function SevenRingsGrid({
+  overallContent,
   ringObjects,
   containerHeight,
   containerWidth,
-  averageScore,
   isMobile,
+  explanations,
+  openExplanationModal,
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
-    return size * 0.8;
-  }, [containerWidth, containerHeight, ringObjects.length]);
-
-  const ringColor = useMemo(() => getRingColor(averageScore), []);
+    return size * 0.75;
+  }, [containerWidth > 0, containerHeight > 0, ringObjects.length, isMobile]);
 
   return (
-    <Stack className={cn(classes.container, { [classes.mobile]: isMobile })}>
+    <Stack className={classes.container}>
       <RingComponent
-        data={[{ label: "Overall", value: averageScore, color: ringColor }]}
+        data={overallContent}
         ringSize={ringSize}
+        isPotential={!!openExplanationModal}
       />
-      <div className={cn(classes.grid, { [classes.horizontal]: !isMobile })}>
+      <div className={classes.grid}>
         {ringObjects.map((featureObject, index) => {
-          return <RingComponent data={featureObject} ringSize={ringSize} key={index} />;
+          return (
+            <RingComponent
+              onClick={() =>
+                openExplanationModal &&
+                explanations &&
+                openExplanationModal({
+                  values: featureObject,
+                  explanation: explanations[featureObject[0].label] || "",
+                })
+              }
+              data={featureObject}
+              ringSize={ringSize}
+              key={index}
+              isPotential={!!openExplanationModal}
+            />
+          );
         })}
       </div>
     </Stack>

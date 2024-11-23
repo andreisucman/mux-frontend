@@ -1,11 +1,15 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { SimpleGrid, Skeleton, Stack, Text } from "@mantine/core";
-import { useElementSize } from "@mantine/hooks";
-import { FormattedRatingType, ProgressType } from "@/types/global";
+import { Skeleton, Stack, Text } from "@mantine/core";
+import { useElementSize, useMediaQuery } from "@mantine/hooks";
+import OneRingGrid from "@/components/AnalysisCarousel/AnalysisCard//OneRingGrid";
+import SevenRingsGrid from "@/components/AnalysisCarousel/AnalysisCard//SevenRingsGrid";
+import SixRingsGrid from "@/components/AnalysisCarousel/AnalysisCard//SixRingsGrid";
+import ThreeRingsGrid from "@/components/AnalysisCarousel/AnalysisCard//ThreeRingsGrid";
+import FiveRingsGrid from "@/components/AnalysisCarousel/AnalysisCard/FiveRingsGrid";
 import { getRingColor } from "@/helpers/utils";
-import RingComponent from "@/components/RingComponent";
+import { FormattedRatingType, ProgressType } from "@/types/global";
 import { openExplanationModal } from "./openExplanationModal";
 import classes from "./AnalysisCardPotential.module.css";
 
@@ -17,6 +21,8 @@ type Props = {
 
 export default function AnalysisCardPotential({ currentRecord, potentialRecord, title }: Props) {
   const { height: containerHeight, width: containerWidth, ref } = useElementSize();
+  const isMobile = !!useMediaQuery("(max-width: 36em)");
+
   const partValues = Object.values(currentRecord)
     .filter((rec) => typeof rec !== "number")
     .filter(Boolean);
@@ -52,7 +58,7 @@ export default function AnalysisCardPotential({ currentRecord, potentialRecord, 
     [potentialPartValues.length]
   );
 
-  const featureCircleObjects = useMemo(
+  const featureRingObjects = useMemo(
     () =>
       partValues.flatMap((obj) =>
         Object.entries((obj as ProgressType).scores)
@@ -65,7 +71,7 @@ export default function AnalysisCardPotential({ currentRecord, potentialRecord, 
             },
             {
               label: key,
-              value: potentialScores[key] - value,
+              value: potentialScores[key] - value || 0,
               color: getRingColor(potentialScores[key], true),
             },
             {
@@ -77,6 +83,9 @@ export default function AnalysisCardPotential({ currentRecord, potentialRecord, 
       ),
     [partValues.length]
   );
+
+  console.log("potentialScores", potentialScores);
+  console.log("featureRingObjects", featureRingObjects);
 
   const overallContent = [
     {
@@ -96,50 +105,69 @@ export default function AnalysisCardPotential({ currentRecord, potentialRecord, 
     },
   ];
 
-  const cols = featureCircleObjects.length < 3 ? 1 : 2;
-
-  const ringSize = useMemo(() => {
-    return Math.max(
-      Math.min(containerHeight, containerWidth) * 0.4,
-      Math.min(containerHeight, containerWidth) / featureCircleObjects.length,
-      125
-    );
-  }, [containerHeight, containerWidth, featureCircleObjects.length]);
-
-  const showOverall = featureCircleObjects.length > 1;
-  const evenFeatures = featureCircleObjects.length % 2 === 0;
+  const len = featureRingObjects.length;
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
-      <Stack className={classes.container} ref={ref}>
-        <Text ta="left" w="100%" fz={14} c="dimmed">
+      <Stack className={classes.container}>
+        <Text className={classes.title} c="dimmed">
           {title}
         </Text>
-        <Stack className={classes.wrapper}>
-          {showOverall && evenFeatures && (
-            <RingComponent data={overallContent} ringSize={ringSize} isPotential />
+        <Stack className={classes.wrapper} ref={ref}>
+          {len === 1 && (
+            <OneRingGrid
+              ringObjects={featureRingObjects}
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              isMobile={isMobile}
+              explanations={potentialExplanations}
+              openExplanationModal={openExplanationModal}
+            />
           )}
-          <SimpleGrid cols={cols} spacing={0} w="100%">
-            {showOverall && !evenFeatures && (
-              <RingComponent data={overallContent} ringSize={ringSize} isPotential />
-            )}
-            {featureCircleObjects.map((featureObject, index) => {
-              return (
-                <RingComponent
-                  data={featureObject}
-                  ringSize={ringSize}
-                  key={index}
-                  isPotential
-                  onClick={() =>
-                    openExplanationModal({
-                      values: featureObject,
-                      explanation: potentialExplanations[featureObject[0].label],
-                    })
-                  }
-                />
-              );
-            })}
-          </SimpleGrid>
+          {len === 2 && (
+            <ThreeRingsGrid
+              isMobile={isMobile}
+              ringObjects={featureRingObjects}
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              overallContent={overallContent}
+              explanations={potentialExplanations}
+              openExplanationModal={openExplanationModal}
+            />
+          )}
+          {len === 4 && (
+            <FiveRingsGrid
+              isMobile={isMobile}
+              ringObjects={featureRingObjects}
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              overallContent={overallContent}
+              explanations={potentialExplanations}
+              openExplanationModal={openExplanationModal}
+            />
+          )}
+          {len === 5 && (
+            <SixRingsGrid
+              isMobile={isMobile}
+              ringObjects={featureRingObjects}
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              overallContent={overallContent}
+              explanations={potentialExplanations}
+              openExplanationModal={openExplanationModal}
+            />
+          )}
+          {len === 6 && (
+            <SevenRingsGrid
+              isMobile={isMobile}
+              ringObjects={featureRingObjects}
+              containerHeight={containerHeight}
+              containerWidth={containerWidth}
+              overallContent={overallContent}
+              explanations={potentialExplanations}
+              openExplanationModal={openExplanationModal}
+            />
+          )}
         </Stack>
       </Stack>
     </Skeleton>

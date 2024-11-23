@@ -28,6 +28,10 @@ export default function AnalysisCard({ record, title }: Props) {
 
   const averageScore = record.overall as number;
 
+  const ringColor = useMemo(() => getRingColor(averageScore), []);
+
+  const overallContent = [{ label: "Overall", value: averageScore, color: ringColor }];
+
   const featureRingObjects = useMemo(
     () =>
       partValues.flatMap((obj) => {
@@ -51,8 +55,6 @@ export default function AnalysisCard({ record, title }: Props) {
 
   const len = featureRingObjects.length;
 
-  console.log("featureRingObjects", featureRingObjects);
-
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
       <Stack className={classes.container}>
@@ -73,7 +75,7 @@ export default function AnalysisCard({ record, title }: Props) {
               ringObjects={featureRingObjects}
               containerHeight={containerHeight}
               containerWidth={containerWidth}
-              averageScore={averageScore}
+              overallContent={overallContent}
               isMobile={isMobile}
             />
           )}
@@ -82,7 +84,7 @@ export default function AnalysisCard({ record, title }: Props) {
               ringObjects={featureRingObjects}
               containerHeight={containerHeight}
               containerWidth={containerWidth}
-              averageScore={averageScore}
+              overallContent={overallContent}
               isMobile={isMobile}
             />
           )}
@@ -91,7 +93,7 @@ export default function AnalysisCard({ record, title }: Props) {
               ringObjects={featureRingObjects}
               containerHeight={containerHeight}
               containerWidth={containerWidth}
-              averageScore={averageScore}
+              overallContent={overallContent}
               isMobile={isMobile}
             />
           )}
@@ -100,7 +102,7 @@ export default function AnalysisCard({ record, title }: Props) {
               ringObjects={featureRingObjects}
               containerHeight={containerHeight}
               containerWidth={containerWidth}
-              averageScore={averageScore}
+              overallContent={overallContent}
               isMobile={isMobile}
             />
           )}

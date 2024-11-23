@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { CircleObjectType } from "@/components/AnalysisCarousel/AnalysisCard";
 import RingComponent from "@/components/RingComponent";
 import { calculateCircleRadius } from "@/helpers/utils";
@@ -9,6 +9,8 @@ type Props = {
   containerWidth: number;
   containerHeight: number;
   isMobile: boolean;
+  explanations?: { [key: string]: string };
+  openExplanationModal?: (object: { values: CircleObjectType; explanation: string }) => void;
 };
 
 export default function OneRingGrid({
@@ -16,16 +18,33 @@ export default function OneRingGrid({
   containerHeight,
   containerWidth,
   isMobile,
+  explanations,
+  openExplanationModal,
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
     return isMobile ? size * 0.8 : size * 0.6;
-  }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
+  }, [containerWidth > 0, containerHeight > 0, ringObjects.length, isMobile]);
 
   return (
     <div className={classes.container}>
       {ringObjects.map((featureObject, index) => {
-        return <RingComponent data={featureObject} ringSize={ringSize} key={index} />;
+        return (
+          <RingComponent
+            onClick={() =>
+              openExplanationModal &&
+              explanations &&
+              openExplanationModal({
+                values: featureObject,
+                explanation: explanations[featureObject[0].label] || "",
+              })
+            }
+            data={featureObject}
+            ringSize={ringSize}
+            key={index}
+            isPotential={!!openExplanationModal}
+          />
+        );
       })}
     </div>
   );
