@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { IconHeart, IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TypeEnum } from "@/types/global";
 import classes from "./UploadOverlay.module.css";

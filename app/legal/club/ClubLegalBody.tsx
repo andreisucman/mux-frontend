@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { rem, Stack, Text, Title } from "@mantine/core";
 
 type Props = {

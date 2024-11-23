@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { IconNotes } from "@tabler/icons-react";
 import { rem, Skeleton, Stack, Text } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import signIn from "@/functions/signIn";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import { getRingColor } from "@/helpers/utils";
 import { FormattedRatingType, TypeEnum } from "@/types/global";

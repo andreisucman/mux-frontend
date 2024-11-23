@@ -1,10 +1,10 @@
 "use client";
 
 import React, { memo, useCallback, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Loader, Progress, rem, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { delayExecution } from "@/helpers/utils";

@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import logoSrc from "@/public/logo.webp";
 import classes from "./Logo.module.css";
 

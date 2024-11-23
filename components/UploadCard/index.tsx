@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Progress, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -9,6 +8,7 @@ import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
 

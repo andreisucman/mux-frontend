@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IconDental, IconMoodEmpty, IconWhirl } from "@tabler/icons-react";
 import { Button, Group, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -7,6 +6,7 @@ import ImageCardStack from "@/components/ProgressUploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
@@ -38,7 +38,9 @@ export default function StartPartialScanOverlay({
   const { blurType } = useContext(BlurChoicesContext);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
 
-  const uploadedParts = userDetails?.toAnalyze[type];
+  const { toAnalyze } = userDetails || {};
+
+  const uploadedParts = toAnalyze?.[type];
 
   async function handleStartAnalysis() {
     try {

@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useContext } from "react";
-import { useRouter } from "next/navigation";
 import { Loader, Stack, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import ProgressUploadCarousel from "@/components/ProgressUploadCarousel";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import modifyQuery from "@/helpers/modifyQuery";
 
 export const runtime = "edge";

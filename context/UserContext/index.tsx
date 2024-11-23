@@ -1,14 +1,15 @@
 "use client";
 
 import React, { createContext, useCallback, useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import openErrorModal from "@/helpers/openErrorModal";
-import { UserDataType } from "@/types/global";
 import { defaultUser } from "@/data/defaultUser";
 import { preventFetchingPaths, requireAuthPaths } from "@/data/paths";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import openErrorModal from "@/helpers/openErrorModal";
+import { UserDataType } from "@/types/global";
 import { UserContextProviderProps, UserContextType } from "./types";
 
 const defaultSetUser = () => {};

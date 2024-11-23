@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IconArrowRight } from "@tabler/icons-react";
 import getBrowserFingerprint from "get-browser-fingerprint";
 import { Button, Stack, Title } from "@mantine/core";
@@ -10,6 +9,7 @@ import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import classes from "./start.module.css";
@@ -23,67 +23,10 @@ export default function StartIndexPage() {
   const [highlightTos, setHighlightTos] = useState(false);
   const [tosAccepted, setTosAccepted] = useState(false);
 
-  const startTheFlow = useCallback(async () => {
-    const { _id: userId } = userDetails || {};
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    try {
-      setIsLoading(true);
-      const fingerprint = await getBrowserFingerprint();
-
-      const response = await callTheServer({
-        endpoint: "startTheFlow",
-        method: "POST",
-        body: {
-          userId,
-          tosAccepted,
-          timeZone,
-          fingerprint,
-        },
-      });
-
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal();
-          setIsLoading(false);
-          return;
-        }
-
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          ...response.message,
-        }));
-
-        nprogress.start();
-        router.push("/start/scan");
-      }
-    } catch (err) {
-      openErrorModal();
-      console.log("Error in startTheFlow: ", err);
-      setIsLoading(false);
-    }
-  }, []);
-
   return (
     <Stack className={classes.container}>
-      <Title order={1}>Review the Terms</Title>
-      <Stack className={classes.content}>
-        <TermsLegalBody />
-      </Stack>
-      <TosCheckbox
-        highlightTos={highlightTos}
-        tosAccepted={tosAccepted}
-        setHighlightTos={setHighlightTos}
-        setTosAccepted={setTosAccepted}
-      />
-      <Button
-        className={classes.button}
-        disabled={!tosAccepted || isLoading}
-        loading={isLoading}
-        onClick={startTheFlow}
-      >
-        Next <IconArrowRight className="icon" />
-      </Button>
+      <Title order={1}>Scan yourself</Title>
+      <Stack className={classes.content}></Stack>
     </Stack>
   );
 }

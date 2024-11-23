@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { Button, Container, Group, Title } from "@mantine/core";
 import classes from "./not-found.module.css";
 

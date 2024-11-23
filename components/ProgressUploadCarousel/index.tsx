@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
@@ -17,6 +16,7 @@ import { UserContext } from "@/context/UserContext";
 import { onBlurImageClick } from "@/functions/blur";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { delayExecution } from "@/helpers/utils";
 import { SexEnum, TypeEnum, UserDataType } from "@/types/global";
