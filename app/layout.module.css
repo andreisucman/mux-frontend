@@ -1,7 +1,7 @@
 .container {
   flex: 1;
   padding: rem(32) rem(16);
-  max-width: rem(740);
+  max-width: clamp(rem(740), 38.5%, rem(1480));
   width: 100%;
   margin: auto;
 

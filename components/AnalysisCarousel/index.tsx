@@ -17,7 +17,7 @@ type Props = {
   styleAnalyses?: StyleAnalysisType[];
 };
 
-const fakeAll = {
+const fakeSix = {
   head: {
     overall: 58,
     face: {
@@ -320,6 +320,246 @@ const fakeAll = {
       specialConsiderations: null,
       isPublic: false,
     },
+  },
+  body: {
+    overall: 0,
+    body: null,
+  },
+  health: {
+    overall: 0,
+    health: null,
+  },
+};
+
+const fakeFive = {
+  head: {
+    overall: 58,
+    face: {
+      _id: "674053e5967c7f1f90753e47",
+      userId: "674033fb1ad895fad61ad0b0",
+      type: "head" as TypeEnum,
+      part: "face" as PartEnum,
+      scores: {
+        overall: 55,
+        lips: 60,
+        grooming: 40,
+        eyes: 60,
+        skin: 60,
+      },
+      demographics: {
+        sex: "male",
+        ageInterval: "24-30",
+        ethnicity: "white",
+        skinColor: "fitzpatrick-2",
+        skinType: "normal",
+      },
+      images: [
+        {
+          position: "front",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            },
+          ],
+        },
+        {
+          position: "right",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            },
+          ],
+        },
+        {
+          position: "left",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            },
+          ],
+        },
+      ],
+      initialImages: [
+        {
+          position: "front",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            },
+          ],
+        },
+        {
+          position: "right",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            },
+          ],
+        },
+        {
+          position: "left",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            },
+          ],
+        },
+      ],
+      initialDate: "2024-11-22T09:50:17.118Z",
+      createdAt: "2024-11-22T09:50:17.118Z",
+      concerns: [
+        {
+          name: "ungroomed_facial_hair",
+          explanation:
+            "Your beard appears full and may benefit from grooming to achieve a more defined shape.",
+          part: "face",
+          importance: 1,
+          isDisabled: false,
+          type: "head" as TypeEnum,
+        },
+      ],
+      scoresDifference: {
+        overall: 0,
+        lips: 0,
+        grooming: 0,
+        eyes: 0,
+        skin: 0,
+      },
+      explanation:
+        "# Head analysis Fri Nov 22 2024\n\n## Lips\n- Score: 60\n- Explanation: The lips appear generally smooth but slightly dry. There is no visible cracking, but the texture suggests minimal dryness.\n\n## Grooming\n- Score: 40\n- Explanation: The beard appears somewhat uneven and slightly unkempt, with some stray hairs visible. It doesn't look completely neglected but could use some trimming for a more defined shape.\n\n## Eyes\n- Score: 60\n- Explanation: The images show minimal crow's feet and no significant under-eye bags or dark circles. The skin texture appears generally smooth, indicating a score in the 60-80 range. However, due to the lighting and image quality, a conservative score of 60 is given.\n\n## Skin\n- Score: 60\n- Explanation: The skin appears generally healthy with no significant visible issues. There are no apparent signs of acne or major discoloration. The lighting is not optimal, but the skin seems to have a smooth texture with minor imperfections.\n\n## Conclusion: \n\nThis person should address the following concerns to improve their appearance at this date:\n\n- ungroomed_facial_hair: Your beard appears full and may benefit from grooming to achieve a more defined shape.",
+      specialConsiderations: null,
+      isPublic: false,
+    },
+    mouth: {
+      _id: "674053e2967c7f1f90753e46",
+      userId: "674033fb1ad895fad61ad0b0",
+      type: "head",
+      part: "mouth",
+      scores: {
+        overall: 40,
+        mouth: 40,
+      },
+      demographics: {
+        sex: "male",
+        ageInterval: "24-30",
+        ethnicity: "white",
+        skinColor: "fitzpatrick-2",
+        skinType: "normal",
+      },
+      images: [
+        {
+          position: "mouth",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            },
+          ],
+        },
+      ],
+      initialImages: [
+        {
+          position: "mouth",
+          mainUrl: {
+            name: "eyes" as "eyes",
+            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+          },
+          urls: [
+            {
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              name: "original" as "eyes",
+            },
+            {
+              name: "eyes" as "eyes",
+              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            },
+          ],
+        },
+      ],
+      initialDate: "2024-11-22T09:50:11.953Z",
+      createdAt: "2024-11-22T09:50:11.953Z",
+      concerns: [
+        {
+          name: "teeth_discoloration",
+          explanation: "Your teeth appear to have a yellowish tint, indicating discoloration.",
+          part: "mouth",
+          importance: 1,
+          isDisabled: false,
+          type: "head",
+        },
+      ],
+      scoresDifference: {
+        overall: 0,
+        mouth: 0,
+      },
+      explanation:
+        "# Head analysis Fri Nov 22 2024\n\n## Mouth\n- Score: 40\n- Explanation: The image is not very clear, but there appears to be some discoloration on the teeth, which could indicate plaque buildup or staining. The gums are not clearly visible, making it difficult to assess their health. Based on the visible teeth, the oral health seems to be in the fair range.\n\n## Conclusion: \n\nThis person should address the following concerns to improve their appearance at this date:\n\n- teeth_discoloration: Your teeth appear to have a yellowish tint, indicating discoloration.",
+      specialConsiderations: null,
+      isPublic: false,
+    },
+    scalp: null,
   },
   body: {
     overall: 0,
@@ -764,7 +1004,7 @@ export default function AnalysisCarousel({ type }: Props) {
     potentiallyHigherThan,
   } = userDetails || {};
 
-  const latestProgress = fakeAll;
+  const latestProgress = fakeSix;
 
   const progressRecord = latestProgress?.[type as "head"];
   const potentialRecord = potential?.[type as "head"];
@@ -773,7 +1013,9 @@ export default function AnalysisCarousel({ type }: Props) {
   function getSlides() {
     const analysisCard = (
       <Carousel.Slide key={"analysisCard"}>
-        {progressRecord && <AnalysisCard record={progressRecord} title={`Current ${type} analysis`} />}
+        {progressRecord && (
+          <AnalysisCard record={progressRecord} title={`Current ${type} analysis`} />
+        )}
       </Carousel.Slide>
     );
 

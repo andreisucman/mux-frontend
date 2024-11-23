@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { IconChevronDown } from "@tabler/icons-react";
 import { Group, Menu, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -28,7 +28,6 @@ export default function FilterDropdown({
   onSelectCallback,
 }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const [opened, { open, close }] = useDisclosure(false);
   const [selected, setSelected] = useState(defaultSelected || data[0]);
 
@@ -38,9 +37,9 @@ export default function FilterDropdown({
         params: [{ name: filterType, value: item.value, action: "replace" }],
       });
 
-      router.replace(`/${pathname}?${newQuery}`);
+      router.replace(`${location.origin}/${location.pathname}?${newQuery}`);
     }
-    
+
     setSelected(item);
 
     if (onSelectCallback) onSelectCallback(item);

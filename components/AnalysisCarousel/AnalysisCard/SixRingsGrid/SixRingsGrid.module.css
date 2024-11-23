@@ -1,0 +1,11 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  place-content: center;
+  transform: translateY(-2.5%);
+}
+
+.mobile {
+  transform: translateY(-1.25%);
+}

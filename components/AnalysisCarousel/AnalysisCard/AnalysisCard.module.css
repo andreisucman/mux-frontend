@@ -2,33 +2,23 @@
   display: flex;
   align-items: center;
   flex: 1;
-  border-radius: var(--mantine-radius-lg);
   height: 100%;
   gap: rem(8);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  padding: rem(16);
 }
 
 .wrapper {
   flex: 1;
   gap: 0;
   width: 100%;
-  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
 }
 
-.grid {
-  display: grid;
-  
-  /* place-items: center; */
-  /* justify-content: center; */
-  /* align-content: center; */
-  /* grid-template-columns: 1fr; */
-  /* flex: 1; */
-}
-
-.doubleGrid {
-  grid-template-columns: 1fr 1fr;
-}
-
-
-.tripleGrid {
-  grid-template-columns: 1fr 1fr 1fr;
+.title {
+  text-align: left;
+  width: 100%;
+  font-size: var(--mantine-font-size-sm);
 }
