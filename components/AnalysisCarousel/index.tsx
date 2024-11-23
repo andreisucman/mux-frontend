@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import React, { useContext, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
 import AnalysisCard from "@/components/AnalysisCarousel/AnalysisCard";
@@ -1058,25 +1058,64 @@ const fakePotential = {
   },
 };
 
+const fakeCurrentlyHigherThan = {
+  head: {
+    overall: 0,
+    face: 0,
+    mouth: 0,
+    scalp: 0,
+  },
+  body: {
+    overall: 0,
+    body: 0,
+  },
+  health: {
+    overall: 0,
+    health: 0,
+  },
+};
+
+const fakePotentiallyHigherThan = {
+  head: {
+    overall: 100,
+    face: 100,
+    mouth: 0,
+    scalp: 0,
+  },
+  body: {
+    overall: 0,
+    body: 0,
+  },
+  health: {
+    overall: 0,
+    health: 0,
+  },
+};
+
 export default function AnalysisCarousel({ type }: Props) {
   const { status, userDetails } = useContext(UserContext);
   const {
     _id: userId,
+    demographics,
     // potential,
     // latestProgress,
     latestStyleAnalysis,
-    currentlyHigherThan,
-    potentiallyHigherThan,
+    // currentlyHigherThan,
+    // potentiallyHigherThan,
   } = userDetails || {};
+
+  const { ageInterval } = demographics || {};
 
   const latestProgress = fakeSix;
   const potential = fakePotential;
+  const currentlyHigherThan = fakeCurrentlyHigherThan;
+  const potentiallyHigherThan = fakePotentiallyHigherThan;
 
   const progressRecord = latestProgress?.[type as "head"];
   const potentialRecord = potential?.[type as "head"];
   const styleAnalysis = latestStyleAnalysis?.[type as "head"];
 
-  function getSlides() {
+  const getSlides = useCallback(() => {
     const analysisCard = (
       <Carousel.Slide key={"analysisCard"}>
         {progressRecord && (
@@ -1104,10 +1143,11 @@ export default function AnalysisCarousel({ type }: Props) {
         {progressRecord && typeCurrentlyHigherThan && (
           <BetterThanCard
             userId={userId}
+            ageInterval={ageInterval}
             progressRecord={progressRecord}
             currentlyHigherThan={typeCurrentlyHigherThan}
             type={type as TypeEnum}
-            title={`Current ${type}`}
+            title={`Current ${type} statistics`}
           />
         )}
       </Carousel.Slide>
@@ -1121,21 +1161,29 @@ export default function AnalysisCarousel({ type }: Props) {
         {potentialRecord && typePotentiallyHigherThan && (
           <BetterThanCardPotential
             userId={userId}
+            ageInterval={ageInterval}
             potentialRecord={potentialRecord}
             potentiallyHigherThan={typePotentiallyHigherThan}
             type={type as TypeEnum}
             authStatus={status}
-            title={`Potential ${type}`}
+            title={`Potential ${type} statistics`}
           />
         )}
       </Carousel.Slide>
     );
 
-    // const slides = [analysisCard, analysisPotentialCard, currentBetterCard, potentialBetterCard];
+    const slides = [analysisCard, analysisPotentialCard, currentBetterCard, potentialBetterCard];
 
-    const slides = [analysisCard, analysisPotentialCard];
     return slides;
-  }
+  }, [
+    typeof progressRecord,
+    typeof potentialRecord,
+    typeof currentlyHigherThan,
+    typeof potentiallyHigherThan,
+    userId,
+    status,
+    type,
+  ]);
 
   const slides = useMemo(() => getSlides(), [progressRecord, styleAnalysis]);
 

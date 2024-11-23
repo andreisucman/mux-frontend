@@ -10,6 +10,7 @@ import {
   IconStar,
   IconTarget,
   IconTargetArrow,
+  IconTrophy
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
@@ -44,6 +45,11 @@ const defaultNavigation = [
     title: "Reviews",
     path: "/reviews",
     icon: <IconStar stroke={1.25} className="icon" />,
+  },
+  {
+    title: "Rewards",
+    path: "/rewards",
+    icon: <IconTrophy stroke={1.25} className="icon" />,
   },
 ];
 

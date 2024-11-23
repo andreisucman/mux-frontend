@@ -21,12 +21,12 @@ function ComparisonStack({
   highlightText,
   higherThanNumber,
 }: Props) {
-  const fontSize = useMemo(() => Math.max(ringSize * 0.15, 12), []);
+  const fontSize = useMemo(() => Math.min(ringSize * 0.3, 24), [ringSize]);
   return (
     <Stack className={classes.container}>
       <Group className={classes.row}>
-        <RingComponent data={ringData} ringSize={ringSize} fontSize={fontSize} />
-        <Highlight highlight={highlight} ta="center" size="md" mb={ringSize > 100 ? 16 : 0}>
+        <RingComponent data={ringData} ringSize={ringSize} showTitle={false} />
+        <Highlight highlight={highlight} ta="center" fz={fontSize} mb={ringSize > 100 ? 16 : 0}>
           {highlightText}
         </Highlight>
       </Group>

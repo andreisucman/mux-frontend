@@ -1,20 +1,21 @@
 import React, { useMemo } from "react";
 import { Skeleton, Stack, Text } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
-import { ProgressType, TypeEnum } from "@/types/global";
 import { getRingColor } from "@/helpers/utils";
+import { ProgressType, TypeEnum } from "@/types/global";
 import ComparisonStack from "./ComparisonStack";
 import classes from "./BetterThanCard.module.css";
 
 type Props = {
-  userId?: string;
+  userId: string;
   title: string;
+  ageInterval: string;
   type: TypeEnum;
   currentlyHigherThan: { [key: string]: number };
   progressRecord: { [key: string]: ProgressType | null | number };
 };
 
-function BetterThanCard({ currentlyHigherThan, progressRecord, title }: Props) {
+function BetterThanCard({ currentlyHigherThan, progressRecord, ageInterval, title }: Props) {
   const { width: containerWidth, height: containerHeight, ref } = useElementSize();
   const partValues = Object.values(progressRecord)
     .filter((rec) => typeof rec !== "number")
@@ -48,7 +49,7 @@ function BetterThanCard({ currentlyHigherThan, progressRecord, title }: Props) {
 
   const percentage = Math.round(currentlyHigherThan.overall);
   const highlight = `${percentage}%`;
-  const highlightText = `Overall you look better than ${percentage}% of users in your age group.`;
+  const highlightText = `Overall you look better than ${percentage}% of users in the ${ageInterval} age group.`;
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
@@ -76,7 +77,7 @@ function BetterThanCard({ currentlyHigherThan, progressRecord, title }: Props) {
           const modelObject = circleObject[0];
           const percentage = Math.round(currentlyHigherThan[modelObject.label]);
           const highlight = `${percentage}%`;
-          const highlightText = `Your ${modelObject.label} looks better than of ${percentage}% of users in your age group.`;
+          const highlightText = `Your ${modelObject.label} looks better than of ${percentage}% of users in the ${ageInterval} age group.`;
 
           return (
             <ComparisonStack

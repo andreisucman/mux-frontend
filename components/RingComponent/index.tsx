@@ -29,7 +29,7 @@ const RingComponent = ({
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}} onClick={onClick}>
-      {isPotential && (
+      {isPotential && onClick && (
         <ActionIcon className={classes.actionIcon} variant="default">
           <IconQuestionMark />
         </ActionIcon>

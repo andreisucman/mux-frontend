@@ -84,9 +84,6 @@ export default function AnalysisCardPotential({ currentRecord, potentialRecord, 
     [partValues.length]
   );
 
-  console.log("potentialScores", potentialScores);
-  console.log("featureRingObjects", featureRingObjects);
-
   const overallContent = [
     {
       label: "Overall",
