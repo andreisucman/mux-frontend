@@ -1,8 +1,8 @@
 "use client";
 
-import { memo, useCallback, useContext } from "react";
+import { memo, useCallback, useContext, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { IconBooks, IconRocket, IconScan, IconStar, IconTargetArrow } from "@tabler/icons-react";
+import { IconRocket, IconScan, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import GlowingButton from "@/components/GlowingButton";
@@ -10,6 +10,8 @@ import DrawerNavigation from "@/components/Header/DrawerNavigation";
 import Logo from "@/components/Header/Logo";
 import { UserContext } from "@/context/UserContext";
 import classes from "./Header.module.css";
+
+const hideStartButtonRoutes = ["/scan", "/review", "/terms", "/wait", "/analysis", "/auth"];
 
 function Header() {
   const router = useRouter();
@@ -33,7 +35,10 @@ function Header() {
     router.push(url);
   }, [status, email]);
 
-  const hideStartButton = pathname.startsWith("/start");
+  const hideStartButton = useMemo(
+    () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),
+    [pathname]
+  );
 
   return (
     <>
@@ -41,50 +46,34 @@ function Header() {
         <div className={classes.wrapper}>
           <Logo />
           <Group className={classes.navigation}>
-            {status !== "authenticated" && !hideStartButton && (
-              <GlowingButton
-                text="Start"
-                disabled={pathname.startsWith("/start")}
-                icon={<IconRocket stroke={1.5} className="icon icon__large" />}
-                onClick={handleAppRedirect}
-              />
-            )}
             <ActionIcon
               variant="default"
               visibleFrom={status === "authenticated" ? undefined : "xs"}
               onClick={() => router.push("/")}
               className={classes.button}
-              aria-label="results page button"
+              aria-label="go to results page button"
             >
               <IconTargetArrow stroke={1.25} className="icon icon__large" />
             </ActionIcon>
-            <ActionIcon
-              variant="default"
-              visibleFrom="xs"
-              onClick={() => router.push("/solutions")}
-              className={classes.button}
-              aria-label="solutions button"
-            >
-              <IconBooks stroke={1.25} className="icon icon__large" />
-            </ActionIcon>
-            <ActionIcon
-              variant="default"
-              visibleFrom="xs"
-              onClick={() => router.push("/reviews")}
-              className={classes.button}
-              aria-label="reviews button"
-            >
-              <IconStar stroke={1.25} className="icon icon__large" />
-            </ActionIcon>
-            <ActionIcon
-              variant="default"
-              visibleFrom={status === "authenticated" ? undefined : "xs"}
-              onClick={() => router.push("/scan")}
-              className={classes.button}
-              aria-label="solutions button"
-            >
-              <IconScan stroke={1.25} className="icon icon__large" />
-            </ActionIcon>
+            {status !== "authenticated" && !hideStartButton && (
+              <GlowingButton
+                text="Start"
+                aria-label="start analysis button"
+                disabled={hideStartButton}
+                icon={<IconRocket stroke={1.5} className="icon icon__large" />}
+                onClick={handleAppRedirect}
+              />
+            )}
+            {status === "authenticated" && (
+              <ActionIcon
+                variant="default"
+                onClick={() => router.push("/scan")}
+                className={classes.button}
+                aria-label="scan appearance button"
+              >
+                <IconScan stroke={1.25} className="icon icon__large" />
+              </ActionIcon>
+            )}
 
             <Burger onClick={toggle} />
           </Group>

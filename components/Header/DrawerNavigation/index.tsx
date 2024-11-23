@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   IconBooks,
   IconDoorEnter,
@@ -13,9 +12,9 @@ import {
   IconTargetArrow,
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
-import { nprogress } from "@mantine/nprogress";
 import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import LinkRow, { NavigationLinkType } from "./LinkRow";
 import classes from "./DrawerNavigation.module.css";
@@ -32,6 +31,11 @@ const defaultNavigation = [
     ],
   },
   {
+    title: "Scan",
+    icon: <IconScan stroke={1.25} className="icon" />,
+    path: "/scan",
+  },
+  {
     title: "Solutions",
     path: "/solutions",
     icon: <IconBooks stroke={1.25} className="icon" />,
@@ -44,11 +48,6 @@ const defaultNavigation = [
 ];
 
 const defaultAuthenticatedNavigation = [
-  {
-    title: "Scan",
-    icon: <IconScan stroke={1.25} className="icon" />,
-    path: "/scan",
-  },
   {
     title: "My routines",
     path: "/my-routines",
@@ -79,7 +78,7 @@ const legalLinks = [
   },
   {
     title: "Privacy Policy",
-    path: "/legal/terms",
+    path: "/legal/privacy",
     icon: <IconLicense stroke={1.25} className="icon" />,
   },
   {
@@ -101,15 +100,10 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
   const handleClickLink = useCallback(
     (path: string) => {
       setLinkClicked(path === linkClicked ? "" : path);
+      closeDrawer();
     },
     [linkClicked]
   );
-
-  const handleNavigate = (path: string) => {
-    router.push(path);
-    nprogress.start();
-    closeDrawer();
-  };
 
   const handleSignOut = useCallback(async () => {
     router.replace("/");
@@ -172,7 +166,6 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
           link={link}
           linkClicked={linkClicked}
           handleClickLink={handleClickLink}
-          handleNavigate={handleNavigate}
         />
       ))}
       {status === "authenticated" && (
@@ -184,7 +177,6 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
               link={link}
               linkClicked={linkClicked}
               handleClickLink={handleClickLink}
-              handleNavigate={handleNavigate}
             />
           ))}
         </>
@@ -208,7 +200,6 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
             link={link}
             linkClicked={linkClicked}
             handleClickLink={handleClickLink}
-            handleNavigate={handleNavigate}
           />
         ))}
         <Text className={classes.copyright}>&copy; {year} Max You Out. All rights reserved</Text>

@@ -1,7 +1,7 @@
 import "@/styles/mantine.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
-import '@mantine/nprogress/styles.css';
+import "@mantine/nprogress/styles.css";
 import "@/styles/global.css";
 
 import React, { Suspense } from "react";
@@ -12,6 +12,7 @@ import { NavigationProgress } from "@mantine/nprogress";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
 import UserContextProvider from "@/context/UserContext";
+import { HandleOnComplete } from "@/helpers/custom-router";
 import { theme } from "../theme";
 import classes from "./layout.module.css";
 
@@ -47,10 +48,12 @@ export default function RootLayout({ children }: Props) {
                 general: GeneralContextModal,
               }}
             >
+              <NavigationProgress />
+              <HandleOnComplete />
+
               <>
                 <UserContextProvider>
                   <Header />
-                  <NavigationProgress />
                 </UserContextProvider>
                 <Stack className={classes.container}>{children}</Stack>
               </>
