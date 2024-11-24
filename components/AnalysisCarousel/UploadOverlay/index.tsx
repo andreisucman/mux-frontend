@@ -36,7 +36,7 @@ export default function UploadOverlay({ type, customStyles }: Props) {
         },
       ],
     });
-    router.push(`/upload-progress?${query}`);
+    router.push(`/scan/progress?${query}`);
   }, []);
 
   return (

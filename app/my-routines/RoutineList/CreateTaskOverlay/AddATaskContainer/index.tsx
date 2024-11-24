@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconBulb } from "@tabler/icons-react";
 import { Button, Group, Loader, rem, Stack, Text } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
@@ -86,16 +86,16 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
                 text={description}
                 setText={setDescription}
                 heading={
-                  <Text size="xs" c="dimmed">
+                  <Text size="sm" c="dimmed">
                     Describe the task freely:
                   </Text>
                 }
                 placeholder={
                   type === "head"
-                    ? "Example: Moisturizing face with coconut oil"
+                    ? "Moisturizing face with coconut oil"
                     : type === "health"
-                      ? "Example: A salad with kinoa and cucumbers"
-                      : "Example: Narrow grip incline bench press with a barbell"
+                      ? "A salad with kinoa and cucumbers"
+                      : "Narrow grip incline bench press with a barbell"
                 }
               />
             )}
@@ -120,7 +120,7 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
             )}
             {step === 1 && (
               <Button onClick={handleCreateTask} className={classes.button}>
-                💡 Create task
+                <IconBulb className="icon" style={{ marginRight: rem(8) }} /> Create task
               </Button>
             )}
             {step === 2 && (

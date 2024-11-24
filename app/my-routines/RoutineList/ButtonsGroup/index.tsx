@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { IconCalendar, IconHistory, IconPlus, IconShoppingBag } from "@tabler/icons-react";
@@ -29,7 +31,7 @@ export default function ButtonsGroup({
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const { tasks } = userDetails || {};
-  const relevantTasks = userDetails?.tasks?.filter((t) => t.type === type);
+  const relevantTasks = tasks?.filter((t) => t.type === type);
   const tooManyTasksForToday = relevantTasks && relevantTasks?.length >= 10;
 
   return (
@@ -56,7 +58,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/a/calendar?${query}`);
+          router.push(`/calendar?${query}`);
         }}
       >
         <IconCalendar style={{ width: rem(20) }} />
@@ -70,7 +72,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/a/history?${query}`);
+          router.push(`/history?${query}`);
         }}
       >
         <IconHistory style={{ width: rem(20) }} />

@@ -1,5 +1,6 @@
 import React from "react";
-import { LoadingOverlay, rem, Stack, Textarea } from "@mantine/core";
+import dynamic from "next/dynamic";
+import { Loader, LoadingOverlay, rem, Stack } from "@mantine/core";
 import classes from "./TextAreaComponent.module.css";
 
 type Props = {
@@ -12,6 +13,11 @@ type Props = {
   placeholder: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
 };
+
+const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
+  ssr: false,
+  loading: () => <Loader m="auto" />, // Optional loading state
+});
 
 export default function TextareaComponent({
   text,

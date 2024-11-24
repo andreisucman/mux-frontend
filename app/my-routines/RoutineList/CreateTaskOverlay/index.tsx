@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { IconCalendarWeek, IconCirclePlus } from "@tabler/icons-react";
-import { Button, Stack } from "@mantine/core";
-import { TypeEnum } from "@/types/global";
+import { Button, Stack, rem } from "@mantine/core";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
+import { TypeEnum } from "@/types/global";
 import { HandleSaveTaskProps } from "./AddATaskContainer/types";
 import openCreateNewTask from "./openCreateNewTask";
 import classes from "./CreateTaskOverlay.module.css";
@@ -17,9 +17,9 @@ export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
     useContext(CreateRoutineContext);
 
-  function onCreateManuallyClick() {
+  const onCreateManuallyClick = useCallback(() => {
     openCreateNewTask(type, handleSaveTask);
-  }
+  }, []);
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
@@ -30,7 +30,7 @@ export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }
           className={classes.button}
           onClick={onCreateManuallyClick}
         >
-          <IconCirclePlus className="icon" /> Create a task manually
+          <IconCirclePlus className="icon" style={{ marginRight: rem(8) }} /> Create a task manually
         </Button>
         <Button
           disabled={isLoading}
@@ -38,7 +38,8 @@ export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }
           className={classes.button}
           onClick={() => onCreateRoutineClick(isSubscriptionActive, isTrialUsed)}
         >
-          <IconCalendarWeek className="icon" /> Create a routine for the week
+          <IconCalendarWeek className="icon" style={{ marginRight: rem(8) }} /> Create a routine for
+          the week
         </Button>
       </Stack>
     </Stack>

@@ -1,14 +1,25 @@
 .container {
   gap: rem(2);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  border-radius: var(--mantine-radius-lg);
+  padding: 0 rem(8);
 }
 
 .label {
   font-size: var(--mantine-font-size-xs);
   height: fit-content;
-  margin-left: rem(2);
 }
 
 .text {
   display: flex;
   gap: rem(8);
+  padding: 0 rem(4);
+}
+
+.icon {
+  width: rem(16);
+  height: rem(16);
+  display: flex;
+  margin-left: rem(1);
+  margin-bottom: rem(1);
 }

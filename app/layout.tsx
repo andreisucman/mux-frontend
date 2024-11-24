@@ -55,6 +55,7 @@ export default function RootLayout({ children }: Props) {
                 <UserContextProvider>
                   <Header />
                 </UserContextProvider>
+
                 <Stack className={classes.container}>{children}</Stack>
               </>
             </ModalsProvider>

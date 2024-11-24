@@ -1,5 +1,7 @@
-.container {}
+.container {
+  flex: 1;
+}
 
 .header {
-    justify-content: space-between;
+  justify-content: space-between;
 }

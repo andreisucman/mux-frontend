@@ -5,6 +5,8 @@ export function saveToLocalStorage(
   value: StorageValue,
   mode: "add" | "replace" = "replace"
 ): void {
+  if (typeof window === "undefined") return;
+
   const existingValueRaw = localStorage.getItem(key);
   let existingValue: StorageValue = null;
 
@@ -35,6 +37,8 @@ export function saveToLocalStorage(
 }
 
 export function getFromLocalStorage<T extends StorageValue>(key: string): T | null {
+  if (typeof window === "undefined") return null;
+
   const rawValue = localStorage.getItem(key);
 
   if (rawValue === null) {
@@ -49,5 +53,6 @@ export function getFromLocalStorage<T extends StorageValue>(key: string): T | nu
 }
 
 export function deleteFromLocalStorage(key: string): void {
+  if (typeof window === "undefined") return;
   localStorage.removeItem(key);
 }

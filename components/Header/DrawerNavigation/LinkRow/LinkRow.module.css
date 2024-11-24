@@ -16,6 +16,6 @@
 
 .child {
   padding-left: rem(30);
-  margin-top: rem(8);
+  margin-top: rem(12);
   font-size: var(--mantine-font-size-sm);
 }

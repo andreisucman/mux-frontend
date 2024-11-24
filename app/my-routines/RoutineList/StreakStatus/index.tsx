@@ -5,12 +5,11 @@ import classes from "./StreakStatus.module.css";
 
 type Props = {
   completionPercent: number;
-  icon: React.ReactNode;
   serie: number;
   customRingStyles?: { [key: string]: any };
 };
 
-export default function StreakStatus({ completionPercent, customRingStyles, icon, serie }: Props) {
+export default function StreakStatus({ completionPercent, customRingStyles, serie }: Props) {
   const sections = [];
 
   sections.push(
@@ -24,16 +23,19 @@ export default function StreakStatus({ completionPercent, customRingStyles, icon
   return (
     <Group className={classes.container}>
       <RingProgress
-        size={37}
-        thickness={5}
-        label={icon}
+        size={34}
+        thickness={4}
+        label={
+          <IconFlame
+            className={classes.icon}
+            color={completionPercent === 100 ? "green.7" : undefined}
+          />
+        }
         sections={sections}
         styles={customRingStyles}
         classNames={{ label: classes.label }}
       />
-      <Text className={classes.text}>
-        <IconFlame className="icon" /> {serie || 0}
-      </Text>
+      <Text className={classes.text}>{serie || 0}</Text>
     </Group>
   );
 }

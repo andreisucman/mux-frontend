@@ -21,18 +21,14 @@
 }
 
 .scrollArea {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
 }
 
 .listWrapper {
+  position: absolute;
+  inset: 0;
   height: 100%;
-}
-
-.viewport {
-  & > div:first-child {
-    height: 100%;
-  }
 }
 
 .waitComponentWrapper {

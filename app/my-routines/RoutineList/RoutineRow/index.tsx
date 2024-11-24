@@ -148,16 +148,16 @@ export default function RoutineRow({
             customStyles={
               isCompleted
                 ? {
-                    fontSize: rem(12),
+                    fontSize: "Var(--mantine-font-size-xs)",
                     color: "var(--mantine-color-green-7)",
                   }
                 : started
                   ? {
-                      fontSize: rem(12),
+                      fontSize: "Var(--mantine-font-size-xs)",
                       color: "var(--mantine-color-red-7)",
                     }
                   : {
-                      fontSize: rem(12),
+                      fontSize: "Var(--mantine-font-size-xs)",
                       color: "var(--mantine-color-green-7)",
                     }
             }
@@ -193,7 +193,7 @@ export default function RoutineRow({
         {timer}
       </Stack>
       {dayTimeSpecified && (
-        <Stack gap={0} p={"0.25rem 0"} h={height} className={classes.dayTimeContainer}>
+        <Stack h={height} className={classes.dayTimeContainer}>
           {dayTimeIcons}
         </Stack>
       )}

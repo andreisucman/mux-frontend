@@ -1,0 +1,15 @@
+.container {
+  flex-wrap: nowrap;
+  gap: rem(12);
+  flex: 1;
+}
+
+.button {
+  padding: rem(4) 0;
+  flex: 1;
+
+  &:focus,
+  :active {
+    color: white;
+  }
+}

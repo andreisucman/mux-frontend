@@ -1,24 +1,23 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useCallback, useContext } from "react";
+import { useSearchParams } from "next/navigation";
+import { IconHeart, IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Group, Stack, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import modifyQuery from "@/helpers/modifyQuery";
 import { UserDataType } from "@/types/global";
 import { ConsiderationsInput } from "./ConsiderationsInput";
 import RoutineList from "./RoutineList";
-import { typeIconsMap } from "./typeIconsMap";
-import classes from "./routine.module.css";
+import classes from "./my-routines.module.css";
 
 export const runtime = "edge";
 
 const filterData = [
-  { label: "Head", icon: typeIconsMap.head, value: "head" },
-  { label: "Body", icon: typeIconsMap.body, value: "body" },
-  { label: "Health", icon: typeIconsMap.health, value: "health" },
+  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
+  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
+  { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
 ];
 
 export default function MyRoutines() {
@@ -102,7 +101,12 @@ export default function MyRoutines() {
     <Stack className={classes.container}>
       <Group className={classes.header}>
         <Title order={1}>My routines</Title>
-        <FilterDropdown data={filterData} filterType="type" addToQuery />
+        <FilterDropdown
+          data={filterData}
+          filterType="type"
+          defaultSelected={filterData.find((item) => item.value === type)}
+          addToQuery
+        />
       </Group>
       <ConsiderationsInput
         placeholder={"Special considerations"}
@@ -110,11 +114,7 @@ export default function MyRoutines() {
         maxLength={300}
         saveValue={updateSpecialConsiderations}
       />
-      <RoutineList
-        icon={typeIconsMap[(type || "head") as "head"]}
-        serie={streak}
-        type={type as string}
-      />
+      <RoutineList serie={streak} type={type as string} />
     </Stack>
   );
 }
