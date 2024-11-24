@@ -2,14 +2,14 @@
 
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { IconCirclePlus, IconSquareCheck } from "@tabler/icons-react";
 import { rem, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconCirclePlus, IconHourglassHigh } from "@tabler/icons-react";
 import createCheckoutSession from "@/functions/createCheckoutSession";
+import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
-import fetchUserData from "@/functions/fetchUserData";
 import { TypeEnum } from "@/types/global";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
@@ -78,9 +78,9 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     } else {
       const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
       const buttonIcon = !!isTrialUsed ? (
-        <IconCirclePlus className="icon" style={{ marginRight: rem(4) }} />
+        <IconCirclePlus className="icon" />
       ) : (
-        <IconHourglassHigh className="icon" style={{ marginRight: rem(4) }} />
+        <IconSquareCheck className="icon" />
       );
       const coachIcon = sex === "male" ? "🦸‍♂️" : "🦸‍♀️";
 

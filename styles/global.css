@@ -31,22 +31,22 @@ body {
 }
 
 .icon {
-  width: rem(20);
-  height: rem(20);
+  min-width: rem(20);
+  min-height: rem(20);
 
   &__small {
-    width: rem(16);
-    height: rem(16);
+    min-width: rem(16);
+    min-height: rem(16);
   }
 
   &__large {
-    width: rem(24);
-    height: rem(24);
+    min-width: rem(24);
+    min-height: rem(24);
   }
 
   &__title {
-    width: rem(32);
-    height: rem(32);
+    min-width: rem(32);
+    min-height: rem(32);
   }
 }
 

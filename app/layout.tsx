@@ -10,6 +10,7 @@ import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core
 import { ModalsProvider } from "@mantine/modals";
 import { NavigationProgress } from "@mantine/nprogress";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
+import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import Header from "@/components/Header";
 import UserContextProvider from "@/context/UserContext";
 import { HandleOnComplete } from "@/helpers/custom-router";

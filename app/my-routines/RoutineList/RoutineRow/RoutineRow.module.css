@@ -37,3 +37,8 @@
 .title {
   font-size: var(--mantine-font-size-md);
 }
+
+.label {
+  display: flex;
+  justify-content: center;
+}

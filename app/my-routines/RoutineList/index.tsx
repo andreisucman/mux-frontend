@@ -144,7 +144,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
 
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "tasks"
-  >("loading");
+  >("createTaskOverlay");
 
   const { nextScan, tasks, _id: userId, timeZone, demographics } = userDetails || {};
   const { sex } = demographics || {};
@@ -261,21 +261,21 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
 
   useSWR(userId, fetchLatestRoutinesAndTasks);
 
-  useEffect(() => {
-    if (!pageLoaded) return;
+  // useEffect(() => {
+  //   if (!pageLoaded) return;
 
-    if (isAnalysisGoing) {
-      setDisplayComponent("wait");
-    } else if (showOverlay) {
-      setDisplayComponent("scanOverlay");
-    } else if (relevantTasks && relevantTasks.length === 0) {
-      setDisplayComponent("createTaskOverlay");
-    } else if (relevantTasks && relevantTasks.length > 0) {
-      setDisplayComponent("tasks");
-    } else if (relevantTasks === undefined) {
-      setDisplayComponent("loading");
-    }
-  }, [isAnalysisGoing, showOverlay, relevantTasks, pageLoaded]);
+  //   if (isAnalysisGoing) {
+  //     setDisplayComponent("wait");
+  //   } else if (showOverlay) {
+  //     setDisplayComponent("scanOverlay");
+  //   } else if (relevantTasks && relevantTasks.length === 0) {
+  //     setDisplayComponent("createTaskOverlay");
+  //   } else if (relevantTasks && relevantTasks.length > 0) {
+  //     setDisplayComponent("tasks");
+  //   } else if (relevantTasks === undefined) {
+  //     setDisplayComponent("loading");
+  //   }
+  // }, [isAnalysisGoing, showOverlay, relevantTasks, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 

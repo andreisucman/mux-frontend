@@ -52,7 +52,7 @@ export default function openSubscriptionModal({
           : analystCoachContent;
 
   modals.openContextModal({
-    modal: "subscription",
+    modal: "general",
     centered: isCentered,
     withCloseButton,
     closeOnClickOutside: withCloseButton,
