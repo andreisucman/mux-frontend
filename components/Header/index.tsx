@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useContext, useMemo } from "react";
+import { memo, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconScan, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group } from "@mantine/core";
@@ -18,23 +18,7 @@ function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
-  const { status, userDetails } = useContext(UserContext);
-  const { email } = userDetails || {};
-
-  const handleAppRedirect = useCallback(() => {
-    let url;
-
-    if (status === "authenticated") {
-      url = "/";
-    } else {
-      if (email) {
-        url = "/auth";
-      } else {
-        url = "/start";
-      }
-    }
-    router.push(url);
-  }, [status, email]);
+  const { status } = useContext(UserContext);
 
   const hideStartButton = useMemo(
     () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),
@@ -62,7 +46,7 @@ function Header() {
                 aria-label="start analysis button"
                 disabled={hideStartButton}
                 icon={<IconRocket stroke={1.5} className="icon icon__large" />}
-                onClick={handleAppRedirect}
+                onClick={() => router.push("/scan")}
               />
             )}
             {status === "authenticated" && (

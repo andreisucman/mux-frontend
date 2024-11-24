@@ -74,8 +74,8 @@ export const theme = createTheme({
     fontWeight: "600",
     textWrap: "wrap",
     sizes: {
-      h1: { fontSize: rem(32) },
-      h2: { fontSize: rem(24) },
+      h1: { fontSize: rem(26) },
+      h2: { fontSize: rem(22) },
       h3: { fontSize: rem(20) },
       h4: { fontSize: rem(18) },
     },

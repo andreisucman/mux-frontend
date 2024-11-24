@@ -29,3 +29,21 @@ export function normalizeString(string: string) {
     .toLowerCase();
   return normalized[0].toUpperCase() + normalized.slice(1);
 }
+
+export function decodeAndCheckUriComponent(encodedUri: string) {
+  const decoded = decodeURIComponent(encodedUri);
+
+  if (!decoded.startsWith("/") || decoded.includes("javascript:")) {
+    return null;
+  }
+
+  return decoded;
+}
+
+export function parseScanDate(scanRecord?: { date: Date | null }) {
+  return scanRecord?.date ? new Date(scanRecord.date) : null;
+}
+
+export function daysFrom({ date = new Date(), days = 0 }) {
+  return new Date(new Date(date).getTime() + days * 24 * 60 * 60 * 1000);
+}

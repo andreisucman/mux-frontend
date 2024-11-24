@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -11,11 +11,15 @@ import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum, UserDataType } from "@/types/global";
-import UploadPageHeading from "../UploadPageHeading";
-import { styleRequirements } from "./styleRequirements";
-import { HandleUploadStyleProps } from "./types";
+import UploadPageHeading from "../ScanPageHeading";
+import classes from "./style.module.css";
 
 export const runtime = "edge";
+
+type HandleUploadStyleProps = {
+  url: string;
+  type: TypeEnum;
+};
 
 export default function UploadStyle() {
   const router = useRouter();
@@ -29,9 +33,10 @@ export default function UploadStyle() {
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, latestStyleAnalysis } = userDetails || {};
+  const { _id: userId, latestStyleAnalysis, styleRequirements } = userDetails || {};
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
+  const typeStyleRequirements = styleRequirements?.[finalType as "head" | "body"];
   const typeStyleAnalysis = latestStyleAnalysis?.[finalType as "head" | "body"];
   const { mainUrl } = typeStyleAnalysis || {};
 
@@ -99,25 +104,31 @@ export default function UploadStyle() {
   );
 
   return (
-    <Stack flex={1}>
+    <Stack className={classes.container}>
       <UploadPageHeading type={type as TypeEnum} />
-      <UploadCarousel
-        latestStyleImage={mainUrl?.url}
-        requirements={styleRequirements?.[finalType as "head" | "body"] || []}
-        type={type as TypeEnum}
-        progress={progress}
-        localUrl={localUrl}
-        originalUrl={originalUrl}
-        eyesBlurredUrl={eyesBlurredUrl}
-        faceBlurredUrl={faceBlurredUrl}
-        isLoading={isLoading}
-        setLocalUrl={setLocalUrl}
-        setOriginalUrl={setOriginalUrl}
-        setEyesBlurredUrl={setEyesBlurredUrl}
-        setFaceBlurredUrl={setFaceBlurredUrl}
-        handleUpload={handleUpload}
-        isStyle
-      />
+      {typeStyleRequirements ? (
+        <UploadCarousel
+          latestStyleImage={mainUrl?.url}
+          requirements={typeStyleRequirements}
+          type={type as TypeEnum}
+          progress={progress}
+          localUrl={localUrl}
+          originalUrl={originalUrl}
+          eyesBlurredUrl={eyesBlurredUrl}
+          faceBlurredUrl={faceBlurredUrl}
+          isLoading={isLoading}
+          setLocalUrl={setLocalUrl}
+          setOriginalUrl={setOriginalUrl}
+          setEyesBlurredUrl={setEyesBlurredUrl}
+          setFaceBlurredUrl={setFaceBlurredUrl}
+          handleUpload={handleUpload}
+          isStyle
+        />
+      ) : (
+        <Stack className={classes.loaderWrapper}>
+          <Loader type="oval" size={32} />
+        </Stack>
+      )}
     </Stack>
   );
 }

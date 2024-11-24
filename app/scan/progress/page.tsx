@@ -2,22 +2,26 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { IconHourglassHigh } from "@tabler/icons-react";
 import { Loader, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
+import OverlayWithText from "@/components/OverlayWithText";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
+import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { TypeEnum, UserDataType } from "@/types/global";
-import { HandleUploadProgressProps } from "./types";
-import UploadPageHeading from "./UploadPageHeading";
-import classes from "./upload.module.css";
+import UploadPageHeading from "../ScanPageHeading";
+import { HandleUploadProgressProps } from "../types";
+import classes from "./progress.module.css";
 
 export const runtime = "edge";
 
-export default function UploadProgress() {
+export default function ScanProgress() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -29,9 +33,16 @@ export default function UploadProgress() {
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, requiredProgress } = userDetails || {};
+  const { _id: userId, requiredProgress, nextScan } = userDetails || {};
+
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
+
+  const { needsScan, availableRequirements, nextScanDate } = useCheckScanAvailability({
+    nextScan,
+    requiredProgress,
+    scanType: finalType as "head" | "body",
+  });
 
   const typeRequiredProgress = requiredProgress?.[finalType as TypeEnum];
 
@@ -131,24 +142,31 @@ export default function UploadProgress() {
 
   return (
     <>
-      {userId && typeRequiredProgress?.length !== 0 ? (
+      {userId ? (
         <Stack className={classes.container}>
           <UploadPageHeading type={finalType as TypeEnum} />
-          <UploadCarousel
-            requirements={typeRequiredProgress || []}
-            type={type as TypeEnum}
-            progress={progress}
-            localUrl={localUrl}
-            originalUrl={originalUrl}
-            eyesBlurredUrl={eyesBlurredUrl}
-            faceBlurredUrl={faceBlurredUrl}
-            isLoading={isLoading}
-            setLocalUrl={setLocalUrl}
-            setOriginalUrl={setOriginalUrl}
-            setEyesBlurredUrl={setEyesBlurredUrl}
-            setFaceBlurredUrl={setFaceBlurredUrl}
-            handleUpload={handleUpload}
-          />
+          {needsScan ? (
+            <UploadCarousel
+              requirements={availableRequirements || []}
+              type={type as TypeEnum}
+              progress={progress}
+              localUrl={localUrl}
+              originalUrl={originalUrl}
+              eyesBlurredUrl={eyesBlurredUrl}
+              faceBlurredUrl={faceBlurredUrl}
+              isLoading={isLoading}
+              setLocalUrl={setLocalUrl}
+              setOriginalUrl={setOriginalUrl}
+              setEyesBlurredUrl={setEyesBlurredUrl}
+              setFaceBlurredUrl={setFaceBlurredUrl}
+              handleUpload={handleUpload}
+            />
+          ) : (
+            <OverlayWithText
+              icon={<IconHourglassHigh className="icon" />}
+              text={`Check back after ${formatDate({ date: nextScanDate, hideYear: true })}.`}
+            />
+          )}
         </Stack>
       ) : (
         <Stack className={classes.loaderWrapper}>

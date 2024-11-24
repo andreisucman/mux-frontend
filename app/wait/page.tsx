@@ -6,6 +6,7 @@ import { Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
+import { decodeAndCheckUriComponent } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -28,7 +29,9 @@ export default function WaitPage() {
 
   const onComplete = useCallback(() => {
     try {
-      if (finalRedirect.startsWith("/") && !finalRedirect.includes("javascript:")) {
+      const uriComponent = decodeAndCheckUriComponent(finalRedirect);
+      
+      if (uriComponent) {
         router.replace(finalRedirect);
       }
     } catch (e) {
@@ -46,7 +49,7 @@ export default function WaitPage() {
       <WaitComponent
         operationKey={type}
         onComplete={onComplete}
-        errorRedirectUrl="/start"
+        errorRedirectUrl="/scan"
         hideDisclaimer={hideDisclaimer}
         customWrapperStyles={
           isMobile ? { transform: "translateY(-5%)" } : { transform: "translateY(-25%)" }

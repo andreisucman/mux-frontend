@@ -20,7 +20,6 @@
   justify-content: center;
   border-radius: var(--mantine-radius-lg);
   padding: rem(16);
-  flex: 1;
   border: rem(1) solid var(--mantine-color-dark-5);
 }
 
@@ -35,7 +34,10 @@
 
 .buttonGroup {
   width: 100%;
-  margin-bottom: rem(24);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin-bottom: rem(24);
+  }
 }
 
 .button {

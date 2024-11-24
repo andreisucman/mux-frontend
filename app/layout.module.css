@@ -6,6 +6,6 @@
   margin: auto;
 
   @media (max-width: $mantine-breakpoint-sm) {
-    padding: rem(24) rem(16);
+    padding: rem(16);
   }
 }

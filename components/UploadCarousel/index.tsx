@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useMemo } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
-import { HandleUploadProgressProps } from "@/app/upload/types";
+import { HandleUploadProgressProps } from "@/app/scan/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCard from "@/components/UploadCard";
 import SelectPartsCheckboxes from "@/components/UploadCarousel/SelectPartsCheckboxes";
@@ -161,7 +161,7 @@ export default function UploadCarousel({
           slideGap={16}
           slidesToScroll={1}
           withControls={false}
-          withIndicators={true}
+          withIndicators={slides.length > 1}
           styles={{
             root: { height: "100%" },
             viewport: { height: "100%" },

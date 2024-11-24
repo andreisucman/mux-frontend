@@ -1,5 +1,5 @@
-import { TypeEnum } from "@/types/global";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { TypeEnum } from "@/types/global";
 
 export type ProgressRequirementType = {
   title: string;

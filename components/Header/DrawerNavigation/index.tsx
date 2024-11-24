@@ -106,7 +106,6 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
   const handleClickLink = useCallback(
     (path: string) => {
       setLinkClicked(path === linkClicked ? "" : path);
-      closeDrawer();
     },
     [linkClicked]
   );
@@ -172,6 +171,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
           link={link}
           linkClicked={linkClicked}
           handleClickLink={handleClickLink}
+          closeDrawer={closeDrawer}
         />
       ))}
       {status === "authenticated" && (
@@ -183,6 +183,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
               link={link}
               linkClicked={linkClicked}
               handleClickLink={handleClickLink}
+              closeDrawer={closeDrawer}
             />
           ))}
         </>
@@ -206,6 +207,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
             link={link}
             linkClicked={linkClicked}
             handleClickLink={handleClickLink}
+            closeDrawer={closeDrawer}
           />
         ))}
         <Text className={classes.copyright}>&copy; {year} Max You Out. All rights reserved</Text>

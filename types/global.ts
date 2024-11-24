@@ -1,3 +1,4 @@
+import { ProgressRequirementType } from "@/components/UploadCarousel/types";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 
 export type DefaultUserType = {
@@ -50,14 +51,6 @@ export type ClubUserType = {
     bodyCurrentScore: number;
     bodyTotalProgress: number;
   };
-};
-
-export type ProgressRequirement = {
-  title: string;
-  instruction: string;
-  type: TypeEnum;
-  part: PartEnum;
-  position: "front" | "back" | "right" | "left" | "mouth" | "scalp";
 };
 
 export type DemographicsType = {
@@ -159,9 +152,13 @@ export interface UserDataType extends DefaultUserType {
   club: ClubDataType | null;
   concerns: UserConcernType[];
   requiredProgress: {
-    head: ProgressRequirement[] | null;
-    body: ProgressRequirement[] | null;
-    health: ProgressRequirement[] | null;
+    head: ProgressRequirementType[] | null;
+    body: ProgressRequirementType[] | null;
+    health: ProgressRequirementType[] | null;
+  };
+  styleRequirements: {
+    head: ProgressRequirementType[] | null;
+    body: ProgressRequirementType[] | null;
   };
   demographics: DemographicsType;
   toAnalyze: {
@@ -169,6 +166,8 @@ export interface UserDataType extends DefaultUserType {
     body: ToAnalyzeType[];
     health: ToAnalyzeType[];
   };
+  nextScan: NextActionType[];
+  nextRoutine: NextActionType[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
   latestStyleAnalysis: UserLatestStyleAnalysis;
@@ -245,3 +244,9 @@ export enum TypeEnum {
   BODY = "body",
   HEALTH = "health",
 }
+
+export type NextActionType = {
+  type: TypeEnum;
+  date: Date | null;
+  parts: { part: PartEnum; date: Date | null }[];
+};

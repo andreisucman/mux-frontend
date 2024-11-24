@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { useSearchParams } from "next/navigation";
 import { IconArrowRight } from "@tabler/icons-react";
 import getBrowserFingerprint from "get-browser-fingerprint";
 import { Button, Stack, Title } from "@mantine/core";
@@ -10,7 +10,9 @@ import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openErrorModal from "@/helpers/openErrorModal";
+import { decodeAndCheckUriComponent } from "@/helpers/utils";
 import { UserDataType } from "@/types/global";
 import classes from "./accept.module.css";
 
@@ -18,6 +20,7 @@ export const runtime = "edge";
 
 export default function AcceptIndexPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [highlightTos, setHighlightTos] = useState(false);
@@ -55,7 +58,13 @@ export default function AcceptIndexPage() {
         }));
 
         nprogress.start();
-        router.push("/start/scan");
+
+        const encodedNext = searchParams.get("next") || "/scan?type=head";
+        const next = decodeAndCheckUriComponent(encodedNext);
+
+        if (next) {
+          router.push(next);
+        }
       }
     } catch (err) {
       openErrorModal();

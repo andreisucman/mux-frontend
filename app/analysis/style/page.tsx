@@ -95,7 +95,7 @@ export default function StyleScanResult() {
     if (!searchParams) return;
     if (!userDetails) return;
 
-    if (!relevantAnalysis) router.replace(`/upload/style?type=${type}`);
+    if (!relevantAnalysis) router.replace(`/scan/style?type=${type}`);
   }, [type, typeof userDetails]);
 
   return (

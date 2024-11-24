@@ -127,6 +127,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (userDetailsState) return;
 
     const savedState: UserDataType | null = getFromLocalStorage("userDetails");
+    console.log("savedState",savedState)
     setUserDetailsState(savedState);
   }, [status]);
 
@@ -145,7 +146,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     handleAuthenticate(code, state);
   }, [code]);
 
-  useSWR(`${status}-${pathname}`, fetchUserDate);
+  // useSWR(`${status}-${pathname}`, fetchUserDate);
 
   return (
     <UserContext.Provider

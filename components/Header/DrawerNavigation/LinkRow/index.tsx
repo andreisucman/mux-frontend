@@ -15,9 +15,10 @@ type Props = {
   linkClicked: string;
   link: NavigationLinkType;
   handleClickLink: (path: string) => void;
+  closeDrawer: () => void;
 };
 
-function LinkRow({ linkClicked, handleClickLink, link }: Props) {
+function LinkRow({ linkClicked, handleClickLink, closeDrawer, link }: Props) {
   const active = linkClicked === link.path;
 
   const chevron = useMemo(
@@ -33,7 +34,7 @@ function LinkRow({ linkClicked, handleClickLink, link }: Props) {
   return (
     <Stack className={classes.container}>
       <Group className={classes.header} onClick={() => handleClickLink(link.path)}>
-        <Link className={classes.link} href={link.path}>
+        <Link className={classes.link} href={link.path} onClick={closeDrawer}>
           {link.icon}
           {link.title}
         </Link>
