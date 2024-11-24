@@ -16,7 +16,7 @@ type Props = {
 export function getAvailableRequirements({ requiredProgress, typeNextScan, type }: Props) {
   const typeRequirements = requiredProgress?.[type as TypeEnum] || [];
 
-  let requirements: ProgressRequirementType[] = [];
+  let requirements: ProgressRequirementType[] = typeRequirements;
 
   if (typeNextScan && typeNextScan.parts.length > 0) {
     const availableParts = typeNextScan.parts.filter((part) => {

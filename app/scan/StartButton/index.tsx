@@ -1,17 +1,62 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
-import { Overlay, Title, UnstyledButton } from "@mantine/core";
+import { IconHanger2, IconMan, IconMoodSmile } from "@tabler/icons-react";
+import cn from "classnames";
+import { Overlay, rem, Stack, Text, UnstyledButton } from "@mantine/core";
+import Timer from "@/components/Timer";
+import { formatDate } from "@/helpers/formatDate";
+import { daysFrom } from "@/helpers/utils";
 import classes from "./StartButton.module.css";
 
 type Props = {
-  title: string;
-  overlayChildren?: React.ReactNode;
+  type: "head" | "body" | "style";
+  needsScan: boolean;
+  nextScanDate?: Date | null;
   onClick: () => void;
 };
 
-export default function StartButton({ onClick, overlayChildren, title }: Props) {
+const icons = {
+  head: <IconMoodSmile className="icon" />,
+  body: <IconMan className="icon" />,
+  style: <IconHanger2 className="icon" />,
+};
+
+export default function StartButton({ onClick, type, needsScan, nextScanDate }: Props) {
+  const overlayProps = useMemo(() => {
+    const afterOneDay = daysFrom({ days: 1 });
+    const payload: {
+      blur?: number;
+      children?: React.ReactNode;
+    } = {};
+
+    if (needsScan && nextScanDate && nextScanDate > new Date()) {
+      payload.blur = 5;
+
+      if (nextScanDate > afterOneDay) {
+        const formattedDate = formatDate({ date: nextScanDate, hideYear: true });
+        payload.children = (
+          <Stack className={classes.stack}>
+            <Text size="sm">Next {type} scan after:</Text>
+            <Text fw={600}>{formattedDate}</Text>
+          </Stack>
+        );
+      } else {
+        payload.children = (
+          <Stack className={classes.stack}>
+            <Text size="sm">Next {type} scan after:</Text>
+            <Timer date={nextScanDate} />
+          </Stack>
+        );
+      }
+    }
+    return payload;
+  }, [needsScan, nextScanDate, type]);
+
   return (
-    <UnstyledButton className={classes.container} onClick={onClick}>
+    <UnstyledButton
+      className={cn(classes.container, { [classes.disabled]: !needsScan })}
+      onClick={onClick}
+    >
       <div className={classes.imageWrapper}>
         <Image
           src="https://placehold.co/160x213"
@@ -20,13 +65,14 @@ export default function StartButton({ onClick, overlayChildren, title }: Props) 
           width={180}
           height={240}
         />
-        {overlayChildren && (
-          <Overlay blur={5} color="000" backgroundOpacity={0.25} children={overlayChildren} />
-        )}
+        <Overlay
+          {...overlayProps}
+          className={cn(classes.overlay, { [classes.disabledOverlay]: !needsScan })}
+        />
       </div>
-      <Title className={classes.title} order={4}>
-        {title}
-      </Title>
+      <Text className={classes.label}>
+        {icons[type]}Scan {type}
+      </Text>
     </UnstyledButton>
   );
 }

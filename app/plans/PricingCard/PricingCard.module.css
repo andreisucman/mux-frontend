@@ -1,0 +1,30 @@
+.container {
+  max-width: rem(440);
+  width: 100%;
+  background-color: var(--mantine-color-dark-6);
+  gap: 0;
+  border-radius: var(--mantine-radius-lg);
+  border: rem(1) solid var(--mantine-color-dark-6);
+  overflow: hidden;
+}
+
+.heading {
+  justify-content: center;
+  align-items: center;
+  font-size: rem(22);
+  gap: 0;
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+  color: var(--mantine-color-dark-9);
+  border-bottom: rem(1) solid var(--mantine-color-dark-5);
+}
+
+.priceGroup {
+  flex-wrap: nowrap;
+  gap: rem(4);
+  padding: rem(4);
+  color: white;
+}
+
+.content {
+  padding: rem(16);
+}

@@ -1,0 +1,27 @@
+.container {
+  flex: 1;
+}
+
+.error {
+  padding: rem(8) rem(16);
+  border: rem(1) solid var(--mantine-color-red-7);
+  border-radius: rem(16);
+}
+
+.addedContainer {
+  justify-content: center;
+  width: 100%;
+}
+
+.buttonsGroup {
+  flex-wrap: nowrap;
+}
+
+.button {
+  flex: 1;
+  padding: 0;
+}
+
+.loader {
+  margin: 3rem auto 4rem;
+}

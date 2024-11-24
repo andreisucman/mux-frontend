@@ -13,9 +13,10 @@ const typeFilters = [
 
 type Props = {
   type: TypeEnum;
+  title: string;
 };
 
-function ScanPageHeading({ type }: Props) {
+function ScanPageHeading({ type, title }: Props) {
   const router = useRouter();
 
   return (
@@ -24,7 +25,7 @@ function ScanPageHeading({ type }: Props) {
         <ActionIcon variant="default" onClick={() => router.back()}>
           <IconChevronLeft className="icon" />
         </ActionIcon>
-        <Title order={1}>Scan your {type}</Title>
+        <Title order={1}>{title}</Title>
       </Group>
 
       <FilterDropdown

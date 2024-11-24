@@ -1,0 +1,46 @@
+import React, { useContext } from "react";
+import { IconCalendarWeek, IconCirclePlus } from "@tabler/icons-react";
+import { Button, Stack } from "@mantine/core";
+import { TypeEnum } from "@/types/global";
+import { CreateRoutineContext } from "@/context/CreateRoutineContext";
+import { HandleSaveTaskProps } from "./AddATaskContainer/types";
+import openCreateNewTask from "./openCreateNewTask";
+import classes from "./CreateTaskOverlay.module.css";
+
+type Props = {
+  type: TypeEnum;
+  handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
+  customStyles?: { [key: string]: any };
+};
+
+export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }: Props) {
+  const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
+    useContext(CreateRoutineContext);
+
+  function onCreateManuallyClick() {
+    openCreateNewTask(type, handleSaveTask);
+  }
+
+  return (
+    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
+      <Stack className={classes.wrapper}>
+        <Button
+          variant="default"
+          disabled={isLoading}
+          className={classes.button}
+          onClick={onCreateManuallyClick}
+        >
+          <IconCirclePlus className="icon" /> Create a task manually
+        </Button>
+        <Button
+          disabled={isLoading}
+          loading={isLoading}
+          className={classes.button}
+          onClick={() => onCreateRoutineClick(isSubscriptionActive, isTrialUsed)}
+        >
+          <IconCalendarWeek className="icon" /> Create a routine for the week
+        </Button>
+      </Stack>
+    </Stack>
+  );
+}

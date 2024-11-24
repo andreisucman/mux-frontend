@@ -1,10 +1,8 @@
 import { useMemo } from "react";
-import Timer from "@/components/Timer";
 import { ProgressRequirementType } from "@/components/UploadCarousel/types";
 import { NextActionType } from "@/types/global";
-import { formatDate } from "./formatDate";
 import { getAvailableRequirements } from "./getAvailableRequirements";
-import { daysFrom, parseScanDate } from "./utils";
+import { parseScanDate } from "./utils";
 
 type Props = {
   scanType: "head" | "body" | "style";
@@ -17,19 +15,12 @@ type Props = {
 };
 
 function useCheckScanAvailability({ scanType, nextScan, requiredProgress }: Props) {
-  const oneDayFromNow = daysFrom({ days: 1 });
-
   const currentNextScan = useMemo(
     () => nextScan?.find((obj) => obj.type === scanType),
     [scanType, typeof nextScan]
   );
 
   const currentNextScanDate = useMemo(() => parseScanDate(currentNextScan), [currentNextScan]);
-
-  const isAfterOneDay = useMemo(
-    () => currentNextScanDate && currentNextScanDate > oneDayFromNow,
-    [currentNextScanDate, oneDayFromNow]
-  );
 
   const currentRequirements = useMemo(
     () =>
@@ -41,23 +32,16 @@ function useCheckScanAvailability({ scanType, nextScan, requiredProgress }: Prop
     [scanType, currentNextScan, requiredProgress]
   );
 
-  const needsScan = useMemo(() => currentRequirements.length > 0, [currentRequirements]);
-
-  const overlayChildren = useMemo(
+  const needsScan = useMemo(
     () =>
-      needsScan ? undefined : isAfterOneDay ? (
-        formatDate({ date: currentNextScanDate, hideYear: true })
-      ) : (
-        <Timer date={currentNextScanDate} />
-      ),
-    [needsScan, isAfterOneDay, currentNextScanDate]
+      !currentNextScanDate || (currentNextScanDate && new Date(currentNextScanDate) < new Date()),
+    [currentNextScanDate]
   );
 
   return {
     needsScan,
     availableRequirements: currentRequirements,
     nextScanDate: currentNextScanDate,
-    overlayChildren,
   };
 }
 

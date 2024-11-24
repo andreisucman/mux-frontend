@@ -30,7 +30,7 @@ export default function WaitPage() {
   const onComplete = useCallback(() => {
     try {
       const uriComponent = decodeAndCheckUriComponent(finalRedirect);
-      
+
       if (uriComponent) {
         router.replace(finalRedirect);
       }
@@ -47,6 +47,7 @@ export default function WaitPage() {
   return (
     <Stack flex={1}>
       <WaitComponent
+        description="Analyzing your data"
         operationKey={type}
         onComplete={onComplete}
         errorRedirectUrl="/scan"

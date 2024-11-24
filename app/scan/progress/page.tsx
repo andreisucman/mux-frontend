@@ -44,8 +44,6 @@ export default function ScanProgress() {
     scanType: finalType as "head" | "body",
   });
 
-  const typeRequiredProgress = requiredProgress?.[finalType as TypeEnum];
-
   const handleUpload = useCallback(
     async ({ url, type, part, position, blurType, blurredImage }: HandleUploadProgressProps) => {
       if (!userDetails) return;
@@ -135,16 +133,16 @@ export default function ScanProgress() {
 
   useShallowEffect(() => {
     if (!userId) return;
-    if (typeRequiredProgress && typeRequiredProgress.length === 0) {
+    if (availableRequirements && availableRequirements.length === 0) {
       router.push(`/wait?type=${finalType}`);
     }
-  }, [typeRequiredProgress?.length, userId]);
+  }, [availableRequirements?.length, userId]);
 
   return (
     <>
       {userId ? (
         <Stack className={classes.container}>
-          <UploadPageHeading type={finalType as TypeEnum} />
+          <UploadPageHeading type={finalType as TypeEnum} title={`Scan your progress`} />
           {needsScan ? (
             <UploadCarousel
               requirements={availableRequirements || []}

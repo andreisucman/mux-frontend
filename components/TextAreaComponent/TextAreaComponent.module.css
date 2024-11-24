@@ -1,0 +1,29 @@
+.container {
+  gap: rem(8);
+  flex: 1;
+}
+
+.wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.loadingOverlay {
+  border-radius: var(--mantine-radius-lg);
+}
+
+.areaWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.areaRoot {
+  display: flex;
+  flex-direction: column;
+}
+
+.areaInput {
+  flex: 1;
+  padding: rem(16);
+}

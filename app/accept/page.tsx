@@ -26,52 +26,57 @@ export default function AcceptIndexPage() {
   const [highlightTos, setHighlightTos] = useState(false);
   const [tosAccepted, setTosAccepted] = useState(false);
 
+  const { _id: userId } = userDetails || {};
+
   const startTheFlow = useCallback(async () => {
-    const { _id: userId } = userDetails || {};
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     try {
+      if (!tosAccepted) return;
       setIsLoading(true);
-      const fingerprint = await getBrowserFingerprint();
 
-      const response = await callTheServer({
-        endpoint: "startTheFlow",
-        method: "POST",
-        body: {
-          userId,
-          tosAccepted,
-          timeZone,
-          fingerprint,
-        },
-      });
+      if (!userId) {
+        const fingerprint = await getBrowserFingerprint();
 
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal();
-          setIsLoading(false);
-          return;
+        const response = await callTheServer({
+          endpoint: "startTheFlow",
+          method: "POST",
+          body: {
+            userId,
+            tosAccepted,
+            timeZone,
+            fingerprint,
+          },
+        });
+
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal();
+            setIsLoading(false);
+            return;
+          }
+
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            ...response.message,
+          }));
+
+          nprogress.start();
         }
+      }
 
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          ...response.message,
-        }));
+      const encodedNext = searchParams.get("next") || "/scan/progress?type=head";
+      const next = decodeAndCheckUriComponent(encodedNext);
 
-        nprogress.start();
-
-        const encodedNext = searchParams.get("next") || "/scan?type=head";
-        const next = decodeAndCheckUriComponent(encodedNext);
-
-        if (next) {
-          router.push(next);
-        }
+      if (next) {
+        router.replace(next);
       }
     } catch (err) {
       openErrorModal();
       console.log("Error in startTheFlow: ", err);
       setIsLoading(false);
     }
-  }, []);
+  }, [tosAccepted, userId]);
 
   return (
     <Stack className={classes.container}>

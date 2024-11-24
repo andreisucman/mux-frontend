@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { Button, Container, Group, Title } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import classes from "./not-found.module.css";
 
 function Illustration(props: React.ComponentPropsWithoutRef<"svg">) {
@@ -18,6 +18,17 @@ function Illustration(props: React.ComponentPropsWithoutRef<"svg">) {
 export default function NotFoundPage() {
   const router = useRouter();
 
+  const handleNavigation = () => {
+    const previousURL = document.referrer;
+    const currentDomain = window.location.origin;
+
+    if (previousURL && new URL(previousURL).origin === currentDomain) {
+      router.back();
+    } else {
+      router.replace("/");
+    }
+  };
+
   return (
     <Container className={classes.root}>
       <div className={classes.inner}>
@@ -27,7 +38,7 @@ export default function NotFoundPage() {
             Not found
           </Title>
           <Group justify="center" mt="xl">
-            <Button variant="default" onClick={() => router.back()}>
+            <Button variant="default" onClick={handleNavigation}>
               Return
             </Button>
           </Group>

@@ -146,6 +146,19 @@ export type UserConcernType = {
   isDisabled: boolean;
 };
 
+export type StreaksType = {
+  faceStreak: number;
+  mouthStreak: number;
+  scalpStreak: number;
+  bodyStreak: number;
+  healthStreak: number;
+  clubFaceStreak: number;
+  clubMouthStreak: number;
+  clubScalpStreak: number;
+  clubBodyStreak: number;
+  clubHealthStreak: number;
+};
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email: string | null;
@@ -166,6 +179,8 @@ export interface UserDataType extends DefaultUserType {
     body: ToAnalyzeType[];
     health: ToAnalyzeType[];
   };
+  streaks: StreaksType;
+  subscriptions: UserSubscriptionsType;
   nextScan: NextActionType[];
   nextRoutine: NextActionType[];
   potential: UserPotentialRecordType;
@@ -173,7 +188,21 @@ export interface UserDataType extends DefaultUserType {
   latestStyleAnalysis: UserLatestStyleAnalysis;
   currentlyHigherThan: HigherThanType;
   potentiallyHigherThan: HigherThanType;
+  tasks: TaskType[];
 }
+
+export type SubscriptionType = {
+  isTrialUsed: boolean;
+  subscriptionId: string;
+  validUntil: Date | null;
+};
+
+export type UserSubscriptionsType = {
+  improvement: SubscriptionType;
+  peek: SubscriptionType;
+  guru: SubscriptionType;
+  analyst: SubscriptionType;
+};
 
 export type ProgressImageType = {
   position: string;
@@ -249,4 +278,69 @@ export type NextActionType = {
   type: TypeEnum;
   date: Date | null;
   parts: { part: PartEnum; date: Date | null }[];
+};
+
+export enum TaskStatusErum {
+  ACTIVE = "active",
+  COMPLETED = "completed",
+  EXPIRED = "expired",
+  CANCELED = "canceled",
+}
+
+export type RecipeType = {
+  name: string;
+  image: string;
+  calories: number;
+  description: string;
+  instruction: string;
+  canPersonalize: boolean;
+};
+
+export type SuggestionType = {
+  itemId: string;
+  asin: string;
+  name: string;
+  url: string;
+  type: "product" | "place";
+  image: string;
+  description: string;
+  rating: number;
+  suggestion: string;
+  variant: string;
+  rank: number;
+  reasoning: string;
+  analysisResult: { [key: string]: boolean };
+  key: string;
+};
+
+export type RequiredSubmissionType = {
+  submissionId: string;
+  name: string;
+  proofId: string;
+  dayTime?: "morning" | "noon" | "evening";
+  isSubmitted: boolean;
+};
+
+export type TaskType = {
+  _id: string;
+  name: string;
+  key: string;
+  icon: string;
+  color: string;
+  type: string;
+  startsAt: string;
+  expiresAt: string;
+  routineId: string;
+  requisite: string;
+  description: string;
+  instruction: string;
+  proofEnabled: boolean;
+  status: TaskStatusErum;
+  isRecipe: boolean;
+  recipe: RecipeType;
+  suggestions: SuggestionType[];
+  productsPersonalized: boolean;
+  requiredSubmissions?: RequiredSubmissionType[];
+  example: { type: string; url: string };
+  defaultSuggestions: SuggestionType[];
 };

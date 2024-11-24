@@ -105,7 +105,7 @@ export default function UploadStyle() {
 
   return (
     <Stack className={classes.container}>
-      <UploadPageHeading type={type as TypeEnum} />
+      <UploadPageHeading type={type as TypeEnum} title={`Scan your style`} />
       {typeStyleRequirements ? (
         <UploadCarousel
           latestStyleImage={mainUrl?.url}

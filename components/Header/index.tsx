@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useContext, useMemo } from "react";
+import { CSSProperties, memo, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconScan, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group } from "@mantine/core";
@@ -25,41 +25,48 @@ function Header() {
     [pathname]
   );
 
+  const headerStyles = useMemo(() => {
+    return status ? { visibility: "visible" } : { visibility: "hidden" };
+  }, [status]);
+
   return (
     <>
       <header className={classes.container}>
         <div className={classes.wrapper}>
           <Logo />
-          <Group className={classes.navigation}>
-            <ActionIcon
-              variant="default"
-              visibleFrom={status === "authenticated" ? undefined : "xs"}
-              onClick={() => router.push("/")}
-              className={classes.button}
-              aria-label="go to results page button"
-            >
-              <IconTargetArrow stroke={1.25} className="icon icon__large" />
-            </ActionIcon>
-            {status !== "authenticated" && !hideStartButton && (
-              <GlowingButton
-                text="Start"
-                aria-label="start analysis button"
-                disabled={hideStartButton}
-                icon={<IconRocket stroke={1.5} className="icon icon__large" />}
-                onClick={() => router.push("/scan")}
-              />
+          <Group className={classes.navigation} style={headerStyles as CSSProperties}>
+            {status !== "unknown" && (
+              <>
+                <ActionIcon
+                  variant="default"
+                  visibleFrom={status === "authenticated" ? undefined : "xs"}
+                  onClick={() => router.push("/")}
+                  className={classes.button}
+                  aria-label="go to results page button"
+                >
+                  <IconTargetArrow stroke={1.25} className="icon icon__large" />
+                </ActionIcon>
+                {status !== "authenticated" && !hideStartButton && (
+                  <GlowingButton
+                    text="Start"
+                    aria-label="start analysis button"
+                    disabled={hideStartButton}
+                    icon={<IconRocket stroke={1.5} className="icon icon__large" />}
+                    onClick={() => router.push("/scan")}
+                  />
+                )}
+                {status === "authenticated" && (
+                  <ActionIcon
+                    variant="default"
+                    onClick={() => router.push("/scan")}
+                    className={classes.button}
+                    aria-label="scan appearance button"
+                  >
+                    <IconScan stroke={1.25} className="icon icon__large" />
+                  </ActionIcon>
+                )}
+              </>
             )}
-            {status === "authenticated" && (
-              <ActionIcon
-                variant="default"
-                onClick={() => router.push("/scan")}
-                className={classes.button}
-                aria-label="scan appearance button"
-              >
-                <IconScan stroke={1.25} className="icon icon__large" />
-              </ActionIcon>
-            )}
-
             <Burger onClick={toggle} />
           </Group>
         </div>

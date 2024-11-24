@@ -11,6 +11,7 @@ import {
   IconTarget,
   IconTargetArrow,
   IconTrophy,
+  IconSocial,
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
@@ -116,10 +117,12 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
     deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
     setUserDetails(null);
+    closeDrawer();
   }, []);
 
   const handleClickSignIn = () => {
     router.push("/auth");
+    closeDrawer();
   };
 
   const finalAuthenticatedNavigation = useMemo(() => {
@@ -132,7 +135,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
         finalNavigation.push({
           title: "Club",
           path: "/club",
-          icon: <IconTarget stroke={1.25} className="icon" />,
+          icon: <IconSocial stroke={1.25} className="icon" />,
           children: [
             { title: "Profile", path: "/club" },
             { title: "About", path: "/club/about" },
@@ -143,14 +146,14 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
         finalNavigation.push({
           title: "Join club",
           path: "/club/registration",
-          icon: <IconTarget stroke={1.25} className="icon" />,
+          icon: <IconSocial stroke={1.25} className="icon" />,
         });
       }
     } else {
       finalNavigation.push({
         title: "Join club",
         path: "/club/join",
-        icon: <IconTarget stroke={1.25} className="icon" />,
+        icon: <IconSocial stroke={1.25} className="icon" />,
       });
     }
 

@@ -16,13 +16,13 @@ export default function ScanIndexPage() {
   const { status, userDetails } = useContext(UserContext);
   const { _id: userId, email, nextScan, requiredProgress } = userDetails || {};
 
-  const { overlayChildren: headOverlayChildren } = useCheckScanAvailability({
+  const { needsScan: needsHeadScan, nextScanDate: nextHeadScanDate } = useCheckScanAvailability({
     nextScan,
     requiredProgress,
     scanType: "head",
   });
 
-  const { overlayChildren: bodyOverlayChildren } = useCheckScanAvailability({
+  const { needsScan: needsBodyScan, nextScanDate: nextBodyScanDate } = useCheckScanAvailability({
     nextScan,
     requiredProgress,
     scanType: "body",
@@ -39,7 +39,7 @@ export default function ScanIndexPage() {
           if (userId) {
             router.push(next); // the user accepted the tos but did not finish the onboarding
           } else {
-            const encodedPath = `/accept?${encodeURIComponent(next)}`; // the user is coming for the first time
+            const encodedPath = `/accept?next=${encodeURIComponent(next)}`; // the user is coming for the first time
             router.push(encodedPath);
           }
         }
@@ -54,17 +54,20 @@ export default function ScanIndexPage() {
         <Title order={1}>Scan yourself</Title>
         <Group className={classes.content}>
           <StartButton
-            title={"Scan head"}
-            overlayChildren={headOverlayChildren}
-            onClick={() => handleRedirect("/scan?type=head")}
+            type={"head"}
+            needsScan={needsHeadScan}
+            nextScanDate={nextHeadScanDate}
+            onClick={() => handleRedirect("/scan/progress?type=head")}
           />
           <StartButton
-            title={"Scan body"}
-            overlayChildren={bodyOverlayChildren}
-            onClick={() => handleRedirect("/scan?type=body")}
+            type={"body"}
+            needsScan={needsBodyScan}
+            nextScanDate={nextBodyScanDate}
+            onClick={() => handleRedirect("/scan/progress?type=body")}
           />
           <StartButton
-            title={"Scan style"}
+            needsScan={true}
+            type={"style"}
             onClick={() => handleRedirect("/scan/style?type=head")}
           />
         </Group>

@@ -2,10 +2,10 @@
 
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import useSWR from "swr";
 import { defaultUser } from "@/data/defaultUser";
-import { preventFetchingPaths, requireAuthPaths } from "@/data/paths";
+import { requireAuthPaths } from "@/data/paths";
 import callTheServer from "@/functions/callTheServer";
+import { getCookieValue } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -33,6 +33,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   const code = searchParams.get("code");
   const error = searchParams.get("error");
   const onProtectedPage = requireAuthPaths.includes(pathname);
+  const isLoggedInCookie = getCookieValue("MYO_isLoggedIn");
 
   const [status, setStatus] = useState("unknown");
   const [userDetailsState, setUserDetailsState] = useState<UserDataType | null>(null);
@@ -45,34 +46,16 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     });
   }, []);
 
-  const fetchUserDate = useCallback(async () => {
-    if (code) return;
-    if (error) return;
-    if (preventFetchingPaths.includes(pathname)) return;
-
-    try {
-      const response = await callTheServer({
-        endpoint: "getUserData",
-        method: "GET",
-      });
-
-      if (response.status === 200) {
-        if (response.message) {
-          setUserDetails(response.message);
-        }
-        setStatus("authenticated");
-      } else {
-        const rejected = response.status === 401 || response.status === 403;
-
-        if (rejected && onProtectedPage) {
-          router.replace("/");
-          setStatus("unauthenticated");
-        }
-      }
-    } catch (err) {
-      console.log("Error in fetchUserData: ", err);
+  useEffect(() => {
+    if (!status || status === "unknown") return;
+    if (status !== "authenticated" && onProtectedPage) {
+      router.replace("/auth");
     }
-  }, [code, error, pathname]);
+  }, [status]);
+
+  const updateAuthenticationStatus = useCallback((isLoggedInCookie: boolean) => {
+    setStatus(isLoggedInCookie ? "authenticated" : "unauthenticated");
+  }, []);
 
   const handleAuthenticate = useCallback(async (code: string, state: string | null) => {
     try {
@@ -103,6 +86,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
           ...userDetailsState,
           ...response.message,
         };
+        console.log("updatedUserDetails", updatedUserDetails);
         setUserDetails(updatedUserDetails as UserDataType);
         setStatus("authenticated");
 
@@ -127,7 +111,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (userDetailsState) return;
 
     const savedState: UserDataType | null = getFromLocalStorage("userDetails");
-    console.log("savedState",savedState)
+    console.log("savedState", savedState);
     setUserDetailsState(savedState);
   }, [status]);
 
@@ -146,7 +130,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     handleAuthenticate(code, state);
   }, [code]);
 
-  // useSWR(`${status}-${pathname}`, fetchUserDate);
+  useEffect(() => updateAuthenticationStatus(!!isLoggedInCookie), [isLoggedInCookie]);
 
   return (
     <UserContext.Provider

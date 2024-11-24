@@ -1,0 +1,20 @@
+.container {
+  flex: 1;
+}
+
+.previewWrapper {
+  max-height: rem(300);
+  height: 100%;
+}
+
+.box {
+  gap: rem(8);
+  flex: 1;
+}
+
+.tasksPreviewContainer {
+  flex: 1;
+  gap: rem(12);
+  max-height: rem(150);
+  overflow: auto;
+}

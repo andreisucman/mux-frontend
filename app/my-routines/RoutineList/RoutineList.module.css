@@ -1,0 +1,42 @@
+.container {
+  flex: 1;
+  height: 100%;
+}
+
+.content {
+  position: relative;
+  flex: 1;
+}
+
+.serie {
+  white-space: nowrap;
+  font-size: rem(18);
+  font-weight: 600;
+}
+
+.titleGroup {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: rem(12);
+}
+
+.scrollArea {
+  position: absolute;
+  inset: 0;
+}
+
+.listWrapper {
+  height: 100%;
+}
+
+.viewport {
+  & > div:first-child {
+    height: 100%;
+  }
+}
+
+.waitComponentWrapper {
+  flex: 1;
+  border-radius: rem(16);
+  border: rem(1) solid var(--mantine-color-dark-4);
+}

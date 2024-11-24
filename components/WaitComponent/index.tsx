@@ -14,14 +14,16 @@ import classes from "./WaitComponent.module.css";
 
 type Props = {
   operationKey: string;
-  errorRedirectUrl: string;
+  errorRedirectUrl?: string;
   hideDisclaimer?: boolean;
+  description: string;
   onComplete: (args?: any) => void;
   customContainerStyles?: { [key: string]: any };
   customWrapperStyles?: { [key: string]: any };
 };
 
 function WaitComponent({
+  description,
   operationKey,
   errorRedirectUrl,
   hideDisclaimer,
@@ -70,7 +72,9 @@ function WaitComponent({
           clearInterval(intervalId);
           openErrorModal({
             description: response.error,
-            onClose: () => router.push(errorRedirectUrl),
+            onClose: () => {
+              if (errorRedirectUrl) router.push(errorRedirectUrl);
+            },
           });
         }
       } catch (err) {
@@ -96,7 +100,7 @@ function WaitComponent({
     };
   }, [userId, operationKey]);
 
-  const description = !progress ? "Loading..." : `Analyzing your data`;
+  const finalDescription = !progress ? "Loading..." : description;
 
   return (
     <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
@@ -104,7 +108,7 @@ function WaitComponent({
         <Loader type="bars" mb={rem(8)} />
         <Progress className={classes.progress} w="100%" value={progress || 0} animated />
         <Text c="dimmed" size="sm">
-          {description} {progress && <span>({progress}%)</span>}
+          {finalDescription} {progress && <span>({progress}%)</span>}
         </Text>
         {!hideDisclaimer && <Disclaimer />}
       </Stack>
