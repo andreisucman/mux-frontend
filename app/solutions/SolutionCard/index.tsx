@@ -1,0 +1,118 @@
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { IconChevronDown, IconScan } from "@tabler/icons-react";
+import {
+  Button,
+  Collapse,
+  Group,
+  rem,
+  RingProgress,
+  Skeleton,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import ExampleContainer from "@/components/ExampleContainer";
+import ExplanationContainer from "@/components/ExplanationContainer";
+import SuggestionContainer from "@/components/SuggestionContainer";
+import { SolutionCardType } from "../types";
+import classes from "./SolutionCard.module.css";
+
+type Props = { data: SolutionCardType };
+
+export default function SolutionCard({ data }: Props) {
+  const [showSkeleton, setShowSkeleton] = useState(true);
+  const [opened, { toggle: toggleCollapse }] = useDisclosure(true);
+  const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
+
+  const { icon, color, name, instruction, description, example, defaultSuggestions } = data;
+
+  const sections = [
+    {
+      value: 0,
+      color: "gray.3",
+    },
+  ];
+
+  useEffect(() => {
+    const tId = setTimeout(() => {
+      setShowSkeleton(false);
+      clearTimeout(tId);
+    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
+  }, []);
+
+  return (
+    <Skeleton visible={showSkeleton} className="skeleton">
+      <Stack className={classes.container}>
+        <Group className={classes.heading} style={{ backgroundColor: color }}>
+          {icon}
+          <Title order={2} className={classes.solutionName}>
+            {name}
+          </Title>
+        </Group>
+        <Stack className={classes.content}>
+          <Group className={classes.ringWrapper}>
+            <Text>{description}</Text>
+            <RingProgress
+              size={100}
+              thickness={10}
+              mr={rem(8)}
+              label={<Text className={classes.ringProgressLabelText}>0%</Text>}
+              className={classes.ringProgress}
+              classNames={{ label: classes.ringProgressLabel }}
+              sections={sections}
+            />
+          </Group>
+          <Stack className={classes.exampleWrapper}>
+            {example && <ExampleContainer title="Example" example={example} />}
+            <ExplanationContainer
+              title={"Instruction:"}
+              text={instruction}
+              size={"sm"}
+              customStyles={example ? { borderRadius: "0 0 1rem 1rem" } : {}}
+            />
+          </Stack>
+
+          <Stack className={classes.ctaBox}>
+            <Text className={classes.ctaText}>
+              Rate your appearance and get your improvement routine
+            </Text>
+            <Button component={Link} variant="default" href={"/scan"}>
+              <IconScan style={{ marginRight: rem(8) }} />
+              Scan now
+            </Button>
+          </Stack>
+          {defaultSuggestions && defaultSuggestions.length > 0 && (
+            <Stack gap={16}>
+              <Group className={classes.showProductsHeading} onClick={toggleCollapse}>
+                <IconChevronDown
+                  style={
+                    opened
+                      ? {
+                          transform: "rotate(180deg)",
+                        }
+                      : {
+                          transform: "rotate(0deg)",
+                        }
+                  }
+                />
+                <Text size="sm">See recommended products</Text>
+              </Group>
+              <Collapse in={opened}>
+                <SuggestionContainer
+                  items={defaultSuggestions}
+                  footer={"We may get a small comission from qualified purchases"}
+                  customStyles={{ backgroundColor: "transparent", padding: 0 }}
+                  rowStyles={{ marginLeft: 0 }}
+                  selectedAsins={selectedAsins}
+                  setSelectedAsins={setSelectedAsins}
+                />
+              </Collapse>
+            </Stack>
+          )}
+        </Stack>
+      </Stack>
+    </Skeleton>
+  );
+}

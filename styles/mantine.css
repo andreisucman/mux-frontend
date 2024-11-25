@@ -37,3 +37,5 @@
 @import "@mantine/core/styles/Divider.layer.css";
 @import "@mantine/core/styles/SimpleGrid.layer.css";
 @import "@mantine/core/styles/Tooltip.layer.css";
+@import "@mantine/core/styles/Rating.layer.css";
+@import "@mantine/core/styles/Pill.layer.css";

@@ -1,13 +1,13 @@
 "use client";
 
-import useSWR from "swr";
-import { useElementSize } from "@mantine/hooks";
-import { useSearchParams } from "next/navigation";
 import React, { useCallback, useContext, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconShoppingBag } from "@tabler/icons-react";
+import useSWR from "swr";
 import { Button, Loader, rem, Stack } from "@mantine/core";
+import { useElementSize } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithType from "@/components/PageHeaderWithType";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { addToAmazonCart } from "@/helpers/addToAmazonCart";
@@ -52,7 +52,7 @@ export default function Products() {
 
   return (
     <Stack className={classes.container} ref={ref}>
-      <PageHeaderWithType title="Products for tasks" showReturn />
+      <PageHeader title="Products for tasks" showReturn />
 
       {uniqueTasks ? (
         <>
@@ -81,7 +81,7 @@ export default function Products() {
           )}
         </>
       ) : (
-        <Loader m="auto" size={32} />
+        <Loader m="auto" />
       )}
       {selectedAsins.length > 0 && (
         <Button

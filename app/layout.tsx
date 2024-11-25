@@ -2,6 +2,7 @@ import "@/styles/mantine.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/nprogress/styles.css";
+import "@mantine/spotlight/styles.css";
 import "@/styles/global.css";
 
 import React, { Suspense } from "react";
@@ -10,7 +11,6 @@ import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core
 import { ModalsProvider } from "@mantine/modals";
 import { NavigationProgress } from "@mantine/nprogress";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
-import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import Header from "@/components/Header";
 import UserContextProvider from "@/context/UserContext";
 import { HandleOnComplete } from "@/helpers/custom-router";

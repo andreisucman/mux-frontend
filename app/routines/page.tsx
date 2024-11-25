@@ -3,7 +3,7 @@
 import React, { useCallback, useContext } from "react";
 import { useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
-import PageHeaderWithType from "@/components/PageHeaderWithType";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
@@ -91,7 +91,7 @@ export default function MyRoutines() {
 
   return (
     <Stack flex={1}>
-      <PageHeaderWithType title="My routines" />
+      <PageHeader title="My routines" />
       <ConsiderationsInput
         placeholder={"Special considerations"}
         defaultValue={specialConsiderations || ""}

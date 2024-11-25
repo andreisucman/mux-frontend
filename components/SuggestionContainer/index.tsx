@@ -232,11 +232,7 @@ export default function SuggestionContainer({
             ))}
           </Group>
         </Group>
-        {footer && (
-          <Text c="dimmed" className={classes.footer}>
-            {footer}
-          </Text>
-        )}
+        {footer && <Text className={classes.footer}>{footer}</Text>}
       </Skeleton>
     </Stack>
   );

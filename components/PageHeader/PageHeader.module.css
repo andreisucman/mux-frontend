@@ -1,0 +1,28 @@
+.container {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  flex: 1;
+  align-items: center;
+}
+
+.right {
+  flex: 1;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    max-width: unset;
+  }
+}
+
+.searchGroup {
+  justify-content: flex-end;
+  gap: rem(8);
+}
+
+.pill {
+  background-color: var(--mantine-color-dark-6);
+}

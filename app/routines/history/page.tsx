@@ -7,7 +7,7 @@ import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithType from "@/components/PageHeaderWithType";
+import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -78,7 +78,7 @@ export default function HistoryPage() {
 
   return (
     <Stack className={classes.container}>
-      <PageHeaderWithType title="Tasks history" onSelect={() => setCompletedTasks([])} showReturn />
+      <PageHeader title="Tasks history" onSelect={() => setCompletedTasks([])} showReturn />
       <Stack className={classes.content}>
         {completedTasks ? (
           <>
@@ -113,7 +113,7 @@ export default function HistoryPage() {
             )}
           </>
         ) : (
-          <Loader size={32} m="auto" />
+          <Loader m="auto" />
         )}
       </Stack>
     </Stack>

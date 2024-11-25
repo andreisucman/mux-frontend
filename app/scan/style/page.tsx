@@ -126,7 +126,7 @@ export default function UploadStyle() {
         />
       ) : (
         <Stack className={classes.loaderWrapper}>
-          <Loader type="oval" size={32} />
+          <Loader type="oval" />
         </Stack>
       )}
     </Stack>

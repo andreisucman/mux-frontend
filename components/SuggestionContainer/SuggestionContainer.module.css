@@ -42,7 +42,7 @@
 }
 
 .footer {
-  size: var(--mantine-font-size-sm);
+  font-size: var(--mantine-font-size-xs);
   text-align: center;
   margin-top: rem(8);
 }

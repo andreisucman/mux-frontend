@@ -14,7 +14,7 @@ import cn from "classnames";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithType from "@/components/PageHeaderWithType";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
@@ -342,7 +342,7 @@ export default function Calendar() {
 
   return (
     <Stack flex={1}>
-      <PageHeaderWithType title="Tasks calendar" isDisabled={mode === "individual"} showReturn />
+      <PageHeader title="Tasks calendar" isDisabled={mode === "individual"} showReturn />
       <DatePicker
         level="month"
         m="auto"

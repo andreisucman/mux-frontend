@@ -26,6 +26,17 @@ export default withBundleAnalyzer({
         pathname: "**",
         protocol: "https",
         port: "",
+      },  {
+        hostname: "myo.nyc3.cdn.digitaloceanspaces.com",
+        pathname: "**",
+        protocol: "https",
+        port: "",
+      },
+      {
+        hostname: "*.media-amazon.com",
+        pathname: "**",
+        protocol: "https",
+        port: "",
       },
     ],
   },
