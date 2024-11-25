@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { defaultUser } from "@/data/defaultUser";
-import { requireAuthPaths } from "@/data/paths";
+import { protectedPaths } from "./protectedPaths";
 import callTheServer from "@/functions/callTheServer";
 import { getCookieValue } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
@@ -32,7 +32,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   const code = searchParams.get("code");
   const error = searchParams.get("error");
-  const onProtectedPage = requireAuthPaths.includes(pathname);
+  const onProtectedPage = protectedPaths.includes(pathname);
   const isLoggedInCookie = getCookieValue("MYO_isLoggedIn");
 
   const [status, setStatus] = useState("unknown");
@@ -91,9 +91,9 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
         setStatus("authenticated");
 
         if (redirectTo) {
-          router.replace(`/a/club/about/routine?trackedUserId=${trackedUserId}`);
+          router.replace(`/club/routines?trackedUserId=${trackedUserId}`);
         } else {
-          router.replace("/a/routine");
+          router.replace("/routines");
         }
       } else {
         const rejected = response.status === 401 || response.status === 403;

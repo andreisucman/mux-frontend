@@ -22,7 +22,7 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
         <Button
           variant="default"
           component={Link}
-          href={`/a/sort-concerns?type=${type}`}
+          href={`/sort-concerns?type=${type}`}
           onClick={() => modals.closeAll()}
         >
           <IconStack2 className="icon" style={{ marginRight: rem(8) }} /> All

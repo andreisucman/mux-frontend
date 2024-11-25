@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconCirclePlus, IconSquareCheck } from "@tabler/icons-react";
-import { rem, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -38,7 +38,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     checkSubscriptionActivity(["improvement", "peek"], subscriptions) || {};
 
   const refetchUserData = useCallback(async () => {
-    const userData = await fetchUserData(pathname);
+    const userData = await fetchUserData();
     setUserDetails(userData);
   }, [pathname]);
 
@@ -46,7 +46,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
       redirectPath: `/sort-concerns?type=${type}`,
-      cancelPath: `/my-routines?type=${type}`,
+      cancelPath: `/routines?type=${type}`,
       setUserDetails,
     });
   }

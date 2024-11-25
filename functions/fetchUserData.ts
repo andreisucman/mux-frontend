@@ -1,9 +1,6 @@
-import { preventFetchingPaths } from "@/data/paths";
 import callTheServer from "./callTheServer";
 
-const fetchUserData = async (pathname: string) => {
-  if (preventFetchingPaths.includes(pathname)) return;
-
+const fetchUserData = async () => {
   try {
     const response = await callTheServer({
       endpoint: "getUserData",

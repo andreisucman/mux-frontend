@@ -12,7 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import classes from "./Header.module.css";
 
-const hideStartButtonRoutes = ["/scan", "/review", "/accept", "/wait", "/analysis", "/auth"];
+const hideStartButtonRoutes = ["/scan", "/accept", "/wait", "/analysis", "/auth"];
 
 function Header() {
   const router = useRouter();

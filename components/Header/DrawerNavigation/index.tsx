@@ -57,22 +57,22 @@ const defaultNavigation = [
 const defaultAuthenticatedNavigation = [
   {
     title: "My routines",
-    path: "/my-routines",
+    path: "/routines",
     icon: <IconRotateDot stroke={1.25} className="icon" />,
     children: [
-      { title: "Current", path: "/my-routines" },
-      { title: "History", path: "/my-routines/history" },
+      { title: "Current", path: "/routines" },
+      { title: "History", path: "/routines/history" },
     ],
   },
   {
     title: "My results",
     icon: <IconTargetArrow stroke={1.25} className="icon" />,
-    path: "/my-results",
+    path: "/progress",
     children: [
-      { title: "Progress", path: "/my-results" },
-      { title: "Style", path: "/my-results/style" },
-      { title: "Uploads", path: "my-results/uploads" },
-      { title: "Analysis", path: "my-results/analysis" },
+      { title: "Progress", path: "/progress" },
+      { title: "Style", path: "/style" },
+      { title: "Uploads", path: "/proof" },
+      { title: "Analysis", path: "/analysis" },
     ],
   },
 ];

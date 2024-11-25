@@ -38,7 +38,7 @@ function ConcernsCard({ concerns, type, title }: Props) {
           <GlowingButton
             text="Create routine free"
             icon={<IconRotateDot className="icon" />}
-            onClick={() => signIn({ router, state: { redirectTo: "/my-routines" } })}
+            onClick={() => signIn({ router, state: { redirectTo: "/routines" } })}
             containerStyles={{ flex: 0 }}
           />
         </Stack>

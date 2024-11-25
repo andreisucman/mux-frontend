@@ -11,7 +11,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import CompletedRoutineRow from "../my-routines/RoutineList/RoutineRow/CompletedRoutineRow";
+import CompletedRoutineRow from "../RoutineList/RoutineRow/CompletedRoutineRow";
 import { CompletedTaskType } from "./type";
 import classes from "./history.module.css";
 
@@ -95,7 +95,7 @@ export default function HistoryPage() {
         />
       </Group>
       <Stack className={classes.content}>
-        {completedTasks && (
+        {completedTasks ? (
           <>
             {completedTasks.length > 0 ? (
               <InfiniteScroll
@@ -127,6 +127,8 @@ export default function HistoryPage() {
               />
             )}
           </>
+        ) : (
+          <Loader size={32} m="auto" />
         )}
       </Stack>
     </Stack>

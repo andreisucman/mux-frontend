@@ -59,10 +59,8 @@ export default function StartPartialScanOverlay({
           setIsButtonLoading(false);
           return;
         }
-        const query = modifyQuery({
-          params: [{ name: "job", value: "analysis", action: "replace" }],
-        });
-        router.push(`/u/wait?${query}`);
+        const redirectTo = encodeURIComponent(`/analysis?${location.search}`);
+        router.push(`/wait?next=${redirectTo}`);
       }
     } catch (err) {
       console.log("Error in handleStartAnalysis: ", err);

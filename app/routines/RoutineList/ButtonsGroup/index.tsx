@@ -39,12 +39,13 @@ export default function ButtonsGroup({
       <Button
         className={classes.button}
         disabled={disableSuggestions}
+        variant="default"
         size="xs"
         onClick={() => {
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/a/suggestions?${query}`);
+          router.push(`/products?${query}`);
         }}
       >
         <IconShoppingBag style={{ width: rem(20) }} />

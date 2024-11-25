@@ -1,0 +1,18 @@
+export const protectedPaths = [
+  "/chat",
+  "/advisor",
+  "/progress",
+  "/styles",
+  "/routines",
+  "/routines/history",
+  "/products",
+  "/calendar",
+  "/explain",
+  "/uploads",
+  "/upload-proof",
+  "/sort-concerns",
+  "/considerations",
+  "/club",
+  "/club/join",
+  "/club/registraion",
+];

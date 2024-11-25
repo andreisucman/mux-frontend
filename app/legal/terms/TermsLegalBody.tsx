@@ -862,7 +862,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             You have the right to request the deletion of your account and all associated personal
             data, including sensitive images and videos at any time. You can do this directly within
             your account settings by clicking on the cog icon in the top right corner of the screen
-            when logged into the platform at www.maxyouout.com/a. Alternatively, you can request
+            when logged into the platform at www.maxyouout.com. Alternatively, you can request
             account deletion by contacting us at info@maxyouout.com.
           </Text>
           <Text>

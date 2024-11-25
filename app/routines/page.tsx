@@ -10,7 +10,7 @@ import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 import { ConsiderationsInput } from "./ConsiderationsInput";
 import RoutineList from "./RoutineList";
-import classes from "./my-routines.module.css";
+import classes from "./routines.module.css";
 
 export const runtime = "edge";
 
