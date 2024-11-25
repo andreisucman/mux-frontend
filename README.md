@@ -8,8 +8,8 @@
 /styles, // p
 /routines, // p
 /routines/history, // p
-/products, // p
-/calendar, // p
+/routeines/calendar, // p
+/routines/products, // p
 /explain, // p
 /proof, // p
 /proof/upload, // p

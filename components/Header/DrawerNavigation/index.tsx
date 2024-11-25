@@ -61,7 +61,9 @@ const defaultAuthenticatedNavigation = [
     icon: <IconRotateDot stroke={1.25} className="icon" />,
     children: [
       { title: "Current", path: "/routines" },
+      { title: "Calendar", path: "/routines/calendar" },
       { title: "History", path: "/routines/history" },
+      { title: "Products", path: "/routines/products" },
     ],
   },
   {

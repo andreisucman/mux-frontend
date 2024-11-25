@@ -159,6 +159,36 @@ export type StreaksType = {
   clubHealthStreak: number;
 };
 
+export type RoutineType = {
+  _id: string;
+  userId: string;
+  type: string;
+  concerns: UserConcernType[];
+  finalSchedule: { [key: string]: any };
+  status: RoutineStatusEnum;
+  createdAt: string;
+  allTasks: AllTaskType[];
+};
+
+export type AllTaskType = {
+  name: string;
+  description: string;
+  instruction: string;
+  key: string;
+  icon: string;
+  color: string;
+  total: number;
+  completed: number;
+  unknown: number;
+  concern: string;
+};
+
+export enum RoutineStatusEnum {
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+  REPLACED = "replaced",
+}
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email: string | null;
@@ -189,6 +219,7 @@ export interface UserDataType extends DefaultUserType {
   currentlyHigherThan: HigherThanType;
   potentiallyHigherThan: HigherThanType;
   tasks: TaskType[];
+  routines: RoutineType[];
 }
 
 export type SubscriptionType = {

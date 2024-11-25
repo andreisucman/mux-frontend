@@ -2,14 +2,16 @@
 
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import useSWR from "swr";
 import { defaultUser } from "@/data/defaultUser";
-import { protectedPaths } from "./protectedPaths";
 import callTheServer from "@/functions/callTheServer";
+import fetchUserData from "@/functions/fetchUserData";
 import { getCookieValue } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
+import { protectedPaths } from "./protectedPaths";
 import { UserContextProviderProps, UserContextType } from "./types";
 
 const defaultSetUser = () => {};
@@ -131,6 +133,8 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, [code]);
 
   useEffect(() => updateAuthenticationStatus(!!isLoggedInCookie), [isLoggedInCookie]);
+
+  useSWR(status, fetchUserData);
 
   return (
     <UserContext.Provider

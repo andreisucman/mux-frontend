@@ -1,0 +1,29 @@
+.container {
+  cursor: pointer;
+  overflow: hidden;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-radius: var(--mantine-radius-lg);
+  width: 100%;
+  height: rem(50);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  background-color: var(--mantine-color-dark-6);
+  padding: 0 rem(8);
+
+  &:hover {
+    background-color: var(--mantine-color-dark-5);
+  }
+}
+
+.name {
+  cursor: pointer;
+}
+
+.date {
+  white-space: nowrap;
+}
+
+.button {
+  padding: rem(6);
+  margin-left: auto;
+}

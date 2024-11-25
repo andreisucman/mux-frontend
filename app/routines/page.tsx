@@ -2,23 +2,15 @@
 
 import React, { useCallback, useContext } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconHeart, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Group, Stack, Title } from "@mantine/core";
-import FilterDropdown from "@/components/FilterDropdown";
+import { Stack } from "@mantine/core";
+import PageHeaderWithType from "@/components/PageHeaderWithType";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 import { ConsiderationsInput } from "./ConsiderationsInput";
 import RoutineList from "./RoutineList";
-import classes from "./routines.module.css";
 
 export const runtime = "edge";
-
-const filterData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
-  { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
-];
 
 export default function MyRoutines() {
   const searchParams = useSearchParams();
@@ -98,21 +90,13 @@ export default function MyRoutines() {
           : undefined;
 
   return (
-    <Stack className={classes.container}>
-      <Group className={classes.header}>
-        <Title order={1}>My routines</Title>
-        <FilterDropdown
-          data={filterData}
-          filterType="type"
-          defaultSelected={filterData.find((item) => item.value === type)}
-          addToQuery
-        />
-      </Group>
+    <Stack flex={1}>
+      <PageHeaderWithType title="My routines" />
       <ConsiderationsInput
         placeholder={"Special considerations"}
         defaultValue={specialConsiderations || ""}
-        maxLength={300}
         saveValue={updateSpecialConsiderations}
+        maxLength={300}
       />
       <RoutineList serie={streak} type={type as string} />
     </Stack>

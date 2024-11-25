@@ -1,61 +1,68 @@
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown } from "@tabler/icons-react";
 import { Group, Menu, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import modifyQuery from "@/helpers/modifyQuery";
+import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
-
-type ItemType = {
-  label: string;
-  icon: React.ReactNode;
-  value: string;
-};
 
 type Props = {
   filterType: string;
+  isDisabled?: boolean;
   addToQuery?: boolean;
-  data: ItemType[];
-  defaultSelected?: ItemType;
-  onSelectCallback?: (item: ItemType) => void;
+  data: FilterItemType[];
+  defaultSelected?: FilterItemType;
+  onSelect?: (item?: FilterItemType) => void;
 };
 
 export default function FilterDropdown({
   data,
+  isDisabled,
   addToQuery,
   filterType,
   defaultSelected,
-  onSelectCallback,
+  onSelect,
 }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
   const [opened, { open, close }] = useDisclosure(false);
   const [selected, setSelected] = useState(defaultSelected || data[0]);
 
-  function handleSelect(item: ItemType) {
-    if (addToQuery) {
-      const newQuery = modifyQuery({
-        params: [{ name: filterType, value: item.value, action: "replace" }],
-      });
+  const handleSelect = useCallback(
+    (item: FilterItemType) => {
+      if (!location) return;
 
-      router.replace(`${location.origin}/${location.pathname}?${newQuery}`);
-    }
+      if (addToQuery) {
+        const newQuery = modifyQuery({
+          params: [{ name: filterType, value: item.value, action: "replace" }],
+        });
 
-    setSelected(item);
+        router.replace(`${pathname}?${newQuery}`);
+      }
 
-    if (onSelectCallback) onSelectCallback(item);
-  }
+      setSelected(item);
 
-  const items = data.map((item) => (
-    <Menu.Item
-      leftSection={<span>{item.icon}</span>}
-      onClick={() => {
-        handleSelect(item);
-      }}
-      key={item.value}
-    >
-      {item.label}
-    </Menu.Item>
-  ));
+      if (onSelect) onSelect(item);
+    },
+    [pathname, addToQuery]
+  );
+
+  const items = useMemo(
+    () =>
+      data.map((item) => (
+        <Menu.Item
+          leftSection={<span>{item.icon}</span>}
+          onClick={() => {
+            handleSelect(item);
+          }}
+          key={item.value}
+        >
+          {item.label}
+        </Menu.Item>
+      )),
+    [data.length]
+  );
 
   return (
     <Menu
@@ -64,6 +71,7 @@ export default function FilterDropdown({
       radius="md"
       width="target"
       withinPortal
+      disabled={isDisabled}
       classNames={{ itemSection: classes.itemSection }}
     >
       <Menu.Target>

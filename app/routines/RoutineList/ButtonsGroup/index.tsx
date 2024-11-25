@@ -59,7 +59,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/calendar?${query}`);
+          router.push(`/routines/calendar?${query}`);
         }}
       >
         <IconCalendar style={{ width: rem(20) }} />
@@ -73,7 +73,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/history?${query}`);
+          router.push(`/routines/history?${query}`);
         }}
       >
         <IconHistory style={{ width: rem(20) }} />

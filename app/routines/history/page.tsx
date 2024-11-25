@@ -2,24 +2,18 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IconCircleOff, IconHeart, IconMan, IconMoodSmile } from "@tabler/icons-react";
+import { IconCircleOff } from "@tabler/icons-react";
 import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
-import { Group, Loader, rem, Stack, Title } from "@mantine/core";
-import FilterDropdown from "@/components/FilterDropdown";
+import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeaderWithType from "@/components/PageHeaderWithType";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import CompletedRoutineRow from "../RoutineList/RoutineRow/CompletedRoutineRow";
 import { CompletedTaskType } from "./type";
 import classes from "./history.module.css";
-
-const filterData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
-  { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
-];
 
 export default function HistoryPage() {
   const router = useRouter();
@@ -84,16 +78,7 @@ export default function HistoryPage() {
 
   return (
     <Stack className={classes.container}>
-      <Group className={classes.header}>
-        <Title order={1}>Tasks history</Title>
-        <FilterDropdown
-          data={filterData}
-          filterType="type"
-          defaultSelected={filterData.find((item) => item.value === type)}
-          onSelectCallback={() => setCompletedTasks([])}
-          addToQuery
-        />
-      </Group>
+      <PageHeaderWithType title="Tasks history" onSelect={() => setCompletedTasks([])} showReturn />
       <Stack className={classes.content}>
         {completedTasks ? (
           <>

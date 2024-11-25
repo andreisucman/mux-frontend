@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import { IconArrowLeft, IconArrowRight, IconBulb } from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconBulb, IconSquareCheck } from "@tabler/icons-react";
 import { Button, Group, Loader, rem, Stack, Text } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
@@ -26,7 +26,10 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
   const [date, setDate] = useState<Date | null>(new Date());
   const [step, setStep] = useState(1);
 
+  const { timeZone } = userDetails || {};
+
   async function handleCreateTask() {
+    if (!timeZone) return;
     if (isLoading) return;
 
     try {
@@ -36,7 +39,7 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
       const response = await callTheServer({
         endpoint: "createTaskFromDescription",
         method: "POST",
-        body: { description, type, timeZone: userDetails?.timeZone },
+        body: { description, type, timeZone },
       });
 
       if (response.status === 200) {
@@ -115,7 +118,7 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
           <Group className={classes.buttonsGroup}>
             {step === 2 && rawTask && (
               <Button variant="default" className={classes.button} onClick={() => setStep(1)}>
-                <IconArrowLeft style={{ marginRight: rem(4) }} /> Return
+                <IconArrowLeft style={{ marginRight: rem(8) }} /> Return
               </Button>
             )}
             {step === 1 && (
@@ -137,12 +140,12 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
                 }
                 className={classes.button}
               >
-                ✅ Save task
+                <IconSquareCheck className="icon" style={{ marginRight: rem(8) }} /> Save task
               </Button>
             )}
             {step === 1 && rawTask && (
               <Button variant="default" className={classes.button} onClick={() => setStep(2)}>
-                Next <IconArrowRight style={{ marginLeft: rem(4) }} />
+                Next <IconArrowRight className="icon" style={{ marginLeft: rem(8) }} />
               </Button>
             )}
           </Group>
