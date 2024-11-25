@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Container, Group, Title } from "@mantine/core";
+import { Button, Group, Stack, Title } from "@mantine/core";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import classes from "./not-found.module.css";
 
@@ -30,7 +30,7 @@ export default function NotFoundPage() {
   };
 
   return (
-    <Container className={classes.root}>
+    <Stack className={classes.container}>
       <div className={classes.inner}>
         <Illustration className={classes.image} />
         <div className={classes.content}>
@@ -44,6 +44,6 @@ export default function NotFoundPage() {
           </Group>
         </div>
       </div>
-    </Container>
+    </Stack>
   );
 }

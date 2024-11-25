@@ -1,6 +1,7 @@
+import { UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
-const fetchUserData = async () => {
+const fetchUserData = async (): Promise<UserDataType | undefined> => {
   try {
     const response = await callTheServer({
       endpoint: "getUserData",

@@ -5,14 +5,14 @@ import { Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import PricingCard from "@/app/plans/PricingCard";
 import {
+  advisorCoachContent,
   analystCoachContent,
-  guruCoachContent,
   improvementCoachContent,
   peekLicenseContent,
 } from "@/app/plans/pricingData";
 
 type Props = {
-  modalType: "improvement" | "guru" | "analyst" | "peek";
+  modalType: "improvement" | "advisor" | "analyst" | "peek";
   title: string;
   name?: string;
   price?: string;
@@ -45,8 +45,8 @@ export default function openSubscriptionModal({
   const content =
     modalType === "improvement"
       ? improvementCoachContent
-      : modalType === "guru"
-        ? guruCoachContent
+      : modalType === "advisor"
+        ? advisorCoachContent
         : modalType === "peek"
           ? peekLicenseContent
           : analystCoachContent;

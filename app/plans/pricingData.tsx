@@ -92,7 +92,7 @@ export const analystCoachContent = [
   },
 ];
 
-export const guruCoachContent = [
+export const advisorCoachContent = [
   {
     icon: <IconMessage2 className="icon icon__large" />,
     description: "Answers your questions about progress, tasks, and more.",

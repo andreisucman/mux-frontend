@@ -16,7 +16,11 @@ type Props = {
 
 const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
   ssr: false,
-  loading: () => <Loader m="auto" />, // Optional loading state
+  loading: () => (
+    <Stack mih={78} align="center">
+      <Loader m="auto" />
+    </Stack>
+  ),
 });
 
 export default function TextareaComponent({

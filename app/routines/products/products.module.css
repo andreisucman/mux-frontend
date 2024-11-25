@@ -1,0 +1,14 @@
+.container {
+  flex: 1;
+}
+
+.content {
+  position: relative;
+  flex: 1;
+}
+
+.list {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}

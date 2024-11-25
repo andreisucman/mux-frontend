@@ -1,0 +1,30 @@
+.image {
+  width: 100%;
+  max-height: rem(250);
+  min-height: rem(250);
+  object-fit: contain;
+  display: flex;
+}
+
+.imageWrapper {
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-raidus-lg);
+}
+
+.titleGroup {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}
+
+.icon {
+  margin-right: rem(8);
+}
+
+.button {
+  flex: 1;
+}
+
+.ratingWrapper {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}

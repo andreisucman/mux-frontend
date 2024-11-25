@@ -2,7 +2,7 @@ import { modals } from "@mantine/modals";
 import callTheServer from "./callTheServer";
 
 type Props = {
-  subscriptionName: "improvement" | "guru" | "analyst" | "peek";
+  subscriptionName: "improvement" | "advisor" | "analyst" | "peek";
   cb?: (...args: any) => void;
 };
 

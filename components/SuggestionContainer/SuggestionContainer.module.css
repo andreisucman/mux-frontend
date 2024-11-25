@@ -1,0 +1,48 @@
+.container {
+  position: relative;
+
+  gap: rem(8);
+  padding: rem(16) 0;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+}
+
+.titleGroup {
+  justify-content: space-between;
+  margin-bottom: rem(8);
+  padding: 0 rem(16);
+}
+
+.title {
+  font-size: var(--mantine-font-size-sm);
+}
+
+.wrapper {
+  overflow: auto;
+  flex-wrap: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.suggestionRow {
+  display: "grid";
+  grid-template-columns: repeat(auto-fill, minmax(1fr, rem(120)));
+  gap: rem(12);
+  flex-wrap: nowrap;
+
+  &:first-child {
+    margin-left: rem(16);
+  }
+
+  &:last-child {
+    margin-right: rem(16);
+  }
+}
+
+.footer {
+  size: var(--mantine-font-size-sm);
+  text-align: center;
+  margin-top: rem(8);
+}

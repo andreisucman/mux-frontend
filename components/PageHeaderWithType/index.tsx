@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { useSearchParams } from "next/navigation";
 import { IconChevronLeft, IconHeart, IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";

@@ -1,27 +1,27 @@
-.root {
-  transform: translateY(40%);
-  padding-bottom: rem(80);
+.container {
+  justify-content: center;
+  flex: 1;
 }
 
 .inner {
   position: relative;
+  transform: translateY(-100%);
 }
 
 .image {
   position: absolute;
-  inset: 0;
+  top: -75%;
   opacity: 0.75;
   color: var(--mantine-color-dark-6);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    top: -35%;
+  }
 }
 
 .content {
-  padding-top: rem(120);
   position: relative;
   z-index: 1;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    padding-top: rem(120);
-  }
 }
 
 .title {

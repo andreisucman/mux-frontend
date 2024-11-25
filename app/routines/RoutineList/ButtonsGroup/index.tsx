@@ -45,7 +45,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/products?${query}`);
+          router.push(`/routines/products?${query}`);
         }}
       >
         <IconShoppingBag style={{ width: rem(20) }} />

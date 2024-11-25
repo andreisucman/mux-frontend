@@ -231,7 +231,7 @@ export type SubscriptionType = {
 export type UserSubscriptionsType = {
   improvement: SubscriptionType;
   peek: SubscriptionType;
-  guru: SubscriptionType;
+  advisor: SubscriptionType;
   analyst: SubscriptionType;
 };
 
