@@ -28,14 +28,16 @@ export default function AuthPage() {
   }
   return (
     <Stack className={classes.container}>
-      <Stack className={classes.content}>
-        <Title className={classes.title} order={1}>
-          Sign in to continue
-        </Title>
-        <Button onClick={onSocialSignUpClick} className={classes.button} variant="default">
-          <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
-          Sign in
-        </Button>
+      <Stack className={classes.wrapper}>
+        <Stack className={classes.content}>
+          <Title className={classes.title} order={1}>
+            Sign in to continue
+          </Title>
+          <Button onClick={onSocialSignUpClick} className={classes.button} variant="default">
+            <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
+            Sign in
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
   );

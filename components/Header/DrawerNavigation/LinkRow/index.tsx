@@ -12,6 +12,7 @@ export type NavigationLinkType = {
 };
 
 type Props = {
+  isSmall?: boolean;
   linkClicked: string;
   link: NavigationLinkType;
   handleClickLink: (path: string) => void;

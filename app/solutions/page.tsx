@@ -155,7 +155,6 @@ export default function Solutions() {
         <PageHeader
           title="Solutions"
           onSearchClick={() => solutionsSpotlight.open()}
-          showReturn
           hideDropdown
         />
         {solutions ? (
@@ -164,7 +163,7 @@ export default function Solutions() {
               <InfiniteScroll
                 loader={
                   <Stack mb={rem(16)} key={0}>
-                    <Loader type="oval" m="auto" />
+                    <Loader m="auto" />
                   </Stack>
                 }
                 loadMore={() => fetchSolutions({ skip: hasMore, query, solutions })}

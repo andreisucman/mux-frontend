@@ -375,3 +375,14 @@ export type TaskType = {
   example: { type: string; url: string };
   defaultSuggestions: SuggestionType[];
 };
+
+export type LatestScoresType = {
+  head: {
+    overall: number;
+    face: number;
+    mouth: number;
+    scalp: number;
+  } | null;
+  body: { overall: number; body: number } | null;
+  health: { overall: number; health: number } | null;
+};

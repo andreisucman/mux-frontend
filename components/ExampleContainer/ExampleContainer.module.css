@@ -1,6 +1,6 @@
 .container {
   gap: 0;
-  background-color: var(--mantine-color-dark-5);
+  background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
@@ -12,8 +12,8 @@
 }
 
 .title {
-  padding: rem(12) rem(16);
-  font-size: var(--mantine-font-size-sm);
+  padding: rem(12) rem(16) rem(8);
+  font-size: var(--mantine-font-size-xs);
 }
 
 .exampleImage,

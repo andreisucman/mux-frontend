@@ -1,0 +1,16 @@
+.container {
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+}
+
+.rating {
+  font-size: rem(16);
+  margin: auto;
+}
+
+.text {
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
+  background-color: var(--mantine-color-dark-6);
+}

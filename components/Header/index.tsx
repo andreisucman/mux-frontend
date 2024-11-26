@@ -18,7 +18,7 @@ function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
-  const { status } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
 
   const hideStartButton = useMemo(
     () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),

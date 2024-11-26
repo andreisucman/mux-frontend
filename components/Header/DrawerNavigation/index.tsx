@@ -7,11 +7,11 @@ import {
   IconRotateDot,
   IconScan,
   IconSettings,
+  IconSocial,
   IconStar,
   IconTarget,
   IconTargetArrow,
   IconTrophy,
-  IconSocial,
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
@@ -83,17 +83,17 @@ const legalLinks = [
   {
     title: "Terms of Service",
     path: "/legal/terms",
-    icon: <IconLicense stroke={1.25} className="icon" />,
+    icon: <IconLicense stroke={1.25} className="icon icon__small" />,
   },
   {
     title: "Privacy Policy",
     path: "/legal/privacy",
-    icon: <IconLicense stroke={1.25} className="icon" />,
+    icon: <IconLicense stroke={1.25} className="icon icon__small" />,
   },
   {
     title: "Club Agreement",
     path: "/legal/club",
-    icon: <IconLicense stroke={1.25} className="icon" />,
+    icon: <IconLicense stroke={1.25} className="icon icon__small" />,
   },
 ];
 
@@ -170,15 +170,24 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
   return (
     <Stack className={classes.container}>
       <Divider />
-      {defaultNavigation.map((link, index) => (
-        <LinkRow
-          key={index}
-          link={link}
-          linkClicked={linkClicked}
-          handleClickLink={handleClickLink}
-          closeDrawer={closeDrawer}
-        />
-      ))}
+      <>
+        {defaultNavigation.map((link, index) => (
+          <LinkRow
+            key={index}
+            link={link}
+            linkClicked={linkClicked}
+            handleClickLink={handleClickLink}
+            closeDrawer={closeDrawer}
+          />
+        ))}
+        {status !== "authenticated" && (
+          <UnstyledButton className={classes.signInButton} onClick={handleClickSignIn}>
+            <IconDoorEnter className="icon" stroke={1.25} />
+            Sign in
+          </UnstyledButton>
+        )}
+      </>
+
       {status === "authenticated" && (
         <>
           <Divider />
@@ -191,21 +200,15 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
               closeDrawer={closeDrawer}
             />
           ))}
+          {status === "authenticated" && (
+            <UnstyledButton className={classes.signOutButton} onClick={handleSignOut}>
+              <IconDoorExit className="icon" stroke={1.25} />
+              Sign out
+            </UnstyledButton>
+          )}
         </>
       )}
       <Stack className={classes.footer}>
-        {status === "authenticated" && (
-          <UnstyledButton className={classes.signOutButton} onClick={handleSignOut}>
-            <IconDoorExit className="icon" stroke={1.25} />
-            Sign out
-          </UnstyledButton>
-        )}
-        {status !== "authenticated" && (
-          <UnstyledButton className={classes.signInButton} onClick={handleClickSignIn}>
-            <IconDoorEnter className="icon" stroke={1.25} />
-            Sign in
-          </UnstyledButton>
-        )}
         {legalLinks.map((link, index) => (
           <LinkRow
             key={index}
@@ -213,6 +216,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
             linkClicked={linkClicked}
             handleClickLink={handleClickLink}
             closeDrawer={closeDrawer}
+            isSmall
           />
         ))}
         <Text className={classes.copyright}>&copy; {year} Max You Out. All rights reserved</Text>

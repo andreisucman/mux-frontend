@@ -1,0 +1,15 @@
+.container {
+  align-items: center;
+  gap: 0;
+}
+
+.labelText {
+  font-weight: 600;
+  text-align: center;
+  font-size: var(--mantine-font-size-xs);
+}
+
+.label {
+  display: flex;
+  justify-content: center;
+}
