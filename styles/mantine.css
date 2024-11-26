@@ -39,3 +39,6 @@
 @import "@mantine/core/styles/Tooltip.layer.css";
 @import "@mantine/core/styles/Rating.layer.css";
 @import "@mantine/core/styles/Pill.layer.css";
+@import "@mantine/core/styles/FloatingIndicator.layer.css";
+@import "@mantine/core/styles/SegmentedControl.layer.css";
+@import '@mantine/core/styles/Indicator.layer.css';

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
+import { Button, Group, rem, SegmentedControl, Skeleton, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -25,8 +25,22 @@ type Props = {
 const RECORDING_TIME = 15000;
 
 const segments = [
-  { value: "image", label: "📸 Photo" },
-  { value: "video", label: "🎥 Video" },
+  {
+    value: "image",
+    label: (
+      <span className={classes.indicatorLabel}>
+        <IconCamera className="icon" style={{ marginRight: rem(8) }} /> Photo
+      </span>
+    ),
+  },
+  {
+    value: "video",
+    label: (
+      <span className={classes.indicatorLabel}>
+        <IconVideo className="icon" style={{ marginRight: rem(8) }} /> Video
+      </span>
+    ),
+  },
 ];
 
 export default function VideoRecorder({ sex, instruction, uploadProof }: Props) {
@@ -428,8 +442,8 @@ export default function VideoRecorder({ sex, instruction, uploadProof }: Props) 
                   onClick={captureType === "image" ? capturePhoto : startRecording}
                   className={classes.button}
                 >
-                  {startText}
                   {startIcon}
+                  {startText}
                 </Button>
               )}
             </Group>

@@ -48,14 +48,8 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     });
   }, []);
 
-  useEffect(() => {
-    if (!status || status === "unknown") return;
-    if (status !== "authenticated" && onProtectedPage) {
-      router.replace("/auth");
-    }
-  }, [status]);
-
   const updateAuthenticationStatus = useCallback((isLoggedInCookie: boolean) => {
+    console.log("new status", isLoggedInCookie ? "authenticated" : "unauthenticated");
     setStatus(isLoggedInCookie ? "authenticated" : "unauthenticated");
   }, []);
 
@@ -110,10 +104,16 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, []);
 
   useEffect(() => {
+    if (!status || status === "unknown") return;
+    if (status !== "authenticated" && onProtectedPage) {
+      router.replace("/auth");
+    }
+  }, [status]);
+
+  useEffect(() => {
     if (userDetailsState) return;
 
     const savedState: UserDataType | null = getFromLocalStorage("userDetails");
-    console.log("savedState", savedState);
     setUserDetailsState(savedState);
   }, [status]);
 

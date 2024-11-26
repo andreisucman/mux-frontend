@@ -11,8 +11,8 @@
 }
 
 .indicator {
+  z-index: 1;
   animation: pulsate 1s infinite;
-  opacity: 0;
 }
 
 @keyframes pulsate {

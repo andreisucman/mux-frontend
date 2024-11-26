@@ -133,22 +133,24 @@ export default function UploadProof() {
 
     const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
 
-    if (runningAnalyses) {
-      const analysisStatus = runningAnalyses[taskId];
+    let analysisStatus;
 
-      if (analysisStatus) {
-        setComponentToDisplay("waitComponent");
-      } else if (taskStatus === "completed") {
-        setComponentToDisplay("completed");
-      } else {
-        setComponentToDisplay("videoRecorder");
-      }
+    if (runningAnalyses) {
+      analysisStatus = runningAnalyses[taskId];
+    }
+
+    if (analysisStatus) {
+      setComponentToDisplay("waitComponent");
+    } else if (taskStatus === "completed") {
+      setComponentToDisplay("completed");
+    } else {
+      setComponentToDisplay("videoRecorder");
     }
   }, [taskId]);
 
   return (
     <Stack flex={1}>
-      <PageHeader title={`Proof - ${submissionName}`} showReturn />
+      <PageHeader title={`Upload proof - ${submissionName}`} showReturn hideDropdown />
       <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
         <Stack className={classes.content}>
           {componentToDisplay === "completed" && existingProofRecord && (

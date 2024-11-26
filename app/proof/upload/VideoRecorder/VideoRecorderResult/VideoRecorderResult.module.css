@@ -16,10 +16,11 @@
   justify-content: center;
   align-items: center;
 
-  min-height: rem(32);
+  min-height: rem(36);
   flex: 1;
   border-radius: var(--mantine-radius-lg);
   opacity: 0.75;
+  height: 100%;
 
   &:hover {
     opacity: 1;

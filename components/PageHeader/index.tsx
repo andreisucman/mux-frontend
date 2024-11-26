@@ -67,7 +67,7 @@ export default function PageHeader({
             <IconChevronLeft className="icon" />
           </ActionIcon>
         )}
-        <Title order={1}>{title}</Title>
+        <Title order={1} lineClamp={2}>{title}</Title>
       </Group>
       {showRightSide && (
         <Group className={classes.right} ref={ref}>
