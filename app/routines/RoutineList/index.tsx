@@ -144,7 +144,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
 
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "tasks"
-  >("createTaskOverlay");
+  >("tasks");
 
   const { nextScan, tasks, _id: userId, timeZone, demographics } = userDetails || {};
   const { sex } = demographics || {};
@@ -188,6 +188,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
         })),
     [type, pathaname]
   );
+
   const fetchLatestRoutinesAndTasks = useCallback(async () => {
     if (!userId) return;
 

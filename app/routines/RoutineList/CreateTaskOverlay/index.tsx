@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { IconCalendarWeek, IconCirclePlus } from "@tabler/icons-react";
+import { IconCalendarWeek, IconPlus } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { TypeEnum } from "@/types/global";
@@ -30,7 +30,7 @@ export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }
           className={classes.button}
           onClick={onCreateManuallyClick}
         >
-          <IconCirclePlus className="icon" style={{ marginRight: rem(8) }} /> Create a task manually
+          <IconPlus className="icon" style={{ marginRight: rem(8) }} /> Create a task manually
         </Button>
         <Button
           disabled={isLoading}

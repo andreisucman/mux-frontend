@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconCirclePlus, IconSquareCheck } from "@tabler/icons-react";
+import { IconPlus, IconSquareCheck } from "@tabler/icons-react";
 import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -78,7 +78,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     } else {
       const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
       const buttonIcon = !!isTrialUsed ? (
-        <IconCirclePlus className="icon" />
+        <IconPlus className="icon" />
       ) : (
         <IconSquareCheck className="icon" />
       );

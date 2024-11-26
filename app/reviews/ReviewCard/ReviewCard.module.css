@@ -1,7 +1,13 @@
 .container {
+  cursor: pointer;
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
   background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  border: rem(1) solid var(--mantine-color-dark-5);
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-dark-6), 0.75);
+  }
 }
 
 .rating {
@@ -12,5 +18,5 @@
 .text {
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
-  background-color: var(--mantine-color-dark-6);
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }

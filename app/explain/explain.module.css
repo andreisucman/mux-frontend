@@ -1,0 +1,22 @@
+.container {
+  flex: 1;
+}
+
+.buttonsGroup {
+  flex-wrap: nowrap;
+}
+
+.disableButton {
+  flex: 1;
+}
+
+.exampleWrapper {
+  gap: 0;
+  border-radius: rem(16);
+}
+
+.editModalContent {
+  width: 100%;
+  height: auto;
+  max-width: rem(400);
+}

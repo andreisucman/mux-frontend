@@ -1,0 +1,8 @@
+.buttonText {
+  margin-left: rem(8);
+}
+
+.text {
+  font-size: var(--mantine-font-size-sm);
+  text-align: center;
+}

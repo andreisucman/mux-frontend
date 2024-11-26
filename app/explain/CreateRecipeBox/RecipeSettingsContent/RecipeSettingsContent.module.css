@@ -1,0 +1,12 @@
+.imageComponentWrapper {
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  padding: rem(16);
+  gap: rem(8);
+  align-items: center;
+}
+
+.imageButton {
+  max-width: rem(200);
+  width: 100%;
+}

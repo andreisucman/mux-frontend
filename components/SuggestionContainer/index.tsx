@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCirclePlus, IconListSearch, IconSquareCheck } from "@tabler/icons-react";
+import { IconPlus, IconListSearch, IconSquareCheck } from "@tabler/icons-react";
 import { Group, rem, Skeleton, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
@@ -90,7 +90,7 @@ export default function SuggestionContainer({
 
             const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
             const buttonIcon = !!isTrialUsed ? (
-              <IconCirclePlus className="icon" />
+              <IconPlus className="icon" />
             ) : (
               <IconSquareCheck className="icon" />
             );

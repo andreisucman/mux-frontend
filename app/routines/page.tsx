@@ -45,38 +45,6 @@ export default function MyRoutines() {
     []
   );
 
-  //   async function updateClub() {
-  //     if (!value.trim()) return;
-  //     if (value.trim().length > maxLength) return;
-
-  //     const key = isName ? "name" : isIntro ? "intro" : "";
-
-  //     setIsLoading(true);
-  //     try {
-  //       const { club } = userDetails || {};
-  //       const newClub = { ...club, [key]: value };
-
-  //       const response = await callTheServer({
-  //         endpoint: "updateClubBio",
-  //         method: "POST",
-  //         body: { name: newClub.name, intro: newClub?.bio?.intro },
-  //       });
-
-  //       if (response.status === 200) {
-  //         setUserDetails(
-  //           (prev: UserDataType) =>
-  //             ({
-  //               ...prev,
-  //               club: newClub,
-  //             }) as UserDataType
-  //         );
-  //       }
-  //     } catch (err) {
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
-
   const { streaks } = userDetails || {};
   const { healthStreak, faceStreak, bodyStreak } = streaks || {};
 
