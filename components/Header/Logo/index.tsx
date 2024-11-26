@@ -17,7 +17,7 @@ function Logo({ customStyles }: Props) {
     <Link href={"/"} className={classes.container} style={customStyles ? customStyles : {}}>
       <Image
         src={logoSrc}
-        width={180}
+        width={170}
         height={50}
         alt="MaxYouOut logo"
         className={classes.logo}
@@ -27,4 +27,4 @@ function Logo({ customStyles }: Props) {
   );
 }
 
-export default memo(Logo);
+export default Logo;

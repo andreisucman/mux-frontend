@@ -6,6 +6,7 @@ import {
   IconFilter,
   IconHeart,
   IconMan,
+  IconMoodNeutral,
   IconMoodSmile,
   IconSearch,
   IconWhirl,
@@ -25,7 +26,7 @@ const typeData = [
 ];
 
 const partData = [
-  { label: "Face", icon: <IconMoodSmile className="icon" />, value: "face", type: "head" },
+  { label: "Face", icon: <IconMoodNeutral className="icon" />, value: "face", type: "head" },
   { label: "Mouth", icon: <IconDental className="icon" />, value: "mouth", type: "head" },
   { label: "Scalp", icon: <IconWhirl className="icon" />, value: "scalp", type: "head" },
 ];

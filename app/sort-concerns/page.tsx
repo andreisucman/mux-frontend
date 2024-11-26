@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowRight, IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Button, Group, Stack, Title } from "@mantine/core";
+import { useElementSize } from "@mantine/hooks";
 import FilterDropdown from "@/components/FilterDropdown";
 import InstructionContainer from "@/components/InstructionContainer";
 import { UserContext } from "@/context/UserContext";
@@ -23,6 +24,7 @@ const filterData = [
 export default function SortConcerns() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { height, ref } = useElementSize();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,7 +69,7 @@ export default function SortConcerns() {
   }, [type, typeof selectedConcerns]);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={classes.container} ref={ref}>
       <Group className={classes.heading}>
         <Title order={1}>Sort concerns</Title>
         <FilterDropdown data={filterData} filterType="type" addToQuery />
@@ -86,7 +88,7 @@ export default function SortConcerns() {
       >
         Next <IconArrowRight className="icon" />
       </Button>
-      <ConcernsSortCard concerns={selectedConcerns || []} type={type as string} />
+      <ConcernsSortCard concerns={selectedConcerns || []} type={type as string} maxHeight={height}/>
     </Stack>
   );
 }
