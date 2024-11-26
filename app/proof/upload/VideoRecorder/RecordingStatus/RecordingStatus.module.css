@@ -1,0 +1,25 @@
+.container {
+  position: absolute;
+  bottom: rem(8);
+  right: rem(16);
+  align-items: center;
+  z-index: 1;
+}
+
+.time {
+  font-size: rem(32);
+}
+
+.indicator {
+  animation: pulsate 1s infinite;
+  opacity: 0;
+}
+
+@keyframes pulsate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

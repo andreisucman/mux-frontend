@@ -1,7 +1,179 @@
-import React from 'react'
+"use client";
 
-export default function ProofUpload() {
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Skeleton, Stack } from "@mantine/core";
+import PageHeader from "@/components/PageHeader";
+import WaitComponent from "@/components/WaitComponent";
+import { UserContext } from "@/context/UserContext";
+import callTheServer from "@/functions/callTheServer";
+import fetchTaskInfo from "@/functions/fetchTaskInfo";
+import uploadToSpaces from "@/functions/uploadToSpaces";
+import {
+  deleteFromLocalStorage,
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "@/helpers/localStorage";
+import openErrorModal from "@/helpers/openErrorModal";
+import { TaskType } from "@/types/global";
+import ProofDisplayContainer from "./ProofDisplayContainer";
+import { ExistingProofRecordType } from "./types";
+import VideoRecorder from "./VideoRecorder";
+import classes from "./proof-upload.module.css";
+
+export const runtime = "edge";
+
+type HandleUploadProps = {
+  blurType: string;
+  captureType: "image" | "video";
+  recordedBlob: Blob;
+  publishToClub: boolean;
+  removeFromLocalStorage: () => Promise<void>;
+};
+
+export default function UploadProof() {
+  const searchParams = useSearchParams();
+  const { status, userDetails } = useContext(UserContext);
+  const [componentToDisplay, setComponentToDisplay] = useState<
+    "loading" | "waitComponent" | "videoRecorder" | "completed"
+  >("loading");
+  const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
+  const [existingProofRecord, setExistingProofRecord] = useState<ExistingProofRecordType | null>(
+    null
+  );
+
+  const taskId = searchParams.get("taskId");
+  const submissionName = searchParams.get("submissionName");
+  const submissionId = searchParams.get("submissionId");
+  const { status: taskStatus, requisite } = taskInfo || {};
+
+  const { demographics } = userDetails || {};
+  const { sex } = demographics || {};
+
+  const fetchProofInfo = useCallback(async (taskId: string | null) => {
+    if (!taskId) return;
+    try {
+      const response = await callTheServer({
+        endpoint: `getProofRecord/${taskId}`,
+        method: "GET",
+      });
+
+      if (response.status === 200) {
+        setExistingProofRecord(response.message);
+      }
+    } catch (err) {
+      console.log("Error in fetchProofInfo: ", err);
+    }
+  }, []);
+
+  const uploadProof = useCallback(
+    async ({ recordedBlob, captureType, blurType }: HandleUploadProps) => {
+      if (status !== "authenticated") return;
+
+      try {
+        setComponentToDisplay("waitComponent");
+
+        const urlArray = await uploadToSpaces({
+          itemsArray: [recordedBlob],
+          mime: captureType === "image" ? "image/jpeg" : "video/webm",
+        });
+
+        const response = await callTheServer({
+          endpoint: "uploadProof",
+          method: "POST",
+          body: { taskId, url: urlArray[0], submissionId, blurType },
+        });
+
+        console.log("upload proof line 85");
+
+        if (response.status !== 200) {
+          setComponentToDisplay("videoRecorder");
+          openErrorModal({
+            description: response.error,
+          });
+
+          saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
+        }
+
+        console.log("upload proof line 99");
+
+        deleteFromLocalStorage("proofRecords", captureType);
+      } catch (err) {
+        console.log("Error in uploadProof: ", err);
+        setComponentToDisplay("videoRecorder");
+        saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
+      }
+    },
+    [status, taskId]
+  );
+
+  const handleFetchTaskInfo = useCallback(async (taskId: string) => {
+    const taskInfo = await fetchTaskInfo(taskId);
+    if (taskInfo) setTaskInfo(taskInfo);
+  }, []);
+
+  const handleCompleteUpload = useCallback(async (taskId: string) => {
+    if (!taskId) return;
+    await fetchProofInfo(taskId);
+    handleFetchTaskInfo(taskId);
+    setComponentToDisplay("completed");
+  }, []);
+
+  useEffect(() => {
+    if (!taskId) return;
+    handleFetchTaskInfo(taskId);
+    fetchProofInfo(taskId);
+  }, [taskId]);
+
+  useEffect(() => {
+    if (!taskId) {
+      setComponentToDisplay("loading");
+      return;
+    }
+
+    const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
+
+    if (runningAnalyses) {
+      const analysisStatus = runningAnalyses[taskId];
+
+      if (analysisStatus) {
+        setComponentToDisplay("waitComponent");
+      } else if (taskStatus === "completed") {
+        setComponentToDisplay("completed");
+      } else {
+        setComponentToDisplay("videoRecorder");
+      }
+    }
+  }, [taskId]);
+
   return (
-    <div>ProofUpload</div>
-  )
+    <Stack flex={1}>
+      <PageHeader title={`Proof - ${submissionName}`} showReturn />
+      <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
+        <Stack className={classes.content}>
+          {componentToDisplay === "completed" && existingProofRecord && (
+            <ProofDisplayContainer
+              existingProofRecord={existingProofRecord}
+              setExistingProofRecord={setExistingProofRecord}
+            />
+          )}
+          {componentToDisplay === "waitComponent" && (
+            <WaitComponent
+              operationKey={taskId || ""}
+              description="Checking your upload"
+              onComplete={handleCompleteUpload}
+              onError={() => setComponentToDisplay("videoRecorder")}
+            />
+          )}
+          {componentToDisplay === "videoRecorder" && status === "authenticated" && (
+            <VideoRecorder
+              sex={sex || "male"}
+              instruction={requisite || ""}
+              uploadProof={uploadProof}
+            />
+          )}
+        </Stack>
+      </Skeleton>
+    </Stack>
+  );
 }

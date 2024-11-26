@@ -18,6 +18,7 @@ type Props = {
   hideDisclaimer?: boolean;
   description: string;
   onComplete: (args?: any) => void;
+  onError: (args?: any) => void;
   customContainerStyles?: { [key: string]: any };
   customWrapperStyles?: { [key: string]: any };
 };
@@ -30,6 +31,7 @@ function WaitComponent({
   customContainerStyles,
   customWrapperStyles,
   onComplete,
+  onError,
 }: Props) {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -76,10 +78,12 @@ function WaitComponent({
               if (errorRedirectUrl) router.push(errorRedirectUrl);
             },
           });
+          if (onError) onError();
         }
       } catch (err) {
         console.log("Error in checkAnalysisCompletion: ", err);
         clearInterval(intervalId);
+        if (onError) onError();
       }
     },
     [userId, operationKey]

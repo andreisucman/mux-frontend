@@ -1,4 +1,4 @@
-type StorageValue = object | any[] | string | number | boolean | null;
+type StorageValue = object | any[] | string | ArrayBuffer | number | boolean | null;
 
 export function saveToLocalStorage(
   key: string,
@@ -52,7 +52,22 @@ export function getFromLocalStorage<T extends StorageValue>(key: string): T | nu
   }
 }
 
-export function deleteFromLocalStorage(key: string): void {
+export function deleteFromLocalStorage(key: string, toDeleteKey: string): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(key);
+
+  const rawValue = localStorage.getItem(key);
+
+  if (!rawValue) return;
+
+  if (toDeleteKey) {
+    try {
+      const parsedValue = JSON.parse(rawValue);
+      delete parsedValue[toDeleteKey];
+      localStorage.setItem(key, JSON.stringify(parsedValue));
+    } catch (err) {
+      console.log("Error in deleteFromLocalStorage: ", err);
+    }
+  } else {
+    localStorage.removeItem(key);
+  }
 }

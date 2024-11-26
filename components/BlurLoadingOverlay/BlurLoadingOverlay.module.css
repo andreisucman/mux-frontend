@@ -1,0 +1,6 @@
+.container {
+  width: rem(150);
+  align-items: center;
+  margin: auto;
+  gap: rem(8);
+}

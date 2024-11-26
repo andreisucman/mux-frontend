@@ -46,7 +46,6 @@ async function blur({ url, blurType, type }: BlurProps) {
       }
       if (response.error) {
         openErrorModal({
-          title: "🚨 An error occurred",
           description: response.error,
         });
       }

@@ -1,0 +1,56 @@
+.container {
+  position: absolute;
+  flex: 1;
+  z-index: 1;
+  gap: rem(8);
+  inset: 0;
+  pointer-events: none;
+}
+
+.target {
+  position: absolute;
+  flex: 1;
+  z-index: 2;
+  gap: rem(8);
+  color: var(--mantine-color-gray-2);
+  pointer-events: all;
+}
+
+.checkboxWrapper {
+  padding: rem(8);
+  border-radius: rem(16);
+}
+
+.topRight {
+  top: rem(12);
+  right: rem(12);
+}
+
+.topLeft {
+  top: rem(12);
+  left: rem(12);
+}
+
+.bottomRight {
+  bottom: rem(12);
+  right: rem(12);
+}
+
+.bottomLeft {
+  bottom: rem(12);
+  left: rem(12);
+}
+
+.content {
+  gap: rem(8);
+  padding: rem(8) 0;
+  border-radius: rem(16);
+  background-color: var(--mantine-color-dark-6);
+}
+
+.loaderStack {
+  width: rem(150);
+  align-items: center;
+  margin: auto;
+  gap: rem(8);
+}

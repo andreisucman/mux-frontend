@@ -1,0 +1,27 @@
+.content {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+
+  & video {
+    flex: 1;
+    background-color: var(--mantine-color-dark-6);
+  }
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: rem(32);
+  flex: 1;
+  border-radius: var(--mantine-radius-lg);
+  opacity: 0.75;
+
+  &:hover {
+    opacity: 1;
+  }
+}
