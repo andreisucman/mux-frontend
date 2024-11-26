@@ -10,7 +10,6 @@
 
 .serie {
   white-space: nowrap;
-  font-size: rem(18);
   font-weight: 600;
 }
 
@@ -33,6 +32,6 @@
 
 .waitComponentWrapper {
   flex: 1;
-  border-radius: rem(16);
-  border: rem(1) solid var(--mantine-color-dark-4);
+  border-radius: var(--mantine-radius-lg);
+  border: rem(1) solid var(--mantine-color-dark-5);
 }

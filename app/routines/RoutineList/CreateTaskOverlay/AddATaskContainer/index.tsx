@@ -1,5 +1,10 @@
 import React, { useContext, useMemo, useState } from "react";
-import { IconArrowLeft, IconArrowRight, IconBulb, IconSquareCheck } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconBulb,
+  IconSquareRoundedCheck,
+} from "@tabler/icons-react";
 import { Button, Group, Loader, rem, Stack, Text } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
@@ -140,7 +145,8 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
                 }
                 className={classes.button}
               >
-                <IconSquareCheck className="icon" style={{ marginRight: rem(8) }} /> Save task
+                <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(8) }} /> Save
+                task
               </Button>
             )}
             {step === 1 && rawTask && (

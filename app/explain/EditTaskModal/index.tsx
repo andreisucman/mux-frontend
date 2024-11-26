@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Loader, Stack, Text } from "@mantine/core";
+import { IconRefresh } from "@tabler/icons-react";
+import { Button, Loader, rem, Stack, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import EditExistingTask from "../EditExistingTask";
 import classes from "./EditTaskModal.module.css";
@@ -66,7 +67,6 @@ export default function EditTaskModal({
                 setUpdatedInstruction={setUpdatedInstruciton}
               />
               <Button
-                size="md"
                 onClick={() =>
                   updateTask({
                     taskId,
@@ -81,7 +81,7 @@ export default function EditTaskModal({
                 }
                 disabled={!isDirty}
               >
-                🛠️ Update task
+                <IconRefresh className="icon" style={{ marginRight: rem(8) }} /> Update task
               </Button>
             </>
           )}

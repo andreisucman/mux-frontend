@@ -57,6 +57,8 @@ export default function PageHeader({
     originalRouter.replace(newUrl);
   }, []);
 
+  const showRightSide = !hideDropdown || onSearchClick || onFilterClick;
+
   return (
     <Group className={classes.container}>
       <Group className={classes.left}>
@@ -67,42 +69,44 @@ export default function PageHeader({
         )}
         <Title order={1}>{title}</Title>
       </Group>
-      <Group className={classes.right} ref={ref}>
-        {!hideDropdown && (
-          <FilterDropdown
-            data={filterData}
-            filterType="type"
-            defaultSelected={filterData.find((item) => item.value === type)}
-            onSelect={onSelect}
-            isDisabled={isDisabled}
-            addToQuery
-          />
-        )}
-        {onSearchClick && (
-          <Group className={classes.searchGroup}>
-            {query && (
-              <Pill
-                className={classes.pill}
-                styles={{ root: { maxWidth: rem(width / 2) } }}
-                onRemove={removeSearchQuery}
-                withRemoveButton
-              >
-                {query}
-              </Pill>
-            )}
-            <ActionIcon variant="default" onClick={onSearchClick}>
-              <IconSearch className="icon icon__small" />
-            </ActionIcon>
-          </Group>
-        )}
-        {onFilterClick && (
-          <Group className={classes.filterGroup}>
-            <ActionIcon variant="default" onClick={onFilterClick}>
-              <IconFilter className="icon" />
-            </ActionIcon>
-          </Group>
-        )}
-      </Group>
+      {showRightSide && (
+        <Group className={classes.right} ref={ref}>
+          {!hideDropdown && (
+            <FilterDropdown
+              data={filterData}
+              filterType="type"
+              defaultSelected={filterData.find((item) => item.value === type)}
+              onSelect={onSelect}
+              isDisabled={isDisabled}
+              addToQuery
+            />
+          )}
+          {onSearchClick && (
+            <Group className={classes.searchGroup}>
+              {query && (
+                <Pill
+                  className={classes.pill}
+                  styles={{ root: { maxWidth: rem(width / 2) } }}
+                  onRemove={removeSearchQuery}
+                  withRemoveButton
+                >
+                  {query}
+                </Pill>
+              )}
+              <ActionIcon variant="default" onClick={onSearchClick}>
+                <IconSearch className="icon icon__small" />
+              </ActionIcon>
+            </Group>
+          )}
+          {onFilterClick && (
+            <Group className={classes.filterGroup}>
+              <ActionIcon variant="default" onClick={onFilterClick}>
+                <IconFilter className="icon" />
+              </ActionIcon>
+            </Group>
+          )}
+        </Group>
+      )}
     </Group>
   );
 }

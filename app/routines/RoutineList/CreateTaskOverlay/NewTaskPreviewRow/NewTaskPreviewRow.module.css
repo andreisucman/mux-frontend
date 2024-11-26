@@ -1,6 +1,6 @@
 .container {
   align-items: center;
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   overflow: hidden;
   flex-wrap: nowrap;
   width: 100%;

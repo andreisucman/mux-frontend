@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconPlus, IconListSearch, IconSquareCheck } from "@tabler/icons-react";
+import { IconListSearch, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Group, rem, Skeleton, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
@@ -92,7 +92,7 @@ export default function SuggestionContainer({
             const buttonIcon = !!isTrialUsed ? (
               <IconPlus className="icon" />
             ) : (
-              <IconSquareCheck className="icon" />
+              <IconSquareRoundedCheck className="icon" />
             );
 
             const coachIcon = sex === "male" ? "🦸🏿‍♂️" : "🦸🏾";
@@ -211,7 +211,7 @@ export default function SuggestionContainer({
                 )}
                 {productsPersonalized && (
                   <Text className={classes.title}>
-                    <IconSquareCheck style={{ marginRight: rem(8) }} /> Best sorted
+                    <IconSquareRoundedCheck style={{ marginRight: rem(8) }} /> Best sorted
                   </Text>
                 )}
               </>

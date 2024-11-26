@@ -30,7 +30,7 @@ export const runtime = "edge";
 export default function Explain() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [pageLoaded, setPageLoaded] = useState(false);
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
   const [showWaitComponent, setShowWaitComponent] = useState(false);
@@ -42,11 +42,11 @@ export default function Explain() {
   const {
     requiredSubmissions,
     isRecipe,
-    proofEnabled,
     startsAt,
+    example,
+    proofEnabled,
     defaultSuggestions,
     suggestions,
-    example,
     key: taskKey,
     productsPersonalized,
   } = taskInfo || {};

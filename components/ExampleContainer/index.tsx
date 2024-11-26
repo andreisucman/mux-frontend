@@ -42,6 +42,7 @@ export default function ExampleContainer({ title, example }: Props) {
                 width={100}
                 height={100}
                 alt=""
+                unoptimized
                 onLoad={() => setIsReady(true)}
               />
             )}

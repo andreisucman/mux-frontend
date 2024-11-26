@@ -1,12 +1,21 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { IconCheck, IconSun, IconSunrise, IconSunset } from "@tabler/icons-react";
-import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
+import {
+  IconArrowBackUp,
+  IconCamera,
+  IconCheck,
+  IconEye,
+  IconSquareRoundedCheck,
+  IconSun,
+  IconSunrise,
+  IconSunset,
+} from "@tabler/icons-react";
+import { Button, Group, RingProgress, Text, ThemeIcon, rem } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskType } from "@/types/global";
-import classes from "./ProofStatusContainer.module.css";
+import classes from "./ProofStatus.module.css";
 
 type Props = {
   name: string;
@@ -74,20 +83,29 @@ function ProofStatus({
     [dayTime]
   );
 
-  const buttonLabel = useMemo(() => {
+  const buttonData = useMemo(() => {
+    let label = "";
+    let icon = undefined;
+
     if (isSubmitted) {
       if (proofId) {
-        return "View";
+        label = "View";
+        icon = <IconEye className="icon" style={{marginRight: rem(8)}} />;
       } else {
-        return "Undo";
+        label = "Undo";
+        icon = <IconArrowBackUp className="icon" style={{marginRight: rem(8)}} />;
       }
     } else {
       if (proofEnabled) {
-        return "Upload proof";
+        label = "Upload proof";
+        icon = <IconCamera className="icon" style={{marginRight: rem(8)}} />;
       } else {
-        return "Mark done";
+        label = "Mark done";
+        icon = <IconSquareRoundedCheck className="icon" style={{marginRight: rem(8)}} />;
       }
     }
+
+    return { label, icon };
   }, [isSubmitted, proofId, proofEnabled]);
 
   const updateRequiredSubmission = useCallback(async () => {
@@ -153,7 +171,8 @@ function ProofStatus({
         disabled={notStarted}
         onClick={updateRequiredSubmission}
       >
-        {buttonLabel}
+        {buttonData.icon}
+        {buttonData.label}
       </Button>
     </Group>
   );

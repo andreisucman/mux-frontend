@@ -11,7 +11,7 @@ import {
   IconHandLoveYou,
   IconMessage2,
   IconShoppingCart,
-  IconSquareCheck,
+  IconSquareRoundedCheck,
   IconToolsKitchen2,
   IconUserCircle,
 } from "@tabler/icons-react";
@@ -51,7 +51,7 @@ export const freePlanContent = [
 
 export const peekLicenseContent = [
   {
-    icon: <IconSquareCheck className="icon icon__large" />,
+    icon: <IconSquareRoundedCheck className="icon icon__large" />,
     description: "Everything from the Free plan, plus...",
   },
   {

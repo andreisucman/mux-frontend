@@ -8,7 +8,7 @@ import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import classes from "./RecipeSettingsContent.module.css";
 
 type Props = {
-  onSubmit: (constraints?: string, productsImage?: string) => Promise<void>;
+  onSubmit: (constraints?: string, productsImage?: string) => void;
 };
 
 export default function RecipeSettingsContent({ onSubmit }: Props) {

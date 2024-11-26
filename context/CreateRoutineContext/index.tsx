@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconPlus, IconSquareCheck } from "@tabler/icons-react";
+import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -80,7 +80,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
       const buttonIcon = !!isTrialUsed ? (
         <IconPlus className="icon" />
       ) : (
-        <IconSquareCheck className="icon" />
+        <IconSquareRoundedCheck className="icon" />
       );
       const coachIcon = sex === "male" ? "🦸‍♂️" : "🦸‍♀️";
 

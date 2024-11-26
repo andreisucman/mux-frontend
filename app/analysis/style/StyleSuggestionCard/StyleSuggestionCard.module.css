@@ -1,7 +1,7 @@
 .container {
   display: flex;
   align-items: center;
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   height: 100%;
   flex: 1;
   gap: rem(8);
