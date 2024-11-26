@@ -1,0 +1,30 @@
+.container {
+  gap: 0;
+}
+
+.concernContainer {
+  gap: rem(12);
+  padding: rem(12);
+  background-color: var(--mantine-color-dark-6);
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  text-align: center;
+}
+
+.footer {
+  border-radius: 0 0 rem(16) rem(16);
+  width: 100%;
+  padding: 0 rem(16) rem(16) rem(16);
+  justify-content: space-between;
+
+  & span {
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+.buttonWrapper {
+  padding: rem(24);
+}

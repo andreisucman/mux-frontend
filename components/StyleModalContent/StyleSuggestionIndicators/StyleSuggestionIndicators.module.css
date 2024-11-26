@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+  gap: 0;
+}
+
+.indicatorRowContainer {
+  flex: 1;
+  flex-wrap: nowrap;
+}
+
+.indicatorRowTargetIcon {
+  font-size: 20;
+  white-space: nowrap;
+  min-width: rem(55);
+}
+
+.indicatorRowProgressRoot {
+  flex: 1;
+  width: 100%;
+}

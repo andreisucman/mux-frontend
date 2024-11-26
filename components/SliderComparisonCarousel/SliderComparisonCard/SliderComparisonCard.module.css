@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.slider {
+  width: 100%;
+  flex: 1;
+}

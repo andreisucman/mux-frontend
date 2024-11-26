@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  gap: rem(4);
+  justify-content: space-between;
+
+  padding: 0 rem(4);
+  font-size: var(--mantine-font-size-sm);
+
+  position: absolute;
+  top: rem(8);
+  right: rem(8);
+  z-index: 2;
+}

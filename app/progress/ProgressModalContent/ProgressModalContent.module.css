@@ -1,0 +1,13 @@
+.container {
+  position: relative;
+  max-height: rem(600);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+  width: 100%;
+  gap: 0;
+}
+
+.buttonWrapper {
+  padding: 0 rem(16) rem(16) rem(16);
+}

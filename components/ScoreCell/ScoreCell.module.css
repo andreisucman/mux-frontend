@@ -1,0 +1,14 @@
+.cell {
+  gap: rem(4);
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.text {
+  cursor: pointer;
+  margin: 0;
+  gap: rem(4);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}

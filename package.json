@@ -37,8 +37,10 @@
     "nanoid": "5.0.8",
     "next": "15.0.1",
     "react": "18.3.1",
+    "react-compare-slider": "^3.1.0",
     "react-dom": "18.3.1",
     "react-infinite-scroller": "1.2.6",
+    "react-nice-avatar": "^1.5.0",
     "react-player": "2.16.0",
     "recharts": "2.13.3",
     "swr": "2.2.5"

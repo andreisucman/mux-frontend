@@ -1,0 +1,76 @@
+@import "../../../styles/animations.css";
+
+.container {
+  cursor: pointer;
+
+  gap: 0;
+  background-color: rgba(25, 25, 25, 0.4);
+  border-radius: var(--mantine-radius-lg);
+  width: 100%;
+  height: fit-content;
+  max-width: rem(260);
+  min-width: rem(160);
+  overflow: hidden;
+}
+
+.heading {
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--mantine-font-size-md);
+  gap: rem(8);
+  padding: rem(16) rem(12);
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: rem(260);
+  border-radius: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.straightFooter {
+  border-radius: unset;
+}
+
+.untoggle {
+  position: absolute;
+  left: rem(16);
+  top: rem(16);
+  z-index: 1;
+
+  color: var(--mantine-color-white);
+  background-color: rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.2s ease-in;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.text {
+  text-align: center;
+  z-index: 2;
+  color: var(--mantine-color-gray-2);
+}
+
+.taskName {
+  font-weight: 600;
+  font-size: var(--mantine-font-size-md);
+}
+
+.modalTitle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: rem(12);
+  font-weight: 600;
+
+  & p {
+    cursor: pointer;
+  }
+}

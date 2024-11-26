@@ -1,0 +1,11 @@
+.container {
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow: auto;
+  padding: rem(16);
+  gap: rem(12);
+}
+
+.wrapper {
+  gap: rem(4);
+}

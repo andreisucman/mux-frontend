@@ -1,12 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter as useOriginalRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
+  IconDental,
   IconFilter,
   IconHeart,
   IconMan,
   IconMoodSmile,
   IconSearch,
+  IconWhirl,
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Pill, rem, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
@@ -16,17 +18,24 @@ import FilterDropdown from "../FilterDropdown";
 import { FilterItemType } from "../FilterDropdown/types";
 import classes from "./PageHeader.module.css";
 
-const filterData = [
+const typeData = [
   { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
   { label: "Body", icon: <IconMan className="icon" />, value: "body" },
   { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
+];
+
+const partData = [
+  { label: "Face", icon: <IconMoodSmile className="icon" />, value: "face", type: "head" },
+  { label: "Mouth", icon: <IconDental className="icon" />, value: "mouth", type: "head" },
+  { label: "Scalp", icon: <IconWhirl className="icon" />, value: "scalp", type: "head" },
 ];
 
 type Props = {
   title: string;
   isDisabled?: boolean;
   showReturn?: boolean;
-  hideDropdown?: boolean;
+  hideTypeDropdown?: boolean;
+  hidePartDropdown?: boolean;
   onSelect?: (item?: FilterItemType) => void;
   onFilterClick?: () => void;
   onSearchClick?: () => void;
@@ -35,7 +44,8 @@ type Props = {
 export default function PageHeader({
   title,
   showReturn,
-  hideDropdown,
+  hideTypeDropdown,
+  hidePartDropdown,
   isDisabled,
   onSelect,
   onFilterClick,
@@ -45,10 +55,13 @@ export default function PageHeader({
   const originalRouter = useOriginalRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { ref, width } = useElementSize();
+
   const type = searchParams.get("type") || "head";
+  const part = searchParams.get("part") || "face";
   const query = searchParams.get("query");
 
-  const { ref, width } = useElementSize();
+  const [relevantParts, setRelevantParts] = useState(partData.filter((p) => p.type === type));
 
   const removeSearchQuery = useCallback(() => {
     const newQuery = modifyQuery({ params: [{ name: "query", value: null, action: "delete" }] });
@@ -57,7 +70,13 @@ export default function PageHeader({
     originalRouter.replace(newUrl);
   }, []);
 
-  const showRightSide = !hideDropdown || onSearchClick || onFilterClick;
+  const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick;
+
+  useEffect(() => {
+    if (hidePartDropdown) return;
+    const relParts = partData.filter((p) => p.type === type);
+    setRelevantParts(relParts);
+  }, [type]);
 
   return (
     <Group className={classes.container}>
@@ -67,20 +86,12 @@ export default function PageHeader({
             <IconChevronLeft className="icon" />
           </ActionIcon>
         )}
-        <Title order={1} lineClamp={2}>{title}</Title>
+        <Title order={1} lineClamp={2}>
+          {title}
+        </Title>
       </Group>
       {showRightSide && (
         <Group className={classes.right} ref={ref}>
-          {!hideDropdown && (
-            <FilterDropdown
-              data={filterData}
-              filterType="type"
-              defaultSelected={filterData.find((item) => item.value === type)}
-              onSelect={onSelect}
-              isDisabled={isDisabled}
-              addToQuery
-            />
-          )}
           {onSearchClick && (
             <Group className={classes.searchGroup}>
               {query && (
@@ -104,6 +115,26 @@ export default function PageHeader({
                 <IconFilter className="icon" />
               </ActionIcon>
             </Group>
+          )}
+          {!hideTypeDropdown && (
+            <FilterDropdown
+              data={typeData}
+              filterType="type"
+              defaultSelected={typeData.find((item) => item.value === type)}
+              onSelect={onSelect}
+              isDisabled={isDisabled}
+              addToQuery
+            />
+          )}
+          {!hidePartDropdown && (
+            <FilterDropdown
+              data={relevantParts}
+              filterType="part"
+              defaultSelected={relevantParts.find((item) => item.value === part)}
+              onSelect={onSelect}
+              isDisabled={isDisabled}
+              addToQuery
+            />
           )}
         </Group>
       )}

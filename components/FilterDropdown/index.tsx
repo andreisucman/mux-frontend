@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { IconChevronDown } from "@tabler/icons-react";
 import { Group, Menu, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -52,7 +52,7 @@ export default function FilterDropdown({
     () =>
       data.map((item) => (
         <Menu.Item
-          leftSection={<span>{item.icon}</span>}
+          leftSection={item.icon ? <span>{item.icon}</span> : undefined}
           onClick={() => {
             handleSelect(item);
           }}

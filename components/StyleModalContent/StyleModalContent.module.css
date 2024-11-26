@@ -1,0 +1,18 @@
+.container {
+  max-height: rem(600);
+  width: 100%;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+  gap: 0;
+}
+
+.date {
+  position: absolute;
+  right: rem(16);
+  bottom: rem(12);
+}
+
+.buttonWrapper {
+  padding: 0 rem(16) rem(16) rem(16);
+}

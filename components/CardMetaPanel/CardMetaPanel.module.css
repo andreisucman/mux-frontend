@@ -1,0 +1,29 @@
+.container {
+  gap: rem(8);
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: rem(16);
+}
+
+.nameWrapper {
+  gap: rem(8);
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  & p {
+    cursor: pointer;
+  }
+}
+
+.scoreWrapper {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}
+
+.clubName {
+  font-weight: 600;
+  text-overflow: ellipsis;
+}

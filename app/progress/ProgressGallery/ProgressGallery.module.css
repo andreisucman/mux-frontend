@@ -1,0 +1,19 @@
+.container {
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+  position: relative;
+}
+
+.scrollArea {
+  position: absolute;
+  inset: 0;
+}
+
+.stacks {
+  flex: 1;
+  height: 100%;
+  gap: rem(12);
+}

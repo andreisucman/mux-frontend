@@ -1,0 +1,20 @@
+.container {
+  height: rem(40);
+  width: rem(40);
+  min-height: rem(40);
+  min-width: rem(40);
+}
+
+.medium {
+  height: rem(32);
+  width: rem(32);
+  min-height: rem(32);
+  min-width: rem(32);
+}
+
+.small {
+  height: rem(26);
+  width: rem(26);
+  min-height: rem(26);
+  min-width: rem(26);
+}

@@ -1,0 +1,35 @@
+.container {
+  position: relative;
+  flex: 1;
+}
+
+.firstDate {
+  position: absolute;
+  top: rem(16);
+  right: rem(16);
+  z-index: 1;
+}
+
+.lastDate {
+  position: absolute;
+  top: rem(16);
+  left: rem(16);
+  z-index: 1;
+}
+
+.control {
+  opacity: 25%;
+
+  &[data-inactive] {
+    cursor: default;
+    opacity: 0;
+    display: none;
+  }
+}
+
+.controls {
+  right: rem(8);
+  gap: rem(8);
+  left: unset;
+  justify-content: flex-end;
+}

@@ -1,0 +1,17 @@
+.container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+  gap: 0;
+  min-height: 75vh;
+}
+
+.taskName {
+  padding: rem(16);
+  flex-wrap: nowrap;
+  gap: rem(12);
+  font-weight: 600;
+}
