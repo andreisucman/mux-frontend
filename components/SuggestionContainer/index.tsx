@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconListSearch, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Group, rem, Skeleton, Stack, Text } from "@mantine/core";
+import { Group, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -139,7 +139,7 @@ export default function SuggestionContainer({
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Text fw={600}>Enter your criteria</Text>,
+      title: <Title order={5}>Enter your criteria</Title>,
       innerProps: <ProductsCriteriaContainer taskKey={taskKey} findProducts={findProducts} />,
     });
   }, []);

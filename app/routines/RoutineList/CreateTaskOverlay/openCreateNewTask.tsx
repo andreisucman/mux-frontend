@@ -1,4 +1,4 @@
-import { rem, Text } from "@mantine/core";
+import { rem, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { TypeEnum } from "@/types/global";
 import AddATaskContainer from "./AddATaskContainer";
@@ -12,7 +12,7 @@ export default function openCreateNewTask(
     centered: true,
     modal: "general",
     size: "auto",
-    title: <Text fw={600}>Add a {type} improvement task</Text>,
+    title: <Title order={5}>Add a {type} improvement task</Title>,
     innerProps: <AddATaskContainer type={type} handleSaveTask={handleSaveTask} />,
     styles: {
       content: { width: "100%", height: "auto", maxWidth: rem(400) },

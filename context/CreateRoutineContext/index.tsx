@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Text } from "@mantine/core";
+import { Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -55,7 +55,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Text fw={600}>Which routine to create?</Text>,
+      title: <Title order={5}>Which routine to create?</Title>,
       innerProps: <SelectPartForRoutineModalContent type={type as TypeEnum} parts={parts} />,
     });
   }

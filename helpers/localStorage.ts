@@ -52,7 +52,7 @@ export function getFromLocalStorage<T extends StorageValue>(key: string): T | nu
   }
 }
 
-export function deleteFromLocalStorage(key: string, toDeleteKey: string): void {
+export function deleteFromLocalStorage(key: string, toDeleteKey?: string): void {
   if (typeof window === "undefined") return;
 
   const rawValue = localStorage.getItem(key);

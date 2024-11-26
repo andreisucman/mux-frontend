@@ -9,7 +9,6 @@ import {
   IconSettings,
   IconSocial,
   IconStar,
-  IconTarget,
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";

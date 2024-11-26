@@ -10,28 +10,29 @@ import ProgressCard from "./ProgressCard";
 import classes from "./ProgressGallery.module.css";
 
 type Props = {
-  progress: SimpleProgressType[];
+  progress?: SimpleProgressType[];
   handleUpdateProgress?: ({ contentId, images, initialImages }: HandleUpdateProgressType) => void;
 };
 
 export default function ProgressGallery({ progress, handleUpdateProgress }: Props) {
   const searchParams = useSearchParams();
-
   const position = searchParams.get("position") || "front";
 
   const processedProgress = useMemo(
     () =>
-      progress.map((p) => ({
-        ...p,
-        images: p.images.filter((io) => io.position === position),
-        initialImages: p.initialImages.filter((io) => io.position === position),
-      })),
+      progress
+        ? progress.map((p) => ({
+            ...p,
+            images: p.images.filter((io) => io.position === position),
+            initialImages: p.initialImages.filter((io) => io.position === position),
+          }))
+        : [],
     [position]
   );
 
   return (
     <Stack className={classes.container}>
-      {progress.length > 0 ? (
+      {progress && progress.length > 0 ? (
         <Stack className={classes.content}>
           {processedProgress.map((record, index) => (
             <ProgressCard data={record} key={index} handleUpdateProgress={handleUpdateProgress} />

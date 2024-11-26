@@ -3,7 +3,7 @@
 import { CSSProperties, memo, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconScan, IconTargetArrow } from "@tabler/icons-react";
-import { ActionIcon, Burger, Drawer, Group } from "@mantine/core";
+import { ActionIcon, Burger, Drawer, Group, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
@@ -75,7 +75,7 @@ function Header() {
       <Drawer
         position="right"
         size="xs"
-        title="Navigation"
+        title={<Title order={5}>Navigation</Title>}
         opened={navigationDrawerOpen}
         onClose={close}
         onChange={toggle}

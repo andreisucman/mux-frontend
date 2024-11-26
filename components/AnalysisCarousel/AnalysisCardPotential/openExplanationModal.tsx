@@ -1,4 +1,4 @@
-import { rem, Stack, Text } from "@mantine/core";
+import { rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RingComponent from "@/components/RingComponent";
@@ -14,9 +14,9 @@ export function openExplanationModal({ values, explanation }: Props) {
     centered: true,
     modal: "general",
     title: (
-      <Text fw={600} fz={rem(18)} lineClamp={1}>
+      <Title order={5} lineClamp={1}>
         {upperFirst(modelObject.label)} potential
-      </Text>
+      </Title>
     ),
     innerProps: (
       <Stack>

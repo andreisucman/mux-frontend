@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Group, Skeleton, Stack, Text, Title, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AvatarComponent from "@/components/AvatarComponent";
+import CardMetaPanel from "@/components/CardMetaPanel";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
 import { UserDataType, UserSubscriptionsType } from "@/types/global";
-import CardMetaPanel from "@/components/CardMetaPanel";
 import ProofCardFooter from "./ProofCardFooter";
 import { ProofCardType } from "./types";
 import classes from "./ProofCard.module.css";
@@ -36,9 +36,9 @@ function ProofCard({ data, isSelf, isMobile, contentChildren, handleTrack }: Pro
 
   const handleClick = useCallback(() => {
     const title = isSelf ? (
-      <Text lineClamp={1} className={classes.modalTitle}>
+      <Title order={5} lineClamp={1}>
         {`${data.icon} ${data.taskName}`}
-      </Text>
+      </Title>
     ) : (
       <UnstyledButton
         className={classes.modalTitle}
@@ -47,7 +47,7 @@ function ProofCard({ data, isSelf, isMobile, contentChildren, handleTrack }: Pro
         onClick={() => modals.closeAll()}
       >
         <AvatarComponent avatar={data.avatar} size="sm" />
-        <Text fw={600}>{data.clubName}</Text>
+        <Title order={5}>{data.clubName}</Title>
       </UnstyledButton>
     );
     openResultModal({

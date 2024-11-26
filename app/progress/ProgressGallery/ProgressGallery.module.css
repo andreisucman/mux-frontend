@@ -3,6 +3,9 @@
 }
 
 .content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem(200), 1fr));
+
   flex: 1;
   position: relative;
 }

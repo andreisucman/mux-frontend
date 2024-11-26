@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Image, Skeleton } from "@mantine/core";
+import { Image, Skeleton, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import { formatDate } from "@/helpers/formatDate";
@@ -20,7 +20,7 @@ function ProgressCard({ data, handleUpdateProgress }: Props) {
   const { images, createdAt } = data;
   const firstImage = images[0];
 
-  const ringSize = useMemo(() => containerWidth * 0.5, [containerWidth > 0]);
+  const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
 
@@ -29,7 +29,11 @@ function ProgressCard({ data, handleUpdateProgress }: Props) {
       openResultModal({
         record: data,
         type: "progress",
-        title: `${formattedDate} - ${data.part} progress preview`,
+        title: (
+          <Title order={5}>
+            {formattedDate} - {data.part} progress preview
+          </Title>
+        ),
       }),
     [data.part]
   );

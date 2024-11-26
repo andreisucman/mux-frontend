@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { IconBolt, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Button, Group, rem, Text } from "@mantine/core";
+import { Button, Group, rem, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -107,7 +107,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
       centered: true,
       modal: "general",
       size: "auto",
-      title: "Recipe settings",
+      title: <Title order={5}>Recipe settings</Title>,
       innerProps: <RecipeSettingsContent onSubmit={generateRecipe} />,
     });
   }, []);

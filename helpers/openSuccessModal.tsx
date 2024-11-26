@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 
 type Props = {
@@ -13,7 +13,7 @@ export default function openSuccessModal(props?: Props) {
   try {
     modals.open({
       centered: true,
-      title: <Text fw={600}>{title}</Text>,
+      title: <Title order={5}>{title}</Title>,
       children: description,
       onClose,
     });

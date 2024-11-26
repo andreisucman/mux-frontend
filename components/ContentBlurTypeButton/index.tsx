@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { IconEye, IconEyeOff, IconMoodOff, IconMoodSmile } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Checkbox, Menu, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -12,9 +12,9 @@ import BlurLoadingOverlay from "../BlurLoadingOverlay";
 import classes from "./ContentBlurTypeButton.module.css";
 
 const displayTypes = [
-  { label: "Original", icon: <IconMoodSmile className="icon" />, value: "original" },
-  { label: "Eyes blurred", icon: <IconEyeOff className="icon" />, value: "eyes" },
-  { label: "Face blurred", icon: <IconMoodOff className="icon" />, value: "face" },
+  { label: "Original", value: "original" },
+  { label: "Eyes blurred", value: "eyes" },
+  { label: "Face blurred", value: "face" },
 ];
 
 type Props = {

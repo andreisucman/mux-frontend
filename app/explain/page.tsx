@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconPencil, IconX } from "@tabler/icons-react";
-import { Button, Group, rem, Skeleton, Stack, Switch } from "@mantine/core";
+import { Button, Group, rem, Skeleton, Stack, Switch, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ExampleContainer from "@/components/ExampleContainer";
@@ -193,7 +193,7 @@ export default function Explain() {
       centered: true,
       modal: "general",
       size: "auto",
-      title: `Edit ${taskName}`,
+      title: <Title order={5}>Edit {taskName}</Title>,
       innerProps: (
         <EditTaskModal
           taskId={taskId || ""}

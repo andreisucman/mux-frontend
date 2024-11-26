@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
 import { IconShoppingBag } from "@tabler/icons-react";
-import { Button, Checkbox, Rating, rem, Stack, Text } from "@mantine/core";
+import { Button, Checkbox, Rating, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ProductModalBody from "@/components/ProductModalBody";
 import { SuggestionType } from "@/types/global";
@@ -38,9 +38,9 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
           centered: true,
           modal: "general",
           title: (
-            <Text fw={600} lineClamp={1}>
+            <Title order={5} lineClamp={1}>
               {modalTitle}
-            </Text>
+            </Title>
           ),
           innerProps: <ProductModalBody item={item} allItems={allItems} />,
           withinPortal: false,

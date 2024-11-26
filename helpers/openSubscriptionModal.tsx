@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Stack, Text } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import PricingCard from "@/app/plans/PricingCard";
 import {
@@ -56,7 +56,7 @@ export default function openSubscriptionModal({
     centered: isCentered,
     withCloseButton,
     closeOnClickOutside: withCloseButton,
-    title: <Text fw={600}>{title}</Text>,
+    title: <Title order={5}>{title}</Title>,
     innerProps: (
       <Stack flex={1}>
         {description && <Text size="sm">{description}</Text>}

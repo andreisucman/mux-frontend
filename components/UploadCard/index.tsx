@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
-import { ActionIcon, Button, Group, Progress, rem, Stack, Text } from "@mantine/core";
+import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
@@ -92,12 +92,7 @@ export default function UploadCard({
     modals.openContextModal({
       modal: "general",
       centered: true,
-
-      title: (
-        <Group gap={8}>
-          <IconCamera className={classes.icon} /> <Text fw={600}>Take a photo</Text>
-        </Group>
-      ),
+      title: <Title order={5}>Take a photo</Title>,
       innerProps: <PhotoCapturer handleCapture={loadLocally} />,
     });
   }, [loadLocally]);
