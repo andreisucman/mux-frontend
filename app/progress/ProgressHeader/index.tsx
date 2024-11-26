@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
   IconDental,
   IconMan,
+  IconMoodNeutral,
   IconMoodSmile,
   IconWhirl,
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import { useRouter } from "@/helpers/custom-router";
+import modifyQuery from "@/helpers/modifyQuery";
 import { PositionsFilterItemType } from "./types";
 import classes from "./ProgressHeader.module.css";
 
@@ -20,7 +21,7 @@ const typeData = [
 ];
 
 const partsData = [
-  { label: "Face", icon: <IconMoodSmile className="icon" />, value: "face", type: "head" },
+  { label: "Face", icon: <IconMoodNeutral className="icon" />, value: "face", type: "head" },
   { label: "Mouth", icon: <IconDental className="icon" />, value: "mouth", type: "head" },
   { label: "Scalp", icon: <IconWhirl className="icon" />, value: "scalp", type: "head" },
 ];
@@ -41,6 +42,7 @@ type Props = {
 export default function ProgressHeader({ title, showReturn, isDisabled, onSelect }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part") || "face";
@@ -50,18 +52,32 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
   const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>(
     positionsData.filter((p) => p.types.includes(type) && p.parts.includes(part))
   );
-
+  
   useEffect(() => {
     const relParts = partsData.filter((p) => p.type === type);
     setRelevantParts(relParts);
-  }, [type]);
 
-  useEffect(() => {
     const relPositions = positionsData.filter(
       (p) => p.types.includes(type) && p.parts.includes(part)
     );
     setRelevantPositions(relPositions);
-  }, [type, part]);
+
+    const params = [];
+
+    if (relParts.length === 0) {
+      params.push({ name: "part", value: null, action: "delete" });
+      params.push({ name: "position", value: null, action: "delete" });
+    }
+
+    if (relPositions.length === 0) {
+      params.push({ name: "position", value: null, action: "delete" });
+    }
+
+    if (params.length > 0) {
+      const newQuery = modifyQuery({ params });
+      router.replace(`${pathname}?${newQuery}`);
+    }
+  }, [type, part, partsData, positionsData]);
 
   return (
     <Group className={classes.container}>
@@ -75,36 +91,34 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
           {title}
         </Title>
       </Group>
-      <Group className={classes.right}>
+      <FilterDropdown
+        data={typeData}
+        filterType="type"
+        defaultSelected={typeData.find((item) => item.value === type)}
+        onSelect={onSelect}
+        isDisabled={isDisabled}
+        addToQuery
+      />
+      {relevantParts.length > 0 && (
         <FilterDropdown
-          data={typeData}
-          filterType="type"
-          defaultSelected={typeData.find((item) => item.value === type)}
+          data={relevantParts}
+          filterType="part"
+          defaultSelected={relevantParts.find((item) => item.value === part)}
           onSelect={onSelect}
           isDisabled={isDisabled}
           addToQuery
         />
-        {relevantParts.length > 0 && (
-          <FilterDropdown
-            data={relevantParts}
-            filterType="part"
-            defaultSelected={relevantParts.find((item) => item.value === part)}
-            onSelect={onSelect}
-            isDisabled={isDisabled}
-            addToQuery
-          />
-        )}
-        {relevantPositions.length > 0 && (
-          <FilterDropdown
-            data={relevantPositions}
-            filterType="position"
-            defaultSelected={relevantPositions.find((item) => item.value === position)}
-            onSelect={onSelect}
-            isDisabled={isDisabled}
-            addToQuery
-          />
-        )}
-      </Group>
+      )}
+      {relevantPositions.length > 0 && (
+        <FilterDropdown
+          data={relevantPositions}
+          filterType="position"
+          defaultSelected={relevantPositions.find((item) => item.value === position)}
+          onSelect={onSelect}
+          isDisabled={isDisabled}
+          addToQuery
+        />
+      )}
     </Group>
   );
 }

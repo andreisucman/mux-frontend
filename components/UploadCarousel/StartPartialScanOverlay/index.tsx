@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import { IconDental, IconMoodEmpty, IconWhirl } from "@tabler/icons-react";
+import { IconDental, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
 import { Button, Group, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
@@ -21,7 +21,7 @@ type Props = {
 };
 
 const iconsMap: { [key: string]: React.ReactNode } = {
-  face: <IconMoodEmpty className={classes.somethingToScanIcon} />,
+  face: <IconMoodNeutral className={classes.somethingToScanIcon} />,
   mouth: <IconDental className={classes.somethingToScanIcon} />,
   scalp: <IconWhirl className={classes.somethingToScanIcon} />,
 };

@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { IconDental, IconMoodEmpty, IconWhirl } from "@tabler/icons-react";
+import { IconDental, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
 import { Checkbox, Group } from "@mantine/core";
 import classes from "./SelectPartsCheckboxes.module.css";
 
@@ -41,7 +41,7 @@ function SelectPartsCheckboxes({
         className={classes.checkbox}
         label={
           <Group className={classes.labelGroup}>
-            <IconMoodEmpty className="icon" /> Face
+            <IconMoodNeutral className="icon" /> Face
           </Group>
         }
         onChange={() => setShowPart("face", !showFace)}

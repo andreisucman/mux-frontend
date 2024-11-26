@@ -18,7 +18,7 @@ type Props = {
   hideDisclaimer?: boolean;
   description: string;
   onComplete: (args?: any) => void;
-  onError: (args?: any) => void;
+  onError?: (args?: any) => void;
   customContainerStyles?: { [key: string]: any };
   customWrapperStyles?: { [key: string]: any };
 };

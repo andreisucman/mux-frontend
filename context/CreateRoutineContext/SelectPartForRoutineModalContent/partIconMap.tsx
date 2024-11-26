@@ -1,8 +1,8 @@
 import React from "react";
-import { IconDental, IconHeart, IconMan, IconMoodEmpty, IconWhirl } from "@tabler/icons-react";
+import { IconDental, IconHeart, IconMan, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
 
 export const partIconMap: { [key: string]: React.ReactNode } = {
-  face: <IconMoodEmpty className="icon" />,
+  face: <IconMoodNeutral className="icon" />,
   mouth: <IconDental className="icon" />,
   scalp: <IconWhirl className="icon" />,
   body: <IconMan className="icon" />,

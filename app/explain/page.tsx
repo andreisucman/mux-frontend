@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IconCancel, IconPencil } from "@tabler/icons-react";
+import { IconPencil, IconX } from "@tabler/icons-react";
 import { Button, Group, rem, Skeleton, Stack, Switch } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -252,7 +252,7 @@ export default function Explain() {
 
   return (
     <Stack className={classes.container}>
-      <PageHeader title={name || ""} showReturn hideDropdown />
+      <PageHeader title={name || ""} showReturn />
 
       <Skeleton className="skeleton" visible={!taskInfo}>
         <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
@@ -318,7 +318,7 @@ export default function Explain() {
                   className={classes.disableButton}
                   onClick={handleRedirectToCalendar}
                 >
-                  <IconCancel className="icon" style={{ marginRight: rem(8) }} />
+                  <IconX className="icon" style={{ marginRight: rem(8) }} />
                   Disable task
                 </Button>
                 <Button
