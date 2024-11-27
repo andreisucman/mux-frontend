@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconChevronDown } from "@tabler/icons-react";
+import cn from "classnames";
 import { Group, Menu, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -75,12 +76,18 @@ export default function FilterDropdown({
       classNames={{ itemSection: classes.itemSection }}
     >
       <Menu.Target>
-        <UnstyledButton className={classes.control} data-expanded={opened || undefined}>
+        <UnstyledButton
+          className={cn(classes.control, { [classes.disabled]: isDisabled })}
+          data-expanded={opened || undefined}
+        >
           <Group gap="xs">
             {selected.icon}
             <span className={classes.label}>{selected.label}</span>
           </Group>
-          <IconChevronDown className={classes.icon} stroke={1.25} />
+          <IconChevronDown
+            className={cn(classes.icon, { [classes.disabled]: isDisabled })}
+            stroke={1.25}
+          />
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>{items}</Menu.Dropdown>

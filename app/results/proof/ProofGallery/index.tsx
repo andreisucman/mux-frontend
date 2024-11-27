@@ -11,7 +11,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { HandleFetchStylesType } from "../types";
 import StyleCard from "./StyleCard";
-import classes from "./StyleGallery.module.css";
+import classes from "./ProgressGallery.module.css";
 
 type Props = {
   hasMore: boolean;
@@ -22,10 +22,9 @@ type Props = {
 
 export default function StyleGallery({ styles, hasMore, setStyles, handleFetchStyles }: Props) {
   const searchParams = useSearchParams();
-  const isMobile = useMediaQuery("(max-width: 36em)");
-
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
+  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const modelObject = styles && styles[0];
   const appliedBlurType = modelObject?.mainUrl.name;

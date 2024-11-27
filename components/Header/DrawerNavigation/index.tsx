@@ -70,9 +70,9 @@ const defaultAuthenticatedNavigation = [
     icon: <IconTargetArrow stroke={1.25} className="icon" />,
     path: "/progress",
     children: [
-      { title: "Progress", path: "/progress" },
-      { title: "Style", path: "/style" },
-      { title: "Uploads", path: "/proof" },
+      { title: "Progress", path: "/results" },
+      { title: "Style", path: "/results/style" },
+      { title: "Uploads", path: "/results/proof" },
       { title: "Analysis", path: "/analysis" },
     ],
   },

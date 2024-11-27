@@ -44,3 +44,9 @@
     display: flex;
   }
 }
+
+.disabled {
+  cursor: not-allowed;
+  transform: unset !important;
+  background-color: var(--mantine-color-dark-6) !important;
+}

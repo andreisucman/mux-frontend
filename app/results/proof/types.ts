@@ -15,3 +15,10 @@ export type SimpleProofType = {
   isPublic: boolean;
   icon: string;
 };
+
+export type HandleFetchProofType = {
+  type: string;
+  part: string | null;
+  concern: string | null;
+  skip?: boolean;
+};

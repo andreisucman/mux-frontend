@@ -1,35 +1,48 @@
-import React, { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useCallback } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
-import FilterDropdown from "@/components/FilterDropdown";
+import { FilterItemType } from "@/components/FilterDropdown/types";
+import SelectAsync from "@/components/SelectAsync";
+import callTheServer from "@/functions/callTheServer";
+import modifyQuery from "@/helpers/modifyQuery";
 
-type Props = {
-  allExistingStyleNames: string[];
-};
-
-export default function StyleFilterContent({ allExistingStyleNames }: Props) {
+export default function StyleFilterContent() {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const styleName = searchParams.get("styleName");
 
-  const styleDropdownData = useMemo(
-    () =>
-      allExistingStyleNames.map((styleName: string) => {
+  const handleGetUsersStyleNames = useCallback(async () => {
+    let result = [];
+
+    const response = await callTheServer({ endpoint: "getUsersStyleNames", method: "GET" });
+
+    if (response.status === 200) {
+      const styleDropdownData = response.message.map((styleName: string) => {
         const relevantStyle = outlookStyles.find((obj) => obj.name === styleName);
         return {
           label: styleName,
           value: styleName,
           icon: (relevantStyle && relevantStyle.icon) || "",
         };
-      }),
-    [allExistingStyleNames.length]
+      });
+
+      result = styleDropdownData;
+    }
+
+    return result;
+  }, []);
+
+  const handleSelectStyle = useCallback(
+    (item: FilterItemType) => {
+      const newQuery = modifyQuery({
+        params: [{ name: "styleName", value: item.value, action: "replace" }],
+      });
+
+      router.replace(`/${pathname}?${newQuery}`);
+    },
+    [pathname]
   );
 
-  return (
-    <FilterDropdown
-      data={styleDropdownData}
-      filterType="styleName"
-      defaultSelected={styleDropdownData.find((rec) => rec.value === styleName)}
-      addToQuery
-    />
-  );
+  return <SelectAsync fetchData={handleGetUsersStyleNames} handleSelectItem={handleSelectStyle} />;
 }

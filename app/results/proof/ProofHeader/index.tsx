@@ -54,23 +54,21 @@ export default function StyleHeader({ title, showReturn, isDisabled, onSelect }:
           {title}
         </Title>
       </Group>
-      {!isDisabled && (
-        <Group className={classes.right}>
-          <FilterButton
-            onFilterClick={handleOpenStyleFilters}
-            activeFiltersCount={activeFiltersCount}
-            isDisabled={isDisabled}
-          />
-          <FilterDropdown
-            data={typeData}
-            filterType="type"
-            defaultSelected={typeData.find((item) => item.value === type)}
-            onSelect={onSelect}
-            isDisabled={isDisabled}
-            addToQuery
-          />
-        </Group>
-      )}
+      <Group className={classes.right}>
+        <FilterButton
+          onFilterClick={handleOpenStyleFilters}
+          activeFiltersCount={activeFiltersCount}
+          isDisabled={isDisabled}
+        />
+        <FilterDropdown
+          data={typeData}
+          filterType="type"
+          defaultSelected={typeData.find((item) => item.value === type)}
+          onSelect={onSelect}
+          isDisabled={isDisabled}
+          addToQuery
+        />
+      </Group>
     </Group>
   );
 }

@@ -7,9 +7,9 @@ import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
+import StyleHeader from "./ProofHeader";
 import StyleGallery from "./StyleGallery";
-import StyleHeader from "./StyleHeader";
-import { HandleFetchStylesType } from "./types";
+import { HandleFetchProofType } from "./types";
 import classes from "./style.module.css";
 
 export const runtime = "edge";
@@ -25,7 +25,7 @@ export default function ResultStyle() {
   const { _id: userId } = userDetails || {};
 
   const handleFetchStyles = useCallback(
-    async ({ type, styleName, skip }: HandleFetchStylesType) => {
+    async ({ type, concern, part, skip }: HandleFetchProofType) => {
       if (!userId) return;
 
       try {
@@ -35,8 +35,12 @@ export default function ResultStyle() {
           parts.push(`type=${type}`);
         }
 
-        if (styleName) {
-          parts.push(`styleName=${styleName}`);
+        if (part) {
+          parts.push(`part=${part}`);
+        }
+
+        if (concern) {
+          parts.push(`concern=${concern}`);
         }
 
         if (skip && styles) {
@@ -45,7 +49,7 @@ export default function ResultStyle() {
 
         const query = parts.join("&");
 
-        const endpoint = `getLatestStyles${query ? `?${query}` : ""}`;
+        const endpoint = `getProofRecords${query ? `?${query}` : ""}`;
 
         const response = await callTheServer({
           endpoint,
