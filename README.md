@@ -1,4 +1,4 @@
-# Max You Out frontend
+# maxyouout frontend
 
 # Paths
 

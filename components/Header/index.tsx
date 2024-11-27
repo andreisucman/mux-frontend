@@ -75,7 +75,7 @@ function Header() {
       <Drawer
         position="right"
         size="xs"
-        title={<Title order={5}>Navigation</Title>}
+        title={<Title order={5} component={"p"}>Navigation</Title>}
         opened={navigationDrawerOpen}
         onClose={close}
         onChange={toggle}

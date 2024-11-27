@@ -5,9 +5,10 @@ import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import openErrorModal from "@/helpers/openErrorModal";
 import ProgressGallery from "./ProgressGallery";
 import ProgressHeader from "./ProgressHeader";
-import { HandleUpdateProgressType, SimpleProgressType } from "./types";
+import { HandleFetchProgressType, HandleUpdateProgressType, SimpleProgressType } from "./types";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
@@ -16,13 +17,14 @@ export default function Progress() {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
+  const [hasMore, setHasMore] = useState(false);
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
   const { _id: userId } = userDetails || {};
 
-  const fetchProgress = useCallback(
-    async (type: string, part: string | null) => {
+  const handleFetchProgress = useCallback(
+    async ({ type, part, skip }: HandleFetchProgressType) => {
       if (!userId) return;
 
       try {
@@ -37,13 +39,20 @@ export default function Progress() {
         });
 
         if (response.status === 200) {
-          setProgress(response.message);
+          if (skip) {
+            setProgress([...(progress || []), ...response.message.slice(0, 6)]);
+          } else {
+            setProgress(response.message.slice(0, 6));
+          }
+          setHasMore(response.message.length === 7);
+        } else {
+          openErrorModal();
         }
       } catch (err) {
-        console.log("Error in fetchProgress: ", err);
+        console.log("Error in handleFetchProgress: ", err);
       }
     },
-    [userId]
+    [userId, progress && progress.length]
   );
 
   const handleUpdateProgress = useCallback(
@@ -62,14 +71,19 @@ export default function Progress() {
   useEffect(() => {
     if (!userId) return;
 
-    fetchProgress(type, part);
+    handleFetchProgress({ type, part });
   }, [userId, type, part]);
 
   return (
     <Stack className={classes.container}>
       <ProgressHeader title="Progress" showReturn />
       {progress ? (
-        <ProgressGallery progress={progress} handleUpdateProgress={handleUpdateProgress} />
+        <ProgressGallery
+          progress={progress}
+          hasMore={hasMore}
+          handleFetchProgress={handleFetchProgress}
+          handleUpdateProgress={handleUpdateProgress}
+        />
       ) : (
         <Loader m="auto" />
       )}

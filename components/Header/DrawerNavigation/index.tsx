@@ -218,7 +218,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
             isSmall
           />
         ))}
-        <Text className={classes.copyright}>&copy; {year} Max You Out. All rights reserved</Text>
+        <Text className={classes.copyright}>&copy; {year} Maxyouout. All rights reserved</Text>
       </Stack>
     </Stack>
   );

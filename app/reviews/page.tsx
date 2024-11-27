@@ -63,7 +63,7 @@ export default function Reviews() {
 
   return (
     <Stack className={classes.container}>
-      <PageHeader title="Reviews" hideDropdown onFilterClick={() => {}} />
+      <PageHeader title="Reviews" onFilterClick={() => {}} />
       {reviews ? (
         <>
           {reviews.length > 0 ? (

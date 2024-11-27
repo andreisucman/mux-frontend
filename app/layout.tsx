@@ -18,7 +18,7 @@ import { theme } from "../theme";
 import classes from "./layout.module.css";
 
 export const metadata = {
-  title: "Max You Out",
+  title: "maxyouout",
   description: "Become five star all around!",
 };
 

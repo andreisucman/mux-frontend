@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "@/helpers/custom-router/patch-router/link";
 import logoSrc from "@/public/logo.webp";
