@@ -45,7 +45,7 @@ export default function ProgressGallery({
             initialImages: p.initialImages.filter((io) => io.position === position),
           }))
         : [],
-    [position, appliedBlurType]
+    [position, appliedBlurType, progress && progress.length]
   );
 
   const memoizedProgressCard = useCallback(
@@ -59,7 +59,7 @@ export default function ProgressGallery({
     [position, blurType]
   );
 
-  const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), []);
+  const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
 
   return (
     <Stack className={classes.container}>

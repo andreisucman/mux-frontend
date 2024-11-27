@@ -38,7 +38,7 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
           centered: true,
           modal: "general",
           title: (
-            <Title order={5} lineClamp={1}>
+            <Title order={5} component={"p"} lineClamp={1}>
               {modalTitle}
             </Title>
           ),

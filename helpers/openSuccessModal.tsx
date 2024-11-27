@@ -13,7 +13,11 @@ export default function openSuccessModal(props?: Props) {
   try {
     modals.open({
       centered: true,
-      title: <Title order={5}>{title}</Title>,
+      title: (
+        <Title order={5} component={"p"}>
+          {title}
+        </Title>
+      ),
       children: description,
       onClose,
     });

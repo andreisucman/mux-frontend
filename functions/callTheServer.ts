@@ -1,4 +1,5 @@
 import { getCookieValue } from "@/helpers/cookies";
+import openErrorModal from "@/helpers/openErrorModal";
 
 type Props<T> = {
   endpoint: string;
@@ -37,6 +38,11 @@ const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Prop
           : process.env.NEXT_PUBLIC_PROCESSING_SERVER_URL;
 
     const response = await fetch(`${serverUrl}/${endpoint}`, fetchOptions);
+
+    if (response.status === 429) {
+      openErrorModal({ description: "You're browsing too fast. Slow down." });
+      return { message: null, error: null };
+    }
 
     const text = await response?.text();
 

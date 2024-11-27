@@ -139,7 +139,7 @@ export default function SuggestionContainer({
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5}>Enter your criteria</Title>,
+      title: <Title order={5} component={"p"}>Enter your criteria</Title>,
       innerProps: <ProductsCriteriaContainer taskKey={taskKey} findProducts={findProducts} />,
     });
   }, []);

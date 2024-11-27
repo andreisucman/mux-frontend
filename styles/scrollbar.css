@@ -1,6 +1,6 @@
 * {
   scrollbar-width: thin;
-  scrollbar-color: alpha(var(--mantine-color-dark-6), 0.5) transparent;
+  scrollbar-color: alpha(var(--mantine-color-dark-5), 0.75) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -12,7 +12,6 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: alpha(var(--mantine-color-dark-6), 0.5);
   box-shadow: 0 0 rem(8) rem(4) alpha(var(--mantine-color-dark-9), 0.1);
   border-radius: rem(100);
 }

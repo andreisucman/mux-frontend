@@ -14,7 +14,7 @@ import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskType, TypeEnum, UserDataType } from "@/types/global";
-import ActivateCoachButton from "./ActivateCoachButton";
+import ActivateCoachButton from "./CreateTaskOverlay/AddATaskContainer/CreateWeeklyRoutineButton";
 import ButtonsGroup from "./ButtonsGroup";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import { HandleSaveTaskProps } from "./CreateTaskOverlay/AddATaskContainer/types";

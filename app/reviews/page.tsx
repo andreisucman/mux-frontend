@@ -42,7 +42,6 @@ export default function Reviews() {
           }
           setHasMore(response.message.length === 7);
         } else {
-          console.log("response", response);
           openErrorModal();
         }
       } catch (err) {

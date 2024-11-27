@@ -107,7 +107,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
       centered: true,
       modal: "general",
       size: "auto",
-      title: <Title order={5}>Recipe settings</Title>,
+      title: <Title order={5} component={"p"}>Recipe settings</Title>,
       innerProps: <RecipeSettingsContent onSubmit={generateRecipe} />,
     });
   }, []);

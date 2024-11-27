@@ -36,7 +36,7 @@ function ProofCard({ data, isSelf, isMobile, contentChildren, handleTrack }: Pro
 
   const handleClick = useCallback(() => {
     const title = isSelf ? (
-      <Title order={5} lineClamp={1}>
+      <Title order={5} component={"p"} lineClamp={1}>
         {`${data.icon} ${data.taskName}`}
       </Title>
     ) : (
@@ -47,7 +47,7 @@ function ProofCard({ data, isSelf, isMobile, contentChildren, handleTrack }: Pro
         onClick={() => modals.closeAll()}
       >
         <AvatarComponent avatar={data.avatar} size="sm" />
-        <Title order={5}>{data.clubName}</Title>
+        <Title order={5} component={"p"}>{data.clubName}</Title>
       </UnstyledButton>
     );
     openResultModal({

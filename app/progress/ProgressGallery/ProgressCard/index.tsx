@@ -30,7 +30,7 @@ function ProgressCard({ data, handleUpdateProgress }: Props) {
         record: data,
         type: "progress",
         title: (
-          <Title order={5}>
+          <Title order={5} component={"p"}>
             {formattedDate} - {data.part} progress preview
           </Title>
         ),

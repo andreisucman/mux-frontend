@@ -12,7 +12,7 @@ export default function openCreateNewTask(
     centered: true,
     modal: "general",
     size: "auto",
-    title: <Title order={5}>Add a {type} improvement task</Title>,
+    title: <Title order={5} component={"p"}>Add a {type} improvement task</Title>,
     innerProps: <AddATaskContainer type={type} handleSaveTask={handleSaveTask} />,
     styles: {
       content: { width: "100%", height: "auto", maxWidth: rem(400) },

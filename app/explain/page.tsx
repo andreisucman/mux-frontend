@@ -193,7 +193,7 @@ export default function Explain() {
       centered: true,
       modal: "general",
       size: "auto",
-      title: <Title order={5}>Edit {taskName}</Title>,
+      title: <Title order={5} component={"p"}>Edit {taskName}</Title>,
       innerProps: (
         <EditTaskModal
           taskId={taskId || ""}

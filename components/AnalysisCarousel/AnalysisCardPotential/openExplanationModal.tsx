@@ -14,7 +14,7 @@ export function openExplanationModal({ values, explanation }: Props) {
     centered: true,
     modal: "general",
     title: (
-      <Title order={5} lineClamp={1}>
+      <Title order={5} component={"p"} lineClamp={1}>
         {upperFirst(modelObject.label)} potential
       </Title>
     ),

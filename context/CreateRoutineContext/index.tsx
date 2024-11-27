@@ -55,7 +55,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5}>Which routine to create?</Title>,
+      title: <Title order={5} component={"p"}>Which routine to create?</Title>,
       innerProps: <SelectPartForRoutineModalContent type={type as TypeEnum} parts={parts} />,
     });
   }

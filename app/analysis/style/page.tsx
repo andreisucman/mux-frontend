@@ -38,7 +38,7 @@ export default function StyleScanResult() {
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5}>Match style</Title>,
+      title: <Title component={"p"} order={5}>Match style</Title>,
       innerProps: <SelectStyleGoalModalContent type={type as TypeEnum} verdict={verdict} />,
     });
   }, [verdict, type]);

@@ -92,7 +92,7 @@ export default function UploadCard({
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5}>Take a photo</Title>,
+      title: <Title order={5} component={"p"}>Take a photo</Title>,
       innerProps: <PhotoCapturer handleCapture={loadLocally} />,
     });
   }, [loadLocally]);

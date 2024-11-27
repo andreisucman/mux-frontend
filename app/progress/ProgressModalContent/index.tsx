@@ -28,8 +28,7 @@ export default function ProgressModalContent({ record, handleTrack }: Props) {
   return (
     <Stack className={classes.container}>
       <SliderComparisonCarousel progressRecord={record} />
-      <LineProgressIndicators record={record} title="Progress: " />
-
+      <LineProgressIndicators record={record} />
       {handleTrack && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

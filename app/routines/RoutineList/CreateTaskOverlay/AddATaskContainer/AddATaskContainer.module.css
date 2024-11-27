@@ -17,11 +17,6 @@
   flex-wrap: nowrap;
 }
 
-.button {
-  flex: 1;
-  padding: 0;
-}
-
 .loader {
   margin: 3rem auto 4rem;
 }

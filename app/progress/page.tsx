@@ -28,14 +28,27 @@ export default function Progress() {
       if (!userId) return;
 
       try {
+        const parts = [];
+
+        if (type) {
+          parts.push(`type=${type}`);
+        }
+
+        if (part) {
+          parts.push(`part=${part}`);
+        }
+
+        if (skip && progress) {
+          parts.push(`skip=${progress.length}`);
+        }
+
+        const query = parts.join("&");
+
+        const endpoint = `getLatestProgress${query ? `?${query}` : ""}`;
+
         const response = await callTheServer({
-          endpoint: "getLatestProgress",
-          method: "POST",
-          body: {
-            userId,
-            type,
-            part,
-          },
+          endpoint,
+          method: "GET",
         });
 
         if (response.status === 200) {

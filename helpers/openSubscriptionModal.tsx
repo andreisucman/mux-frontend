@@ -56,7 +56,7 @@ export default function openSubscriptionModal({
     centered: isCentered,
     withCloseButton,
     closeOnClickOutside: withCloseButton,
-    title: <Title order={5}>{title}</Title>,
+    title: <Title order={5} component={"p"}>{title}</Title>,
     innerProps: (
       <Stack flex={1}>
         {description && <Text size="sm">{description}</Text>}
