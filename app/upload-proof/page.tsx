@@ -19,7 +19,7 @@ import { TaskType } from "@/types/global";
 import ProofDisplayContainer from "./ProofDisplayContainer";
 import { ExistingProofRecordType } from "./types";
 import VideoRecorder from "./VideoRecorder";
-import classes from "./proof-upload.module.css";
+import classes from "./upload-proof.module.css";
 
 export const runtime = "edge";
 
@@ -150,7 +150,12 @@ export default function UploadProof() {
 
   return (
     <Stack flex={1}>
-      <PageHeader title={`Upload proof - ${submissionName}`} showReturn hideDropdown />
+      <PageHeader
+        title={`Upload proof - ${submissionName}`}
+        showReturn
+        hideTypeDropdown
+        hidePartDropdown
+      />
       <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
         <Stack className={classes.content}>
           {componentToDisplay === "completed" && existingProofRecord && (

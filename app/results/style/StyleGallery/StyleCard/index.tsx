@@ -6,15 +6,14 @@ import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
-import { HandleUpdateStylesType } from "../../types";
 import classes from "./StyleCard.module.css";
 
 type Props = {
   data: SimpleStyleType;
-  handleUpdateStyles?: ({ contentId, mainUrl, initialMainUrl }: HandleUpdateStylesType) => void;
+  setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
 };
 
-function StyleCard({ data, handleUpdateStyles }: Props) {
+function StyleCard({ data, setStyles }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { mainUrl, styleIcon, styleName, createdAt } = data;
 
@@ -30,6 +29,7 @@ function StyleCard({ data, handleUpdateStyles }: Props) {
             {formattedDate} - {data.styleName} style preview
           </Title>
         ),
+        setRecords: setStyles,
       }),
     [data.styleName]
   );
@@ -49,7 +49,7 @@ function StyleCard({ data, handleUpdateStyles }: Props) {
           currentMain={mainUrl}
           contentCategory={"style"}
           position="top-left"
-          updateRecord={handleUpdateStyles}
+          setRecords={setStyles}
         />
         <span className={classes.date}>{formattedDate}</span>
         <ContentPublicityIndicator isPublic={data.isPublic} />

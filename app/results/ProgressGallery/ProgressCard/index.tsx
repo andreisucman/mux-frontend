@@ -2,19 +2,19 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Image, Skeleton, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
+import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
-import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
-import { HandleUpdateProgressType, SimpleProgressType } from "../../types";
+import { SimpleProgressType } from "../../types";
 import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
 
 type Props = {
   data: SimpleProgressType;
-  handleUpdateProgress?: ({ contentId, images, initialImages }: HandleUpdateProgressType) => void;
+  setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
-function ProgressCard({ data, handleUpdateProgress }: Props) {
+function ProgressCard({ data, setProgress }: Props) {
   const { width: containerWidth, ref } = useElementSize();
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { images, createdAt } = data;
@@ -53,7 +53,7 @@ function ProgressCard({ data, handleUpdateProgress }: Props) {
           currentMain={firstImage.mainUrl}
           contentCategory={"progress"}
           position="top-left"
-          updateRecord={handleUpdateProgress}
+          setRecords={setProgress}
         />
         <span className={classes.date}>{formattedDate}</span>
         <ContentPublicityIndicator isPublic={data.isPublic} />

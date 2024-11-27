@@ -1,8 +1,8 @@
 "use client";
 
-import { CSSProperties, memo, useContext, useMemo } from "react";
+import { CSSProperties, memo, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { IconRocket, IconScan, IconTargetArrow } from "@tabler/icons-react";
+import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import GlowingButton from "@/components/GlowingButton";
@@ -10,6 +10,7 @@ import DrawerNavigation from "@/components/Header/DrawerNavigation";
 import Logo from "@/components/Header/Logo";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import UserButton from "./UserButton";
 import classes from "./Header.module.css";
 
 const hideStartButtonRoutes = ["/scan", "/accept", "/wait", "/analysis", "/auth"];
@@ -19,6 +20,11 @@ function Header() {
   const pathname = usePathname();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
   const { status, userDetails } = useContext(UserContext);
+  const [displayComponent, setDisplayComponent] = useState("none");
+
+  const { club } = userDetails || {};
+  const { avatar, payouts } = club || {};
+  const { detailsSubmitted } = payouts || {};
 
   const hideStartButton = useMemo(
     () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),
@@ -29,13 +35,25 @@ function Header() {
     return status ? { visibility: "visible" } : { visibility: "hidden" };
   }, [status]);
 
+  useEffect(() => {
+    if (status === "unknown") {
+      setDisplayComponent("none");
+    } else if (status === "authenticated") {
+      setDisplayComponent("userButton");
+    } else if (status === "unauthenticated" && !hideStartButton) {
+      setDisplayComponent("startButton");
+    } else {
+      setDisplayComponent("default");
+    }
+  }, [status, hideStartButton]);
+
   return (
     <>
       <header className={classes.container}>
         <div className={classes.wrapper}>
           <Logo />
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>
-            {status !== "unknown" && (
+            {displayComponent !== "none" && (
               <>
                 <ActionIcon
                   variant="default"
@@ -46,7 +64,7 @@ function Header() {
                 >
                   <IconTargetArrow stroke={1.25} className="icon icon__large" />
                 </ActionIcon>
-                {status !== "authenticated" && !hideStartButton && (
+                {displayComponent === "startButton" && (
                   <GlowingButton
                     text="Start"
                     aria-label="start analysis button"
@@ -55,15 +73,8 @@ function Header() {
                     onClick={() => router.push("/scan")}
                   />
                 )}
-                {status === "authenticated" && (
-                  <ActionIcon
-                    variant="default"
-                    onClick={() => router.push("/scan")}
-                    className={classes.button}
-                    aria-label="scan appearance button"
-                  >
-                    <IconScan stroke={1.25} className="icon icon__large" />
-                  </ActionIcon>
+                {displayComponent === "userButton" && (
+                  <UserButton avatar={avatar} clubDetailsSubmitted={!!detailsSubmitted} />
                 )}
               </>
             )}
@@ -75,7 +86,11 @@ function Header() {
       <Drawer
         position="right"
         size="xs"
-        title={<Title order={5} component={"p"}>Navigation</Title>}
+        title={
+          <Title order={5} component={"p"}>
+            Navigation
+          </Title>
+        }
         opened={navigationDrawerOpen}
         onClose={close}
         onChange={toggle}

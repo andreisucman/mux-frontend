@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRouter as useOriginalRouter, usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
   IconDental,
@@ -52,21 +52,17 @@ export default function PageHeader({
   onSearchClick,
 }: Props) {
   const router = useRouter();
-  const originalRouter = useOriginalRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part") || "face";
-  const query = searchParams.get("query");
 
   const [relevantParts, setRelevantParts] = useState(partData.filter((p) => p.type === type));
-
   const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick;
 
   useEffect(() => {
-    if (hidePartDropdown) return;
+    if (hideTypeDropdown || hidePartDropdown) return;
     const relParts = partData.filter((p) => p.type === type);
     setRelevantParts(relParts);
   }, [type]);

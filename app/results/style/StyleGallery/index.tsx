@@ -9,7 +9,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
-import { HandleFetchStylesType, HandleUpdateStylesType } from "../types";
+import { HandleFetchStylesType } from "../types";
 import StyleCard from "./StyleCard";
 import classes from "./ProgressGallery.module.css";
 
@@ -17,15 +17,10 @@ type Props = {
   hasMore: boolean;
   styles?: SimpleStyleType[];
   handleFetchStyles: (props: HandleFetchStylesType) => void;
-  handleUpdateStyles?: ({ contentId, mainUrl, initialMainUrl }: HandleUpdateStylesType) => void;
+  setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
 };
 
-export default function StyleGallery({
-  styles,
-  hasMore,
-  handleUpdateStyles,
-  handleFetchStyles,
-}: Props) {
+export default function StyleGallery({ styles, hasMore, setStyles, handleFetchStyles }: Props) {
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
@@ -35,7 +30,7 @@ export default function StyleGallery({
   const appliedBlurType = modelObject?.mainUrl.name;
 
   const memoizedStyleCard = useCallback(
-    (props: any) => <StyleCard data={props.data} key={props.index} handleUpdateStyles={handleUpdateStyles} />,
+    (props: any) => <StyleCard data={props.data} key={props.index} setStyles={setStyles} />,
     [styleName, appliedBlurType]
   );
 

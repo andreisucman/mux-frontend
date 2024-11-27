@@ -8,7 +8,7 @@ import { Loader, rem, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import { HandleFetchProgressType, HandleUpdateProgressType, SimpleProgressType } from "../types";
+import { HandleFetchProgressType, SimpleProgressType } from "../types";
 import ProgressCard from "./ProgressCard";
 import classes from "./ProgressGallery.module.css";
 
@@ -16,13 +16,13 @@ type Props = {
   hasMore: boolean;
   progress?: SimpleProgressType[];
   handleFetchProgress: (props: HandleFetchProgressType) => void;
-  handleUpdateProgress?: ({ contentId, images, initialImages }: HandleUpdateProgressType) => void;
+  setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
 export default function ProgressGallery({
   progress,
   hasMore,
-  handleUpdateProgress,
+  setProgress,
   handleFetchProgress,
 }: Props) {
   const searchParams = useSearchParams();
@@ -47,13 +47,7 @@ export default function ProgressGallery({
   );
 
   const memoizedProgressCard = useCallback(
-    (props: any) => (
-      <ProgressCard
-        data={props.data}
-        key={props.index}
-        handleUpdateProgress={handleUpdateProgress}
-      />
-    ),
+    (props: any) => <ProgressCard data={props.data} key={props.index} setProgress={setProgress} />,
     [position, appliedBlurType]
   );
 

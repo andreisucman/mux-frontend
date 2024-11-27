@@ -33,3 +33,7 @@
   left: unset;
   justify-content: flex-end;
 }
+
+.slide {
+  height: 100%;
+}

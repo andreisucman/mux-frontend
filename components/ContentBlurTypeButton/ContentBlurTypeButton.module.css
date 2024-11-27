@@ -54,3 +54,7 @@
   margin: auto;
   gap: rem(8);
 }
+
+.dropdown {
+  pointer-events: all;
+}

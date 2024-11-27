@@ -9,7 +9,7 @@ import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import StyleGallery from "./StyleGallery";
 import StyleHeader from "./StyleHeader";
-import { HandleFetchStylesType, HandleUpdateStylesType } from "./types";
+import { HandleFetchStylesType } from "./types";
 import classes from "./style.module.css";
 
 export const runtime = "edge";
@@ -69,19 +69,6 @@ export default function ResultStyle() {
     [userId, styles && styles.length]
   );
 
-  const handleUpdateStyles = useCallback(
-    ({ contentId, mainUrl, initialMainUrl }: HandleUpdateStylesType) => {
-      try {
-        setStyles((prev) =>
-          prev?.map((rec) => (rec._id === contentId ? { ...rec, mainUrl, initialMainUrl } : rec))
-        );
-      } catch (err) {
-        console.log("Error in handleUpdateProgress: ", err);
-      }
-    },
-    []
-  );
-
   useEffect(() => {
     if (!userId) return;
 
@@ -96,7 +83,7 @@ export default function ResultStyle() {
           styles={styles}
           hasMore={hasMore}
           handleFetchStyles={handleFetchStyles}
-          handleUpdateStyles={handleUpdateStyles}
+          setStyles={setStyles}
         />
       ) : (
         <Loader m="auto" />

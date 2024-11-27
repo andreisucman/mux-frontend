@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cn from "classnames";
 import Avatar, { genConfig } from "react-nice-avatar";
+import { Avatar as MantineAvatar } from "@mantine/core";
 import classes from "./AvatarComponent.module.css";
 
 type Props = {
@@ -20,7 +21,7 @@ export default function AvatarComponent({ avatar, size = "md", customStyles }: P
 
   return (
     <>
-      {config && (
+      {config ? (
         <Avatar
           {...config}
           style={customStyles ? customStyles : {}}
@@ -29,6 +30,8 @@ export default function AvatarComponent({ avatar, size = "md", customStyles }: P
             [classes.medium]: size === "sm",
           })}
         />
+      ) : (
+        <MantineAvatar style={customStyles ? customStyles : {}} />
       )}
     </>
   );

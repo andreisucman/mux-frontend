@@ -4,6 +4,7 @@ import { Stack } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
+import { formatDate } from "@/helpers/formatDate";
 import { UserDataType, UserSubscriptionsType } from "@/types/global";
 import LineProgressIndicators from "../LineProgressIndicators";
 import { SimpleProgressType } from "../types";
@@ -23,11 +24,20 @@ export default function ProgressModalContent({ record, handleTrack }: Props) {
   const { club, subscriptions } = userDetails || {};
   const { trackedUserId } = club || {};
 
-  const isTracked = trackedUserId === record.userId;
+  const { userId, images, initialImages, createdAt, initialDate } = record;
+  const isTracked = trackedUserId === userId;
+
+  const formattedInitialDate = formatDate({ date: initialDate });
+  const formattedCompareDate = formatDate({ date: createdAt });
 
   return (
     <Stack className={classes.container}>
-      <SliderComparisonCarousel progressRecord={record} />
+      <SliderComparisonCarousel
+        currentImages={images.map((imo) => imo.mainUrl.url || "") || []}
+        compareImages={initialImages.map((imo) => imo.mainUrl.url || "") || []}
+        compareDate={formattedInitialDate}
+        currentDate={formattedCompareDate}
+      />
       <LineProgressIndicators record={record} />
       {handleTrack && (
         <div className={classes.buttonWrapper}>

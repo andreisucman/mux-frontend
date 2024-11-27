@@ -18,6 +18,7 @@ type OpenViewModalProps = {
     setUserDetails: React.Dispatch<React.SetStateAction<UserDataType>>,
     subscriptions?: UserSubscriptionsType | null
   ) => void;
+  setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
 export default function openResultModal({
@@ -26,10 +27,11 @@ export default function openResultModal({
   type,
   isFullScreen,
   handleTrack,
+  setRecords,
 }: OpenViewModalProps) {
   const content =
     type === "style" ? (
-      <StyleModalContent record={record as SimpleStyleType} handleTrack={handleTrack} />
+      <StyleModalContent record={record as SimpleStyleType} handleTrack={handleTrack} setRecords={setRecords} />
     ) : type === "progress" ? (
       <ProgressModalContent record={record as SimpleProgressType} handleTrack={handleTrack} />
     ) : (

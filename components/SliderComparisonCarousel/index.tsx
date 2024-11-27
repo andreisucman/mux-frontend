@@ -1,32 +1,37 @@
 import React, { useMemo } from "react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
-import { SimpleProgressType } from "@/app/results/types";
 import { formatDate } from "@/helpers/formatDate";
 import SliderComparisonCard from "./SliderComparisonCard";
 import classes from "./SliderComparisonCarousel.module.css";
 
 type Props = {
-  progressRecord: SimpleProgressType;
+  currentImages: string[];
+  compareImages: string[];
+  currentDate: string;
+  compareDate: string;
 };
 
-export default function SliderComparisonCarousel({ progressRecord }: Props) {
-  const { images, initialImages, createdAt, initialDate } = progressRecord;
-
-  const firstDate = useMemo(() => formatDate({ date: initialDate }), []);
-  const lastDate = useMemo(() => formatDate({ date: createdAt }), []);
+export default function SliderComparisonCarousel({
+  currentImages,
+  compareImages,
+  currentDate,
+  compareDate,
+}: Props) {
+  const firstDate = useMemo(() => formatDate({ date: currentDate }), [currentDate]);
+  const lastDate = useMemo(() => formatDate({ date: compareDate }), [compareDate]);
 
   const slides = useMemo(
     () =>
-      images.map((obj, index) => (
+      currentImages.map((url, index) => (
         <Carousel.Slide key={index}>
           <SliderComparisonCard
-            srcOne={initialImages[index].mainUrl.url || ""}
-            srcTwo={obj.mainUrl.url || ""}
+            srcOne={url}
+            srcTwo={compareImages[index]}
           />
         </Carousel.Slide>
       )),
-    [images.length]
+    [currentImages.length]
   );
 
   return (
@@ -35,11 +40,10 @@ export default function SliderComparisonCarousel({ progressRecord }: Props) {
       <span className={classes.firstDate}>{firstDate}</span>
       <Carousel
         align="center"
+        height="50vh"
         orientation="vertical"
         className={classes.carousel}
-        styles={{ slide: { height: "100%" } }}
-        height={"50vh"}
-        classNames={{ control: classes.control, controls: classes.controls }}
+        classNames={{ control: classes.control, controls: classes.controls, slide: classes.slide }}
       >
         {slides}
       </Carousel>

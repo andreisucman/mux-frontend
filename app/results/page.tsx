@@ -8,7 +8,7 @@ import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import ProgressGallery from "./ProgressGallery";
 import ProgressHeader from "./ProgressHeader";
-import { HandleFetchProgressType, HandleUpdateProgressType, SimpleProgressType } from "./types";
+import { HandleFetchProgressType, SimpleProgressType } from "./types";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
@@ -68,19 +68,6 @@ export default function ResultsProgress() {
     [userId, progress && progress.length]
   );
 
-  const handleUpdateProgress = useCallback(
-    ({ contentId, images, initialImages }: HandleUpdateProgressType) => {
-      try {
-        setProgress((prev) =>
-          prev?.map((rec) => (rec._id === contentId ? { ...rec, images, initialImages } : rec))
-        );
-      } catch (err) {
-        console.log("Error in handleUpdateProgress: ", err);
-      }
-    },
-    []
-  );
-
   useEffect(() => {
     if (!userId) return;
 
@@ -95,7 +82,7 @@ export default function ResultsProgress() {
           progress={progress}
           hasMore={hasMore}
           handleFetchProgress={handleFetchProgress}
-          handleUpdateProgress={handleUpdateProgress}
+          setProgress={setProgress}
         />
       ) : (
         <Loader m="auto" />

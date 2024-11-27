@@ -11,11 +11,10 @@ import { BlurredUrlType } from "@/types/global";
 import BlurLoadingOverlay from "../BlurLoadingOverlay";
 import classes from "./ContentBlurTypeButton.module.css";
 
-const displayTypes = [
-  { label: "Original", value: "original" },
-  { label: "Eyes blurred", value: "eyes" },
-  { label: "Face blurred", value: "face" },
-];
+type HandleUpdateRecordType = {
+  contentId: string;
+  updateObject: { [key: string]: any };
+};
 
 type Props = {
   hash?: string;
@@ -23,9 +22,15 @@ type Props = {
   position?: "top-right" | "bottom-right" | "top-left" | "bottom-left";
   currentMain: BlurredUrlType;
   contentCategory: "progress" | "proof" | "style";
-  updateRecord?: (...args: any) => void;
-  customStyles?: { [key: string]: any };
+  setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  customStyles?: { [key: string]: any[] };
 };
+
+const displayTypes = [
+  { label: "Original", value: "original" },
+  { label: "Eyes blurred", value: "eyes" },
+  { label: "Face blurred", value: "face" },
+];
 
 export default function ContentBlurTypeButton({
   contentId,
@@ -33,7 +38,7 @@ export default function ContentBlurTypeButton({
   hash,
   currentMain,
   contentCategory,
-  updateRecord,
+  setRecords,
   customStyles,
 }: Props) {
   const { blurType, setBlurType } = useContext(BlurChoicesContext);
@@ -73,21 +78,37 @@ export default function ContentBlurTypeButton({
     }
   }, []);
 
-  const handleBlurError = (hash: string, error: string) => {
-    setProgress(0);
-    setIsBlurLoading(false);
-    clearInterval(intervalRef.current || undefined);
-    saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
-    openErrorModal({ description: error });
-  };
+  const handleBlurError = useCallback(
+    (hash: string, error: string) => {
+      setProgress(0);
+      setIsBlurLoading(false);
+      clearInterval(intervalRef.current || undefined);
+      saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
+      openErrorModal({ description: error });
+    },
+    [intervalRef.current]
+  );
 
-  const handleBlurComplete = (message: { [key: string]: any }) => {
-    setIsBlurLoading(false);
-    setProgress(0);
-    clearInterval(intervalRef.current || undefined);
-    saveToLocalStorage("blurAnalyses", { [message.hash]: false }, "add");
-    updateRecord && updateRecord(message);
-  };
+  const handleUpdateRecord = useCallback(({ contentId, updateObject }: HandleUpdateRecordType) => {
+    try {
+      setRecords((prev: any) =>
+        prev?.map((rec: any) => (rec._id === contentId ? { ...rec, ...updateObject } : rec))
+      );
+    } catch (err) {
+      console.log("Error in handleUpdateRecord: ", err);
+    }
+  }, []);
+
+  const handleBlurComplete = useCallback(
+    (message: { [key: string]: any }) => {
+      setIsBlurLoading(false);
+      setProgress(0);
+      clearInterval(intervalRef.current || undefined);
+      saveToLocalStorage("blurAnalyses", { [message.hash]: false }, "add");
+      handleUpdateRecord({ contentId, updateObject: message });
+    },
+    [contentId, intervalRef.current]
+  );
 
   const handleSelect = useCallback(
     async (blurType: "original" | "eyes" | "face") => {
@@ -109,13 +130,11 @@ export default function ContentBlurTypeButton({
           const { hash, mainUrl, images } = response.message;
 
           if (mainUrl || images) {
-            if (updateRecord) {
-              updateRecord({
-                contentId,
-                ...response.message,
-              });
-              setIsBlurLoading(false);
-            }
+            handleUpdateRecord({
+              contentId,
+              ...response.message,
+            });
+            setIsBlurLoading(false);
           } else if (hash) {
             saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
             intervalRef.current = setInterval(() => pollBlurProgressStatus(hash, blurType), 3000);
@@ -179,7 +198,7 @@ export default function ContentBlurTypeButton({
         trigger="click"
         withinPortal={false}
         trapFocus={false}
-        styles={{ dropdown: { pointerEvents: "all" } }}
+        classNames={{ dropdown: classes.dropdown }}
       >
         <Menu.Target>
           <ActionIcon

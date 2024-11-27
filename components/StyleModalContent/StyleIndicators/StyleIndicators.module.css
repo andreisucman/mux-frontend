@@ -18,3 +18,7 @@
   flex: 1;
   width: 100%;
 }
+
+.popoverDropdown {
+  padding: rem(4) rem(8);
+}

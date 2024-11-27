@@ -4,30 +4,30 @@
 
 /chat, // p
 /advisor, // p
-/progress, // p
-/styles, // p
+/results, // p
+/results/styles, // p
+/results/proof, // p
 /routines, // p
 /routines/history, // p
-/routeines/calendar, // p
+/routines/calendar, // p
 /routines/products, // p
 /explain, // p
-/proof, // p
-/proof/upload, // p
+/upload-proof, // p
+/sort-concerns // p
+/considerations // p
 /analysis, // p,
 /analysis/style, // p
 /club, // p - club profile
 /club/join, // p
 /club/registraion, // p
-/sort-concerns // p
-/considerations // p
-/club/progress,
-/club/styles,
-/club/proof,
+/club/progress, // progress of a user from club
+/club/styles, // styles of a user from club
+/club/proof, // proof of a user from club
 /club/about,
 /club/routines,
 /, // before afters from club
-/results/style, // styles from club
-/results/proof, // proof from club
+/style, // styles from club
+/proof, // proof from club
 /reviews,
 /solutions,
 /rewards,
