@@ -281,7 +281,7 @@ export type StyleAnalysisType = {
   demographics: DemographicsType;
   type: TypeEnum;
   goal: StyleGoalsType;
-  verdict?: string;
+  styleName?: string;
   createdAt: string;
   currentDescription?: string;
   currentSuggestion?: string;

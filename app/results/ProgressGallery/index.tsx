@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -8,7 +8,6 @@ import { Loader, rem, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { HandleFetchProgressType, HandleUpdateProgressType, SimpleProgressType } from "../types";
 import ProgressCard from "./ProgressCard";
 import classes from "./ProgressGallery.module.css";
@@ -26,7 +25,6 @@ export default function ProgressGallery({
   handleUpdateProgress,
   handleFetchProgress,
 }: Props) {
-  const { blurType } = useContext(BlurChoicesContext);
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
@@ -56,7 +54,7 @@ export default function ProgressGallery({
         handleUpdateProgress={handleUpdateProgress}
       />
     ),
-    [position, blurType]
+    [position, appliedBlurType]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);

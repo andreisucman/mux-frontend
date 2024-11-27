@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Carousel } from "@mantine/carousel";
 import { Stack } from "@mantine/core";
-import { SimpleProgressType } from "@/app/progress/types";
+import { SimpleProgressType } from "@/app/results/types";
 import { formatDate } from "@/helpers/formatDate";
 import SliderComparisonCard from "./SliderComparisonCard";
 import classes from "./SliderComparisonCarousel.module.css";

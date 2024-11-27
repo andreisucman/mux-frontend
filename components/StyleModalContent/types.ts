@@ -4,11 +4,11 @@ export type SimpleStyleType = {
   _id: string;
   userId: string;
   styleIcon?: string;
-  styleName?: string;
-  isPublic?: boolean;
+  isPublic: boolean;
   mainUrl: BlurredUrlType;
+  initialMainUrl: BlurredUrlType;
   urls: BlurredUrlType[];
-  verdict?: string;
+  styleName?: string;
   styleKeys: string[];
   styleValues: number[];
   createdAt: string;

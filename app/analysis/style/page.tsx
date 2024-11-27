@@ -32,16 +32,16 @@ export default function StyleScanResult() {
   const relevantAnalysis = latestStyleAnalysis?.[type as "head"];
   const emptyAnalysis = !relevantAnalysis;
 
-  const { verdict, isPublic, _id: styleId, mainUrl } = relevantAnalysis || {};
+  const { styleName, isPublic, _id: styleId, mainUrl } = relevantAnalysis || {};
 
   const openMatchStyle = useCallback(() => {
     modals.openContextModal({
       modal: "general",
       centered: true,
       title: <Title component={"p"} order={5}>Match style</Title>,
-      innerProps: <SelectStyleGoalModalContent type={type as TypeEnum} verdict={verdict} />,
+      innerProps: <SelectStyleGoalModalContent type={type as TypeEnum} styleName={styleName} />,
     });
-  }, [verdict, type]);
+  }, [styleName, type]);
 
   const handlePublishToClub = useCallback(async () => {
     if (isLoading) return;
@@ -83,13 +83,13 @@ export default function StyleScanResult() {
   }, [styleId, isLoading, status, typeof club, typeof latestStyleAnalysis]);
 
   const relevantOutlook = useMemo(
-    () => outlookStyles.find((item) => item.name === verdict),
-    [verdict]
+    () => outlookStyles.find((item) => item.name === styleName),
+    [styleName]
   );
 
   const title = `${relevantOutlook?.icon} Your ${
     type === "head" ? "head" : "outfit"
-  } looks ${verdict}`;
+  } looks ${styleName}`;
 
   useEffect(() => {
     if (!searchParams) return;

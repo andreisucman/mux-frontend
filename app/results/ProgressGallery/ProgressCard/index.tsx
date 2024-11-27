@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Image, Skeleton, Text, Title } from "@mantine/core";
+import { Image, Skeleton, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
+import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { HandleUpdateProgressType, SimpleProgressType } from "../../types";
 import ProgressIndicator from "../ProgressIndicator";
-import ContentPublicityIndicator from "./ContentPublicityIndicator";
 import classes from "./ProgressCard.module.css";
 
 type Props = {

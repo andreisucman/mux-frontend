@@ -102,11 +102,6 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
               <TextareaComponent
                 text={description}
                 setText={setDescription}
-                heading={
-                  <Text size="xs" c="dimmed">
-                    Describe the task freely:
-                  </Text>
-                }
                 placeholder={
                   type === "head"
                     ? "Moisturizing face with coconut oil"

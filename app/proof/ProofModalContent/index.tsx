@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Stack, Text } from "@mantine/core";
-import ContentPublicityIndicator from "@/app/progress/ProgressGallery/ProgressCard/ContentPublicityIndicator";
+import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { UserContext } from "@/context/UserContext";

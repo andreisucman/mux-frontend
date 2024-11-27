@@ -13,7 +13,7 @@ import classes from "./progress.module.css";
 
 export const runtime = "edge";
 
-export default function Progress() {
+export default function ResultsProgress() {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();

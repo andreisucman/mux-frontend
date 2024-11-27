@@ -11,8 +11,8 @@ const defaultProgressFiltersContext = {
   setSex: (args: any) => {},
   type: "",
   setType: (args: any) => {},
-  verdict: "",
-  setVerdict: (args: any) => {},
+  styleName: "",
+  setStyleName: (args: any) => {},
 };
 
 export const StyleFiltersContext = createContext(defaultProgressFiltersContext);
@@ -25,7 +25,7 @@ export default function StyleFiltersContextProvider({
   const [sex, setSex] = useState("");
   const [ethnicity, setEthnicity] = useState("");
   const [ageInterval, setAgeInterval] = useState("");
-  const [verdict, setVerdict] = useState("");
+  const [styleName, setStyleName] = useState("");
   const [type, setType] = useState("");
 
   return (
@@ -33,8 +33,8 @@ export default function StyleFiltersContextProvider({
       value={{
         ethnicity,
         setEthnicity,
-        verdict,
-        setVerdict,
+        styleName,
+        setStyleName,
         ageInterval,
         setAgeInterval,
         sex,

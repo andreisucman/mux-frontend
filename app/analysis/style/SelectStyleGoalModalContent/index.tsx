@@ -14,10 +14,10 @@ import classes from "./SelectStyleContent.module.css";
 
 type Props = {
   type: TypeEnum;
-  verdict?: string;
+  styleName?: string;
 };
 
-function SelectStyleGoalModalContent({ type, verdict }: Props) {
+function SelectStyleGoalModalContent({ type, styleName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
@@ -55,7 +55,7 @@ function SelectStyleGoalModalContent({ type, verdict }: Props) {
     }
   }, [styleId, type, selectedGoal?.name]);
 
-  const styles = outlookStyles.filter((obj) => obj.name !== verdict);
+  const styles = outlookStyles.filter((obj) => obj.name !== styleName);
 
   return (
     <Stack className={classes.container}>

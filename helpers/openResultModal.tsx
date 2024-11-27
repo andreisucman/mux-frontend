@@ -1,9 +1,9 @@
 import React from "react";
 import { modals } from "@mantine/modals";
-import ProgressModalContent from "@/app/progress/ProgressModalContent";
-import { SimpleProgressType } from "@/app/progress/types";
 import ProofModalContent from "@/app/proof/ProofModalContent";
 import { SimpleProofType } from "@/app/proof/types";
+import ProgressModalContent from "@/app/results/ProgressModalContent";
+import { SimpleProgressType } from "@/app/results/types";
 import StyleModalContent from "@/components/StyleModalContent";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserDataType, UserSubscriptionsType } from "@/types/global";

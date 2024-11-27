@@ -1,22 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter as useOriginalRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
   IconDental,
-  IconFilter,
   IconHeart,
   IconMan,
   IconMoodNeutral,
   IconMoodSmile,
-  IconSearch,
   IconWhirl,
 } from "@tabler/icons-react";
-import { ActionIcon, Group, Pill, rem, Title } from "@mantine/core";
+import { ActionIcon, Group, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
+import FilterButton from "../FilterButton";
 import FilterDropdown from "../FilterDropdown";
 import { FilterItemType } from "../FilterDropdown/types";
+import SearchButton from "../SearchButton";
 import classes from "./PageHeader.module.css";
 
 const typeData = [
@@ -64,13 +63,6 @@ export default function PageHeader({
 
   const [relevantParts, setRelevantParts] = useState(partData.filter((p) => p.type === type));
 
-  const removeSearchQuery = useCallback(() => {
-    const newQuery = modifyQuery({ params: [{ name: "query", value: null, action: "delete" }] });
-    let newUrl = pathname;
-    if (newQuery) newUrl += `?${newQuery}`;
-    originalRouter.replace(newUrl);
-  }, []);
-
   const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick;
 
   useEffect(() => {
@@ -93,30 +85,8 @@ export default function PageHeader({
       </Group>
       {showRightSide && (
         <Group className={classes.right} ref={ref}>
-          {onSearchClick && (
-            <Group className={classes.searchGroup}>
-              {query && (
-                <Pill
-                  className={classes.pill}
-                  styles={{ root: { maxWidth: rem(width / 2) } }}
-                  onRemove={removeSearchQuery}
-                  withRemoveButton
-                >
-                  {query}
-                </Pill>
-              )}
-              <ActionIcon variant="default" onClick={onSearchClick}>
-                <IconSearch className="icon icon__small" />
-              </ActionIcon>
-            </Group>
-          )}
-          {onFilterClick && (
-            <Group className={classes.filterGroup}>
-              <ActionIcon variant="default" onClick={onFilterClick}>
-                <IconFilter className="icon" />
-              </ActionIcon>
-            </Group>
-          )}
+          {onSearchClick && <SearchButton onSearchClick={onSearchClick} maxPillWidth={width / 2} />}
+          {onFilterClick && <FilterButton onFilterClick={onFilterClick} />}
           {!hideTypeDropdown && (
             <FilterDropdown
               data={typeData}
