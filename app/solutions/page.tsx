@@ -10,11 +10,11 @@ import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
+import fetchAutocompleteData from "@/functions/fetchAutocompleteData";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import { normalizeString } from "@/helpers/utils";
 import SolutionCard from "./SolutionCard";
-import { SolutionCardType } from "./types";
+import { SolutionCardType, SpotlightActionType } from "./types";
 import classes from "./solutions.module.css";
 
 export const runtime = "edge";
@@ -27,13 +27,6 @@ type FetchSolutionsProps = {
   concern?: string | null;
   query?: string | null;
   solutions?: SolutionCardType[];
-};
-
-type SpotlightActionType = {
-  id: string;
-  label: string;
-  leftSection: React.ReactNode;
-  onClick: () => void;
 };
 
 export default function Solutions() {
@@ -63,8 +56,6 @@ export default function Solutions() {
         finalEndpoint += `?${queryParams.join("&")}`;
       }
 
-      console.log("finalEndpoint", finalEndpoint);
-
       const response = await callTheServer({
         endpoint: finalEndpoint,
         method: "GET",
@@ -85,56 +76,23 @@ export default function Solutions() {
     }
   }, []);
 
-  const handleActionClick = useCallback((value: string) => {
-    const newQuery = modifyQuery({ params: [{ name: "query", value, action: "replace" }] });
-    router.replace(`${pathname}?${newQuery}`);
-  }, []);
+  const handleActionClick = useCallback(
+    (value: string) => {
+      const newQuery = modifyQuery({ params: [{ name: "query", value, action: "replace" }] });
+      router.replace(`${pathname}?${newQuery}`);
+    },
+    [pathname]
+  );
 
   const getAutocompleteData = useCallback(async () => {
-    try {
-      const response = await callTheServer({
-        endpoint: `getAllSolutions?fields=name,nearestConcerns`,
-        method: "GET",
-      });
-      if (response.status === 200) {
-        if (response.message) {
-          const actions = [];
+    const autocompleteData = await fetchAutocompleteData({
+      endpoint: "getAllSolutions",
+      fields: ["name", "nearestConcerns"],
+      handleActionClick,
+    });
 
-          const uniqueConcerns = [
-            ...new Set(
-              response.message.flatMap((obj: { nearestConcerns: string[] }) => obj.nearestConcerns)
-            ),
-          ] as string[];
-
-          for (const concern of uniqueConcerns) {
-            actions.push({
-              id: concern,
-              label: normalizeString(concern).toLowerCase(),
-              leftSection: <IconSearch className={"icon"} stroke={1.5} />,
-              onClick: () => handleActionClick(concern),
-            });
-          }
-
-          const uniqueNames = [
-            ...new Set(response.message.map((obj: { name: string }) => obj.name)),
-          ] as string[];
-
-          for (const name of uniqueNames) {
-            actions.push({
-              id: name,
-              label: name,
-              leftSection: <IconSearch className={"icon"} stroke={1.5} />,
-              onClick: () => handleActionClick(name),
-            });
-          }
-
-          setSpotlightActions(actions);
-        }
-      }
-    } catch (err) {
-      console.log("Error in getAutocompleteData: ", err);
-    }
-  }, []);
+    setSpotlightActions(autocompleteData);
+  }, [pathname]);
 
   const memoizedSolutionsCard = useCallback(
     (props: any) => <SolutionCard data={props.data} key={props.index} />,
@@ -155,7 +113,8 @@ export default function Solutions() {
         <PageHeader
           title="Solutions"
           onSearchClick={() => solutionsSpotlight.open()}
-          hideDropdown
+          hideTypeDropdown
+          hidePartDropdown
         />
         {solutions ? (
           <>

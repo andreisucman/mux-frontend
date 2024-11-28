@@ -44,7 +44,7 @@ function LinkRow({ linkClicked, handleClickLink, closeDrawer, link }: Props) {
       {link.children && (
         <Collapse in={linkClicked === link.path}>
           {link.children.map((child, index) => (
-            <Link key={index} href={child.path} className={`${classes.link} ${classes.child}`}>
+            <Link key={index} href={child.path} className={`${classes.link} ${classes.child}`} onClick={closeDrawer}>
               {child.title}
             </Link>
           ))}

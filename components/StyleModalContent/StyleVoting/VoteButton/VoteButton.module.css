@@ -1,0 +1,39 @@
+.group {
+  border-radius: var(--mantine-radius-lg);
+  padding: 0 rem(16);
+  min-height: rem(48);
+  border: rem(1) solid var(--mantine-color-dark-6);
+}
+
+.selected {
+  background-color: var(--mantine-color-dark-6);
+}
+
+.name {
+  gap: rem(8);
+  font-weight: 600;
+}
+
+.action {
+  gap: rem(8);
+}
+
+.votes {
+  font-size: rem(20);
+  font-weight: 600;
+}
+
+.filled {
+  color: var(--mantine-color-green-7);
+  fill: var(--mantine-color-green-7);
+}
+
+.filledButton {
+  background-color: alpha(var(--mantine-color-green-7), 0.25);
+  border: rem(1) solid var(--mantine-color-green-9);
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-green-7), 0.25);
+    border: rem(1) solid var(--mantine-color-green-9);
+  }
+}

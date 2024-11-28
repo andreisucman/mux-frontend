@@ -1,0 +1,30 @@
+.container {
+  position: absolute;
+
+  border-radius: var(--mantine-radius-lg);
+  padding: 0 rem(12) 0 rem(8);
+  min-height: rem(32);
+  border: rem(1) solid var(--mantine-color-dark-6);
+  width: fit-content;
+  gap: 0;
+}
+
+.bottomLeft {
+  bottom: rem(16);
+  left: rem(16);
+}
+
+.bottomRight {
+  bottom: rem(16);
+  right: rem(16);
+}
+
+.icon {
+  color: var(--mantine-color-green-7);
+  fill: var(--mantine-color-green-7);
+}
+
+.votes {
+  cursor: default;
+  font-weight: 600;
+}

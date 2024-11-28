@@ -7,7 +7,7 @@ import ScoreCell from "../ScoreCell";
 import classes from "./CardMetaPanel.module.css";
 
 type Props = {
-  avatar?: { [key: string]: any };
+  avatar?: { [key: string]: any } | null;
   userId: string;
   name: string;
   faceProgress: number;

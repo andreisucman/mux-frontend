@@ -59,15 +59,7 @@ export default function StyleGallery({ styles, hasMore, setStyles, handleFetchSt
           />
         </InfiniteScroll>
       ) : (
-        <OverlayWithText
-          icon={<IconCircleOff className="icon" />}
-          text="Nothing found"
-          outerStyles={{
-            backgroundColor: "var(--mantine-color-dark-6)",
-            border: "1px solid var(--mantine-color-dark-5)",
-            borderRadius: "var(--mantine-radius-lg)",
-          }}
-        />
+        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing found" />
       )}
     </Stack>
   );

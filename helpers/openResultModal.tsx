@@ -1,8 +1,9 @@
 import React from "react";
 import { modals } from "@mantine/modals";
+import ProgressModalContent from "@/app/results/ProgressModalContent";
+import { HandleTrackProps } from "@/app/results/proof/ProofGallery/type";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
 import { SimpleProofType } from "@/app/results/proof/types";
-import ProgressModalContent from "@/app/results/ProgressModalContent";
 import { SimpleProgressType } from "@/app/results/types";
 import StyleModalContent from "@/components/StyleModalContent";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
@@ -13,12 +14,8 @@ type OpenViewModalProps = {
   title: React.ReactNode;
   type: "style" | "progress" | "proof";
   isFullScreen?: boolean;
-  handleTrack?: (
-    trackedUserId: string,
-    setUserDetails: React.Dispatch<React.SetStateAction<UserDataType>>,
-    subscriptions?: UserSubscriptionsType | null
-  ) => void;
-  setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  handleTrack?: (props: HandleTrackProps) => void;
+  setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
 export default function openResultModal({
@@ -31,7 +28,11 @@ export default function openResultModal({
 }: OpenViewModalProps) {
   const content =
     type === "style" ? (
-      <StyleModalContent record={record as SimpleStyleType} handleTrack={handleTrack} setRecords={setRecords} />
+      <StyleModalContent
+        record={record as SimpleStyleType}
+        handleTrack={handleTrack}
+        setRecords={setRecords!}
+      />
     ) : type === "progress" ? (
       <ProgressModalContent record={record as SimpleProgressType} handleTrack={handleTrack} />
     ) : (

@@ -4,6 +4,7 @@ import { upperFirst } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
+import VotesCountIndicator from "@/components/VotesCountIndicator";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
 import classes from "./StyleCard.module.css";
@@ -15,7 +16,7 @@ type Props = {
 
 function StyleCard({ data, setStyles }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const { mainUrl, styleIcon, styleName, createdAt } = data;
+  const { mainUrl, styleIcon, styleName, createdAt, votes, _id: styleId, isPublic } = data;
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
 
@@ -26,12 +27,12 @@ function StyleCard({ data, setStyles }: Props) {
         type: "style",
         title: (
           <Title order={5} component={"p"}>
-            {formattedDate} - {data.styleName} style preview
+            {formattedDate} - {styleName} style preview
           </Title>
         ),
         setRecords: setStyles,
       }),
-    [data.styleName]
+    [styleName]
   );
 
   useEffect(() => {
@@ -45,14 +46,14 @@ function StyleCard({ data, setStyles }: Props) {
     <Skeleton visible={showSkeleton} className="skeleton">
       <div className={classes.imageWrapper}>
         <ContentBlurTypeButton
-          contentId={data._id}
+          contentId={styleId}
           currentMain={mainUrl}
           contentCategory={"style"}
           position="top-left"
           setRecords={setStyles}
         />
         <span className={classes.date}>{formattedDate}</span>
-        <ContentPublicityIndicator isPublic={data.isPublic} />
+        <ContentPublicityIndicator isPublic={isPublic} />
         <Image
           className={classes.image}
           src={mainUrl.url || "/"}
@@ -61,6 +62,7 @@ function StyleCard({ data, setStyles }: Props) {
           alt=""
           onClick={handleContainerClick}
         />
+        <VotesCountIndicator votes={votes} />
       </div>
       <Title order={5} className={classes.styleName}>
         {styleIcon} {upperFirst(styleName || "")}

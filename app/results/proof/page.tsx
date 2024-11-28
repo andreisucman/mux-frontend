@@ -3,95 +3,72 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
-import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
-import callTheServer from "@/functions/callTheServer";
+import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import openErrorModal from "@/helpers/openErrorModal";
+import ProofGallery from "./ProofGallery";
 import StyleHeader from "./ProofHeader";
-import StyleGallery from "./StyleGallery";
-import { HandleFetchProofType } from "./types";
-import classes from "./style.module.css";
+import { SimpleProofType } from "./types";
+import classes from "./proof.module.css";
 
 export const runtime = "edge";
 
-export default function ResultStyle() {
+export default function ResultsProof() {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
-  const [styles, setStyles] = useState<SimpleStyleType[]>();
+  const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
-  const styleName = searchParams.get("styleName");
   const { _id: userId } = userDetails || {};
+  const type = searchParams.get("type") || "head";
+  const query = searchParams.get("query");
+  const part = searchParams.get("part");
+  const sex = searchParams.get("sex");
+  const ageInterval = searchParams.get("ageInterval");
+  const ethnicity = searchParams.get("ethnicity");
+  const concern = searchParams.get("concern");
 
-  const handleFetchStyles = useCallback(
-    async ({ type, concern, part, skip }: HandleFetchProofType) => {
-      if (!userId) return;
+  const handleFetchProof = useCallback(
+    async ({ userId, type, part, concern, currentArrayLength, query, skip }: FetchProofProps) => {
+      const data = await fetchProof({
+        concern,
+        part,
+        query,
+        type,
+        currentArrayLength,
+        userId,
+        skip,
+      });
 
-      try {
-        const parts = [];
-
-        if (type) {
-          parts.push(`type=${type}`);
-        }
-
-        if (part) {
-          parts.push(`part=${part}`);
-        }
-
-        if (concern) {
-          parts.push(`concern=${concern}`);
-        }
-
-        if (skip && styles) {
-          parts.push(`skip=${styles.length}`);
-        }
-
-        const query = parts.join("&");
-
-        const endpoint = `getProofRecords${query ? `?${query}` : ""}`;
-
-        const response = await callTheServer({
-          endpoint,
-          method: "GET",
-        });
-
-        if (response.status === 200) {
-          if (skip) {
-            setStyles([...(styles || []), ...response.message.slice(0, 6)]);
-          } else {
-            setStyles(response.message.slice(0, 6));
-          }
-          setHasMore(response.message.length === 7);
+      if (data) {
+        if (skip) {
+          setProof([...(proof || []), ...data.slice(0, 20)]);
         } else {
-          openErrorModal();
+          setProof(data.slice(0, 20));
         }
-      } catch (err) {
-        console.log("Error in handleFetchStyles: ", err);
+        setHasMore(data.length === 21);
+      } else {
+        openErrorModal();
       }
     },
-    [userId, styles && styles.length]
+    [userId, type, part, concern, query, ageInterval]
   );
 
   useEffect(() => {
     if (!userId) return;
 
-    handleFetchStyles({ type, styleName });
-  }, [userId, type, styleName]);
+    handleFetchProof({ type, part, concern, query });
+  }, [userId, type, part, concern, query, ageInterval, ethnicity, sex]);
 
   return (
     <Stack className={classes.container}>
-      <StyleHeader
-        title="Style"
-        isDisabled={!styles || (styles && styles.length === 0)}
-        showReturn
-      />
-      {styles ? (
-        <StyleGallery
-          styles={styles}
+      <StyleHeader title="Proof" showReturn />
+      {proof ? (
+        <ProofGallery
+          proof={proof}
           hasMore={hasMore}
-          handleFetchStyles={handleFetchStyles}
-          setStyles={setStyles}
+          handleFetchProof={() => fetchProof({ concern, type, part, query, skip: hasMore })}
+          setProof={setProof}
         />
       ) : (
         <Loader m="auto" />

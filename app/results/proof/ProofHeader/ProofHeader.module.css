@@ -10,10 +10,9 @@
 
 .right {
   justify-content: flex-end;
-  min-width: rem(300);
 
   @media (max-width: $mantine-breakpoint-xs) {
-  flex: 1;
+    flex: 1;
     max-width: unset;
   }
 }

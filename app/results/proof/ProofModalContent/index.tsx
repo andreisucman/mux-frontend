@@ -6,18 +6,14 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
 import { normalizeString } from "@/helpers/utils";
-import { UserDataType, UserSubscriptionsType } from "@/types/global";
-import ProofCardFooter from "../ProofCard/ProofCardFooter";
+import ProofCardFooter from "../ProofGallery/ProofCard/ProofCardFooter";
+import { HandleTrackProps } from "../ProofGallery/type";
 import { SimpleProofType } from "../types";
 import classes from "./ProofModalContent.module.css";
 
 type Props = {
   record: SimpleProofType;
-  handleTrack?: (
-    trackedUserId: string,
-    setUserDetails: React.Dispatch<React.SetStateAction<UserDataType>>,
-    subscriptions?: UserSubscriptionsType | null
-  ) => void;
+  handleTrack?: (props: HandleTrackProps) => void;
 };
 
 export default function ProofModalContent({ record, handleTrack }: Props) {
@@ -29,7 +25,6 @@ export default function ProofModalContent({ record, handleTrack }: Props) {
   const isSelf = userDetails?._id === record.userId;
 
   const formattedDate = formatDate({ date: record.createdAt });
-  const disclaimer = record.isPublic ? "🔓 Public" : "🔒 Private";
   const concernName = normalizeString(record.concern);
 
   return (
@@ -61,7 +56,7 @@ export default function ProofModalContent({ record, handleTrack }: Props) {
         isTracked={isTracked}
         handleTrack={() => {
           if (handleTrack && trackedUserId)
-            handleTrack(trackedUserId, setUserDetails, subscriptions);
+            handleTrack({ trackedUserId, setUserDetails, subscriptions });
         }}
         isModal={true}
       />

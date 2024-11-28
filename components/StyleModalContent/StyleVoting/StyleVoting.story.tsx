@@ -4,7 +4,7 @@ export default {
   title: "Style Voting",
 };
 
-const Props = {
+const props = {
   votes: 100,
   compareVotes: 87,
   styleIcon: "🏃‍♂️🎽",
@@ -15,4 +15,4 @@ const Props = {
   setRecords: () => {},
 };
 
-export const StyleVotingComponent = () => <StyleVoting {...Props} />;
+export const StyleVotingComponent = () => <StyleVoting {...props} />;

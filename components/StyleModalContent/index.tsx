@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
+import { HandleTrackProps } from "@/app/results/proof/ProofGallery/type";
 import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
-import { UserDataType, UserSubscriptionsType } from "@/types/global";
 import GlowingButton from "../GlowingButton";
 import SliderComparisonCarousel from "../SliderComparisonCarousel";
 import StyleIndicators from "./StyleIndicators";
@@ -13,11 +13,7 @@ import classes from "./StyleModalContent.module.css";
 
 type Props = {
   record: SimpleStyleType;
-  handleTrack?: (
-    trackedUserId: string,
-    setUserDetails: React.Dispatch<React.SetStateAction<UserDataType>>,
-    subscriptions?: UserSubscriptionsType | null
-  ) => void;
+  handleTrack?: (props: HandleTrackProps) => void;
   setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
@@ -75,7 +71,9 @@ export default function StyleModalContent({ record, handleTrack, setRecords }: P
             addGradient={!isTracked}
             disabled={isTracked}
             icon={<IconEye className={classes.icon} />}
-            onClick={() => handleTrack(record.userId, setUserDetails, subscriptions)}
+            onClick={() =>
+              handleTrack({ trackedUserId: record.userId, setUserDetails, subscriptions })
+            }
           />
         </div>
       )}

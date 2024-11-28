@@ -17,8 +17,8 @@ function Logo({ customStyles }: Props) {
     <Link href={"/"} className={classes.container} style={customStyles ? customStyles : {}}>
       <Image
         src={logoSrc}
-        width={170}
-        height={50}
+        width={190}
+        height={42}
         alt="MaxYouOut logo"
         className={classes.logo}
         priority={true}

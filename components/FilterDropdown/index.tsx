@@ -53,7 +53,7 @@ export default function FilterDropdown({
     () =>
       data.map((item) => (
         <Menu.Item
-          leftSection={item.icon ? <span>{item.icon}</span> : undefined}
+          leftSection={item && item.icon ? <span>{item.icon}</span> : undefined}
           onClick={() => {
             handleSelect(item);
           }}
@@ -81,8 +81,8 @@ export default function FilterDropdown({
           data-expanded={opened || undefined}
         >
           <Group gap="xs">
-            {selected.icon}
-            <span className={classes.label}>{selected.label}</span>
+            {selected?.icon}
+            <span className={classes.label}>{selected?.label}</span>
           </Group>
           <IconChevronDown
             className={cn(classes.icon, { [classes.disabled]: isDisabled })}

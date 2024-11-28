@@ -10,3 +10,10 @@ export type SolutionCardType = {
   example: { type: string; url: string };
   defaultSuggestions: SuggestionType[];
 };
+
+export type SpotlightActionType = {
+  id: string;
+  label: string;
+  leftSection: React.ReactNode;
+  onClick: () => void;
+};

@@ -5,18 +5,14 @@ import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
-import { UserDataType, UserSubscriptionsType } from "@/types/global";
 import LineProgressIndicators from "../LineProgressIndicators";
+import { HandleTrackProps } from "../proof/ProofGallery/type";
 import { SimpleProgressType } from "../types";
 import classes from "./ProgressModalContent.module.css";
 
 type Props = {
   record: SimpleProgressType;
-  handleTrack?: (
-    trackedUserId: string,
-    setUserDetails: React.Dispatch<React.SetStateAction<UserDataType>>,
-    subscriptions?: UserSubscriptionsType | null
-  ) => void;
+  handleTrack?: (props: HandleTrackProps) => void;
 };
 
 export default function ProgressModalContent({ record, handleTrack }: Props) {
@@ -46,7 +42,9 @@ export default function ProgressModalContent({ record, handleTrack }: Props) {
             addGradient={!isTracked}
             disabled={isTracked}
             icon={<IconEye className={classes.icon} />}
-            onClick={() => handleTrack(record.userId, setUserDetails, subscriptions)}
+            onClick={() =>
+              handleTrack({ trackedUserId: record.userId, setUserDetails, subscriptions })
+            }
           />
         </div>
       )}

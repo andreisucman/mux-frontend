@@ -70,6 +70,11 @@ export default function ScanIndexPage() {
             type={"style"}
             onClick={() => handleRedirect("/scan/style?type=head")}
           />
+             <StartButton
+            needsScan={true}
+            type={"food"}
+            onClick={() => handleRedirect("/scan/style?type=head")}
+          />
         </Group>
       </Stack>
     </Stack>

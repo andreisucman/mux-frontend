@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { IconCaretUp } from "@tabler/icons-react";
-import cn from "classnames";
-import { ActionIcon, Group } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { Group } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
+import VoteButton from "./VoteButton";
 import classes from "./StyleVoting.module.css";
 
 type Props = {
@@ -86,39 +84,24 @@ export default function StyleVoting({
 
   return (
     <Group className={classes.container}>
-      <Group className={cn(classes.group, { [classes.selected]: votedFor === "current" })}>
-        <Group className={classes.name}>
-          <span className={classes.icon}>{styleIcon}</span>
-          {upperFirst(styleName)}
-        </Group>
-        <Group className={classes.action}>
-          <span className={classes.votes}>{votes}</span>
-
-          <ActionIcon
-            size="lg"
-            variant={votedFor === "current" ? "filled" : "default"}
-            onClick={() => handleVote(styleId, "current")}
-          >
-            <IconCaretUp className="icon" />
-          </ActionIcon>
-        </Group>
-      </Group>
-      <Group className={cn(classes.group, { [classes.selected]: votedFor === "compare" })}>
-        <Group className={classes.name}>
-          <span className={classes.icon}>{compareIcon}</span>
-          {upperFirst(compareName)}
-        </Group>
-        <Group className={classes.action}>
-          <span className={classes.votes}>{compareVotes}</span>
-          <ActionIcon
-            size="lg"
-            variant={votedFor === "compare" ? "filled" : "default"}
-            onClick={() => handleVote(styleId, "compare")}
-          >
-            <IconCaretUp className="icon" />
-          </ActionIcon>
-        </Group>
-      </Group>
+      <VoteButton
+        handleVote={handleVote}
+        styleIcon={styleIcon}
+        styleId={styleId}
+        styleName={styleName}
+        votedFor={votedFor}
+        votes={votes}
+        type={"current"}
+      />
+      <VoteButton
+        handleVote={handleVote}
+        styleIcon={compareIcon}
+        styleId={styleId}
+        styleName={compareName}
+        votedFor={votedFor}
+        votes={compareVotes}
+        type={"compare"}
+      />
     </Group>
   );
 }

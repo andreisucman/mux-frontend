@@ -6,7 +6,7 @@ import { modals } from "@mantine/modals";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import StyleFilterContent from "../StyleFilterContent";
+import StyleFilterContent from "./StyleFilterContent";
 import classes from "./StyleHeader.module.css";
 
 const typeData = [

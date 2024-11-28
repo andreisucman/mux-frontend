@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -8,44 +8,59 @@ import { Loader, rem, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import { SimpleStyleType } from "@/components/StyleModalContent/types";
-import { HandleFetchStylesType } from "../types";
-import StyleCard from "./StyleCard";
-import classes from "./ProgressGallery.module.css";
+import { UserContext } from "@/context/UserContext";
+import { SimpleProofType } from "../types";
+import ProofCard from "./ProofCard";
+import classes from "./ProofGallery.module.css";
 
 type Props = {
   hasMore: boolean;
-  styles?: SimpleStyleType[];
-  handleFetchStyles: (props: HandleFetchStylesType) => void;
-  setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
+  proof?: SimpleProofType[];
+  handleFetchProof: () => void;
+  setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
 };
 
-export default function StyleGallery({ styles, hasMore, setStyles, handleFetchStyles }: Props) {
+export default function ProofGallery({ proof, hasMore, setProof, handleFetchProof }: Props) {
+  const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
-  const type = searchParams.get("type") || "head";
-  const styleName = searchParams.get("styleName");
   const isMobile = useMediaQuery("(max-width: 36em)");
 
-  const modelObject = styles && styles[0];
+  const { _id: userId } = userDetails || {};
+
+  const type = searchParams.get("type") || "head";
+  const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
+  const trackedUserId = searchParams.get("trackedUserId");
+  const isSelf = userId === trackedUserId;
+
+  const modelObject = proof && proof[0];
   const appliedBlurType = modelObject?.mainUrl.name;
 
   const memoizedStyleCard = useCallback(
-    (props: any) => <StyleCard data={props.data} key={props.index} setStyles={setStyles} />,
-    [styleName, appliedBlurType]
+    (props: any) => (
+      <ProofCard
+        data={props.data}
+        key={props.index}
+        isMobile={!!isMobile}
+        isSelf={isSelf}
+        setProof={setProof}
+      />
+    ),
+    [type, part, concern, isMobile, isSelf, appliedBlurType]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
 
   return (
     <Stack className={classes.container}>
-      {styles && styles.length > 0 ? (
+      {proof && proof.length > 0 ? (
         <InfiniteScroll
           loader={
             <Stack mb={rem(16)} key={0}>
               <Loader m="auto" />
             </Stack>
           }
-          loadMore={() => handleFetchStyles({ type, styleName, skip: hasMore })}
+          loadMore={() => handleFetchProof()}
           hasMore={hasMore}
           pageStart={0}
         >
@@ -54,19 +69,11 @@ export default function StyleGallery({ styles, hasMore, setStyles, handleFetchSt
             columnGutter={16}
             columnWidth={gridColumnWidth}
             render={memoizedStyleCard}
-            items={styles}
+            items={proof}
           />
         </InfiniteScroll>
       ) : (
-        <OverlayWithText
-          icon={<IconCircleOff className="icon" />}
-          text="Nothing found"
-          outerStyles={{
-            backgroundColor: "var(--mantine-color-dark-6)",
-            border: "1px solid var(--mantine-color-dark-5)",
-            borderRadius: "var(--mantine-radius-lg)",
-          }}
-        />
+        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing found" />
       )}
     </Stack>
   );

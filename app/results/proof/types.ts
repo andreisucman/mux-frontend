@@ -14,11 +14,8 @@ export type SimpleProofType = {
   isTracked?: boolean;
   isPublic: boolean;
   icon: string;
-};
-
-export type HandleFetchProofType = {
-  type: string;
-  part: string | null;
-  concern: string | null;
-  skip?: boolean;
+  avatar: { [key: string]: any } | null;
+  clubName: string;
+  latestFaceScoreDifference?: { [key: string]: number };
+  latestBodyScoreDifference?: { [key: string]: number };
 };

@@ -7,7 +7,7 @@
   font-size: var(--mantine-font-size-sm);
 
   position: absolute;
-  top: rem(8);
-  right: rem(8);
+  top: rem(16);
+  right: rem(16);
   z-index: 2;
 }

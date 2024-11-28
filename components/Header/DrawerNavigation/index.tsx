@@ -24,9 +24,9 @@ const defaultNavigation = [
   {
     title: "Results",
     icon: <IconTargetArrow stroke={1.25} className="icon" />,
-    path: "/results",
+    path: "/",
     children: [
-      { title: "Progress", path: "/results" },
+      { title: "Progress", path: "/" },
       { title: "Style", path: "/style" },
       { title: "Uploads", path: "uploads" },
     ],
@@ -68,7 +68,7 @@ const defaultAuthenticatedNavigation = [
   {
     title: "My results",
     icon: <IconTargetArrow stroke={1.25} className="icon" />,
-    path: "/progress",
+    path: "/results",
     children: [
       { title: "Progress", path: "/results" },
       { title: "Style", path: "/results/style" },
