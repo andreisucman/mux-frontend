@@ -1,0 +1,38 @@
+.container {
+  gap: 0;
+  padding: rem(8);
+  gap: rem(8);
+  background-color: var(--mantine-color-dark-6);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  flex: 1;
+  width: 100%;
+
+  border-radius: var(--mantine-radius-lg);
+}
+
+.row {
+  position: relative;
+  border-radius: var(--mantine-radius-lg);
+  gap: rem(12);
+  align-items: flex-start;
+}
+
+.content {
+  flex: 1;
+  gap: rem(4);
+  margin: auto;
+}
+
+.name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--mantine-font-size-md);
+  font-weight: 600;
+}
+
+.clubSettingsButton {
+  position: absolute;
+  right: rem(8);
+  top: rem(8);
+}

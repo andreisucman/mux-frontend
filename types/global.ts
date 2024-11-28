@@ -218,6 +218,8 @@ export interface UserDataType extends DefaultUserType {
   latestStyleAnalysis: UserLatestStyleAnalysis;
   currentlyHigherThan: HigherThanType;
   potentiallyHigherThan: HigherThanType;
+  latestScores: LatestScoresType;
+  latestScoresDifference: LatestScoresType;
   tasks: TaskType[];
   routines: RoutineType[];
 }

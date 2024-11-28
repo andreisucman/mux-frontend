@@ -11,7 +11,7 @@
 }
 
 .rating {
-  font-size: rem(16);
+  font-size: var(--mantine-font-size-md);
   margin: auto;
 }
 

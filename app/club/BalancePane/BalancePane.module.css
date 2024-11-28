@@ -1,0 +1,27 @@
+.container {
+  gap: rem(12);
+}
+
+.amount {
+  gap: 0;
+  justify-content: center;
+  background-color: var(--mantine-color-dark-6);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  border-radius: var(--mantine-radius-lg);
+  font-size: rem(32);
+  font-weight: 600;
+  text-align: center;
+}
+
+.row {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.stack {
+  gap: rem(12);
+}
+
+.redirectToWalletButton {
+  padding: 0 rem(16);
+}

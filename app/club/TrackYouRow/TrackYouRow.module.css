@@ -1,0 +1,22 @@
+.container {
+  flex-wrap: nowrap;
+  gap: rem(16);
+  flex: 1;
+}
+
+.icon {
+  margin-right: rem(4);
+  min-width: rem(20);
+}
+
+.cell {
+  flex: 1;
+  gap: 0;
+}
+
+.text {
+  margin: 0;
+  flex-wrap: nowrap;
+  gap: rem(4);
+  white-space: nowrap;
+}

@@ -12,7 +12,7 @@
 
   position: relative;
   width: unset;
-  font-size: rem(16);
+  font-size: var(--mantine-font-size-md);
   height: rem(36);
   padding: 0 rem(16);
 

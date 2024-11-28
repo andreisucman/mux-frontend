@@ -1,6 +1,15 @@
-import React, { useContext } from "react";
-import { UserContext } from "@/context/UserContext";
+import React from "react";
+import ClubDataContextProvider from "@/context/ClubDataContext";
+import UserContextProvider from "@/context/UserContext";
 
-export default function ClubLayout() {
-  return <div>ClubLayout</div>;
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function ClubLayout({ children }: Props) {
+  return (
+    <UserContextProvider>
+      <ClubDataContextProvider>{children}</ClubDataContextProvider>
+    </UserContextProvider>
+  );
 }

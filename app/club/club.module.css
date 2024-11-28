@@ -1,0 +1,34 @@
+.container {
+  flex: 1;
+}
+
+.followYou {
+  flex: 1;
+  gap: rem(12);
+}
+
+.top {
+  gap: rem(12);
+  align-items: flex-start;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
+  }
+}
+
+.followYouScrollContainer {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.followYouScrollWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+}
