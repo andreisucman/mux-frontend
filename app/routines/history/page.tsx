@@ -77,8 +77,8 @@ export default function HistoryPage() {
   }, [type]);
 
   return (
-    <Stack className={classes.container}>
-      <PageHeader title="Tasks history" onSelect={() => setCompletedTasks([])} showReturn />
+    <Stack className={`${classes.container} smallPage`}>
+      <PageHeader title="Tasks history" onSelect={() => setCompletedTasks([])} showReturn hidePartDropdown />
       <Stack className={classes.content}>
         {completedTasks ? (
           <>

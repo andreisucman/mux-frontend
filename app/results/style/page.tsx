@@ -76,7 +76,7 @@ export default function ResultStyle() {
   }, [userId, type, styleName]);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} mediumPage`}>
       <StyleHeader
         title="Style"
         isDisabled={!styles || (styles && styles.length === 0)}

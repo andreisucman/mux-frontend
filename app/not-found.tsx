@@ -30,7 +30,7 @@ export default function NotFoundPage() {
   };
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} smallPage`}>
       <div className={classes.inner}>
         <Illustration className={classes.image} />
         <div className={classes.content}>

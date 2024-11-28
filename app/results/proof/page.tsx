@@ -61,7 +61,7 @@ export default function ResultsProof() {
   }, [userId, type, part, concern, query, ageInterval, ethnicity, sex]);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} mediumPage`}>
       <StyleHeader title="Proof" showReturn />
       {proof ? (
         <ProofGallery

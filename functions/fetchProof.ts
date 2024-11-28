@@ -25,7 +25,7 @@ export default async function fetchProof({
   currentArrayLength,
 }: FetchProofProps) {
   try {
-    let finalEndpoint = `getProofRecords${userId ? `/${userId}` : ""}`;
+    let finalEndpoint = `getUsersProofRecords${userId ? `/${userId}` : ""}`;
 
     const queryParams = [];
 

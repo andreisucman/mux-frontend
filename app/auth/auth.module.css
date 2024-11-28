@@ -5,18 +5,19 @@
 .wrapper {
   flex: 1;
   background-color: alpha(var(--mantine-color-dark-6), 0.25);
-  
+
   border-radius: var(--mantine-radius-lg);
-  max-height: rem(600);
+  max-height: rem(400);
   margin: auto;
   width: 100%;
   align-items: center;
   justify-content: center;
+  transform: translateY(-10%);
 }
 
 .content {
   max-height: rem(200);
-  max-width: rem(400);
+  max-width: clamp(80%, 80%, rem(400));
   width: 100%;
   height: 100%;
   background-color: alpha(var(--mantine-color-dark-6), 0.5);

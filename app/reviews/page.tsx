@@ -61,8 +61,8 @@ export default function Reviews() {
   }, []);
 
   return (
-    <Stack className={classes.container}>
-      <PageHeader title="Reviews" onFilterClick={() => {}} />
+    <Stack className={`${classes.container} largePage`}>
+      <PageHeader title="Reviews" />
       {reviews ? (
         <>
           {reviews.length > 0 ? (

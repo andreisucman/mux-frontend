@@ -251,8 +251,8 @@ export default function Explain() {
   }, []);
 
   return (
-    <Stack className={classes.container}>
-      <PageHeader title={name || ""} showReturn />
+    <Stack className={`${classes.container} smallPage`}>
+      <PageHeader title={name || ""} showReturn hidePartDropdown hideTypeDropdown/>
 
       <Skeleton className="skeleton" visible={!taskInfo}>
         <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>

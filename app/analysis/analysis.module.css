@@ -2,7 +2,12 @@
   flex: 1;
 }
 
-.heading {
-  align-items: center;
-  justify-content: space-between;
+.right {
+  max-width: rem(250);
+  width: 100%;
+  margin-left: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    max-width: unset;
+  }
 }

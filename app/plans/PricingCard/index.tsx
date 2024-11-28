@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Group, rem, Stack, Text } from "@mantine/core";
+import cn from "classnames";
+import { Group, rem, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import classes from "./PricingCard.module.css";
 
@@ -10,9 +11,9 @@ type Props = {
   customPriceGroupStyles?: { [key: string]: any };
   name?: string | React.ReactNode;
   icon?: React.ReactNode;
-  buttonText: string;
+  buttonText?: string;
   underButtonText?: string;
-  onClick: (args?: any) => Promise<void> | void;
+  onClick?: (args?: any) => Promise<void> | void;
   content: { icon: React.ReactNode; description: string }[];
 };
 
@@ -31,6 +32,8 @@ export default function PricingCard({
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleClick() {
+    if (!onClick) return;
+
     setIsLoading(true);
     await onClick();
 
@@ -42,18 +45,22 @@ export default function PricingCard({
 
   return (
     <Stack className={classes.container}>
-      <Stack className={classes.heading} style={customHeadingStyles ? customHeadingStyles : {}}>
-        {name}
+      <Stack
+        className={cn(classes.heading, {
+          [classes.premium]: !!price,
+        })}
+        style={customHeadingStyles ? customHeadingStyles : {}}
+      >
+        <Title order={4} className={classes.name}>
+          {name}
+        </Title>
         <>
           {price && (
             <Group
-              className={classes.priceGroup}
+              className={cn(classes.priceGroup)}
               style={customPriceGroupStyles ? customPriceGroupStyles : {}}
             >
-              <Text fw={600} fz={22} component="div">
-                ${price}
-              </Text>
-              /{" "}
+              <Title order={3}>${price}</Title>/{" "}
               <Text size="sm" mt={rem(2)}>
                 month
               </Text>
@@ -61,7 +68,7 @@ export default function PricingCard({
           )}
         </>
       </Stack>
-      <Stack className={classes.content}>
+      <Stack className={classes.content} mt={price ? 8 : 0}>
         {content.map((item, index) => (
           <Group wrap="nowrap" key={index} gap={12}>
             {item.icon}
@@ -69,19 +76,23 @@ export default function PricingCard({
           </Group>
         ))}
 
-        <GlowingButton
-          icon={icon}
-          text={buttonText}
-          disabled={!price}
-          addGradient={addGradient}
-          loading={isLoading}
-          onClick={handleClick}
-          containerStyles={{ marginTop: rem(4) }}
-        />
-        {underButtonText && (
-          <Text size="xs" c="dimmed" ta="center">
-            {underButtonText}
-          </Text>
+        {buttonText && (
+          <>
+            <GlowingButton
+              icon={icon}
+              text={buttonText}
+              disabled={!price}
+              addGradient={addGradient}
+              loading={isLoading}
+              onClick={handleClick}
+              containerStyles={{ marginTop: rem(4) }}
+            />
+            {underButtonText && (
+              <Text size="xs" c="dimmed" ta="center">
+                {underButtonText}
+              </Text>
+            )}
+          </>
         )}
       </Stack>
     </Stack>

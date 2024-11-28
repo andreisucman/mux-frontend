@@ -9,11 +9,6 @@
   inset: 0;
 }
 
-.title {
-  font-size: rem(22);
-  font-weight: 600;
-}
-
 .icon {
   width: rem(20);
 }

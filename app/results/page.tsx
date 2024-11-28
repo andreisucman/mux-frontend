@@ -75,7 +75,7 @@ export default function ResultsProgress() {
   }, [userId, type, part]);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} mediumPage`}>
       <ProgressHeader title="Progress" showReturn />
       {progress ? (
         <ProgressGallery

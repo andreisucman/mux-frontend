@@ -109,7 +109,7 @@ export default function Solutions() {
 
   return (
     <>
-      <Stack className={classes.container}>
+      <Stack className={`${classes.container} largePage`}>
         <PageHeader
           title="Solutions"
           onSearchClick={() => solutionsSpotlight.open()}

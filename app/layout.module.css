@@ -1,9 +1,6 @@
 .container {
   flex: 1;
   padding: rem(24) rem(16);
-  max-width: clamp(rem(740), 38.5%, rem(1480));
-  width: 100%;
-  margin: auto;
 
   @media (max-width: $mantine-breakpoint-sm) {
     padding: rem(16);

@@ -8,21 +8,53 @@
   overflow: hidden;
 }
 
+.name {
+  display: flex;
+  align-items: center;
+  min-height: rem(40);
+}
+
 .heading {
+  position: relative;
   justify-content: center;
   align-items: center;
-  font-size: rem(22);
   gap: 0;
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
-  color: var(--mantine-color-dark-9);
-  border-bottom: rem(1) solid var(--mantine-color-dark-5);
+  background-color: var(--mantine-color-dark-8);
+  border-radius: rem(14) 0 0 ;
+}
+
+.premium {
+  background-image: linear-gradient(
+    45deg,
+    var(--mantine-color-dark-8) 0%,
+    var(--mantine-color-dark-6) 25%,
+    var(--mantine-color-dark-7) 50%,
+    var(--mantine-color-dark-5) 75%,
+    var(--mantine-color-dark-8) 100%
+  );
+  animation: pulsate 10s infinite alternate;
+}
+
+@keyframes pulsate {
+  0% {
+    box-shadow: 0 0 10px 3px var(--mantine-color-brand-7); /* Red */
+  }
+  50% {
+    box-shadow: 0 0 20px 6px var(--mantine-color-orange-7); /* Green */
+  }
+  100% {
+    box-shadow: 0 0 30px 8px var(--mantine-color-red-7); /* Blue */
+  }
 }
 
 .priceGroup {
   flex-wrap: nowrap;
   gap: rem(4);
-  padding: rem(4);
   color: white;
+  min-height: rem(40);
+  width: 100%;
+  justify-content: center;
 }
 
 .content {

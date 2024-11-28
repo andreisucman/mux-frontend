@@ -54,3 +54,23 @@ body {
   background-size: contain !important;
   background-repeat: no-repeat !important;
 }
+
+.smallPage {
+  max-width: clamp(rem(740), 38.5%, rem(1480));
+  width: 100%;
+  margin: auto;
+}
+
+.mediumPage {
+  max-width: clamp(rem(960), 38.5%, rem(1480));
+  width: 100%;
+  margin: auto;
+}
+
+
+.largePage {
+  max-width: clamp(rem(1280), 38.5%, rem(1480));
+  width: 100%;
+  margin: auto;
+}
+

@@ -127,7 +127,7 @@ function ProofStatus({
           params: queryPayload,
         });
 
-        router.push(`/proof/upload?${query}`);
+        router.push(`/upload-proof?${query}`);
       } else {
         const response = await callTheServer({
           endpoint: "updateRequiredSubmission",

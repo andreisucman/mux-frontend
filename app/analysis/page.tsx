@@ -20,10 +20,12 @@ export default function StartAnalysis() {
   const type = searchParams.get("type") || "head";
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} smallPage`}>
       <Group className={classes.heading}>
         <Title order={1}>Analysis</Title>
-        <FilterDropdown data={filterData} filterType="type" addToQuery />
+        <Group className={classes.right}>
+          <FilterDropdown data={filterData} filterType="type" addToQuery />
+        </Group>
       </Group>
 
       <AnalysisCarousel type={type as "head" | "body"} />

@@ -69,7 +69,6 @@ export default function SolutionCard({ data }: Props) {
             <ExplanationContainer
               title={"Instruction:"}
               text={instruction}
-              size={"sm"}
               customStyles={example ? { borderRadius: "0 0 1rem 1rem" } : {}}
             />
           </Stack>

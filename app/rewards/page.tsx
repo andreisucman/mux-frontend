@@ -61,7 +61,7 @@ export default function Rewards() {
   }, []);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} largePage`}>
       <Title order={1}>Rewards</Title>
       {rewards ? (
         <>

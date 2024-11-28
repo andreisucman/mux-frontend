@@ -6,8 +6,6 @@
   border-radius: var(--mantine-radius-lg);
   width: 100%;
   height: fit-content;
-  max-width: rem(260);
-  min-width: rem(160);
   overflow: hidden;
 }
 
@@ -25,10 +23,9 @@
   position: relative;
   width: 100%;
   flex: 1;
-  min-height: rem(260);
   border-radius: 0;
-  overflow: hidden;
   gap: 0;
+  padding-bottom: 177%;
 }
 
 .taskName {

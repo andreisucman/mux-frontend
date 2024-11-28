@@ -5,9 +5,9 @@ import { useSearchParams } from "next/navigation";
 import {
   IconActivity,
   IconArrowBack,
-  IconCancel,
   IconCheck,
   IconClock,
+  IconX,
   IconZzz,
 } from "@tabler/icons-react";
 import cn from "classnames";
@@ -168,20 +168,26 @@ export default function Calendar() {
   const loadTasks = useCallback(
     async ({ date, status, type, key, mode, timeZone, routineId }: LoadTasksProps) => {
       try {
-        const payload = {
-          key,
-          type,
-          mode,
-          status: status || selectedStatus,
-          routineId,
-          timeZone,
-          date,
-        };
+        let endpoint = "getCalendarTasks";
+
+        const parts = [];
+        const finalStatus = status || selectedStatus;
+
+        if (key) parts.push(`key=${key}`);
+        if (type) parts.push(`type=${type}`);
+        if (mode) parts.push(`mode=${mode}`);
+        if (finalStatus) parts.push(`status=${finalStatus}`);
+        if (routineId) parts.push(`routineId=${routineId}`);
+        if (timeZone) parts.push(`timeZone=${timeZone}`);
+        if (date) parts.push(`date=${date}`);
+
+        const query = parts.join("&");
+
+        if (query) endpoint += `?${query}`;
 
         const response = await callTheServer({
-          endpoint: "getCalendarTasks",
-          method: "POST",
-          body: payload,
+          endpoint,
+          method: "GET",
         });
 
         if (response.status === 200) {
@@ -281,7 +287,7 @@ export default function Calendar() {
   const emptyIcon = useMemo(
     () =>
       selectedStatus === "disabled" ? (
-        <IconCancel className="icon" />
+        <IconX className="icon" />
       ) : selectedStatus === "expired" ? (
         <IconClock className="icon" />
       ) : (
@@ -341,8 +347,8 @@ export default function Calendar() {
   }, [givenTaskKey]);
 
   return (
-    <Stack flex={1}>
-      <PageHeader title="Tasks calendar" isDisabled={mode === "individual"} showReturn />
+    <Stack flex={1} className="smallPage">
+      <PageHeader title="Tasks calendar" isDisabled={mode === "individual"} showReturn hidePartDropdown />
       <DatePicker
         level="month"
         m="auto"
@@ -390,7 +396,7 @@ export default function Calendar() {
           onClick={() => handleShowByStatus("disabled")}
           disabled={!relevantRoutine}
         >
-          <IconCancel className={classes.icon} />
+          <IconX className={classes.icon} />
         </ActionIcon>
         <ActionIcon
           variant="default"
@@ -434,7 +440,7 @@ export default function Calendar() {
           onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
         >
           {selectedStatus === "active" ? (
-            <IconCancel className="icon" style={{ marginRight: rem(8) }} />
+            <IconX className="icon" style={{ marginRight: rem(8) }} />
           ) : (
             <IconCheck className="icon" style={{ marginRight: rem(8) }} />
           )}

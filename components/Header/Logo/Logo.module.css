@@ -2,7 +2,7 @@
 .container {
   display: flex;
   align-items: center;
-  height: rem(42);
+  height: rem(40);
 }
 
 .logo {

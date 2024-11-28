@@ -149,7 +149,7 @@ export default function UploadProof() {
   }, [taskId]);
 
   return (
-    <Stack flex={1}>
+    <Stack flex={1} className="smallPage">
       <PageHeader
         title={`Upload proof - ${submissionName}`}
         showReturn

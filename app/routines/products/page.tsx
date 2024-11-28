@@ -51,8 +51,8 @@ export default function Products() {
   useSWR(`${type}-${status}`, () => fetchProducts(type as TypeEnum));
 
   return (
-    <Stack className={classes.container} ref={ref}>
-      <PageHeader title="Products for tasks" showReturn />
+    <Stack className={`${classes.container} smallPage`} ref={ref}>
+      <PageHeader title="Products for tasks" showReturn hidePartDropdown/>
 
       {uniqueTasks ? (
         <>

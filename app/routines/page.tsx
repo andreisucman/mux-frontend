@@ -58,8 +58,8 @@ export default function MyRoutines() {
           : undefined;
 
   return (
-    <Stack flex={1}>
-      <PageHeader title="My routines" />
+    <Stack flex={1} className="smallPage">
+      <PageHeader title="My routines" hidePartDropdown/>
       <ConsiderationsInput
         placeholder={"Special considerations"}
         defaultValue={specialConsiderations || ""}

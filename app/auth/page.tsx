@@ -27,7 +27,7 @@ export default function AuthPage() {
     }
   }
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
         <Stack className={classes.content}>
           <Title className={classes.title} order={1}>
