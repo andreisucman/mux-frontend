@@ -22,8 +22,6 @@ export default function Club() {
   const { trackYouData, youTrackData, youData } = useContext(ClubContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  console.log("trackYouData", trackYouData);
-
   const { club } = userDetails || {};
   const { trackedUserId: localTrackedUserId, payouts } = club || {};
   const { rewardEarned, payoutsEnabled } = payouts || {};
@@ -68,12 +66,6 @@ export default function Club() {
   );
 
   useEffect(() => {
-    console.log(
-      typeof rewardEarned !== "number",
-      localTrackedUserId && !youTrackData,
-      !trackYouData,
-      !youData
-    );
     if (typeof rewardEarned !== "number") return;
     if (localTrackedUserId && !youTrackData) return;
     if (!trackYouData) return;
@@ -92,7 +84,7 @@ export default function Club() {
         <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
         <Stack className={classes.followYou}>
           <Text c="dimmed" size="sm">
-            Follow you
+            Peek you
           </Text>
           <Stack className={classes.followYouScrollContainer}>
             {trackYouData ? (
@@ -109,7 +101,7 @@ export default function Club() {
                     ))}
                   </Stack>
                 ) : (
-                  <OverlayWithText text="No followers" icon={<IconCircleOff className="icon" />} />
+                  <OverlayWithText text="No peekers" icon={<IconCircleOff className="icon" />} />
                 )}
               </>
             ) : (

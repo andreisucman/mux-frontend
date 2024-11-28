@@ -1,0 +1,4 @@
+.wrapper {
+  gap: rem(12);
+  flex: 1;
+}

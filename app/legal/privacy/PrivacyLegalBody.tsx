@@ -62,7 +62,7 @@ export default function PrivacyLegalBody() {
         <ul>
           <li>Stripe for payment processing.</li>
           <li>
-            {`Users who follow you on the platform, if you opt into the "Club"
+            {`Users who peek (follow) you on the platform, if you opt into the "Club"
             feature, enabling them to view your images and videos`}
             .
           </li>

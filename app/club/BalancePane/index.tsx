@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Group, Stack, Text } from "@mantine/core";
+import { Group, Title, Stack, Text } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -45,7 +45,7 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
           </Text>
           <RedirectToWalletButton />
         </Group>
-        <Text className={classes.amount}>${displayBalance}</Text>
+        <Title order={2} className={classes.amount}>${displayBalance}</Title>
       </Stack>
       <GlowingButton
         text={"Withdraw"}

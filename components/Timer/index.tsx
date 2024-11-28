@@ -10,10 +10,19 @@ type Props = {
   showDays?: boolean;
   onlyMinutes?: boolean;
   text?: string;
+  onComplete?: () => void;
   customStyles?: { [key: string]: any };
 };
 
-const Timer = ({ date, text, showDays, onlyMinutes, customStyles, onlyCountdown }: Props) => {
+const Timer = ({
+  date,
+  text,
+  showDays,
+  onlyMinutes,
+  customStyles,
+  onlyCountdown,
+  onComplete,
+}: Props) => {
   const containerRef = useRef(null);
   const [countdown, setCountdown] = useState(0);
 
@@ -39,6 +48,10 @@ const Timer = ({ date, text, showDays, onlyMinutes, customStyles, onlyCountdown 
         if (prevCountdown > 0) {
           return prevCountdown - 1;
         } else {
+          if (!callbackInvoked) {
+            onComplete();
+            callbackInvoked = true;
+          }
           clearInterval(timer);
           return 0;
         }

@@ -135,7 +135,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
           </li>
           <li>
             <strong>Progress Images of Head and Body:</strong> These images remain private and are
-            only accessible to users who follow you. Unauthorized sharing or use of these images by
+            only accessible to users who peek (follow) you. Unauthorized sharing or use of these images by
             followers is strictly prohibited and may result in penalties or removal from the Club.
           </li>
         </ul>

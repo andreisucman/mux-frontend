@@ -1,10 +1,10 @@
 import React, { memo, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
+import { useRouter } from "@/helpers/custom-router";
 import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
 import classes from "./ClubProfilePreview.module.css";
@@ -19,7 +19,6 @@ type Props = {
 
 function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: Props) {
   const router = useRouter();
-
   const { scores, bio, _id: trackedUserId, avatar, name } = data || {};
   const { headTotalProgress, bodyTotalProgress } = scores || {};
   const { questions } = bio || {};

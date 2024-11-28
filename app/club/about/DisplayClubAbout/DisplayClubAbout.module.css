@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+  flex: 1;
+}
+
+.wrapper {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+}
+
+.text {
+  position: absolute;
+  inset: 0;
+}
+
+.cell {
+  display: flex;
+  gap: rem(4);
+  align-items: center;
+}

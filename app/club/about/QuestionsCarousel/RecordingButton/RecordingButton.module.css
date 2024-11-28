@@ -1,0 +1,42 @@
+.container {
+  display: inline-flex;
+  gap: rem(8);
+  min-width: rem(60);
+  width: fit-content;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 0 rem(4);
+}
+
+.buttonLabel {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: rem(4);
+}
+
+.indicator {
+  width: rem(12);
+  height: rem(12);
+  border-radius: 1000px;
+  background-color: var(--mantine-color-gray-3);
+}
+
+.indicatorActive {
+  background-color: var(--mantine-color-brand-7);
+  animation: pulsate 1s infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -543,7 +543,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             The Services may allow registered users to join a membership program (the "Club"), where
             you can upload content, including but not limited to text, photographs, videos, or other
             materials (collectively, "Contributions"). By joining the Club, your Contributions may
-            be accessible to users who follow you ("Followers") in exchange for financial
+            be accessible to users who peek (follow) you ("Followers") in exchange for financial
             compensation, as outlined in the applicable terms for the Club.
           </Text>
           <Text>
