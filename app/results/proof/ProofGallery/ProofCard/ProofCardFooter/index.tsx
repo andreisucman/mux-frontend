@@ -45,7 +45,7 @@ export default function ProofCardFooter({
             text={"Peek the routine"}
             addGradient={!isTracked}
             disabled={isTracked}
-            icon={<IconEye className={classes.icon} />}
+            icon={<IconEye className={"icon"} />}
             onClick={handleTrack}
           />
         </div>

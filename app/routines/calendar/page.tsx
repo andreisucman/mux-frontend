@@ -348,7 +348,12 @@ export default function Calendar() {
 
   return (
     <Stack flex={1} className="smallPage">
-      <PageHeader title="Tasks calendar" isDisabled={mode === "individual"} showReturn hidePartDropdown />
+      <PageHeader
+        title="Tasks calendar"
+        isDisabled={mode === "individual"}
+        showReturn
+        hidePartDropdown
+      />
       <DatePicker
         level="month"
         m="auto"
@@ -375,7 +380,7 @@ export default function Calendar() {
             onClick={handleResetMode}
             className={classes.taskStatusButton}
           >
-            <IconArrowBack className={classes.icon} />
+            <IconArrowBack className={"icon"} />
           </ActionIcon>
         )}
         <ActionIcon
@@ -386,7 +391,7 @@ export default function Calendar() {
           onClick={() => handleShowByStatus("active")}
           disabled={!relevantRoutine}
         >
-          <IconActivity className={classes.icon} />
+          <IconActivity className={"icon"} />
         </ActionIcon>
         <ActionIcon
           variant="default"
@@ -396,7 +401,7 @@ export default function Calendar() {
           onClick={() => handleShowByStatus("disabled")}
           disabled={!relevantRoutine}
         >
-          <IconX className={classes.icon} />
+          <IconX className={"icon"} />
         </ActionIcon>
         <ActionIcon
           variant="default"
@@ -406,7 +411,7 @@ export default function Calendar() {
           onClick={() => handleShowByStatus("expired")}
           disabled={!relevantRoutine}
         >
-          <IconClock className={classes.icon} />
+          <IconClock className={"icon"} />
         </ActionIcon>
       </Group>
 

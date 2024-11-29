@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
@@ -36,6 +36,7 @@ type Props = {
   showReturn?: boolean;
   hideTypeDropdown?: boolean;
   hidePartDropdown?: boolean;
+  filterNames?: string[];
   onSelect?: (item?: FilterItemType) => void;
   onFilterClick?: () => void;
   onSearchClick?: () => void;
@@ -47,6 +48,7 @@ export default function PageHeader({
   hideTypeDropdown,
   hidePartDropdown,
   isDisabled,
+  filterNames = [],
   onSelect,
   onFilterClick,
   onSearchClick,
@@ -60,6 +62,12 @@ export default function PageHeader({
 
   const [relevantParts, setRelevantParts] = useState(partData.filter((p) => p.type === type));
   const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick;
+
+  const activeFiltersCount = useMemo(() => {
+    const allQueryParams = Array.from(searchParams.keys());
+    const included = allQueryParams.filter((k) => filterNames?.includes(k));
+    return included.length;
+  }, [searchParams.toString()]);
 
   useEffect(() => {
     if (hideTypeDropdown || hidePartDropdown) return;
@@ -82,7 +90,9 @@ export default function PageHeader({
       {showRightSide && (
         <Group className={classes.right} ref={ref}>
           {onSearchClick && <SearchButton onSearchClick={onSearchClick} maxPillWidth={width / 2} />}
-          {onFilterClick && <FilterButton onFilterClick={onFilterClick} />}
+          {onFilterClick && (
+            <FilterButton onFilterClick={onFilterClick} activeFiltersCount={activeFiltersCount} />
+          )}
           {!hideTypeDropdown && (
             <FilterDropdown
               data={typeData}

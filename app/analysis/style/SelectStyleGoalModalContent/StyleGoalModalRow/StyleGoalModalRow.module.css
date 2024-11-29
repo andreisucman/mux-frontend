@@ -4,3 +4,7 @@
   white-space: wrap;
   margin-right: rem(4);
 }
+
+.checkboxInput {
+  cursor: pointer;
+}

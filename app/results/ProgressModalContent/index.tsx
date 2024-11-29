@@ -41,7 +41,7 @@ export default function ProgressModalContent({ record, handleTrack }: Props) {
             text={"Peek the routine"}
             addGradient={!isTracked}
             disabled={isTracked}
-            icon={<IconEye className={classes.icon} />}
+            icon={<IconEye className={"icon"} />}
             onClick={() =>
               handleTrack({ trackedUserId: record.userId, setUserDetails, subscriptions })
             }

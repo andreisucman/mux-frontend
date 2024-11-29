@@ -1,0 +1,21 @@
+.container {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  flex: 1;
+  align-items: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+.right {
+  flex: 1;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    max-width: unset;
+  }
+}

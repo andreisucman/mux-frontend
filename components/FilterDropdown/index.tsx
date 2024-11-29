@@ -9,7 +9,7 @@ import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
 
 type Props = {
-  filterType: string;
+  filterType?: string;
   isDisabled?: boolean;
   addToQuery?: boolean;
   data: FilterItemType[];
@@ -34,7 +34,7 @@ export default function FilterDropdown({
     (item: FilterItemType) => {
       if (!location) return;
 
-      if (addToQuery) {
+      if (addToQuery && filterType) {
         const newQuery = modifyQuery({
           params: [{ name: filterType, value: item.value, action: "replace" }],
         });
@@ -85,7 +85,7 @@ export default function FilterDropdown({
             <span className={classes.label}>{selected?.label}</span>
           </Group>
           <IconChevronDown
-            className={cn(classes.icon, { [classes.disabled]: isDisabled })}
+            className={cn("icon", classes.icon, { [classes.disabled]: isDisabled })}
             stroke={1.25}
           />
         </UnstyledButton>

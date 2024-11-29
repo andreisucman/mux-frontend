@@ -123,11 +123,11 @@ export default function RoutineRow({
         ? "var(--mantine-color-green-7)"
         : "var(--mantine-color-gray-3)";
       if (submission.dayTime === "morning")
-        return <IconSunrise key={index} color={submissionColor} className={classes.icon} />;
+        return <IconSunrise key={index} color={submissionColor} className={"icon icon__small"} />;
       if (submission.dayTime === "evening")
-        return <IconSunset key={index} color={submissionColor} className={classes.icon} />;
+        return <IconSunset key={index} color={submissionColor} className={"icon icon__small"} />;
       if (submission.dayTime === "noon")
-        return <IconSun key={index} color={submissionColor} className={classes.icon} />;
+        return <IconSun key={index} color={submissionColor} className={"icon icon__small"} />;
     });
   }, [requiredSubmissions?.length]);
 

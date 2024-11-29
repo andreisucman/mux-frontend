@@ -70,7 +70,7 @@ export default function StyleModalContent({ record, handleTrack, setRecords }: P
             text={"Peek lifestyle"}
             addGradient={!isTracked}
             disabled={isTracked}
-            icon={<IconEye className={classes.icon} />}
+            icon={<IconEye className={"icon"} />}
             onClick={() =>
               handleTrack({ trackedUserId: record.userId, setUserDetails, subscriptions })
             }

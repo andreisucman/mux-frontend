@@ -92,7 +92,11 @@ export default function UploadCard({
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5} component={"p"}>Take a photo</Title>,
+      title: (
+        <Title order={5} component={"p"}>
+          Take a photo
+        </Title>
+      ),
       innerProps: <PhotoCapturer handleCapture={loadLocally} />,
     });
   }, [loadLocally]);
@@ -165,7 +169,7 @@ export default function UploadCard({
                   variant="default"
                   onClick={() => router.replace(`/scan/style/result?type=${type}`)}
                 >
-                  <IconArrowRight className={classes.icon} />
+                  <IconArrowRight className={"icon"} />
                 </ActionIcon>
               )}
             </Group>

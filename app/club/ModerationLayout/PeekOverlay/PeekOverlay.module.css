@@ -1,0 +1,16 @@
+.container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--mantine-color-dark-6);
+
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
+}
+
+.text {
+  padding: rem(8) rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  border-radius: var(--mantine-radius-lg);
+}

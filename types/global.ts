@@ -222,6 +222,7 @@ export interface UserDataType extends DefaultUserType {
   latestScoresDifference: LatestScoresType;
   tasks: TaskType[];
   routines: RoutineType[];
+  coachEnergy: number;
 }
 
 export type SubscriptionType = {

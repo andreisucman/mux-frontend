@@ -3,7 +3,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
-import PageHeader from "@/components/PageHeader";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -152,25 +151,22 @@ export default function ClubAbout() {
   }, [loadData, userDetails]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Club about" showReturn hidePartDropdown hideTypeDropdown />
-      <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
-        {questions && questions.length > 0 && (
-          <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
-        )}
+    <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
+      {questions && questions.length > 0 && (
+        <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
+      )}
 
-        {trackedUserId ? (
-          <DisplayClubAbout bioData={bioData} />
-        ) : (
-          <EditClubAbout
-            bioData={bioData}
-            loadData={loadData}
-            questions={questions}
-            setBioData={setBioData}
-            updateClubBio={updateClubBio}
-          />
-        )}
-      </Skeleton>
-    </Stack>
+      {trackedUserId ? (
+        <DisplayClubAbout bioData={bioData} />
+      ) : (
+        <EditClubAbout
+          bioData={bioData}
+          loadData={loadData}
+          questions={questions}
+          setBioData={setBioData}
+          updateClubBio={updateClubBio}
+        />
+      )}
+    </Skeleton>
   );
 }

@@ -1,4 +1,3 @@
-import cn from "classnames";
 import { Checkbox, rem, Text, UnstyledButton } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { ImageCheckboxProps } from "./types";
@@ -19,7 +18,6 @@ export default function StyleGoalModalRow({
       {...others}
       onClick={() => onChange({ icon, name, description })}
       data-checked={checked}
-      className={cn(classes.button, { [classes.selected]: checked })}
     >
       <Text className={classes.icon}>{icon}</Text>
       <div className={classes.body}>
@@ -34,7 +32,7 @@ export default function StyleGoalModalRow({
         readOnly
         checked={checked}
         tabIndex={-1}
-        styles={{ input: { cursor: "pointer" } }}
+        classNames={{ input: classes.checkboxInput }}
       />
     </UnstyledButton>
   );

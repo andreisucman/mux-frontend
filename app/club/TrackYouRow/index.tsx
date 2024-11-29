@@ -57,7 +57,7 @@ export default function TrackYouRow({
         className={classes.button}
         variant="default"
       >
-        <IconEye className={classes.icon} />
+        <IconEye className={"icon"} />
       </Button>
     </Group>
   );

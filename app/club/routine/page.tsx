@@ -7,7 +7,6 @@ import { Accordion, ActionIcon, Group, Loader, rem, Stack, Text } from "@mantine
 import { modals } from "@mantine/modals";
 import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -217,8 +216,6 @@ export default function ClubRoutine() {
 
   return (
     <Stack className={classes.container}>
-      <PageHeader title="Peek routines" showReturn hidePartDropdown />
-
       {routines ? (
         <>
           {routines.length > 0 ? (
@@ -256,7 +253,7 @@ export default function ClubRoutine() {
           ) : (
             <OverlayWithText
               icon={<IconCircleOff className="icon" />}
-              text={`This user doesn't have any ${type} routines`}
+              text={`No ${type} routines`}
             />
           )}
         </>

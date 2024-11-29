@@ -56,11 +56,6 @@
   }
 }
 
-.icon {
-  width: rem(20);
-  height: rem(20);
-}
-
 .checkboxAndButtons {
   gap: rem(12);
   width: 100%;
