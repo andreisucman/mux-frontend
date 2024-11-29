@@ -1,0 +1,12 @@
+.container {
+  gap: rem(8);
+  flex-wrap: nowrap;
+}
+
+.text {
+  white-space: nowrap;
+}
+
+.isChild {
+  font-size: var(--mantine-font-size-sm);
+}

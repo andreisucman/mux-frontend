@@ -1,4 +1,4 @@
 .carousel {
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   overflow: hidden;
 }

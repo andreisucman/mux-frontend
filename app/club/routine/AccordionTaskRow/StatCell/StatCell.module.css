@@ -1,0 +1,13 @@
+.container {
+  gap: rem(4);
+  flex-wrap: nowrap;
+}
+
+.value {
+  font-size: var(--mantine-font-size-md);
+  white-space: nowrap;
+}
+
+.child {
+  font-size: var(--mantine-font-size-sm);
+}

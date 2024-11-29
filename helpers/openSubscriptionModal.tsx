@@ -16,7 +16,6 @@ type Props = {
   title: string;
   name?: string;
   price?: string;
-  color: string;
   withCloseButton?: boolean;
   description?: string;
   buttonText: string;
@@ -32,7 +31,6 @@ export default function openSubscriptionModal({
   modalType,
   price,
   name,
-  color,
   description,
   buttonText,
   buttonIcon,
@@ -56,7 +54,11 @@ export default function openSubscriptionModal({
     centered: isCentered,
     withCloseButton,
     closeOnClickOutside: withCloseButton,
-    title: <Title order={5} component={"p"}>{title}</Title>,
+    title: (
+      <Title order={5} component={"p"}>
+        {title}
+      </Title>
+    ),
     innerProps: (
       <Stack flex={1}>
         {description && <Text size="sm">{description}</Text>}
@@ -69,7 +71,6 @@ export default function openSubscriptionModal({
           buttonText={buttonText}
           underButtonText={underButtonText}
           customHeadingStyles={{
-            backgroundColor: color,
             borderRadius: 0,
           }}
           customPriceGroupStyles={{ color: "#262626" }}

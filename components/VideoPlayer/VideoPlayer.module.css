@@ -49,7 +49,7 @@
   position: absolute;
   top: rem(16);
   left: rem(16);
-  font-size: rem(14);
+  font-size: var(--mantine-font-size-sm);
 }
 
 .thumbnail {
