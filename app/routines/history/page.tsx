@@ -97,7 +97,7 @@ export default function HistoryPage() {
                 {completedTasks && (
                   <List
                     items={completedTasks}
-                    rowGutter={12}
+                    rowGutter={16}
                     render={(props: any) => {
                       const { key, ...rest } = props.data;
                       return <CompletedRoutineRow {...rest} key={key} />;

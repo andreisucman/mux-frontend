@@ -1,10 +1,11 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { IconEye } from "@tabler/icons-react";
+import { IconBlur } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Checkbox, Menu, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import callTheServer from "@/functions/callTheServer";
+import { onComplete } from "@/helpers/custom-router/events";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { BlurredUrlType } from "@/types/global";
@@ -22,7 +23,8 @@ type Props = {
   position?: "top-right" | "bottom-right" | "top-left" | "bottom-left";
   currentMain: BlurredUrlType;
   contentCategory: "progress" | "proof" | "style";
-  setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  onComplete?: (props: { [key: string]: any }) => void;
   customStyles?: { [key: string]: any };
 };
 
@@ -39,6 +41,7 @@ export default function ContentBlurTypeButton({
   currentMain,
   contentCategory,
   setRecords,
+  onComplete,
   customStyles,
 }: Props) {
   const { blurType, setBlurType } = useContext(BlurChoicesContext);
@@ -91,9 +94,11 @@ export default function ContentBlurTypeButton({
 
   const handleUpdateRecord = useCallback(({ contentId, updateObject }: HandleUpdateRecordType) => {
     try {
-      setRecords((prev: any) =>
-        prev?.map((rec: any) => (rec._id === contentId ? { ...rec, ...updateObject } : rec))
-      );
+      if (setRecords)
+        setRecords((prev: any) =>
+          prev?.map((rec: any) => (rec._id === contentId ? { ...rec, ...updateObject } : rec))
+        );
+      if (onComplete) onComplete(updateObject);
     } catch (err) {
       console.log("Error in handleUpdateRecord: ", err);
     }
@@ -212,7 +217,7 @@ export default function ContentBlurTypeButton({
             })}
             style={customStyles || {}}
           >
-            <IconEye />
+            <IconBlur className="icon" />
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>

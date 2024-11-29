@@ -19,11 +19,12 @@ export default function ClubChatContainer({ disabled }: Props) {
 
   const trackedUserId = searchParams.get("trackedUserId");
   const name = trackedUserId ? `the ${youTrackData?.name}'s` : "your";
+  const openChat = disabled ? false : focused && conversation.length > 0;
 
   return (
     <Stack className={classes.container} ref={focusRef}>
       <Collapse
-        in={disabled ? false : focused}
+        in={openChat}
         className={classes.collapse}
         transitionDuration={250}
         transitionTimingFunction="linear"

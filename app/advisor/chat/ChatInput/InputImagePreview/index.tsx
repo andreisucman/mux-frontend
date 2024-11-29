@@ -17,7 +17,7 @@ export default function InputImagePreview({ image, setImages }: Props) {
     } catch (err) {
       console.error(err);
     }
-  }, [image.name]);
+  }, [image]);
 
   useEffect(() => {
     const url = URL.createObjectURL(image);
@@ -26,7 +26,7 @@ export default function InputImagePreview({ image, setImages }: Props) {
     return () => {
       URL.revokeObjectURL(url);
     };
-  }, [image.name]);
+  }, [image]);
 
   return (
     <Group className={classes.container}>

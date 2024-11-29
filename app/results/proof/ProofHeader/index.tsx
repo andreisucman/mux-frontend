@@ -46,7 +46,7 @@ export default function ProofHeader({ showReturn, showFilter }: Props) {
 
   const getAutocompleteData = useCallback(async () => {
     const autocompleteData = await fetchAutocompleteData({
-      endpoint: "getProofAutocomplete",
+      endpoint: "getUsersProofAutocomplete",
       fields: ["taskName", "concern", "part", "type"],
       handleActionClick,
     });

@@ -1,0 +1,16 @@
+.container {
+  min-height: rem(350);
+  gap: 0;
+}
+
+.wrapper {
+  position: relative;
+  flex: 1;
+  gap: 0;
+  overflow-y: auto;
+  max-height: rem(350);
+}
+
+.getMoreButton {
+  margin: auto;
+}

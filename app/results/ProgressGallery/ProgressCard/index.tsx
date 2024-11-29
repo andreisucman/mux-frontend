@@ -31,7 +31,7 @@ function ProgressCard({ data, setProgress }: Props) {
         type: "progress",
         title: (
           <Title order={5} component={"p"}>
-            {formattedDate} - {upperFirst(data.part)} progress
+            {upperFirst(data.part)} progress
           </Title>
         ),
       }),

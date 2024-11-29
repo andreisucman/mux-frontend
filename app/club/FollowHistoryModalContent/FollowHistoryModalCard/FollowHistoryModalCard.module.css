@@ -1,0 +1,13 @@
+.container {
+  flex: 0 1;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.icon {
+  margin-right: rem(8);
+}
+
+.name {
+  font-weight: 600;
+}

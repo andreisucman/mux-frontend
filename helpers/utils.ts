@@ -11,6 +11,7 @@ export function getRingColor(score: number, isPotential?: boolean) {
       ? "green.7"
       : "green.9";
 }
+
 export function calculateCircleRadius(rectWidth: number, rectHeight: number, numCircles: number) {
   let circlesPerRow = Math.ceil(Math.sqrt(numCircles * (rectWidth / rectHeight)));
   let circlesPerCol = Math.ceil(numCircles / circlesPerRow);

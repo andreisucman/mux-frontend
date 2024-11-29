@@ -84,8 +84,6 @@ export default function UploadProof() {
           body: { taskId, url: urlArray[0], submissionId, blurType },
         });
 
-        console.log("upload proof line 85");
-
         if (response.status !== 200) {
           setComponentToDisplay("videoRecorder");
           openErrorModal({
@@ -94,8 +92,6 @@ export default function UploadProof() {
 
           saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
         }
-
-        console.log("upload proof line 99");
 
         deleteFromLocalStorage("proofRecords", captureType);
       } catch (err) {

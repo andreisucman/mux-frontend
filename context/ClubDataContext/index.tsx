@@ -96,13 +96,11 @@ export default function ClubDataContextProvider({ children }: Props) {
     getClubYouTrack(trackedUserId);
   }, [trackedUserId]);
 
-  console.log("statu", status);
-
   useEffect(() => {
     getClubTrackYou();
   }, [status]);
 
-  // useSWR(status, getClubTrackYou);
+  useSWR(status, getClubTrackYou);
 
   return (
     <ClubContext.Provider

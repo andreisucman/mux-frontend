@@ -5,12 +5,13 @@ import { IconCircleOff } from "@tabler/icons-react";
 import { Group, Loader, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeader from "@/components/PageHeader";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import { UserDataType } from "@/types/global";
 import BalancePane from "./BalancePane";
+import ClubProfileHeader from "./ClubProfileHeader";
 import ClubProfilePreview from "./ClubProfilePreview";
 import TrackYouRow from "./TrackYouRow";
 import classes from "./club.module.css";
@@ -75,7 +76,7 @@ export default function Club() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title={"Club profile"} showReturn hidePartDropdown hideTypeDropdown />
+      <ClubProfileHeader />
       <Skeleton className={`${classes.skeleton} skeleton`} visible={showSkeleton}>
         <Group className={classes.top}>
           <ClubProfilePreview data={youData} type="you" showButtons />

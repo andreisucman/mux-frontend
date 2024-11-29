@@ -27,7 +27,7 @@ function StyleCard({ data, setStyles }: Props) {
         type: "style",
         title: (
           <Title order={5} component={"p"}>
-            {formattedDate} - {styleName} style preview
+            {formattedDate} - {styleName} style
           </Title>
         ),
         setRecords: setStyles,

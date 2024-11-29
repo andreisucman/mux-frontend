@@ -17,9 +17,8 @@ export default function TitleDropdown({ titles }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
-  const currentPage = useMemo(() => titles.find((record) => record.value === pathname), [pathname]);
-
   const [collapseOpened, { toggle, close }] = useDisclosure(false);
+  const currentPage = useMemo(() => titles.find((record) => record.value === pathname), [pathname]);
 
   const icon = collapseOpened ? (
     <IconChevronUp className="icon" stroke={1.5} />
@@ -29,7 +28,7 @@ export default function TitleDropdown({ titles }: Props) {
 
   const handleRedirect = useCallback(
     (pathname: string) => {
-      router.push(`${pathname}?${searchParams.toString()}`);
+      router.replace(`${pathname}?${searchParams.toString()}`);
       close();
     },
     [searchParams.toString(), pathname]

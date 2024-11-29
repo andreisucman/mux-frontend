@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import NextImage from "next/image";
 import { Image, rem, Stack, Text } from "@mantine/core";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
@@ -10,9 +10,7 @@ import classes from "./ProofDisplayContainer.module.css";
 
 type Props = {
   existingProofRecord: ExistingProofRecordType;
-  setExistingProofRecord: React.Dispatch<
-    React.SetStateAction<ExistingProofRecordType[] | undefined>
-  >;
+  setExistingProofRecord: React.Dispatch<React.SetStateAction<ExistingProofRecordType | null>>;
 };
 
 export default function ProofDisplayContainer({
@@ -24,6 +22,14 @@ export default function ProofDisplayContainer({
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
 
+  const handleUpdateExistingRecord = useCallback((input: { [key: string]: any }) => {
+    setExistingProofRecord((prev: any) => ({
+      ...(prev || {}),
+      mainUrl: input.mainUrl,
+      mainThumbnail: input.mainThumbnail,
+    }));
+  }, []);
+
   return (
     <Stack className={classes.container}>
       {createdAt && <Text className={classes.date}>{formattedDate}</Text>}{" "}
@@ -33,8 +39,8 @@ export default function ProofDisplayContainer({
         contentCategory={"proof"}
         currentMain={mainUrl}
         position="top-right"
-        setRecords={setExistingProofRecord}
         customStyles={{ top: rem(16), right: rem(16) }}
+        onComplete={handleUpdateExistingRecord}
       />
       {contentType === "image" ? (
         <Image
