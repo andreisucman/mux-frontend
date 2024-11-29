@@ -1,0 +1,22 @@
+.container {
+  flex: 1;
+}
+
+.content {
+  gap: rem(8);
+}
+
+.imageWrapper {
+  background-color: var(--mantine-color-dark-6);
+  border-radius: rem(16);
+}
+
+.image {
+  max-width: rem(200);
+  margin: auto;
+}
+
+.text {
+  text-align: center;
+  font-size: var(--mantine-font-size-sm);
+}

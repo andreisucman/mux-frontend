@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+}
+
+.scrollArea {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  gap: 0;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

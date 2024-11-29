@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useRef, useState } from "react";
-import { IconBatteryVertical } from "@tabler/icons-react";
+import { IconBatteryVertical, IconBatteryVertical4 } from "@tabler/icons-react";
 import { UserContext } from "@/context/UserContext";
 import { MessageType } from "../../types";
 import ChatDisplay from "../ChatDisplay";
@@ -15,7 +15,12 @@ const ChatBody = () => {
   const chatRef = useRef<HTMLScriptElement>(null);
 
   const { coachEnergy } = userDetails || {};
-  const coachIcon = coachEnergy && coachEnergy < 50000 ? "😵" : "😎";
+  const coachIcon =
+    coachEnergy && coachEnergy < 50000 ? (
+      <IconBatteryVertical4 className="icon" />
+    ) : (
+      <IconBatteryVertical className="icon" />
+    );
 
   return (
     <section className={classes.container} ref={chatRef}>
@@ -24,7 +29,6 @@ const ChatBody = () => {
           isTyping={isTyping}
           conversation={conversation}
           setConversation={setConversation}
-          coachIcon={coachIcon}
         />
         <ChatInput
           conversation={conversation}

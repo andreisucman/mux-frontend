@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: fit-content;
+  padding: rem(4) rem(8);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: 1rem;
+  margin-right: auto;
+
+  &__bot {
+    margin-right: unset;
+    margin-left: auto;
+    background-color: var(--mantine-color-dark-6);
+  }
+
+  &:first-child {
+    margin-top: auto;
+  }
+}
+
+.text {
+  position: relative;
+  display: flex;
+  gap: rem(8);
+  margin: 0;
+
+  & span {
+    &:first-child {
+      font-size: 0.8rem;
+    }
+
+    &:nth-child(2) {
+      max-width: 15rem;
+    }
+  }
+}
+
+.label {
+  font-size: rem(14);
+}
+
+.markdownWrapper {
+  margin: auto;
+
+  & p {
+    margin: rem(8) 0;
+  }
+}
+
+.imageWrapper {
+  background-color: var(--mantine-color-dark-5);
+  border-radius: var(--mantine-font-size-md);
+}

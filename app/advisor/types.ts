@@ -5,6 +5,11 @@ export type CoachQuestionType = {
   onClick?: () => void;
 };
 
+export type RecentMessageType = {
+  user: MessageContent[];
+  assistant: MessageContent[];
+};
+
 export type MessageType = {
   role: string;
   content: MessageContent[];

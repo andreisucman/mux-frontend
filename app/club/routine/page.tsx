@@ -105,7 +105,7 @@ export default function ClubRoutine() {
 
         if (response.status === 200) {
           if (response.error === "subscription expired") {
-            const url = `/a/club/about/routine?${searchParams.toString()}`;
+            const url = `/club/routine?${searchParams.toString()}`;
             openSubscriptionModal({
               title: `Add the Peek License`,
               modalType: "peek",

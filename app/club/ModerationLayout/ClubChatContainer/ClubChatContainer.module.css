@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+}
+
+.collapse {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 15px);
+  min-height: 45vh;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  overflow: auto;
+  z-index: 1;
+}
+
+.chatDisplayWrapper {
+  position: absolute;
+  inset: 0;
+  gap: 0;
+}
+
+.disclaimer {
+  padding: rem(8) 0;
+  text-align: center;
+  font-size: var(--mantine-font-size-xs);
+}

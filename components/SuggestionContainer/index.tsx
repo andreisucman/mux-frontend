@@ -111,7 +111,6 @@ export default function SuggestionContainer({
               price: "4",
               buttonText,
               buttonIcon,
-              color: "#b9c7e2",
               underButtonText: "No credit card required",
               onClose: handleRefetchData,
               onClick,
@@ -139,7 +138,11 @@ export default function SuggestionContainer({
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5} component={"p"}>Enter your criteria</Title>,
+      title: (
+        <Title order={5} component={"p"}>
+          Enter your criteria
+        </Title>
+      ),
       innerProps: <ProductsCriteriaContainer taskKey={taskKey} findProducts={findProducts} />,
     });
   }, []);

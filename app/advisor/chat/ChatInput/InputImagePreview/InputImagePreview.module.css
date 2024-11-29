@@ -1,0 +1,24 @@
+.container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: rem(16);
+  flex-wrap: nowrap;
+  gap: rem(4);
+  background-color: var(--mantine-color-dark-6);
+}
+
+.row {
+  gap: rem(8);
+  flex-wrap: nowrap;
+  align-items: center;
+  max-width: rem(140);
+}
+
+.button {
+  border: none;
+}
+
+.fileName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
