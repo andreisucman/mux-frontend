@@ -11,7 +11,7 @@ import ClubProfilePreview from "../ClubProfilePreview";
 import ClubChatContainer from "./ClubChatContainer";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
-import classes from "./club-about.module.css";
+import classes from "./ClubModerationLayout.module.css";
 
 export const runtime = "edge";
 
@@ -19,7 +19,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function ClubAboutLayout({ children }: Props) {
+export default function ClubModerationLayout({ children }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
@@ -29,7 +29,7 @@ export default function ClubAboutLayout({ children }: Props) {
   const trackedUserId = searchParams.get("trackedUserId");
   const isRoutine = pathname.includes("/routine");
 
-  const { subscriptions, club } = userDetails || {};
+  const { _id: userId, subscriptions, club } = userDetails || {};
   const { trackedUserId: localTrackedUserId } = club || {};
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
@@ -51,28 +51,20 @@ export default function ClubAboutLayout({ children }: Props) {
     }
   }, [isSubscriptionActive, localTrackedUserId, trackedUserId]);
 
-  const peekText = `Add the 👀 Peek License to view ${
-    isRoutine ? "the routines" : "the details"
-  } of the Club members.`;
-
   const followText = `Follow to see ${isRoutine ? "their routines" : "their details"}.`;
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <ClubHeader
-        title={`Club ${isRoutine ? "routine" : "about"}`}
-        hideTypeDropdown={!isRoutine}
-        showReturn
-      />
-      <ClubProfilePreview
-        type={trackedUserId ? "peek" : "you"}
-        data={trackedUserId ? youTrackData : youData}
-        isMini={true}
-        showButtons
-      />
-      <Skeleton className="skeleton" visible={showComponent === "loading"}>
+      <ClubHeader title={"Club"} hideTypeDropdown={!isRoutine} showReturn />
+      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData || !youTrackData}>
+        <ClubProfilePreview
+          type={trackedUserId ? "peek" : "you"}
+          data={trackedUserId ? youTrackData : youData}
+          customStyles={{ flex: 0 }}
+          showButtons
+        />
         {showComponent === "children" && children}
-        {showComponent === "subscriptionOverlay" && <PeekOverlay description={peekText} />}
+        {showComponent === "subscriptionOverlay" && <PeekOverlay />}
         {showComponent === "followOverlay" && (
           <FollowOverlay trackedUserId={trackedUserId} description={followText} />
         )}

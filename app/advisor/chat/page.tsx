@@ -1,20 +1,19 @@
 "use client";
 
 import React from "react";
-import { Stack, Title } from "@mantine/core";
-import ChatBody from "../../components/ChatWidget/ChatBody";
-import PageHeader from "../../components/PageHeader";
+import { Stack } from "@mantine/core";
+import PageHeader from "@/components/PageHeader";
+import ChatMessagesButton from "../ConversationHistoryButton";
+import ChatBody from "./ChatBody";
 import classes from "./chat.module.css";
 
 export const runtime = "edge";
 
 export default function Chat() {
   return (
-    <>
-      <Stack className={classes.container}>
-        <PageHeader title={"Ask advisor"} showReturn />
-        <ChatBody />
-      </Stack>
-    </>
+    <Stack className={`${classes.container} smallPage`}>
+      <PageHeader title={"Advisor"} children={<ChatMessagesButton />} showReturn hidePartDropdown  hideTypeDropdown/>
+      <ChatBody />
+    </Stack>
   );
 }

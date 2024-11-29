@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
@@ -15,8 +15,8 @@ import { useRouter } from "@/helpers/custom-router";
 import classes from "./ClubHeader.module.css";
 
 const clubPageTypeData = [
-  { label: "About", icon: <IconUserCircle className="icon" />, value: "about" },
-  { label: "Routine", icon: <IconClipboardText className="icon" />, value: "routine" },
+  { label: "About", icon: <IconUserCircle className="icon" />, value: "/club/about" },
+  { label: "Routine", icon: <IconClipboardText className="icon" />, value: "/club/routine" },
 ];
 
 const typeData = [
@@ -46,6 +46,15 @@ export default function ClubHeader({
 
   const type = searchParams.get("type") || "head";
 
+  const handleRedirect = useCallback(
+    (item?: FilterItemType) => {
+      if (!item) return;
+
+      router.push(`${item.value}?${searchParams.toString()}`);
+    },
+    [searchParams.toString()]
+  );
+
   return (
     <Group className={classes.container}>
       <Group className={classes.left}>
@@ -61,8 +70,8 @@ export default function ClubHeader({
       <Group className={classes.right}>
         <FilterDropdown
           data={clubPageTypeData}
-          defaultSelected={clubPageTypeData.find((item) => item.value === pathname.slice(1))}
-          onSelect={(item?: FilterItemType) => router.push(`/${item?.value}`)}
+          defaultSelected={clubPageTypeData.find((item) => item.value === pathname)}
+          onSelect={(item?: FilterItemType) => handleRedirect(item)}
           isDisabled={isDisabled}
         />
         {!hideTypeDropdown && (

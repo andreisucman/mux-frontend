@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { IconImageInPicture } from "@tabler/icons-react";
+import { IconPhoto } from "@tabler/icons-react";
 import { ActionIcon } from "@mantine/core";
 
 type Props = {
@@ -29,7 +29,7 @@ export default function ImageUploadButton({ disabled, setImages }: Props) {
       variant="default"
       style={{ border: "none" }}
     >
-      <IconImageInPicture className="icon" />
+      <IconPhoto className="icon" />
       <input
         hidden
         disabled={disabled}

@@ -15,7 +15,7 @@ import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import AccordionRoutineRow from "./AccordionRoutineRow";
 import TaskInfoContainer from "./TaskInfoContainer";
-import classes from "./club-routine.module.css";
+import classes from "./routine.module.css";
 
 export const runtime = "edge";
 

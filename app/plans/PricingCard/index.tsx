@@ -51,6 +51,7 @@ export default function PricingCard({
         })}
         style={customHeadingStyles ? customHeadingStyles : {}}
       >
+        {price && <div className={classes.neon} />}
         <Title order={4} className={classes.name}>
           {name}
         </Title>
@@ -68,7 +69,7 @@ export default function PricingCard({
           )}
         </>
       </Stack>
-      <Stack className={classes.content} mt={price ? 8 : 0}>
+      <Stack className={classes.content}>
         {content.map((item, index) => (
           <Group wrap="nowrap" key={index} gap={12}>
             {item.icon}

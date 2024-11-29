@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  max-width: rem(32);
+  min-height: rem(32);
+  color: var(--mantine-color-gray-2);
+}
+
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

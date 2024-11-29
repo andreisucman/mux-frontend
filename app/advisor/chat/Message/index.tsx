@@ -1,9 +1,11 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import Markdown from "react-markdown";
 import { Stack } from "@mantine/core";
 import { MessageContent } from "../../types";
 import classes from "./Message.module.css";
+
+const Markdown = dynamic(() => import("react-markdown"), { ssr: false });
 
 type props = {
   message: MessageContent;

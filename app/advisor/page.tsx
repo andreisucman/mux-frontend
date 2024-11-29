@@ -6,11 +6,12 @@ import { rem, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import PageHeader from "@/components/PageHeader";
 import modifyQuery from "@/helpers/modifyQuery";
+import ChatMessagesButton from "./ConversationHistoryButton";
 import { questions } from "./questions";
 import QuestionsList from "./QuestionsList";
 import QuestionRow from "./QuestionsList/QuestionRow";
 import { CoachQuestionType } from "./types";
-import classes from "./guru.module.css";
+import classes from "./advisor.module.css";
 
 export const runtime = "edge";
 
@@ -52,11 +53,9 @@ export default function Advisor() {
   };
 
   return (
-    <Stack className={classes.container}>
-      <PageHeader title={"Ask advisor"} showReturn />
-      <Title order={3} className={classes.title}>
-        Free style
-      </Title>
+    <Stack className={`${classes.container} smallPage`}>
+      <PageHeader title={"Advisor"} children={<ChatMessagesButton />} hidePartDropdown showReturn />
+      <Title order={3}>Free style</Title>
       <QuestionRow
         title={freeStyleQuestion.question}
         color={freeStyleQuestion.color}

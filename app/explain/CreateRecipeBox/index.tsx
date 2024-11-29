@@ -26,11 +26,6 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
   const { _id: userId } = userDetails || {};
   const { canPersonalize } = recipe || {};
 
-  const refetchUserData = async () => {
-    const userData = await fetchUserData();
-    setUserDetails(userData);
-  };
-
   const generateRecipe = useCallback(
     async (constraints?: string, productsImage?: string) => {
       if (!taskId) return;
@@ -78,8 +73,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
                 onClick,
                 buttonText,
                 buttonIcon,
-                color: "#99e2ff",
-                onClose: refetchUserData,
+                onClose: () => fetchUserData(setUserDetails),
               });
               return;
             } else {
@@ -107,7 +101,11 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
       centered: true,
       modal: "general",
       size: "auto",
-      title: <Title order={5} component={"p"}>Recipe settings</Title>,
+      title: (
+        <Title order={5} component={"p"}>
+          Recipe settings
+        </Title>
+      ),
       innerProps: <RecipeSettingsContent onSubmit={generateRecipe} />,
     });
   }, []);

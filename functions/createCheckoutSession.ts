@@ -18,6 +18,7 @@ export default async function createCheckoutSession({
   cancelPath,
   setUserDetails,
 }: Props) {
+  if (typeof window === "undefined") return;
   if (!priceId) return;
 
   try {

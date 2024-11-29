@@ -15,13 +15,11 @@ type Props = {
 export default function QuestionsList({ title, questions, customStyles }: Props) {
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
-      <Title order={3} className={classes.title}>
-        {upperFirst(title as string)}
-      </Title>
+      <Title order={3}>{upperFirst(title as string)}</Title>
       <Stack className={classes.content}>
-        <Stack className={classes.list}>
-          {questions &&
-            questions.map((record: CoachQuestionType, index: number) => {
+        {questions && (
+          <Stack className={classes.list}>
+            {questions.map((record: CoachQuestionType, index: number) => {
               const icon = record.icon;
               return (
                 <QuestionRow
@@ -35,7 +33,8 @@ export default function QuestionsList({ title, questions, customStyles }: Props)
                 />
               );
             })}
-        </Stack>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

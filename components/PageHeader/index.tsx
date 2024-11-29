@@ -37,6 +37,7 @@ type Props = {
   hideTypeDropdown?: boolean;
   hidePartDropdown?: boolean;
   filterNames?: string[];
+  children?: React.ReactNode;
   onSelect?: (item?: FilterItemType) => void;
   onFilterClick?: () => void;
   onSearchClick?: () => void;
@@ -49,6 +50,7 @@ export default function PageHeader({
   hidePartDropdown,
   isDisabled,
   filterNames = [],
+  children,
   onSelect,
   onFilterClick,
   onSearchClick,
@@ -61,7 +63,7 @@ export default function PageHeader({
   const part = searchParams.get("part") || "face";
 
   const [relevantParts, setRelevantParts] = useState(partData.filter((p) => p.type === type));
-  const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick;
+  const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick || children;
 
   const activeFiltersCount = useMemo(() => {
     const allQueryParams = Array.from(searchParams.keys());
@@ -89,6 +91,7 @@ export default function PageHeader({
       </Group>
       {showRightSide && (
         <Group className={classes.right} ref={ref}>
+          {children}
           {onSearchClick && <SearchButton onSearchClick={onSearchClick} maxPillWidth={width / 2} />}
           {onFilterClick && (
             <FilterButton onFilterClick={onFilterClick} activeFiltersCount={activeFiltersCount} />

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, rem, Stack } from "@mantine/core";

@@ -4,7 +4,6 @@
   align-items: center;
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
-  background-image: url("../../../public/assets/locked_pattern.svg");
   background-color: var(--mantine-color-dark-6);
 
   background-size: 100%;

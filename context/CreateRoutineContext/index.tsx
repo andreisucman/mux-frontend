@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Text, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -37,11 +37,6 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const { isSubscriptionActive, isTrialUsed } =
     checkSubscriptionActivity(["improvement", "peek"], subscriptions) || {};
 
-  const refetchUserData = useCallback(async () => {
-    const userData = await fetchUserData();
-    setUserDetails(userData);
-  }, [pathname]);
-
   async function handleCreateCheckoutSession() {
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
@@ -55,7 +50,11 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title order={5} component={"p"}>Which routine to create?</Title>,
+      title: (
+        <Title order={5} component={"p"}>
+          Which routine to create?
+        </Title>
+      ),
       innerProps: <SelectPartForRoutineModalContent type={type as TypeEnum} parts={parts} />,
     });
   }
@@ -99,10 +98,9 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         modalType: "improvement",
         buttonIcon,
         buttonText,
-        color: "#99e2ff",
         underButtonText: "No credit card required",
         onClick,
-        onClose: refetchUserData,
+        onClose: () => fetchUserData(setUserDetails),
       });
     }
     setIsLoading(false);

@@ -137,7 +137,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     updateAuthenticationStatus(!!isLoggedInCookie);
   }, [isLoggedInCookie, code]);
 
-  useSWR(status, fetchUserData);
+  useSWR(status, () => fetchUserData(setUserDetailsState));
 
   return (
     <UserContext.Provider

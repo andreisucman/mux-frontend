@@ -1,6 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { Loader, LoadingOverlay, rem, Stack } from "@mantine/core";
+import { LoadingOverlay, rem, Skeleton, Stack } from "@mantine/core";
 import classes from "./TextAreaComponent.module.css";
 
 type Props = {
@@ -16,11 +16,7 @@ type Props = {
 
 const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
   ssr: false,
-  loading: () => (
-    <Stack mih={78} flex={1} align="center">
-      <Loader m="auto" />
-    </Stack>
-  ),
+  loading: () => <Skeleton mih={78} className="skeleton" visible></Skeleton>,
 });
 
 export default function TextareaComponent({

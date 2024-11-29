@@ -1,7 +1,8 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconPlus, IconSend, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { ActionIcon, Group, Stack, Textarea } from "@mantine/core";
+import { ActionIcon, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -19,6 +20,11 @@ import EnergyIndicator from "../EnergyIndicator";
 import ImageUploadButton from "./ImageUploadButton";
 import InputImagePreview from "./InputImagePreview";
 import classes from "./ChatInput.module.css";
+
+const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
+  ssr: false,
+  loading: () => <Skeleton className="skeleton" visible></Skeleton>,
+});
 
 type Props = {
   isClub?: boolean;
@@ -59,11 +65,11 @@ export default function ChatInput({
       priceId: isClub
         ? process.env.NEXT_PUBLIC_PEEK_PRICE_ID!
         : process.env.NEXT_PUBLIC_ADVISOR_PRICE_ID!,
-      redirectPath: `${location.pathname}${location.search}`,
-      cancelPath: `${location.pathname}${location.search}`,
+      redirectPath: `${pathname}${searchParams.toString()}`,
+      cancelPath: `${pathname}${searchParams.toString()}`,
       setUserDetails,
     });
-  }, [isClub]);
+  }, [isClub, pathname, searchParams.toString()]);
 
   const openCoachIsTiredModal = useCallback(() => {
     modals.openContextModal({
@@ -234,6 +240,15 @@ export default function ChatInput({
     [disabled, currentMessage]
   );
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Enter") {
+        handleSubmit(e);
+      }
+    },
+    [handleSubmit]
+  );
+
   const previewImages = useMemo(
     () =>
       images.map((image, index) => (
@@ -258,6 +273,7 @@ export default function ChatInput({
             value={currentMessage}
             className={classes.input}
             onChange={(e) => setCurrentMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
             minRows={1}
             maxRows={4}
             size="md"

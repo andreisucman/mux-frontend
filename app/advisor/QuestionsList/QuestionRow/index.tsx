@@ -1,5 +1,5 @@
 import React from "react";
-import { Group, Stack, Text } from "@mantine/core";
+import { Group, Stack, Text, rem } from "@mantine/core";
 import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
 import classes from "./QuestionRow.module.css";
 
@@ -18,7 +18,7 @@ export default function QuestionRow({ color, title, icon, customStyles, onClick 
       onClick={onClick ? onClick : undefined}
       style={customStyles ? customStyles : {}}
     >
-      <IconWithColor icon={icon || ""} color={color} />
+      <IconWithColor icon={icon || ""} color={color} customStyles={{ minWidth: rem(40) }} />
       <Stack className={classes.wrapper}>
         <Text className={classes.title} lineClamp={2}>
           {title}

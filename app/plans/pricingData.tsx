@@ -14,7 +14,6 @@ import {
   IconShoppingCart,
   IconSquareRoundedCheck,
   IconToolsKitchen2,
-  IconUserCircle,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
 
@@ -73,7 +72,7 @@ export const peekLicenseContent = [
 
   {
     icon: <IconMessage2 className="icon icon__large" style={style} />,
-    description: "Ask questions to your appearance coach about the club members.",
+    description: "Ask questions to your advisor about the club members.",
   },
 ];
 
