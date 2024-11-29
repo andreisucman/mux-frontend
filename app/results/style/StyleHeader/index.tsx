@@ -6,12 +6,19 @@ import { modals } from "@mantine/modals";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import TitleDropdown from "../../TitleDropdown";
 import StyleFilterContent from "./StyleFilterContent";
 import classes from "./StyleHeader.module.css";
 
 const typeData = [
   { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
   { label: "Body", icon: <IconMan className="icon" />, value: "body" },
+];
+
+const titles = [
+  { label: "Progress", value: "/results" },
+  { label: "Style", value: "/results/style" },
+  { label: "Proof", value: "/results/proof" },
 ];
 
 type Props = {
@@ -50,9 +57,7 @@ export default function StyleHeader({ title, showReturn, isDisabled, onSelect }:
             <IconChevronLeft className="icon" />
           </ActionIcon>
         )}
-        <Title order={1} lineClamp={2}>
-          {title}
-        </Title>
+        <TitleDropdown titles={titles} />
       </Group>
       {!isDisabled && (
         <Group className={classes.right}>

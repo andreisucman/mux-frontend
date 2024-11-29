@@ -23,7 +23,7 @@ type Props = {
   currentMain: BlurredUrlType;
   contentCategory: "progress" | "proof" | "style";
   setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
-  customStyles?: { [key: string]: any[] };
+  customStyles?: { [key: string]: any };
 };
 
 const displayTypes = [

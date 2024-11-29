@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Image, Skeleton, Title } from "@mantine/core";
-import { useElementSize } from "@mantine/hooks";
+import { upperFirst, useElementSize } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { formatDate } from "@/helpers/formatDate";
@@ -31,7 +31,7 @@ function ProgressCard({ data, setProgress }: Props) {
         type: "progress",
         title: (
           <Title order={5} component={"p"}>
-            {formattedDate} - {data.part} progress preview
+            {formattedDate} - {upperFirst(data.part)} progress
           </Title>
         ),
       }),

@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import NextImage from "next/image";
 import { Image, rem, Stack, Text } from "@mantine/core";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
+import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
 import { ExistingProofRecordType } from "../types";
@@ -9,7 +10,9 @@ import classes from "./ProofDisplayContainer.module.css";
 
 type Props = {
   existingProofRecord: ExistingProofRecordType;
-  setExistingProofRecord: React.Dispatch<React.SetStateAction<ExistingProofRecordType | null>>;
+  setExistingProofRecord: React.Dispatch<
+    React.SetStateAction<ExistingProofRecordType[] | undefined>
+  >;
 };
 
 export default function ProofDisplayContainer({
@@ -20,20 +23,6 @@ export default function ProofDisplayContainer({
     existingProofRecord;
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
-  const disclaimer = useMemo(() => (isPublic ? "🔓 Public" : "🔒 Private"), [isPublic]);
-
-  const handleUpdateProofRecord = useCallback(async (message: { [key: string]: any }) => {
-    const { mainUrl, mainThumbnail } = message;
-
-    setExistingProofRecord((prev) => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        mainUrl,
-        mainThumbnail,
-      };
-    });
-  }, []);
 
   return (
     <Stack className={classes.container}>
@@ -44,7 +33,7 @@ export default function ProofDisplayContainer({
         contentCategory={"proof"}
         currentMain={mainUrl}
         position="top-right"
-        updateRecord={handleUpdateProofRecord}
+        setRecords={setExistingProofRecord}
         customStyles={{ top: rem(16), right: rem(16) }}
       />
       {contentType === "image" ? (
@@ -57,11 +46,14 @@ export default function ProofDisplayContainer({
           alt=""
         />
       ) : (
-        <VideoPlayer url={mainUrl.url} thumbnail={mainThumbnail.url} createdAt={createdAt} />
+        <VideoPlayer
+          url={mainUrl.url}
+          thumbnail={mainThumbnail.url}
+          createdAt={createdAt}
+          isStatic
+        />
       )}
-      <Text ta="center" mb={rem(16)}>
-        {disclaimer}
-      </Text>
+      <ContentPublicityIndicator isPublic={isPublic} />
     </Stack>
   );
 }

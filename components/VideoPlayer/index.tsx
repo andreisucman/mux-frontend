@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { IconPlayerPlay } from "@tabler/icons-react";
+import cn from "classnames";
 import ReactPlayer from "react-player";
 import { Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
@@ -7,6 +8,7 @@ import classes from "./VideoPlayer.module.css";
 
 type Props = {
   showDate?: boolean;
+  isStatic?: boolean;
   url?: string;
   disabled?: boolean;
   thumbnail?: string;
@@ -18,6 +20,7 @@ type Props = {
 export default function VideoPlayer({
   url,
   showDate,
+  isStatic,
   thumbnail,
   createdAt,
   customStyles,
@@ -57,7 +60,7 @@ export default function VideoPlayer({
 
   return (
     <Skeleton
-      className={`${classes.skeleton} skeleton `}
+      className={cn("skeleton", classes.skeleton, { [classes.static]: isStatic })}
       visible={!url}
       style={customStyles ? customStyles : {}}
     >

@@ -12,6 +12,7 @@ import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import modifyQuery from "@/helpers/modifyQuery";
+import TitleDropdown from "../TitleDropdown";
 import { PositionsFilterItemType } from "./types";
 import classes from "./ProgressHeader.module.css";
 
@@ -30,6 +31,12 @@ const positionsData = [
   { label: "Front", value: "front", types: ["head", "body"], parts: ["face", "body"] },
   { label: "Right", value: "right", types: ["head", "body"], parts: ["face", "body"] },
   { label: "Left", value: "left", types: ["head", "body"], parts: ["face", "body"] },
+];
+
+const titles = [
+  { label: "Progress", value: "/results" },
+  { label: "Style", value: "/results/style" },
+  { label: "Proof", value: "/results/proof" },
 ];
 
 type Props = {
@@ -52,7 +59,7 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
   const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>(
     positionsData.filter((p) => p.types.includes(type) && p.parts.includes(part))
   );
-  
+
   useEffect(() => {
     const relParts = partsData.filter((p) => p.type === type);
     setRelevantParts(relParts);
@@ -87,9 +94,7 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
             <IconChevronLeft className="icon" />
           </ActionIcon>
         )}
-        <Title order={1} lineClamp={2}>
-          {title}
-        </Title>
+        <TitleDropdown titles={titles} />
       </Group>
       <FilterDropdown
         data={typeData}

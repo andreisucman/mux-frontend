@@ -12,6 +12,7 @@
 
 .right {
   flex: 1;
+  max-width: rem(200);
   flex-wrap: nowrap;
   justify-content: flex-end;
 

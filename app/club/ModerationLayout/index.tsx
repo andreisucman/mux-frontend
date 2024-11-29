@@ -29,7 +29,7 @@ export default function ClubModerationLayout({ children }: Props) {
   const trackedUserId = searchParams.get("trackedUserId");
   const isRoutine = pathname.includes("/routine");
 
-  const { _id: userId, subscriptions, club } = userDetails || {};
+  const { subscriptions, club } = userDetails || {};
   const { trackedUserId: localTrackedUserId } = club || {};
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
@@ -61,7 +61,6 @@ export default function ClubModerationLayout({ children }: Props) {
           type={trackedUserId ? "peek" : "you"}
           data={trackedUserId ? youTrackData : youData}
           customStyles={{ flex: 0 }}
-          showButtons
         />
         {showComponent === "children" && children}
         {showComponent === "subscriptionOverlay" && <PeekOverlay />}

@@ -41,6 +41,7 @@ export default function ResultDisplayContainer({
             thumbnail={thumbnail}
             createdAt={createdAt}
             customStyles={{ borderRadius: rem(16), overflow: "hidden" }}
+            isStatic
           />
         )}
       </Skeleton>

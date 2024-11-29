@@ -1,9 +1,15 @@
 .skeleton {
+  position: absolute;
+  inset: 0;
   border-radius: 0;
 
   & video {
     object-fit: contain;
   }
+}
+
+.static {
+  position: static;
 }
 
 .playButton {

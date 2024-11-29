@@ -48,7 +48,7 @@ const Timer = ({
         if (prevCountdown > 0) {
           return prevCountdown - 1;
         } else {
-          if (!callbackInvoked) {
+          if (!callbackInvoked && onComplete) {
             onComplete();
             callbackInvoked = true;
           }

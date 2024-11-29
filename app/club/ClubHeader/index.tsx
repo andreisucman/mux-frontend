@@ -6,6 +6,7 @@ import {
   IconHeart,
   IconMan,
   IconMoodSmile,
+  IconTargetArrow,
   IconUserCircle,
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
@@ -17,6 +18,7 @@ import classes from "./ClubHeader.module.css";
 const clubPageTypeData = [
   { label: "About", icon: <IconUserCircle className="icon" />, value: "/club/about" },
   { label: "Routine", icon: <IconClipboardText className="icon" />, value: "/club/routine" },
+  { label: "Results", icon: <IconTargetArrow className="icon" />, value: "/club/results" },
 ];
 
 const typeData = [

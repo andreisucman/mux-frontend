@@ -1,13 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  IconChevronLeft,
-  IconHeart,
-  IconMan,
-  IconMoodSmile,
-  IconSearch,
-} from "@tabler/icons-react";
-import { ActionIcon, Group, Title } from "@mantine/core";
+import { IconChevronLeft, IconSearch } from "@tabler/icons-react";
+import { ActionIcon, Group } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
@@ -15,12 +9,13 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import SearchButton from "@/components/SearchButton";
 import fetchAutocompleteData from "@/functions/fetchAutocompleteData";
 import modifyQuery from "@/helpers/modifyQuery";
+import TitleDropdown from "../../TitleDropdown";
 import classes from "./ProofHeader.module.css";
 
-const typeData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
-  { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
+const titles = [
+  { label: "Progress", value: "/results" },
+  { label: "Style", value: "/results/style" },
+  { label: "Proof", value: "/results/proof" },
 ];
 
 type Props = {
@@ -33,7 +28,7 @@ type Props = {
 
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
-export default function ProofHeader({ title, showReturn, showFilter, onSelect }: Props) {
+export default function ProofHeader({ showReturn, showFilter }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -72,9 +67,7 @@ export default function ProofHeader({ title, showReturn, showFilter, onSelect }:
               <IconChevronLeft className="icon" />
             </ActionIcon>
           )}
-          <Title order={1} lineClamp={2}>
-            {title}
-          </Title>
+          <TitleDropdown titles={titles} />
         </Group>
         <Group className={classes.right} ref={ref}>
           <SearchButton maxPillWidth={width / 2} onSearchClick={() => solutionsSpotlight.open()} />

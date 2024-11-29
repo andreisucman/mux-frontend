@@ -38,6 +38,7 @@ export default function ProofModalContent({ record, handleTrack }: Props) {
           image={record.mainUrl.url}
           datePosition="bottom-right"
           showDate={!isSelf}
+          isStatic
         />
       ) : (
         <VideoPlayer
@@ -45,6 +46,7 @@ export default function ProofModalContent({ record, handleTrack }: Props) {
           createdAt={record.createdAt}
           thumbnail={record.mainThumbnail.url}
           showDate={!isSelf}
+          isStatic
         />
       )}
       <ProofCardFooter
