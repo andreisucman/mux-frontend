@@ -17,3 +17,9 @@
 .th {
   white-space: nowrap;
 }
+
+.close {
+  position: absolute;
+  top: rem(16);
+  right: rem(16);
+}

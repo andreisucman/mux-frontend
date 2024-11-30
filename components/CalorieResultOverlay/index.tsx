@@ -1,24 +1,32 @@
 import React, { useMemo } from "react";
-import { Highlight, Overlay, Stack, Table } from "@mantine/core";
+import { CloseButton, Highlight, Overlay, Stack, Table, Text } from "@mantine/core";
 import PieChartComponent from "@/components/PieChart";
 import percentageToFraction from "@/helpers/percentageToFraction";
 import classes from "./CalorieResultOverlay.module.css";
 
 export type FoodAnalysisType = {
+  shouldEat: boolean;
   energy: number;
   proteins: number;
   carbohydrates: number;
   fats: number;
+  explanation: string;
 };
 
 type Props = {
   data: FoodAnalysisType;
   actionChildren: React.ReactNode;
   calorieGoal: number;
+  handleClose: () => void;
 };
 
-export default function CalorieResultOverlay({ data, calorieGoal, actionChildren }: Props) {
-  const { energy, proteins, carbohydrates, fats } = data;
+export default function CalorieResultOverlay({
+  data,
+  calorieGoal,
+  actionChildren,
+  handleClose,
+}: Props) {
+  const { shouldEat, energy, proteins, carbohydrates, fats, explanation } = data;
 
   const tableData = {
     body: [
@@ -29,47 +37,60 @@ export default function CalorieResultOverlay({ data, calorieGoal, actionChildren
     ],
   };
 
-  const eatShare = useMemo(
-    () => (calorieGoal > energy ? 100 : Math.round((calorieGoal / energy) * 100)),
-    [energy, calorieGoal]
-  );
-  const eatFraction = useMemo(() => percentageToFraction(eatShare), [eatShare]);
+  let displayData = useMemo(() => {
+    let response = {
+      titleText: "",
+      eatFraction: "",
+      chartShares: [] as { name: string; value: number }[],
+    };
 
-  const shares = useMemo(() => {
-    let shares = [{ name: "eat", value: 100 }];
+    if (shouldEat) {
+      const eatShare = calorieGoal > energy ? 100 : Math.round((calorieGoal / energy) * 100);
+      const eatFraction = percentageToFraction(eatShare);
+      response.chartShares = [{ name: "eat", value: 100 }];
 
-    if (energy > calorieGoal) {
-      shares = [
-        { name: "eat", value: eatShare },
-        { name: "skip", value: 100 - eatShare },
+      if (energy > calorieGoal) {
+        response.chartShares = [
+          { name: "eat", value: eatShare },
+          { name: "skip", value: 100 - eatShare },
+        ];
+      }
+      response.eatFraction = eatFraction;
+      response.titleText =
+        eatFraction === "everything"
+          ? "Eat everything"
+          : eatFraction
+            ? `Eat ${eatFraction} of it`
+            : "Skip it";
+    } else {
+      response.titleText = "Skip it";
+      response.chartShares = [
+        { name: "eat", value: 0 },
+        { name: "skip", value: 100 },
       ];
     }
-
-    return shares;
-  }, [energy, calorieGoal]);
-
-  const text =
-    eatFraction === "everything"
-      ? "Eat everything"
-      : eatFraction
-        ? `Eat ${eatFraction} of it`
-        : "Skip it";
+    return response;
+  }, [shouldEat, energy]);
 
   return (
     <Overlay
       className={classes.overlay}
       children={
-        <Stack className={classes.container}>
-          <PieChartComponent data={shares} />
-          <Highlight highlight={eatFraction} ta="center" fz={32} fw={600}>
-            {text}
-          </Highlight>
-          <Table
-            data={tableData}
-            classNames={{ table: classes.table, td: classes.td, th: classes.th }}
-          />
-          {actionChildren}
-        </Stack>
+        <>
+          <Stack className={classes.container}>
+            <PieChartComponent data={displayData.chartShares} />
+            <Highlight highlight={displayData.eatFraction} ta="center" fz={32} fw={600}>
+              {displayData.titleText}
+            </Highlight>
+            {explanation && <Text>{explanation}</Text>}
+            <Table
+              data={tableData}
+              classNames={{ table: classes.table, td: classes.td, th: classes.th }}
+            />
+            {actionChildren}
+          </Stack>
+          <CloseButton className={classes.close} onClick={handleClose} />
+        </>
       }
     />
   );

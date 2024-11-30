@@ -86,6 +86,7 @@ export default function ScanFoodPage() {
         <CalorieResultOverlay
           data={analysisResult}
           calorieGoal={calorieGoal}
+          handleClose={handleResetResult}
           actionChildren={
             <Button variant="default" w="100%" onClick={handleResetResult}>
               <IconRotate className="icon" style={{ marginRight: rem(8) }} /> New scan
