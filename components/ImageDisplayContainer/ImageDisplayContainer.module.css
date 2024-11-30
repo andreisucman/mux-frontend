@@ -1,14 +1,14 @@
 .container {
   position: relative;
   flex: 1;
+  height: 100%;
   align-self: center;
-  background-color: var(--mantine-color-dark-6);
 }
 
 .deleteIcon {
   position: absolute;
-  top: rem(8);
-  right: rem(8);
+  top: rem(16);
+  right: rem(16);
   z-index: 1;
 }
 
@@ -18,6 +18,4 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  max-width: clamp(100px, 40vw, 175px);
-  background-color: var(--mantine-color-dark-5);
 }

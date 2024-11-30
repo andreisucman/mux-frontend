@@ -109,6 +109,7 @@ export default function PhotoCapturer({ handleCapture }: Props) {
   return (
     <Stack className={classes.container}>
       <video ref={videoRef} autoPlay muted></video>
+      <div className={classes.captureOverlay} />
       <Group className={classes.buttonGroup}>
         {hasMultipleCameras && (
           <Button
@@ -121,9 +122,8 @@ export default function PhotoCapturer({ handleCapture }: Props) {
             <IconRefresh className="icon" />
           </Button>
         )}
-        <Button onClick={capturePhoto} className={classes.button}>
-          <IconCamera className="icon" style={{marginRight: rem(8)}} />
-          Take the photo
+        <Button onClick={capturePhoto} variant="filled" className={classes.button}>
+          <IconCamera className="icon" />
         </Button>
       </Group>
     </Stack>

@@ -96,7 +96,12 @@ export default function FollowHistoryModalContent() {
         {history ? (
           <>
             {history.length > 0 ? (
-              <List items={history} rowGutter={16} render={memoizedHistoryCard} />
+              <List
+                items={history}
+                className={classes.list}
+                rowGutter={16}
+                render={memoizedHistoryCard}
+              />
             ) : (
               <OverlayWithText text="No history found" icon={<IconCircleOff className="icon" />} />
             )}

@@ -8,7 +8,6 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
 import { UserDataType } from "@/types/global";
 import BalancePane from "./BalancePane";
 import ClubProfileHeader from "./ClubProfileHeader";

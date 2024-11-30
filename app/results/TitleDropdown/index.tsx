@@ -10,9 +10,10 @@ import classes from "./TitleDropdown.module.css";
 
 type Props = {
   titles: { label: string; value: string }[];
+  customDropdownStyles?: { [key: string]: any };
 };
 
-export default function TitleDropdown({ titles }: Props) {
+export default function TitleDropdown({ titles, customDropdownStyles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -40,6 +41,7 @@ export default function TitleDropdown({ titles }: Props) {
       onClose={close}
       closeOnClickOutside
       classNames={{ dropdown: classes.dropdown }}
+      styles={{ dropdown: customDropdownStyles ? customDropdownStyles : {} }}
     >
       <HoverCard.Target>
         <Group className={classes.head} onClick={toggle} ref={ref}>

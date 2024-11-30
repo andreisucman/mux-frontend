@@ -15,7 +15,7 @@ import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { TypeEnum, UserDataType } from "@/types/global";
-import UploadPageHeading from "../ScanPageHeading";
+import ScanPageHeading from "../ScanPageHeading";
 import { HandleUploadProgressProps } from "../types";
 import classes from "./progress.module.css";
 
@@ -141,8 +141,8 @@ export default function ScanProgress() {
   return (
     <>
       {userId ? (
-        <Stack className={classes.container}>
-          <UploadPageHeading type={finalType as TypeEnum} title={`Scan your progress`} />
+        <Stack className={`${classes.container} smallPage`}>
+          <ScanPageHeading type={finalType as TypeEnum} />
           {needsScan ? (
             <UploadCarousel
               requirements={availableRequirements || []}

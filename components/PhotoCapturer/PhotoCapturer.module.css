@@ -2,9 +2,8 @@
   position: relative;
   flex: 1;
   width: 100%;
+  height: 100%;
   border-radius: var(--mantine-radius-lg);
-  height: 75vh;
-  max-height: rem(600);
   overflow: hidden;
 
   & video {
@@ -14,15 +13,35 @@
   }
 }
 
+.captureOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background-image: url("/capture.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 65%;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    background-size: 85%;
+  }
+}
+
 .buttonGroup {
   position: absolute;
-  left: rem(16);
   right: rem(16);
   top: rem(16);
   z-index: 1;
   opacity: 0;
   animation: fadeIn 0.3s forwards;
   animation-delay: 1s;
+}
+
+.button {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 @keyframes fadeIn {
@@ -37,10 +56,4 @@
   100% {
     opacity: 1;
   }
-}
-
-.button {
-  display: flex;
-  width: 100%;
-  justify-content: center;
 }

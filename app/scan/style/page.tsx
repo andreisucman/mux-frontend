@@ -11,7 +11,7 @@ import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum, UserDataType } from "@/types/global";
-import UploadPageHeading from "../ScanPageHeading";
+import ScanPageHeading from "../ScanPageHeading";
 import classes from "./style.module.css";
 
 export const runtime = "edge";
@@ -104,8 +104,8 @@ export default function UploadStyle() {
   );
 
   return (
-    <Stack className={classes.container}>
-      <UploadPageHeading type={type as TypeEnum} title={`Scan your style`} />
+    <Stack className={`${classes.container} smallPage`}>
+      <ScanPageHeading type={type as TypeEnum} />
       {typeStyleRequirements ? (
         <UploadCarousel
           latestStyleImage={mainUrl?.url}

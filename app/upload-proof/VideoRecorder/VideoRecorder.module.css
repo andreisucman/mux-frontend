@@ -16,6 +16,21 @@
   }
 }
 
+.captureOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background-image: url("/capture.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 65%;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    background-size: 85%;
+  }
+}
+
 .buttonGroup {
   position: absolute;
   left: rem(16);

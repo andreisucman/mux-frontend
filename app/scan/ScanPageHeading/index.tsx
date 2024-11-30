@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { IconChevronLeft, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { ActionIcon, Group, Title } from "@mantine/core";
+import { ActionIcon, Group, rem } from "@mantine/core";
+import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
 import { TypeEnum } from "@/types/global";
@@ -11,12 +12,17 @@ const typeFilters = [
   { label: "Body", icon: <IconMan className="icon" />, value: "body" },
 ];
 
+const titles = [
+  { label: "Scan progress", value: "/scan/progress" },
+  { label: "Scan style", value: "/scan/style" },
+  { label: "Scan food", value: "/scan/food" },
+];
+
 type Props = {
-  type: TypeEnum;
-  title: string;
+  type?: TypeEnum;
 };
 
-function ScanPageHeading({ type, title }: Props) {
+function ScanPageHeading({ type }: Props) {
   const router = useRouter();
 
   return (
@@ -25,15 +31,17 @@ function ScanPageHeading({ type, title }: Props) {
         <ActionIcon variant="default" onClick={() => router.back()}>
           <IconChevronLeft className="icon" />
         </ActionIcon>
-        <Title order={1}>{title}</Title>
+        <TitleDropdown titles={titles} customDropdownStyles={{ minWidth: rem(210) }} />
       </Group>
 
-      <FilterDropdown
-        data={typeFilters}
-        defaultSelected={typeFilters.find((rec) => rec.value === type)}
-        filterType={"type"}
-        addToQuery
-      />
+      {type && (
+        <FilterDropdown
+          data={typeFilters}
+          defaultSelected={typeFilters.find((rec) => rec.value === type)}
+          filterType={"type"}
+          addToQuery
+        />
+      )}
     </Group>
   );
 }

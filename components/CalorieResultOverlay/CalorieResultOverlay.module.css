@@ -1,0 +1,19 @@
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  align-items: center;
+  max-width: rem(400);
+  padding: rem(16);
+}
+
+.table {
+  max-width: rem(300);
+}
+
+.th {
+  white-space: nowrap;
+}

@@ -5,11 +5,10 @@ import { ActionIcon, Checkbox, Menu, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import callTheServer from "@/functions/callTheServer";
-import { onComplete } from "@/helpers/custom-router/events";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { BlurredUrlType } from "@/types/global";
-import BlurLoadingOverlay from "../BlurLoadingOverlay";
+import ProgressLoadingOverlay from "../ProgressLoadingOverlay";
 import classes from "./ContentBlurTypeButton.module.css";
 
 type HandleUpdateRecordType = {
@@ -198,7 +197,7 @@ export default function ContentBlurTypeButton({
 
   return (
     <Stack className={classes.container}>
-      <BlurLoadingOverlay isLoading={isBlurLoading} progress={progress} />
+      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress} />
       <Menu
         trigger="click"
         withinPortal={false}

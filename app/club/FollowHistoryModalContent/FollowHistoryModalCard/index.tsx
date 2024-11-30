@@ -27,10 +27,13 @@ export default function FollowHistoryModalCard({ data, onClick }: Props) {
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
       <Group className={classes.container}>
-        <AvatarComponent avatar={avatar} />
-        <Text className={classes.name} lineClamp={1}>
-          {name}
-        </Text>
+        <Group className={classes.header}>
+          <AvatarComponent avatar={avatar} />
+          <Text className={classes.name} lineClamp={1}>
+            {name}
+          </Text>
+        </Group>
+
         <Button onClick={() => onClick(trackedUserId)} variant="default">
           <IconEye className={`icon ${classes.icon}`} /> Follow again
         </Button>

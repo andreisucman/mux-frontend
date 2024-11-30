@@ -1,7 +1,7 @@
 import React from "react";
 import NextImage from "next/image";
 import { Image, rem, Skeleton } from "@mantine/core";
-import BlurLoadingOverlay from "@/components/BlurLoadingOverlay";
+import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
 import VideoPlayer from "@/components/VideoPlayer";
 import classes from "./ResultDisplayContainer.module.css";
 
@@ -25,7 +25,7 @@ export default function ResultDisplayContainer({
   return (
     <div className={classes.container}>
       <Skeleton className="skeleton" visible={!captureType}>
-        <BlurLoadingOverlay isLoading={isBlurLoading} progress={progress} />
+        <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress} />
         {captureType === "image" ? (
           <Image
             src={url}

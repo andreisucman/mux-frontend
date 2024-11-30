@@ -73,7 +73,7 @@ export default function FilterDropdown({
       width="target"
       withinPortal
       disabled={isDisabled}
-      classNames={{ itemSection: classes.itemSection }}
+      classNames={{ itemSection: classes.itemSection}}
     >
       <Menu.Target>
         <UnstyledButton

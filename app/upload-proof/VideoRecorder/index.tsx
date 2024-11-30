@@ -419,6 +419,7 @@ export default function VideoRecorder({ sex, instruction, uploadProof }: Props) 
         <Skeleton visible={isVideoLoading} className="skeleton">
           <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
             {isRecording && <RecordingStatus recordingTime={recordingTime} />}
+            <div className={classes.captureOverlay} />
             <video ref={videoRef} className={classes.video} autoPlay muted></video>
             <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
               {!isRecording && hasMultipleCameras && (

@@ -1,7 +1,9 @@
 .container {
-  flex: 0 1;
+  flex: 1;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: nowrap;
+  width: 100%;
 }
 
 .icon {
@@ -10,4 +12,9 @@
 
 .name {
   font-weight: 600;
+}
+
+.header {
+  flex: 1;
+  flex-wrap: nowrap;
 }

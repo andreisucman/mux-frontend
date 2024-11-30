@@ -223,6 +223,7 @@ export interface UserDataType extends DefaultUserType {
   tasks: TaskType[];
   routines: RoutineType[];
   coachEnergy: number;
+  remainingCaloriesPerDay: number;
 }
 
 export type SubscriptionType = {

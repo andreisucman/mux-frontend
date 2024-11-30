@@ -18,8 +18,7 @@ export default function ClubProfileHeader() {
         </Title>
       ),
       centered: true,
-      size: "xs",
-      h: rem(400),
+      size: "sm",
       innerProps: <FollowHistoryModalContent />,
     });
   }, []);
@@ -33,7 +32,7 @@ export default function ClubProfileHeader() {
         <Title order={1}>Club profile</Title>
       </Group>
 
-      <ActionIcon onClick={openFollowHistory} variant="default">
+      <ActionIcon onClick={openFollowHistory} size="md" variant="default">
         <IconHistory className="icon" />
       </ActionIcon>
     </Group>

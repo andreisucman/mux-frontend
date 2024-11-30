@@ -1,0 +1,25 @@
+.container {
+  position: relative;
+  width: rem(300);
+  min-height: rem(300);
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  flex: 1;
+}
+
+.image {
+  position: absolute;
+  inset:0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+}
+
+.label {
+  font-size: rem(32);
+  font-weight: 600;
+}
