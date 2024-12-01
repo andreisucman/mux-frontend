@@ -45,16 +45,16 @@ const fakeSix = {
           position: "front",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
             },
           ],
         },
@@ -62,16 +62,16 @@ const fakeSix = {
           position: "right",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
             },
           ],
         },
@@ -79,16 +79,16 @@ const fakeSix = {
           position: "left",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
             },
           ],
         },
@@ -98,16 +98,16 @@ const fakeSix = {
           position: "front",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
             },
           ],
         },
@@ -115,16 +115,16 @@ const fakeSix = {
           position: "right",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
             },
           ],
         },
@@ -132,16 +132,16 @@ const fakeSix = {
           position: "left",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
             },
           ],
         },
@@ -192,16 +192,16 @@ const fakeSix = {
           position: "mouth",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
             },
           ],
         },
@@ -211,16 +211,16 @@ const fakeSix = {
           position: "mouth",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
             },
           ],
         },
@@ -267,16 +267,16 @@ const fakeSix = {
           position: "scalp",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
             },
           ],
         },
@@ -286,16 +286,16 @@ const fakeSix = {
           position: "scalp" as "eyes",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
             },
           ],
         },
@@ -359,16 +359,16 @@ const fakeFive = {
           position: "front",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
             },
           ],
         },
@@ -376,16 +376,16 @@ const fakeFive = {
           position: "right",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
             },
           ],
         },
@@ -393,16 +393,16 @@ const fakeFive = {
           position: "left",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
             },
           ],
         },
@@ -412,16 +412,16 @@ const fakeFive = {
           position: "front",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
             },
           ],
         },
@@ -429,16 +429,16 @@ const fakeFive = {
           position: "right",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
             },
           ],
         },
@@ -446,16 +446,16 @@ const fakeFive = {
           position: "left",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
             },
           ],
         },
@@ -506,16 +506,16 @@ const fakeFive = {
           position: "mouth",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
             },
           ],
         },
@@ -525,16 +525,16 @@ const fakeFive = {
           position: "mouth",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
             },
           ],
         },
@@ -599,16 +599,16 @@ const fakeFour = {
           position: "front",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
             },
           ],
         },
@@ -616,16 +616,16 @@ const fakeFour = {
           position: "right",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
             },
           ],
         },
@@ -633,16 +633,16 @@ const fakeFour = {
           position: "left",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
             },
           ],
         },
@@ -652,16 +652,16 @@ const fakeFour = {
           position: "front",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/_wm2FVkH8hNlF4yZocxs5.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-dzdnNGH7W6ZR49Se0lIjc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-dzdnNGH7W6ZR49Se0lIjc.webp",
             },
           ],
         },
@@ -669,16 +669,16 @@ const fakeFour = {
           position: "right",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/LTnVKvmAcCApFrMTHhg7M.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-AXYhJS970xlmR1UcVTnq-.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-AXYhJS970xlmR1UcVTnq-.webp",
             },
           ],
         },
@@ -686,16 +686,16 @@ const fakeFour = {
           position: "left",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ALV5xrG2IOcVjxfx4lS0y.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-qM5JWUreFRiFw_pc0kr-J.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-qM5JWUreFRiFw_pc0kr-J.webp",
             },
           ],
         },
@@ -763,16 +763,16 @@ const fakeTwo = {
           position: "mouth",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
             },
           ],
         },
@@ -782,16 +782,16 @@ const fakeTwo = {
           position: "mouth",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/tQJSzrdOVuxoYk7jnxu1k.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-g9PfZdq0LPJHnBQ_tGgdc.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-g9PfZdq0LPJHnBQ_tGgdc.webp",
             },
           ],
         },
@@ -838,16 +838,16 @@ const fakeTwo = {
           position: "scalp",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
             },
           ],
         },
@@ -857,16 +857,16 @@ const fakeTwo = {
           position: "scalp" as "eyes",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
             },
           ],
         },
@@ -929,16 +929,16 @@ const fakeOne = {
           position: "scalp",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
             },
           ],
         },
@@ -948,16 +948,16 @@ const fakeOne = {
           position: "scalp" as "eyes",
           mainUrl: {
             name: "eyes" as "eyes",
-            url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+            url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
           },
           urls: [
             {
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/ocGZNgkY3ENl_Ll5Jo_w9.jpg",
               name: "original" as "eyes",
             },
             {
               name: "eyes" as "eyes",
-              url: "https://myo-data.nyc3.digitaloceanspaces.com/MYO-jKyOL4YafuJ5HJuKNZmS1.webp",
+              url: "https://mux-data.nyc3.digitaloceanspaces.com/mux-jKyOL4YafuJ5HJuKNZmS1.webp",
             },
           ],
         },

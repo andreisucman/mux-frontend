@@ -22,19 +22,19 @@ export default withBundleAnalyzer({
         port: "",
       },
       {
-        hostname: "myo.nyc3.cdn.digitaloceanspaces.com",
+        hostname: "mux.nyc3.cdn.digitaloceanspaces.com",
         pathname: "**",
         protocol: "https",
         port: "",
       },
       {
-        hostname: "myo-data.nyc3.cdn.digitaloceanspaces.com",
+        hostname: "mux-data.nyc3.cdn.digitaloceanspaces.com",
         pathname: "**",
         protocol: "https",
         port: "",
       },
       {
-        hostname: "myo-data.nyc3.digitaloceanspaces.com",
+        hostname: "mux-data.nyc3.digitaloceanspaces.com",
         pathname: "**",
         protocol: "https",
         port: "",

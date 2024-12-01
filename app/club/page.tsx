@@ -26,7 +26,7 @@ export default function Club() {
   const { trackedUserId: localTrackedUserId, payouts } = club || {};
   const { rewardEarned, payoutsEnabled } = payouts || {};
 
-  const trackUser = useCallback(async (trackedUserId: string) => {
+  const handleTrackUser = useCallback(async (trackedUserId: string) => {
     try {
       const response = await callTheServer({
         endpoint: "trackUser",
@@ -59,7 +59,7 @@ export default function Club() {
         closeOnConfirm: true,
         children: <Text>This action will untrack the current user. Are you sure?</Text>,
         labels: { confirm: "Yes", cancel: "No" },
-        onConfirm: () => trackUser(trackedUserId),
+        onConfirm: () => handleTrackUser(trackedUserId),
       });
     },
     [localTrackedUserId]

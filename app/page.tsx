@@ -1,29 +1,142 @@
 "use client";
 
-import React, { useEffect, useContext, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
-import { UserContext } from "@/context/UserContext";
+import { IconCircleOff } from "@tabler/icons-react";
+import InfiniteScroll from "react-infinite-scroller";
+import { Loader, rem, Stack } from "@mantine/core";
+import ComparisonCarousel from "@/components/ComparisonCarousel";
+import MasonryComponent from "@/components/MasonryComponent";
+import OverlayWithText from "@/components/OverlayWithText";
+import callTheServer from "@/functions/callTheServer";
+import openErrorModal from "@/helpers/openErrorModal";
 import { SimpleBeforeAfterType } from "./types";
 import classes from "./page.module.css";
 
+type FetchBeforeAftersProps = {
+  skip?: boolean;
+  existingCount?: number;
+};
+
 export default function IndexPage() {
-  const { userDetails } = useContext(UserContext);
+  const searchParams = useSearchParams();
   const [beforeAfters, setBeforeAfters] = useState<SimpleBeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const { _id: userId } = userDetails || {};
-  const searchParams = useSearchParams();
-
   const type = searchParams.get("type") || "head";
-  const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
   const ageInterval = searchParams.get("ageInterval");
   const ethnicity = searchParams.get("ethnicity");
+  const bodyType = searchParams.get("bodyType");
   const concern = searchParams.get("concern");
 
-  return <Stack className={`${classes.container} mediumPage`}>
+  const fetchBeforeAfters = useCallback(
+    async ({ skip, existingCount }: FetchBeforeAftersProps) => {
+      try {
+        let finalEndpoint = "getAllSolutions";
+        const queryParams = [];
 
-  </Stack>;
+        if (skip && existingCount && existingCount > 0) {
+          queryParams.push(`skip=${existingCount}`);
+        }
+
+        if (type) {
+          queryParams.push(`type=${type}`);
+        }
+
+        if (bodyType) {
+          queryParams.push(`bodyType=${bodyType}`);
+        }
+
+        if (part) {
+          queryParams.push(`part=${part}`);
+        }
+
+        if (sex) {
+          queryParams.push(`sex=${sex}`);
+        }
+
+        if (ageInterval) {
+          queryParams.push(`ageInterval=${ageInterval}`);
+        }
+
+        if (ethnicity) {
+          queryParams.push(`ethnicity=${ethnicity}`);
+        }
+
+        if (concern) {
+          queryParams.push(`concern=${concern}`);
+        }
+
+        if (queryParams.length > 0) {
+          finalEndpoint += `?${queryParams.join("&")}`;
+        }
+
+        const response = await callTheServer({
+          endpoint: finalEndpoint,
+          method: "GET",
+        });
+
+        if (response.status === 200) {
+          if (skip) {
+            setBeforeAfters([...(beforeAfters || []), ...response.message.slice(0, 6)]);
+          } else {
+            setBeforeAfters(response.message.slice(0, 6));
+          }
+          setHasMore(response.message.length === 7);
+        } else {
+          openErrorModal();
+        }
+      } catch (err) {
+        console.log("Error in fetchBeforeAfters: ", err);
+      }
+    },
+    [type, part, sex, ageInterval, ethnicity, concern, bodyType]
+  );
+
+  const memoizedComparisonCarousel = useCallback(
+    (props: any) => <ComparisonCarousel data={props.data} key={props.index} />,
+    []
+  );
+
+  useEffect(() => {
+    fetchBeforeAfters({});
+  }, []);
+
+  return (
+    <Stack className={`${classes.container} mediumPage`}>
+      {beforeAfters ? (
+        <>
+          {beforeAfters.length > 0 ? (
+            <InfiniteScroll
+              loader={
+                <Stack mb={rem(16)} key={0}>
+                  <Loader m="auto" />
+                </Stack>
+              }
+              loadMore={() =>
+                fetchBeforeAfters({ skip: hasMore, existingCount: beforeAfters.length })
+              }
+              useWindow={true}
+              hasMore={hasMore}
+              pageStart={0}
+            >
+              <MasonryComponent
+                maxColumnCount={3}
+                columnGutter={16}
+                columnWidth={300}
+                render={memoizedComparisonCarousel}
+                items={beforeAfters}
+              />
+            </InfiniteScroll>
+          ) : (
+            <OverlayWithText text="No solutions found" icon={<IconCircleOff className="icon" />} />
+          )}
+        </>
+      ) : (
+        <Loader m="auto" />
+      )}
+    </Stack>
+  );
 }

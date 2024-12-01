@@ -12,7 +12,6 @@ type Props = {
   formattedDate: string;
   isModal?: boolean;
   showConcern: boolean;
-  showButton: boolean;
   isTracked?: boolean;
   handleTrack?: () => void;
 };
@@ -25,7 +24,6 @@ export default function ProofCardFooter({
   isModal,
   formattedDate,
   showConcern,
-  showButton,
   handleTrack,
 }: Props) {
   return (
@@ -39,7 +37,7 @@ export default function ProofCardFooter({
           <Text className={classes.text}>{`❗ ${concernName}`}</Text>
         </div>
       )}
-      {showButton && handleTrack && (
+      {handleTrack && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
             text={"Peek the routine"}

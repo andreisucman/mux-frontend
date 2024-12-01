@@ -1,23 +1,28 @@
 import React, { useContext } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Stack, Text } from "@mantine/core";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { UserContext } from "@/context/UserContext";
+import handleTrackUser from "@/functions/handleTrackUser";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { normalizeString } from "@/helpers/utils";
 import ProofCardFooter from "../ProofGallery/ProofCard/ProofCardFooter";
-import { HandleTrackProps } from "../ProofGallery/type";
 import { SimpleProofType } from "../types";
 import classes from "./ProofModalContent.module.css";
 
 type Props = {
   record: SimpleProofType;
-  handleTrack?: (props: HandleTrackProps) => void;
+  showTrackButton?: boolean;
 };
 
-export default function ProofModalContent({ record, handleTrack }: Props) {
-  const { userDetails, setUserDetails } = useContext(UserContext);
+export default function ProofModalContent({ record, showTrackButton }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { club, subscriptions } = userDetails || {};
   const { trackedUserId } = club || {};
 
@@ -51,14 +56,23 @@ export default function ProofModalContent({ record, handleTrack }: Props) {
       )}
       <ProofCardFooter
         showConcern={true}
-        showButton={true}
         disclaimer={<ContentPublicityIndicator isPublic={record.isPublic} />}
         concernName={concernName}
         formattedDate={formattedDate}
         isTracked={isTracked}
         handleTrack={() => {
-          if (handleTrack && trackedUserId)
-            handleTrack({ trackedUserId, setUserDetails, subscriptions });
+          if (showTrackButton && club) {
+            handleTrackUser({
+              router,
+              status,
+              clubData: club,
+              redirectPath: `/club/proof?trackedUserId=${record.userId}`,
+              cancelPath: `/${pathname}?${searchParams.toString()}`,
+              trackedUserId: record.userId,
+              setUserDetails,
+              subscriptions,
+            });
+          }
         }}
         isModal={true}
       />

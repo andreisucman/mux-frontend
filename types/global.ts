@@ -191,7 +191,7 @@ export enum RoutineStatusEnum {
 
 export interface UserDataType extends DefaultUserType {
   _id?: string;
-  email: string | null;
+  email?: string | null;
   club: ClubDataType | null;
   concerns: UserConcernType[];
   requiredProgress: {

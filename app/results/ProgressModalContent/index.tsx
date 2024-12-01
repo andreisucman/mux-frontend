@@ -1,22 +1,27 @@
 import React, { useContext } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { Stack } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
+import handleTrackUser from "@/functions/handleTrackUser";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import LineProgressIndicators from "../LineProgressIndicators";
-import { HandleTrackProps } from "../proof/ProofGallery/type";
 import { SimpleProgressType } from "../types";
 import classes from "./ProgressModalContent.module.css";
 
 type Props = {
   record: SimpleProgressType;
-  handleTrack?: (props: HandleTrackProps) => void;
+  showTrackButton?: boolean;
 };
 
-export default function ProgressModalContent({ record, handleTrack }: Props) {
-  const { userDetails, setUserDetails } = useContext(UserContext);
+export default function ProgressModalContent({ record, showTrackButton }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { club, subscriptions } = userDetails || {};
   const { trackedUserId } = club || {};
 
@@ -35,7 +40,7 @@ export default function ProgressModalContent({ record, handleTrack }: Props) {
         currentDate={formattedCompareDate}
       />
       <LineProgressIndicators record={record} />
-      {handleTrack && (
+      {showTrackButton && club && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
             text={"Peek the routine"}
@@ -43,7 +48,16 @@ export default function ProgressModalContent({ record, handleTrack }: Props) {
             disabled={isTracked}
             icon={<IconEye className={"icon"} />}
             onClick={() =>
-              handleTrack({ trackedUserId: record.userId, setUserDetails, subscriptions })
+              handleTrackUser({
+                router,
+                status,
+                clubData: club,
+                redirectPath: `/club/progress?trackedUserId=${record.userId}`,
+                cancelPath: `/${pathname}?${searchParams.toString()}`,
+                trackedUserId: record.userId,
+                setUserDetails,
+                subscriptions,
+              })
             }
           />
         </div>

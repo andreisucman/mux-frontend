@@ -53,7 +53,7 @@ const fakeTasks = [
     routineId: "673c2956735094d0b405cc72",
     example: {
       type: "image",
-      url: "https://myo-data.nyc3.digitaloceanspaces.com/Ms12Cg6cZdC9pc0pPIqth.jpg",
+      url: "https://mux-data.nyc3.digitaloceanspaces.com/Ms12Cg6cZdC9pc0pPIqth.jpg",
     },
     productsPersonalized: false,
     proofEnabled: true,
@@ -98,7 +98,7 @@ const fakeTasks = [
     routineId: "673c2956735094d0b405cc72",
     example: {
       type: "image",
-      url: "https://myo-data.nyc3.digitaloceanspaces.com/4-LF1Nn7q0jWGKpPKtRlt.jpg",
+      url: "https://mux-data.nyc3.digitaloceanspaces.com/4-LF1Nn7q0jWGKpPKtRlt.jpg",
     },
     productsPersonalized: false,
     proofEnabled: true,

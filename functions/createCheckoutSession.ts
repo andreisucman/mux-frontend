@@ -8,7 +8,7 @@ type Props = {
   cancelPath?: string;
   priceId: string;
   cb?: (...args: any) => void;
-  setUserDetails: React.Dispatch<React.SetStateAction<UserDataType>>;
+  setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
 };
 
 export default async function createCheckoutSession({

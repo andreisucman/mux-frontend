@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
@@ -15,15 +15,23 @@ import classes from "./ProofGallery.module.css";
 
 type Props = {
   hasMore: boolean;
+  isSelfPage: boolean;
   proof?: SimpleProofType[];
   handleFetchProof: () => void;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
 };
 
-export default function ProofGallery({ proof, hasMore, setProof, handleFetchProof }: Props) {
+export default function ProofGallery({
+  proof,
+  hasMore,
+  isSelfPage,
+  setProof,
+  handleFetchProof,
+}: Props) {
   const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
+  const pathname = usePathname();
 
   const { _id: userId } = userDetails || {};
 
@@ -44,6 +52,7 @@ export default function ProofGallery({ proof, hasMore, setProof, handleFetchProo
         isMobile={!!isMobile}
         isSelf={isSelf}
         setProof={setProof}
+        showTrackButton={!isSelfPage}
       />
     ),
     [type, part, concern, isMobile, isSelf, appliedBlurType]

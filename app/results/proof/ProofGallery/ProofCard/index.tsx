@@ -12,7 +12,6 @@ import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
 import { SimpleProofType } from "../../types";
-import { HandleTrackProps } from "../type";
 import ProofCardFooter from "./ProofCardFooter";
 import classes from "./ProofCard.module.css";
 
@@ -22,7 +21,7 @@ type Props = {
   isLite?: boolean;
   data: SimpleProofType;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
-  handleTrack?: (props: HandleTrackProps) => void;
+  showTrackButton?: boolean;
   contentChildren?: React.ReactNode;
 };
 
@@ -32,8 +31,8 @@ function ProofCard({
   isLite,
   isMobile,
   contentChildren,
+  showTrackButton,
   setProof,
-  handleTrack,
 }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const {
@@ -80,7 +79,7 @@ function ProofCard({
       type: "proof",
       title,
       isFullScreen: isMobile,
-      handleTrack,
+      showButton: showTrackButton,
     });
   }, []);
 

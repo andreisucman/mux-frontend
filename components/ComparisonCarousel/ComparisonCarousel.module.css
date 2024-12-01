@@ -1,0 +1,33 @@
+.container {
+  cursor: pointer;
+  position: relative;
+
+  width: 100%;
+  overflow: hidden;
+  gap: rem(0);
+}
+
+.carousel {
+  border-radius: rem(16);
+  overflow: hidden;
+}
+
+.modalHead {
+  display: flex;
+  gap: rem(8);
+  align-items: center;
+
+  & p {
+    cursor: pointer;
+    font-weight: 600;
+  }
+}
+
+.carouselViewport {
+  max-width: rem(580);
+  margin: auto;
+}
+
+.carouselRoot {
+  background-color: var(--mantine-color-dark-8);
+}

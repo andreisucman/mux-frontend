@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
-import { HandleTrackProps } from "@/app/results/proof/ProofGallery/type";
 import { UserContext } from "@/context/UserContext";
+import handleTrackUser from "@/functions/handleTrackUser";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import GlowingButton from "../GlowingButton";
 import SliderComparisonCarousel from "../SliderComparisonCarousel";
@@ -13,12 +15,15 @@ import classes from "./StyleModalContent.module.css";
 
 type Props = {
   record: SimpleStyleType;
-  handleTrack?: (props: HandleTrackProps) => void;
+  showTrackButton?: boolean;
   setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
-export default function StyleModalContent({ record, handleTrack, setRecords }: Props) {
-  const { userDetails, setUserDetails } = useContext(UserContext);
+export default function StyleModalContent({ record, showTrackButton, setRecords }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { subscriptions, club } = userDetails || {};
   const { trackedUserId } = club || {};
 
@@ -64,7 +69,7 @@ export default function StyleModalContent({ record, handleTrack, setRecords }: P
         styleId={styleId}
         setRecords={setRecords}
       />
-      {handleTrack && (
+      {showTrackButton && club && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
             text={"Peek lifestyle"}
@@ -72,7 +77,16 @@ export default function StyleModalContent({ record, handleTrack, setRecords }: P
             disabled={isTracked}
             icon={<IconEye className={"icon"} />}
             onClick={() =>
-              handleTrack({ trackedUserId: record.userId, setUserDetails, subscriptions })
+              handleTrackUser({
+                router,
+                status,
+                redirectPath: `/club/style?trackedUserId=${record.userId}`,
+                cancelPath: `/${pathname}?${searchParams.toString()}`,
+                clubData: club,
+                trackedUserId: record.userId,
+                subscriptions,
+                setUserDetails,
+              })
             }
           />
         </div>
