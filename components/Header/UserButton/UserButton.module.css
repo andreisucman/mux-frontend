@@ -3,3 +3,12 @@
   align-items: center;
   gap: 0;
 }
+
+.icon {
+  width: rem(16) !important;
+  height: rem(16) !important;
+
+  & path {
+    stroke: var(--mantine-color-gray-4);
+  }
+}

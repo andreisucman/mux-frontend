@@ -7,7 +7,6 @@ export type SimpleProgressType = {
   userId: string;
   type: TypeEnum;
   part: PartEnum;
-  position: PositionEnum;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
   scores: { [key: string]: number };

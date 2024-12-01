@@ -14,20 +14,20 @@ export default function TermsLegalBody({ addTitle }: Props) {
       </Text>
       <Stack>
         <Text mt={0}>
-          Welcome to maxyouout.com! This website is owned and operated by Purrma LLC ("Company,"
-          "we," "us," "our"), a company incorporated in Wyoming, United States, with its principal
-          place of business at 30N Gould St., Sheridan, WY 82801.
+          Welcome to muxout.com! This website is owned and operated by Purrma LLC ("Company," "we,"
+          "us," "our"), a company incorporated in Wyoming, United States, with its principal place
+          of business at 30N Gould St., Sheridan, WY 82801.
         </Text>
         <Text>
-          We operate the website maxyouout.com (the "Site"), along with any related products and
+          We operate the website muxout.com (the "Site"), along with any related products and
           services that reference or link to these terms (the "Terms") (collectively, the
           "Services"), which include the collection, analysis, and storage of user-provided
           information for AI-based assessments and personalized guidance regarding physical
           appearance improvement.
         </Text>
         <Text>
-          You can contact us by email at info@maxyouout.com, or by mail at Purrma LLC, 30N Gould
-          St., Sheridan, WY 82801, United States.
+          You can contact us by email at info@muxout.com, or by mail at Purrma LLC, 30N Gould St.,
+          Sheridan, WY 82801, United States.
         </Text>
         <Text>
           These Terms constitute a legally binding agreement between you, whether as an individual
@@ -138,7 +138,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
         </ul>
         <Text>
           If you wish to use any part of the Services, Content, or Marks beyond the scope provided
-          here, please contact us at: info@maxyouout.com.
+          here, please contact us at: info@muxout.com.
         </Text>
         <Text>
           If we grant permission to use any part of our Services or Content, you must acknowledge us
@@ -329,7 +329,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             event of a pricing error, we reserve the right to correct the error and adjust the
             transaction accordingly, even after payment has been processed. If you are not satisfied
             with the corrected price, you may choose to cancel your order by contacting us at
-            info@maxyouout.com.
+            info@muxout.com.
           </Text>
           <Title order={3}>Order Refusal</Title>
           <Text>
@@ -403,8 +403,8 @@ export default function TermsLegalBody({ addTitle }: Props) {
           <Title order={3}>Customer Support</Title>
           <Text>
             If you have any concerns, technical issues, or are dissatisfied with our Services, we
-            encourage you to contact us at info@maxyouout.com or call (323) 540-57-18. We are
-            committed to addressing your concerns and ensuring a positive user experience.
+            encourage you to contact us at info@muxout.com or call (323) 540-57-18. We are committed
+            to addressing your concerns and ensuring a positive user experience.
           </Text>
         </Stack>
         <Stack>
@@ -862,8 +862,8 @@ export default function TermsLegalBody({ addTitle }: Props) {
             You have the right to request the deletion of your account and all associated personal
             data, including sensitive images and videos at any time. You can do this directly within
             your account settings by clicking on the cog icon in the top right corner of the screen
-            when logged into the platform at www.maxyouout.com. Alternatively, you can request
-            account deletion by contacting us at info@maxyouout.com.
+            when logged into the platform at www.muxout.com. Alternatively, you can request account
+            deletion by contacting us at info@muxout.com.
           </Text>
           <Text>
             Upon initiating the deletion request, we will remove your data from our systems in
@@ -1186,7 +1186,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             their use, please contact us at:
           </Text>
           <Text>Purrma LLC, 30N Gould St. Sheridan, Wyoming 82801, United States</Text>
-          <Text>info@maxyouout.com</Text>
+          <Text>info@muxout.com</Text>
         </Stack>
       </Stack>
     </>

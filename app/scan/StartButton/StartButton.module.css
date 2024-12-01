@@ -19,7 +19,7 @@
   height: rem(19);
 
   & path {
-    stroke: var(--mantine-color-gray-2);
+    stroke: var(--mantine-color-gray-4);
   }
 }
 

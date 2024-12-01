@@ -10,13 +10,13 @@ export default function PrivacyLegalBody() {
       </Text>
       <Stack>
         <Text mt={0}>
-          {`Purrma LLC, operating as maxyouout.com ("we," "us," or "our"), is
+          {`Purrma LLC, operating as muxout.com ("we," "us," or "our"), is
           committed to protecting your personal information. This privacy policy
           explains how we collect, use, and share your data when you use our
           website ("Site") and services ("Services"). By using our Site or
           Services, you agree to our privacy practices outlined here. If you
           disagree with our policies, please refrain from using our Site or
-          Services. You may contact us at info@maxyouout.com with any questions.`}
+          Services. You may contact us at info@muxout.com with any questions.`}
         </Text>
 
         <Title order={2}>Summary of Key Points</Title>
@@ -90,7 +90,7 @@ export default function PrivacyLegalBody() {
 
         <Title order={4}>How do you exercise your rights?</Title>
         <Text>
-          To exercise your rights, contact us at info@maxyouout.com. We will process your request in
+          To exercise your rights, contact us at info@muxout.com. We will process your request in
           line with relevant data protection laws.
         </Text>
       </Stack>
@@ -467,7 +467,7 @@ export default function PrivacyLegalBody() {
         </Text>
         <Text>
           If you have any questions regarding the retention of your information, please contact us
-          at info@maxyouout.com.
+          at info@muxout.com.
         </Text>
       </Stack>
 
@@ -521,7 +521,7 @@ export default function PrivacyLegalBody() {
         </Text>
         <Text>
           If you have any concerns or believe your account may have been compromised, please contact
-          us immediately at info@maxyouout.com.
+          us immediately at info@muxout.com.
         </Text>
       </Stack>
 
@@ -537,8 +537,8 @@ export default function PrivacyLegalBody() {
         <Text>
           If you are a parent or guardian and believe your minor child is using our services without
           your consent, or if we inadvertently collected personal information from someone under 18,
-          please contact us immediately at info@maxyouout.com. We will take swift action to
-          deactivate the account and delete the relevant information from our systems.
+          please contact us immediately at info@muxout.com. We will take swift action to deactivate
+          the account and delete the relevant information from our systems.
         </Text>
         <Title>Steps We Take:</Title>
         <ul>
@@ -555,7 +555,7 @@ export default function PrivacyLegalBody() {
         </ul>
         <Text>
           For any questions or concerns about our policies regarding minors, or if you need
-          assistance with the removal of information, please contact us at info@maxyouout.com.
+          assistance with the removal of information, please contact us at info@muxout.com.
         </Text>
       </Stack>
       <Stack>
@@ -634,13 +634,13 @@ export default function PrivacyLegalBody() {
         <Text>
           You have the right to opt out of receiving marketing and promotional communications from
           us. To do so, you can follow the opt-out instructions in any marketing emails you receive,
-          or you may contact us directly at info@maxyouout.com. Please note that opting out of
+          or you may contact us directly at info@muxout.com. Please note that opting out of
           marketing communications will not prevent you from receiving essential service-related
           communications, such as those related to your account or transactions.
         </Text>
         <Text>
           For any further questions or concerns about your privacy rights, feel free to contact us
-          at info@maxyouout.com.
+          at info@muxout.com.
         </Text>
       </Stack>
 
@@ -676,7 +676,7 @@ export default function PrivacyLegalBody() {
         <Text>
           For further information about our data collection practices or to exercise your privacy
           rights, please refer to the relevant sections of this Privacy Notice or contact us at
-          info@maxyouout.com.
+          info@muxout.com.
         </Text>
       </Stack>
       <Stack>
@@ -985,7 +985,7 @@ export default function PrivacyLegalBody() {
           out to us through the following methods:
         </Text>
         <ul>
-          <li>Email: info@maxyouout.com</li>
+          <li>Email: info@muxout.com</li>
           <li>Postal Mail:</li>
           <Text>
             Purrma LLC
@@ -1010,7 +1010,7 @@ export default function PrivacyLegalBody() {
         <Text>
           Depending on the laws applicable in your country, you may have the right to access,
           update, or delete your personal information that we collect. To exercise these rights, you
-          can reach out to us directly via email at info@maxyouout.com or by post at:
+          can reach out to us directly via email at info@muxout.com or by post at:
         </Text>
         <Text>Purrma LLC, 30N Gould St Ste, Sheridan, WY 82801, United States</Text>
         <Text>

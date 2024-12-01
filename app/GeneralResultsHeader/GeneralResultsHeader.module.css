@@ -1,0 +1,18 @@
+.container {
+  position: relative;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.right {
+  justify-content: flex-end;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex: 1;
+    max-width: unset;
+  }
+}
+
+.filterCard {
+  
+}

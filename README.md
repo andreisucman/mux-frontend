@@ -1,4 +1,4 @@
-# maxyouout frontend
+# muxout frontend
 
 # Paths
 

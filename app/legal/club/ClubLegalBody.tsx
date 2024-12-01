@@ -1,6 +1,6 @@
 import React from "react";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { rem, Stack, Text, Title } from "@mantine/core";
+import Link from "@/helpers/custom-router/patch-router/link";
 
 type Props = {
   addTitle?: boolean;
@@ -68,8 +68,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
                 <strong>Daily Task Completion Proof:</strong> This includes images or videos of you
                 performing daily activities, such as using products, eating, or working out at the
                 gym, etc., as described in the tasks of your routine. Once uploaded, this content
-                becomes publicly viewable by all visitors of maxyouout.com, regardless of whether
-                they are members of the Club or not.
+                becomes publicly viewable by all visitors of muxout.com, regardless of whether they
+                are members of the Club or not.
               </li>
               <li>
                 <strong>Progress Images:</strong> These are your weekly progress images, which
@@ -135,8 +135,9 @@ export default function ClubLegalBody({ addTitle }: Props) {
           </li>
           <li>
             <strong>Progress Images of Head and Body:</strong> These images remain private and are
-            only accessible to users who peek (follow) you. Unauthorized sharing or use of these images by
-            followers is strictly prohibited and may result in penalties or removal from the Club.
+            only accessible to users who peek (follow) you. Unauthorized sharing or use of these
+            images by followers is strictly prohibited and may result in penalties or removal from
+            the Club.
           </li>
         </ul>
         <Title order={3}>4. Privacy of Content:</Title>
@@ -158,7 +159,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Text>
           You can leave the Club at any time by visiting your Settings page at
           <Link href="/settings" style={{ display: "inline-block" }}>
-            www.maxyouout.com/settings
+            www.muxout.com/settings
           </Link>
           and clicking the "Leave Club" button.
         </Text>
@@ -237,7 +238,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>3. Reporting Mechanism:</Title>
         <Text>
           If you encounter any inappropriate content or behavior, you may report it by emailing
-          support@maxyouout.com. We will review and take appropriate action, which may include
+          support@muxout.com. We will review and take appropriate action, which may include
           suspending or terminating the violator&apos;s account.
         </Text>
       </Stack>
@@ -276,7 +277,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>10. Contact Us</Title>
         <Text>
           If you have any questions regarding these Club Terms, please contact us at
-          info@maxyouout.com.
+          info@muxout.com.
         </Text>
       </Stack>
     </>

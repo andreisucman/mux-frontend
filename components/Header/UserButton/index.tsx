@@ -1,6 +1,7 @@
-import { IconRotateDot, IconScan, IconSettings, IconSocial } from "@tabler/icons-react";
+import { IconRotateDot, IconSettings, IconSocial } from "@tabler/icons-react";
 import { Avatar, Menu, rem, UnstyledButton } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
+import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import Link from "@/helpers/custom-router/patch-router/link";
 import classes from "./UserButton.module.css";
 
@@ -28,11 +29,13 @@ function UserButton({ avatar, clubDetailsSubmitted }: Props) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-      <Menu.Item component={Link} href="/scan/food">
-          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> Scan food
+        <Menu.Item component={Link} href="/scan/food">
+          <IconScanStyle className={`icon ${classes.icon}`} style={{ marginRight: rem(8) }} />
+          Scan food
         </Menu.Item>
         <Menu.Item component={Link} href="/scan/style">
-          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> Scan style
+          <IconScanFood className={`icon ${classes.icon}`} style={{ marginRight: rem(8) }} />
+          Scan style
         </Menu.Item>
         <Menu.Item component={Link} href="/routines">
           <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> My routines

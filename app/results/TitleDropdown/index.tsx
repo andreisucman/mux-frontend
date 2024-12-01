@@ -30,7 +30,6 @@ export default function TitleDropdown({ titles, customDropdownStyles }: Props) {
   const handleRedirect = useCallback(
     (pathname: string) => {
       router.replace(`${pathname}?${searchParams.toString()}`);
-      close();
     },
     [searchParams.toString(), pathname]
   );
@@ -39,7 +38,7 @@ export default function TitleDropdown({ titles, customDropdownStyles }: Props) {
     <HoverCard
       width={width}
       onClose={close}
-      closeOnClickOutside
+      defaultOpened={false}
       classNames={{ dropdown: classes.dropdown }}
       styles={{ dropdown: customDropdownStyles ? customDropdownStyles : {} }}
     >

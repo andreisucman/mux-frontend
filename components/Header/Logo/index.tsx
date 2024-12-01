@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "@/helpers/custom-router/patch-router/link";
-import logoSrc from "@/public/logo.webp";
+import logoSrc from "@/public/logo.svg";
 import classes from "./Logo.module.css";
 
 type Props = {

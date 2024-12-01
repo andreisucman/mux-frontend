@@ -5,7 +5,7 @@ import classes from "./InstructionContainer.module.css";
 
 type Props = {
   sex: string;
-  title: string;
+  title?: string;
   description?: string;
   instruction: string;
   customStyles?: { [key: string]: any };
@@ -24,9 +24,11 @@ export default function InstructionContainer({
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Skeleton className="skeleton" visible={!instruction}>
         <Stack className={classes.meta} style={instruction ? {} : { visibility: "hidden" }}>
-          <Text size="xs" c="dimmed">
-            {title}
-          </Text>
+          {title && (
+            <Text size="xs" c="dimmed">
+              {title}
+            </Text>
+          )}
           <Text className={classes.description}>
             {coach} Coach: {instruction}
           </Text>

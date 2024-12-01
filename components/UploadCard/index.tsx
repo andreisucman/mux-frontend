@@ -105,7 +105,6 @@ export default function UploadCard({
     <Stack className={classes.container}>
       <InstructionContainer
         sex={sex}
-        title="Instructions"
         instruction={instruction}
         description="All of your uploads are private unless you publish them in the Club."
         customStyles={{ flex: 0 }}
