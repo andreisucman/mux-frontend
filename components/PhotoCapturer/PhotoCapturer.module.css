@@ -18,13 +18,13 @@
   inset: 0;
   z-index: 1;
 
-  background-image: url("/capture.png");
+  background-image: url("/assets/capture.svg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 65%;
+  background-size: 90%;
 
   @media (max-width: $mantine-breakpoint-sm) {
-    background-size: 85%;
+    background-size: 100%;
   }
 }
 

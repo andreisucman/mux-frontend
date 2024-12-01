@@ -9,7 +9,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import ProgressGallery from "./ProgressGallery";
 import ProgressHeader from "./ProgressHeader";
 import { HandleFetchProgressType, SimpleProgressType } from "./types";
-import classes from "./progress.module.css";
+import classes from "./results.module.css";
 
 export const runtime = "edge";
 

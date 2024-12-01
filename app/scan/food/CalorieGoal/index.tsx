@@ -51,7 +51,7 @@ export default function CalorieGoalController({
     <Stack className={classes.container}>
       <Group className={classes.titleGroup}>
         <Text className={classes.title} c={"dimmed"}>
-          Calorie goal
+          Calorie limit
         </Text>
         <SegmentedControl
           disabled={disabled}

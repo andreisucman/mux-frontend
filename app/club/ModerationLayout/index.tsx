@@ -17,9 +17,11 @@ export const runtime = "edge";
 
 type Props = {
   children: React.ReactNode;
+  showChat?: boolean;
+  showHeader?: boolean;
 };
 
-export default function ClubModerationLayout({ children }: Props) {
+export default function ClubModerationLayout({ children, showChat,showHeader }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
@@ -55,7 +57,7 @@ export default function ClubModerationLayout({ children }: Props) {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <ClubHeader title={"Club"} hideTypeDropdown={!isRoutine} showReturn />
+      {showHeader && <ClubHeader title={"Club"} hideTypeDropdown={!isRoutine} showReturn />}
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData || !youTrackData}>
         <ClubProfilePreview
           type={trackedUserId ? "peek" : "you"}
@@ -67,7 +69,7 @@ export default function ClubModerationLayout({ children }: Props) {
         {showComponent === "followOverlay" && (
           <FollowOverlay trackedUserId={trackedUserId} description={followText} />
         )}
-        <ClubChatContainer disabled={showComponent !== "children"} />
+        {showChat && <ClubChatContainer disabled={showComponent !== "children"} />}
       </Skeleton>
     </Stack>
   );

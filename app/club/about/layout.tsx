@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function ClubAboutLayout({ children }: Props) {
-  return <ClubModerationLayout>{children}</ClubModerationLayout>;
+  return <ClubModerationLayout showChat showHeader>{children}</ClubModerationLayout>;
 }

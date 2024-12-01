@@ -28,6 +28,12 @@ function UserButton({ avatar, clubDetailsSubmitted }: Props) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
+      <Menu.Item component={Link} href="/scan/food">
+          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> Scan food
+        </Menu.Item>
+        <Menu.Item component={Link} href="/scan/style">
+          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> Scan style
+        </Menu.Item>
         <Menu.Item component={Link} href="/routines">
           <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> My routines
         </Menu.Item>

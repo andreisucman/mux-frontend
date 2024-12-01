@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
 import Image from "next/image";
-import { IconHanger2, IconMan, IconMoodSmile, IconSoup } from "@tabler/icons-react";
+import { IconBodyScan, IconUserScan } from "@tabler/icons-react";
 import cn from "classnames";
-import { Overlay, rem, Stack, Text, UnstyledButton } from "@mantine/core";
+import { Overlay, Stack, Text, UnstyledButton } from "@mantine/core";
+import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import Timer from "@/components/Timer";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
@@ -16,10 +17,10 @@ type Props = {
 };
 
 const icons = {
-  head: <IconMoodSmile className="icon" />,
-  body: <IconMan className="icon" />,
-  style: <IconHanger2 className="icon" />,
-  food: <IconSoup className="icon" />
+  head: <IconUserScan className="icon icon__large" />,
+  body: <IconBodyScan className="icon icon__large" />,
+  style: <IconScanStyle className={`icon ${classes.icon}`} />,
+  food: <IconScanFood className={`icon ${classes.icon}`} />,
 };
 
 export default function StartButton({ onClick, type, needsScan, nextScanDate }: Props) {

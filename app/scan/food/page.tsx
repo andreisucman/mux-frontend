@@ -17,7 +17,7 @@ import classes from "./food.module.css";
 export default function ScanFoodPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<FoodAnalysisType | null>(null);
-  const [calorieGoal, setCalorieGoal] = useState(0);
+  const [calorieGoal, setCalorieGoal] = useState(300);
   const [localUrl, setLocalUrl] = useState<string>("");
   const [goalType, setGoalType] = useState<string>("portion");
 
