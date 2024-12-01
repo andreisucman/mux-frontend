@@ -39,11 +39,11 @@ export default function ResultsProgress() {
 
         if (response.status === 200) {
           if (skip) {
-            setProgress([...(currentArray || []), ...response.message.slice(0, 6)]);
+            setProgress([...(currentArray || []), ...response.message.slice(0, 20)]);
           } else {
-            setProgress(response.message.slice(0, 6));
+            setProgress(response.message.slice(0, 20));
           }
-          setHasMore(response.message.length === 7);
+          setHasMore(response.message.length === 21);
         } else {
           openErrorModal();
         }

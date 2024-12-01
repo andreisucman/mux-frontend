@@ -81,11 +81,11 @@ export default function BeforeAftersPage() {
 
         if (response.status === 200) {
           if (skip) {
-            setBeforeAfters([...(beforeAfters || []), ...response.message.slice(0, 6)]);
+            setBeforeAfters([...(beforeAfters || []), ...response.message.slice(0, 20)]);
           } else {
-            setBeforeAfters(response.message.slice(0, 6));
+            setBeforeAfters(response.message.slice(0, 20));
           }
-          setHasMore(response.message.length === 7);
+          setHasMore(response.message.length === 21);
         } else {
           openErrorModal();
         }
