@@ -18,7 +18,7 @@ type FetchBeforeAftersProps = {
   existingCount?: number;
 };
 
-export default function IndexPage() {
+export default function BeforeAftersPage() {
   const searchParams = useSearchParams();
   const [beforeAfters, setBeforeAfters] = useState<SimpleBeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -32,9 +32,10 @@ export default function IndexPage() {
   const concern = searchParams.get("concern");
 
   const fetchBeforeAfters = useCallback(
-    async ({ skip, existingCount }: FetchBeforeAftersProps) => {
+    async (props?: FetchBeforeAftersProps) => {
+      const { skip, existingCount } = props || {};
       try {
-        let finalEndpoint = "getAllSolutions";
+        let finalEndpoint = "getBeforeAfters";
         const queryParams = [];
 
         if (skip && existingCount && existingCount > 0) {
@@ -101,8 +102,8 @@ export default function IndexPage() {
   );
 
   useEffect(() => {
-    fetchBeforeAfters({});
-  }, []);
+    fetchBeforeAfters();
+  }, [type, part, sex, ageInterval, ethnicity, bodyType, concern]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>

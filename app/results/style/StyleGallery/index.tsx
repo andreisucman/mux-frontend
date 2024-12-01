@@ -9,29 +9,48 @@ import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
-import { HandleFetchStylesType } from "../types";
+import { FetchStyleProps } from "@/functions/fetchStyle";
 import StyleCard from "./StyleCard";
 import classes from "./StyleGallery.module.css";
 
+interface HandleFetchStyleProps extends FetchStyleProps {
+  currentArray?: SimpleStyleType[];
+}
+
 type Props = {
   hasMore: boolean;
+  isSelfPage?: boolean;
   styles?: SimpleStyleType[];
-  handleFetchStyles: (props: HandleFetchStylesType) => void;
+  handleFetchStyles: (props: HandleFetchStyleProps) => void;
   setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
 };
 
-export default function StyleGallery({ styles, hasMore, setStyles, handleFetchStyles }: Props) {
+export default function StyleGallery({
+  styles,
+  hasMore,
+  isSelfPage,
+  setStyles,
+  handleFetchStyles,
+}: Props) {
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
 
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
+  const trackedUserId = searchParams.get("trackedUserId");
 
   const modelObject = styles && styles[0];
   const appliedBlurType = modelObject?.mainUrl.name;
 
   const memoizedStyleCard = useCallback(
-    (props: any) => <StyleCard data={props.data} key={props.index} setStyles={setStyles} />,
+    (props: any) => (
+      <StyleCard
+        data={props.data}
+        key={props.index}
+        setStyles={setStyles}
+        showTrackButton={!isSelfPage}
+      />
+    ),
     [styleName, appliedBlurType]
   );
 
@@ -46,7 +65,15 @@ export default function StyleGallery({ styles, hasMore, setStyles, handleFetchSt
               <Loader m="auto" />
             </Stack>
           }
-          loadMore={() => handleFetchStyles({ type, styleName, skip: hasMore })}
+          loadMore={() =>
+            handleFetchStyles({
+              skip: hasMore,
+              currentArray: styles,
+              type,
+              trackedUserId,
+              styleName,
+            })
+          }
           hasMore={hasMore}
           pageStart={0}
         >

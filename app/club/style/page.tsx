@@ -7,11 +7,16 @@ import StyleGallery from "@/app/results/style/StyleGallery";
 import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
-import fetchUsersStyle, { FetchUsersStyleProps } from "@/functions/fetchUsersStyle";
+import { FetchStyleProps } from "@/functions/fetchStyle";
+import fetchUsersStyle from "@/functions/fetchUsersStyle";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
+
+interface HandleFetchStyleProps extends FetchStyleProps {
+  currentArray?: SimpleStyleType[];
+}
 
 export default function ClubStyle() {
   const searchParams = useSearchParams();
@@ -24,11 +29,12 @@ export default function ClubStyle() {
   const trackedUserId = searchParams.get("trackedUserId");
 
   const handleFetchUsersStyles = useCallback(
-    async ({ type, currentArrayLength, skip }: FetchUsersStyleProps) => {
+    async ({ type, currentArray, styleName, skip, trackedUserId }: HandleFetchStyleProps) => {
       const data = await fetchUsersStyle({
         type,
         styleName,
-        currentArrayLength,
+        currentArrayLength: currentArray?.length || 0,
+        trackedUserId,
         skip,
       });
 
@@ -43,14 +49,15 @@ export default function ClubStyle() {
         openErrorModal();
       }
     },
-    [trackedUserId, styleName]
+    []
   );
 
   useEffect(() => {
     if (status !== "authenticated") return;
+    if (!trackedUserId) return;
 
-    handleFetchUsersStyles({ type, styleName });
-  }, [status, type, styleName]);
+    handleFetchUsersStyles({ type, styleName, trackedUserId });
+  }, [status, type, styleName, trackedUserId]);
 
   return (
     <ClubModerationLayout>

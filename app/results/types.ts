@@ -21,9 +21,3 @@ export type HandleUpdateProgressType = {
   images: ProgressImageType[];
   initialImages: ProgressImageType[];
 };
-
-export type HandleFetchProgressType = {
-  type: string;
-  part: string | null;
-  skip?: boolean;
-};

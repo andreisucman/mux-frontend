@@ -1,20 +1,13 @@
 import callTheServer from "./callTheServer";
-
-export type FetchUsersStyleProps = {
-  trackedUserId?: string | null;
-  styleName?: string | null;
-  currentArrayLength?: number;
-  skip?: boolean;
-  type: string;
-};
+import { FetchStyleProps } from "./fetchStyle";
 
 export default async function fetchUsersStyle({
   trackedUserId,
-  type,
   styleName,
+  type,
   skip,
   currentArrayLength,
-}: FetchUsersStyleProps) {
+}: FetchStyleProps) {
   try {
     let finalEndpoint = `getUsersStyleRecords${trackedUserId ? `/${trackedUserId}` : ""}`;
 

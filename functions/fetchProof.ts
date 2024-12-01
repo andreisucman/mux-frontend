@@ -1,7 +1,8 @@
 import callTheServer from "./callTheServer";
+import { SimpleProofType } from "@/app/results/proof/types";
 
 export type FetchProofProps = {
-  userId?: string;
+  trackedUserId?: string | null;
   type: string;
   part: string | null;
   query: string | null;
@@ -14,7 +15,6 @@ export type FetchProofProps = {
 };
 
 export default async function fetchProof({
-  userId,
   type,
   sex,
   ageInterval,
@@ -25,7 +25,7 @@ export default async function fetchProof({
   currentArrayLength,
 }: FetchProofProps) {
   try {
-    let finalEndpoint = `getUsersProofRecords${userId ? `/${userId}` : ""}`;
+    let finalEndpoint = "getAllProofRecords";
 
     const queryParams = [];
 

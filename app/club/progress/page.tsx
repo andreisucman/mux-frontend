@@ -13,6 +13,10 @@ import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
 
+interface HandleFetchProgressProps extends FetchProgressProps {
+  currentArray?: SimpleProgressType[];
+}
+
 export default function ClubProgress() {
   const searchParams = useSearchParams();
   const { status } = useContext(UserContext);
@@ -24,33 +28,34 @@ export default function ClubProgress() {
   const trackedUserId = searchParams.get("trackedUserId");
 
   const handleFetchProgress = useCallback(
-    async ({ type, part, currentArrayLength, skip }: FetchProgressProps) => {
+    async ({ type, part, currentArray, trackedUserId, skip }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
         part,
         type,
-        currentArrayLength,
+        currentArrayLength: (currentArray && currentArray.length) || 0,
         trackedUserId,
         skip,
       });
 
       if (data) {
         if (skip) {
-          setProgress([...(progress || []), ...data.slice(0, 20)]);
+          setProgress([...(currentArray || []), ...data.slice(0, 6)]);
         } else {
-          setProgress(data.slice(0, 20));
+          setProgress(data.slice(0, 6));
         }
-        setHasMore(data.length === 21);
+        setHasMore(data.length === 7);
       } else {
         openErrorModal();
       }
     },
-    [trackedUserId, progress && progress.length]
+    []
   );
 
   useEffect(() => {
     if (status !== "authenticated") return;
+    if (!trackedUserId) return;
 
-    handleFetchProgress({ type, part });
+    handleFetchProgress({ type, part, trackedUserId });
   }, [status, trackedUserId, type, part]);
 
   return (

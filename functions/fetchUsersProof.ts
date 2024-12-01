@@ -1,14 +1,5 @@
 import callTheServer from "./callTheServer";
-
-export type FetchUsersProofProps = {
-  trackedUserId?: string | null;
-  type: string;
-  part: string | null;
-  query: string | null;
-  concern: string | null;
-  skip?: boolean;
-  currentArrayLength?: number;
-};
+import { FetchProofProps } from "./fetchProof";
 
 export default async function fetchUsersProof({
   trackedUserId,
@@ -17,8 +8,8 @@ export default async function fetchUsersProof({
   query,
   concern,
   skip,
-  currentArrayLength,
-}: FetchUsersProofProps) {
+  currentArray,
+}: FetchProofProps) {
   try {
     let finalEndpoint = `getUsersProofRecords${trackedUserId ? `/${trackedUserId}` : ""}`;
 
@@ -40,8 +31,8 @@ export default async function fetchUsersProof({
       queryParams.push(`concern=${encodeURIComponent(concern)}`);
     }
 
-    if (skip && currentArrayLength && currentArrayLength > 0) {
-      queryParams.push(`skip=${currentArrayLength}`);
+    if (skip && currentArray && currentArray.length > 0) {
+      queryParams.push(`skip=${currentArray}`);
     }
 
     if (queryParams.length > 0) {

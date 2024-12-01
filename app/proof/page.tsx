@@ -2,15 +2,14 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader } from "@mantine/core";
-import ProofGallery from "@/app/results/proof/ProofGallery";
-import ProofHeader from "@/app/results/proof/ProofHeader";
-import { SimpleProofType } from "@/app/results/proof/types";
+import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import { FetchProofProps } from "@/functions/fetchProof";
-import fetchUsersProof from "@/functions/fetchUsersProof";
+import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import openErrorModal from "@/helpers/openErrorModal";
-import ClubModerationLayout from "../ModerationLayout";
+import ProofGallery from "../results/proof/ProofGallery";
+import ProofHeader from "../results/proof/ProofHeader";
+import { SimpleProofType } from "../results/proof/types";
+import classes from "./proof.module.css";
 
 export const runtime = "edge";
 
@@ -18,7 +17,7 @@ interface HandleFetchProofProps extends FetchProofProps {
   currentArray?: SimpleProofType[];
 }
 
-export default function ClubProof() {
+export default function AllProof() {
   const searchParams = useSearchParams();
   const { status } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
@@ -27,32 +26,38 @@ export default function ClubProof() {
   const type = searchParams.get("type") || "head";
   const query = searchParams.get("query");
   const part = searchParams.get("part");
+  const sex = searchParams.get("sex");
+  const ageInterval = searchParams.get("ageInterval");
+  const ethnicity = searchParams.get("ethnicity");
   const concern = searchParams.get("concern");
-  const trackedUserId = searchParams.get("trackedUserId");
 
   const handleFetchProof = useCallback(
     async ({
       type,
       part,
-      trackedUserId,
+      ethnicity,
+      sex,
+      ageInterval,
       concern,
       currentArray,
       query,
       skip,
     }: HandleFetchProofProps) => {
-      const data = await fetchUsersProof({
+      const data = await fetchProof({
         concern,
         part,
         query,
         type,
-        currentArrayLength: (currentArray && currentArray.length) || 0,
-        trackedUserId,
+        ethnicity,
+        sex,
+        ageInterval,
+        currentArrayLength: currentArray?.length || 0,
         skip,
       });
 
       if (data) {
         if (skip) {
-          setProof([...(proof || []), ...data.slice(0, 20)]);
+          setProof([...(currentArray || []), ...data.slice(0, 20)]);
         } else {
           setProof(data.slice(0, 20));
         }
@@ -66,24 +71,32 @@ export default function ClubProof() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!trackedUserId) return;
 
-    handleFetchProof({ trackedUserId, type, part, concern, query });
-  }, [status, trackedUserId, type, part, concern, query]);
+    handleFetchProof({
+      type,
+      part,
+      ageInterval,
+      ethnicity,
+      sex,
+      concern,
+      currentArray: proof,
+      query,
+    });
+  }, [status, type, part, concern, query, ageInterval, ethnicity, sex]);
 
   return (
-    <ClubModerationLayout>
+    <Stack className={`${classes.container} mediumPage`}>
       <ProofHeader title="Proof" showReturn />
       {proof ? (
         <ProofGallery
           proof={proof}
           hasMore={hasMore}
-          handleFetchProof={handleFetchProof}
+          handleFetchProof={fetchProof}
           setProof={setProof}
         />
       ) : (
         <Loader m="auto" />
       )}
-    </ClubModerationLayout>
+    </Stack>
   );
 }

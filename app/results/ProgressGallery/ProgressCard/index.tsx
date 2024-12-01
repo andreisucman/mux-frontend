@@ -10,11 +10,12 @@ import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
 
 type Props = {
+  showTrackButton: boolean;
   data: SimpleProgressType;
   setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
-function ProgressCard({ data, setProgress }: Props) {
+function ProgressCard({ data, showTrackButton, setProgress }: Props) {
   const { width: containerWidth, ref } = useElementSize();
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { images, createdAt } = data;
@@ -34,6 +35,7 @@ function ProgressCard({ data, setProgress }: Props) {
             {upperFirst(data.part)} progress
           </Title>
         ),
+        showTrackButton,
       }),
     [data.part]
   );

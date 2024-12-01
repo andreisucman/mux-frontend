@@ -10,11 +10,12 @@ import openResultModal from "@/helpers/openResultModal";
 import classes from "./StyleCard.module.css";
 
 type Props = {
+  showTrackButton: boolean;
   data: SimpleStyleType;
   setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
 };
 
-function StyleCard({ data, setStyles }: Props) {
+function StyleCard({ data, showTrackButton, setStyles }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { mainUrl, styleIcon, styleName, createdAt, votes, _id: styleId, isPublic } = data;
 
@@ -30,9 +31,10 @@ function StyleCard({ data, setStyles }: Props) {
             {formattedDate} - {styleName} style
           </Title>
         ),
+        showTrackButton,
         setRecords: setStyles,
       }),
-    [styleName]
+    [styleName, showTrackButton]
   );
 
   useEffect(() => {

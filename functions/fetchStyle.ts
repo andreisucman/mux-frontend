@@ -1,13 +1,14 @@
 import callTheServer from "./callTheServer";
 
 export type FetchStyleProps = {
+  trackedUserId?: string | null;
   styleName?: string | null;
   currentArrayLength?: number;
   skip?: boolean;
   type: string;
-  sex: string | null;
-  ageInterval: string | null;
-  ethnicity: string | null;
+  sex?: string | null;
+  ageInterval?: string | null;
+  ethnicity?: string | null;
 };
 
 export default async function fetchStyle({

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
@@ -9,15 +9,20 @@ import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
+import { FetchProofProps } from "@/functions/fetchProof";
 import { SimpleProofType } from "../types";
 import ProofCard from "./ProofCard";
 import classes from "./ProofGallery.module.css";
 
+interface HandleFetchProofProps extends FetchProofProps {
+  currentArray?: SimpleProofType[];
+}
+
 type Props = {
   hasMore: boolean;
-  isSelfPage: boolean;
+  isSelfPage?: boolean;
   proof?: SimpleProofType[];
-  handleFetchProof: () => void;
+  handleFetchProof: (args: HandleFetchProofProps) => void;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
 };
 
@@ -31,13 +36,13 @@ export default function ProofGallery({
   const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const pathname = usePathname();
 
   const { _id: userId } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
+  const query = searchParams.get("query");
   const trackedUserId = searchParams.get("trackedUserId");
   const isSelf = userId === trackedUserId;
 
@@ -55,7 +60,7 @@ export default function ProofGallery({
         showTrackButton={!isSelfPage}
       />
     ),
-    [type, part, concern, isMobile, isSelf, appliedBlurType]
+    [type, part, concern, isMobile, isSelf, appliedBlurType, isSelfPage]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
@@ -69,7 +74,17 @@ export default function ProofGallery({
               <Loader m="auto" />
             </Stack>
           }
-          loadMore={() => handleFetchProof()}
+          loadMore={() =>
+            handleFetchProof({
+              trackedUserId,
+              currentArray: proof,
+              concern,
+              type,
+              part,
+              query,
+              skip: hasMore,
+            })
+          }
           hasMore={hasMore}
           pageStart={0}
         >

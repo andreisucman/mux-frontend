@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
-import { UserContext } from "@/context/UserContext";
-import { FetchStyleProps } from "@/functions/fetchStyle";
-import fetchUsersStyle from "@/functions/fetchUsersStyle";
+import fetchStyle, { FetchStyleProps } from "@/functions/fetchStyle";
 import openErrorModal from "@/helpers/openErrorModal";
-import StyleGallery from "./StyleGallery";
-import StyleHeader from "./StyleHeader";
+import StyleGallery from "../results/style/StyleGallery";
+import StyleHeader from "../results/style/StyleHeader";
 import classes from "./style.module.css";
 
 export const runtime = "edge";
@@ -18,22 +16,35 @@ interface HandleFetchStyleProps extends FetchStyleProps {
   currentArray?: SimpleStyleType[];
 }
 
-export default function ResultStyle() {
+export default function AllStyle() {
   const searchParams = useSearchParams();
-  const { status } = useContext(UserContext);
   const [styles, setStyles] = useState<SimpleStyleType[]>();
   const [hasMore, setHasMore] = useState(false);
 
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
+  const sex = searchParams.get("sex");
+  const ageInterval = searchParams.get("ageInterval");
+  const ethnicity = searchParams.get("ethnicity");
 
   const handleFetchStyles = useCallback(
-    async ({ type, styleName, skip, currentArray }: HandleFetchStyleProps) => {
+    async ({
+      type,
+      styleName,
+      skip,
+      currentArray,
+      ethnicity,
+      ageInterval,
+      sex,
+    }: HandleFetchStyleProps) => {
       try {
-        const response = await fetchUsersStyle({
+        const response = await fetchStyle({
           type,
           styleName,
           currentArrayLength: currentArray?.length || 0,
+          ethnicity,
+          ageInterval,
+          sex,
           skip,
         });
 
@@ -55,10 +66,8 @@ export default function ResultStyle() {
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
-    handleFetchStyles({ type, styleName });
-  }, [status, type, styleName]);
+    handleFetchStyles({ type, styleName, sex, ageInterval, ethnicity });
+  }, [type, styleName, sex, ageInterval, ethnicity]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
@@ -73,7 +82,6 @@ export default function ResultStyle() {
           hasMore={hasMore}
           handleFetchStyles={handleFetchStyles}
           setStyles={setStyles}
-          isSelfPage
         />
       ) : (
         <Loader m="auto" />

@@ -8,28 +8,36 @@ import { Loader, rem, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import { HandleFetchProgressType, SimpleProgressType } from "../types";
+import { FetchProgressProps } from "@/functions/fetchProgress";
+import { SimpleProgressType } from "../types";
 import ProgressCard from "./ProgressCard";
 import classes from "./ProgressGallery.module.css";
 
+interface HandleFetchProgressProps extends FetchProgressProps {
+  currentArray?: SimpleProgressType[];
+}
+
 type Props = {
   hasMore: boolean;
+  isSelfPage?: boolean;
   progress?: SimpleProgressType[];
-  handleFetchProgress: (props: HandleFetchProgressType) => void;
+  handleFetchProgress: (props: HandleFetchProgressProps) => void;
   setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
 export default function ProgressGallery({
   progress,
   hasMore,
+  isSelfPage,
   setProgress,
   handleFetchProgress,
 }: Props) {
   const searchParams = useSearchParams();
+  const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
   const position = searchParams.get("position") || "front";
-  const isMobile = useMediaQuery("(max-width: 36em)");
+  const trackedUserId = searchParams.get("trackedUserId") || "front";
 
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;
@@ -47,8 +55,15 @@ export default function ProgressGallery({
   );
 
   const memoizedProgressCard = useCallback(
-    (props: any) => <ProgressCard data={props.data} key={props.index} setProgress={setProgress} />,
-    [position, appliedBlurType]
+    (props: any) => (
+      <ProgressCard
+        data={props.data}
+        key={props.index}
+        setProgress={setProgress}
+        showTrackButton={!isSelfPage}
+      />
+    ),
+    [position, isSelfPage, appliedBlurType]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
@@ -62,7 +77,15 @@ export default function ProgressGallery({
               <Loader m="auto" />
             </Stack>
           }
-          loadMore={() => handleFetchProgress({ type, part, skip: hasMore })}
+          loadMore={() =>
+            handleFetchProgress({
+              type,
+              part,
+              skip: hasMore,
+              currentArray: progress,
+              trackedUserId,
+            })
+          }
           hasMore={hasMore}
           pageStart={0}
         >

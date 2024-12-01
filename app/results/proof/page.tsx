@@ -5,44 +5,53 @@ import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
+import fetchUsersProof from "@/functions/fetchUsersProof";
 import openErrorModal from "@/helpers/openErrorModal";
 import ProofGallery from "./ProofGallery";
-import StyleHeader from "./ProofHeader";
+import ProofHeader from "./ProofHeader";
 import { SimpleProofType } from "./types";
 import classes from "./proof.module.css";
 
 export const runtime = "edge";
 
+interface HandleFetchProofProps extends FetchProofProps {
+  currentArray?: SimpleProofType[];
+}
+
 export default function ResultsProof() {
   const searchParams = useSearchParams();
-  const { userDetails } = useContext(UserContext);
+  const { status } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const { _id: userId } = userDetails || {};
   const type = searchParams.get("type") || "head";
   const query = searchParams.get("query");
   const part = searchParams.get("part");
-  const sex = searchParams.get("sex");
-  const ageInterval = searchParams.get("ageInterval");
-  const ethnicity = searchParams.get("ethnicity");
   const concern = searchParams.get("concern");
 
   const handleFetchProof = useCallback(
-    async ({ userId, type, part, concern, currentArrayLength, query, skip }: FetchProofProps) => {
-      const data = await fetchProof({
+    async ({
+      trackedUserId,
+      type,
+      part,
+      concern,
+      currentArray,
+      query,
+      skip,
+    }: HandleFetchProofProps) => {
+      const data = await fetchUsersProof({
         concern,
         part,
         query,
         type,
-        currentArrayLength,
-        userId,
+        currentArrayLength: currentArray?.length || 0,
+        trackedUserId,
         skip,
       });
 
       if (data) {
         if (skip) {
-          setProof([...(proof || []), ...data.slice(0, 20)]);
+          setProof([...(currentArray || []), ...data.slice(0, 20)]);
         } else {
           setProof(data.slice(0, 20));
         }
@@ -51,24 +60,25 @@ export default function ResultsProof() {
         openErrorModal();
       }
     },
-    [userId, type, part, concern, query, ageInterval]
+    []
   );
 
   useEffect(() => {
-    if (!userId) return;
+    if (status !== "authenticated") return;
 
     handleFetchProof({ type, part, concern, query });
-  }, [userId, type, part, concern, query, ageInterval, ethnicity, sex]);
+  }, [status, type, part, concern, query]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <StyleHeader title="Proof" showReturn />
+      <ProofHeader title="Proof" showReturn />
       {proof ? (
         <ProofGallery
           proof={proof}
           hasMore={hasMore}
-          handleFetchProof={() => fetchProof({ concern, type, part, query, skip: hasMore })}
+          handleFetchProof={fetchProof}
           setProof={setProof}
+          isSelfPage
         />
       ) : (
         <Loader m="auto" />

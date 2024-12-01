@@ -4,56 +4,42 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import callTheServer from "@/functions/callTheServer";
+import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
 import ProgressGallery from "./ProgressGallery";
 import ProgressHeader from "./ProgressHeader";
-import { HandleFetchProgressType, SimpleProgressType } from "./types";
+import { SimpleProgressType } from "./types";
 import classes from "./results.module.css";
 
 export const runtime = "edge";
 
+interface HandleFetchProgressProps extends FetchProgressProps {
+  currentArray?: SimpleProgressType[]
+}
+
 export default function ResultsProgress() {
   const searchParams = useSearchParams();
-  const { userDetails } = useContext(UserContext);
+  const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
-  const { _id: userId } = userDetails || {};
 
   const handleFetchProgress = useCallback(
-    async ({ type, part, skip }: HandleFetchProgressType) => {
-      if (!userId) return;
-
+    async ({ type, part, skip, trackedUserId, currentArray }: HandleFetchProgressProps) => {
       try {
-        const parts = [];
-
-        if (type) {
-          parts.push(`type=${type}`);
-        }
-
-        if (part) {
-          parts.push(`part=${part}`);
-        }
-
-        if (skip && progress) {
-          parts.push(`skip=${progress.length}`);
-        }
-
-        const query = parts.join("&");
-
-        const endpoint = `getLatestProgress${query ? `?${query}` : ""}`;
-
-        const response = await callTheServer({
-          endpoint,
-          method: "GET",
+        const response = await fetchProgress({
+          type,
+          part,
+          skip,
+          trackedUserId,
+          currentArrayLength: currentArray && currentArray.length || 0,
         });
 
         if (response.status === 200) {
           if (skip) {
-            setProgress([...(progress || []), ...response.message.slice(0, 6)]);
+            setProgress([...(currentArray || []), ...response.message.slice(0, 6)]);
           } else {
             setProgress(response.message.slice(0, 6));
           }
@@ -65,14 +51,14 @@ export default function ResultsProgress() {
         console.log("Error in handleFetchProgress: ", err);
       }
     },
-    [userId, progress && progress.length]
+    []
   );
 
   useEffect(() => {
-    if (!userId) return;
+    if (status !== "authenticated") return;
 
     handleFetchProgress({ type, part });
-  }, [userId, type, part]);
+  }, [status, type, part]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
@@ -83,6 +69,7 @@ export default function ResultsProgress() {
           hasMore={hasMore}
           handleFetchProgress={handleFetchProgress}
           setProgress={setProgress}
+          isSelfPage
         />
       ) : (
         <Loader m="auto" />
