@@ -5,7 +5,9 @@ import { Group, Stack, Title } from "@mantine/core";
 import { useElementSize, useMediaQuery } from "@mantine/hooks";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
+import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import { partIcons, partItems, typeIcons, typeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -44,11 +46,21 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
   const isMobile = useMediaQuery("(max-width: 36em)");
   const [filters, setFilters] = useState<ExistingFiltersType>();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
+  const [partFilterItems, setPartFilterItems] = useState<FilterItemType[]>();
 
-  const paramsCount = useMemo(
-    () => (searchParams ? Array.from(searchParams.values()).length : 0),
-    [searchParams.toString()]
+  const type = searchParams.get("type") || "head";
+  const part = searchParams.get("part");
+
+  const typeFilterItems = useMemo(
+    () => filters && typeItems.filter((item) => filters.type.includes(item.value)),
+    [typeof filters]
   );
+
+  const paramsCount = useMemo(() => {
+    const allParams = Array.from(searchParams.values());
+    const requiredParams = allParams.filter((param) => !["type", "part"].includes(param));
+    return requiredParams.length;
+  }, [searchParams.toString()]);
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -100,16 +112,48 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
     getExistingFilters();
   }, []);
 
+  useEffect(() => {
+    setPartFilterItems(partItems.filter((item) => item.type === type));
+  }, [type]);
+
+  const showRightPart = useMemo(() => {
+    const anyTypeFilter = typeFilterItems && typeFilterItems.length > 1;
+    const anyPartFilter = partFilterItems && partFilterItems.length > 1;
+    return (showFilter && (anyTypeFilter || anyPartFilter)) || showSearch;
+  }, [typeFilterItems, partFilterItems, showFilter, showSearch]);
+
   return (
     <Group className={classes.container}>
       <Group className={classes.wrapper}>
         <TitleDropdown titles={titles} />
-        <Group className={classes.right} ref={ref}>
-          {showSearch && (
-            <SearchButton maxPillWidth={width / 2} onSearchClick={() => spotlight.open()} />
-          )}
-          {showFilter && isMobile && <FilterButton activeFiltersCount={paramsCount} />}
-        </Group>
+        {showRightPart && (
+          <Group className={classes.right} ref={ref}>
+            {typeFilterItems && typeFilterItems.length > 1 && (
+              <FilterDropdown
+                data={typeFilterItems || []}
+                icons={typeIcons}
+                placeholder="Select type"
+                defaultSelected={type}
+                filterType="type"
+                addToQuery
+              />
+            )}
+            {partFilterItems && partFilterItems.length > 1 && (
+              <FilterDropdown
+                data={partFilterItems || []}
+                icons={partIcons}
+                placeholder="Select part"
+                defaultSelected={part}
+                filterType="type"
+                addToQuery
+              />
+            )}
+            {showSearch && (
+              <SearchButton maxPillWidth={width / 2} onSearchClick={() => spotlight.open()} />
+            )}
+            {showFilter && isMobile && <FilterButton activeFiltersCount={paramsCount} />}
+          </Group>
+        )}
       </Group>
       {showFilter && (
         <>

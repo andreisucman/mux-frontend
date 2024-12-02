@@ -128,7 +128,7 @@ export default function ProofHeader({ showReturn }: Props) {
         </Group>
         <Group className={classes.right} ref={ref}>
           <SearchButton maxPillWidth={width / 2} onSearchClick={() => solutionsSpotlight.open()} />
-          {typeFilterData.items.length > 0 && (
+          {typeFilterData.items.length > 1 && (
             <FilterDropdown
               data={typeFilterData.items}
               icons={typeFilterData.icons}
@@ -138,7 +138,7 @@ export default function ProofHeader({ showReturn }: Props) {
               addToQuery
             />
           )}
-          {partFilterData.items.length > 0 && (
+          {partFilterData.items.length > 1 && (
             <FilterDropdown
               data={partFilterData.items}
               icons={partFilterData.icons}

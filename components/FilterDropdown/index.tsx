@@ -12,7 +12,7 @@ type Props = {
   isDisabled?: boolean;
   addToQuery?: boolean;
   data: FilterItemType[];
-  defaultSelected?: string;
+  defaultSelected?: string | null;
   onSelect?: (key?: string | null) => void;
 };
 
