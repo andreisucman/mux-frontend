@@ -11,7 +11,6 @@ import {
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType } from "@/components/FilterDropdown/types";
 import { useRouter } from "@/helpers/custom-router";
 import classes from "./ClubHeader.module.css";
 
@@ -32,7 +31,7 @@ type Props = {
   isDisabled?: boolean;
   showReturn?: boolean;
   hideTypeDropdown?: boolean;
-  onSelect?: (item?: FilterItemType) => void;
+  onSelect?: (value?: string | null) => void;
 };
 
 export default function ClubHeader({
@@ -49,10 +48,10 @@ export default function ClubHeader({
   const type = searchParams.get("type") || "head";
 
   const handleRedirect = useCallback(
-    (item?: FilterItemType) => {
-      if (!item) return;
+    (value?: string | null) => {
+      if (!value) return;
 
-      router.push(`${item.value}?${searchParams.toString()}`);
+      router.push(`${value}?${searchParams.toString()}`);
     },
     [searchParams.toString()]
   );
@@ -72,16 +71,18 @@ export default function ClubHeader({
       <Group className={classes.right}>
         <FilterDropdown
           data={clubPageTypeData}
-          defaultSelected={clubPageTypeData.find((item) => item.value === pathname)}
-          onSelect={(item?: FilterItemType) => handleRedirect(item)}
+          defaultSelected={clubPageTypeData.find((item) => item.value === pathname)?.value}
+          onSelect={handleRedirect}
+          placeholder="Select page"
           isDisabled={isDisabled}
         />
         {!hideTypeDropdown && (
           <FilterDropdown
             data={typeData}
             filterType="type"
-            defaultSelected={typeData.find((item) => item.value === type)}
+            defaultSelected={typeData.find((item) => item.value === type)?.value}
             onSelect={onSelect}
+            placeholder="Select type"
             isDisabled={isDisabled}
             addToQuery
           />

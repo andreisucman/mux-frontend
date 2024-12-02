@@ -6,14 +6,10 @@ import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import callTheServer from "@/functions/callTheServer";
 
-interface AllFiltersIitemType extends FilterItemType {
-  field: string;
-}
-
 export default function ProofFilterContent() {
   const searchParams = useSearchParams();
-  const [typeFilters, setTypeFilters] = useState<AllFiltersIitemType[]>();
-  const [partFilters, setPartFilters] = useState<AllFiltersIitemType[]>();
+  const [typeFilters, setTypeFilters] = useState<FilterItemType[]>();
+  const [partFilters, setPartFilters] = useState<FilterItemType[]>();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
@@ -23,7 +19,8 @@ export default function ProofFilterContent() {
       {typeFilters && typeFilters.length > 0 && (
         <FilterDropdown
           data={typeFilters || []}
-          defaultSelected={typeFilters && typeFilters.find((obj) => obj.value === type)}
+          placeholder="Select type"
+          defaultSelected={typeFilters && typeFilters.find((obj) => obj.value === type)?.value}
           filterType="type"
           addToQuery
         />
@@ -31,7 +28,8 @@ export default function ProofFilterContent() {
       {partFilters && partFilters.length > 0 && (
         <FilterDropdown
           data={partFilters || []}
-          defaultSelected={partFilters && partFilters.find((obj) => obj.value === part)}
+          placeholder="Select part"
+          defaultSelected={partFilters && partFilters.find((obj) => obj.value === part)?.value}
           filterType="part"
           addToQuery
         />

@@ -1,19 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
-import { Group, Stack } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
 import { useElementSize, useMediaQuery } from "@mantine/hooks";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
-import fetchAutocompleteData from "@/functions/fetchAutocompleteData";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import { normalizeString } from "@/helpers/utils";
 import TitleDropdown from "../results/TitleDropdown";
-import ProofFilterContent from "./ProofFilterContent";
+import FilterCardContent from "./FilterCardContent";
 import { ExistingFiltersType } from "./types";
 import classes from "./GeneralResultsHeader.module.css";
 
@@ -45,7 +44,11 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
   const isMobile = useMediaQuery("(max-width: 36em)");
   const [filters, setFilters] = useState<ExistingFiltersType>();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
-  const numParams = searchParams ? Array.from(searchParams.values()).length : 0;
+
+  const paramsCount = useMemo(
+    () => (searchParams ? Array.from(searchParams.values()).length : 0),
+    [searchParams.toString()]
+  );
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -66,9 +69,15 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
         setFilters(response.message);
 
         if (showSearch) {
-          const { styleName, concern, taskName } = response.message;
+          const { concern, taskName } = response.message;
 
-          const spotlightActions = [...styleName, ...concern, ...taskName].map((filter) => ({
+          const keys = [];
+
+          if (pathname === "/proof") {
+            keys.push(...concern, taskName);
+          }
+
+          const spotlightActions = keys.map((filter) => ({
             id: filter as string,
             label: normalizeString(filter as string).toLowerCase(),
             leftSection: <IconSearch className={"icon"} stroke={1.5} />,
@@ -84,14 +93,6 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
         description: "Please try refreshing the page and inform us if the error persists.",
       });
     }
-
-    const autocompleteData = await fetchAutocompleteData({
-      endpoint: "getAllProofAutocomplete",
-      fields: ["taskName", "concern", "part", "type"],
-      handleActionClick,
-    });
-
-    setSpotlightActions(autocompleteData);
   }, [pathname]);
 
   useEffect(() => {
@@ -100,25 +101,26 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
   }, []);
 
   return (
-    <>
-      <Group className={classes.container}>
+    <Group className={classes.container}>
+      <Group className={classes.wrapper}>
         <TitleDropdown titles={titles} />
         <Group className={classes.right} ref={ref}>
           {showSearch && (
             <SearchButton maxPillWidth={width / 2} onSearchClick={() => spotlight.open()} />
           )}
-          {showFilter && (
-            <>
-              {isMobile && <FilterButton activeFiltersCount={numParams} />}
-              {!isMobile && (
-                <Stack className={classes.filterCard}>
-                  <ProofFilterContent />
-                </Stack>
-              )}
-            </>
-          )}
+          {showFilter && isMobile && <FilterButton activeFiltersCount={paramsCount} />}
         </Group>
       </Group>
+      {showFilter && (
+        <>
+          {!isMobile && (
+            <Stack className={classes.filterCard}>
+              <Title order={3}>Filters</Title>
+              <FilterCardContent filters={filters} />
+            </Stack>
+          )}
+        </>
+      )}
       {showSearch && (
         <Spotlight
           store={spotlightStore}
@@ -128,11 +130,11 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
             leftSection: <IconSearch className="icon" stroke={1.5} />,
             placeholder: "Search...",
           }}
-          highlightQuery
           overlayProps={{ blur: 0 }}
+          highlightQuery
           limit={10}
         />
       )}
-    </>
+    </Group>
   );
 }

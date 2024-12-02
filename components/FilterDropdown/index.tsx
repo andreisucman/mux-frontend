@@ -1,24 +1,25 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { IconChevronDown } from "@tabler/icons-react";
-import cn from "classnames";
-import { Group, Menu, UnstyledButton } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { IconCheck } from "@tabler/icons-react";
+import { Group, Select, SelectProps } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
-import classes from "./FilterDropdown.module.css";
 
 type Props = {
+  icons?: { [key: string]: React.ReactNode };
+  placeholder: string;
   filterType?: string;
   isDisabled?: boolean;
   addToQuery?: boolean;
   data: FilterItemType[];
-  defaultSelected?: FilterItemType;
-  onSelect?: (item?: FilterItemType) => void;
+  defaultSelected?: string;
+  onSelect?: (key?: string | null) => void;
 };
 
 export default function FilterDropdown({
   data,
+  icons,
+  placeholder,
   isDisabled,
   addToQuery,
   filterType,
@@ -27,70 +28,39 @@ export default function FilterDropdown({
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const [opened, { open, close }] = useDisclosure(false);
-  const [selected, setSelected] = useState(defaultSelected || data[0]);
+  const defaultValue = defaultSelected || data[0].value;
 
   const handleSelect = useCallback(
-    (item: FilterItemType) => {
-      if (!location) return;
-
+    (key: string | null) => {
       if (addToQuery && filterType) {
         const newQuery = modifyQuery({
-          params: [{ name: filterType, value: item.value, action: "replace" }],
+          params: [{ name: filterType, value: key, action: "replace" }],
         });
 
         router.replace(`${pathname}?${newQuery}`);
       }
 
-      setSelected(item);
-
-      if (onSelect) onSelect(item);
+      if (onSelect) onSelect(key);
     },
     [pathname, addToQuery]
   );
 
-  const items = useMemo(
-    () =>
-      data.map((item) => (
-        <Menu.Item
-          leftSection={item && item.icon ? <span>{item.icon}</span> : undefined}
-          onClick={() => {
-            handleSelect(item);
-          }}
-          key={item.value}
-        >
-          {item.label}
-        </Menu.Item>
-      )),
-    [data.length]
+  const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => (
+    <Group flex="1" gap="xs">
+      {icons && icons[option.value]}
+      {option.label}
+      {checked && <IconCheck style={{ marginInlineStart: "auto" }} className="icon" />}
+    </Group>
   );
 
   return (
-    <Menu
-      onOpen={open}
-      onClose={close}
-      radius="md"
-      width="target"
-      withinPortal
+    <Select
+      data={data}
       disabled={isDisabled}
-      classNames={{ itemSection: classes.itemSection}}
-    >
-      <Menu.Target>
-        <UnstyledButton
-          className={cn(classes.control, { [classes.disabled]: isDisabled })}
-          data-expanded={opened || undefined}
-        >
-          <Group gap="xs">
-            {selected?.icon}
-            <span className={classes.label}>{selected?.label}</span>
-          </Group>
-          <IconChevronDown
-            className={cn("icon", classes.icon, { [classes.disabled]: isDisabled })}
-            stroke={1.25}
-          />
-        </UnstyledButton>
-      </Menu.Target>
-      <Menu.Dropdown>{items}</Menu.Dropdown>
-    </Menu>
+      placeholder={placeholder}
+      renderOption={renderSelectOption}
+      onChange={handleSelect}
+      defaultValue={defaultValue}
+    />
   );
 }

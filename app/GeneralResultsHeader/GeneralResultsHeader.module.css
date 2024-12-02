@@ -1,5 +1,8 @@
 .container {
   position: relative;
+}
+
+.wrapper {
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -14,5 +17,9 @@
 }
 
 .filterCard {
-  
+  position: sticky;
+  left: 0;
+  top: 0;
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
 }

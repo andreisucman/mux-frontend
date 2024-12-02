@@ -4,8 +4,9 @@ import { IconChevronLeft, IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
-import FilterButton from "@/components/FilterButton";
+import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import { partIcons, partItems, typeIcons, typeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
 import fetchAutocompleteData from "@/functions/fetchAutocompleteData";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -18,6 +19,11 @@ const titles = [
   { label: "Proof", value: "/results/proof" },
 ];
 
+type FilterDataType = {
+  icons: { [key: string]: React.ReactNode | undefined };
+  items: FilterItemType[];
+};
+
 type Props = {
   title: string;
   isDisabled?: boolean;
@@ -28,13 +34,18 @@ type Props = {
 
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
-export default function ProofHeader({ showReturn, showFilter }: Props) {
+export default function ProofHeader({ showReturn }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { width, ref } = useElementSize();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
-  const numParams = searchParams ? Array.from(searchParams.values()).length : 0;
+  const [typeFilterData, setTypeFilterData] = useState<FilterDataType>({ icons: {}, items: [] });
+  const [partFilterData, setPartFilterData] = useState<FilterDataType>({ icons: {}, items: [] });
+  const [rawAutocompleteData, setRawAutocompleteData] = useState<{ [key: string]: any }[]>();
+
+  const type = searchParams.get("type") || "head";
+  const part = searchParams.get("part");
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -44,19 +55,65 @@ export default function ProofHeader({ showReturn, showFilter }: Props) {
     [pathname]
   );
 
+  const handleUpdatePartsFilterData = useCallback(
+    (selectedType: string | null, data: { [key: string]: any }[]) => {
+      if (!selectedType) return;
+      const filteredParts = data.filter((record) => record.type === selectedType);
+      const uniqueParts = Array.from(
+        new Set(filteredParts.map((record) => record.part).filter(Boolean))
+      );
+
+      setPartFilterData({
+        icons: Object.keys(partIcons).reduce(
+          (a: { [key: string]: React.ReactNode }, c: string) => ((a[c] = typeIcons[c]), a),
+          {}
+        ),
+        items: uniqueParts.reduce((a: FilterItemType[], c: string) => {
+          const relevantPart = partItems.find((item) => item.value === c);
+          if (relevantPart) a.push(relevantPart);
+          return a;
+        }, []),
+      });
+    },
+    []
+  );
+
   const getAutocompleteData = useCallback(async () => {
-    const autocompleteData = await fetchAutocompleteData({
+    const { data, actions } = await fetchAutocompleteData({
       endpoint: "getUsersProofAutocomplete",
       fields: ["taskName", "concern", "part", "type"],
       handleActionClick,
     });
 
-    setSpotlightActions(autocompleteData);
-  }, [pathname]);
+    setRawAutocompleteData(data);
+    setSpotlightActions(actions);
+
+    const uniqueTypes = Array.from(new Set(data.map((record) => record.type).filter(Boolean)));
+
+    setTypeFilterData({
+      icons: Object.keys(typeIcons).reduce(
+        (a: { [key: string]: React.ReactNode }, c: string) => ((a[c] = typeIcons[c]), a),
+        {}
+      ),
+      items: uniqueTypes.reduce((a, c) => a.push(typeItems.find((item) => item.value === c)), []),
+    });
+
+    const selectedType = type || uniqueTypes[0];
+
+    handleUpdatePartsFilterData(selectedType, data);
+  }, [pathname, type]);
 
   useEffect(() => {
     getAutocompleteData();
   }, []);
+
+  useEffect(() => {
+    if (!rawAutocompleteData) return;
+    const selectedType = type || typeFilterData.items[0].value;
+    if (!selectedType) return;
+
+    handleUpdatePartsFilterData(selectedType, rawAutocompleteData);
+  }, [type]);
 
   return (
     <>
@@ -71,7 +128,26 @@ export default function ProofHeader({ showReturn, showFilter }: Props) {
         </Group>
         <Group className={classes.right} ref={ref}>
           <SearchButton maxPillWidth={width / 2} onSearchClick={() => solutionsSpotlight.open()} />
-          {showFilter && <FilterButton activeFiltersCount={numParams} />}
+          {typeFilterData.items.length > 0 && (
+            <FilterDropdown
+              data={typeFilterData.items}
+              icons={typeFilterData.icons}
+              placeholder="Select type"
+              defaultSelected={typeFilterData.items.find((obj) => obj.value === type)?.value}
+              filterType="type"
+              addToQuery
+            />
+          )}
+          {partFilterData.items.length > 0 && (
+            <FilterDropdown
+              data={partFilterData.items}
+              icons={partFilterData.icons}
+              placeholder="Select part"
+              defaultSelected={partFilterData.items.find((obj) => obj.value === part)?.value}
+              filterType="part"
+              addToQuery
+            />
+          )}
         </Group>
       </Group>
       <Spotlight

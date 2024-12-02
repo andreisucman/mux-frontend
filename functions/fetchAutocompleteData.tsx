@@ -9,12 +9,17 @@ type Props = {
   handleActionClick: (key: string) => void;
 };
 
+type Response = {
+  actions: SpotlightActionType[];
+  data: { [key: string]: any }[];
+};
+
 const fetchAutocompleteData = async ({
   handleActionClick,
   endpoint,
   fields,
-}: Props): Promise<SpotlightActionType[]> => {
-  const actions = [];
+}: Props): Promise<Response> => {
+  const reply: Response = { actions: [], data: [] };
 
   try {
     const fieldsString = fields.join(",");
@@ -39,19 +44,20 @@ const fetchAutocompleteData = async ({
         }
 
         for (const value of uniqueValues) {
-          actions.push({
+          reply.actions.push({
             id: value as string,
             label: normalizeString(value as string).toLowerCase(),
             leftSection: <IconSearch className={"icon"} stroke={1.5} />,
             onClick: () => handleActionClick(value as string),
           });
         }
+        reply.data = response.mesage;
       }
     }
   } catch (err) {
     console.log("Error in getAutocompleteData: ", err);
   } finally {
-    return actions;
+    return reply;
   }
 };
 

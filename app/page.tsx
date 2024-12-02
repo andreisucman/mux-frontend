@@ -10,6 +10,7 @@ import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
+import GeneralResultsHeader from "./GeneralResultsHeader";
 import { SimpleBeforeAfterType } from "./types";
 import classes from "./page.module.css";
 
@@ -107,6 +108,7 @@ export default function BeforeAftersPage() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
+      <GeneralResultsHeader />
       {beforeAfters ? (
         <>
           {beforeAfters.length > 0 ? (

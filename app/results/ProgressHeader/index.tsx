@@ -43,7 +43,7 @@ type Props = {
   title: string;
   isDisabled?: boolean;
   showReturn?: boolean;
-  onSelect?: (item?: FilterItemType) => void;
+  onSelect?: (value?: string | null) => void;
 };
 
 export default function ProgressHeader({ title, showReturn, isDisabled, onSelect }: Props) {
@@ -99,8 +99,9 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
       <FilterDropdown
         data={typeData}
         filterType="type"
-        defaultSelected={typeData.find((item) => item.value === type)}
+        defaultSelected={typeData.find((item) => item.value === type)?.value}
         onSelect={onSelect}
+        placeholder="Select type"
         isDisabled={isDisabled}
         addToQuery
       />
@@ -108,7 +109,8 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
         <FilterDropdown
           data={relevantParts}
           filterType="part"
-          defaultSelected={relevantParts.find((item) => item.value === part)}
+          placeholder="Select part"
+          defaultSelected={relevantParts.find((item) => item.value === part)?.value}
           onSelect={onSelect}
           isDisabled={isDisabled}
           addToQuery
@@ -118,7 +120,8 @@ export default function ProgressHeader({ title, showReturn, isDisabled, onSelect
         <FilterDropdown
           data={relevantPositions}
           filterType="position"
-          defaultSelected={relevantPositions.find((item) => item.value === position)}
+          placeholder="Select position"
+          defaultSelected={relevantPositions.find((item) => item.value === position)?.value}
           onSelect={onSelect}
           isDisabled={isDisabled}
           addToQuery

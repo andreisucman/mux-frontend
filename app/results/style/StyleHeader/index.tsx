@@ -5,14 +5,18 @@ import { ActionIcon, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType } from "@/components/FilterDropdown/types";
 import TitleDropdown from "../../TitleDropdown";
 import StyleFilterContent from "./StyleFilterContent";
 import classes from "./StyleHeader.module.css";
 
+const icons = {
+  head: <IconMoodSmile className="icon" />,
+  body: <IconMan className="icon" />,
+};
+
 const typeData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
+  { label: "Head", value: "head" },
+  { label: "Body", value: "body" },
 ];
 
 const titles = [
@@ -25,10 +29,10 @@ type Props = {
   title: string;
   isDisabled?: boolean;
   showReturn?: boolean;
-  onSelect?: (item?: FilterItemType) => void;
+  onSelect?: (item?: string | null) => void;
 };
 
-export default function StyleHeader({ title, showReturn, isDisabled, onSelect }: Props) {
+export default function StyleHeader({ showReturn, isDisabled, onSelect }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const styleName = searchParams.get("styleName");
@@ -69,8 +73,10 @@ export default function StyleHeader({ title, showReturn, isDisabled, onSelect }:
           <FilterDropdown
             data={typeData}
             filterType="type"
-            defaultSelected={typeData.find((item) => item.value === type)}
+            icons={icons}
+            defaultSelected={typeData.find((item) => item.value === type)?.value}
             onSelect={onSelect}
+            placeholder="Select type"
             isDisabled={isDisabled}
             addToQuery
           />

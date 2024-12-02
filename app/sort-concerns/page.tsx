@@ -16,9 +16,14 @@ import classes from "./sort-concerns.module.css";
 
 export const runtime = "edge";
 
+const icons = {
+  head: <IconMoodSmile className="icon" />,
+  body: <IconMan className="icon" />,
+};
+
 const filterData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
+  { label: "Head", value: "head" },
+  { label: "Body", value: "body" },
 ];
 
 export default function SortConcerns() {
@@ -72,7 +77,13 @@ export default function SortConcerns() {
     <Stack className={classes.container} ref={ref}>
       <Group className={classes.heading}>
         <Title order={1}>Sort concerns</Title>
-        <FilterDropdown data={filterData} filterType="type" addToQuery />
+        <FilterDropdown
+          data={filterData}
+          icons={icons}
+          placeholder="Select type"
+          filterType="type"
+          addToQuery
+        />
       </Group>
       <InstructionContainer
         sex={sex || "male"}
@@ -88,7 +99,11 @@ export default function SortConcerns() {
       >
         Next <IconArrowRight className="icon" />
       </Button>
-      <ConcernsSortCard concerns={selectedConcerns || []} type={type as string} maxHeight={height}/>
+      <ConcernsSortCard
+        concerns={selectedConcerns || []}
+        type={type as string}
+        maxHeight={height}
+      />
     </Stack>
   );
 }

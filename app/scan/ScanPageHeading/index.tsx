@@ -7,9 +7,14 @@ import { useRouter } from "@/helpers/custom-router";
 import { TypeEnum } from "@/types/global";
 import classes from "./ScanPageHeading.module.css";
 
+const icons = {
+  head: <IconMoodSmile className="icon" />,
+  body: <IconMan className="icon" />,
+};
+
 const typeFilters = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
+  { label: "Head", value: "head" },
+  { label: "Body", value: "body" },
 ];
 
 const titles = [
@@ -37,8 +42,10 @@ function ScanPageHeading({ type }: Props) {
       {type && (
         <FilterDropdown
           data={typeFilters}
-          defaultSelected={typeFilters.find((rec) => rec.value === type)}
+          icons={icons}
+          defaultSelected={typeFilters.find((rec) => rec.value === type)?.value}
           filterType={"type"}
+          placeholder="Select type"
           addToQuery
         />
       )}

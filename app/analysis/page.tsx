@@ -10,9 +10,11 @@ import classes from "./analysis.module.css";
 
 export const runtime = "edge";
 
+const icons = { head: <IconMoodSmile className="icon" />, body: <IconMan className="icon" /> };
+
 const filterData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
+  { label: "Head", value: "head" },
+  { label: "Body", value: "body" },
 ];
 
 export default function StartAnalysis() {
@@ -24,7 +26,13 @@ export default function StartAnalysis() {
       <Group className={classes.heading}>
         <Title order={1}>Analysis</Title>
         <Group className={classes.right}>
-          <FilterDropdown data={filterData} filterType="type" addToQuery />
+          <FilterDropdown
+            data={filterData}
+            icons={icons}
+            filterType="type"
+            placeholder="Select type"
+            addToQuery
+          />
         </Group>
       </Group>
 

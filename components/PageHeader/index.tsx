@@ -1,34 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  IconChevronLeft,
-  IconDental,
-  IconHeart,
-  IconMan,
-  IconMoodNeutral,
-  IconMoodSmile,
-  IconWhirl,
-} from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { useRouter } from "@/helpers/custom-router";
 import FilterButton from "../FilterButton";
 import FilterDropdown from "../FilterDropdown";
-import { FilterItemType } from "../FilterDropdown/types";
 import SearchButton from "../SearchButton";
+import { partIcons, partItems, typeIcons, typeItems } from "./data";
 import classes from "./PageHeader.module.css";
-
-const typeData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
-  { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
-];
-
-const partData = [
-  { label: "Face", icon: <IconMoodNeutral className="icon" />, value: "face", type: "head" },
-  { label: "Mouth", icon: <IconDental className="icon" />, value: "mouth", type: "head" },
-  { label: "Scalp", icon: <IconWhirl className="icon" />, value: "scalp", type: "head" },
-];
 
 type Props = {
   title: string;
@@ -38,7 +18,7 @@ type Props = {
   hidePartDropdown?: boolean;
   filterNames?: string[];
   children?: React.ReactNode;
-  onSelect?: (item?: FilterItemType) => void;
+  onSelect?: (value?: string | null) => void;
   onFilterClick?: () => void;
   onSearchClick?: () => void;
 };
@@ -62,7 +42,7 @@ export default function PageHeader({
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part") || "face";
 
-  const [relevantParts, setRelevantParts] = useState(partData.filter((p) => p.type === type));
+  const [relevantParts, setRelevantParts] = useState(partItems.filter((p) => p.type === type));
   const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick || children;
 
   const activeFiltersCount = useMemo(() => {
@@ -73,7 +53,7 @@ export default function PageHeader({
 
   useEffect(() => {
     if (hideTypeDropdown || hidePartDropdown) return;
-    const relParts = partData.filter((p) => p.type === type);
+    const relParts = partItems.filter((p) => p.type === type);
     setRelevantParts(relParts);
   }, [type]);
 
@@ -98,9 +78,11 @@ export default function PageHeader({
           )}
           {!hideTypeDropdown && (
             <FilterDropdown
-              data={typeData}
+              data={typeItems}
+              icons={typeIcons}
               filterType="type"
-              defaultSelected={typeData.find((item) => item.value === type)}
+              placeholder="Select type"
+              defaultSelected={typeItems.find((item) => item.value === type)?.value}
               onSelect={onSelect}
               isDisabled={isDisabled}
               addToQuery
@@ -109,8 +91,10 @@ export default function PageHeader({
           {!hidePartDropdown && (
             <FilterDropdown
               data={relevantParts}
+              icons={partIcons}
               filterType="part"
-              defaultSelected={relevantParts.find((item) => item.value === part)}
+              placeholder="Select part"
+              defaultSelected={relevantParts.find((item) => item.value === part)?.value}
               onSelect={onSelect}
               isDisabled={isDisabled}
               addToQuery
