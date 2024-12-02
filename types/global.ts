@@ -37,6 +37,8 @@ export type ClubDataType = {
     disabledReason: string;
   };
   privacy: HeadValuePartsBoolean;
+  nextAvatarUpdateAt: Date | null;
+  nextNameUpdateAt: Date | null;
 };
 
 export type ClubUserType = {

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Skeleton, Stack } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -108,7 +108,7 @@ export default function ClubAbout() {
         );
 
         const response = await callTheServer({
-          endpoint: "updateClubBio",
+          endpoint: "updateClubData",
           method: "POST",
           body: { bio: updatedBio },
         });

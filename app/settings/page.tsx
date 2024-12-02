@@ -31,10 +31,13 @@ export type UpdateClubInfoProps = {
 export default function Settings() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { _id: userId, club } = userDetails || {};
-  const { avatar, name } = club || {};
+  const { avatar, name, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
 
   const [userName, setUserName] = useState<string>(name || "");
   const [isLoading, setIsLoading] = useState(false);
+
+  const canUpdateName = new Date() > new Date(nextNameUpdateAt || 0);
+  const canUpdateAvatar = new Date() > new Date(nextAvatarUpdateAt || 0);
 
   const isNameDirty = userName.trim() !== name?.trim();
 
@@ -146,6 +149,7 @@ export default function Settings() {
       size: "md",
       innerProps: (
         <AvatarEditor
+          canUpdateAvatar={canUpdateAvatar}
           currentConfig={avatar as AvatarConfig}
           handleUpdateClubInfo={handleUpdateClubInfo}
         />
@@ -195,10 +199,11 @@ export default function Settings() {
                 </div>
                 <TextInput
                   value={name}
+                  disabled={!canUpdateName}
                   onChange={(e) => setUserName(e.currentTarget.value)}
                   rightSection={
                     <ActionIcon
-                      disabled={!isNameDirty || isLoading}
+                      disabled={!isNameDirty || isLoading || !canUpdateName}
                       onClick={() =>
                         handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })
                       }
@@ -208,10 +213,6 @@ export default function Settings() {
                   }
                 />
               </Group>
-              <AvatarEditor
-                currentConfig={avatar as AvatarConfig}
-                handleUpdateClubInfo={handleUpdateClubInfo}
-              />
               <DataSharingSwitches title="Data privacy" />
               <UnstyledButton className={classes.button} onClick={openLeaveClubConfirmation}>
                 <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club

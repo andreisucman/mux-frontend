@@ -8,11 +8,16 @@ import { options } from "./options";
 import classes from "./AvatarEditor.module.css";
 
 type Props = {
+  canUpdateAvatar: boolean;
   currentConfig: AvatarConfig;
   handleUpdateClubInfo: (updatedAvatar: UpdateClubInfoProps) => void;
 };
 
-export default function AvatarEditor({ currentConfig, handleUpdateClubInfo }: Props) {
+export default function AvatarEditor({
+  canUpdateAvatar,
+  currentConfig,
+  handleUpdateClubInfo,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [updatedAvatar, setUpdatedAvatar] = useState<AvatarConfig>(currentConfig);
 
@@ -37,7 +42,7 @@ export default function AvatarEditor({ currentConfig, handleUpdateClubInfo }: Pr
       <Stack className={classes.wrapper}>
         <Button
           loading={isLoading}
-          disabled={!isDirty || isLoading}
+          disabled={!isDirty || isLoading || !canUpdateAvatar}
           onClick={() =>
             handleUpdateClubInfo({ type: "avatar", data: updatedAvatar, setIsLoading })
           }
