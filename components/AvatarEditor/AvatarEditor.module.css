@@ -1,0 +1,21 @@
+.container {
+  flex: 1;
+}
+
+.wrapper {
+  gap: rem(12);
+}
+
+.row {
+  gap: rem(12);
+}
+
+.avatarPreview {
+  width: rem(100);
+  height: rem(100);
+  align-self: center;
+}
+
+.icon {
+  margin-right: rem(8);
+}

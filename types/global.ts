@@ -224,6 +224,7 @@ export interface UserDataType extends DefaultUserType {
   routines: RoutineType[];
   coachEnergy: number;
   remainingCaloriesPerDay: number;
+  deleteOn: Date | null;
 }
 
 export type SubscriptionType = {

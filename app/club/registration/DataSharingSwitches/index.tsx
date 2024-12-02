@@ -1,13 +1,18 @@
 import React, { useCallback, useContext } from "react";
-import { Stack } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { updateClubPrivacy } from "@/helpers/clubPrivacy";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import SwitchBox from "./SwitchBox";
+import classes from "./DataSharingSwitches.module.css";
 
-export default function DataSharingSwitches() {
+type Props = {
+  title?: string;
+};
+
+export default function DataSharingSwitches({ title }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { club } = userDetails || {};
   const { privacy } = club || {};
@@ -51,10 +56,17 @@ export default function DataSharingSwitches() {
   );
 
   return (
-    <Stack flex={1}>
-      <SwitchBox type={"head"} privacy={privacy} onChange={updatePrivacy} />
-      <SwitchBox type={"body"} privacy={privacy} onChange={updatePrivacy} />
-      <SwitchBox type={"health"} privacy={privacy} onChange={updatePrivacy} />
+    <Stack className={classes.container}>
+      {title && (
+        <Text className={classes.title} c="dimmed">
+          {title}
+        </Text>
+      )}
+      <Stack className={classes.wrapper}>
+        <SwitchBox type={"head"} privacy={privacy} onChange={updatePrivacy} />
+        <SwitchBox type={"body"} privacy={privacy} onChange={updatePrivacy} />
+        <SwitchBox type={"health"} privacy={privacy} onChange={updatePrivacy} />
+      </Stack>
     </Stack>
   );
 }

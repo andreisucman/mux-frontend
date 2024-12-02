@@ -1,0 +1,32 @@
+.container {
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+}
+
+.icon {
+  margin-right: rem(8);
+}
+
+.stack {
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  border-radius: var(--mantine-radius-lg);
+}
+
+.list {
+  gap: rem(8);
+}
+
+.button {
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.avatarWrapper {
+  display: flex;
+}
