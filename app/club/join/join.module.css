@@ -1,0 +1,25 @@
+.container {
+  flex: 1;
+}
+
+.wrapper {
+  margin-top: rem(32);
+  gap: rem(24);
+}
+
+.th {
+  text-align: center;
+}
+
+.td {
+  font-size: rem(16);
+}
+
+.announcement {
+  align-items: center;
+  border: 1px solid var(--mantine-color-dark-5);
+  padding: rem(16);
+  border-radius: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  padding-bottom: rem(24);
+}

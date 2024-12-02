@@ -1,0 +1,10 @@
+.td {
+  &:first-child {
+    font-size: rem(32);
+    text-align: center;
+  }
+}
+
+.th {
+  white-space: nowrap;
+}

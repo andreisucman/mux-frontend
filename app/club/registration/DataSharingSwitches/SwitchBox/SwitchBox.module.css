@@ -1,0 +1,8 @@
+.container {
+  gap: rem(12);
+}
+
+.wrapper {
+  padding-left: rem(16);
+  gap: rem(8);
+}
