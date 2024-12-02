@@ -134,7 +134,7 @@ export default function BeforeAftersPage() {
               />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="No solutions found" icon={<IconCircleOff className="icon" />} />
+            <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
           )}
         </>
       ) : (

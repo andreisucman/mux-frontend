@@ -153,7 +153,7 @@ export default function ProofHeader({ showReturn }: Props) {
       <Spotlight
         store={spotlightStore}
         actions={spotlightActions}
-        nothingFound="Nothing found..."
+        nothingFound="Nothing found"
         searchProps={{
           leftSection: <IconSearch className="icon" stroke={1.5} />,
           placeholder: "Search...",

@@ -86,7 +86,7 @@ export default function Rewards() {
               />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="No rewards found" icon={<IconCircleOff className="icon" />} />
+            <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
           )}
         </>
       ) : (

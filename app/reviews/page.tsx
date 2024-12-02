@@ -85,7 +85,7 @@ export default function Reviews() {
               />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="No reviews found" icon={<IconCircleOff className="icon" />} />
+            <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
           )}
         </>
       ) : (

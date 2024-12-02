@@ -85,13 +85,13 @@ export default function Solutions() {
   );
 
   const getAutocompleteData = useCallback(async () => {
-    const autocompleteData = await fetchAutocompleteData({
+    const { actions } = await fetchAutocompleteData({
       endpoint: "getAllSolutions",
       fields: ["name", "nearestConcerns"],
       handleActionClick,
     });
 
-    setSpotlightActions(autocompleteData);
+    setSpotlightActions(actions);
   }, [pathname]);
 
   const memoizedSolutionsCard = useCallback(
@@ -139,10 +139,7 @@ export default function Solutions() {
                 />
               </InfiniteScroll>
             ) : (
-              <OverlayWithText
-                text="No solutions found"
-                icon={<IconCircleOff className="icon" />}
-              />
+              <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
             )}
           </>
         ) : (
@@ -152,7 +149,7 @@ export default function Solutions() {
       <Spotlight
         store={spotlightStore}
         actions={spotlightActions}
-        nothingFound="Nothing found..."
+        nothingFound="Nothing found"
         searchProps={{
           leftSection: <IconSearch className="icon" stroke={1.5} />,
           placeholder: "Search...",
