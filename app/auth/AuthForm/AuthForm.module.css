@@ -1,0 +1,42 @@
+.container {
+  max-width: clamp(rem(300), 90%, rem(400));
+  padding: rem(24) rem(16);
+  width: 100%;
+
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  border-radius: var(--mantine-radius-lg);
+
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-10%);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+  width: 100%;
+}
+
+.footer {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftFooterStack {
+  align-items: flex-start;
+}
+
+.title {
+  font-size: rem(24);
+  text-align: center;
+}
+
+.button {
+  width: 100%;
+}
+
+.secondaryButton {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-dark-2);
+}

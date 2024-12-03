@@ -22,7 +22,7 @@ export default function TosCheckbox({
     <Stack className={cn(classes.container, { [classes.highlightTos]: highlightTos })}>
       <Checkbox
         label={
-          <Text component="div" lineClamp={1} size="sm">
+          <Text component="div" lineClamp={2} size="sm">
             I have read, understood and accept the{" "}
             <Text
               onClickCapture={openLegalBody}

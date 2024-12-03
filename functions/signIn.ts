@@ -1,7 +1,7 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import callTheServer from "./callTheServer";
 
-type State = {
+export type State = {
   redirectTo?: string;
   localUserId?: string;
   trackedUserId?: string;
