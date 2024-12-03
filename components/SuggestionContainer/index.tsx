@@ -77,7 +77,7 @@ export default function SuggestionContainer({
 
       try {
         const response = await callTheServer({
-          endpoint: "findProductsRoute",
+          endpoint: "findProducts",
           method: "POST",
           body: { taskKey, criteria },
         });

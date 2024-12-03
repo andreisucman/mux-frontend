@@ -1,14 +1,12 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   IconArrowLeft,
   IconArrowRight,
   IconBulb,
-  IconCalendar,
   IconSquareRoundedCheck,
 } from "@tabler/icons-react";
-import { Button, Group, Loader, rem, Stack, Text } from "@mantine/core";
+import { Button, Loader, rem, Stack, Text } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { formatDate } from "@/helpers/formatDate";
@@ -24,13 +22,12 @@ type Props = {
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
 };
 
+type HandleCreateTaskProps = {
+  timeZone?: string;
+  isLoading: boolean;
+};
+
 export default function AddATaskContainer({ type, handleSaveTask }: Props) {
-  const {
-    isSubscriptionActive,
-    isTrialUsed,
-    isLoading: isCreateRoutineLoading,
-    onCreateRoutineClick,
-  } = useContext(CreateRoutineContext);
   const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -42,7 +39,7 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
 
   const { timeZone } = userDetails || {};
 
-  async function handleCreateTask() {
+  const handleCreateTask = useCallback(async ({ timeZone, isLoading }: HandleCreateTaskProps) => {
     if (!timeZone) return;
     if (isLoading) return;
 
@@ -68,7 +65,7 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
     } catch (err) {
       setIsLoading(false);
     }
-  }
+  }, []);
 
   const datesPreview = useMemo(() => {
     const dates: string[] = [];
@@ -127,7 +124,7 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
           <Stack className={classes.buttonsGroup}>
             {step === 1 && !rawTask && (
               <>
-                <Button variant="default" onClick={handleCreateTask}>
+                <Button variant="default" onClick={() => handleCreateTask({ isLoading, timeZone })}>
                   <IconBulb className="icon" style={{ marginRight: rem(8) }} /> Create task
                 </Button>
                 <CreateWeeklyRoutineButton type={type} />

@@ -1,5 +1,4 @@
 import callTheServer from "./callTheServer";
-import { SimpleProofType } from "@/app/results/proof/types";
 
 export type FetchProofProps = {
   trackedUserId?: string | null;

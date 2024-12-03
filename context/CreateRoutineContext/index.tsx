@@ -14,10 +14,15 @@ import { TypeEnum } from "@/types/global";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
 
+export type OnCreateRoutineClickProps = {
+  isSubscriptionActive: boolean;
+  isTrialUsed: boolean;
+};
+
 const defaultCreateRoutineContext = {
   isSubscriptionActive: false,
   isTrialUsed: false,
-  onCreateRoutineClick: (...args: any) => {},
+  onCreateRoutineClick: (args: OnCreateRoutineClickProps) => {},
   isLoading: false,
 };
 
@@ -59,7 +64,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     });
   }
 
-  function onCreateRoutineClick(isSubscriptionActive: boolean, isTrialUsed: boolean) {
+  function onCreateRoutineClick({ isSubscriptionActive, isTrialUsed }: OnCreateRoutineClickProps) {
     if (isLoading) return;
 
     if (isSubscriptionActive) {
@@ -88,7 +93,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         : () =>
             startSubscriptionTrial({
               subscriptionName: "improvement",
-              cb: onCreateRoutineClick,
+              onComplete: onCreateRoutineClick,
             });
 
       openSubscriptionModal({

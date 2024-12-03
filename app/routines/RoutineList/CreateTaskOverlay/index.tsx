@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useContext } from "react";
 import { IconCalendarWeek, IconPlus } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
@@ -36,7 +36,7 @@ export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }
           disabled={isLoading}
           loading={isLoading}
           className={classes.button}
-          onClick={() => onCreateRoutineClick(isSubscriptionActive, isTrialUsed)}
+          onClick={() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed })}
         >
           <IconCalendarWeek className="icon" style={{ marginRight: rem(8) }} /> Create a routine for
           the week

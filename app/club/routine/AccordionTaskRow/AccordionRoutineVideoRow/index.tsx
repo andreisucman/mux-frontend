@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import ProofCard from "@/app/results/proof/ProofGallery/ProofCard";
 import { SimpleProofType } from "@/app/results/proof/types";
 import callTheServer from "@/functions/callTheServer";
+import fetchUsersProof from "@/functions/fetchUsersProof";
 import classes from "./AccordionRoutineVideoRow.module.css";
 
 type Props = {
@@ -19,7 +20,7 @@ function AccordionRoutineVideoRow({ routineId, taskKey, isSelf }: Props) {
   const getProofVideos = useCallback(async () => {
     try {
       const response = await callTheServer({
-        endpoint: `getProofVideos?routineId=${routineId}&taskKey=${taskKey}`,
+        endpoint: `getUsersProofRecords?routineId=${routineId}&taskKey=${taskKey}`,
         method: "GET",
       });
 

@@ -48,7 +48,7 @@ export default function StartPartialScanOverlay({
       setIsButtonLoading(true);
 
       const response = await callTheServer({
-        endpoint: "startAnalysis",
+        endpoint: "startProgressAnalysis",
         method: "POST",
         body: { userId, type, blurType },
       });
