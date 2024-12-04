@@ -6,14 +6,10 @@
   gap: rem(12);
 }
 
-.row {
-  gap: rem(12);
-}
-
-.avatarPreview {
-  width: rem(100);
-  height: rem(100);
-  align-self: center;
+.content {
+  height: 50vh;
+  max-height: rem(600);
+  overflow: auto;
 }
 
 .icon {

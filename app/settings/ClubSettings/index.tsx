@@ -1,7 +1,15 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconDeviceFloppy, IconTargetOff } from "@tabler/icons-react";
 import { AvatarConfig } from "react-nice-avatar";
-import { ActionIcon, Group, Stack, TextInput, Title, UnstyledButton } from "@mantine/core";
+import {
+  ActionIcon,
+  Group,
+  Skeleton,
+  Stack,
+  TextInput,
+  Title,
+  UnstyledButton,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import DataSharingSwitches from "@/app/club/registration/DataSharingSwitches";
 import AvatarComponent from "@/components/AvatarComponent";
@@ -20,7 +28,9 @@ export type UpdateClubInfoProps = {
 };
 
 export default function ClubSettings() {
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const { userDetails, setUserDetails } = useContext(UserContext);
+
   const { club } = userDetails || {};
   const { avatar, name, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
 
@@ -103,8 +113,15 @@ export default function ClubSettings() {
     });
   }, []);
 
+  useEffect(() => {
+    const tId = setTimeout(() => {
+      setShowSkeleton(false);
+      clearTimeout(tId);
+    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
+  }, []);
+
   return (
-    <Stack className={classes.stack}>
+    <Skeleton className={classes.stack} visible={showSkeleton}>
       <Title order={2} fz={18}>
         Club
       </Title>
@@ -114,6 +131,8 @@ export default function ClubSettings() {
             <AvatarComponent avatar={avatar} size="md" />
           </div>
           <TextInput
+            flex={1}
+            maw={300}
             value={name}
             disabled={!canUpdateName}
             onChange={(e) => setUserName(e.currentTarget.value)}
@@ -132,6 +151,6 @@ export default function ClubSettings() {
           <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club
         </UnstyledButton>
       </Stack>
-    </Stack>
+    </Skeleton>
   );
 }

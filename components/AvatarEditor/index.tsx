@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import Avatar, { AvatarConfig, genConfig } from "react-nice-avatar";
-import { Button, ColorInput, Group, Stack } from "@mantine/core";
-import { UpdateClubInfoProps } from "@/app/settings/page";
+import { Button, ColorInput, Fieldset, rem, Stack } from "@mantine/core";
+import { UpdateClubInfoProps } from "@/app/settings/ClubSettings";
 import FilterDropdown from "../FilterDropdown";
 import { options } from "./options";
 import classes from "./AvatarEditor.module.css";
@@ -28,17 +28,18 @@ export default function AvatarEditor({
   const modifyConfig = (key: string, value: string | null | undefined) => {
     if (!value) return;
 
-    const updatedAvatar = genConfig({
-      ...currentConfig,
-      ...{ [key]: value },
-    });
-
-    setUpdatedAvatar(updatedAvatar);
+    setUpdatedAvatar((prev) =>
+      genConfig({
+        ...prev,
+        ...{ [key]: value },
+        isGradient: true,
+      })
+    );
   };
 
   return (
     <Stack className={classes.container}>
-      <Avatar {...updatedAvatar} className={classes.avatar} />
+      <Avatar {...updatedAvatar} style={{ width: rem(100), height: rem(100), margin: "auto" }} />
       <Stack className={classes.wrapper}>
         <Button
           loading={isLoading}
@@ -49,77 +50,105 @@ export default function AvatarEditor({
         >
           <IconDeviceFloppy className={`${classes.icon} icon`} /> Save
         </Button>
-        <Group className={classes.row}>
-          <FilterDropdown
-            data={options.hatStyle}
-            placeholder="Hat"
-            onSelect={(value) => modifyConfig("hatStyle", value)}
-          />
-          <ColorInput
-            value={updatedAvatar.hatColor}
-            placeholder="Hat color"
-            onChange={(value) => modifyConfig("hatColor", value)}
-          />
-        </Group>
-        <Group className={classes.row}>
-          <FilterDropdown
-            data={options.hairStyle as { label: string; value: string }[]}
-            placeholder="Hair"
-            onSelect={(value) => modifyConfig("hairStyle", value)}
-          />
-          <ColorInput
-            value={updatedAvatar.hairColor}
-            placeholder="Hair color"
-            onChange={(value) => modifyConfig("hairColor", value)}
-          />
-        </Group>
-        <FilterDropdown
-          data={options.earSize}
-          placeholder="Ear"
-          onSelect={(value) => modifyConfig("earSize", value)}
-        />
-        <FilterDropdown
-          data={options.eyeBrowStyle}
-          placeholder="Brows"
-          onSelect={(value) => modifyConfig("eyeBrowStyle", value)}
-        />
-        <FilterDropdown
-          data={options.eyeStyle}
-          placeholder="Eyes"
-          onSelect={(value) => modifyConfig("eyeStyle", value)}
-        />
-        <FilterDropdown
-          data={options.glassesStyle}
-          placeholder="Glasses"
-          onSelect={(value) => modifyConfig("glassesStyle", value)}
-        />
-        <FilterDropdown
-          data={options.noseStyle}
-          placeholder="Nose"
-          onSelect={(value) => modifyConfig("noseStyle", value)}
-        />
-        <FilterDropdown
-          data={options.mouthStyle}
-          placeholder="Mouth"
-          onSelect={(value) => modifyConfig("mouthStyle", value)}
-        />
-        <Group className={classes.row}>
-          <FilterDropdown
-            data={options.shirtStyle as { label: string; value: string }[]}
-            placeholder="Shirt"
-            onSelect={(value) => modifyConfig("shirtStyle", value)}
-          />
-          <ColorInput
-            value={updatedAvatar.shirtColor}
-            placeholder="Shirt color"
-            onChange={(value) => modifyConfig("shirtColor", value)}
-          />
-        </Group>
-        <ColorInput
-          value={updatedAvatar.bgColor}
-          placeholder="Background color"
-          onChange={(value) => modifyConfig("bgColor", value)}
-        />
+        <Stack className={classes.content}>
+          <Fieldset legend="Hat">
+            <FilterDropdown
+              data={options.hatStyle}
+              placeholder="Hat"
+              defaultSelected={currentConfig.hatStyle}
+              onSelect={(value) => modifyConfig("hatStyle", value)}
+            />
+            <ColorInput
+              flex={1}
+              mt={12}
+              value={updatedAvatar.hatColor}
+              placeholder="Hat color"
+              defaultValue={currentConfig.hatColor}
+              onChange={(value) => modifyConfig("hatColor", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Hair">
+            <FilterDropdown
+              data={options.hairStyle as { label: string; value: string }[]}
+              placeholder="Hair"
+              defaultSelected={currentConfig.hairStyle}
+              onSelect={(value) => modifyConfig("hairStyle", value)}
+            />
+            <ColorInput
+              flex={1}
+              mt={12}
+              value={updatedAvatar.hairColor}
+              placeholder="Hair color"
+              defaultValue={currentConfig.hairColor}
+              onChange={(value) => modifyConfig("hairColor", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Ear">
+            <FilterDropdown
+              data={options.earSize}
+              placeholder="Ear"
+              defaultSelected={currentConfig.earSize}
+              onSelect={(value) => modifyConfig("earSize", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Eyes">
+            <FilterDropdown
+              data={options.eyeStyle}
+              placeholder="Eyes"
+              defaultSelected={currentConfig.eyeStyle}
+              onSelect={(value) => modifyConfig("eyeStyle", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Glasses">
+            <FilterDropdown
+              data={options.glassesStyle}
+              placeholder="Glasses"
+              defaultSelected={currentConfig.glassesStyle}
+              onSelect={(value) => modifyConfig("glassesStyle", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Nose">
+            <FilterDropdown
+              data={options.noseStyle}
+              placeholder="Nose"
+              defaultSelected={currentConfig.noseStyle}
+              onSelect={(value) => modifyConfig("noseStyle", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Mouth">
+            <FilterDropdown
+              data={options.mouthStyle}
+              placeholder="Mouth"
+              defaultSelected={currentConfig.mouthStyle}
+              onSelect={(value) => modifyConfig("mouthStyle", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Shirt">
+            <FilterDropdown
+              data={options.shirtStyle as { label: string; value: string }[]}
+              placeholder="Shirt"
+              defaultSelected={currentConfig.shirtStyle}
+              onSelect={(value) => modifyConfig("shirtStyle", value)}
+            />
+            <ColorInput
+              flex={1}
+              mt={12}
+              value={updatedAvatar.shirtColor}
+              placeholder="Shirt color"
+              defaultValue={currentConfig.shirtColor}
+              onChange={(value) => modifyConfig("shirtColor", value)}
+            />
+          </Fieldset>
+          <Fieldset legend="Background color">
+            <ColorInput
+              flex={1}
+              value={updatedAvatar.bgColor}
+              placeholder="Background color"
+              defaultValue={currentConfig.bgColor}
+              onChange={(value) => modifyConfig("bgColor", value)}
+            />
+          </Fieldset>
+        </Stack>
       </Stack>
     </Stack>
   );

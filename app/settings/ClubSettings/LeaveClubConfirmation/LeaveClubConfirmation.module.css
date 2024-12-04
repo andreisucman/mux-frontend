@@ -12,3 +12,7 @@
 .th {
   white-space: nowrap;
 }
+
+.icon {
+  margin-right: rem(8);
+}

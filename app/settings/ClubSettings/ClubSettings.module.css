@@ -3,13 +3,12 @@
 }
 
 .stack {
+  display: flex;
+  flex-direction: column;
   padding: rem(16);
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  gap: rem(16);
+  background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
-}
-
-.list {
-  /* gap: rem(8); */
 }
 
 .item {
@@ -23,5 +22,6 @@
 }
 
 .avatarWrapper {
+  cursor: pointer;
   display: flex;
 }

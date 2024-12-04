@@ -1,6 +1,6 @@
 .container {
   flex: 1;
-  gap: rem(8);
+  gap: rem(12);
 }
 
 .wrapper {

@@ -200,6 +200,7 @@ export enum AuthRedirectToEnum {
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email?: string | null;
+  auth?: string;
   club: ClubDataType | null;
   concerns: UserConcernType[];
   requiredProgress: {

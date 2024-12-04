@@ -13,7 +13,7 @@ import classes from "./confirm-email.module.css";
 
 export const runtime = "edge";
 
-export default function ConfirmEmail() {
+export default function VerifyEmail() {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,13 +31,13 @@ export default function ConfirmEmail() {
     }
   }, []);
 
-  const handleConfirmEmail = useCallback(async () => {
+  const handleVerifyEmail = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
       const response = await callTheServer({
-        endpoint: "confirmEmail",
+        endpoint: "verifyEmail",
         method: "POST",
         body: { code },
       });
@@ -51,7 +51,7 @@ export default function ConfirmEmail() {
       }
     } catch (err) {
       openErrorModal();
-      console.log("Error in handleConfirmEmail: ", err);
+      console.log("Error in handleVerifyEmail: ", err);
     } finally {
       setIsLoading(false);
     }
@@ -62,10 +62,10 @@ export default function ConfirmEmail() {
       <Stack className={classes.wrapper}>
         <Stack className={classes.content}>
           <Title order={1} className={classes.title}>
-            Enter the code from email
+            Enter the code from the email
           </Title>
           <PinInput length={5} size={isMobile ? "md" : "lg"} onChange={setCode} />
-          <Button disabled={code.length < 6} loading={isLoading} onClick={handleConfirmEmail}>
+          <Button disabled={code.length < 6} loading={isLoading} onClick={handleVerifyEmail}>
             Continue
             <IconArrowRight className={`icon ${classes.icon}`} />
           </Button>

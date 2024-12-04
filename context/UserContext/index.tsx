@@ -53,8 +53,8 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!status || status === AuthStateEnum.UNKNOWN) return;
 
     if (onProtectedPage) {
-      if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED) {
-        router.replace("/enter-code");
+      if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED && pathname !== "/settings") {
+        router.replace("/confirm-email");
         return;
       }
 

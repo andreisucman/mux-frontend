@@ -38,7 +38,6 @@ export default async function joinClub({
     const avatarConfig = genConfig({
       sex: map[sex || "male"] as Sex,
       faceColor: skinColorMap[ethnicity as EthnicityEnum],
-      isGradient: true,
       mouthStyle: "peace",
       glassesStyle: "none",
     });

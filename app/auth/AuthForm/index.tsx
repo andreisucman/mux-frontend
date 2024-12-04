@@ -16,12 +16,10 @@ import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import authenticate from "@/functions/authenticate";
-import callTheServer from "@/functions/callTheServer";
 import signIn, { State } from "@/functions/signIn";
+import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
-import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
 import { validateEmail } from "@/helpers/utils";
 import PasswordInputWithStrength from "./PasswordInputWithStrength";
 import classes from "./AuthForm.module.css";
@@ -100,26 +98,6 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
     setPassword(e.currentTarget.value);
   };
 
-  const handleStartPasswordReset = async (email: string) => {
-    try {
-      const response = await callTheServer({
-        endpoint: "startPasswordReset",
-        method: "POST",
-        body: { email },
-      });
-
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({ description: response.error });
-          return;
-        }
-        openSuccessModal({ description: response.message });
-      }
-    } catch (err) {
-      console.log("Error in handleSendResetPassword: ", err);
-    }
-  };
-
   const handleSubmitForm = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
@@ -144,7 +122,7 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
       }
 
       if (showResetPassword) {
-        handleStartPasswordReset(email);
+        sendPasswordResetEmail({ email });
         return;
       }
 
