@@ -8,6 +8,7 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import openErrorModal from "@/helpers/openErrorModal";
+import openSuccessModal from "@/helpers/openSuccessModal";
 import PasswordInputWithStrength from "../auth/AuthForm/PasswordInputWithStrength";
 import classes from "./set-password.module.css";
 
@@ -50,7 +51,10 @@ export default function ChangePassword() {
             return;
           }
 
-          router.replace("/auth")
+          openSuccessModal({
+            description: response.message,
+            onClose: () => router.replace("/auth"),
+          });
         }
       } catch (err) {
         console.log("Error in handleSubmitSetPasswordForm: ", err);

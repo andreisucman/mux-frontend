@@ -5,6 +5,7 @@ type Props<T> = {
   endpoint: string;
   method: "GET" | "POST";
   body?: T | FormData;
+  accessToken?: string | null;
   server?: "api" | "chat" | "processing";
 };
 

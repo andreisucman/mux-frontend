@@ -37,7 +37,7 @@ export default function Expired() {
       <div className={classes.inner}>
         <Image className={classes.image} src={expiredImage.src} alt="" width={500} height={500} />
         <Stack className={classes.content}>
-          <Title order={1} className={classes.title}>This link expired</Title>
+          <Title order={1} className={classes.title}>This operation expired</Title>
           <Button variant="default" onClick={handleNavigation}>
             Return
           </Button>

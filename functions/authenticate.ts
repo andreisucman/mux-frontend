@@ -55,13 +55,24 @@ const authenticate = async ({
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
+      let nextPath = "";
+
       if (redirectTo === AuthRedirectToEnum.clubMemberRoutines) {
-        router.replace(`/club/routines?followingUserId=${followingUserId}`);
+        nextPath = `/club/routines?followingUserId=${followingUserId}`;
       } else if (redirectTo === AuthRedirectToEnum.clubMemberAbout) {
-        router.replace(`/club/about?followingUserId=${followingUserId}`);
+        nextPath = `/club/about?followingUserId=${followingUserId}`;
       } else {
-        router.replace("/routines");
+        nextPath = "/routines";
       }
+
+      const { emailVerified } = response.message;
+
+      if (!emailVerified) {
+        router.push(`/confirm-email?next=${encodeURIComponent(nextPath)}`);
+        return;
+      }
+
+      router.push(nextPath);
     } else {
       const rejected = response.status === 401 || response.status === 403;
       if (rejected) {
