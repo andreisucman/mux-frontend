@@ -28,13 +28,13 @@ export default function ClubProof() {
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
 
   const handleFetchProof = useCallback(
     async ({
       type,
       part,
-      trackedUserId,
+      followingUserId,
       concern,
       currentArray,
       query,
@@ -46,7 +46,7 @@ export default function ClubProof() {
         query,
         type,
         currentArrayLength: (currentArray && currentArray.length) || 0,
-        trackedUserId,
+        followingUserId,
         skip,
       });
 
@@ -66,10 +66,10 @@ export default function ClubProof() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!trackedUserId) return;
+    if (!followingUserId) return;
 
-    handleFetchProof({ trackedUserId, type, part, concern, query });
-  }, [status, trackedUserId, type, part, concern, query]);
+    handleFetchProof({ followingUserId, type, part, concern, query });
+  }, [status, followingUserId, type, part, concern, query]);
 
   return (
     <ClubModerationLayout>

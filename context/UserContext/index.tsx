@@ -4,24 +4,21 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { defaultUser } from "@/data/defaultUser";
-import callTheServer from "@/functions/callTheServer";
+import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
 import { getCookieValue } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import { protectedPaths } from "./protectedPaths";
-import { UserContextProviderProps, UserContextType } from "./types";
+import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
 
 const defaultSetUser = () => {};
 
-const defaultSetStatus: React.Dispatch<
-  React.SetStateAction<"unauthenticated" | "loading" | "authenticated" | "unknown">
-> = () => {};
+const defaultSetStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>> = () => {};
 
 export const UserContext = createContext<UserContextType>({
-  status: "unauthenticated",
+  status: AuthStateEnum.UNAUTHENTICATED,
   setStatus: defaultSetStatus,
   userDetails: defaultUser,
   setUserDetails: defaultSetUser,
@@ -37,7 +34,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   const onProtectedPage = protectedPaths.includes(pathname);
   const isLoggedInCookie = getCookieValue("MYO_isLoggedIn");
 
-  const [status, setStatus] = useState("unknown");
+  const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
   const [userDetailsState, setUserDetailsState] = useState<UserDataType | null>(null);
 
   const setUserDetails = useCallback((value: React.SetStateAction<UserDataType | null>) => {
@@ -49,64 +46,21 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, []);
 
   const updateAuthenticationStatus = useCallback((isLoggedInCookie: boolean) => {
-    console.log("new status", isLoggedInCookie ? "authenticated" : "unauthenticated");
-    setStatus(isLoggedInCookie ? "authenticated" : "unauthenticated");
-  }, []);
-
-  const handleAuthenticate = useCallback(async (code: string, state: string | null) => {
-    try {
-      const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
-      const { localUserId, redirectTo, trackedUserId } = parsedState;
-
-      const response = await callTheServer({
-        endpoint: "authenticate",
-        method: "POST",
-        body: {
-          code: code as string,
-          localUserId,
-          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          state,
-        },
-      });
-
-      if (response.status === 200) {
-        if (response.error === "blocked") {
-          openErrorModal({
-            title: `🚨 Account blocked`,
-            description: `We have temporarily blocked your account while we investigate a potential violation of our Terms of Service. Please check your email for more details.`,
-          });
-          setStatus("unauthenticated");
-          return;
-        }
-        const updatedUserDetails = {
-          ...userDetailsState,
-          ...response.message,
-        };
-        console.log("updatedUserDetails", updatedUserDetails);
-        setUserDetails(updatedUserDetails as UserDataType);
-        setStatus("authenticated");
-
-        if (redirectTo) {
-          router.replace(`/club/routines?trackedUserId=${trackedUserId}`);
-        } else {
-          router.replace("/routines");
-        }
-      } else {
-        const rejected = response.status === 401 || response.status === 403;
-        if (rejected && onProtectedPage) {
-          router.replace("/");
-          setStatus("unauthenticated");
-        }
-      }
-    } catch (err) {
-      console.log(`Error in handleAuthenticate: `, err);
-    }
+    setStatus(isLoggedInCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED);
   }, []);
 
   useEffect(() => {
-    if (!status || status === "unknown") return;
-    if (status !== "authenticated" && onProtectedPage) {
-      router.replace("/auth");
+    if (!status || status === AuthStateEnum.UNKNOWN) return;
+
+    if (onProtectedPage) {
+      if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED) {
+        router.replace("/enter-code");
+        return;
+      }
+
+      if (status !== AuthStateEnum.UNAUTHENTICATED) {
+        router.replace("/auth");
+      }
     }
   }, [status]);
 
@@ -121,7 +75,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!error) return;
 
     if (error) {
-      window.history.go(-3); // when the user declines auth return to the page before the auth
+      window.history.go(-3); // when the user declines auth in google return to the page before the auth
     }
   }, [error]);
 
@@ -129,7 +83,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!code) return;
 
     const state = searchParams.get("state");
-    handleAuthenticate(code, state);
+    authenticate({ code, state, router, setStatus, setUserDetails });
   }, [code]);
 
   useEffect(() => {
@@ -144,7 +98,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
       value={{
         userDetails: userDetailsState,
         setUserDetails,
-        status: status as "loading",
+        status: status as AuthStateEnum,
         setStatus,
       }}
     >

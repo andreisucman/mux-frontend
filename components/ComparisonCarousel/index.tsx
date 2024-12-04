@@ -53,7 +53,7 @@ export default function ComparisonCarousel({ data }: Props) {
         <UnstyledButton
           className={classes.modalHead}
           component={Link}
-          href={`/club/routine?trackedUserId=${data.userId}`}
+          href={`/club/routine?followingUserId=${data.userId}`}
           onClick={() => modals.closeAll()}
         >
           <AvatarComponent avatar={avatar} size="xs" />

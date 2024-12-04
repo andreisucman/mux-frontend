@@ -25,7 +25,7 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
   const searchParams = useSearchParams();
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { subscriptions, club } = userDetails || {};
-  const { trackedUserId } = club || {};
+  const { followingUserId } = club || {};
 
   const {
     _id: styleId,
@@ -42,7 +42,7 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
     compareVotes,
   } = record;
 
-  const isTracked = trackedUserId === userId;
+  const isTracked = followingUserId === userId;
 
   const formattedCurrentDate = formatDate({ date: createdAt });
   const formattedCompareDate = formatDate({ date: compareDate });
@@ -80,10 +80,10 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
               handleTrackUser({
                 router,
                 status,
-                redirectPath: `/club/style?trackedUserId=${record.userId}`,
+                redirectPath: `/club/style?followingUserId=${record.userId}`,
                 cancelPath: `/${pathname}?${searchParams.toString()}`,
                 clubData: club,
-                trackedUserId: record.userId,
+                followingUserId: record.userId,
                 subscriptions,
                 setUserDetails,
               })

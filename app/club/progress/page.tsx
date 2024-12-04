@@ -25,15 +25,15 @@ export default function ClubProgress() {
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
 
   const handleFetchProgress = useCallback(
-    async ({ type, part, currentArray, trackedUserId, skip }: HandleFetchProgressProps) => {
+    async ({ type, part, currentArray, followingUserId, skip }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
         part,
         type,
         currentArrayLength: (currentArray && currentArray.length) || 0,
-        trackedUserId,
+        followingUserId,
         skip,
       });
 
@@ -53,10 +53,10 @@ export default function ClubProgress() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!trackedUserId) return;
+    if (!followingUserId) return;
 
-    handleFetchProgress({ type, part, trackedUserId });
-  }, [status, trackedUserId, type, part]);
+    handleFetchProgress({ type, part, followingUserId });
+  }, [status, followingUserId, type, part]);
 
   return (
     <ClubModerationLayout>

@@ -30,7 +30,7 @@ type Props = {
   isClub?: boolean;
   disabled?: boolean;
   heading?: React.ReactNode;
-  trackedUserId?: string | null;
+  followingUserId?: string | null;
   conversation: MessageType[];
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
@@ -40,7 +40,7 @@ export default function ChatInput({
   isClub,
   heading,
   disabled,
-  trackedUserId,
+  followingUserId,
   conversation,
   setIsTyping,
   setConversation,
@@ -173,7 +173,7 @@ export default function ChatInput({
           taskName,
         };
 
-        if (isClub) payload.userId = trackedUserId;
+        if (isClub) payload.userId = followingUserId;
 
         const response = await callTheServer({
           endpoint: "addMessage",

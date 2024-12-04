@@ -64,7 +64,7 @@ function ProofCard({
       <UnstyledButton
         className={classes.modalTitle}
         component={Link}
-        href={`/club/about?trackedUserId=${userId}`}
+        href={`/club/about?followingUserId=${userId}`}
         onClick={() => modals.closeAll()}
       >
         <AvatarComponent avatar={avatar} size="sm" />

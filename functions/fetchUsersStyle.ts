@@ -2,14 +2,14 @@ import callTheServer from "./callTheServer";
 import { FetchStyleProps } from "./fetchStyle";
 
 export default async function fetchUsersStyle({
-  trackedUserId,
+  followingUserId,
   styleName,
   type,
   skip,
   currentArrayLength,
 }: FetchStyleProps) {
   try {
-    let finalEndpoint = `getUsersStyleRecords${trackedUserId ? `/${trackedUserId}` : ""}`;
+    let finalEndpoint = `getUsersStyleRecords${followingUserId ? `/${followingUserId}` : ""}`;
 
     const queryParams = [];
 

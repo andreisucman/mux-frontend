@@ -15,7 +15,7 @@ import classes from "./FollowHistoryModalContent.module.css";
 type FollowType = {
   avatar: { [key: string]: any };
   name: string;
-  trackedUserId: string;
+  followingUserId: string;
 };
 
 type HandleFetchFollowHistoryProps = {
@@ -34,12 +34,12 @@ export default function FollowHistoryModalContent() {
       const response = await callTheServer({
         endpoint: "trackUser",
         method: "POST",
-        body: { trackedUserId: userId },
+        body: { followingUserId: userId },
       });
 
       if (response.status === 200) {
         const { club } = userDetails || {};
-        const newClub = { ...club, trackedUserId: userId };
+        const newClub = { ...club, followingUserId: userId };
 
         if (club) {
           setUserDetails((prev: UserDataType) => ({
@@ -49,7 +49,7 @@ export default function FollowHistoryModalContent() {
         }
 
         const query = modifyQuery({
-          params: [{ name: "trackedUserId", value: userId, action: "replace" }],
+          params: [{ name: "followingUserId", value: userId, action: "replace" }],
         });
         router.push(`/club?${query}`);
         modals.closeAll();

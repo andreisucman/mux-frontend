@@ -2,7 +2,7 @@ import callTheServer from "./callTheServer";
 import { FetchProofProps } from "./fetchProof";
 
 export default async function fetchUsersProof({
-  trackedUserId,
+  followingUserId,
   type,
   part,
   query,
@@ -11,7 +11,7 @@ export default async function fetchUsersProof({
   currentArrayLength,
 }: FetchProofProps) {
   try {
-    let finalEndpoint = `getUsersProofRecords${trackedUserId ? `/${trackedUserId}` : ""}`;
+    let finalEndpoint = `getUsersProofRecords${followingUserId ? `/${followingUserId}` : ""}`;
 
     const queryParams = [];
 

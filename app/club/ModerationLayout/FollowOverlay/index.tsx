@@ -7,11 +7,11 @@ import { ClubDataType, UserDataType } from "@/types/global";
 import classes from "./FollowOverlay.module.css";
 
 type Props = {
-  trackedUserId: string | null;
+  followingUserId: string | null;
   description: string;
 };
 
-export default function FollowOverlay({ trackedUserId, description }: Props) {
+export default function FollowOverlay({ followingUserId, description }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const handleTrackUser = useCallback(async () => {
@@ -19,12 +19,12 @@ export default function FollowOverlay({ trackedUserId, description }: Props) {
       const response = await callTheServer({
         endpoint: "trackUser",
         method: "POST",
-        body: { trackedUserId },
+        body: { followingUserId },
       });
 
       if (response.status === 200) {
         const { club } = userDetails || {};
-        const newClub = { ...club, trackedUserId };
+        const newClub = { ...club, followingUserId };
 
         if (club) {
           setUserDetails((prev: UserDataType) => ({
@@ -36,7 +36,7 @@ export default function FollowOverlay({ trackedUserId, description }: Props) {
     } catch (err) {
       console.log("Error in handleTrackUser: ", err);
     }
-  }, [trackedUserId]);
+  }, [followingUserId]);
 
   return (
     <Stack className={classes.container}>

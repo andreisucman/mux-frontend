@@ -2,8 +2,9 @@ import { UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 const fetchUserData = async (
-  setUserDetails?: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>
-): Promise<UserDataType | undefined> => {
+  setUserDetails?: React.Dispatch<React.SetStateAction<UserDataType | null>>
+): Promise<UserDataType | null> => {
+  let data = null;
   try {
     const response = await callTheServer({
       endpoint: "getUserData",
@@ -11,11 +12,13 @@ const fetchUserData = async (
     });
 
     if (response.status === 200) {
-      if (setUserDetails) setUserDetails(response.message);
-      return response.message;
+      data = response.message;
+      if (setUserDetails) setUserDetails(data);
     }
   } catch (err) {
     console.log("Error in fetchUserData: ", err);
+  } finally {
+    return data;
   }
 };
 

@@ -1,6 +1,6 @@
 .container {
-  max-width: clamp(rem(300), 90%, rem(400));
-  padding: rem(24) rem(16);
+  max-width: rem(450);
+  padding: rem(24) rem(16) rem(32);
   width: 100%;
 
   background-color: alpha(var(--mantine-color-dark-6), 0.5);
@@ -8,7 +8,6 @@
 
   align-items: center;
   justify-content: center;
-  transform: translateY(-10%);
 }
 
 .form {

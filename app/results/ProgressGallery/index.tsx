@@ -37,7 +37,7 @@ export default function ProgressGallery({
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
   const position = searchParams.get("position") || "front";
-  const trackedUserId = searchParams.get("trackedUserId") || "front";
+  const followingUserId = searchParams.get("followingUserId") || "front";
 
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;
@@ -83,7 +83,7 @@ export default function ProgressGallery({
               part,
               skip: hasMore,
               currentArray: progress,
-              trackedUserId,
+              followingUserId,
             })
           }
           hasMore={hasMore}

@@ -1,7 +1,7 @@
 import callTheServer from "./callTheServer";
 
 export type FetchProofProps = {
-  trackedUserId?: string | null;
+  followingUserId?: string | null;
   type: string;
   part: string | null;
   query: string | null;

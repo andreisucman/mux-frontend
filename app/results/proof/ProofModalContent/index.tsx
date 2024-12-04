@@ -24,9 +24,9 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
   const searchParams = useSearchParams();
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { club, subscriptions } = userDetails || {};
-  const { trackedUserId } = club || {};
+  const { followingUserId } = club || {};
 
-  const isTracked = trackedUserId === record.userId;
+  const isTracked = followingUserId === record.userId;
   const isSelf = userDetails?._id === record.userId;
 
   const formattedDate = formatDate({ date: record.createdAt });
@@ -66,9 +66,9 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
               router,
               status,
               clubData: club,
-              redirectPath: `/club/proof?trackedUserId=${record.userId}`,
+              redirectPath: `/club/proof?followingUserId=${record.userId}`,
               cancelPath: `/${pathname}?${searchParams.toString()}`,
-              trackedUserId: record.userId,
+              followingUserId: record.userId,
               setUserDetails,
               subscriptions,
             });

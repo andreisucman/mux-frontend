@@ -24,7 +24,7 @@ type ClubBioType = {
 };
 
 export type ClubDataType = {
-  trackedUserId: string;
+  followingUserId: string;
   name: string;
   avatar: { [key: string]: any };
   isActive: boolean;
@@ -189,6 +189,12 @@ export enum RoutineStatusEnum {
   ACTIVE = "active",
   INACTIVE = "inactive",
   REPLACED = "replaced",
+}
+
+export enum AuthRedirectToEnum {
+  clubMemberRoutines = "clubMemberRoutines",
+  clubMemberAbout = "clubMemberAbout",
+  routines = "routines",
 }
 
 export interface UserDataType extends DefaultUserType {

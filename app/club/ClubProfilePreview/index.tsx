@@ -19,7 +19,7 @@ type Props = {
 
 function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: Props) {
   const router = useRouter();
-  const { scores, bio, _id: trackedUserId, avatar, name } = data || {};
+  const { scores, bio, _id: followingUserId, avatar, name } = data || {};
   const { headTotalProgress, bodyTotalProgress } = scores || {};
   const { questions } = bio || {};
 
@@ -31,7 +31,7 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
   const redirectToProgress = useCallback(() => {
     if (!data) return;
 
-    let url = `/club/progress?trackedUserId=${trackedUserId}`;
+    let url = `/club/progress?followingUserId=${followingUserId}`;
     if (type === "you") url = `/results`;
 
     if (!!headTotalProgress) {
@@ -40,16 +40,16 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
       url += `&type=body`;
     }
     router.push(url);
-  }, [headTotalProgress, bodyTotalProgress, trackedUserId]);
+  }, [headTotalProgress, bodyTotalProgress, followingUserId]);
 
   const redirectToTrackingAbout = useCallback(() => {
     if (!data) return;
 
-    let url = `/club/about?trackedUserId=${trackedUserId}`;
+    let url = `/club/about?followingUserId=${followingUserId}`;
     if (type === "you") url = `/club/about`;
 
     router.push(url);
-  }, [trackedUserId]);
+  }, [followingUserId]);
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>

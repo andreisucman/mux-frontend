@@ -3,11 +3,10 @@
 }
 
 .wrapper {
-  flex: 1;
   background-color: alpha(var(--mantine-color-dark-6), 0.25);
 
+  padding: rem(10%) rem(16);
   border-radius: var(--mantine-radius-lg);
-  max-height: rem(500);
   margin: auto;
   width: 100%;
   align-items: center;

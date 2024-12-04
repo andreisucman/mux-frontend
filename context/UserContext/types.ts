@@ -1,12 +1,20 @@
 import { UserDataType } from "@/types/global";
 
 export type UserContextType = {
-  status: "loading" | "unauthenticated" | "authenticated" | "unknown";
+  status: AuthStateEnum;
   userDetails: Partial<UserDataType> | null;
-  setStatus: (userDetails: "loading" | "unauthenticated" | "authenticated" | "unknown") => void;
+  setStatus: (args: any) => void;
   setUserDetails: (args: any) => void;
 };
 
 export type UserContextProviderProps = {
   children: React.ReactNode;
 };
+
+export enum AuthStateEnum {
+  UNAUTHENTICATED = "unauthenticated",
+  LOADING = "loading",
+  AUTHENTICATED = "authenticated",
+  EMAILCONFIRMATIONREQUIRED = "emailConfirmationRequired",
+  UNKNOWN = "unknown",
+}

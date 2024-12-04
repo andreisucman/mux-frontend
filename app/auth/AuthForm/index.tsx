@@ -1,5 +1,3 @@
-import "@mantine/core/styles/PasswordInput.layer.css";
-
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconBrandGoogle, IconMail } from "@tabler/icons-react";
 import {
@@ -17,16 +15,19 @@ import { modals } from "@mantine/modals";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
+import authenticate from "@/functions/authenticate";
 import callTheServer from "@/functions/callTheServer";
 import signIn, { State } from "@/functions/signIn";
 import { useRouter } from "@/helpers/custom-router";
+import getPasswordStrength from "@/helpers/getPasswordStrength";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
-import { validateEmail, validatePassword } from "@/helpers/utils";
+import { validateEmail } from "@/helpers/utils";
+import PasswordInputWithStrength from "./PasswordInputWithStrength";
 import classes from "./AuthForm.module.css";
 
 type Props = {
-  state?: State;
+  stateObject?: State;
   showTos: boolean;
   formType: "login" | "registration";
   customStyles?: { [key: string]: any };
@@ -50,7 +51,7 @@ function openLegalBody() {
   });
 }
 
-export default function AuthForm({ formType, state, customStyles }: Props) {
+export default function AuthForm({ formType, stateObject, customStyles }: Props) {
   const router = useRouter();
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
@@ -58,7 +59,7 @@ export default function AuthForm({ formType, state, customStyles }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const { tosAccepted: contextTosAccepted = false } = userDetails || {};
 
   const [highlightTos, setHighlightTos] = useState(false);
@@ -83,18 +84,18 @@ export default function AuthForm({ formType, state, customStyles }: Props) {
 
   const onSocialButtonClick = useCallback(async () => {
     try {
-      await signIn({ router, state });
+      await signIn({ router, stateObject });
     } catch (err) {
       console.log("Error in authorize: ", err);
     }
-  }, [typeof router, state]);
+  }, [typeof router, typeof stateObject]);
 
-  const handleChangeEmail = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleEnterEmail = (e: React.FormEvent<HTMLInputElement>) => {
     if (emailError) setEmailError("");
     setEmail(e.currentTarget.value);
   };
 
-  const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleEnterPassword = (e: React.FormEvent<HTMLInputElement>) => {
     if (passwordError) setPasswordError("");
     setPassword(e.currentTarget.value);
   };
@@ -119,91 +120,63 @@ export default function AuthForm({ formType, state, customStyles }: Props) {
     }
   };
 
-  const handleStartEmailRegistration = async (email: string, password: string) => {
-    try {
-      const response = await callTheServer({
-        endpoint: "startEmailRegistration",
-        method: "POST",
-        body: {
-          email,
-          password,
-        },
-      });
-    } catch (err) {}
-  };
-
-  const handleLoginWithEmail = async (email: string, password: string, state?: State) => {
-    try {
-      const response = await callTheServer({
-        endpoint: "loginWithEmail",
-        method: "POST",
-        body: {
-          email,
-          password,
-          state,
-        },
-      });
-
-      if (response.status === 200) {
-        const { redirectTo } = state || {};
-        let redirectUrl;
-
-        if (redirectTo) {
-          redirectUrl = redirectTo;
-        } else {
-          redirectUrl = `/routine?type=head`;
-        }
-
-        router.push(redirectUrl);
-      }
-    } catch (err) {
-      openErrorModal();
-    }
-  };
-
   const handleSubmitForm = useCallback(
-    (e: React.FormEvent, state?: State) => {
+    (e: React.FormEvent) => {
       e.preventDefault();
 
       const emailValid = validateEmail(email);
 
-      if (!emailValid) {
-        setEmailError("The email format is invalid");
+      if (!email.trim()) {
+        setEmailError("The email field cannot be empty.");
         return;
       }
 
-      if (formType === "login") {
-        if (showResetPassword) {
-          if (!email.trim()) return;
-          handleStartPasswordReset(email);
-        } else {
-          const passwordValid = validateEmail(password);
-
-          if (!passwordValid) {
-            setEmailError("The password format is invalid");
-            return;
-          }
-          handleLoginWithEmail(email, password, state);
-        }
+      if (!emailValid) {
+        setEmailError("The email format is invalid.");
+        return;
       }
 
       if (formType === "registration") {
-        console.log("entered here", tosAccepted);
         if (!tosAccepted) {
           setHighlightTos(true);
           return;
         }
-        if (!email.trim() || !password || !password.trim()) return;
-        const passwordValid = validatePassword(password);
-        if (!passwordValid) {
-          setPasswordError("The password format is invalid");
-          return;
-        }
-        handleStartEmailRegistration(email, password);
       }
+
+      if (showResetPassword) {
+        handleStartPasswordReset(email);
+        return;
+      }
+
+      if (!password || !password.trim()) {
+        setPasswordError("The password field cannot be empty.");
+        return;
+      }
+
+      const { score, requirement } = getPasswordStrength(password);
+
+      if (score < 100) {
+        setPasswordError(requirement);
+        return;
+      }
+
+      let state = null;
+
+      if (stateObject) {
+        state = encodeURIComponent(JSON.stringify(stateObject));
+      }
+
+      authenticate({
+        state,
+        router,
+        setStatus,
+        setUserDetails,
+      });
     },
     [formType, showResetPassword, tosAccepted, password, email]
   );
+
+  const disableSubmit = email.trim().length < 4 && showResetPassword;
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
@@ -227,17 +200,28 @@ export default function AuthForm({ formType, state, customStyles }: Props) {
           placeholder={formType === "login" ? "Enter your email" : "Enter an email"}
           value={email}
           error={emailError}
-          onChange={handleChangeEmail}
+          onChange={handleEnterEmail}
         />
 
         {!showResetPassword && (
-          <PasswordInput
-            value={password}
-            onChange={handleChangePassword}
-            placeholder={formType === "login" ? "Enter your password" : "Create a password"}
-            error={passwordError}
-            required
-          />
+          <>
+            {formType === "login" ? (
+              <PasswordInput
+                value={password}
+                onChange={handleEnterPassword}
+                placeholder={"Enter your password"}
+                error={passwordError}
+                required
+              />
+            ) : (
+              <PasswordInputWithStrength
+                password={password}
+                passwordError={passwordError}
+                handleEnterPassword={handleEnterPassword}
+                withChecks
+              />
+            )}
+          </>
         )}
         <Stack className={classes.footer}>
           {formType === "registration" && !contextTosAccepted && (
@@ -249,7 +233,7 @@ export default function AuthForm({ formType, state, customStyles }: Props) {
               openLegalBody={openLegalBody}
             />
           )}
-          <Button type="submit" className={classes.button}>
+          <Button type="submit" className={classes.button} disabled={disableSubmit}>
             <IconMail className="icon" style={{ marginRight: rem(8) }} /> {buttonText}
           </Button>
           {formType === "login" && (

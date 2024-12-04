@@ -11,6 +11,7 @@ export const runtime = "edge";
 export default function AuthPage() {
   const { userDetails } = useContext(UserContext);
   const { tosAccepted } = userDetails || {};
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>

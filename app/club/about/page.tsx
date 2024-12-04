@@ -29,13 +29,13 @@ export default function ClubAbout() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
 
   const { club } = userDetails || {};
   const { bio } = club || {};
   const { questions } = bio || {};
 
-  const loadData = trackedUserId ? youTrackData : youData;
+  const loadData = followingUserId ? youTrackData : youData;
   const [bioData, setBioData] = useState<BioDataType>({
     philosophy: "",
     style: "",
@@ -128,7 +128,7 @@ export default function ClubAbout() {
         console.log("Error in updateClubBio: ", err);
       }
     },
-    [trackedUserId]
+    [followingUserId]
   );
 
   useEffect(() => {
@@ -142,7 +142,7 @@ export default function ClubAbout() {
       tips,
       about,
     });
-  }, [trackedUserId, youData, youTrackData]);
+  }, [followingUserId, youData, youTrackData]);
 
   useEffect(() => {
     if (!loadData || !userDetails) return;
@@ -156,7 +156,7 @@ export default function ClubAbout() {
         <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
       )}
 
-      {trackedUserId ? (
+      {followingUserId ? (
         <DisplayClubAbout bioData={bioData} />
       ) : (
         <EditClubAbout

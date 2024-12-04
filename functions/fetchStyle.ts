@@ -1,7 +1,7 @@
 import callTheServer from "./callTheServer";
 
 export type FetchStyleProps = {
-  trackedUserId?: string | null;
+  followingUserId?: string | null;
   styleName?: string | null;
   currentArrayLength?: number;
   skip?: boolean;

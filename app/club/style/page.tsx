@@ -26,15 +26,15 @@ export default function ClubStyle() {
 
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
 
   const handleFetchUsersStyles = useCallback(
-    async ({ type, currentArray, styleName, skip, trackedUserId }: HandleFetchStyleProps) => {
+    async ({ type, currentArray, styleName, skip, followingUserId }: HandleFetchStyleProps) => {
       const data = await fetchUsersStyle({
         type,
         styleName,
         currentArrayLength: currentArray?.length || 0,
-        trackedUserId,
+        followingUserId,
         skip,
       });
 
@@ -54,10 +54,10 @@ export default function ClubStyle() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!trackedUserId) return;
+    if (!followingUserId) return;
 
-    handleFetchUsersStyles({ type, styleName, trackedUserId });
-  }, [status, type, styleName, trackedUserId]);
+    handleFetchUsersStyles({ type, styleName, followingUserId });
+  }, [status, type, styleName, followingUserId]);
 
   return (
     <ClubModerationLayout>

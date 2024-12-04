@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { IconSquareCheck } from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import { Button, PinInput, Stack, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import classes from "./enter-code.module.css";
@@ -18,9 +18,10 @@ export default function AuthPage() {
           <Title order={1} className={classes.title}>
             Enter the code from email
           </Title>
-          <PinInput length={6} size={isMobile ? "md" : "lg"} onChange={setPin} />
+          <PinInput length={5} size={isMobile ? "md" : "lg"} onChange={setPin} />
           <Button disabled={pin.length < 6}>
-            <IconSquareCheck className={`icon ${classes.icon}`} /> Finalize registration
+            Continue
+            <IconArrowRight className={`icon ${classes.icon}`} />
           </Button>
         </Stack>
       </Stack>

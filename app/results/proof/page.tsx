@@ -31,7 +31,7 @@ export default function ResultsProof() {
 
   const handleFetchProof = useCallback(
     async ({
-      trackedUserId,
+      followingUserId,
       type,
       part,
       concern,
@@ -45,7 +45,7 @@ export default function ResultsProof() {
         query,
         type,
         currentArrayLength: currentArray?.length || 0,
-        trackedUserId,
+        followingUserId,
         skip,
       });
 

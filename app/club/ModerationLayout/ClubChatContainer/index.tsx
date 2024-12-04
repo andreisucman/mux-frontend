@@ -17,8 +17,8 @@ export default function ClubChatContainer({ disabled }: Props) {
   const [isTyping, setIsTyping] = useState(false);
   const [conversation, setConversation] = useState<MessageType[]>([]);
 
-  const trackedUserId = searchParams.get("trackedUserId");
-  const name = trackedUserId ? `the ${youTrackData?.name}'s` : "your";
+  const followingUserId = searchParams.get("followingUserId");
+  const name = followingUserId ? `the ${youTrackData?.name}'s` : "your";
   const openChat = disabled ? false : focused && conversation.length > 0;
 
   return (
@@ -46,7 +46,7 @@ export default function ClubChatContainer({ disabled }: Props) {
         isClub={true}
         disabled={disabled}
         conversation={conversation}
-        trackedUserId={trackedUserId}
+        followingUserId={followingUserId}
         setConversation={setConversation}
         setIsTyping={setIsTyping}
       />

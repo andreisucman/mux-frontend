@@ -14,7 +14,7 @@ import classes from "./results.module.css";
 export const runtime = "edge";
 
 interface HandleFetchProgressProps extends FetchProgressProps {
-  currentArray?: SimpleProgressType[]
+  currentArray?: SimpleProgressType[];
 }
 
 export default function ResultsProgress() {
@@ -27,14 +27,14 @@ export default function ResultsProgress() {
   const part = searchParams.get("part");
 
   const handleFetchProgress = useCallback(
-    async ({ type, part, skip, trackedUserId, currentArray }: HandleFetchProgressProps) => {
+    async ({ type, part, skip, followingUserId, currentArray }: HandleFetchProgressProps) => {
       try {
         const response = await fetchProgress({
           type,
           part,
           skip,
-          trackedUserId,
-          currentArrayLength: currentArray && currentArray.length || 0,
+          followingUserId,
+          currentArrayLength: (currentArray && currentArray.length) || 0,
         });
 
         if (response.status === 200) {

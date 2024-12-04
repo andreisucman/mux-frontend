@@ -4,20 +4,20 @@ import callTheServer from "./callTheServer";
 export type State = {
   redirectTo?: string;
   localUserId?: string;
-  trackedUserId?: string;
+  followingUserId?: string;
 };
 
 type Props = {
-  state?: State;
+  stateObject?: State;
   router: AppRouterInstance;
 };
 
-export default async function signIn({ state, router }: Props) {
+export default async function signIn({ stateObject, router }: Props) {
   try {
     let url = "authorize";
 
-    if (state) {
-      const encoded = encodeURIComponent(JSON.stringify(state));
+    if (stateObject) {
+      const encoded = encodeURIComponent(JSON.stringify(stateObject));
       url += `?state=${encoded}`;
     }
 

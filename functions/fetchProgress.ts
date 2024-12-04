@@ -1,7 +1,7 @@
 import callTheServer from "./callTheServer";
 
 export type FetchProgressProps = {
-  trackedUserId?: string | null;
+  followingUserId?: string | null;
   type: string;
   part: string | null;
   skip?: boolean;
@@ -9,14 +9,14 @@ export type FetchProgressProps = {
 };
 
 export default async function fetchProgress({
-  trackedUserId,
+  followingUserId,
   type,
   part,
   skip,
   currentArrayLength,
 }: FetchProgressProps) {
   try {
-    let finalEndpoint = `getUsersProgressRecords${trackedUserId ? `/${trackedUserId}` : ""}`;
+    let finalEndpoint = `getUsersProgressRecords${followingUserId ? `/${followingUserId}` : ""}`;
 
     const queryParams = [];
 

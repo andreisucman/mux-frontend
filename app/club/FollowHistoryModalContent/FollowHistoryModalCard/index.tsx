@@ -8,13 +8,13 @@ type Props = {
   data: {
     avatar: { [key: string]: any };
     name: string;
-    trackedUserId: string;
+    followingUserId: string;
   };
   onClick: (userId: string) => void;
 };
 
 export default function FollowHistoryModalCard({ data, onClick }: Props) {
-  const { avatar, name, trackedUserId } = data;
+  const { avatar, name, followingUserId } = data;
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function FollowHistoryModalCard({ data, onClick }: Props) {
           </Text>
         </Group>
 
-        <Button onClick={() => onClick(trackedUserId)} variant="default">
+        <Button onClick={() => onClick(followingUserId)} variant="default">
           <IconEye className={`icon ${classes.icon}`} /> Follow again
         </Button>
       </Group>

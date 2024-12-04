@@ -37,7 +37,7 @@ export default function StyleGallery({
 
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
 
   const modelObject = styles && styles[0];
   const appliedBlurType = modelObject?.mainUrl.name;
@@ -70,7 +70,7 @@ export default function StyleGallery({
               skip: hasMore,
               currentArray: styles,
               type,
-              trackedUserId,
+              followingUserId,
               styleName,
             })
           }

@@ -36,8 +36,8 @@ export default function ClubRoutine() {
   const { _id: userId, routines: currentUserRoutines } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
-  const trackedUserId = searchParams.get("trackedUserId") || userId;
-  const isSelf = userId === trackedUserId;
+  const followingUserId = searchParams.get("followingUserId") || userId;
+  const isSelf = userId === followingUserId;
 
   const openTaskDetails = useCallback(
     (task: AllTaskType, routineId: string) => {
@@ -167,7 +167,7 @@ export default function ClubRoutine() {
         const response = await callTheServer({
           endpoint: "addTaskToRoutine",
           method: "POST",
-          body: { taskKey, routineId, total, trackedUserId, type },
+          body: { taskKey, routineId, total, followingUserId, type },
         });
 
         if (response.status === 200) {
@@ -207,12 +207,12 @@ export default function ClubRoutine() {
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
-      userId: trackedUserId,
+      userId: followingUserId,
       routines,
       type,
     };
     getTrackedRoutines(payload);
-  }, [type, trackedUserId]);
+  }, [type, followingUserId]);
 
   return (
     <Stack className={classes.container}>
@@ -240,7 +240,7 @@ export default function ClubRoutine() {
                   onClick={() =>
                     getTrackedRoutines({
                       skip: true,
-                      userId: trackedUserId,
+                      userId: followingUserId,
                       routines,
                       type,
                     })

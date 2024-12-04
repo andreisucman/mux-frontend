@@ -37,7 +37,7 @@ export default function EditClubAbout({
   const searchParams = useSearchParams();
 
   const [showSegment, setShowSegment] = useState("philosophy");
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
 
   const dirtyParts = Object.keys(bioData)
     .map((key) =>
@@ -47,7 +47,7 @@ export default function EditClubAbout({
     )
     .filter(Boolean);
 
-  const editingDisabled = !!trackedUserId || (questions && questions?.length > 0);
+  const editingDisabled = !!followingUserId || (questions && questions?.length > 0);
   const currentSegment = segments.find((segment) => segment.value === showSegment) || segments[0];
 
   return (
@@ -66,7 +66,7 @@ export default function EditClubAbout({
         isUnbounded
       />
 
-      {!trackedUserId && (
+      {!followingUserId && (
         <Button
           w="100%"
           onClick={() => updateClubBio(dirtyParts as string[], bioData)}

@@ -23,15 +23,15 @@ export default function Club() {
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   const { club } = userDetails || {};
-  const { trackedUserId: localTrackedUserId, payouts } = club || {};
+  const { followingUserId: localFollowingUserId, payouts } = club || {};
   const { rewardEarned, payoutsEnabled } = payouts || {};
 
-  const handleTrackUser = useCallback(async (trackedUserId: string) => {
+  const handleTrackUser = useCallback(async (followingUserId: string) => {
     try {
       const response = await callTheServer({
         endpoint: "trackUser",
         method: "POST",
-        body: { trackedUserId },
+        body: { followingUserId },
       });
 
       if (response.status === 200) {
@@ -43,8 +43,8 @@ export default function Club() {
   }, []);
 
   const openTrackConfirm = useCallback(
-    (trackedUserId: string) => {
-      if (trackedUserId === localTrackedUserId) {
+    (followingUserId: string) => {
+      if (followingUserId === localFollowingUserId) {
         return;
       }
 
@@ -59,19 +59,19 @@ export default function Club() {
         closeOnConfirm: true,
         children: <Text>This action will untrack the current user. Are you sure?</Text>,
         labels: { confirm: "Yes", cancel: "No" },
-        onConfirm: () => handleTrackUser(trackedUserId),
+        onConfirm: () => handleTrackUser(followingUserId),
       });
     },
-    [localTrackedUserId]
+    [localFollowingUserId]
   );
 
   useEffect(() => {
     if (typeof rewardEarned !== "number") return;
-    if (localTrackedUserId && !youTrackData) return;
+    if (localFollowingUserId && !youTrackData) return;
     if (!trackYouData) return;
     if (!youData) return;
     setShowSkeleton(false);
-  }, [rewardEarned, localTrackedUserId, youTrackData, trackYouData, youData]);
+  }, [rewardEarned, localFollowingUserId, youTrackData, trackYouData, youData]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -79,7 +79,7 @@ export default function Club() {
       <Skeleton className={`${classes.skeleton} skeleton`} visible={showSkeleton}>
         <Group className={classes.top}>
           <ClubProfilePreview data={youData} type="you" showButtons />
-          {localTrackedUserId && <ClubProfilePreview data={youTrackData} type="peek" showButtons />}
+          {localFollowingUserId && <ClubProfilePreview data={youTrackData} type="peek" showButtons />}
         </Group>
         <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
         <Stack className={classes.followYou}>
@@ -96,7 +96,7 @@ export default function Club() {
                         key={record._id}
                         {...record}
                         onClick={(userId: string) => openTrackConfirm(userId)}
-                        disabled={record._id === localTrackedUserId}
+                        disabled={record._id === localFollowingUserId}
                       />
                     ))}
                   </Stack>

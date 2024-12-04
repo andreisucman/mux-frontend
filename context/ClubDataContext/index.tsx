@@ -30,14 +30,14 @@ export default function ClubDataContextProvider({ children }: Props) {
   const [youData, setYouData] = useState<ClubUserType | null>(null);
 
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
-  const { trackedUserId: localTrackedUserId } = club || {};
+  const { followingUserId: localFollowingUserId } = club || {};
 
-  const trackedUserId = searchParams.get("trackedUserId") || localTrackedUserId;
+  const followingUserId = searchParams.get("followingUserId") || localFollowingUserId;
 
-  const getClubYouTrack = useCallback(async (trackedUserId: string) => {
+  const getClubYouTrack = useCallback(async (followingUserId: string) => {
     try {
       const response = await callTheServer({
-        endpoint: `getClubYouTrack/${trackedUserId}`,
+        endpoint: `getClubYouTrack/${followingUserId}`,
         method: "GET",
       });
 
@@ -92,9 +92,9 @@ export default function ClubDataContextProvider({ children }: Props) {
   }, [userId]);
 
   useEffect(() => {
-    if (!trackedUserId) return;
-    getClubYouTrack(trackedUserId);
-  }, [trackedUserId]);
+    if (!followingUserId) return;
+    getClubYouTrack(followingUserId);
+  }, [followingUserId]);
 
   useEffect(() => {
     getClubTrackYou();

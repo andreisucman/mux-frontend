@@ -18,7 +18,7 @@ function Logo({ customStyles }: Props) {
       <Image
         src={logoSrc}
         width={190}
-        height={35}
+        height={32}
         alt="MaxYouOut logo"
         className={classes.logo}
         priority={true}

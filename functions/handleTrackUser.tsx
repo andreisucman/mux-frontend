@@ -14,13 +14,13 @@ export type TrackUserProps = {
   clubData: ClubDataType;
   redirectPath: string;
   cancelPath: string;
-  trackedUserId: string;
+  followingUserId: string;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
   subscriptions?: UserSubscriptionsType | null;
 };
 
 const handleTrackUser = async ({
-  trackedUserId,
+  followingUserId,
   subscriptions,
   redirectPath,
   cancelPath,
@@ -30,13 +30,13 @@ const handleTrackUser = async ({
   setUserDetails,
 }: TrackUserProps) => {
   if (typeof window === "undefined") return;
-  if (!trackedUserId) return;
+  if (!followingUserId) return;
 
   if (status === "authenticated") {
     const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions) || {};
 
     if (isSubscriptionActive) {
-      trackUser({ router, setUserDetails, trackedUserId, clubData, redirectPath });
+      trackUser({ router, setUserDetails, followingUserId, clubData, redirectPath });
     } else {
       openSubscriptionModal({
         title: `Add the Peek License`,
@@ -58,7 +58,7 @@ const handleTrackUser = async ({
                 cancelPath,
                 status,
                 clubData,
-                trackedUserId,
+                followingUserId,
                 setUserDetails,
                 subscriptions,
               }),
@@ -67,7 +67,7 @@ const handleTrackUser = async ({
       });
     }
   } else {
-    signIn({ state: { redirectTo: "peek", trackedUserId }, router });
+    signIn({ state: { redirectTo: "peek", followingUserId }, router });
   }
 };
 

@@ -43,8 +43,8 @@ export default function ProofGallery({
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
-  const trackedUserId = searchParams.get("trackedUserId");
-  const isSelf = userId === trackedUserId;
+  const followingUserId = searchParams.get("followingUserId");
+  const isSelf = userId === followingUserId;
 
   const modelObject = proof && proof[0];
   const appliedBlurType = modelObject?.mainUrl.name;
@@ -76,7 +76,7 @@ export default function ProofGallery({
           }
           loadMore={() =>
             handleFetchProof({
-              trackedUserId,
+              followingUserId,
               currentArray: proof,
               concern,
               type,

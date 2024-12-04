@@ -65,5 +65,3 @@ export const validateEmail = (val: string) => {
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailPattern.test(val);
 };
-
-export const validatePassword = (val: string) => val.length >= 6;

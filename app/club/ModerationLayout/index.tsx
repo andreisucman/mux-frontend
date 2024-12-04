@@ -21,25 +21,25 @@ type Props = {
   showHeader?: boolean;
 };
 
-export default function ClubModerationLayout({ children, showChat,showHeader }: Props) {
+export default function ClubModerationLayout({ children, showChat, showHeader }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youTrackData } = useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("followOverlay");
 
-  const trackedUserId = searchParams.get("trackedUserId");
+  const followingUserId = searchParams.get("followingUserId");
   const isRoutine = pathname.includes("/routine");
 
   const { subscriptions, club } = userDetails || {};
-  const { trackedUserId: localTrackedUserId } = club || {};
+  const { followingUserId: localFollowingUserId } = club || {};
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
 
   useEffect(() => {
-    if (trackedUserId) {
+    if (followingUserId) {
       if (isSubscriptionActive) {
-        const follows = localTrackedUserId === trackedUserId;
+        const follows = localFollowingUserId === followingUserId;
         if (follows) {
           setShowComponent("children");
         } else {
@@ -51,7 +51,7 @@ export default function ClubModerationLayout({ children, showChat,showHeader }: 
     } else {
       setShowComponent("children");
     }
-  }, [isSubscriptionActive, localTrackedUserId, trackedUserId]);
+  }, [isSubscriptionActive, localFollowingUserId, followingUserId]);
 
   const followText = `Follow to see ${isRoutine ? "their routines" : "their details"}.`;
 
@@ -60,14 +60,14 @@ export default function ClubModerationLayout({ children, showChat,showHeader }: 
       {showHeader && <ClubHeader title={"Club"} hideTypeDropdown={!isRoutine} showReturn />}
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData || !youTrackData}>
         <ClubProfilePreview
-          type={trackedUserId ? "peek" : "you"}
-          data={trackedUserId ? youTrackData : youData}
+          type={followingUserId ? "peek" : "you"}
+          data={followingUserId ? youTrackData : youData}
           customStyles={{ flex: 0 }}
         />
         {showComponent === "children" && children}
         {showComponent === "subscriptionOverlay" && <PeekOverlay />}
         {showComponent === "followOverlay" && (
-          <FollowOverlay trackedUserId={trackedUserId} description={followText} />
+          <FollowOverlay followingUserId={followingUserId} description={followText} />
         )}
         {showChat && <ClubChatContainer disabled={showComponent !== "children"} />}
       </Skeleton>

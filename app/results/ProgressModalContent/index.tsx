@@ -23,10 +23,10 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const searchParams = useSearchParams();
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { club, subscriptions } = userDetails || {};
-  const { trackedUserId } = club || {};
+  const { followingUserId } = club || {};
 
   const { userId, images, initialImages, createdAt, initialDate } = record;
-  const isTracked = trackedUserId === userId;
+  const isTracked = followingUserId === userId;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: createdAt });
@@ -52,9 +52,9 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
                 router,
                 status,
                 clubData: club,
-                redirectPath: `/club/progress?trackedUserId=${record.userId}`,
+                redirectPath: `/club/progress?followingUserId=${record.userId}`,
                 cancelPath: `/${pathname}?${searchParams.toString()}`,
-                trackedUserId: record.userId,
+                followingUserId: record.userId,
                 setUserDetails,
                 subscriptions,
               })
