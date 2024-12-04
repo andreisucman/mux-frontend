@@ -15,7 +15,7 @@ export default function AuthPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
-        <AuthForm formType={"registration"} showTos={!tosAccepted} />
+        <AuthForm formType={"login"} showTos={!tosAccepted} />
       </Stack>
     </Stack>
   );
