@@ -6,6 +6,7 @@ import {
   Group,
   Skeleton,
   Stack,
+  Text,
   TextInput,
   Title,
   UnstyledButton,
@@ -22,25 +23,30 @@ import LeaveClubConfirmation from "./LeaveClubConfirmation";
 import classes from "./ClubSettings.module.css";
 
 export type UpdateClubInfoProps = {
-  type: "name" | "avatar";
+  type: "name" | "avatar" | "intro";
   data: AvatarConfig | string;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+const MAX_INTRO_CHARACTERS = 180;
 
 export default function ClubSettings() {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const { club } = userDetails || {};
-  const { avatar, name, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
+  const { avatar, name, bio, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
+  const { intro } = bio || {};
 
   const [userName, setUserName] = useState<string>(name || "");
+  const [userIntro, setUserIntro] = useState<string>(intro || "");
   const [isLoading, setIsLoading] = useState(false);
 
   const canUpdateName = new Date() > new Date(nextNameUpdateAt || 0);
   const canUpdateAvatar = new Date() > new Date(nextAvatarUpdateAt || 0);
 
   const isNameDirty = userName.trim() !== name?.trim();
+  const isIntroDirty = userIntro.trim() !== intro?.trim();
 
   const openLeaveClubConfirmation = useCallback(() => {
     modals.openContextModal({
@@ -62,7 +68,7 @@ export default function ClubSettings() {
       const response = await callTheServer({
         endpoint: "updateClubData",
         method: "POST",
-        body: { type, data },
+        body: { [type]: data },
       });
 
       if (response.status === 200) {
@@ -113,12 +119,19 @@ export default function ClubSettings() {
     });
   }, []);
 
+  const handleEnterIntro = (text: string) => {
+    if (text.length > MAX_INTRO_CHARACTERS) return;
+    setUserIntro(text);
+  };
+
   useEffect(() => {
     const tId = setTimeout(() => {
       setShowSkeleton(false);
       clearTimeout(tId);
     }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
   }, []);
+
+  const introCharactersLeft = MAX_INTRO_CHARACTERS - userIntro.length;
 
   return (
     <Skeleton className={classes.stack} visible={showSkeleton}>
@@ -146,6 +159,22 @@ export default function ClubSettings() {
             }
           />
         </Group>
+        <TextInput
+          flex={1}
+          maw={355}
+          value={userIntro}
+          onChange={(e) => handleEnterIntro(e.currentTarget.value)}
+          leftSection={<Text size="xs">{introCharactersLeft}</Text>}
+          leftSectionWidth={50}
+          rightSection={
+            <ActionIcon
+              disabled={!isIntroDirty || userIntro.length === 0}
+              onClick={() => handleUpdateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
+            >
+              <IconDeviceFloppy className="icon" />
+            </ActionIcon>
+          }
+        />
         <DataSharingSwitches title="Data privacy" />
         <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
           <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club

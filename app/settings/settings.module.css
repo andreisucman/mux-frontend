@@ -19,10 +19,6 @@
   border-radius: var(--mantine-radius-lg);
 }
 
-.list {
-  gap: rem(8);
-}
-
 .item {
   cursor: pointer;
   display: flex;

@@ -37,6 +37,12 @@ import { UserDataType } from "@/types/global";
 import ClubSettings from "./ClubSettings";
 import classes from "./settings.module.css";
 
+type AskConfirmationProps = {
+  title: string;
+  body: string;
+  onConfirm: () => void;
+};
+
 export default function Settings() {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
@@ -46,6 +52,8 @@ export default function Settings() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState<string>(currentEmail || "");
   const [confirmationCode, setConfirmationCode] = useState("");
+
+  const isEmailDirty = currentEmail !== email.trim();
 
   const redirectToBillingPortal = useCallback(async () => {
     try {
@@ -90,31 +98,17 @@ export default function Settings() {
     [userId]
   );
 
-  const askEmailChange = () => {
+  const askConfirmation = ({ title, body, onConfirm }: AskConfirmationProps) => {
     modals.openConfirmModal({
       title: (
         <Title order={5} component={"p"}>
-          Confirm email change
+          {title}
         </Title>
       ),
       centered: true,
-      children: <Text>Start the email change?</Text>,
+      children: <Text>{body}</Text>,
       labels: { confirm: "Yes", cancel: "No" },
-      onConfirm: () => emailChangeModalsStack.open("changeEmail"),
-    });
-  };
-
-  const askPasswordReset = () => {
-    modals.openConfirmModal({
-      title: (
-        <Title order={5} component={"p"}>
-          Confirm password reset
-        </Title>
-      ),
-      centered: true,
-      children: <Text>Start password reset?</Text>,
-      labels: { confirm: "Yes", cancel: "No" },
-      onConfirm: () => sendPasswordResetEmail({ email }),
+      onConfirm,
     });
   };
 
@@ -177,23 +171,60 @@ export default function Settings() {
           )}
           <Stack className={classes.list}>
             <TextInput
+              maw={355}
               value={email}
               onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}
               readOnly={auth === "g"}
               rightSection={
-                <ActionIcon disabled={email === currentEmail} onClick={askEmailChange}>
+                <ActionIcon
+                  disabled={!isEmailDirty || !email}
+                  onClick={() =>
+                    askConfirmation({
+                      title: "Confirm email change",
+                      body: "Start the email change?",
+                      onConfirm: () => emailChangeModalsStack.open("changeEmail"),
+                    })
+                  }
+                >
                   <IconDeviceFloppy className="icon" />{" "}
                 </ActionIcon>
               }
             />
-            <UnstyledButton className={classes.item} onClick={askPasswordReset}>
+            <UnstyledButton
+              className={classes.item}
+              onClick={() =>
+                askConfirmation({
+                  title: "Confirm reset password",
+                  body: "Start password reset?",
+                  onConfirm: () => sendPasswordResetEmail({ email }),
+                })
+              }
+            >
               <IconAsterisk className={`${classes.icon} icon`} /> Reset password
             </UnstyledButton>
-            <UnstyledButton className={classes.item} onClick={redirectToBillingPortal}>
+            <UnstyledButton
+              className={classes.item}
+              onClick={() =>
+                askConfirmation({
+                  title: "Confirm redirect",
+                  body: "Go to the billing portal?",
+                  onConfirm: () => redirectToBillingPortal(),
+                })
+              }
+            >
               <IconCreditCard className={`${classes.icon} icon`} /> Manage subscriptions
             </UnstyledButton>
             {!deleteOn && (
-              <UnstyledButton className={classes.item} onClick={() => deleteAccount(true)}>
+              <UnstyledButton
+                className={classes.item}
+                onClick={() =>
+                  askConfirmation({
+                    title: "Confirm delete",
+                    body: "Delete account?",
+                    onConfirm: () => deleteAccount(true),
+                  })
+                }
+              >
                 <IconInfoCircle className={`${classes.icon} icon`} /> Delete account
               </UnstyledButton>
             )}
@@ -208,6 +239,7 @@ export default function Settings() {
             Confirm current email
           </Title>
         }
+        centered
       >
         <Stack>
           <Text>We've sent a confirmation code to your current email. Enter it to continue.</Text>
@@ -229,6 +261,7 @@ export default function Settings() {
             Confirm new email
           </Title>
         }
+        centered
       >
         <Stack>
           <Text>We've sent a confirmation code to your new email. Enter it to continue.</Text>
