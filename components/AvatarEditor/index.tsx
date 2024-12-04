@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import Avatar, { AvatarConfig, genConfig } from "react-nice-avatar";
 import { Button, ColorInput, Fieldset, rem, Stack } from "@mantine/core";
 import { UpdateClubInfoProps } from "@/app/settings/ClubSettings";
+import extractGradientColors from "@/helpers/extractGradientColors";
 import FilterDropdown from "../FilterDropdown";
 import { options } from "./options";
 import classes from "./AvatarEditor.module.css";
@@ -19,6 +20,8 @@ export default function AvatarEditor({
   handleUpdateClubInfo,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const [bgColorOne, setBgColorOne] = useState<string>("");
+  const [bgColorTwo, setBgColorTwo] = useState<string>("");
   const [updatedAvatar, setUpdatedAvatar] = useState<AvatarConfig>(currentConfig);
 
   const isDirty = useMemo(() => {
@@ -36,6 +39,19 @@ export default function AvatarEditor({
       })
     );
   };
+
+  const createGradient = useCallback(
+    (colorOne: string, colorTwo: string) =>
+      `linear-gradient(90deg, ${colorOne || colorTwo} 0%, ${colorTwo || colorOne} 100%)`,
+    []
+  );
+
+  useEffect(() => {
+    if (!currentConfig.bgColor) return;
+    const gradientColors = extractGradientColors(currentConfig.bgColor);
+    setBgColorOne(gradientColors[0]);
+    setBgColorOne(gradientColors[1]);
+  }, [currentConfig.bgColor]);
 
   return (
     <Stack className={classes.container}>
@@ -139,13 +155,25 @@ export default function AvatarEditor({
               onChange={(value) => modifyConfig("shirtColor", value)}
             />
           </Fieldset>
-          <Fieldset legend="Background color">
+          <Fieldset legend="Background">
             <ColorInput
               flex={1}
-              value={updatedAvatar.bgColor}
-              placeholder="Background color"
-              defaultValue={currentConfig.bgColor}
-              onChange={(value) => modifyConfig("bgColor", value)}
+              value={bgColorOne}
+              placeholder="Color one"
+              onChange={(value) => {
+                setBgColorOne(value);
+                modifyConfig("bgColor", createGradient(value, bgColorTwo));
+              }}
+            />
+            <ColorInput
+              mt={12}
+              flex={1}
+              value={bgColorTwo}
+              placeholder="Color two"
+              onChange={(value) => {
+                setBgColorTwo(value);
+                modifyConfig("bgColor", createGradient(bgColorOne, value));
+              }}
             />
           </Fieldset>
         </Stack>

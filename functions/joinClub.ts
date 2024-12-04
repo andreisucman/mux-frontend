@@ -40,6 +40,8 @@ export default async function joinClub({
       faceColor: skinColorMap[ethnicity as EthnicityEnum],
       mouthStyle: "peace",
       glassesStyle: "none",
+      hairColorRandom: true,
+      isGradient: true,
     });
 
     const response = await callTheServer({

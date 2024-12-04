@@ -97,7 +97,8 @@ export default function Settings() {
           Confirm email change
         </Title>
       ),
-      children: <Text>Start the email change flow?</Text>,
+      centered: true,
+      children: <Text>Start the email change?</Text>,
       labels: { confirm: "Yes", cancel: "No" },
       onConfirm: () => emailChangeModalsStack.open("changeEmail"),
     });
@@ -110,7 +111,8 @@ export default function Settings() {
           Confirm password reset
         </Title>
       ),
-      children: <Text>Start password reset flow?</Text>,
+      centered: true,
+      children: <Text>Start password reset?</Text>,
       labels: { confirm: "Yes", cancel: "No" },
       onConfirm: () => sendPasswordResetEmail({ email }),
     });

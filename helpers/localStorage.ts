@@ -7,7 +7,7 @@ export function saveToLocalStorage(
 ): void {
   if (typeof window === "undefined") return;
 
-  const existingValueRaw = localStorage.getItem(key);
+  const existingValueRaw = localStorage.getItem(`MUX_${key}`);
   let existingValue: StorageValue = null;
 
   try {
@@ -18,28 +18,28 @@ export function saveToLocalStorage(
 
   if (mode === "add" && existingValue) {
     if (Array.isArray(existingValue) && Array.isArray(value)) {
-      localStorage.setItem(key, JSON.stringify([...existingValue, ...value]));
+      localStorage.setItem(`MUX_${key}`, JSON.stringify([...existingValue, ...value]));
     } else if (
       typeof existingValue === "object" &&
       !Array.isArray(existingValue) &&
       typeof value === "object" &&
       value !== null
     ) {
-      localStorage.setItem(key, JSON.stringify({ ...existingValue, ...value }));
+      localStorage.setItem(`MUX_${key}`, JSON.stringify({ ...existingValue, ...value }));
     } else {
       throw new Error(
         `Cannot add value. Existing value for key "${key}" must be an array or object to use "add" mode.`
       );
     }
   } else {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(`MUX_${key}`, JSON.stringify(value));
   }
 }
 
 export function getFromLocalStorage<T extends StorageValue>(key: string): T | null {
   if (typeof window === "undefined") return null;
 
-  const rawValue = localStorage.getItem(key);
+  const rawValue = localStorage.getItem(`MUX_${key}`);
 
   if (rawValue === null) {
     return null;
@@ -55,7 +55,7 @@ export function getFromLocalStorage<T extends StorageValue>(key: string): T | nu
 export function deleteFromLocalStorage(key: string, toDeleteKey?: string): void {
   if (typeof window === "undefined") return;
 
-  const rawValue = localStorage.getItem(key);
+  const rawValue = localStorage.getItem(`MUX_${key}`);
 
   if (!rawValue) return;
 
@@ -63,11 +63,11 @@ export function deleteFromLocalStorage(key: string, toDeleteKey?: string): void 
     try {
       const parsedValue = JSON.parse(rawValue);
       delete parsedValue[toDeleteKey];
-      localStorage.setItem(key, JSON.stringify(parsedValue));
+      localStorage.setItem(`MUX_${key}`, JSON.stringify(parsedValue));
     } catch (err) {
       console.log("Error in deleteFromLocalStorage: ", err);
     }
   } else {
-    localStorage.removeItem(key);
+    localStorage.removeItem(`MUX_${key}`);
   }
 }
