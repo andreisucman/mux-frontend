@@ -12,7 +12,7 @@ import openSuccessModal from "@/helpers/openSuccessModal";
 import PasswordInputWithStrength from "../auth/AuthForm/PasswordInputWithStrength";
 import classes from "./set-password.module.css";
 
-export default function ChangePassword() {
+export default function SetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string>("");
@@ -75,7 +75,6 @@ export default function ChangePassword() {
               password={password}
               passwordError={error}
               handleEnterPassword={handleEnterPassword}
-              withChecks
             />
 
             <Button type="submit" className={classes.button} disabled={score < 100}>

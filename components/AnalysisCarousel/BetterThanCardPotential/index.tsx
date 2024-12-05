@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Skeleton, Stack, Text } from "@mantine/core";
+import { Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
+import getAppearanceVerdict from "@/helpers/getAppearanceVerdict";
 import { getRingColor } from "@/helpers/utils";
 import { FormattedRatingType, TypeEnum } from "@/types/global";
 import ComparisonStack from "../BetterThanCard/ComparisonStack";
@@ -60,13 +61,20 @@ function BetterThanCardPotential({
     [containerHeight > 0]
   );
 
+  const verdictTitle = useMemo(
+    () => getAppearanceVerdict(potentialRecord.overall as number, true),
+    [potentialRecord.overall]
+  );
+
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
       <Stack className={classes.container} ref={ref}>
         <Text className={classes.title} c="dimmed">
           {title}
         </Text>
-
+        <Title order={2} ta="center">
+          {verdictTitle}
+        </Title>
         {partCircleObjects.length > 1 && (
           <ComparisonStack
             higherThanNumber={percentage}

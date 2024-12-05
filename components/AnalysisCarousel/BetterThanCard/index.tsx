@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
-import { Skeleton, Stack, Text } from "@mantine/core";
+import { Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
+import getAppearanceVerdict from "@/helpers/getAppearanceVerdict";
 import { getRingColor } from "@/helpers/utils";
 import { ProgressType, TypeEnum } from "@/types/global";
 import ComparisonStack from "./ComparisonStack";
@@ -51,12 +52,20 @@ function BetterThanCard({ currentlyHigherThan, progressRecord, ageInterval, titl
   const highlight = `${percentage}%`;
   const highlightText = `Overall you look better than ${percentage}% of users in the ${ageInterval} age group.`;
 
+  const verdictTitle = useMemo(
+    () => getAppearanceVerdict(progressRecord.overall as number),
+    [progressRecord.overall]
+  );
+
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
       <Stack className={classes.container} ref={ref}>
         <Text className={classes.title} c="dimmed">
           {title}
         </Text>
+        <Title order={2} ta="center">
+          {verdictTitle}
+        </Title>
         {partCircleObjects.length > 1 && (
           <ComparisonStack
             higherThanNumber={percentage}

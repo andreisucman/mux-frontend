@@ -1,4 +1,5 @@
 import React from "react";
+import { usePathname } from "next/navigation";
 import { Group, PasswordInput, Progress, Stack } from "@mantine/core";
 import getPasswordStrength, { requirements } from "@/helpers/getPasswordStrength";
 import PasswordRequirement from "./PasswordRequirement";
@@ -12,11 +13,13 @@ type Props = {
 
 export default function PasswordInputWithStrength({
   password,
-  withChecks,
   passwordError,
   handleEnterPassword,
 }: Props) {
+  const pathname = usePathname();
   const { score } = getPasswordStrength(password);
+
+  const isSetPasswordPage = pathname === "/set-password";
 
   const checks = [
     ...requirements.map((requirement, index) => (
@@ -27,6 +30,7 @@ export default function PasswordInputWithStrength({
       />
     )),
     <PasswordRequirement
+      key={999}
       label={"Make it 6-18 characters"}
       meets={password.length >= 6 && password.length < 19}
     />,
@@ -58,7 +62,7 @@ export default function PasswordInputWithStrength({
       <Group gap={6} grow mt="xs" mb={2}>
         {bars}
       </Group>
-      {withChecks && checks}
+      {isSetPasswordPage && checks}
     </Stack>
   );
 }

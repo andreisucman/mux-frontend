@@ -11,19 +11,26 @@ import {
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
+import { typeIcons } from "@/components/PageHeader/data";
 import { useRouter } from "@/helpers/custom-router";
 import classes from "./ClubHeader.module.css";
 
+export const pageTypeIcons: { [key: string]: React.ReactNode } = {
+  "/club/about": <IconUserCircle className="icon" />,
+  "/club/routine": <IconClipboardText className="icon" />,
+  "/club/results": <IconTargetArrow className="icon" />,
+};
+
 const clubPageTypeData = [
-  { label: "About", icon: <IconUserCircle className="icon" />, value: "/club/about" },
-  { label: "Routine", icon: <IconClipboardText className="icon" />, value: "/club/routine" },
-  { label: "Results", icon: <IconTargetArrow className="icon" />, value: "/club/results" },
+  { label: "About", value: "/club/about" },
+  { label: "Routine", value: "/club/routine" },
+  { label: "Results", value: "/club/results" },
 ];
 
 const typeData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
-  { label: "Health", icon: <IconHeart className="icon" />, value: "health" },
+  { label: "Head", value: "head" },
+  { label: "Body", value: "body" },
+  { label: "Health", value: "health" },
 ];
 
 type Props = {
@@ -68,26 +75,26 @@ export default function ClubHeader({
           {title}
         </Title>
       </Group>
-      <Group className={classes.right}>
+      <FilterDropdown
+        icons={pageTypeIcons}
+        data={clubPageTypeData}
+        defaultSelected={clubPageTypeData.find((item) => item.value === pathname)?.value}
+        onSelect={handleRedirect}
+        placeholder="Select page"
+        isDisabled={isDisabled}
+      />
+      {!hideTypeDropdown && (
         <FilterDropdown
-          data={clubPageTypeData}
-          defaultSelected={clubPageTypeData.find((item) => item.value === pathname)?.value}
-          onSelect={handleRedirect}
-          placeholder="Select page"
+          icons={typeIcons}
+          data={typeData}
+          filterType="type"
+          defaultSelected={typeData.find((item) => item.value === type)?.value}
+          onSelect={onSelect}
+          placeholder="Select type"
           isDisabled={isDisabled}
+          addToQuery
         />
-        {!hideTypeDropdown && (
-          <FilterDropdown
-            data={typeData}
-            filterType="type"
-            defaultSelected={typeData.find((item) => item.value === type)?.value}
-            onSelect={onSelect}
-            placeholder="Select type"
-            isDisabled={isDisabled}
-            addToQuery
-          />
-        )}
-      </Group>
+      )}
     </Group>
   );
 }

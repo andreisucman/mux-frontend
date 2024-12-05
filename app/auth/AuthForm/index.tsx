@@ -16,7 +16,7 @@ import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import authenticate from "@/functions/authenticate";
-import signIn, { State } from "@/functions/signIn";
+import signIn, { SignInStateType } from "@/functions/signIn";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
@@ -25,7 +25,7 @@ import PasswordInputWithStrength from "./PasswordInputWithStrength";
 import classes from "./AuthForm.module.css";
 
 type Props = {
-  stateObject?: State;
+  stateObject?: SignInStateType;
   showTos: boolean;
   formType: "login" | "registration";
   customStyles?: { [key: string]: any };
@@ -196,7 +196,6 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
                 password={password}
                 passwordError={passwordError}
                 handleEnterPassword={handleEnterPassword}
-                withChecks
               />
             )}
           </>

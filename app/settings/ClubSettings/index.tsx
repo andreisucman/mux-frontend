@@ -159,7 +159,7 @@ export default function ClubSettings() {
             }
           />
         </Group>
-        <TextInput
+        {/* <TextInput
           flex={1}
           maw={355}
           value={userIntro}
@@ -174,7 +174,7 @@ export default function ClubSettings() {
               <IconDeviceFloppy className="icon" />
             </ActionIcon>
           }
-        />
+        /> */}
         <DataSharingSwitches title="Data privacy" />
         <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
           <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club

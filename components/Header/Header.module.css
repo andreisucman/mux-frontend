@@ -43,3 +43,14 @@
 .drawerTitle {
   font-weight: 600;
 }
+
+.burger {
+  cursor: pointer;
+  display: flex;
+  height: fit-content;
+  width: fit-content;
+
+  & button {
+    width: fit-content;
+  }
+}

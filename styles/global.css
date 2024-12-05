@@ -67,10 +67,8 @@ body {
   margin: auto;
 }
 
-
 .largePage {
   max-width: clamp(rem(1280), 38.5%, rem(1480));
   width: 100%;
   margin: auto;
 }
-

@@ -2,12 +2,13 @@
 
 import React, { useMemo } from "react";
 import { IconRotateDot } from "@tabler/icons-react";
-import { Skeleton, Stack, Text } from "@mantine/core";
+import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
 import GlowingButton from "@/components/GlowingButton";
 import signIn from "@/functions/signIn";
 import { useRouter } from "@/helpers/custom-router";
+import openAuthModal from "@/helpers/openAuthModal";
 import { TypeEnum, UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
 
@@ -18,7 +19,6 @@ type Props = {
 };
 
 function ConcernsCard({ concerns, type, title }: Props) {
-  const router = useRouter();
   const { height: containerHeight, ref } = useElementSize();
 
   const maxHeight = useMemo(() => {
@@ -33,13 +33,23 @@ function ConcernsCard({ concerns, type, title }: Props) {
         <Text className={classes.title} c="dimmed">
           {title}
         </Text>
+        <Title order={2} ta="center" mb={4} mt={4}>
+          Start your change
+        </Title>
         <Stack className={classes.wrapper}>
           <ConcernsSortCard concerns={concerns} type={type} maxHeight={maxHeight} disabled />
           <GlowingButton
             text="Create routine free"
             icon={<IconRotateDot className="icon" />}
-            onClick={() => signIn({ router, state: { redirectTo: "/routines" } })}
-            containerStyles={{ flex: 0 }}
+            onClick={() =>
+              openAuthModal({
+                formType: "registration",
+                stateObject: { redirectTo: "routines" },
+                title: "Start your change",
+                showTos: true,
+              })
+            }
+            containerStyles={{ flex: 0, maxWidth: rem(300), width: "100%", margin: "0 auto" }}
           />
         </Stack>
       </Stack>

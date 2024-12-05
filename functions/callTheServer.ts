@@ -14,7 +14,7 @@ const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Prop
     const isFormData = body instanceof FormData;
     const headers: HeadersInit = isFormData ? {} : { "Content-Type": "application/json" };
 
-    const csrfToken = getCookieValue("MYO_csrfToken");
+    const csrfToken = getCookieValue("MUX_csrfToken");
 
     if (csrfToken) {
       headers["X-CSRF-Token"] = csrfToken;

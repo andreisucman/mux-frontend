@@ -29,7 +29,7 @@ export default function ClubModerationLayout({ children, showChat, showHeader }:
   const [showComponent, setShowComponent] = useState("followOverlay");
 
   const followingUserId = searchParams.get("followingUserId");
-  const isRoutine = pathname.includes("/routine");
+  const isRoutine = pathname.includes("/club/routine");
 
   const { subscriptions, club } = userDetails || {};
   const { followingUserId: localFollowingUserId } = club || {};

@@ -1,10 +1,11 @@
 import React, { memo, useMemo } from "react";
-import { Group, Highlight, Stack } from "@mantine/core";
+import { Group, Highlight, Stack, Title } from "@mantine/core";
 import AreaChart from "@/components/AreaChart";
 import RingComponent from "@/components/RingComponent";
 import classes from "./ComparisonStack.module.css";
 
 type Props = {
+  title?: string;
   ringData: { value: number; label: string; color: string }[];
   ringSize: number;
   highlight: string;
@@ -26,7 +27,7 @@ function ComparisonStack({
     <Stack className={classes.container}>
       <Group className={classes.row}>
         <RingComponent data={ringData} ringSize={ringSize} showTitle={false} />
-        <Highlight highlight={highlight} ta="center" fz={fontSize} mb={ringSize > 100 ? 16 : 0}>
+        <Highlight highlight={highlight} fz={fontSize} mb={ringSize > 100 ? 16 : 0}>
           {highlightText}
         </Highlight>
       </Group>
