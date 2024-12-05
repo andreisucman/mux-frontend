@@ -10,8 +10,6 @@
   width: 100%;
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
-  min-height: 33vh;
-  max-height: 33vh;
   overflow: hidden;
 }
 

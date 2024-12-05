@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useActionState, useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconHourglassHigh } from "@tabler/icons-react";
 import { Loader, Stack } from "@mantine/core";
@@ -133,6 +133,13 @@ export default function ScanProgress() {
     [userDetails, setUserDetails]
   );
 
+  const handleResetOnChangeType = useCallback(() => {
+    setLocalUrl("");
+    setOriginalUrl("");
+    setEyesBlurredUrl("");
+    setFaceBlurredUrl("");
+  }, []);
+
   useShallowEffect(() => {
     if (!userId) return;
     if (availableRequirements && availableRequirements.length === 0) {
@@ -144,7 +151,7 @@ export default function ScanProgress() {
     <>
       {availableRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
-          <ScanPageHeading type={finalType as TypeEnum} />
+          <ScanPageHeading type={finalType as TypeEnum} onSelect={handleResetOnChangeType} />
           {needsScan ? (
             <UploadCarousel
               requirements={availableRequirements || []}

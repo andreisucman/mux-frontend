@@ -7,7 +7,7 @@ import StyleGallery from "@/app/results/style/StyleGallery";
 import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import fetchStyle, { FetchStyleProps } from "@/functions/fetchStyle";
-import openErrorModal from "@/helpers/openErrorModal";
+import GeneralResultsHeader from "../GeneralResultsHeader";
 
 export const runtime = "edge";
 
@@ -15,14 +15,20 @@ interface HandleFetchStyleProps extends FetchStyleProps {
   currentArray?: SimpleStyleType[];
 }
 
+const titles = [
+  { label: "Progress", value: "/" },
+  { label: "Style", value: "/style" },
+  { label: "Proof", value: "/proof" },
+];
+
 export default function AllStyle() {
   const searchParams = useSearchParams();
   const [styles, setStyles] = useState<SimpleStyleType[]>();
   const [hasMore, setHasMore] = useState(false);
 
+  const sex = searchParams.get("sex");
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
-  const sex = searchParams.get("sex");
   const ageInterval = searchParams.get("ageInterval");
   const ethnicity = searchParams.get("ethnicity");
 
@@ -37,7 +43,7 @@ export default function AllStyle() {
       sex,
     }: HandleFetchStyleProps) => {
       try {
-        const response = await fetchStyle({
+        const styles = await fetchStyle({
           type,
           styleName,
           currentArrayLength: currentArray?.length || 0,
@@ -47,16 +53,12 @@ export default function AllStyle() {
           skip,
         });
 
-        if (response.status === 200) {
-          if (skip) {
-            setStyles([...(currentArray || []), ...response.message.slice(0, 20)]);
-          } else {
-            setStyles(response.message.slice(0, 20));
-          }
-          setHasMore(response.message.length === 21);
+        if (skip) {
+          setStyles([...(currentArray || []), ...styles.slice(0, 20)]);
         } else {
-          openErrorModal();
+          setStyles(styles.slice(0, 20));
         }
+        setHasMore(styles.length === 21);
       } catch (err) {
         console.log("Error in handleFetchStyles: ", err);
       }
@@ -70,11 +72,7 @@ export default function AllStyle() {
 
   return (
     <Stack className={"mediumPage"} flex={1}>
-      <StyleHeader
-        title="Style"
-        isDisabled={!styles || (styles && styles.length === 0)}
-        showReturn
-      />
+      <GeneralResultsHeader />
       {styles ? (
         <StyleGallery
           styles={styles}

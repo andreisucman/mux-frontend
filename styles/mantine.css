@@ -3,7 +3,6 @@
 @import '@mantine/core/styles/Flex.layer.css';
 @import '@mantine/core/styles/VisuallyHidden.layer.css';
 @import '@mantine/core/styles/Paper.layer.css';
-@import "@mantine/core/styles/ActionIcon.layer.css";
 @import "@mantine/core/styles/Affix.layer.css";
 @import "@mantine/core/styles/Accordion.layer.css";
 @import "@mantine/core/styles/Alert.layer.css";
@@ -59,3 +58,5 @@
 @import "@mantine/core/styles/Tooltip.layer.css";
 @import "@mantine/core/styles/UnstyledButton.layer.css";
 @import "@mantine/core/styles/Button.layer.css";
+@import "@mantine/core/styles/ActionIcon.layer.css";
+

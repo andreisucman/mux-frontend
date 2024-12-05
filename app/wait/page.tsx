@@ -15,7 +15,7 @@ export default function WaitPage() {
 
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
-  const redirect = searchParams.get("redirect") || `/analysis?type=${finalType}`;
+  const redirect = searchParams.get("next") || `/analysis?type=${finalType}`;
   const finalRedirect = decodeURIComponent(redirect);
 
   const hideDisclaimer = useMemo(() => {

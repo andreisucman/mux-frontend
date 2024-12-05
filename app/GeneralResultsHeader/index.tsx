@@ -73,17 +73,21 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
       const keys = [];
 
       if (pathname === "/proof") {
-        keys.push(...concern, taskName);
+        keys.push(...concern, ...taskName);
       }
 
-      const spotlightActions = keys.map((filter) => ({
-        id: filter as string,
-        label: normalizeString(filter as string).toLowerCase(),
-        leftSection: <IconSearch className={"icon"} stroke={1.5} />,
-        onClick: () => handleActionClick(filter as string),
-      }));
+      let actions: SpotlightActionData[] = [];
 
-      return spotlightActions;
+      if (keys.length > 0) {
+        actions = keys.map((filter) => ({
+          id: filter as string,
+          label: normalizeString(filter as string).toLowerCase(),
+          leftSection: <IconSearch className={"icon"} stroke={1.5} />,
+          onClick: () => handleActionClick(filter as string),
+        }));
+      }
+
+      return actions;
     },
     [pathname]
   );
@@ -168,7 +172,9 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
             {showSearch && (
               <SearchButton maxPillWidth={width / 2} onSearchClick={() => spotlight.open()} />
             )}
-            {showFilter && <FilterButton activeFiltersCount={paramsCount} onFilterClick={openFiltersCard} />}
+            {showFilter && (
+              <FilterButton activeFiltersCount={paramsCount} onFilterClick={openFiltersCard} />
+            )}
           </Group>
         )}
       </Group>

@@ -25,9 +25,10 @@ const titles = [
 
 type Props = {
   type?: TypeEnum;
+  onSelect?: () => void;
 };
 
-function ScanPageHeading({ type }: Props) {
+function ScanPageHeading({ type, onSelect }: Props) {
   const router = useRouter();
 
   return (
@@ -43,6 +44,7 @@ function ScanPageHeading({ type }: Props) {
         <FilterDropdown
           data={typeFilters}
           icons={icons}
+          onSelect={onSelect}
           defaultSelected={typeFilters.find((rec) => rec.value === type)?.value}
           filterType={"type"}
           placeholder="Select type"

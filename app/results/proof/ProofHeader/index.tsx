@@ -13,28 +13,19 @@ import modifyQuery from "@/helpers/modifyQuery";
 import TitleDropdown from "../../TitleDropdown";
 import classes from "./ProofHeader.module.css";
 
-const titles = [
-  { label: "Progress", value: "/results" },
-  { label: "Style", value: "/results/style" },
-  { label: "Proof", value: "/results/proof" },
-];
-
 type FilterDataType = {
   icons: { [key: string]: React.ReactNode | undefined };
   items: FilterItemType[];
 };
 
 type Props = {
-  title: string;
-  isDisabled?: boolean;
+  titles: { label: string; value: string }[];
   showReturn?: boolean;
-  showFilter?: boolean;
-  onSelect?: (item?: FilterItemType) => void;
 };
 
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
-export default function ProofHeader({ showReturn }: Props) {
+export default function ProofHeader({ showReturn, titles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

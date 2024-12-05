@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useContext, useState } from "react";
-import { usePathname } from "next/navigation";
 import { IconFocus } from "@tabler/icons-react";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -19,7 +18,6 @@ type Props = {
 
 function SelectStyleGoalModalContent({ type, styleName }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
   const [selectedGoal, setSelectedGoal] = useState<StyleGoalsType>();
 
@@ -45,9 +43,7 @@ function SelectStyleGoalModalContent({ type, styleName }: Props) {
       });
 
       if (response.status === 200) {
-        router.push(
-          `/wait?type=${type}&redirect=${encodeURIComponent(`${pathname}?type=${type}`)}`
-        );
+        router.push(`/wait?type=${type}&next=${encodeURIComponent(`?type=${type}`)}`);
         saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
       }
     } catch (err) {

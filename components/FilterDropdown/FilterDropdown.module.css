@@ -1,0 +1,8 @@
+.container {
+  flex: 1;
+  max-width: rem(250);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    max-width: unset;
+  }
+}

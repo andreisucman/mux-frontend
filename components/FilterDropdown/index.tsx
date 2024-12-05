@@ -4,6 +4,7 @@ import { IconCheck } from "@tabler/icons-react";
 import { Group, Text,Select, SelectProps } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
+import classes from "./FilterDropdown.module.css"
 
 type Props = {
   icons?: { [key: string]: React.ReactNode };
@@ -67,8 +68,9 @@ export default function FilterDropdown({
 
   return (
     <Select
-      flex={1}
-      miw={150}
+      // flex={1}
+      className={classes.container}
+      // miw={150}
       data={data}
       disabled={isDisabled}
       placeholder={placeholder}

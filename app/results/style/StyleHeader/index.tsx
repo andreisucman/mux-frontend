@@ -19,20 +19,14 @@ const typeData = [
   { label: "Body", value: "body" },
 ];
 
-const titles = [
-  { label: "Progress", value: "/results" },
-  { label: "Style", value: "/results/style" },
-  { label: "Proof", value: "/results/proof" },
-];
-
 type Props = {
-  title: string;
+  titles: { label: string; value: string }[];
   isDisabled?: boolean;
   showReturn?: boolean;
   onSelect?: (item?: string | null) => void;
 };
 
-export default function StyleHeader({ showReturn, isDisabled, onSelect }: Props) {
+export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const styleName = searchParams.get("styleName");

@@ -85,7 +85,8 @@ export default function UploadStyle() {
                 _id: response.message,
               }));
 
-              router.push(`/wait?type=${finalType}&redirect`);
+              const nextPage = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
+              router.push(`/wait?type=${finalType}&next=${nextPage}`);
             } else {
               setProgress(0);
               openErrorModal({
@@ -103,27 +104,36 @@ export default function UploadStyle() {
     [userId, setUserDetails]
   );
 
+  const handleResetOnChangeType = useCallback(() => {
+    setLocalUrl("");
+    setOriginalUrl("");
+    setEyesBlurredUrl("");
+    setFaceBlurredUrl("");
+  }, []);
+
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <ScanPageHeading type={type as TypeEnum} />
       {typeStyleRequirements ? (
-        <UploadCarousel
-          latestStyleImage={mainUrl?.url}
-          requirements={typeStyleRequirements}
-          type={type as TypeEnum}
-          progress={progress}
-          localUrl={localUrl}
-          originalUrl={originalUrl}
-          eyesBlurredUrl={eyesBlurredUrl}
-          faceBlurredUrl={faceBlurredUrl}
-          isLoading={isLoading}
-          setLocalUrl={setLocalUrl}
-          setOriginalUrl={setOriginalUrl}
-          setEyesBlurredUrl={setEyesBlurredUrl}
-          setFaceBlurredUrl={setFaceBlurredUrl}
-          handleUpload={handleUpload}
-          isStyle
-        />
+        <>
+          <ScanPageHeading type={type as TypeEnum} onSelect={handleResetOnChangeType} />
+          <UploadCarousel
+            latestStyleImage={mainUrl?.url}
+            requirements={typeStyleRequirements}
+            type={type as TypeEnum}
+            progress={progress}
+            localUrl={localUrl}
+            originalUrl={originalUrl}
+            eyesBlurredUrl={eyesBlurredUrl}
+            faceBlurredUrl={faceBlurredUrl}
+            isLoading={isLoading}
+            setLocalUrl={setLocalUrl}
+            setOriginalUrl={setOriginalUrl}
+            setEyesBlurredUrl={setEyesBlurredUrl}
+            setFaceBlurredUrl={setFaceBlurredUrl}
+            handleUpload={handleUpload}
+            isStyle
+          />
+        </>
       ) : (
         <Stack className={classes.loaderWrapper}>
           <Loader type="oval" />

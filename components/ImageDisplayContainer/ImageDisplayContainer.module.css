@@ -3,6 +3,7 @@
   flex: 1;
   height: 100%;
   align-self: center;
+  max-height: calc(100vh - 452px);
 }
 
 .deleteIcon {

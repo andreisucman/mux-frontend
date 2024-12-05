@@ -1,4 +1,5 @@
 import callTheServer from "./callTheServer";
+import openErrorModal from "@/helpers/openErrorModal";
 
 export type FetchProofProps = {
   followingUserId?: string | null;
@@ -71,6 +72,7 @@ export default async function fetchProof({
 
     return response.message;
   } catch (err) {
+    openErrorModal();
     console.log("Error in fetchProof: ", err);
     throw err;
   }

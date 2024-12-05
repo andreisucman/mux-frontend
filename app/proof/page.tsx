@@ -3,18 +3,24 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
-import { UserContext } from "@/context/UserContext";
-import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
-import openErrorModal from "@/helpers/openErrorModal";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import ProofHeader from "@/app/results/proof/ProofHeader";
 import { SimpleProofType } from "@/app/results/proof/types";
+import { UserContext } from "@/context/UserContext";
+import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
+import GeneralResultsHeader from "../GeneralResultsHeader";
 
 export const runtime = "edge";
 
 interface HandleFetchProofProps extends FetchProofProps {
   currentArray?: SimpleProofType[];
 }
+
+const titles = [
+  { label: "Progress", value: "/" },
+  { label: "Style", value: "/style" },
+  { label: "Proof", value: "/proof" },
+];
 
 export default function AllProof() {
   const searchParams = useSearchParams();
@@ -54,23 +60,17 @@ export default function AllProof() {
         skip,
       });
 
-      if (data) {
-        if (skip) {
-          setProof([...(currentArray || []), ...data.slice(0, 20)]);
-        } else {
-          setProof(data.slice(0, 20));
-        }
-        setHasMore(data.length === 21);
+      if (skip) {
+        setProof([...(currentArray || []), ...data.slice(0, 20)]);
       } else {
-        openErrorModal();
+        setProof(data.slice(0, 20));
       }
+      setHasMore(data.length === 21);
     },
     []
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
     handleFetchProof({
       type,
       part,
@@ -84,8 +84,8 @@ export default function AllProof() {
   }, [status, type, part, concern, query, ageInterval, ethnicity, sex]);
 
   return (
-    <Stack className={"mediumPage"}>
-      <ProofHeader title="Proof" showReturn />
+    <Stack className={"mediumPage"} flex={1}>
+      <GeneralResultsHeader />
       {proof ? (
         <ProofGallery
           proof={proof}
