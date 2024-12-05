@@ -44,7 +44,7 @@ function ConcernsCard({ concerns, type, title }: Props) {
             onClick={() =>
               openAuthModal({
                 formType: "registration",
-                stateObject: { redirectTo: "routines" },
+                stateObject: { redirectTo: "/routines" },
                 title: "Start your change",
                 showTos: true,
               })

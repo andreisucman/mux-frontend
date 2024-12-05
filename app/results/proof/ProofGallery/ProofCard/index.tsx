@@ -79,7 +79,6 @@ function ProofCard({
       type: "proof",
       title,
       isFullScreen: isMobile,
-      showButton: showTrackButton,
     });
   }, []);
 
@@ -130,7 +129,6 @@ function ProofCard({
           {isSelf && <ContentPublicityIndicator isPublic={isPublic} />}
         </Stack>
         <ProofCardFooter
-          showButton={false}
           showConcern={false}
           metaPanel={
             isLite ? (

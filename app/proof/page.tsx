@@ -6,10 +6,9 @@ import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import openErrorModal from "@/helpers/openErrorModal";
-import ProofGallery from "../results/proof/ProofGallery";
-import ProofHeader from "../results/proof/ProofHeader";
-import { SimpleProofType } from "../results/proof/types";
-import classes from "./proof.module.css";
+import ProofGallery from "@/app/results/proof/ProofGallery";
+import ProofHeader from "@/app/results/proof/ProofHeader";
+import { SimpleProofType } from "@/app/results/proof/types";
 
 export const runtime = "edge";
 
@@ -85,7 +84,7 @@ export default function AllProof() {
   }, [status, type, part, concern, query, ageInterval, ethnicity, sex]);
 
   return (
-    <Stack className={`${classes.container} mediumPage`}>
+    <Stack className={"mediumPage"}>
       <ProofHeader title="Proof" showReturn />
       {proof ? (
         <ProofGallery

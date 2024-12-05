@@ -3,8 +3,8 @@
 import React, { useCallback, useContext } from "react";
 import { Group, Stack, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import signIn from "@/functions/signIn";
 import { useRouter } from "@/helpers/custom-router";
+import openAuthModal from "@/helpers/openAuthModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
@@ -33,8 +33,13 @@ export default function ScanIndexPage() {
       if (status === "authenticated") {
         router.push(next);
       } else {
-        if (email) {
-          signIn({ router, state: { redirectTo: next } }); // add each of the scan path as reirect uri in google
+        if (email) { // the user has finished the onboarding
+          openAuthModal({
+            formType: "login",
+            showTos: false,
+            title: "Login to continue",
+            stateObject: { redirectTo: next },
+          });
         } else {
           if (userId) {
             router.push(next); // the user accepted the tos but did not finish the onboarding
@@ -55,12 +60,14 @@ export default function ScanIndexPage() {
         <Group className={classes.content}>
           <StartButton
             type={"head"}
+            position={"front"}
             needsScan={needsHeadScan}
             nextScanDate={nextHeadScanDate}
             onClick={() => handleRedirect("/scan/progress?type=head")}
           />
           <StartButton
             type={"body"}
+            position={"front"}
             needsScan={needsBodyScan}
             nextScanDate={nextBodyScanDate}
             onClick={() => handleRedirect("/scan/progress?type=body")}
@@ -68,11 +75,13 @@ export default function ScanIndexPage() {
           <StartButton
             needsScan={true}
             type={"style"}
+            position={"body"}
             onClick={() => handleRedirect("/scan/style?type=head")}
           />
           <StartButton
             needsScan={true}
             type={"food"}
+            position={"front"}
             onClick={() => handleRedirect("/scan/style?type=head")}
           />
         </Group>

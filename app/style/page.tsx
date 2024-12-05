@@ -3,12 +3,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import StyleGallery from "@/app/results/style/StyleGallery";
+import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import fetchStyle, { FetchStyleProps } from "@/functions/fetchStyle";
 import openErrorModal from "@/helpers/openErrorModal";
-import StyleGallery from "../results/style/StyleGallery";
-import StyleHeader from "../results/style/StyleHeader";
-import classes from "./style.module.css";
 
 export const runtime = "edge";
 
@@ -70,7 +69,7 @@ export default function AllStyle() {
   }, [type, styleName, sex, ageInterval, ethnicity]);
 
   return (
-    <Stack className={`${classes.container} mediumPage`}>
+    <Stack className={"mediumPage"} flex={1}>
       <StyleHeader
         title="Style"
         isDisabled={!styles || (styles && styles.length === 0)}

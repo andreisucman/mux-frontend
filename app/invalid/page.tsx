@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import invalidImage from "@/public/assets/computer_fix.svg";
+import invalidImage from "@/public/assets/computer-fix.svg";
 import classes from "./invalid.module.css";
 
 export default function Expired() {

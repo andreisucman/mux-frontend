@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Button, Stack } from "@mantine/core";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import notFoundImage from "@/public/assets/not_found.svg";
+import notFoundImage from "@/public/assets/not-found.svg";
 import classes from "./not-found.module.css";
 
 export default function NotFoundPage() {

@@ -1,7 +1,7 @@
 import { Image, Stack, Text } from "@mantine/core";
 import EnergyIndicator from "@/app/advisor/chat/EnergyIndicator";
-import coachRestingFemale from "@/public/assets/coach_is_tired_female.svg";
-import coachRestingMale from "@/public/assets/coach_is_tired_male.svg";
+import coachRestingFemale from "@/public/assets/coach-is-tired-female.svg";
+import coachRestingMale from "@/public/assets/coach-is-tired-male.svg";
 import { SexEnum } from "@/types/global";
 import classes from "./CoachIsTiredModalContent.module.css";
 

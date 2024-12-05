@@ -1,16 +1,19 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import Image from "next/image";
 import { IconBodyScan, IconUserScan } from "@tabler/icons-react";
 import cn from "classnames";
 import { Overlay, Stack, Text, UnstyledButton } from "@mantine/core";
 import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import Timer from "@/components/Timer";
+import { UserContext } from "@/context/UserContext";
+import { placeholders } from "@/data/placeholders";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
 import classes from "./StartButton.module.css";
 
 type Props = {
   type: "head" | "body" | "style" | "food";
+  position: string;
   needsScan: boolean;
   nextScanDate?: Date | null;
   onClick: () => void;
@@ -23,7 +26,11 @@ const icons = {
   food: <IconScanFood className={`icon ${classes.icon}`} />,
 };
 
-export default function StartButton({ onClick, type, needsScan, nextScanDate }: Props) {
+export default function StartButton({ onClick, type, position, needsScan, nextScanDate }: Props) {
+  const { userDetails } = useContext(UserContext);
+  const { demographics } = userDetails || {};
+  const { sex = "male" } = demographics || {};
+
   const overlayProps = useMemo(() => {
     const afterOneDay = daysFrom({ days: 1 });
     const payload: {
@@ -54,6 +61,10 @@ export default function StartButton({ onClick, type, needsScan, nextScanDate }: 
     return payload;
   }, [needsScan, nextScanDate, type]);
 
+  const relevantPlaceholder = placeholders.find(
+    (item) => item.sex.includes(sex) && item.type === type && item.position === position
+  );
+
   return (
     <UnstyledButton
       className={cn(classes.container, { [classes.disabled]: !needsScan })}
@@ -61,7 +72,7 @@ export default function StartButton({ onClick, type, needsScan, nextScanDate }: 
     >
       <div className={classes.imageWrapper}>
         <Image
-          src="https://placehold.co/160x213"
+          src={relevantPlaceholder && relevantPlaceholder.url}
           className={classes.image}
           alt=""
           width={180}

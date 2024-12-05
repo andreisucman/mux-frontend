@@ -9,7 +9,7 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
-import classes from "./confirm-email.module.css";
+import classes from "./verify-email.module.css";
 
 export const runtime = "edge";
 

@@ -5,7 +5,7 @@ export default {
 };
 
 const props = {
-  highestVotes: 100,
+  votes: 100,
 };
 
 export const VotesCountIndicatorComponent = () => <VotesCountIndicator {...props} />;

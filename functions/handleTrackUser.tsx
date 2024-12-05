@@ -67,7 +67,7 @@ const handleTrackUser = async ({
       });
     }
   } else {
-    signIn({ state: { redirectTo: "peek", followingUserId }, router });
+    signIn({ stateObject: { redirectTo: `/club?followingUserId=${followingUserId}` }, router });
   }
 };
 

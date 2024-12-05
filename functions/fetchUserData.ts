@@ -2,7 +2,7 @@ import { UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 const fetchUserData = async (
-  setUserDetails?: React.Dispatch<React.SetStateAction<UserDataType | null>>
+  setUserDetails?: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>
 ): Promise<UserDataType | null> => {
   let data = null;
   try {

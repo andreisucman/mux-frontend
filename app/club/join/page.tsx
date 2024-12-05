@@ -9,7 +9,7 @@ import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
 import Confirmation from "./Confirmation";
-import classes from "./club-join.module.css";
+import classes from "./join.module.css";
 
 export const runtime = "edge";
 

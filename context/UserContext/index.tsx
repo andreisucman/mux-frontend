@@ -35,10 +35,10 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
 
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
-  const [userDetailsState, setUserDetailsState] = useState<UserDataType | null>(null);
+  const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
 
   const setUserDetails = useCallback((value: React.SetStateAction<UserDataType | null>) => {
-    setUserDetailsState((prevState: UserDataType | null) => {
+    setUserDetailsState((prevState: Partial<UserDataType> | null) => {
       const newState = typeof value === "function" ? value(prevState as UserDataType) : value;
       saveToLocalStorage("userDetails", newState);
       return newState;

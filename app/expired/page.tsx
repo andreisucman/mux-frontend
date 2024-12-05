@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import expiredImage from "@/public/assets/clock_and_cat.svg";
+import expiredImage from "@/public/assets/clock-and-cat.svg";
 import classes from "./expired.module.css";
 
 export default function Expired() {
