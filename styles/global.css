@@ -15,6 +15,14 @@ body {
   max-width: rem(3840);
   overflow-x: hidden;
   margin: auto;
+
+  background-image: linear-gradient(
+    -45deg,
+    var(--mantine-color-dark-7) 49.9%,
+    alpha(var(--mantine-color-dark-6), 0.25) 50%,
+    alpha(var(--mantine-color-dark-6), 0.25) 74.9%,
+    alpha(var(--mantine-color-dark-6), 0.5) 75%
+  );
 }
 
 .skeleton {

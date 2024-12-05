@@ -59,6 +59,7 @@
 
 .overlay {
   display: flex;
+  z-index: 0;
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 

@@ -149,7 +149,7 @@ export default function UploadCarousel({
 
   return (
     <Stack flex={1}>
-      {type === "head" && !isStyle && (
+      {type === "head" && !isStyle && somethingToScan && (
         <SelectPartsCheckboxes
           distinctUploadedParts={distinctUploadedParts}
           showMouth={mouthExists && showMouth}

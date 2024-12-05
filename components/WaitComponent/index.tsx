@@ -51,6 +51,18 @@ function WaitComponent({
         });
 
         if (response.status === 200) {
+          if (response.error) {
+            clearInterval(intervalId);
+            if (onError) onError();
+            openErrorModal({
+              description: response.error,
+              onClose: () => {
+                if (errorRedirectUrl) router.push(errorRedirectUrl);
+              },
+            });
+            return;
+          }
+
           const { jobProgress, ...otherData } = response.message;
 
           if (jobProgress < 100) {
@@ -70,18 +82,8 @@ function WaitComponent({
 
             if (onComplete) onComplete();
           }
-        } else {
-          clearInterval(intervalId);
-          openErrorModal({
-            description: response.error,
-            onClose: () => {
-              if (errorRedirectUrl) router.push(errorRedirectUrl);
-            },
-          });
-          if (onError) onError();
         }
       } catch (err) {
-        console.log("Error in checkAnalysisCompletion: ", err);
         clearInterval(intervalId);
         if (onError) onError();
       }
@@ -90,6 +92,7 @@ function WaitComponent({
   );
 
   useEffect(() => {
+    console.log("userId", userId);
     if (!userId) return;
     const updateInterval = 3000;
 

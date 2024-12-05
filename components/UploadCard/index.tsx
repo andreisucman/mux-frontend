@@ -130,32 +130,16 @@ export default function UploadCard({
             image={localUrl || latestStyleImage}
             isLoadingOverlay={isBlurLoading}
             placeholder={relevantPlaceholder && relevantPlaceholder.url}
-            customImageStyles={{
-              backgroundImage: `linear-gradient(
-              45deg,
-              var(--mantine-color-gray-4) 49.9%,
-              var(--mantine-color-gray-3) 50%,
-              var(--mantine-color-gray-3) 74.9%,
-              var(--mantine-color-gray-1) 75%
-            )`,
-            }}
           />
         </Stack>
-        {isLoading && (
-          <Stack className={classes.uploadingStack}>
-            <Text size="sm" c="dimmed">
-              Uploading...
-            </Text>
-            <Progress value={progress} w="100%" style={{ minHeight: rem(8) }} />
-          </Stack>
-        )}
-        {!isLoading && (
-          <Stack className={classes.checkboxAndButtons}>
-            <BlurButtons
-              disabled={isBlurLoading}
-              originalUrl={originalUrl}
-              onBlurClick={onBlurClick}
-            />
+
+        <Stack className={classes.checkboxAndButtons}>
+          <BlurButtons
+            disabled={isBlurLoading || !!isLoading}
+            originalUrl={originalUrl}
+            onBlurClick={onBlurClick}
+          />
+          {!isLoading && (
             <Group
               className={classes.buttonGroup}
               style={customButtonStyles ? customButtonStyles : {}}
@@ -192,6 +176,11 @@ export default function UploadCard({
                 </ActionIcon>
               )}
             </Group>
+          )}
+        </Stack>
+        {isLoading && (
+          <Stack className={classes.uploadingStack}>
+            <Progress value={progress} w="100%" style={{ minHeight: rem(8) }} />
           </Stack>
         )}
       </Stack>

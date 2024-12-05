@@ -28,9 +28,9 @@
   max-width: rem(150);
   width: 100%;
   align-items: center;
-  gap: rem(12);
-  margin-bottom: rem(24);
-  height: rem(40);
+  justify-content: center;
+  gap: 0;
+  height: rem(36);
 }
 
 .buttonGroup {

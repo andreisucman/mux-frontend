@@ -82,7 +82,7 @@ export default function ScanIndexPage() {
             needsScan={true}
             type={"food"}
             position={"front"}
-            onClick={() => handleRedirect("/scan/style?type=head")}
+            onClick={() => handleRedirect("/scan/food")}
           />
         </Group>
       </Stack>

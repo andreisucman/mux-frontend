@@ -5,6 +5,7 @@ import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import TextareaComponent from "@/components/TextAreaComponent";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
+import pantryImage from "@/public/assets/pantry.svg";
 import classes from "./RecipeSettingsContent.module.css";
 
 type Props = {
@@ -62,8 +63,12 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
           <ImageDisplayContainer
             image={image}
             isLoadingOverlay={isLoadingOverlay}
-            customImageStyles={{ height: "unset", maxHeight: rem(110) }}
             handleDelete={handleDelete}
+            placeholder={pantryImage}
+            customImageStyles={{
+              height: "unset",
+              maxHeight: rem(110),
+            }}
           />
           <Button
             component="label"

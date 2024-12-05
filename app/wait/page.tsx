@@ -3,8 +3,8 @@
 import React, { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import WaitComponent from "@/components/WaitComponent";
+import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import { decodeAndCheckUriComponent } from "@/helpers/utils";
 
 export const runtime = "edge";
@@ -13,7 +13,6 @@ export default function WaitPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
   const redirect = searchParams.get("redirect") || `/analysis?type=${finalType}`;
@@ -36,6 +35,8 @@ export default function WaitPage() {
     }
   }, [finalType, typeof router]);
 
+  const onError = useCallback(() => {console.log("line 38 on error")},[])
+
   return (
     <Stack flex={1} className="smallPage">
       <WaitComponent
@@ -44,9 +45,6 @@ export default function WaitPage() {
         onComplete={onComplete}
         errorRedirectUrl="/scan"
         hideDisclaimer={hideDisclaimer}
-        customWrapperStyles={
-          isMobile ? { transform: "translateY(-5%)" } : { transform: "translateY(-25%)" }
-        }
       />
     </Stack>
   );

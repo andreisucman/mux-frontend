@@ -12,6 +12,7 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
 import ScanPageHeading from "../ScanPageHeading";
 import CalorieGoalController from "./CalorieGoal";
+import foodImage from "@/public/assets/placeholders/food.svg"
 import classes from "./food.module.css";
 
 export default function ScanFoodPage() {
@@ -77,7 +78,7 @@ export default function ScanFoodPage() {
       <Stack className={classes.content}>
         <ProgressLoadingOverlay isLoading={isLoading} loaderType="bars" description="Analyzing" />
         {localUrl ? (
-          <ImageDisplayContainer handleDelete={() => setLocalUrl("")} image={localUrl} />
+          <ImageDisplayContainer handleDelete={() => setLocalUrl("")} image={localUrl} placeholder={foodImage} />
         ) : (
           <PhotoCapturer handleCapture={(base64string: string) => setLocalUrl(base64string)} />
         )}
