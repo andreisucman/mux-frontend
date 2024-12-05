@@ -1,9 +1,4 @@
 .container {
-  position:relative;
-  left: -10%;
+  position: relative;
   flex: 1;
-
-  @media (max-width: $mantine-breakpoint-lg) {
-    left: unset;
-  }
 }

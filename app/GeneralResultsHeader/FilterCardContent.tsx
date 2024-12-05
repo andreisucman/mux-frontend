@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { ExistingFiltersType } from "./types";
+import classes from "./FilterCardContent.module.css";
 
 type Props = {
-  filters?: ExistingFiltersType;
+  filters: ExistingFiltersType | null;
 };
 
 export default function FilterCardContent({ filters }: Props) {
@@ -36,60 +37,66 @@ export default function FilterCardContent({ filters }: Props) {
   }, [typeof filters]);
 
   return (
-    <Stack>
-      {sexFilters.length > 0 && (
-        <FilterDropdown
-          data={sexFilters}
-          defaultSelected={sexFilters.find((obj) => obj.value === sex)?.value}
-          filterType="sex"
-          placeholder="Select sex"
-          addToQuery
-        />
-      )}
-      {ethnicityFilters.length > 0 && (
-        <FilterDropdown
-          data={ethnicityFilters}
-          defaultSelected={ethnicityFilters.find((obj) => obj.value === ethnicity)?.value}
-          filterType="ethnicity"
-          placeholder="Select ethnicity"
-          addToQuery
-        />
-      )}
-      {ageIntervalFilters.length > 0 && (
-        <FilterDropdown
-          data={ageIntervalFilters}
-          defaultSelected={ageIntervalFilters.find((obj) => obj.value === ageInterval)?.value}
-          filterType="ageInterval"
-          placeholder="Select age interval"
-          addToQuery
-        />
-      )}
-      {concernFilters.length > 0 && (
-        <FilterDropdown
-          data={concernFilters}
-          defaultSelected={concernFilters.find((obj) => obj.value === concern)?.value}
-          filterType="concern"
-          placeholder="Select concern"
-          addToQuery
-        />
-      )}
-      {bodyTypeFilters.length > 0 && (
-        <FilterDropdown
-          data={bodyTypeFilters}
-          defaultSelected={bodyTypeFilters.find((obj) => obj.value === bodyType)?.value}
-          filterType="bodyType"
-          placeholder="Select body type"
-          addToQuery
-        />
-      )}
-      {styleNameFilters.length > 0 && (
-        <FilterDropdown
-          data={styleNameFilters}
-          defaultSelected={styleNameFilters.find((obj) => obj.value === styleName)?.value}
-          filterType="styleName"
-          placeholder="Select style name"
-          addToQuery
-        />
+    <Stack className={classes.container}>
+      {filters ? (
+        <>
+          {sexFilters.length > 0 && (
+            <FilterDropdown
+              data={sexFilters}
+              defaultSelected={sexFilters.find((obj) => obj.value === sex)?.value}
+              filterType="sex"
+              placeholder="Select sex"
+              addToQuery
+            />
+          )}
+          {ethnicityFilters.length > 0 && (
+            <FilterDropdown
+              data={ethnicityFilters}
+              defaultSelected={ethnicityFilters.find((obj) => obj.value === ethnicity)?.value}
+              filterType="ethnicity"
+              placeholder="Select ethnicity"
+              addToQuery
+            />
+          )}
+          {ageIntervalFilters.length > 0 && (
+            <FilterDropdown
+              data={ageIntervalFilters}
+              defaultSelected={ageIntervalFilters.find((obj) => obj.value === ageInterval)?.value}
+              filterType="ageInterval"
+              placeholder="Select age interval"
+              addToQuery
+            />
+          )}
+          {concernFilters.length > 0 && (
+            <FilterDropdown
+              data={concernFilters}
+              defaultSelected={concernFilters.find((obj) => obj.value === concern)?.value}
+              filterType="concern"
+              placeholder="Select concern"
+              addToQuery
+            />
+          )}
+          {bodyTypeFilters.length > 0 && (
+            <FilterDropdown
+              data={bodyTypeFilters}
+              defaultSelected={bodyTypeFilters.find((obj) => obj.value === bodyType)?.value}
+              filterType="bodyType"
+              placeholder="Select body type"
+              addToQuery
+            />
+          )}
+          {styleNameFilters.length > 0 && (
+            <FilterDropdown
+              data={styleNameFilters}
+              defaultSelected={styleNameFilters.find((obj) => obj.value === styleName)?.value}
+              filterType="styleName"
+              placeholder="Select style name"
+              addToQuery
+            />
+          )}
+        </>
+      ) : (
+        <Loader m="auto" />
       )}
     </Stack>
   );

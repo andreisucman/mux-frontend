@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
-import { Group, Stack, Title } from "@mantine/core";
-import { useElementSize, useMediaQuery } from "@mantine/hooks";
+import { Group, Title } from "@mantine/core";
+import { useElementSize } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -18,17 +19,17 @@ import FilterCardContent from "./FilterCardContent";
 import { ExistingFiltersType } from "./types";
 import classes from "./GeneralResultsHeader.module.css";
 
-const titles = [
-  { label: "Progress", value: "/" },
-  { label: "Style", value: "/style" },
-  { label: "Proof", value: "/proof" },
-];
-
 const collectionMap: { [key: string]: string } = {
   "/": "BeforeAfter",
   "/style": "StyleAnalysis",
   "/proof": "Proof",
 };
+
+const titles = [
+  { label: "Progress", value: "/" },
+  { label: "Style", value: "/style" },
+  { label: "Proof", value: "/proof" },
+];
 
 type Props = {
   showFilter?: boolean;
@@ -43,18 +44,13 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { width, ref } = useElementSize();
-  const isMobile = useMediaQuery("(max-width: 36em)");
-  const [filters, setFilters] = useState<ExistingFiltersType>();
-  const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
+  const [typeFilterItems, setTypeFilterItems] = useState<FilterItemType[]>();
   const [partFilterItems, setPartFilterItems] = useState<FilterItemType[]>();
+  const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
+  const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
-
-  const typeFilterItems = useMemo(
-    () => filters && typeItems.filter((item) => filters.type.includes(item.value)),
-    [typeof filters]
-  );
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.values());
@@ -70,7 +66,29 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
     [pathname]
   );
 
-  const getExistingFilters = useCallback(async () => {
+  const createSpotlightActions = useCallback(
+    (existingFilters: ExistingFiltersType) => {
+      const { concern, taskName } = existingFilters;
+
+      const keys = [];
+
+      if (pathname === "/proof") {
+        keys.push(...concern, taskName);
+      }
+
+      const spotlightActions = keys.map((filter) => ({
+        id: filter as string,
+        label: normalizeString(filter as string).toLowerCase(),
+        leftSection: <IconSearch className={"icon"} stroke={1.5} />,
+        onClick: () => handleActionClick(filter as string),
+      }));
+
+      return spotlightActions;
+    },
+    [pathname]
+  );
+
+  const getExistingFilters = useCallback(async (pathname: string, type: string | null) => {
     try {
       const response = await callTheServer({
         endpoint: `getExistingFilters/${collectionMap[pathname]}`,
@@ -80,24 +98,16 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
       if (response.status === 200) {
         setFilters(response.message);
 
-        if (showSearch) {
-          const { concern, taskName } = response.message;
+        const actions = createSpotlightActions(response.message);
+        setSpotlightActions(actions);
 
-          const keys = [];
+        const relevantTypeItems = typeItems.filter((item) =>
+          response.message.type.includes(item.value)
+        );
+        setTypeFilterItems(relevantTypeItems);
 
-          if (pathname === "/proof") {
-            keys.push(...concern, taskName);
-          }
-
-          const spotlightActions = keys.map((filter) => ({
-            id: filter as string,
-            label: normalizeString(filter as string).toLowerCase(),
-            leftSection: <IconSearch className={"icon"} stroke={1.5} />,
-            onClick: () => handleActionClick(filter as string),
-          }));
-
-          setSpotlightActions(spotlightActions);
-        }
+        const relevantParts = partItems.filter((part) => response.message.type.includes(part.type));
+        setPartFilterItems(relevantParts.filter((item) => item.type === type));
       }
     } catch (err) {
       console.log("Error in getExistingFilters: ", err);
@@ -105,16 +115,23 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
         description: "Please try refreshing the page and inform us if the error persists.",
       });
     }
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!showSearch) return;
-    getExistingFilters();
   }, []);
 
+  const openFiltersCard = useCallback(() => {
+    modals.openContextModal({
+      modal: "general",
+      title: (
+        <Title order={5} component="p">
+          Filters
+        </Title>
+      ),
+      innerProps: <FilterCardContent filters={filters} />,
+    });
+  }, [typeof filters]);
+
   useEffect(() => {
-    setPartFilterItems(partItems.filter((item) => item.type === type));
-  }, [type]);
+    getExistingFilters(pathname, type);
+  }, [pathname, type]);
 
   const showRightPart = useMemo(() => {
     const anyTypeFilter = typeFilterItems && typeFilterItems.length > 1;
@@ -151,20 +168,10 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
             {showSearch && (
               <SearchButton maxPillWidth={width / 2} onSearchClick={() => spotlight.open()} />
             )}
-            {showFilter && isMobile && <FilterButton activeFiltersCount={paramsCount} />}
+            {showFilter && <FilterButton activeFiltersCount={paramsCount} onFilterClick={openFiltersCard} />}
           </Group>
         )}
       </Group>
-      {showFilter && (
-        <>
-          {!isMobile && (
-            <Stack className={classes.filterCard}>
-              <Title order={3}>Filters</Title>
-              <FilterCardContent filters={filters} />
-            </Stack>
-          )}
-        </>
-      )}
       {showSearch && (
         <Spotlight
           store={spotlightStore}
