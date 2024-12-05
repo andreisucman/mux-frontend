@@ -14,6 +14,7 @@ import { UploadPartsChoicesContext } from "@/context/UploadPartsChoicesContext";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import { onBlurImageClick } from "@/functions/blur";
+import openPhotoCapturer from "@/helpers/openPhotoCapturer";
 import { TypeEnum } from "@/types/global";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
 import { ProgressRequirementType } from "./types";
@@ -112,6 +113,7 @@ export default function UploadCarousel({
             originalUrl={originalUrl}
             instruction={item.instruction}
             localUrl={localUrl}
+            position={item.position}
             handleUpload={() =>
               handleUpload({
                 url: originalUrl,
@@ -143,6 +145,7 @@ export default function UploadCarousel({
     .filter(Boolean);
 
   const somethingToScan = slides.length === 0 && toAnalyze && toAnalyze?.[type]?.length > 0;
+  const allPartsEnabled = showFace && showMouth && showScalp;
 
   return (
     <Stack flex={1}>
@@ -161,7 +164,7 @@ export default function UploadCarousel({
           slideGap={16}
           slidesToScroll={1}
           withControls={false}
-          withIndicators={slides.length > 1}
+          withIndicators={true}
         >
           {slides}
         </Carousel>
@@ -169,7 +172,7 @@ export default function UploadCarousel({
       {nothingToScan && (
         <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
       )}
-      {somethingToScan && !isStyle && (
+      {somethingToScan && !isStyle && !allPartsEnabled && (
         <StartPartialScanOverlay
           type={type as TypeEnum}
           userId={userId}

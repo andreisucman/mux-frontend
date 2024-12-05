@@ -61,8 +61,12 @@ export default function StartButton({ onClick, type, position, needsScan, nextSc
     return payload;
   }, [needsScan, nextScanDate, type]);
 
-  const relevantPlaceholder = placeholders.find(
-    (item) => item.sex.includes(sex) && item.type === type && item.position === position
+  const relevantPlaceholder = useMemo(
+    () =>
+      placeholders.find(
+        (item) => item.sex.includes(sex) && item.type === type && item.position === position
+      ),
+    [sex, type, position]
   );
 
   return (

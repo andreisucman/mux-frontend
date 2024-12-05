@@ -44,6 +44,8 @@ export default function ScanProgress() {
     scanType: finalType as "head" | "body",
   });
 
+  const checkBackDate = formatDate({ date: nextScanDate, hideYear: true });
+
   const handleUpload = useCallback(
     async ({ url, type, part, position, blurType, blurredImage }: HandleUploadProgressProps) => {
       if (!userDetails) return;
@@ -162,7 +164,7 @@ export default function ScanProgress() {
           ) : (
             <OverlayWithText
               icon={<IconHourglassHigh className="icon" />}
-              text={`Check back after ${formatDate({ date: nextScanDate, hideYear: true })}.`}
+              text={`Check back after ${checkBackDate}.`}
             />
           )}
         </Stack>

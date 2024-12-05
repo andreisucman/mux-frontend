@@ -49,6 +49,8 @@ export default function AcceptIndexPage() {
           },
         });
 
+        console.log("response", response);
+
         if (response.status === 200) {
           if (response.error) {
             openErrorModal();
@@ -79,7 +81,7 @@ export default function AcceptIndexPage() {
   }, [tosAccepted, userId]);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} smallPage`}>
       <Title order={1}>Review the Terms</Title>
       <Stack className={classes.content}>
         <TermsLegalBody />

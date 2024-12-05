@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -8,6 +8,7 @@ import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import { placeholders } from "@/data/placeholders";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
@@ -26,6 +27,7 @@ type Props = {
   faceBlurredUrl: string;
   originalUrl: string;
   progress: number;
+  position: string;
   latestStyleImage?: string;
   isLoading?: boolean;
   instruction: string;
@@ -45,6 +47,7 @@ export default function UploadCard({
   localUrl,
   originalUrl,
   progress,
+  position,
   isLoading,
   instruction,
   eyesBlurredUrl,
@@ -59,8 +62,8 @@ export default function UploadCard({
   handleUpload,
 }: Props) {
   const router = useRouter();
-  const [isBlurLoading, setIsBlurLoading] = useState(false);
   const { blurType } = useContext(BlurChoicesContext);
+  const [isBlurLoading, setIsBlurLoading] = useState(false);
 
   const disableUpload =
     (blurType === "eyes" && !eyesBlurredUrl && type === "head") ||
@@ -70,10 +73,11 @@ export default function UploadCard({
   const loadLocally = useCallback(
     async (base64string: string) => {
       if (!base64string) return;
-      modals.closeAll();
 
       setLocalUrl(base64string);
       setOriginalUrl(base64string);
+
+      modals.closeAll();
 
       if (blurType === "original") return;
       setIsBlurLoading(true);
@@ -101,6 +105,12 @@ export default function UploadCard({
     });
   }, [loadLocally]);
 
+  const relevantPlaceholder = useMemo(() => {
+    return placeholders.find(
+      (item) => item.sex.includes(sex) && item.type === type && item.position === position
+    );
+  }, [sex, type, position]);
+
   return (
     <Stack className={classes.container}>
       <InstructionContainer
@@ -119,6 +129,16 @@ export default function UploadCard({
             handleDelete={handleDelete}
             image={localUrl || latestStyleImage}
             isLoadingOverlay={isBlurLoading}
+            placeholder={relevantPlaceholder && relevantPlaceholder.url}
+            customImageStyles={{
+              backgroundImage: `linear-gradient(
+              45deg,
+              var(--mantine-color-gray-4) 49.9%,
+              var(--mantine-color-gray-3) 50%,
+              var(--mantine-color-gray-3) 74.9%,
+              var(--mantine-color-gray-1) 75%
+            )`,
+            }}
           />
         </Stack>
         {isLoading && (

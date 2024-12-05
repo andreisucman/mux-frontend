@@ -1,10 +1,10 @@
-.content {
-  max-height: rem(600);
-  overflow-y: auto;
+.container {
+  flex: 1;
+}
 
-  @media (max-width: $mantine-breakpoint-sm) {
-    max-height: rem(60vh);
-  }
+.content {
+  overflow-y: auto;
+  max-height: calc(100vh - 268px);
 }
 
 .button {

@@ -7,6 +7,7 @@ type Props = {
   isLoadingOverlay?: boolean;
   image?: string;
   handleDelete?: () => void;
+  placeholder: any;
   customImageStyles?: { [key: string]: any };
   customStyles?: { [key: string]: any };
 };
@@ -16,6 +17,7 @@ export default function ImageDisplayContainer({
   isLoadingOverlay = false,
   customImageStyles,
   customStyles,
+  placeholder,
   handleDelete,
 }: Props) {
   return (
@@ -28,7 +30,7 @@ export default function ImageDisplayContainer({
       <Image
         width={100}
         height={100}
-        src={image || "https://placehold.co/169x300?text=Your+photo"}
+        src={image || placeholder.src || "https://placehold.co/169x300?text=Your+photo"}
         className={classes.image}
         style={customImageStyles ? customImageStyles : {}}
         alt=""

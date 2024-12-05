@@ -34,7 +34,13 @@
   display: flex;
 
   padding-bottom: 177%;
-  background-image: linear-gradient(45deg, #d3d3d3 49.9%, #808080 50%);
+  background-image: linear-gradient(
+    45deg,
+    var(--mantine-color-gray-4) 49.9%,
+    var(--mantine-color-gray-3) 50%,
+    var(--mantine-color-gray-3) 74.9%,
+    var(--mantine-color-gray-1) 75%
+  );
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
@@ -54,6 +60,7 @@
 .overlay {
   display: flex;
   background-color: rgba(0, 0, 0, 0.25);
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 
   &:hover {
     color: var(--mantine-color-dark-2);

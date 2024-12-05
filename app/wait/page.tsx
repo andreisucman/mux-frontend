@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import WaitComponent from "@/components/WaitComponent";
-import { UserContext } from "@/context/UserContext";
 import { decodeAndCheckUriComponent } from "@/helpers/utils";
 
 export const runtime = "edge";
@@ -13,8 +12,6 @@ export const runtime = "edge";
 export default function WaitPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userDetails } = useContext(UserContext);
-  const { _id: userId } = userDetails || {};
 
   const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type") || "head";
@@ -39,13 +36,8 @@ export default function WaitPage() {
     }
   }, [finalType, typeof router]);
 
-  useEffect(() => {
-    if (userId) return;
-    if (!userId) router.replace("/");
-  }, [userId]);
-
   return (
-    <Stack flex={1}>
+    <Stack flex={1} className="smallPage">
       <WaitComponent
         description="Analyzing your data"
         operationKey={type}

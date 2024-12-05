@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { IconCamera, IconRefresh } from "@tabler/icons-react";
-import { Button, Group, rem, Stack } from "@mantine/core";
+import { IconCamera, IconRefresh, IconStopwatch } from "@tabler/icons-react";
+import { Button, Group, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
@@ -9,12 +9,16 @@ type Props = {
   handleCapture: (base64string: string) => void;
 };
 
+const TIMER_SECONDS = 5;
+
 export default function PhotoCapturer({ handleCapture }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutIdRef = useRef<NodeJS.Timeout>();
+  const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
+  const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
 
   let constraints: MediaStreamConstraints = {
@@ -35,6 +39,31 @@ export default function PhotoCapturer({ handleCapture }: Props) {
       }
     });
   }, []);
+
+  const startDelayedCapture = () => {
+    if (timerStarted) return;
+    setTimerStarted(true);
+    try {
+      timeoutIdRef.current = setInterval(() => {
+        setSecondsLeft((prev) => {
+          if (prev <= 0) {
+            clearInterval(timeoutIdRef.current);
+            setTimerStarted(false);
+            capturePhoto();
+            return TIMER_SECONDS;
+          } else {
+            return prev - 1;
+          }
+        });
+      }, 1000);
+    } catch (err) {
+      if (timeoutIdRef.current) {
+        setTimerStarted(false);
+        clearInterval(timeoutIdRef.current);
+      }
+      console.log("Error in startDelayedCapture: ", err);
+    }
+  };
 
   const capturePhoto = useCallback(async () => {
     if (!videoRef.current) return;
@@ -110,7 +139,22 @@ export default function PhotoCapturer({ handleCapture }: Props) {
     <Stack className={classes.container}>
       <video ref={videoRef} autoPlay muted></video>
       <div className={classes.captureOverlay} />
+      {timerStarted && (
+        <div className={classes.timerOverlay}>
+          <Text fz={40}>{secondsLeft}</Text>
+        </div>
+      )}
       <Group className={classes.buttonGroup}>
+        <Button
+          variant="default"
+          disabled={timerStarted}
+          onClick={startDelayedCapture}
+          className={classes.button}
+          style={{ flexGrow: 0, padding: 0 }}
+          miw={rem(50)}
+        >
+          <IconStopwatch className="icon" />
+        </Button>
         {hasMultipleCameras && (
           <Button
             variant="default"
@@ -122,7 +166,12 @@ export default function PhotoCapturer({ handleCapture }: Props) {
             <IconRefresh className="icon" />
           </Button>
         )}
-        <Button onClick={capturePhoto} variant="filled" className={classes.button}>
+        <Button
+          disabled={timerStarted}
+          onClick={capturePhoto}
+          variant="filled"
+          className={classes.button}
+        >
           <IconCamera className="icon" />
         </Button>
       </Group>
