@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
-import { Group, Select, SelectProps } from "@mantine/core";
+import { Group, Text,Select, SelectProps } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
 
@@ -55,12 +55,12 @@ export default function FilterDropdown({
   );
 
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {
-    console.log("icons[option.value]", option);
     return (
       <Group flex="1" gap="xs">
         {icons && icons[option.value]}
         {option.label}
         {checked && <IconCheck style={{ marginInlineStart: "auto" }} className="icon" />}
+        {option.disabled && <Text component="span" size="sm">(Sign in)</Text>}
       </Group>
     );
   };
@@ -76,6 +76,7 @@ export default function FilterDropdown({
       onChange={handleSelect}
       defaultValue={defaultValue}
       leftSection={leftSectionIcon}
+      leftSectionWidth={40}
     />
   );
 }

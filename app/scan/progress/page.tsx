@@ -82,7 +82,7 @@ export default function ScanProgress() {
         }
         if (finalUrl) {
           try {
-            const response = await callTheServer({ 
+            const response = await callTheServer({
               endpoint: "uploadProgress",
               method: "POST",
               body: {
@@ -142,7 +142,7 @@ export default function ScanProgress() {
 
   return (
     <>
-      {userId ? (
+      {availableRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
           <ScanPageHeading type={finalType as TypeEnum} />
           {needsScan ? (

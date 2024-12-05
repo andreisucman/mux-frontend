@@ -35,7 +35,10 @@ export default function WaitPage() {
     }
   }, [finalType, typeof router]);
 
-  const onError = useCallback(() => {console.log("line 38 on error")},[])
+  const onError = useCallback(() => {
+    deleteFromLocalStorage("userDetails");
+    deleteFromLocalStorage("runningAnalyses", "head");
+  }, []);
 
   return (
     <Stack flex={1} className="smallPage">
@@ -44,6 +47,7 @@ export default function WaitPage() {
         operationKey={type}
         onComplete={onComplete}
         errorRedirectUrl="/scan"
+        onError={onError}
         hideDisclaimer={hideDisclaimer}
       />
     </Stack>

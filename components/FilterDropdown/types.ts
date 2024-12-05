@@ -3,4 +3,5 @@ export type FilterItemType = {
   value: string;
   types?: string[];
   parts?: string[];
+  disabled?:boolean;
 };

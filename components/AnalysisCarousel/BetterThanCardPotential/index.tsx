@@ -3,6 +3,7 @@
 import React, { useMemo } from "react";
 import { Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import getAppearanceVerdict from "@/helpers/getAppearanceVerdict";
 import { getRingColor } from "@/helpers/utils";
 import { FormattedRatingType, TypeEnum } from "@/types/global";
@@ -10,11 +11,11 @@ import ComparisonStack from "../BetterThanCard/ComparisonStack";
 import classes from "./BetterThanCardPotential.module.css";
 
 type Props = {
-  userId: string;
-  ageInterval: string;
+  userId?: string;
+  ageInterval?: string;
   type: TypeEnum;
   title: string;
-  authStatus: "unauthenticated" | "authenticated" | "loading" | "unknown";
+  authStatus: AuthStateEnum;
   potentiallyHigherThan: { [key: string]: number };
   potentialRecord: { [key: string]: FormattedRatingType | null | number };
 };

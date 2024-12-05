@@ -8,9 +8,9 @@ import ComparisonStack from "./ComparisonStack";
 import classes from "./BetterThanCard.module.css";
 
 type Props = {
-  userId: string;
+  userId?: string;
+  ageInterval?: string;
   title: string;
-  ageInterval: string;
   type: TypeEnum;
   currentlyHigherThan: { [key: string]: number };
   progressRecord: { [key: string]: ProgressType | null | number };

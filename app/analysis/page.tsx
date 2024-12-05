@@ -14,7 +14,7 @@ const icons = { head: <IconMoodSmile className="icon" />, body: <IconMan classNa
 
 const filterData = [
   { label: "Head", value: "head" },
-  { label: "Body", value: "body" },
+  { label: "Body", value: "body", disabled: true },
 ];
 
 export default function StartAnalysis() {

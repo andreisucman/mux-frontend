@@ -92,7 +92,6 @@ function WaitComponent({
   );
 
   useEffect(() => {
-    console.log("userId", userId);
     if (!userId) return;
     const updateInterval = 3000;
 
