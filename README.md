@@ -28,7 +28,6 @@
 /, // before afters from club
 /style, // styles from club
 /proof, // proof from club
-/reviews,
 /solutions,
 /rewards,
 /settings,

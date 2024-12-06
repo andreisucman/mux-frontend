@@ -43,11 +43,6 @@ const defaultNavigation = [
     icon: <IconBooks stroke={1.25} className="icon" />,
   },
   {
-    title: "Reviews",
-    path: "/reviews",
-    icon: <IconStar stroke={1.25} className="icon" />,
-  },
-  {
     title: "Rewards",
     path: "/rewards",
     icon: <IconTrophy stroke={1.25} className="icon" />,
