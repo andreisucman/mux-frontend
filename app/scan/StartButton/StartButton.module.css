@@ -33,7 +33,7 @@
   position: relative;
   display: flex;
 
-  padding-bottom: 177%;
+  padding-bottom: 176%;
   background-image: linear-gradient(
     45deg,
     var(--mantine-color-dark-7) 49.9%,

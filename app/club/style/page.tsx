@@ -11,6 +11,7 @@ import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../ModerationLayout";
+import { clubResultTitles } from "../clubResultTitles";
 
 export const runtime = "edge";
 
@@ -62,7 +63,7 @@ export default function ClubStyle() {
   return (
     <ClubModerationLayout>
       <StyleHeader
-        title="Style"
+        titles={clubResultTitles}
         isDisabled={!styles || (styles && styles.length === 0)}
         showReturn
       />

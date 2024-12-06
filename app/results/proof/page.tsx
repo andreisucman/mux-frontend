@@ -9,6 +9,7 @@ import fetchUsersProof from "@/functions/fetchUsersProof";
 import openErrorModal from "@/helpers/openErrorModal";
 import ProofGallery from "./ProofGallery";
 import ProofHeader from "./ProofHeader";
+import { individualResultTitles } from "../individualResultTitles";
 import { SimpleProofType } from "./types";
 import classes from "./proof.module.css";
 
@@ -71,7 +72,7 @@ export default function ResultsProof() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <ProofHeader title="Proof" showReturn />
+      <ProofHeader titles={individualResultTitles} showReturn />
       {proof ? (
         <ProofGallery
           proof={proof}

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ProgressRequirementType } from "@/components/UploadCarousel/types";
+import { RequirementType } from "@/components/UploadCarousel/types";
 import { NextActionType } from "@/types/global";
 import { getAvailableRequirements } from "./getAvailableRequirements";
 import { parseScanDate } from "./utils";
@@ -8,9 +8,9 @@ type Props = {
   scanType: "head" | "body" | "style";
   nextScan?: NextActionType[];
   requiredProgress?: {
-    head: ProgressRequirementType[] | null;
-    body: ProgressRequirementType[] | null;
-    health: ProgressRequirementType[] | null;
+    head: RequirementType[] | null;
+    body: RequirementType[] | null;
+    health: RequirementType[] | null;
   };
 };
 

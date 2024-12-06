@@ -2,9 +2,10 @@ import React from "react";
 import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 import uploadToSpaces from "./uploadToSpaces";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 type OnBlurClickProps = {
-  blurType: "eyes" | "face";
+  blurType: BlurTypeEnum;
   originalUrl: string;
   faceBlurredUrl: string;
   eyesBlurredUrl: string;
@@ -14,12 +15,12 @@ type OnBlurClickProps = {
 };
 
 interface OnBlurVideoClickProps extends OnBlurClickProps {
-  handlePoll: (hash: string, blurType: "face" | "eyes") => void;
+  handlePoll: (hash: string, blurType: BlurTypeEnum) => void;
   setIsBlurLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type BlurProps = {
-  blurType: "eyes" | "face";
+  blurType: BlurTypeEnum;
   type: "image" | "video";
   url: string;
 };
@@ -71,7 +72,7 @@ export async function onBlurImageClick({
       if (!faceBlurredUrl) {
         const blurredImageResponse = await blur({
           url: originalUrl,
-          blurType: "face",
+          blurType: BlurTypeEnum.FACE,
           type: "image",
         });
         setFaceBlurredUrl(blurredImageResponse.url);
@@ -83,7 +84,7 @@ export async function onBlurImageClick({
       if (!eyesBlurredUrl) {
         const blurredImageResponse = await blur({
           url: originalUrl,
-          blurType: "eyes",
+          blurType: BlurTypeEnum.EYES,
           type: "image",
         });
 
@@ -119,7 +120,7 @@ export async function onBlurVideoClick({
       if (!faceBlurredUrl) {
         const blurredVideoResponse = await blur({
           url: originalUrl,
-          blurType: "face",
+          blurType: BlurTypeEnum.FACE,
           type: "video",
         });
 
@@ -140,7 +141,7 @@ export async function onBlurVideoClick({
       if (!eyesBlurredUrl) {
         const blurredVideoResponse = await blur({
           url: originalUrl,
-          blurType: "eyes",
+          blurType: BlurTypeEnum.EYES,
           type: "video",
         });
 

@@ -15,16 +15,17 @@ import {
   saveToLocalStorage,
 } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import { TaskType } from "@/types/global";
+import { SexEnum, TaskType } from "@/types/global";
 import ProofDisplayContainer from "./ProofDisplayContainer";
 import { ExistingProofRecordType } from "./types";
 import VideoRecorder from "./VideoRecorder";
 import classes from "./upload-proof.module.css";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 export const runtime = "edge";
 
 type HandleUploadProps = {
-  blurType: string;
+  blurType: BlurTypeEnum;
   captureType: "image" | "video";
   recordedBlob: Blob;
   publishToClub: boolean;
@@ -170,7 +171,7 @@ export default function UploadProof() {
           )}
           {componentToDisplay === "videoRecorder" && status === "authenticated" && (
             <VideoRecorder
-              sex={sex || "male"}
+              sex={sex || SexEnum.FEMALE}
               instruction={requisite || ""}
               uploadProof={uploadProof}
             />

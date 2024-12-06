@@ -3,9 +3,6 @@ import { usePathname, useSearchParams } from "next/navigation";
 import {
   IconChevronLeft,
   IconClipboardText,
-  IconHeart,
-  IconMan,
-  IconMoodSmile,
   IconTargetArrow,
   IconUserCircle,
 } from "@tabler/icons-react";
@@ -21,13 +18,13 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   "/club/results": <IconTargetArrow className="icon" />,
 };
 
-const clubPageTypeData = [
+const clubPageTypeData: { label: string; value: string }[] = [
   { label: "About", value: "/club/about" },
   { label: "Routine", value: "/club/routine" },
   { label: "Results", value: "/club/results" },
 ];
 
-const typeData = [
+const typeData: { label: string; value: string }[] = [
   { label: "Head", value: "head" },
   { label: "Body", value: "body" },
   { label: "Health", value: "health" },

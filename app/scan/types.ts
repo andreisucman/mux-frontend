@@ -2,7 +2,7 @@ import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { TypeEnum } from "@/types/global";
 
-export type HandleUploadProgressProps = {
+export type UploadProgressProps = {
   url: string;
   type: TypeEnum;
   part: PartEnum;

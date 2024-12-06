@@ -15,9 +15,10 @@ import { getSupportedMimeType } from "@/helpers/utils";
 import RecordingStatus from "./RecordingStatus";
 import VideoRecorderResult from "./VideoRecorderResult";
 import classes from "./VideoRecorder.module.css";
+import { SexEnum } from "@/types/global";
 
 type Props = {
-  sex: string;
+  sex: SexEnum;
   instruction: string;
   uploadProof: (props: any) => void;
 };
@@ -407,7 +408,7 @@ export default function VideoRecorder({ sex, instruction, uploadProof }: Props) 
   return (
     <Stack className={classes.container}>
       <InstructionContainer
-        sex={sex}
+        sex={sex || SexEnum.FEMALE}
         title="Instructions"
         instruction={instruction}
         customStyles={{ flex: 0 }}

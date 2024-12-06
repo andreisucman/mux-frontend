@@ -33,20 +33,14 @@ const positionsData = [
   { label: "Left", value: "left", types: ["head", "body"], parts: ["face", "body"] },
 ];
 
-const titles = [
-  { label: "Progress", value: "/results" },
-  { label: "Style", value: "/results/style" },
-  { label: "Proof", value: "/results/proof" },
-];
-
 type Props = {
-  title: string;
+  titles: { label: string; value: string }[];
   isDisabled?: boolean;
   showReturn?: boolean;
   onSelect?: (value?: string | null) => void;
 };
 
-export default function ProgressHeader({ title, showReturn, isDisabled, onSelect }: Props) {
+export default function ProgressHeader({ titles, showReturn, isDisabled, onSelect }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();

@@ -1,4 +1,4 @@
-import { ProgressRequirementType } from "@/components/UploadCarousel/types";
+import { RequirementType } from "@/components/UploadCarousel/types";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 
 export type DefaultUserType = {
@@ -61,6 +61,15 @@ export type DemographicsType = {
   ethnicity: EthnicityEnum;
   ageInterval: AgeIntervalEnum;
 };
+
+export enum PositionEnum {
+  FRONT = "front",
+  BACK = "back",
+  RIGHT = "right",
+  LEFT = "left",
+  MOUTH = "mouth",
+  SCALP = "scalp",
+}
 
 export enum EthnicityEnum {
   WHITE = "white",
@@ -204,14 +213,15 @@ export interface UserDataType extends DefaultUserType {
   club: ClubDataType | null;
   concerns: UserConcernType[];
   requiredProgress: {
-    head: ProgressRequirementType[] | null;
-    body: ProgressRequirementType[] | null;
-    health: ProgressRequirementType[] | null;
+    head: RequirementType[] | null;
+    body: RequirementType[] | null;
+    health: RequirementType[] | null;
   };
   styleRequirements: {
-    head: ProgressRequirementType[] | null;
-    body: ProgressRequirementType[] | null;
+    head: RequirementType[] | null;
+    body: RequirementType[] | null;
   };
+  healthRequirements: RequirementType[] | null;
   demographics: DemographicsType;
   toAnalyze: {
     head: ToAnalyzeType[];
@@ -317,6 +327,13 @@ export enum TypeEnum {
   HEAD = "head",
   BODY = "body",
   HEALTH = "health",
+}
+
+export enum ScanTypeEnum {
+  PROGRESS = "progress",
+  STYLE = "style",
+  HEALTH = "health",
+  FOOD = "food",
 }
 
 export type NextActionType = {

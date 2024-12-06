@@ -2,18 +2,19 @@
 
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import { BlurTypeEnum } from "./types";
 
 const defaultBlurChoices = {
-  blurType: "original",
-  setBlurType: (choice: "eyes" | "face" | "original") => {},
+  blurType: BlurTypeEnum.ORIGINAL,
+  setBlurType: (choice: BlurTypeEnum) => {},
 };
 
 export const BlurChoicesContext = createContext(defaultBlurChoices);
 
 export default function BlurChoicesProvider({ children }: { children: React.ReactNode }) {
-  const [blurType, setBlurTypeLocal] = useState<"eyes" | "face" | "original">("original");
+  const [blurType, setBlurTypeLocal] = useState<BlurTypeEnum>(BlurTypeEnum.ORIGINAL);
 
-  const setBlurType = useCallback((choice: "eyes" | "face" | "original") => {
+  const setBlurType = useCallback((choice: BlurTypeEnum) => {
     saveToLocalStorage("blurChoice", choice);
     setBlurTypeLocal(choice);
   }, []);
@@ -22,7 +23,7 @@ export default function BlurChoicesProvider({ children }: { children: React.Reac
     const blurChoice = getFromLocalStorage("blurChoice");
 
     if (blurChoice) {
-      setBlurType(blurChoice as "eyes" | "face" | "original");
+      setBlurType(blurChoice as BlurTypeEnum);
     }
   }, []);
 

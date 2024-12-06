@@ -8,20 +8,22 @@ import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { placeholders } from "@/data/placeholders";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { ScanTypeEnum, SexEnum } from "@/types/global";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
 
 type OnBlurClickProps = {
-  blurType: "eyes" | "face";
+  blurType: BlurTypeEnum;
   originalUrl: string;
 };
 
 type Props = {
-  sex: string;
+  sex: SexEnum;
   type?: string;
-  isStyle?: boolean;
+  scanType?: ScanTypeEnum;
   localUrl: string;
   eyesBlurredUrl: string;
   faceBlurredUrl: string;
@@ -41,8 +43,8 @@ type Props = {
 };
 
 export default function UploadCard({
-  isStyle,
   sex,
+  scanType,
   type,
   localUrl,
   originalUrl,
@@ -70,8 +72,6 @@ export default function UploadCard({
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
     !localUrl;
 
-  console.log("isStyle", isStyle);
-
   const loadLocally = useCallback(
     async (base64string: string) => {
       if (!base64string) return;
@@ -86,7 +86,7 @@ export default function UploadCard({
 
       await onBlurClick({
         originalUrl: base64string,
-        blurType: blurType as "eyes",
+        blurType: blurType as BlurTypeEnum,
       });
 
       setIsBlurLoading(false);
@@ -108,12 +108,14 @@ export default function UploadCard({
   }, [loadLocally]);
 
   const relevantPlaceholder = useMemo(() => {
-    const finalType = isStyle ? "style" : type;
-    const finalPosition = isStyle ? (type === "head" || type === "body" ? type : position) : position;
     return placeholders.find(
-      (item) => item.sex.includes(sex) && item.type === finalType && item.position === finalPosition
+      (item) =>
+        item.sex.includes(sex) &&
+        scanType === item.scanType &&
+        item.type === type &&
+        item.position === position
     );
-  }, [sex, type, position, isStyle]);
+  }, [sex, type, position, scanType]);
 
   return (
     <Stack className={classes.container}>
@@ -169,7 +171,7 @@ export default function UploadCard({
                   Upload
                 </Button>
               )}
-              {isStyle && !localUrl && latestStyleImage && (
+              {scanType && !localUrl && latestStyleImage && (
                 <ActionIcon
                   maw={rem(50)}
                   disabled={isLoading}

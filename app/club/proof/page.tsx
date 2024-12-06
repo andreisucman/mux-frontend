@@ -10,6 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import openErrorModal from "@/helpers/openErrorModal";
+import { clubResultTitles } from "../clubResultTitles";
 import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
@@ -73,7 +74,7 @@ export default function ClubProof() {
 
   return (
     <ClubModerationLayout>
-      <ProofHeader title="Proof" showReturn />
+      <ProofHeader showReturn titles={clubResultTitles} />
       {proof ? (
         <ProofGallery
           proof={proof}

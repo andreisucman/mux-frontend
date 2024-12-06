@@ -8,6 +8,7 @@ import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
 import openErrorModal from "@/helpers/openErrorModal";
+import { individualResultTitles } from "../individualResultTitles";
 import StyleGallery from "./StyleGallery";
 import StyleHeader from "./StyleHeader";
 import classes from "./style.module.css";
@@ -63,7 +64,7 @@ export default function ResultStyle() {
   return (
     <Stack className={`${classes.container} mediumPage`}>
       <StyleHeader
-        title="Style"
+        titles={individualResultTitles}
         isDisabled={!styles || (styles && styles.length === 0)}
         showReturn
       />

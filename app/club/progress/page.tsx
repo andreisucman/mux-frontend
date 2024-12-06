@@ -10,6 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../ModerationLayout";
+import { clubResultTitles } from "../clubResultTitles";
 
 export const runtime = "edge";
 
@@ -60,7 +61,7 @@ export default function ClubProgress() {
 
   return (
     <ClubModerationLayout>
-      <ProgressHeader title="Progress" showReturn />
+      <ProgressHeader titles={clubResultTitles} showReturn />
       {progress ? (
         <ProgressGallery
           progress={progress}

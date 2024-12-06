@@ -2,6 +2,7 @@ import React, { useCallback, useContext } from "react";
 import { IconEyeOff, IconMoodOff } from "@tabler/icons-react";
 import { Checkbox, Group } from "@mantine/core";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import classes from "./BlurButtons.module.css";
 
 type Props = {
@@ -14,8 +15,8 @@ type Props = {
 export default function BlurButtons({ disabled, originalUrl, customStyles, onBlurClick }: Props) {
   const { blurType, setBlurType } = useContext(BlurChoicesContext);
 
-  const handleChange = useCallback((checked: boolean, type: "face" | "eyes" | "original") => {
-    const newBlurType = checked ? type : "original";
+  const handleChange = useCallback((checked: boolean, type: BlurTypeEnum) => {
+    const newBlurType = checked ? type : BlurTypeEnum.ORIGINAL;
     setBlurType(newBlurType);
     onBlurClick({
       originalUrl,
@@ -40,7 +41,7 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
           </Group>
         }
         disabled={disabled}
-        onChange={(e) => handleChange(e.currentTarget.checked, "eyes")}
+        onChange={(e) => handleChange(e.currentTarget.checked, BlurTypeEnum.EYES)}
       />
       <Checkbox
         checked={blurType === "face"}
@@ -57,7 +58,7 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
           </Group>
         }
         disabled={disabled}
-        onChange={(e) => handleChange(e.currentTarget.checked, "face")}
+        onChange={(e) => handleChange(e.currentTarget.checked, BlurTypeEnum.FACE)}
       />
     </Group>
   );

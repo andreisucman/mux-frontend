@@ -9,7 +9,7 @@ import FilterDropdown from "@/components/FilterDropdown";
 import InstructionContainer from "@/components/InstructionContainer";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
-import { UserDataType } from "@/types/global";
+import { SexEnum, UserDataType } from "@/types/global";
 import ConcernsSortCard from "./ConcernsSortCard";
 import { maintenanceConcerns } from "./maintenanceConcerns";
 import classes from "./sort-concerns.module.css";
@@ -86,7 +86,7 @@ export default function SortConcerns() {
         />
       </Group>
       <InstructionContainer
-        sex={sex || "male"}
+        sex={sex || SexEnum.FEMALE}
         title="Instructions"
         instruction={"These are the potential concerns identified from your photos."}
         description="Drag and drop to change their importance or click the minus sign to ignore."

@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
-import ProofHeader from "@/app/results/proof/ProofHeader";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
@@ -15,12 +14,6 @@ export const runtime = "edge";
 interface HandleFetchProofProps extends FetchProofProps {
   currentArray?: SimpleProofType[];
 }
-
-const titles = [
-  { label: "Progress", value: "/" },
-  { label: "Style", value: "/style" },
-  { label: "Proof", value: "/proof" },
-];
 
 export default function AllProof() {
   const searchParams = useSearchParams();

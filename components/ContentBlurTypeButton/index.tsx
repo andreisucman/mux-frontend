@@ -10,6 +10,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import { BlurredUrlType } from "@/types/global";
 import ProgressLoadingOverlay from "../ProgressLoadingOverlay";
 import classes from "./ContentBlurTypeButton.module.css";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 type HandleUpdateRecordType = {
   contentId: string;
@@ -52,7 +53,7 @@ export default function ContentBlurTypeButton({
   }>();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const pollBlurProgressStatus = useCallback(async (hash: string, blurType: string) => {
+  const pollBlurProgressStatus = useCallback(async (hash: string, blurType: BlurTypeEnum) => {
     try {
       setIsBlurLoading(true);
       const response = await callTheServer({
@@ -115,7 +116,7 @@ export default function ContentBlurTypeButton({
   );
 
   const handleSelect = useCallback(
-    async (blurType: "original" | "eyes" | "face") => {
+    async (blurType: BlurTypeEnum) => {
       const relevantDisplayType = displayTypes.find((obj) => obj.value === blurType);
       if (!relevantDisplayType) return;
 
@@ -162,7 +163,7 @@ export default function ContentBlurTypeButton({
           checked={selectedDisplayType?.value === item.value}
           size="md"
           label={item.label}
-          onChange={() => handleSelect(item.value as "original")}
+          onChange={() => handleSelect(item.value as BlurTypeEnum)}
           readOnly
         />
       )),

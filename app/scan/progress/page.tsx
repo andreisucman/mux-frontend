@@ -14,9 +14,9 @@ import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
-import { TypeEnum, UserDataType } from "@/types/global";
+import { ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
 import ScanPageHeading from "../ScanPageHeading";
-import { HandleUploadProgressProps } from "../types";
+import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
@@ -47,7 +47,7 @@ export default function ScanProgress() {
   const checkBackDate = formatDate({ date: nextScanDate, hideYear: true });
 
   const handleUpload = useCallback(
-    async ({ url, type, part, position, blurType, blurredImage }: HandleUploadProgressProps) => {
+    async ({ url, type, part, position, blurType, blurredImage }: UploadProgressProps) => {
       if (!userDetails) return;
       let intervalId: NodeJS.Timeout;
 
@@ -163,6 +163,7 @@ export default function ScanProgress() {
               eyesBlurredUrl={eyesBlurredUrl}
               faceBlurredUrl={faceBlurredUrl}
               isLoading={isLoading}
+              scanType={ScanTypeEnum.PROGRESS}
               setLocalUrl={setLocalUrl}
               setOriginalUrl={setOriginalUrl}
               setEyesBlurredUrl={setEyesBlurredUrl}

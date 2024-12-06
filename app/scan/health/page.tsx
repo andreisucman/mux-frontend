@@ -12,16 +12,16 @@ import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
 import ScanPageHeading from "../ScanPageHeading";
-import classes from "./style.module.css";
+import classes from "./health.module.css";
 
 export const runtime = "edge";
 
-type HandleUploadStyleProps = {
+type HandleUploadHealthProps = {
   url: string;
   type: TypeEnum;
 };
 
-export default function UploadStyle() {
+export default function UploadHealth() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -32,16 +32,12 @@ export default function UploadStyle() {
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const type = searchParams.get("type");
 
-  const { _id: userId, latestStyleAnalysis, styleRequirements } = userDetails || {};
-  const type = searchParams.get("type") || "head";
-  const finalType = type === "health" ? "head" : type;
-  const typeStyleRequirements = styleRequirements?.[finalType as "head" | "body"];
-  const typeStyleAnalysis = latestStyleAnalysis?.[finalType as "head" | "body"];
-  const { mainUrl } = typeStyleAnalysis || {};
+  const { _id: userId, healthRequirements } = userDetails || {};
 
   const handleUpload = useCallback(
-    async ({ url, type }: HandleUploadStyleProps) => {
+    async ({ url, type }: HandleUploadHealthProps) => {
       let intervalId: NodeJS.Timeout;
 
       try {
@@ -69,7 +65,7 @@ export default function UploadStyle() {
 
           if (fileUrls) {
             const response = await callTheServer({
-              endpoint: "startStyleAnalysis",
+              endpoint: "startHealthAnalysis",
               method: "POST",
               body: {
                 type,
@@ -79,14 +75,14 @@ export default function UploadStyle() {
             });
 
             if (response.status === 200) {
-              saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
+              saveToLocalStorage("runningAnalyses", { [`health-${type}`]: true }, "add");
               setUserDetails((prev: UserDataType) => ({
                 ...prev,
                 _id: response.message,
               }));
 
-              const nextPage = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
-              router.push(`/wait?type=${finalType}&next=${nextPage}`);
+              const nextPage = encodeURIComponent(`/analysis/health?${type ? `type=${type}` : ""}`);
+              router.push(`/wait?type=${type}&next=${nextPage}`);
             } else {
               setProgress(0);
               openErrorModal({
@@ -113,12 +109,11 @@ export default function UploadStyle() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {typeStyleRequirements ? (
+      {healthRequirements ? (
         <>
           <ScanPageHeading type={type as TypeEnum} onSelect={handleResetOnChangeType} />
           <UploadCarousel
-            latestStyleImage={mainUrl?.url}
-            requirements={typeStyleRequirements}
+            requirements={healthRequirements}
             type={type as TypeEnum}
             progress={progress}
             localUrl={localUrl}

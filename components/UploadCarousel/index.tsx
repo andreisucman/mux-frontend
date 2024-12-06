@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useMemo } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { rem, Stack } from "@mantine/core";
-import { HandleUploadProgressProps } from "@/app/scan/types";
+import { UploadProgressProps } from "@/app/scan/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCard from "@/components/UploadCard";
 import SelectPartsCheckboxes from "@/components/UploadCarousel/SelectPartsCheckboxes";
@@ -14,16 +14,15 @@ import { UploadPartsChoicesContext } from "@/context/UploadPartsChoicesContext";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import { onBlurImageClick } from "@/functions/blur";
-import openPhotoCapturer from "@/helpers/openPhotoCapturer";
-import { TypeEnum } from "@/types/global";
+import { ScanTypeEnum, SexEnum, TypeEnum } from "@/types/global";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
-import { ProgressRequirementType } from "./types";
+import { RequirementType } from "./types";
 
 type Props = {
   type: TypeEnum;
-  isStyle?: boolean;
+  scanType: ScanTypeEnum;
   latestStyleImage?: string;
-  requirements: ProgressRequirementType[] | [];
+  requirements: RequirementType[] | [];
   faceBlurredUrl: string;
   eyesBlurredUrl: string;
   originalUrl: string;
@@ -34,12 +33,12 @@ type Props = {
   setOriginalUrl: React.Dispatch<React.SetStateAction<string>>;
   setEyesBlurredUrl: React.Dispatch<React.SetStateAction<string>>;
   setFaceBlurredUrl: React.Dispatch<React.SetStateAction<string>>;
-  handleUpload: (args: HandleUploadProgressProps) => void;
+  handleUpload: (args: UploadProgressProps) => void;
 };
 
 export default function UploadCarousel({
   type,
-  isStyle,
+  scanType,
   requirements,
   isLoading,
   progress,
@@ -94,17 +93,17 @@ export default function UploadCarousel({
       if (!showMouth && item.position === "mouth") return;
       if (!showScalp && item.position === "scalp") return;
 
+      const { demographics } = userDetails || {};
+      const { sex } = demographics || {};
+
       const blurredImage =
         blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
-
-      const { demographics } = userDetails || {};
-      const { sex } = demographics || { sex: "male" };
 
       return (
         <Carousel.Slide key={index}>
           <UploadCard
-            sex={sex}
-            isStyle={isStyle}
+            sex={sex || SexEnum.FEMALE}
+            scanType={scanType}
             eyesBlurredUrl={eyesBlurredUrl}
             faceBlurredUrl={faceBlurredUrl}
             isLoading={isLoading}
@@ -149,7 +148,7 @@ export default function UploadCarousel({
 
   return (
     <Stack flex={1}>
-      {type === "head" && !isStyle && somethingToScan && (
+      {type === "head" && scanType !== "style" && somethingToScan && (
         <SelectPartsCheckboxes
           distinctUploadedParts={distinctUploadedParts}
           showMouth={mouthExists && showMouth}
@@ -172,7 +171,7 @@ export default function UploadCarousel({
       {nothingToScan && (
         <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
       )}
-      {somethingToScan && !isStyle && !allPartsEnabled && (
+      {somethingToScan && scanType !== "style" && !allPartsEnabled && (
         <StartPartialScanOverlay
           type={type as TypeEnum}
           userId={userId}

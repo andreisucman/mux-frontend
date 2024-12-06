@@ -9,6 +9,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import ProgressGallery from "./ProgressGallery";
 import ProgressHeader from "./ProgressHeader";
 import { SimpleProgressType } from "./types";
+import { individualResultTitles } from "./individualResultTitles";
 import classes from "./results.module.css";
 
 export const runtime = "edge";
@@ -62,7 +63,7 @@ export default function ResultsProgress() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <ProgressHeader title="Progress" showReturn />
+      <ProgressHeader titles={individualResultTitles} showReturn />
       {progress ? (
         <ProgressGallery
           progress={progress}

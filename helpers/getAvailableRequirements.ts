@@ -1,13 +1,13 @@
-import { ProgressRequirementType } from "@/components/UploadCarousel/types";
+import { RequirementType } from "@/components/UploadCarousel/types";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { NextActionType, TypeEnum } from "@/types/global";
 import { parseScanDate } from "./utils";
 
 type Props = {
   requiredProgress?: {
-    head: ProgressRequirementType[] | null;
-    body: ProgressRequirementType[] | null;
-    health: ProgressRequirementType[] | null;
+    head: RequirementType[] | null;
+    body: RequirementType[] | null;
+    health: RequirementType[] | null;
   } | null;
   typeNextScan?: NextActionType;
   type: string;
@@ -16,7 +16,7 @@ type Props = {
 export function getAvailableRequirements({ requiredProgress, typeNextScan, type }: Props) {
   const typeRequirements = requiredProgress?.[type as TypeEnum] || [];
 
-  let requirements: ProgressRequirementType[] = typeRequirements;
+  let requirements: RequirementType[] = typeRequirements;
 
   if (typeNextScan && typeNextScan.parts.length > 0) {
     const availableParts = typeNextScan.parts.filter((part) => {

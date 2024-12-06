@@ -5,7 +5,7 @@ import { Group, Stack, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
-import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
+import { ScanTypeEnum } from "@/types/global";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
 
@@ -14,19 +14,7 @@ export const runtime = "edge";
 export default function ScanIndexPage() {
   const router = useRouter();
   const { status, userDetails } = useContext(UserContext);
-  const { _id: userId, email, nextScan, requiredProgress } = userDetails || {};
-
-  const { needsScan: needsHeadScan, nextScanDate: nextHeadScanDate } = useCheckScanAvailability({
-    nextScan,
-    requiredProgress,
-    scanType: "head",
-  });
-
-  const { needsScan: needsBodyScan, nextScanDate: nextBodyScanDate } = useCheckScanAvailability({
-    nextScan,
-    requiredProgress,
-    scanType: "body",
-  });
+  const { _id: userId, email } = userDetails || {};
 
   const handleRedirect = useCallback(
     (next: string) => {
@@ -60,29 +48,23 @@ export default function ScanIndexPage() {
         <Title order={1}>Scan yourself</Title>
         <Group className={classes.content}>
           <StartButton
-            type={"head"}
-            position={"front"}
-            needsScan={needsHeadScan}
-            nextScanDate={nextHeadScanDate}
-            onClick={() => handleRedirect("/scan/progress?type=head")}
-          />
-          <StartButton
+            scanType={ScanTypeEnum.PROGRESS}
             type={"body"}
-            position={"front"}
-            needsScan={needsBodyScan}
-            nextScanDate={nextBodyScanDate}
-            onClick={() => handleRedirect("/scan/progress?type=body")}
+            onClick={() => handleRedirect("/scan/progress?scanThead")}
           />
           <StartButton
-            needsScan={true}
-            type={"style"}
-            position={"body"}
+            scanType={ScanTypeEnum.STYLE}
+            type={"body"}
             onClick={() => handleRedirect("/scan/style?type=head")}
           />
           <StartButton
-            needsScan={true}
+            scanType={ScanTypeEnum.HEALTH}
+            type={"health"}
+            onClick={() => handleRedirect("/scan/health")}
+          />
+          <StartButton
+            scanType={ScanTypeEnum.FOOD}
             type={"food"}
-            position={"front"}
             onClick={() => handleRedirect("/scan/food")}
           />
         </Group>

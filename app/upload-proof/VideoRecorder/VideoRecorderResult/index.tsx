@@ -8,6 +8,7 @@ import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import ResultDisplayContainer from "./ResultDisplayContainer";
 import classes from "./VideoRecorderResult.module.css";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 type Props = {
   isVideoLoading: boolean;
@@ -26,7 +27,7 @@ type Props = {
 
 type HandleBlurClickProps = {
   isBlur: boolean;
-  blurType: "face" | "eyes";
+  blurType: BlurTypeEnum;
   originalUrl: string;
 };
 
@@ -50,7 +51,7 @@ export default function VideoRecorderResult({
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const pollBlurProgressStatus = useCallback(async (hash: string, blurType: "face" | "eyes") => {
+  const pollBlurProgressStatus = useCallback(async (hash: string, blurType: BlurTypeEnum) => {
     try {
       setIsBlurLoading(true);
 
@@ -167,7 +168,7 @@ export default function VideoRecorderResult({
 
         await onBlurImageClick({
           originalUrl,
-          blurType: blurType as "face",
+          blurType: BlurTypeEnum.FACE,
           faceBlurredUrl,
           eyesBlurredUrl,
           setEyesBlurredUrl,
@@ -181,7 +182,7 @@ export default function VideoRecorderResult({
       if (captureType === "video") {
         await onBlurVideoClick({
           originalUrl,
-          blurType: blurType as "face",
+          blurType: BlurTypeEnum.FACE,
           faceBlurredUrl,
           eyesBlurredUrl,
           setLocalUrl,
