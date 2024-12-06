@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { defaultUser } from "@/data/defaultUser";
@@ -50,21 +50,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, []);
 
   useEffect(() => {
-    if (!status || status === AuthStateEnum.UNKNOWN) return;
-
-    if (onProtectedPage) {
-      if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED && pathname !== "/settings") {
-        router.replace("/verify-email");
-        return;
-      }
-
-      if (status !== AuthStateEnum.UNAUTHENTICATED) {
-        router.replace("/auth");
-      }
-    }
-  }, [status]);
-
-  useEffect(() => {
     if (userDetailsState) return;
 
     const savedState: UserDataType | null = getFromLocalStorage("userDetails");
@@ -83,7 +68,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!code) return;
 
     const state = searchParams.get("state");
-    console.log("called authenticate");
     authenticate({ code, state, router, setStatus, setUserDetails });
   }, [code]);
 
@@ -92,7 +76,26 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     updateAuthenticationStatus(!!isLoggedInCookie);
   }, [isLoggedInCookie, code]);
 
-  useSWR(status, () => fetchUserData(setUserDetailsState));
+  useEffect(() => {
+    if (!status || status === AuthStateEnum.UNKNOWN) return;
+
+    if (onProtectedPage) {
+      if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED && pathname !== "/settings") {
+        router.replace("/verify-email");
+        return;
+      }
+
+      if (status !== AuthStateEnum.AUTHENTICATED) {
+        router.replace("/auth");
+      }
+    }
+  }, [status]);
+
+  useSWR(`${status}-${code}-${error}`, () => {
+    if (code) return;
+    if (error) return;
+    fetchUserData(setUserDetailsState);
+  });
 
   return (
     <UserContext.Provider

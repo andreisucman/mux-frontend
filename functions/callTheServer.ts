@@ -1,4 +1,3 @@
-import { getCookieValue } from "@/helpers/cookies";
 import openErrorModal from "@/helpers/openErrorModal";
 
 type Props<T> = {
@@ -13,12 +12,6 @@ const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Prop
   try {
     const isFormData = body instanceof FormData;
     const headers: HeadersInit = isFormData ? {} : { "Content-Type": "application/json" };
-
-    const csrfToken = getCookieValue("MUX_csrfToken");
-
-    if (csrfToken) {
-      headers["X-CSRF-Token"] = csrfToken;
-    }
 
     const fetchOptions: RequestInit = {
       method,

@@ -55,7 +55,7 @@ const authenticate = async ({
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
-      let redirectUrl = "/routine";
+      let redirectUrl = "/routines";
 
       if (redirectPath) redirectUrl = redirectPath;
       if (redirectQuery) redirectUrl += `?${redirectQuery}`;

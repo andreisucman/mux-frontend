@@ -37,7 +37,7 @@ export default function LeaveClubConfirmation() {
       if (response.status === 200) {
         setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
 
-        router.push("/routine");
+        router.push("/routines");
         modals.closeAll();
       }
     } catch (err) {
