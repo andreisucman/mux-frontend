@@ -65,11 +65,11 @@ export default function AcceptIndexPage() {
         }
       }
 
-      const encodedNext = searchParams.get("next") || "/scan/progress?type=head";
-      const next = decodeAndCheckUriComponent(encodedNext);
+      const encodedRedirectUrl = searchParams.get("redirectUrl") || "/scan/progress?type=head";
+      const redirectUrl = decodeAndCheckUriComponent(encodedRedirectUrl);
 
-      if (next) {
-        router.replace(next);
+      if (redirectUrl) {
+        router.replace(redirectUrl);
       }
     } catch (err) {
       openErrorModal();

@@ -18,8 +18,11 @@ export default function ScanIndexPage() {
 
   const handleRedirect = useCallback(
     (redirectPath: string, redirectQuery?: string) => {
+      let redirectUrl = redirectPath;
+      if (redirectQuery) redirectUrl += `?${redirectQuery}`;
+      
       if (status === "authenticated") {
-        router.push(redirectPath);
+        router.push(redirectUrl);
       } else {
         if (email) {
           // the user has finished the onboarding
@@ -31,11 +34,9 @@ export default function ScanIndexPage() {
           });
         } else {
           if (userId) {
-            router.push(redirectPath); // the user accepted the tos but did not finish the onboarding
+            router.push(redirectUrl); // the user accepted the tos but did not finish the onboarding
           } else {
-            let redirectUrl = redirectPath;
-            if (redirectQuery) redirectUrl += `?${redirectQuery}`;
-            const encodedPath = `/accept?redirectPath=${encodeURIComponent(redirectUrl)}`; // the user is coming for the first time
+            const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`; // the user is coming for the first time
             router.push(encodedPath);
           }
         }

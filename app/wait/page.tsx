@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import WaitComponent from "@/components/WaitComponent";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
-import { decodeAndCheckUriComponent } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -14,25 +13,24 @@ export default function WaitPage() {
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type") || "head";
-  const redirect = searchParams.get("next") || `/analysis${type ? `?type=${type}` : ""}`;
-  const finalRedirect = decodeURIComponent(redirect);
+  const encodedRedirectUrl =
+    searchParams.get("redirectUrl") || `/analysis${type ? `?type=${type}` : ""}`;
+  const redirectUrl = decodeURIComponent(encodedRedirectUrl);
 
   const hideDisclaimer = useMemo(() => {
-    const path = finalRedirect.split("?").shift();
+    const path = redirectUrl.split("?").shift();
     return path !== "/analysis";
-  }, [finalRedirect]);
+  }, [redirectUrl]);
 
   const onComplete = useCallback(() => {
     try {
-      const uriComponent = decodeAndCheckUriComponent(finalRedirect);
-
-      if (uriComponent) {
-        router.replace(finalRedirect);
+      if (redirectUrl) {
+        router.replace(redirectUrl);
       }
     } catch (e) {
       console.error("Invalid redirect URL", e);
     }
-  }, [type, typeof router]);
+  }, [type, redirectUrl, typeof router]);
 
   const onError = useCallback(() => {
     deleteFromLocalStorage("userDetails");

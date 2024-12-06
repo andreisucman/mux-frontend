@@ -43,7 +43,7 @@ function SelectStyleGoalModalContent({ type, styleName }: Props) {
       });
 
       if (response.status === 200) {
-        router.push(`/wait?type=${type}&next=${encodeURIComponent(`?type=${type}`)}`);
+        router.push(`/wait?type=${type}&redirectUrl=${encodeURIComponent(`?type=${type}`)}`);
         saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
       }
     } catch (err) {

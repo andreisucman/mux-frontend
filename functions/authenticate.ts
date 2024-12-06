@@ -21,14 +21,13 @@ const authenticate = async ({
 }: AuthenticateProps) => {
   try {
     const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
-    const { localUserId, redirectTo, followingUserId } = parsedState;
+    const { redirectPath, redirectQuery } = parsedState;
 
     const response = await callTheServer({
       endpoint: "authenticate",
       method: "POST",
       body: {
         code,
-        localUserId,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         state,
       },
@@ -55,24 +54,19 @@ const authenticate = async ({
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
-      let nextPath = "";
+      let redirectUrl = "/routine";
 
-      if (redirectTo === AuthRedirectToEnum.clubMemberRoutines) {
-        nextPath = `/club/routines?followingUserId=${followingUserId}`;
-      } else if (redirectTo === AuthRedirectToEnum.clubMemberAbout) {
-        nextPath = `/club/about?followingUserId=${followingUserId}`;
-      } else {
-        nextPath = "/routines";
-      }
+      if (redirectPath) redirectUrl = redirectPath;
+      if (redirectQuery) redirectUrl += `?${redirectQuery}`;
 
       const { emailVerified } = response.message;
 
       if (!emailVerified) {
-        router.push(`/verify-email?redirectPath=${encodeURIComponent(nextPath)}`);
+        router.push(`/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`);
         return;
       }
 
-      router.push(nextPath);
+      router.push(redirectUrl);
     } else {
       const rejected = response.status === 401 || response.status === 403;
       if (rejected) {

@@ -85,8 +85,8 @@ export default function UploadStyle() {
                 _id: response.message,
               }));
 
-              const nextPage = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
-              router.push(`/wait?type=${finalType}&next=${nextPage}`);
+              const redirectUrl = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
+              router.push(`/wait?type=${finalType}&redirectUrl=${redirectUrl}`);
             } else {
               setProgress(0);
               openErrorModal({
