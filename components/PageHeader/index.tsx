@@ -88,7 +88,7 @@ export default function PageHeader({
               addToQuery
             />
           )}
-          {!hidePartDropdown && (
+          {!hidePartDropdown && relevantParts.length > 0 && (
             <FilterDropdown
               data={relevantParts}
               icons={partIcons}

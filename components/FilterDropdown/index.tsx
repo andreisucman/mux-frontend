@@ -30,8 +30,9 @@ export default function FilterDropdown({
   const [selectedValue, setSelectedValue] = useState<string>();
   const router = useRouter();
   const pathname = usePathname();
-  console.log("data",data)
-  const defaultValue = defaultSelected || data[0].value;
+  
+  const firstItem = data[0];
+  const defaultValue = defaultSelected || firstItem?.value;
 
   const leftSectionIcon = useMemo(
     () => (icons ? icons[selectedValue || defaultValue] : <></>),
@@ -68,9 +69,7 @@ export default function FilterDropdown({
 
   return (
     <Select
-      // flex={1}
       className={classes.container}
-      // miw={150}
       data={data}
       disabled={isDisabled}
       placeholder={placeholder}
