@@ -1,7 +1,7 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import openErrorModal from "@/helpers/openErrorModal";
-import { AuthRedirectToEnum, UserDataType } from "@/types/global";
+import { UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 type AuthenticateProps = {
@@ -21,7 +21,7 @@ const authenticate = async ({
 }: AuthenticateProps) => {
   try {
     const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
-    const { redirectPath, redirectQuery } = parsedState;
+    const { redirectPath, redirectQuery, localUserId } = parsedState;
 
     const response = await callTheServer({
       endpoint: "authenticate",
@@ -29,6 +29,7 @@ const authenticate = async ({
       body: {
         code,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        localUserId,
         state,
       },
     });

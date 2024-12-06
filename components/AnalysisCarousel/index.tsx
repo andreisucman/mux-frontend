@@ -94,7 +94,12 @@ export default function AnalysisCarousel({ type }: Props) {
     const concernsCard = (
       <Carousel.Slide key={"concernsCard"}>
         {concerns && (
-          <ConcernsCard concerns={concerns} title="Areas of improvement" type={type as TypeEnum} />
+          <ConcernsCard
+            concerns={concerns}
+            title="Areas of improvement"
+            type={type as TypeEnum}
+            userId={userId}
+          />
         )}
       </Carousel.Slide>
     );

@@ -6,19 +6,18 @@ import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
 import GlowingButton from "@/components/GlowingButton";
-import signIn from "@/functions/signIn";
-import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import { TypeEnum, UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
 
 type Props = {
+  userId?: string;
   title: string;
   type: TypeEnum;
   concerns: UserConcernType[];
 };
 
-function ConcernsCard({ concerns, type, title }: Props) {
+function ConcernsCard({ userId, concerns, type, title }: Props) {
   const { height: containerHeight, ref } = useElementSize();
 
   const maxHeight = useMemo(() => {
@@ -44,7 +43,7 @@ function ConcernsCard({ concerns, type, title }: Props) {
             onClick={() =>
               openAuthModal({
                 formType: "registration",
-                stateObject: { redirectTo: "/routines" },
+                stateObject: { redirectPath: "/routines", redirectQuery: `type=${type}`, localUserId: userId },
                 title: "Start your change",
                 showTos: true,
               })

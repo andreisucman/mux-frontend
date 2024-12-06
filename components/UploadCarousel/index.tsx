@@ -58,9 +58,13 @@ export default function UploadCarousel({
 
   const { _id: userId, toAnalyze } = userDetails || {};
   const nothingToScan =
-    toAnalyze && toAnalyze[type].length === 0 && !showFace && !showMouth && !showScalp;
+    toAnalyze &&
+    toAnalyze[type as TypeEnum.BODY | TypeEnum.HEAD].length === 0 &&
+    !showFace &&
+    !showMouth &&
+    !showScalp;
 
-  const uploadedParts = toAnalyze && toAnalyze[type];
+  const uploadedParts = toAnalyze && toAnalyze[type as TypeEnum.BODY | TypeEnum.HEAD];
 
   const distinctUploadedParts = [
     ...new Set(uploadedParts?.map((obj) => obj.part).filter(Boolean)),
@@ -143,7 +147,10 @@ export default function UploadCarousel({
     })
     .filter(Boolean);
 
-  const somethingToScan = slides.length === 0 && toAnalyze && toAnalyze?.[type]?.length > 0;
+  const somethingToScan =
+    slides.length === 0 &&
+    toAnalyze &&
+    toAnalyze?.[type as TypeEnum.BODY | TypeEnum.HEAD]?.length > 0;
   const allPartsEnabled = showFace && showMouth && showScalp;
   const showPartsSelector = type === "head" && scanType === "progress" && somethingToScan;
 
@@ -165,6 +172,12 @@ export default function UploadCarousel({
           slidesToScroll={1}
           withControls={false}
           withIndicators={true}
+          styles={{
+            container: { height: "100%" },
+            viewport: { height: "100%" },
+            control: { height: "100%" },
+            root: { height: "100%" },
+          }}
         >
           {slides}
         </Carousel>

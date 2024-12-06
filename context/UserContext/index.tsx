@@ -83,6 +83,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!code) return;
 
     const state = searchParams.get("state");
+    console.log("called authenticate");
     authenticate({ code, state, router, setStatus, setUserDetails });
   }, [code]);
 

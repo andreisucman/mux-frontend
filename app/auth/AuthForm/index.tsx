@@ -154,8 +154,6 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
     [formType, showResetPassword, tosAccepted, password, email]
   );
 
-  const disableSubmit = email.trim().length < 4 && showResetPassword;
-
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Title order={1} className={classes.title}>
@@ -210,7 +208,7 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
               openLegalBody={openLegalBody}
             />
           )}
-          <Button type="submit" className={classes.button} disabled={disableSubmit}>
+          <Button type="submit" className={classes.button}>
             <IconMail className="icon" style={{ marginRight: rem(8) }} /> {buttonText}
           </Button>
           {formType === "login" && (

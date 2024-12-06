@@ -2,7 +2,7 @@ export default function getAppearanceVerdict(score: number, isPotential?: boolea
   let text = "";
 
   if (score > 0) {
-    text = "You could get some work";
+    text = "You could use some work";
   }
 
   if (score > 40) {

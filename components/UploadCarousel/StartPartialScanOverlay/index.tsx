@@ -1,13 +1,12 @@
 import React, { useContext, useMemo, useState } from "react";
-import { IconDental, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
-import { Button, Group, Stack } from "@mantine/core";
+import { IconDental, IconFlag, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
+import { Button, Group, Stack, rem } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
 import classes from "./StartPartialScanOverlay.module.css";
@@ -40,7 +39,7 @@ export default function StartPartialScanOverlay({
 
   const { toAnalyze } = userDetails || {};
 
-  const uploadedParts = toAnalyze?.[type];
+  const uploadedParts = toAnalyze?.[type as TypeEnum.HEAD | TypeEnum.BODY];
 
   async function handleStartAnalysis() {
     try {
@@ -59,8 +58,8 @@ export default function StartPartialScanOverlay({
           setIsButtonLoading(false);
           return;
         }
-        const redirectTo = encodeURIComponent(`/analysis?${location.search}`);
-        router.push(`/wait?redirectPath=${redirectTo}`);
+        const redirectUrl = encodeURIComponent(`/analysis?${location.search}`);
+        router.push(`/wait?redirectUrl=${redirectUrl}`);
       }
     } catch (err) {
       console.log("Error in handleStartAnalysis: ", err);
@@ -100,7 +99,7 @@ export default function StartPartialScanOverlay({
           loading={isButtonLoading}
           disabled={isButtonLoading}
         >
-          🏁 Start scan
+          <IconFlag className="icon" style={{ marginRight: rem(8) }} /> Start scan
         </Button>
       </Stack>
     </Stack>

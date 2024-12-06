@@ -10,12 +10,12 @@ export const runtime = "edge";
 
 export default function AuthPage() {
   const { userDetails } = useContext(UserContext);
-  const { tosAccepted } = userDetails || {};
+  const { tosAccepted, _id: userId } = userDetails || {};
 
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
-        <AuthForm formType={"login"} showTos={!tosAccepted} />
+        <AuthForm formType={"login"} showTos={!tosAccepted} stateObject={{ localUserId: userId }} />
       </Stack>
     </Stack>
   );

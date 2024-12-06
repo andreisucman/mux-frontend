@@ -20,7 +20,7 @@ export default function ScanIndexPage() {
     (redirectPath: string, redirectQuery?: string) => {
       let redirectUrl = redirectPath;
       if (redirectQuery) redirectUrl += `?${redirectQuery}`;
-      
+
       if (status === "authenticated") {
         router.push(redirectUrl);
       } else {
@@ -30,7 +30,7 @@ export default function ScanIndexPage() {
             formType: "login",
             showTos: false,
             title: "Login to continue",
-            stateObject: { redirectPath, redirectQuery },
+            stateObject: { redirectPath, redirectQuery, localUserId: userId },
           });
         } else {
           if (userId) {
