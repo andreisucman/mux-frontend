@@ -31,7 +31,6 @@
 @import "@mantine/core/styles/Input.layer.css";
 @import "@mantine/core/styles/Loader.layer.css";
 @import "@mantine/core/styles/LoadingOverlay.layer.css";
-@import "@mantine/core/styles/Menu.layer.css";
 @import "@mantine/core/styles/Modal.layer.css";
 @import "@mantine/core/styles/ModalBase.layer.css";
 @import "@mantine/core/styles/NumberInput.layer.css";
@@ -59,4 +58,5 @@
 @import "@mantine/core/styles/UnstyledButton.layer.css";
 @import "@mantine/core/styles/Button.layer.css";
 @import "@mantine/core/styles/ActionIcon.layer.css";
+@import "@mantine/core/styles/Menu.layer.css";
 

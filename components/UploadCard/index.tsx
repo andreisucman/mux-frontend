@@ -70,6 +70,8 @@ export default function UploadCard({
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
     !localUrl;
 
+  console.log("isStyle", isStyle);
+
   const loadLocally = useCallback(
     async (base64string: string) => {
       if (!base64string) return;
@@ -106,10 +108,12 @@ export default function UploadCard({
   }, [loadLocally]);
 
   const relevantPlaceholder = useMemo(() => {
+    const finalType = isStyle ? "style" : type;
+    const finalPosition = isStyle ? (type === "head" || type === "body" ? type : position) : position;
     return placeholders.find(
-      (item) => item.sex.includes(sex) && item.type === type && item.position === position
+      (item) => item.sex.includes(sex) && item.type === finalType && item.position === finalPosition
     );
-  }, [sex, type, position]);
+  }, [sex, type, position, isStyle]);
 
   return (
     <Stack className={classes.container}>

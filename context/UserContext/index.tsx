@@ -54,7 +54,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
     if (onProtectedPage) {
       if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED && pathname !== "/settings") {
-        router.replace("/confirm-email");
+        router.replace("/verify-email");
         return;
       }
 

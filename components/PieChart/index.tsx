@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Cell, Pie, PieChart } from "recharts";
 import { Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import plate from "@/public/assets/plate.webp";
+import plate from "@/public/assets/empty-plate.svg";
 import classes from "./PieChart.module.css";
 
 type Props = {

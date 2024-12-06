@@ -4,7 +4,7 @@
 
 .wrapper {
   flex: 1;
-  background-color: alpha(var(--mantine-color-dark-6), 0.25);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
 
   border-radius: var(--mantine-radius-lg);
   max-height: rem(500);
@@ -19,7 +19,7 @@
   padding: rem(24) rem(16);
   width: 100%;
 
-  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 
   align-items: center;

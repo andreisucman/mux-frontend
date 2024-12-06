@@ -33,7 +33,8 @@ export default function ScanIndexPage() {
       if (status === "authenticated") {
         router.push(next);
       } else {
-        if (email) { // the user has finished the onboarding
+        if (email) {
+          // the user has finished the onboarding
           openAuthModal({
             formType: "login",
             showTos: false,

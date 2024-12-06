@@ -29,7 +29,7 @@ const icons = {
 export default function StartButton({ onClick, type, position, needsScan, nextScanDate }: Props) {
   const { userDetails } = useContext(UserContext);
   const { demographics } = userDetails || {};
-  const { sex = "male" } = demographics || {};
+  const { sex = "female" } = demographics || {};
 
   const overlayProps = useMemo(() => {
     const afterOneDay = daysFrom({ days: 1 });
@@ -38,7 +38,7 @@ export default function StartButton({ onClick, type, position, needsScan, nextSc
       children?: React.ReactNode;
     } = {};
 
-    if (needsScan && nextScanDate && nextScanDate > new Date()) {
+    if (!needsScan && nextScanDate && nextScanDate > new Date()) {
       payload.blur = 5;
 
       if (nextScanDate > afterOneDay) {

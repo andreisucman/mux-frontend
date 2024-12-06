@@ -142,10 +142,11 @@ export default function ScanProgress() {
 
   useShallowEffect(() => {
     if (!userId) return;
+    if (!needsScan) return;
     if (availableRequirements && availableRequirements.length === 0) {
       router.push(`/wait?type=${finalType}`);
     }
-  }, [availableRequirements?.length, userId]);
+  }, [availableRequirements?.length, userId, needsScan]);
 
   return (
     <>

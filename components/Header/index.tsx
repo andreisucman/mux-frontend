@@ -19,7 +19,7 @@ const hideStartButtonRoutes = [
   "/wait",
   "/analysis",
   "/auth",
-  "/enter-code",
+  "/verify-email",
   "/set-password",
 ];
 

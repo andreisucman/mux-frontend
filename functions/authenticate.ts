@@ -68,7 +68,7 @@ const authenticate = async ({
       const { emailVerified } = response.message;
 
       if (!emailVerified) {
-        router.push(`/confirm-email?next=${encodeURIComponent(nextPath)}`);
+        router.push(`/verify-email?next=${encodeURIComponent(nextPath)}`);
         return;
       }
 

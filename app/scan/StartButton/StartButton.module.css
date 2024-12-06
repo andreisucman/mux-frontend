@@ -6,12 +6,12 @@
   width: 100%;
   min-width: rem(200);
 
-  background-color: var(--mantine-color-dark-6);
-  border: rem(1) solid var(--mantine-color-dark-5);
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  /* border: rem(1) solid var(--mantine-color-dark-5); */
 
   &:hover {
     background-color: var(--mantine-color-dark-5);
-    border: rem(1) solid var(--mantine-color-dark-4);
+    /* border: rem(1) solid var(--mantine-color-dark-4); */
   }
 }
 
@@ -36,12 +36,22 @@
   padding-bottom: 177%;
   background-image: linear-gradient(
     45deg,
-    var(--mantine-color-gray-4) 49.9%,
-    var(--mantine-color-gray-3) 50%,
-    var(--mantine-color-gray-3) 74.9%,
-    var(--mantine-color-gray-1) 75%
+    var(--mantine-color-dark-7) 49.9%,
+    alpha(var(--mantine-color-dark-6), 0.5) 50%,
+    alpha(var(--mantine-color-dark-6), 0.5) 74.9%,
+    var(--mantine-color-dark-5) 75%
   );
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+
+  &:hover {
+    background-image: linear-gradient(
+      45deg,
+      var(--mantine-color-dark-7) 49.9%,
+      alpha(var(--mantine-color-brand-6), 0.5) 50%,
+      alpha(var(--mantine-color-brand-6), 0.5) 74.9%,
+      var(--mantine-color-dark-5) 75%
+    );
+  }
 }
 
 .image {
