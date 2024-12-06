@@ -1,6 +1,7 @@
 .container {
   flex: 1;
   max-width: rem(250);
+  min-width: rem(200);
 
   @media (max-width: $mantine-breakpoint-xs) {
     max-width: unset;

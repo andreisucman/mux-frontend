@@ -8,9 +8,8 @@ type Props = {
   scanType: "head" | "body" | "style";
   nextScan?: NextActionType[];
   requiredProgress?: {
-    head: RequirementType[] | null;
-    body: RequirementType[] | null;
-    health: RequirementType[] | null;
+    head: RequirementType[];
+    body: RequirementType[];
   };
 };
 

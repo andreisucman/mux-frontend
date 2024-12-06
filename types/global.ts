@@ -123,7 +123,6 @@ export type UserPotentialRecordType = {
     scalp: FormattedRatingType | null;
   };
   body: { overall: number; body: FormattedRatingType | null };
-  health: { overall: number; health: FormattedRatingType | null };
 };
 
 export type UserProgressRecordType = {
@@ -134,7 +133,6 @@ export type UserProgressRecordType = {
     scalp: ProgressType | null;
   };
   body: { overall: number; body: ProgressType | null };
-  health: { overall: number; health: ProgressType | null };
 };
 
 export type UserLatestStyleAnalysis = {
@@ -145,7 +143,6 @@ export type UserLatestStyleAnalysis = {
 export type HigherThanType = {
   head: { overall: number; face: number; mouth: number; scalp: number };
   body: { overall: number; body: number };
-  health: { overall: number; health: number };
 };
 
 export type UserConcernType = {
@@ -212,20 +209,18 @@ export interface UserDataType extends DefaultUserType {
   auth?: string;
   club: ClubDataType | null;
   concerns: UserConcernType[];
+  demographics: DemographicsType;
   requiredProgress: {
     head: RequirementType[];
     body: RequirementType[];
-    health: RequirementType[];
   };
   styleRequirements: {
     head: RequirementType[];
     body: RequirementType[];
   };
-  demographics: DemographicsType;
   toAnalyze: {
     head: ToAnalyzeType[];
     body: ToAnalyzeType[];
-    health: ToAnalyzeType[];
   };
   streaks: StreaksType;
   subscriptions: UserSubscriptionsType;
@@ -414,5 +409,4 @@ export type LatestScoresType = {
     scalp: number;
   } | null;
   body: { overall: number; body: number } | null;
-  health: { overall: number; health: number } | null;
 };

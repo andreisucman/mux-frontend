@@ -22,7 +22,6 @@ import maleMouth from "@/public/assets/placeholders/male-mouth.svg";
 import maleScalp from "@/public/assets/placeholders/male-scalp.svg";
 import maleStyleBody from "@/public/assets/placeholders/male-style-body.svg";
 import maleStyleHead from "@/public/assets/placeholders/male-style-head.svg";
-import health from "@/public/assets/placeholders/medical-test.svg";
 import { PositionEnum, ScanTypeEnum, TypeEnum } from "@/types/global";
 
 export const placeholders: {
@@ -192,12 +191,5 @@ export const placeholders: {
     position: PositionEnum.FRONT,
     type: "food" as any,
     url: food,
-  },
-  {
-    sex: ["male", "female"],
-    scanType: ScanTypeEnum.HEALTH,
-    type: TypeEnum.HEALTH,
-    position: PositionEnum.FRONT,
-    url: health,
   },
 ];

@@ -5,16 +5,15 @@ import { parseScanDate } from "./utils";
 
 type Props = {
   requiredProgress?: {
-    head: RequirementType[] | null;
-    body: RequirementType[] | null;
-    health: RequirementType[] | null;
-  } | null;
+    head: RequirementType[];
+    body: RequirementType[];
+  };
   typeNextScan?: NextActionType;
   type: string;
 };
 
 export function getAvailableRequirements({ requiredProgress, typeNextScan, type }: Props) {
-  const typeRequirements = requiredProgress?.[type as TypeEnum] || [];
+  const typeRequirements = requiredProgress?.[type as TypeEnum.HEAD | TypeEnum.BODY] || [];
 
   let requirements: RequirementType[] = typeRequirements;
 

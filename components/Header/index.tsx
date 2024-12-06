@@ -21,6 +21,7 @@ const hideStartButtonRoutes = [
   "/auth",
   "/verify-email",
   "/set-password",
+  "/settings"
 ];
 
 function Header() {

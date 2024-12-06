@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
-import { Group, Text,Select, SelectProps } from "@mantine/core";
+import { Group, Select, SelectProps, Text } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
-import classes from "./FilterDropdown.module.css"
+import classes from "./FilterDropdown.module.css";
 
 type Props = {
   icons?: { [key: string]: React.ReactNode };
@@ -30,6 +30,7 @@ export default function FilterDropdown({
   const [selectedValue, setSelectedValue] = useState<string>();
   const router = useRouter();
   const pathname = usePathname();
+  console.log("data",data)
   const defaultValue = defaultSelected || data[0].value;
 
   const leftSectionIcon = useMemo(
@@ -61,7 +62,6 @@ export default function FilterDropdown({
         {icons && icons[option.value]}
         {option.label}
         {checked && <IconCheck style={{ marginInlineStart: "auto" }} className="icon" />}
-        {option.disabled && <Text component="span" size="sm">(Sign in)</Text>}
       </Group>
     );
   };

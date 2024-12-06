@@ -58,11 +58,6 @@ export default function ScanIndexPage() {
             onClick={() => handleRedirect("/scan/style?type=head")}
           />
           <StartButton
-            scanType={ScanTypeEnum.HEALTH}
-            type={"health"}
-            onClick={() => handleRedirect("/scan/health")}
-          />
-          <StartButton
             scanType={ScanTypeEnum.FOOD}
             type={"food"}
             onClick={() => handleRedirect("/scan/food")}

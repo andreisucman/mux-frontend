@@ -10,14 +10,13 @@ import classes from "./StartButton.module.css";
 
 type Props = {
   scanType: ScanTypeEnum;
-  type: "head" | "body" | "health" | "food";
+  type: "head" | "body" | "food";
   onClick: () => void;
 };
 
-const icons = {
+const icons: { [key: string]: React.ReactNode } = {
   progress: <IconBodyScan className="icon icon__large" />,
   style: <IconScanStyle className={`icon ${classes.icon}`} />,
-  health: <IconTextScan2 className={`icon icon__large`} />,
   food: <IconScanFood className={`icon ${classes.icon}`} />,
 };
 
