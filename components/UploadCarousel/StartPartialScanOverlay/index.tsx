@@ -60,7 +60,7 @@ export default function StartPartialScanOverlay({
           return;
         }
         const redirectTo = encodeURIComponent(`/analysis?${location.search}`);
-        router.push(`/wait?next=${redirectTo}`);
+        router.push(`/wait?redirectPath=${redirectTo}`);
       }
     } catch (err) {
       console.log("Error in handleStartAnalysis: ", err);

@@ -20,11 +20,11 @@ export default function VerifyEmail() {
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
 
-  const next = searchParams.get("next");
+  const state = searchParams.get("state");
 
-  const handleRedirect = useCallback((next: string | null) => {
-    if (next) {
-      const decodedUri = decodeURIComponent(next);
+  const handleRedirect = useCallback((state: string | null) => {
+    if (state) {
+      const decodedUri = decodeURIComponent(state);
       router.replace(decodedUri);
     } else {
       router.replace("/routine");
@@ -47,7 +47,7 @@ export default function VerifyEmail() {
           return;
         }
 
-        openSuccessModal({ description: response.message, onClose: () => handleRedirect(next) });
+        openSuccessModal({ description: response.message, onClose: () => handleRedirect(state) });
       }
     } catch (err) {
       openErrorModal();
@@ -55,7 +55,7 @@ export default function VerifyEmail() {
     } finally {
       setIsLoading(false);
     }
-  }, [next, isLoading]);
+  }, [state, isLoading]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

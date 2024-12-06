@@ -17,9 +17,9 @@ export default function ScanIndexPage() {
   const { _id: userId, email } = userDetails || {};
 
   const handleRedirect = useCallback(
-    (next: string) => {
+    (redirectPath: string, redirectQuery?: string) => {
       if (status === "authenticated") {
-        router.push(next);
+        router.push(redirectPath);
       } else {
         if (email) {
           // the user has finished the onboarding
@@ -27,13 +27,15 @@ export default function ScanIndexPage() {
             formType: "login",
             showTos: false,
             title: "Login to continue",
-            stateObject: { redirectTo: next },
+            stateObject: { redirectPath, redirectQuery },
           });
         } else {
           if (userId) {
-            router.push(next); // the user accepted the tos but did not finish the onboarding
+            router.push(redirectPath); // the user accepted the tos but did not finish the onboarding
           } else {
-            const encodedPath = `/accept?next=${encodeURIComponent(next)}`; // the user is coming for the first time
+            let redirectUrl = redirectPath;
+            if (redirectQuery) redirectUrl += `?${redirectQuery}`;
+            const encodedPath = `/accept?redirectPath=${encodeURIComponent(redirectUrl)}`; // the user is coming for the first time
             router.push(encodedPath);
           }
         }
@@ -50,12 +52,12 @@ export default function ScanIndexPage() {
           <StartButton
             scanType={ScanTypeEnum.PROGRESS}
             type={"body"}
-            onClick={() => handleRedirect("/scan/progress?scanThead")}
+            onClick={() => handleRedirect("/scan/progress", "type=head")}
           />
           <StartButton
             scanType={ScanTypeEnum.STYLE}
             type={"body"}
-            onClick={() => handleRedirect("/scan/style?type=head")}
+            onClick={() => handleRedirect("/scan/style", "type=head")}
           />
           <StartButton
             scanType={ScanTypeEnum.FOOD}

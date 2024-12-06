@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import Image from "next/image";
-import { IconBodyScan, IconTextScan2 } from "@tabler/icons-react";
+import { IconBodyScan } from "@tabler/icons-react";
 import { Text, UnstyledButton } from "@mantine/core";
 import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import { UserContext } from "@/context/UserContext";

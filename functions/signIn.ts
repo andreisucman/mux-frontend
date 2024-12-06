@@ -2,9 +2,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import callTheServer from "./callTheServer";
 
 export type SignInStateType = {
-  redirectTo?: string;
-  localUserId?: string;
-  followingUserId?: string;
+  redirectPath?: string;
+  redirectQuery?:string;
 };
 
 type Props = {

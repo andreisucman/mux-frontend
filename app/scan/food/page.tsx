@@ -12,7 +12,7 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
 import ScanPageHeading from "../ScanPageHeading";
 import CalorieGoalController from "./CalorieGoal";
-import foodImage from "@/public/assets/placeholders/food.svg"
+import foodImage from "@/public/assets/placeholders/dark/food.svg"
 import classes from "./food.module.css";
 
 export default function ScanFoodPage() {
