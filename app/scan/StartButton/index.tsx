@@ -5,8 +5,8 @@ import { Text, UnstyledButton } from "@mantine/core";
 import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
-import classes from "./StartButton.module.css";
 import { ScanTypeEnum } from "@/types/global";
+import classes from "./StartButton.module.css";
 
 type Props = {
   scanType: ScanTypeEnum;

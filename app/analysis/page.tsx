@@ -6,6 +6,7 @@ import { IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Group, Stack, Title } from "@mantine/core";
 import AnalysisCarousel from "@/components/AnalysisCarousel";
 import FilterDropdown from "@/components/FilterDropdown";
+import { TypeEnum } from "@/types/global";
 import classes from "./analysis.module.css";
 
 export const runtime = "edge";
@@ -36,7 +37,7 @@ export default function StartAnalysis() {
         </Group>
       </Group>
 
-      <AnalysisCarousel type={type as "head" | "body"} />
+      <AnalysisCarousel type={type as TypeEnum} />
     </Stack>
   );
 }

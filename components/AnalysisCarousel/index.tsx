@@ -6,13 +6,12 @@ import AnalysisCard from "@/components/AnalysisCarousel/AnalysisCard";
 import AnalysisCardPotential from "@/components/AnalysisCarousel/AnalysisCardPotential";
 import BetterThanCard from "@/components/AnalysisCarousel/BetterThanCard";
 import BetterThanCardPotential from "@/components/AnalysisCarousel/BetterThanCardPotential";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import { StyleAnalysisType, TypeEnum } from "@/types/global";
 import classes from "./AnalysisCarousel.module.css";
 
 type Props = {
-  type: "head" | "body";
+  type: TypeEnum;
   styleAnalyses?: StyleAnalysisType[];
 };
 
@@ -34,8 +33,6 @@ export default function AnalysisCarousel({ type }: Props) {
   const progressRecord = latestProgress?.[type as "head"];
   const potentialRecord = potential?.[type as "head"];
   const styleAnalysis = latestStyleAnalysis?.[type as "head"];
-
-  console.log("latestProgress",latestProgress)
 
   const getSlides = useCallback(() => {
     const analysisCard = (
@@ -96,7 +93,9 @@ export default function AnalysisCarousel({ type }: Props) {
 
     const concernsCard = (
       <Carousel.Slide key={"concernsCard"}>
-        {concerns && <ConcernsCard concerns={concerns} title="Areas of improvement" type={type as TypeEnum} />}
+        {concerns && (
+          <ConcernsCard concerns={concerns} title="Areas of improvement" type={type as TypeEnum} />
+        )}
       </Carousel.Slide>
     );
 
@@ -121,7 +120,6 @@ export default function AnalysisCarousel({ type }: Props) {
   ]);
 
   const slides = useMemo(() => getSlides(), [progressRecord, styleAnalysis]);
-
 
   return (
     <Stack className={classes.container}>

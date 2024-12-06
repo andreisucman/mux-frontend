@@ -30,7 +30,7 @@ export default function ImageDisplayContainer({
       <Image
         width={100}
         height={100}
-        src={image || placeholder.src || "https://placehold.co/169x300?text=Your+photo"}
+        src={image || placeholder && placeholder.src || "https://placehold.co/169x300?text=Your+photo"}
         className={classes.image}
         style={customImageStyles ? customImageStyles : {}}
         alt=""

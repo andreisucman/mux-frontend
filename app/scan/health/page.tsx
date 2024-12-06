@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
@@ -23,7 +22,6 @@ type HandleUploadHealthProps = {
 
 export default function UploadHealth() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const [progress, setProgress] = useState(0);
@@ -32,9 +30,10 @@ export default function UploadHealth() {
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const type = searchParams.get("type");
 
-  const { _id: userId, healthRequirements } = userDetails || {};
+  const { _id: userId, requiredProgress } = userDetails || {};
+
+  const requiredHealthProgress = requiredProgress && requiredProgress.health;
 
   const handleUpload = useCallback(
     async ({ url, type }: HandleUploadHealthProps) => {
@@ -81,8 +80,8 @@ export default function UploadHealth() {
                 _id: response.message,
               }));
 
-              const nextPage = encodeURIComponent(`/analysis/health?${type ? `type=${type}` : ""}`);
-              router.push(`/wait?type=${type}&next=${nextPage}`);
+              const nextPage = encodeURIComponent("/analysis?type=health");
+              router.push(`/wait?type=health&next=${nextPage}`);
             } else {
               setProgress(0);
               openErrorModal({
@@ -100,33 +99,26 @@ export default function UploadHealth() {
     [userId, setUserDetails]
   );
 
-  const handleResetOnChangeType = useCallback(() => {
-    setLocalUrl("");
-    setOriginalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
-  }, []);
-
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {healthRequirements ? (
+      {requiredHealthProgress ? (
         <>
-          <ScanPageHeading type={type as TypeEnum} onSelect={handleResetOnChangeType} />
+          <ScanPageHeading />
           <UploadCarousel
-            requirements={healthRequirements}
-            type={type as TypeEnum}
+            requirements={requiredHealthProgress}
+            type={"health" as TypeEnum}
             progress={progress}
             localUrl={localUrl}
             originalUrl={originalUrl}
             eyesBlurredUrl={eyesBlurredUrl}
             faceBlurredUrl={faceBlurredUrl}
             isLoading={isLoading}
+            scanType={ScanTypeEnum.HEALTH}
             setLocalUrl={setLocalUrl}
             setOriginalUrl={setOriginalUrl}
             setEyesBlurredUrl={setEyesBlurredUrl}
             setFaceBlurredUrl={setFaceBlurredUrl}
             handleUpload={handleUpload}
-            scanType={ScanTypeEnum.STYLE}
           />
         </>
       ) : (

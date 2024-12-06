@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useMemo } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
-import { rem, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { UploadProgressProps } from "@/app/scan/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCard from "@/components/UploadCard";
@@ -113,7 +113,7 @@ export default function UploadCarousel({
             instruction={item.instruction}
             localUrl={localUrl}
             position={item.position}
-            handleUpload={() =>
+            handleUpload={async () =>
               handleUpload({
                 url: originalUrl,
                 type: item.type as TypeEnum,
@@ -145,10 +145,11 @@ export default function UploadCarousel({
 
   const somethingToScan = slides.length === 0 && toAnalyze && toAnalyze?.[type]?.length > 0;
   const allPartsEnabled = showFace && showMouth && showScalp;
+  const showPartsSelector = type === "head" && scanType === "progress" && somethingToScan;
 
   return (
     <Stack flex={1}>
-      {type === "head" && scanType !== "style" && somethingToScan && (
+      {showPartsSelector && (
         <SelectPartsCheckboxes
           distinctUploadedParts={distinctUploadedParts}
           showMouth={mouthExists && showMouth}

@@ -14,8 +14,7 @@ export default function WaitPage() {
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type") || "head";
-  const finalType = type === "health" ? "head" : type;
-  const redirect = searchParams.get("next") || `/analysis?type=${finalType}`;
+  const redirect = searchParams.get("next") || `/analysis${type ? `?type=${type}` : ""}`;
   const finalRedirect = decodeURIComponent(redirect);
 
   const hideDisclaimer = useMemo(() => {
@@ -33,11 +32,11 @@ export default function WaitPage() {
     } catch (e) {
       console.error("Invalid redirect URL", e);
     }
-  }, [finalType, typeof router]);
+  }, [type, typeof router]);
 
   const onError = useCallback(() => {
     deleteFromLocalStorage("userDetails");
-    deleteFromLocalStorage("runningAnalyses", "head");
+    deleteFromLocalStorage("runningAnalyses", type || "head");
   }, []);
 
   return (

@@ -186,10 +186,18 @@ export const placeholders: {
     position: PositionEnum.BACK,
     url: femaleBodyBack,
   },
-  { sex: ["male", "female"], scanType: ScanTypeEnum.FOOD, url: food },
+  {
+    sex: ["male", "female"],
+    scanType: ScanTypeEnum.FOOD,
+    position: PositionEnum.FRONT,
+    type: "food" as any,
+    url: food,
+  },
   {
     sex: ["male", "female"],
     scanType: ScanTypeEnum.HEALTH,
+    type: TypeEnum.HEALTH,
+    position: PositionEnum.FRONT,
     url: health,
   },
 ];

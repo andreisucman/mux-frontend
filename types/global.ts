@@ -213,15 +213,14 @@ export interface UserDataType extends DefaultUserType {
   club: ClubDataType | null;
   concerns: UserConcernType[];
   requiredProgress: {
-    head: RequirementType[] | null;
-    body: RequirementType[] | null;
-    health: RequirementType[] | null;
+    head: RequirementType[];
+    body: RequirementType[];
+    health: RequirementType[];
   };
   styleRequirements: {
-    head: RequirementType[] | null;
-    body: RequirementType[] | null;
+    head: RequirementType[];
+    body: RequirementType[];
   };
-  healthRequirements: RequirementType[] | null;
   demographics: DemographicsType;
   toAnalyze: {
     head: ToAnalyzeType[];

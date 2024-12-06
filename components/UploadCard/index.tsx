@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
-import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Button, Group, Progress, rem, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
@@ -38,7 +38,7 @@ type Props = {
   setOriginalUrl: React.Dispatch<React.SetStateAction<string>>;
   onBlurClick: ({ originalUrl, blurType }: OnBlurClickProps) => Promise<void>;
   setLocalUrl: React.Dispatch<React.SetStateAction<string>>;
-  handleUpload: (() => Promise<void>) | (() => void);
+  handleUpload: (args?: File | null) => Promise<void>;
   handleDelete: () => void;
 };
 
@@ -64,13 +64,14 @@ export default function UploadCard({
   handleUpload,
 }: Props) {
   const router = useRouter();
+  const [localFile, setLocalFile] = useState<File | null>();
   const { blurType } = useContext(BlurChoicesContext);
   const [isBlurLoading, setIsBlurLoading] = useState(false);
 
   const disableUpload =
     (blurType === "eyes" && !eyesBlurredUrl && type === "head") ||
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
-    !localUrl;
+    (!localUrl && !localFile);
 
   const loadLocally = useCallback(
     async (base64string: string) => {
@@ -107,6 +108,8 @@ export default function UploadCard({
     });
   }, [loadLocally]);
 
+  const showBlurButtons = useMemo(() => scanType === "progress" || scanType === "style", []);
+
   const relevantPlaceholder = useMemo(() => {
     return placeholders.find(
       (item) =>
@@ -125,7 +128,6 @@ export default function UploadCard({
         description="All of your uploads are private unless you publish them in the Club."
         customStyles={{ flex: 0 }}
       />
-
       <Stack
         className={classes.centralContent}
         style={customContentStyles ? customContentStyles : {}}
@@ -140,17 +142,19 @@ export default function UploadCard({
         </Stack>
 
         <Stack className={classes.checkboxAndButtons}>
-          <BlurButtons
-            disabled={isBlurLoading || !!isLoading}
-            originalUrl={originalUrl}
-            onBlurClick={onBlurClick}
-          />
+          {showBlurButtons && (
+            <BlurButtons
+              disabled={isBlurLoading || !!isLoading}
+              originalUrl={originalUrl}
+              onBlurClick={onBlurClick}
+            />
+          )}
           {!isLoading && (
             <Group
               className={classes.buttonGroup}
               style={customButtonStyles ? customButtonStyles : {}}
             >
-              {!localUrl && (
+              {!localUrl && scanType !== "health" && (
                 <Button
                   className={classes.button}
                   onClick={openPhotoCapturer}
@@ -161,16 +165,37 @@ export default function UploadCard({
                   Take a photo
                 </Button>
               )}
-              {localUrl && (
+              {scanType === "health" && !localFile && (
                 <Button
+                  component="label"
+                  variant="default"
+                  htmlFor="file_input"
                   className={classes.button}
-                  disabled={disableUpload || isLoading}
-                  onClick={handleUpload}
                 >
                   <IconUpload className="icon" style={{ marginRight: rem(8) }} />
-                  Upload
+                  Upload a file
+                  <input
+                    id="file_input"
+                    type="file"
+                    accept="image/png, image/jpeg, application/pdf"
+                    hidden
+                    onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                      setLocalFile(e.currentTarget.files?.[0])
+                    }
+                  />
                 </Button>
               )}
+              {localUrl ||
+                (localFile && (
+                  <Button
+                    className={classes.button}
+                    disabled={disableUpload || isLoading}
+                    onClick={() => handleUpload(localFile)}
+                  >
+                    <IconUpload className="icon" style={{ marginRight: rem(8) }} />
+                    Upload
+                  </Button>
+                ))}
               {scanType && !localUrl && latestStyleImage && (
                 <ActionIcon
                   maw={rem(50)}
