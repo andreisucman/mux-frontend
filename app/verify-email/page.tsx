@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowRight } from "@tabler/icons-react";
-import { Button, PinInput, Stack, Title } from "@mantine/core";
+import { Button, PinInput, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -19,6 +20,8 @@ export default function VerifyEmail() {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
+  const { userDetails } = useContext(UserContext);
+  const { email } = userDetails || {};
 
   const redirectUrl = searchParams.get("redirectUrl");
 
@@ -47,7 +50,10 @@ export default function VerifyEmail() {
           return;
         }
 
-        openSuccessModal({ description: response.message, onClose: () => handleRedirect(redirectUrl) });
+        openSuccessModal({
+          description: response.message,
+          onClose: () => handleRedirect(redirectUrl),
+        });
       }
     } catch (err) {
       openErrorModal();
@@ -64,6 +70,7 @@ export default function VerifyEmail() {
           <Title order={1} className={classes.title}>
             Enter the code from the email
           </Title>
+          {<Text>{`We've sent an email with the code to ${email}.`}</Text>}
           <PinInput length={5} size={isMobile ? "md" : "lg"} onChange={setCode} />
           <Button disabled={code.length < 6} loading={isLoading} onClick={handleVerifyEmail}>
             Continue

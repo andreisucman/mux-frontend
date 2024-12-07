@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { IconBrandGoogle, IconMail } from "@tabler/icons-react";
 import {
   Button,
@@ -10,10 +10,9 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
+import PrivacyLegalBody from "@/app/legal/privacy/PrivacyLegalBody";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
-import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import authenticate from "@/functions/authenticate";
 import signIn, { SignInStateType } from "@/functions/signIn";
@@ -21,17 +20,15 @@ import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import { validateEmail } from "@/helpers/utils";
-import PasswordInputWithStrength from "./PasswordInputWithStrength";
 import classes from "./AuthForm.module.css";
 
 type Props = {
   stateObject?: SignInStateType;
   showTos: boolean;
-  formType: "login" | "registration";
   customStyles?: { [key: string]: any };
 };
 
-function openLegalBody() {
+function openLegalBody(type: "privacy" | "terms") {
   modals.openContextModal({
     centered: true,
     modal: "general",
@@ -41,15 +38,11 @@ function openLegalBody() {
         {"Terms of Service"}
       </Title>
     ),
-    innerProps: (
-      <Stack>
-        <TermsLegalBody />
-      </Stack>
-    ),
+    innerProps: <Stack>{type === "terms" ? <TermsLegalBody /> : <PrivacyLegalBody />}</Stack>,
   });
 }
 
-export default function AuthForm({ formType, stateObject, customStyles }: Props) {
+export default function AuthForm({ stateObject, customStyles }: Props) {
   const router = useRouter();
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
@@ -57,28 +50,10 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { userDetails, setStatus, setUserDetails } = useContext(UserContext);
-  const { tosAccepted: contextTosAccepted = false } = userDetails || {};
+  const { setStatus, setUserDetails } = useContext(UserContext);
 
-  const [highlightTos, setHighlightTos] = useState(false);
-  const [tosAccepted, setTosAccepted] = useState(contextTosAccepted);
-
-  const buttonText = useMemo(() => {
-    const text = formType === "login" ? (showResetPassword ? "Reset" : "Sign in") : "Register";
-    return upperFirst(text);
-  }, [formType, showResetPassword]);
-
+  const title = showResetPassword ? "Password reset" : "Sign in to continue";
   const secondaryButtonText = showResetPassword ? "Return" : "Reset password";
-
-  const title = useMemo(
-    () =>
-      formType === "login"
-        ? showResetPassword
-          ? "Password reset"
-          : "Sign in to continue"
-        : "Register to continue",
-    [formType, showResetPassword]
-  );
 
   const onSocialButtonClick = useCallback(async () => {
     try {
@@ -114,13 +89,6 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
         return;
       }
 
-      if (formType === "registration") {
-        if (!tosAccepted) {
-          setHighlightTos(true);
-          return;
-        }
-      }
-
       if (showResetPassword) {
         sendPasswordResetEmail({ email });
         return;
@@ -151,7 +119,7 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
         setUserDetails,
       });
     },
-    [formType, showResetPassword, tosAccepted, password, email]
+    [showResetPassword, password, email]
   );
 
   return (
@@ -173,7 +141,7 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
       <form onSubmit={handleSubmitForm} className={classes.form}>
         <TextInput
           required
-          placeholder={formType === "login" ? "Enter your email" : "Enter an email"}
+          placeholder={"Enter your email"}
           value={email}
           error={emailError}
           onChange={handleEnterEmail}
@@ -181,44 +149,35 @@ export default function AuthForm({ formType, stateObject, customStyles }: Props)
 
         {!showResetPassword && (
           <>
-            {formType === "login" ? (
-              <PasswordInput
-                value={password}
-                onChange={handleEnterPassword}
-                placeholder={"Enter your password"}
-                error={passwordError}
-                required
-              />
-            ) : (
-              <PasswordInputWithStrength
-                password={password}
-                passwordError={passwordError}
-                handleEnterPassword={handleEnterPassword}
-              />
-            )}
+            <PasswordInput
+              value={password}
+              onChange={handleEnterPassword}
+              placeholder={"Enter your password"}
+              error={passwordError}
+              required
+            />
           </>
         )}
         <Stack className={classes.footer}>
-          {formType === "registration" && !contextTosAccepted && (
-            <TosCheckbox
-              highlightTos={highlightTos}
-              tosAccepted={tosAccepted}
-              setHighlightTos={setHighlightTos}
-              setTosAccepted={setTosAccepted}
-              openLegalBody={openLegalBody}
-            />
-          )}
+          <Text component="div" lineClamp={2} size="sm">
+            By signing in, you accept our
+            <Text onClickCapture={() => openLegalBody("privacy")} style={{ cursor: "pointer" }}>
+              Privacy policy
+            </Text>{" "}
+            and
+            <Text onClickCapture={() => openLegalBody("terms")} style={{ cursor: "pointer" }}>
+              Terms of Service
+            </Text>
+          </Text>
           <Button type="submit" className={classes.button}>
-            <IconMail className="icon" style={{ marginRight: rem(8) }} /> {buttonText}
+            <IconMail className="icon" style={{ marginRight: rem(8) }} /> Sign in
           </Button>
-          {formType === "login" && (
-            <UnstyledButton
-              className={classes.secondaryButton}
-              onClick={() => setShowResetPassword((prev) => !prev)}
-            >
-              {secondaryButtonText}
-            </UnstyledButton>
-          )}
+          <UnstyledButton
+            className={classes.secondaryButton}
+            onClick={() => setShowResetPassword((prev) => !prev)}
+          >
+            {secondaryButtonText}
+          </UnstyledButton>
         </Stack>
       </form>
     </Stack>

@@ -2,22 +2,18 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   IconBooks,
   IconDoorEnter,
-  IconDoorExit,
   IconInnerShadowBottom,
   IconLicense,
   IconRotateDot,
   IconScan,
   IconSettings,
   IconSocial,
-  IconStar,
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import LinkRow, { NavigationLinkType } from "./LinkRow";
 import classes from "./DrawerNavigation.module.css";
 
@@ -100,9 +96,10 @@ const legalLinks = [
 type Props = {
   closeDrawer: () => void;
 };
+
 export default function DrawerNavigation({ closeDrawer }: Props) {
   const router = useRouter();
-  const { status, userDetails, setUserDetails, setStatus } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [linkClicked, setLinkClicked] = useState("");
   const year = new Date().getFullYear();
 
@@ -112,15 +109,6 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
     },
     [linkClicked]
   );
-
-  const handleSignOut = useCallback(async () => {
-    router.replace("/");
-    clearCookies();
-    deleteFromLocalStorage("userDetails");
-    setStatus("unauthenticated");
-    setUserDetails(null);
-    closeDrawer();
-  }, []);
 
   const handleClickSignIn = () => {
     router.push("/auth");
@@ -200,12 +188,6 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
               closeDrawer={closeDrawer}
             />
           ))}
-          {status === "authenticated" && (
-            <UnstyledButton className={classes.signOutButton} onClick={handleSignOut}>
-              <IconDoorExit className="icon" stroke={1.25} />
-              Sign out
-            </UnstyledButton>
-          )}
         </>
       )}
       <Stack className={classes.footer}>

@@ -1,13 +1,17 @@
-import { IconRotateDot, IconSettings, IconSocial } from "@tabler/icons-react";
+import { IconDoorExit, IconRotateDot, IconSettings, IconSocial } from "@tabler/icons-react";
 import { Avatar, Menu, rem, UnstyledButton } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import Link from "@/helpers/custom-router/patch-router/link";
 import classes from "./UserButton.module.css";
 
-type Props = { avatar?: { [key: string]: any }; clubDetailsSubmitted: boolean };
+type Props = {
+  handleSignOut: () => void;
+  avatar?: { [key: string]: any };
+  clubDetailsSubmitted: boolean;
+};
 
-function UserButton({ avatar, clubDetailsSubmitted }: Props) {
+function UserButton({ handleSignOut, avatar, clubDetailsSubmitted }: Props) {
   return (
     <Menu withArrow classNames={{ itemLabel: classes.itemLabel }}>
       <Menu.Target>
@@ -47,6 +51,9 @@ function UserButton({ avatar, clubDetailsSubmitted }: Props) {
         )}
         <Menu.Item component={Link} href="/settings">
           <IconSettings className="icon icon__small" style={{ marginRight: rem(8) }} /> Settings
+        </Menu.Item>
+        <Menu.Item component={Link} href="/" onClick={handleSignOut}>
+          <IconDoorExit className="icon icon__small" style={{ marginRight: rem(8) }} /> Sign out
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

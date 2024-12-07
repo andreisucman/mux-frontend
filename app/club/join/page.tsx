@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { IconTargetArrow } from "@tabler/icons-react";
 import { rem, Stack, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import ClubLegalBody from "@/app/legal/club/ClubLegalBody";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
+import openLegalBody from "@/helpers/openLegalBody";
 import Confirmation from "./Confirmation";
 import classes from "./join.module.css";
 
@@ -18,20 +18,6 @@ const tableData = {
   head: ["Event", "Reward"],
   body: [["New follower", "25%"]],
 };
-
-function openLegalBody() {
-  modals.openContextModal({
-    centered: true,
-    modal: "general",
-    size: "md",
-    title: (
-      <Title order={5} component={"p"}>
-        {"Club's Terms of Service"}
-      </Title>
-    ),
-    innerProps: <ClubLegalBody />,
-  });
-}
 
 export default function ClubJoin() {
   const [tosAccepted, setTosAccepted] = useState(false);
@@ -60,6 +46,19 @@ export default function ClubJoin() {
     });
   }, [tosAccepted]);
 
+  const checkboxLabel = useMemo(
+    () => (
+      <Text component="div" lineClamp={2} size="sm">
+        I have read, understood and accept the{" "}
+        <Text
+          onClickCapture={() => openLegalBody("club")}
+          style={{ cursor: "pointer" }}
+        >{`Club's Terms of Service`}</Text>
+      </Text>
+    ),
+    []
+  );
+
   return (
     <>
       <Stack className={classes.container}>
@@ -74,11 +73,11 @@ export default function ClubJoin() {
           </Stack>
           <Table data={tableData} ta={"center"} classNames={{ th: classes.th, td: classes.td }} />
           <TosCheckbox
+            label={checkboxLabel}
             highlightTos={highlightTos}
             setHighlightTos={setHighlightTos}
             setTosAccepted={setTosAccepted}
             tosAccepted={tosAccepted}
-            openLegalBody={openLegalBody}
           />
           <GlowingButton
             text="Join the Club"

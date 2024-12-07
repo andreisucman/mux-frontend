@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Stack } from "@mantine/core";
+import { useToggle } from "@mantine/hooks";
 import { UserContext } from "@/context/UserContext";
 import AuthForm from "./AuthForm";
 import classes from "./auth.module.css";
@@ -15,7 +16,7 @@ export default function AuthPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
-        <AuthForm formType={"login"} showTos={!tosAccepted} stateObject={{ localUserId: userId }} />
+        <AuthForm showTos={!tosAccepted} stateObject={{ localUserId: userId }} />
       </Stack>
     </Stack>
   );

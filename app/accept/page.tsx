@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowRight } from "@tabler/icons-react";
 import getBrowserFingerprint from "get-browser-fingerprint";
-import { Button, Stack, Title } from "@mantine/core";
+import { Button, Stack, Text, Title } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import TosCheckbox from "@/components/TosCheckbox";
@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openErrorModal from "@/helpers/openErrorModal";
+import openLegalBody from "@/helpers/openLegalBody";
 import { decodeAndCheckUriComponent } from "@/helpers/utils";
 import { UserDataType } from "@/types/global";
 import classes from "./accept.module.css";
@@ -78,6 +79,18 @@ export default function AcceptIndexPage() {
     }
   }, [tosAccepted, userId]);
 
+  const checkboxLabel = useMemo(
+    () => (
+      <Text component="div" lineClamp={2} size="sm">
+        I have read, understood and accept the <Text>Terms of Service</Text> and{" "}
+        <Text onClickCapture={() => openLegalBody("privacy")} style={{ cursor: "pointer" }}>
+          Privacy policy
+        </Text>
+      </Text>
+    ),
+    []
+  );
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Title order={1}>Review the Terms</Title>
@@ -85,6 +98,7 @@ export default function AcceptIndexPage() {
         <TermsLegalBody />
       </Stack>
       <TosCheckbox
+        label={checkboxLabel}
         highlightTos={highlightTos}
         tosAccepted={tosAccepted}
         setHighlightTos={setHighlightTos}

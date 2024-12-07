@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, memo, useContext, useEffect, useMemo, useState } from "react";
+import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Burger, Drawer, Group, Title } from "@mantine/core";
@@ -9,7 +9,9 @@ import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
 import Logo from "@/components/Header/Logo";
 import { UserContext } from "@/context/UserContext";
+import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import UserButton from "./UserButton";
 import classes from "./Header.module.css";
 
@@ -21,14 +23,14 @@ const hideStartButtonRoutes = [
   "/auth",
   "/verify-email",
   "/set-password",
-  "/settings"
+  "/settings",
 ];
 
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
-  const { status, userDetails } = useContext(UserContext);
+  const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
 
   const { club } = userDetails || {};
@@ -55,6 +57,14 @@ function Header() {
       setDisplayComponent("default");
     }
   }, [status, hideStartButton]);
+
+  const handleSignOut = useCallback(async () => {
+    router.replace("/");
+    clearCookies();
+    deleteFromLocalStorage("userDetails");
+    setStatus("unauthenticated");
+    setUserDetails(null);
+  }, []);
 
   return (
     <>
@@ -83,7 +93,11 @@ function Header() {
                   />
                 )}
                 {displayComponent === "userButton" && (
-                  <UserButton avatar={avatar} clubDetailsSubmitted={!!detailsSubmitted} />
+                  <UserButton
+                    avatar={avatar}
+                    handleSignOut={handleSignOut}
+                    clubDetailsSubmitted={!!detailsSubmitted}
+                  />
                 )}
               </>
             )}
