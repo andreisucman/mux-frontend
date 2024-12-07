@@ -5,6 +5,6 @@ import UserContextProvider from "@/context/UserContext";
 
 type Props = { children: React.ReactNode };
 
-export default function MyRoutineLayout({ children }: Props) {
+export default function RoutinesLayout({ children }: Props) {
   return <UserContextProvider>{children}</UserContextProvider>;
 }

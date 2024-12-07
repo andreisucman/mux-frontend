@@ -58,8 +58,6 @@ const authenticate = async ({
         return;
       }
 
-      console.log("response", response);
-
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
@@ -69,8 +67,6 @@ const authenticate = async ({
       if (redirectQuery) redirectUrl += `?${redirectQuery}`;
 
       const { emailVerified } = response.message;
-
-      console.log("response.message", response.message);
 
       if (!emailVerified) {
         router.push(`/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`);

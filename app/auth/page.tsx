@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Stack } from "@mantine/core";
-import { useToggle } from "@mantine/hooks";
 import { UserContext } from "@/context/UserContext";
 import AuthForm from "./AuthForm";
 import classes from "./auth.module.css";

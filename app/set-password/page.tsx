@@ -1,18 +1,23 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { Button, Stack, Title } from "@mantine/core";
+import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { clearCookies } from "@/helpers/cookies";
+import { modals } from "@mantine/modals";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
+import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import PasswordInputWithStrength from "../auth/AuthForm/PasswordInputWithStrength";
 import classes from "./set-password.module.css";
 
 export default function SetPassword() {
+  const { setUserDetails, setStatus } = useContext(UserContext);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string>("");
@@ -20,6 +25,15 @@ export default function SetPassword() {
 
   const accessToken = searchParams.get("accessToken");
   const { score, requirement } = getPasswordStrength(password);
+
+  const handleSignOut = useCallback(async () => {
+    clearCookies();
+    deleteFromLocalStorage("userDetails");
+    setStatus("unauthenticated");
+    setUserDetails(null);
+    modals.closeAll();
+    router.replace("/auth");
+  }, []);
 
   const handleEnterPassword = (e: React.FormEvent<HTMLInputElement>) => {
     if (error) setError("");
@@ -48,15 +62,14 @@ export default function SetPassword() {
         if (response.status === 200) {
           if (response.error) {
             openErrorModal({
-              description: `Your access token is ${response.error}`,
-              // onClose: () => router.replace("/auth"),
+              description: `Your access token is ${response.error}. Request a new password reset.`,
             });
             return;
           }
 
           openSuccessModal({
             description: response.message,
-            // onClose: () => router.replace("/auth"),
+            onClose: handleSignOut,
           });
         }
       } catch (err) {

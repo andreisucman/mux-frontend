@@ -12,7 +12,7 @@ import RoutineList from "./RoutineList";
 
 export const runtime = "edge";
 
-export default function MyRoutines() {
+export default function Routines() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { specialConsiderations } = userDetails || {};

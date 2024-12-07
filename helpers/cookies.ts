@@ -15,9 +15,15 @@ export function getCookieValue(name: string): string | null {
   const cookies = window.document.cookie;
   if (!cookies) return null;
 
-  const parts = cookies.split(`; ${name}=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(";").shift() || null;
+  const cookieArray = cookies.split(";");
+
+  for (const cookie of cookieArray) {
+    const trimmedCookie = cookie.trim();
+
+    if (trimmedCookie.startsWith(`${name}=`)) {
+      return trimmedCookie.substring(name.length + 1) || null;
+    }
   }
+
   return null;
 }
