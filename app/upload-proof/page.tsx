@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
@@ -16,11 +17,11 @@ import {
 } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { SexEnum, TaskType } from "@/types/global";
+import SkeletonWrapper from "../SkeletonWrapper";
 import ProofDisplayContainer from "./ProofDisplayContainer";
 import { ExistingProofRecordType } from "./types";
 import VideoRecorder from "./VideoRecorder";
 import classes from "./upload-proof.module.css";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 export const runtime = "edge";
 
@@ -147,37 +148,39 @@ export default function UploadProof() {
 
   return (
     <Stack flex={1} className="smallPage">
-      <PageHeader
-        title={`Upload proof - ${submissionName}`}
-        showReturn
-        hideTypeDropdown
-        hidePartDropdown
-      />
-      <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
-        <Stack className={classes.content}>
-          {componentToDisplay === "completed" && existingProofRecord && (
-            <ProofDisplayContainer
-              existingProofRecord={existingProofRecord}
-              setExistingProofRecord={setExistingProofRecord}
-            />
-          )}
-          {componentToDisplay === "waitComponent" && (
-            <WaitComponent
-              operationKey={taskId || ""}
-              description="Checking your upload"
-              onComplete={handleCompleteUpload}
-              onError={() => setComponentToDisplay("videoRecorder")}
-            />
-          )}
-          {componentToDisplay === "videoRecorder" && status === "authenticated" && (
-            <VideoRecorder
-              sex={sex || SexEnum.FEMALE}
-              instruction={requisite || ""}
-              uploadProof={uploadProof}
-            />
-          )}
-        </Stack>
-      </Skeleton>
+      <SkeletonWrapper>
+        <PageHeader
+          title={`Upload proof - ${submissionName}`}
+          showReturn
+          hideTypeDropdown
+          hidePartDropdown
+        />
+        <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
+          <Stack className={classes.content}>
+            {componentToDisplay === "completed" && existingProofRecord && (
+              <ProofDisplayContainer
+                existingProofRecord={existingProofRecord}
+                setExistingProofRecord={setExistingProofRecord}
+              />
+            )}
+            {componentToDisplay === "waitComponent" && (
+              <WaitComponent
+                operationKey={taskId || ""}
+                description="Checking your upload"
+                onComplete={handleCompleteUpload}
+                onError={() => setComponentToDisplay("videoRecorder")}
+              />
+            )}
+            {componentToDisplay === "videoRecorder" && status === "authenticated" && (
+              <VideoRecorder
+                sex={sex || SexEnum.FEMALE}
+                instruction={requisite || ""}
+                uploadProof={uploadProof}
+              />
+            )}
+          </Stack>
+        </Skeleton>
+      </SkeletonWrapper>
     </Stack>
   );
 }

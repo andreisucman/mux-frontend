@@ -1,6 +1,6 @@
 .container {
   max-width: rem(400);
-  padding: rem(24) rem(16) rem(32);
+  padding: rem(24) rem(16) rem(24);
   width: 100%;
 
   background-color: alpha(var(--mantine-color-dark-6), 1);

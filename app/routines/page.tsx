@@ -7,7 +7,8 @@ import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
-import { ConsiderationsInput } from "./ConsiderationsInput";
+import { ConsiderationsInput } from "../../components/ConsiderationsInput";
+import SkeletonWrapper from "../SkeletonWrapper";
 import RoutineList from "./RoutineList";
 
 export const runtime = "edge";
@@ -59,14 +60,16 @@ export default function Routines() {
 
   return (
     <Stack flex={1} className="smallPage">
-      <PageHeader title="My routines" hidePartDropdown/>
-      <ConsiderationsInput
-        placeholder={"Special considerations"}
-        defaultValue={specialConsiderations || ""}
-        saveValue={updateSpecialConsiderations}
-        maxLength={300}
-      />
-      <RoutineList serie={streak} type={type as string} />
+      <SkeletonWrapper>
+        <PageHeader title="My routines" hidePartDropdown />
+        <ConsiderationsInput
+          placeholder={"Special considerations"}
+          defaultValue={specialConsiderations || ""}
+          saveValue={updateSpecialConsiderations}
+          maxLength={300}
+        />
+        <RoutineList serie={streak} type={type as string} />
+      </SkeletonWrapper>
     </Stack>
   );
 }

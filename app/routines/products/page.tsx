@@ -6,6 +6,7 @@ import { IconCircleOff, IconShoppingBag } from "@tabler/icons-react";
 import useSWR from "swr";
 import { Button, Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
@@ -52,48 +53,50 @@ export default function Products() {
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
-      <PageHeader title="Products for tasks" showReturn hidePartDropdown/>
+      <SkeletonWrapper>
+        <PageHeader title="Products for tasks" showReturn hidePartDropdown />
 
-      {uniqueTasks ? (
-        <>
-          {uniqueTasks.length > 0 ? (
-            <Stack className={classes.content}>
-              {/* <Stack className={classes.list} style={{ maxWidth: width }}> */}
-              <Stack className={classes.list}>
-                {uniqueTasks.map((record) => {
-                  return (
-                    <ProductsRow
-                      key={record._id}
-                      task={record}
-                      selectedAsins={selectedAsins}
-                      setSelectedAsins={setSelectedAsins}
-                      setUniqueTasks={setUniqueTasks}
-                    />
-                  );
-                })}
+        {uniqueTasks ? (
+          <>
+            {uniqueTasks.length > 0 ? (
+              <Stack className={classes.content}>
+                {/* <Stack className={classes.list} style={{ maxWidth: width }}> */}
+                <Stack className={classes.list}>
+                  {uniqueTasks.map((record) => {
+                    return (
+                      <ProductsRow
+                        key={record._id}
+                        task={record}
+                        selectedAsins={selectedAsins}
+                        setSelectedAsins={setSelectedAsins}
+                        setUniqueTasks={setUniqueTasks}
+                      />
+                    );
+                  })}
+                </Stack>
               </Stack>
-            </Stack>
-          ) : (
-            <OverlayWithText
-              icon={<IconCircleOff className="icon" />}
-              text={`No suggested products for your ${type} routine.`}
-            />
-          )}
-        </>
-      ) : (
-        <Loader m="auto" />
-      )}
-      {selectedAsins.length > 0 && (
-        <Button
-          mt={rem(12)}
-          style={uniqueTasks ? {} : { visibility: "hidden" }}
-          disabled={selectedAsins.length === 0}
-          onClick={() => addToAmazonCart(selectedAsins)}
-        >
-          <IconShoppingBag style={{ marginRight: rem(8) }} /> Add to cart{" "}
-          {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
-        </Button>
-      )}
+            ) : (
+              <OverlayWithText
+                icon={<IconCircleOff className="icon" />}
+                text={`No suggested products for your ${type} routine.`}
+              />
+            )}
+          </>
+        ) : (
+          <Loader m="auto" />
+        )}
+        {selectedAsins.length > 0 && (
+          <Button
+            mt={rem(12)}
+            style={uniqueTasks ? {} : { visibility: "hidden" }}
+            disabled={selectedAsins.length === 0}
+            onClick={() => addToAmazonCart(selectedAsins)}
+          >
+            <IconShoppingBag style={{ marginRight: rem(8) }} /> Add to cart{" "}
+            {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
+          </Button>
+        )}
+      </SkeletonWrapper>
     </Stack>
   );
 }

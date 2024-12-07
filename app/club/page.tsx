@@ -9,6 +9,7 @@ import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
+import SkeletonWrapper from "../SkeletonWrapper";
 import BalancePane from "./BalancePane";
 import ClubProfileHeader from "./ClubProfileHeader";
 import ClubProfilePreview from "./ClubProfilePreview";
@@ -75,41 +76,45 @@ export default function Club() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <ClubProfileHeader />
-      <Skeleton className={`${classes.skeleton} skeleton`} visible={showSkeleton}>
-        <Group className={classes.top}>
-          <ClubProfilePreview data={youData} type="you" showButtons />
-          {localFollowingUserId && <ClubProfilePreview data={youTrackData} type="peek" showButtons />}
-        </Group>
-        <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
-        <Stack className={classes.followYou}>
-          <Text c="dimmed" size="sm">
-            Peek you
-          </Text>
-          <Stack className={classes.followYouScrollContainer}>
-            {trackYouData ? (
-              <>
-                {trackYouData.length > 0 ? (
-                  <Stack className={classes.followYouScrollWrapper}>
-                    {trackYouData.map((record) => (
-                      <TrackYouRow
-                        key={record._id}
-                        {...record}
-                        onClick={(userId: string) => openTrackConfirm(userId)}
-                        disabled={record._id === localFollowingUserId}
-                      />
-                    ))}
-                  </Stack>
-                ) : (
-                  <OverlayWithText text="No peekers" icon={<IconCircleOff className="icon" />} />
-                )}
-              </>
-            ) : (
-              <Loader m="auto" />
+      <SkeletonWrapper>
+        <ClubProfileHeader />
+        <Skeleton className={`${classes.skeleton} skeleton`} visible={showSkeleton}>
+          <Group className={classes.top}>
+            <ClubProfilePreview data={youData} type="you" showButtons />
+            {localFollowingUserId && (
+              <ClubProfilePreview data={youTrackData} type="peek" showButtons />
             )}
+          </Group>
+          <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
+          <Stack className={classes.followYou}>
+            <Text c="dimmed" size="sm">
+              Peek you
+            </Text>
+            <Stack className={classes.followYouScrollContainer}>
+              {trackYouData ? (
+                <>
+                  {trackYouData.length > 0 ? (
+                    <Stack className={classes.followYouScrollWrapper}>
+                      {trackYouData.map((record) => (
+                        <TrackYouRow
+                          key={record._id}
+                          {...record}
+                          onClick={(userId: string) => openTrackConfirm(userId)}
+                          disabled={record._id === localFollowingUserId}
+                        />
+                      ))}
+                    </Stack>
+                  ) : (
+                    <OverlayWithText text="No peekers" icon={<IconCircleOff className="icon" />} />
+                  )}
+                </>
+              ) : (
+                <Loader m="auto" />
+              )}
+            </Stack>
           </Stack>
-        </Stack>
-      </Skeleton>
+        </Skeleton>
+      </SkeletonWrapper>
     </Stack>
   );
 }

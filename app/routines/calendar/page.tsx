@@ -13,6 +13,7 @@ import {
 import cn from "classnames";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
@@ -348,110 +349,112 @@ export default function Calendar() {
 
   return (
     <Stack flex={1} className="smallPage">
-      <PageHeader
-        title="Tasks calendar"
-        isDisabled={mode === "individual"}
-        showReturn
-        hidePartDropdown
-      />
-      <DatePicker
-        level="month"
-        m="auto"
-        w="100%"
-        value={mode === "all" ? selectedDate : null}
-        onChange={mode === "all" ? (date) => handleSelectDate(date) : undefined}
-        renderDay={(date) => (
-          <DayRenderer
-            date={date}
-            status={selectedStatus}
-            mode={mode as string}
-            dates={dates}
-            keysToBeDeleted={keysToBeDeleted}
-          />
-        )}
-        minDate={new Date()}
-        classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
-      />
+      <SkeletonWrapper>
+        <PageHeader
+          title="Tasks calendar"
+          isDisabled={mode === "individual"}
+          showReturn
+          hidePartDropdown
+        />
+        <DatePicker
+          level="month"
+          m="auto"
+          w="100%"
+          value={mode === "all" ? selectedDate : null}
+          onChange={mode === "all" ? (date) => handleSelectDate(date) : undefined}
+          renderDay={(date) => (
+            <DayRenderer
+              date={date}
+              status={selectedStatus}
+              mode={mode as string}
+              dates={dates}
+              keysToBeDeleted={keysToBeDeleted}
+            />
+          )}
+          minDate={new Date()}
+          classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
+        />
 
-      <Group>
-        {!givenMode && mode !== "all" && (
+        <Group>
+          {!givenMode && mode !== "all" && (
+            <ActionIcon
+              variant="default"
+              onClick={handleResetMode}
+              className={classes.taskStatusButton}
+            >
+              <IconArrowBack className={"icon"} />
+            </ActionIcon>
+          )}
           <ActionIcon
             variant="default"
-            onClick={handleResetMode}
-            className={classes.taskStatusButton}
+            className={cn(classes.taskStatusButton, {
+              [classes.selectedButton]: selectedStatus === "active" && !!relevantRoutine,
+            })}
+            onClick={() => handleShowByStatus("active")}
+            disabled={!relevantRoutine}
           >
-            <IconArrowBack className={"icon"} />
+            <IconActivity className={"icon"} />
           </ActionIcon>
+          <ActionIcon
+            variant="default"
+            className={cn(classes.taskStatusButton, {
+              [classes.selectedButton]: selectedStatus === "disabled" && !!relevantRoutine,
+            })}
+            onClick={() => handleShowByStatus("disabled")}
+            disabled={!relevantRoutine}
+          >
+            <IconX className={"icon"} />
+          </ActionIcon>
+          <ActionIcon
+            variant="default"
+            className={cn(classes.taskStatusButton, {
+              [classes.selectedButton]: selectedStatus === "expired" && !!relevantRoutine,
+            })}
+            onClick={() => handleShowByStatus("expired")}
+            disabled={!relevantRoutine}
+          >
+            <IconClock className={"icon"} />
+          </ActionIcon>
+        </Group>
+
+        {selectedTasks.length > 0 ? (
+          <Stack className={classes.content}>
+            {selectedTasks && (
+              <Stack className={classes.list}>
+                {selectedTasks.map((record, index) => {
+                  return (
+                    <CalendarRow
+                      key={index}
+                      mode={mode as string}
+                      task={record}
+                      tasksToUpdate={tasksToUpdate}
+                      selectTask={selectTask}
+                      handleChangeMode={handleChangeMode}
+                    />
+                  );
+                })}
+              </Stack>
+            )}
+          </Stack>
+        ) : (
+          <OverlayWithText icon={emptyIcon} text={emptyText} />
         )}
-        <ActionIcon
-          variant="default"
-          className={cn(classes.taskStatusButton, {
-            [classes.selectedButton]: selectedStatus === "active" && !!relevantRoutine,
-          })}
-          onClick={() => handleShowByStatus("active")}
-          disabled={!relevantRoutine}
-        >
-          <IconActivity className={"icon"} />
-        </ActionIcon>
-        <ActionIcon
-          variant="default"
-          className={cn(classes.taskStatusButton, {
-            [classes.selectedButton]: selectedStatus === "disabled" && !!relevantRoutine,
-          })}
-          onClick={() => handleShowByStatus("disabled")}
-          disabled={!relevantRoutine}
-        >
-          <IconX className={"icon"} />
-        </ActionIcon>
-        <ActionIcon
-          variant="default"
-          className={cn(classes.taskStatusButton, {
-            [classes.selectedButton]: selectedStatus === "expired" && !!relevantRoutine,
-          })}
-          onClick={() => handleShowByStatus("expired")}
-          disabled={!relevantRoutine}
-        >
-          <IconClock className={"icon"} />
-        </ActionIcon>
-      </Group>
 
-      {selectedTasks.length > 0 ? (
-        <Stack className={classes.content}>
-          {selectedTasks && (
-            <Stack className={classes.list}>
-              {selectedTasks.map((record, index) => {
-                return (
-                  <CalendarRow
-                    key={index}
-                    mode={mode as string}
-                    task={record}
-                    tasksToUpdate={tasksToUpdate}
-                    selectTask={selectTask}
-                    handleChangeMode={handleChangeMode}
-                  />
-                );
-              })}
-            </Stack>
-          )}
-        </Stack>
-      ) : (
-        <OverlayWithText icon={emptyIcon} text={emptyText} />
-      )}
-
-      {tasksToUpdate.length > 0 && (
-        <Button
-          loading={isLoading}
-          disabled={disableButton || isLoading}
-          onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
-        >
-          {selectedStatus === "active" ? (
-            <IconX className="icon" style={{ marginRight: rem(8) }} />
-          ) : (
-            <IconCheck className="icon" style={{ marginRight: rem(8) }} />
-          )}
-          {selectedStatus === "active" ? "Disable" : "Enable"} selected
-        </Button>
-      )}
+        {tasksToUpdate.length > 0 && (
+          <Button
+            loading={isLoading}
+            disabled={disableButton || isLoading}
+            onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
+          >
+            {selectedStatus === "active" ? (
+              <IconX className="icon" style={{ marginRight: rem(8) }} />
+            ) : (
+              <IconCheck className="icon" style={{ marginRight: rem(8) }} />
+            )}
+            {selectedStatus === "active" ? "Disable" : "Enable"} selected
+          </Button>
+        )}
+      </SkeletonWrapper>
     </Stack>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
@@ -63,22 +64,24 @@ export default function ResultStyle() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <StyleHeader
-        titles={individualResultTitles}
-        isDisabled={!styles || (styles && styles.length === 0)}
-        showReturn
-      />
-      {styles ? (
-        <StyleGallery
-          styles={styles}
-          hasMore={hasMore}
-          handleFetchStyles={handleFetchStyles}
-          setStyles={setStyles}
-          isSelfPage
+      <SkeletonWrapper>
+        <StyleHeader
+          titles={individualResultTitles}
+          isDisabled={!styles || (styles && styles.length === 0)}
+          showReturn
         />
-      ) : (
-        <Loader m="auto" />
-      )}
+        {styles ? (
+          <StyleGallery
+            styles={styles}
+            hasMore={hasMore}
+            handleFetchStyles={handleFetchStyles}
+            setStyles={setStyles}
+            isSelfPage
+          />
+        ) : (
+          <Loader m="auto" />
+        )}
+      </SkeletonWrapper>
     </Stack>
   );
 }

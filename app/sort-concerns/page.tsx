@@ -3,13 +3,14 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowRight, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Button, Group, Stack, Title } from "@mantine/core";
+import { Button, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import FilterDropdown from "@/components/FilterDropdown";
 import InstructionContainer from "@/components/InstructionContainer";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { SexEnum, UserDataType } from "@/types/global";
+import SkeletonWrapper from "../SkeletonWrapper";
 import ConcernsSortCard from "./ConcernsSortCard";
 import { maintenanceConcerns } from "./maintenanceConcerns";
 import classes from "./sort-concerns.module.css";
@@ -74,36 +75,40 @@ export default function SortConcerns() {
   }, [type, typeof selectedConcerns]);
 
   return (
-    <Stack className={classes.container} ref={ref}>
-      <Group className={classes.heading}>
-        <Title order={1}>Sort concerns</Title>
-        <FilterDropdown
-          data={filterData}
-          icons={icons}
-          placeholder="Select type"
-          filterType="type"
-          addToQuery
+    <Stack className={`${classes.container} smallPage`} ref={ref}>
+      <SkeletonWrapper>
+        <Group className={classes.heading}>
+          <Title order={1}>Sort concerns</Title>
+          <FilterDropdown
+            data={filterData}
+            icons={icons}
+            placeholder="Select type"
+            filterType="type"
+            addToQuery
+          />
+        </Group>
+        <InstructionContainer
+          sex={sex || SexEnum.FEMALE}
+          title="Instructions"
+          instruction={"These are the potential concerns identified from your photos."}
+          description="Drag and drop to change their importance or click the minus sign to ignore."
+          customStyles={{ flex: 0 }}
         />
-      </Group>
-      <InstructionContainer
-        sex={sex || SexEnum.FEMALE}
-        title="Instructions"
-        instruction={"These are the potential concerns identified from your photos."}
-        description="Drag and drop to change their importance or click the minus sign to ignore."
-        customStyles={{ flex: 0 }}
-      />
-      <Button
-        loading={isLoading}
-        onClick={onButtonClick}
-        disabled={isLoading || !selectedConcerns || (activeConcerns && activeConcerns.length === 0)}
-      >
-        Next <IconArrowRight className="icon" />
-      </Button>
-      <ConcernsSortCard
-        concerns={selectedConcerns || []}
-        type={type as string}
-        maxHeight={height}
-      />
+        <Button
+          loading={isLoading}
+          onClick={onButtonClick}
+          disabled={
+            isLoading || !selectedConcerns || (activeConcerns && activeConcerns.length === 0)
+          }
+        >
+          Next <IconArrowRight className="icon" />
+        </Button>
+        <ConcernsSortCard
+          concerns={selectedConcerns || []}
+          type={type as string}
+          maxHeight={height}
+        />
+      </SkeletonWrapper>
     </Stack>
   );
 }

@@ -1,5 +1,4 @@
 import "@/styles/mantine.css";
-// import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/nprogress/styles.css";
@@ -56,7 +55,6 @@ export default function RootLayout({ children }: Props) {
               <>
                 <UserContextProvider>
                   <Header />
-
                   <Stack className={classes.container}>{children}</Stack>
                 </UserContextProvider>
               </>

@@ -3,13 +3,14 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import openErrorModal from "@/helpers/openErrorModal";
+import { individualResultTitles } from "../individualResultTitles";
 import ProofGallery from "./ProofGallery";
 import ProofHeader from "./ProofHeader";
-import { individualResultTitles } from "../individualResultTitles";
 import { SimpleProofType } from "./types";
 import classes from "./proof.module.css";
 
@@ -72,18 +73,20 @@ export default function ResultsProof() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <ProofHeader titles={individualResultTitles} showReturn />
-      {proof ? (
-        <ProofGallery
-          proof={proof}
-          hasMore={hasMore}
-          handleFetchProof={fetchProof}
-          setProof={setProof}
-          isSelfPage
-        />
-      ) : (
-        <Loader m="auto" />
-      )}
+      <SkeletonWrapper>
+        <ProofHeader titles={individualResultTitles} showReturn />
+        {proof ? (
+          <ProofGallery
+            proof={proof}
+            hasMore={hasMore}
+            handleFetchProof={fetchProof}
+            setProof={setProof}
+            isSelfPage
+          />
+        ) : (
+          <Loader m="auto" />
+        )}
+      </SkeletonWrapper>
     </Stack>
   );
 }

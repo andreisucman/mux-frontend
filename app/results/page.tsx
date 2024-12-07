@@ -6,10 +6,11 @@ import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
+import SkeletonWrapper from "../SkeletonWrapper";
+import { individualResultTitles } from "./individualResultTitles";
 import ProgressGallery from "./ProgressGallery";
 import ProgressHeader from "./ProgressHeader";
 import { SimpleProgressType } from "./types";
-import { individualResultTitles } from "./individualResultTitles";
 import classes from "./results.module.css";
 
 export const runtime = "edge";
@@ -63,18 +64,20 @@ export default function ResultsProgress() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <ProgressHeader titles={individualResultTitles} showReturn />
-      {progress ? (
-        <ProgressGallery
-          progress={progress}
-          hasMore={hasMore}
-          handleFetchProgress={handleFetchProgress}
-          setProgress={setProgress}
-          isSelfPage
-        />
-      ) : (
-        <Loader m="auto" />
-      )}
+      <SkeletonWrapper>
+        <ProgressHeader titles={individualResultTitles} showReturn />
+        {progress ? (
+          <ProgressGallery
+            progress={progress}
+            hasMore={hasMore}
+            handleFetchProgress={handleFetchProgress}
+            setProgress={setProgress}
+            isSelfPage
+          />
+        ) : (
+          <Loader m="auto" />
+        )}
+      </SkeletonWrapper>
     </Stack>
   );
 }

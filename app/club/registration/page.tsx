@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconBuildingBank, IconRocket, IconSquareCheck } from "@tabler/icons-react";
 import { Group, Stack, Text, Title } from "@mantine/core";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
@@ -60,8 +61,8 @@ export default function ClubRegistration() {
   }, [detailsSubmitted]);
 
   return (
-    <>
-      <Stack className={classes.container}>
+    <Stack className={`${classes.container} smallPage`}>
+      <SkeletonWrapper>
         <PageHeader title="Club admission" showReturn hidePartDropdown hideTypeDropdown />
         <Stack className={classes.content}>
           <Stack>
@@ -100,7 +101,7 @@ export default function ClubRegistration() {
             />
           </Stack>
         </Stack>
-      </Stack>
-    </>
+      </SkeletonWrapper>
+    </Stack>
   );
 }

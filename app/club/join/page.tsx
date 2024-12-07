@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { IconTargetArrow } from "@tabler/icons-react";
 import { rem, Stack, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
@@ -48,20 +49,20 @@ export default function ClubJoin() {
 
   const checkboxLabel = useMemo(
     () => (
-      <Text component="div" lineClamp={2} size="sm">
+      <Text lineClamp={2} size="sm">
         I have read, understood and accept the{" "}
-        <Text
+        <span
           onClickCapture={() => openLegalBody("club")}
-          style={{ cursor: "pointer" }}
-        >{`Club's Terms of Service`}</Text>
+          style={{ cursor: "pointer", fontWeight: 600 }}
+        >{`Club's Terms of Service`}</span>
       </Text>
     ),
     []
   );
 
   return (
-    <>
-      <Stack className={classes.container}>
+    <Stack className={`${classes.container} smallPage`}>
+      <SkeletonWrapper>
         <PageHeader title="Join the Club" hidePartDropdown hideTypeDropdown showReturn />
         <Stack className={classes.wrapper}>
           <Stack className={classes.announcement}>
@@ -85,7 +86,7 @@ export default function ClubJoin() {
             onClick={onStart}
           />
         </Stack>
-      </Stack>
-    </>
+      </SkeletonWrapper>
+    </Stack>
   );
 }

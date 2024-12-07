@@ -20,6 +20,7 @@ import modifyQuery from "@/helpers/modifyQuery";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { daysFrom } from "@/helpers/utils";
 import { RequiredSubmissionType, TaskType } from "@/types/global";
+import SkeletonWrapper from "../SkeletonWrapper";
 import CreateRecipeBox from "./CreateRecipeBox";
 import EditTaskModal, { UpdateTaskProps } from "./EditTaskModal";
 import ProofStatus from "./ProofStatus";
@@ -193,7 +194,11 @@ export default function Explain() {
       centered: true,
       modal: "general",
       size: "auto",
-      title: <Title order={5} component={"p"}>Edit {taskName}</Title>,
+      title: (
+        <Title order={5} component={"p"}>
+          Edit {taskName}
+        </Title>
+      ),
       innerProps: (
         <EditTaskModal
           taskId={taskId || ""}
@@ -252,89 +257,91 @@ export default function Explain() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title={name || ""} showReturn hidePartDropdown hideTypeDropdown/>
+      <SkeletonWrapper>
+        <PageHeader title={name || ""} showReturn hidePartDropdown hideTypeDropdown />
 
-      <Skeleton className="skeleton" visible={!taskInfo}>
-        <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
-          {showWaitComponent ? (
-            <WaitComponent
-              operationKey={`createRecipe-${taskId}`}
-              description={"Creating a recipe"}
-              onComplete={() => handleFetchTaskInfo(taskId || "")}
-            />
-          ) : (
-            <>
-              <Switch
-                label={proofSwitchLabel}
-                disabled={taskStatus === "completed"}
-                checked={proofEnabled || false}
-                onChange={() => switchProofUpload(!proofEnabled, taskId)}
+        <Skeleton className="skeleton" visible={!taskInfo}>
+          <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
+            {showWaitComponent ? (
+              <WaitComponent
+                operationKey={`createRecipe-${taskId}`}
+                description={"Creating a recipe"}
+                onComplete={() => handleFetchTaskInfo(taskId || "")}
               />
+            ) : (
+              <>
+                <Switch
+                  label={proofSwitchLabel}
+                  disabled={taskStatus === "completed"}
+                  checked={proofEnabled || false}
+                  onChange={() => switchProofUpload(!proofEnabled, taskId)}
+                />
 
-              {required.map((r: RequiredSubmissionType, index) => {
-                return (
-                  <ProofStatus
-                    key={index}
-                    name={r.name}
-                    dayTime={r.dayTime}
-                    submissionId={r.submissionId}
-                    selectedTask={taskInfo}
-                    setTaskInfo={setTaskInfo}
-                    notStarted={notStarted}
+                {required.map((r: RequiredSubmissionType, index) => {
+                  return (
+                    <ProofStatus
+                      key={index}
+                      name={r.name}
+                      dayTime={r.dayTime}
+                      submissionId={r.submissionId}
+                      selectedTask={taskInfo}
+                      setTaskInfo={setTaskInfo}
+                      notStarted={notStarted}
+                    />
+                  );
+                })}
+
+                <ExplanationContainer title="Description:" text={description} />
+                {isRecipe && (
+                  <CreateRecipeBox
+                    taskId={taskId}
+                    recipe={recipe}
+                    setShowWaitComponent={setShowWaitComponent}
                   />
-                );
-              })}
+                )}
+                <Stack className={classes.exampleWrapper}>
+                  {example && <ExampleContainer title="Example:" example={example} />}
+                  <ExplanationContainer
+                    title="Steps:"
+                    text={instruction}
+                    customStyles={{ borderRadius: "0 0 1rem 1rem" }}
+                  />
+                </Stack>
 
-              <ExplanationContainer title="Description:" text={description} />
-              {isRecipe && (
-                <CreateRecipeBox
-                  taskId={taskId}
-                  recipe={recipe}
-                  setShowWaitComponent={setShowWaitComponent}
-                />
-              )}
-              <Stack className={classes.exampleWrapper}>
-                {example && <ExampleContainer title="Example:" example={example} />}
-                <ExplanationContainer
-                  title="Steps:"
-                  text={instruction}
-                  customStyles={{ borderRadius: "0 0 1rem 1rem" }}
-                />
-              </Stack>
-
-              {finalSuggestions && finalSuggestions.length > 0 && (
-                <SuggestionContainer
-                  title="Products:"
-                  items={finalSuggestions}
-                  taskKey={taskKey || ""}
-                  productsPersonalized={productsPersonalized}
-                  refetchTask={handleFetchTaskProducts}
-                />
-              )}
-              <Group className={classes.buttonsGroup}>
-                <Button
-                  variant="default"
-                  disabled={taskStatus === "completed"}
-                  className={classes.disableButton}
-                  onClick={handleRedirectToCalendar}
-                >
-                  <IconX className="icon" style={{ marginRight: rem(8) }} />
-                  Disable task
-                </Button>
-                <Button
-                  variant="default"
-                  disabled={taskStatus === "completed"}
-                  className={classes.disableButton}
-                  onClick={openEditTaskModal}
-                >
-                  <IconPencil className="icon" style={{ marginRight: rem(8) }} />
-                  Edit task
-                </Button>
-              </Group>
-            </>
-          )}
-        </Stack>
-      </Skeleton>
+                {finalSuggestions && finalSuggestions.length > 0 && (
+                  <SuggestionContainer
+                    title="Products:"
+                    items={finalSuggestions}
+                    taskKey={taskKey || ""}
+                    productsPersonalized={productsPersonalized}
+                    refetchTask={handleFetchTaskProducts}
+                  />
+                )}
+                <Group className={classes.buttonsGroup}>
+                  <Button
+                    variant="default"
+                    disabled={taskStatus === "completed"}
+                    className={classes.disableButton}
+                    onClick={handleRedirectToCalendar}
+                  >
+                    <IconX className="icon" style={{ marginRight: rem(8) }} />
+                    Disable task
+                  </Button>
+                  <Button
+                    variant="default"
+                    disabled={taskStatus === "completed"}
+                    className={classes.disableButton}
+                    onClick={openEditTaskModal}
+                  >
+                    <IconPencil className="icon" style={{ marginRight: rem(8) }} />
+                    Edit task
+                  </Button>
+                </Group>
+              </>
+            )}
+          </Stack>
+        </Skeleton>
+      </SkeletonWrapper>
     </Stack>
   );
 }
