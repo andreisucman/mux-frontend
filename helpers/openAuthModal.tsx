@@ -6,18 +6,10 @@ import { SignInStateType } from "@/functions/signIn";
 
 type Props = {
   title: string;
-  formType: "login" | "registration";
   stateObject?: SignInStateType;
   customStyles?: React.CSSProperties;
-  showTos: boolean;
 };
-export default async function openAuthModal({
-  title,
-  formType,
-  stateObject,
-  customStyles,
-  showTos,
-}: Props) {
+export default async function openAuthModal({ title, stateObject, customStyles }: Props) {
   modals.openContextModal({
     modal: "general",
     centered: true,
@@ -26,13 +18,6 @@ export default async function openAuthModal({
         {title}
       </Title>
     ),
-    innerProps: (
-      <AuthForm
-        formType={formType}
-        stateObject={stateObject}
-        customStyles={customStyles}
-        showTos={showTos}
-      />
-    ),
+    innerProps: <AuthForm stateObject={stateObject} customStyles={customStyles} />,
   });
 }

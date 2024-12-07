@@ -15,6 +15,5 @@ export enum AuthStateEnum {
   UNAUTHENTICATED = "unauthenticated",
   LOADING = "loading",
   AUTHENTICATED = "authenticated",
-  EMAILCONFIRMATIONREQUIRED = "emailConfirmationRequired",
   UNKNOWN = "unknown",
 }

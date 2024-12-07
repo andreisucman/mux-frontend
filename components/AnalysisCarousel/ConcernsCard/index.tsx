@@ -42,10 +42,12 @@ function ConcernsCard({ userId, concerns, type, title }: Props) {
             icon={<IconRotateDot className="icon" />}
             onClick={() =>
               openAuthModal({
-                formType: "registration",
-                stateObject: { redirectPath: "/routines", redirectQuery: `type=${type}`, localUserId: userId },
+                stateObject: {
+                  redirectPath: "/routines",
+                  redirectQuery: `type=${type}`,
+                  localUserId: userId,
+                },
                 title: "Start your change",
-                showTos: true,
               })
             }
             containerStyles={{ flex: 0, maxWidth: rem(300), width: "100%", margin: "0 auto" }}

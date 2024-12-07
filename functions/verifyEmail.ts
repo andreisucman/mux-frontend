@@ -18,7 +18,7 @@ const verifyEmail = async ({ code }: VerifyEmailProps) => {
         return;
       }
 
-      status = true;
+      status = response.message;
     }
   } catch (err) {
     openErrorModal();

@@ -27,8 +27,6 @@ export default function ScanIndexPage() {
         if (email) {
           // the user has finished the onboarding
           openAuthModal({
-            formType: "login",
-            showTos: false,
             title: "Login to continue",
             stateObject: { redirectPath, redirectQuery, localUserId: userId },
           });

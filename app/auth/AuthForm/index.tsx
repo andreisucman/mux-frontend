@@ -22,7 +22,6 @@ import classes from "./AuthForm.module.css";
 
 type Props = {
   stateObject?: SignInStateType;
-  showTos: boolean;
   customStyles?: { [key: string]: any };
 };
 
@@ -38,17 +37,6 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
   const secondaryButtonText = showResetPassword ? "Return" : "Reset password";
-
-  console.log("password",password)
-
-
-  const onSocialButtonClick = useCallback(async () => {
-    try {
-      await signIn({ router, stateObject });
-    } catch (err) {
-      console.log("Error in authorize: ", err);
-    }
-  }, [typeof router, typeof stateObject]);
 
   const handleEnterEmail = (e: React.FormEvent<HTMLInputElement>) => {
     if (emailError) setEmailError("");
@@ -118,7 +106,11 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       </Title>
       {!showResetPassword && (
         <>
-          <Button onClick={onSocialButtonClick} className={classes.button} variant="default">
+          <Button
+            onClick={() => signIn({ router, stateObject })}
+            className={classes.button}
+            variant="default"
+          >
             <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
             Sign in
           </Button>
@@ -148,22 +140,24 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
           </>
         )}
         <Stack className={classes.footer}>
-          {!showResetPassword && <Text lineClamp={2} size="xs" ta="center">
-            By signing in, you accept our{" "}
-            <span
-              onClickCapture={() => openLegalBody("privacy")}
-              style={{ cursor: "pointer", fontWeight: 600 }}
-            >
-              Privacy policy
-            </span>{" "}
-            and{" "}
-            <span
-              onClickCapture={() => openLegalBody("terms")}
-              style={{ cursor: "pointer", fontWeight: 600 }}
-            >
-              Terms of Service
-            </span>
-          </Text>}
+          {!showResetPassword && (
+            <Text lineClamp={2} size="xs" ta="center">
+              By signing in, you accept our{" "}
+              <span
+                onClickCapture={() => openLegalBody("privacy")}
+                style={{ cursor: "pointer", fontWeight: 600 }}
+              >
+                Privacy policy
+              </span>{" "}
+              and{" "}
+              <span
+                onClickCapture={() => openLegalBody("terms")}
+                style={{ cursor: "pointer", fontWeight: 600 }}
+              >
+                Terms of Service
+              </span>
+            </Text>
+          )}
           <Button type="submit" className={classes.button}>
             <IconMail className="icon" style={{ marginRight: rem(8) }} /> Sign in
           </Button>

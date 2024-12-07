@@ -70,33 +70,28 @@ export default function Settings() {
     }
   }, []);
 
-  const deleteAccount = useCallback(
-    async (isDelete: boolean) => {
-      try {
-        const response = await callTheServer({
-          endpoint: "updateAccountDeletion",
-          method: "POST",
-          body: { isActivate: !isDelete },
+  const deleteAccount = async (isDelete: boolean) => {
+    try {
+      const response = await callTheServer({
+        endpoint: "updateAccountDeletion",
+        method: "POST",
+        body: { isActivate: !isDelete },
+      });
+
+      if (response.status === 200) {
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          deleteOn: new Date(response.message),
+        }));
+
+        openSuccessModal({
+          description: "Your account is scheduled for deletion after 30 days.",
         });
-
-        if (response.status === 200) {
-          if (userId) {
-            setUserDetails((prev: UserDataType) => ({
-              ...prev,
-              deleteOn: new Date(response.message),
-            }));
-          }
-
-          openSuccessModal({
-            description: "Your account is scheduled for deletion after 30 days.",
-          });
-        }
-      } catch (err) {
-        console.log("Error in deleteAccount: ", err);
       }
-    },
-    [userId]
-  );
+    } catch (err) {
+      console.log("Error in deleteAccount: ", err);
+    }
+  };
 
   const askConfirmation = ({ title, body, onConfirm }: AskConfirmationProps) => {
     modals.openConfirmModal({
@@ -112,44 +107,75 @@ export default function Settings() {
     });
   };
 
-  const changeEmail = useCallback(
-    async (code: string, newEmail: string) => {
-      if (newEmail === currentEmail) return;
+  const sendConfirmationCode = async () => {
+    try {
+      emailChangeModalsStack.open("changeEmail");
+      await callTheServer({ endpoint: "sendConfirmationCode", method: "POST" });
+    } catch (err) {
+      console.log("Error in sendConfirmationCode: ", err);
+      openErrorModal();
+    }
+  };
+
+  const handleChangeEmailStepOne = async (code: string, newEmail: string) => {
+    try {
       if (isLoading) return;
       setIsLoading(true);
 
-      try {
-        const response = await callTheServer({
-          endpoint: "changeEmail",
-          method: "POST",
-          body: { newEmail, code },
-        });
+      const response = await callTheServer({
+        endpoint: "changeEmailStepOne",
+        method: "POST",
+        body: { code, newEmail },
+      });
 
-        if (response.status === 200) {
-          setUserDetails((prev: UserDataType) => ({ ...prev, email }));
-          emailChangeModalsStack.close("changeEmail");
-          emailChangeModalsStack.open("confirmNewEmail");
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          return;
         }
-      } catch (err) {
-        openErrorModal();
-      } finally {
-        setConfirmationCode("");
-        setIsLoading(false);
-      }
-    },
-    [isLoading, currentEmail, emailChangeModalsStack]
-  );
 
-  const handleVerifyEmail = useCallback(async () => {
+        emailChangeModalsStack.close("changeEmail");
+        emailChangeModalsStack.open("confirmNewEmail");
+      }
+    } catch (err) {
+      console.log("Error in handleChangeEmailStepOne: ", err);
+      openErrorModal();
+    } finally {
+      setConfirmationCode("");
+      setIsLoading(false);
+    }
+  };
+
+  const handleChangeEmailStepTwo = async (code: string, newEmail: string) => {
+    if (newEmail === currentEmail) return;
     if (isLoading) return;
     setIsLoading(true);
-    const isSuccess = await verifyEmail({ code: confirmationCode });
-    if (isSuccess) {
-      emailChangeModalsStack.close("confirmNewEmail");
-      openSuccessModal({ description: "Your email has been verified." });
+
+    try {
+      const response = await callTheServer({
+        endpoint: "changeEmailStepTwo",
+        method: "POST",
+        body: { code, newEmail },
+      });
+
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          return;
+        }
+
+        setUserDetails((prev: UserDataType) => ({ ...prev, email }));
+
+        emailChangeModalsStack.close("confirmNewEmail");
+        openSuccessModal({ description: response.message });
+      }
+    } catch (err) {
+      openErrorModal();
+    } finally {
+      setConfirmationCode("");
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  }, [confirmationCode]);
+  };
 
   const formattedDeleteOnDate = formatDate({ date: deleteOn || new Date() });
 
@@ -190,7 +216,7 @@ export default function Settings() {
                     askConfirmation({
                       title: "Confirm email change",
                       body: "Start the email change?",
-                      onConfirm: () => emailChangeModalsStack.open("changeEmail"),
+                      onConfirm: () => sendConfirmationCode(),
                     })
                   }
                 >
@@ -198,18 +224,20 @@ export default function Settings() {
                 </ActionIcon>
               }
             />
-            <UnstyledButton
-              className={classes.item}
-              onClick={() =>
-                askConfirmation({
-                  title: "Confirm reset password",
-                  body: "Start password reset?",
-                  onConfirm: () => sendPasswordResetEmail({ email }),
-                })
-              }
-            >
-              <IconAsterisk className={`${classes.icon} icon`} /> Reset password
-            </UnstyledButton>
+            {auth === "e" && (
+              <UnstyledButton
+                className={classes.item}
+                onClick={() =>
+                  askConfirmation({
+                    title: "Confirm reset password",
+                    body: "Start password reset?",
+                    onConfirm: () => sendPasswordResetEmail({ email }),
+                  })
+                }
+              >
+                <IconAsterisk className={`${classes.icon} icon`} /> Reset password
+              </UnstyledButton>
+            )}
             <UnstyledButton
               className={classes.item}
               onClick={() =>
@@ -249,14 +277,13 @@ export default function Settings() {
         }
         centered
       >
-        <Stack>
-          <Text>We've sent a confirmation code to your current email. Enter it to continue.</Text>
+        <Stack align="center">
+          <Text>We've sent a confirmation code to {currentEmail} email. Enter it to continue.</Text>
           <PinInput length={5} size={isMobile ? "md" : "lg"} onChange={setConfirmationCode} />
           <Button
-            variant="default"
-            flex={1}
-            disabled={confirmationCode.length < 5}
-            onClick={() => changeEmail(confirmationCode, email)}
+            loading={isLoading}
+            disabled={confirmationCode.length < 5 || isLoading}
+            onClick={() => handleChangeEmailStepOne(confirmationCode, email)}
           >
             Next <IconArrowRight className={"icon"} style={{ marginLeft: rem(8) }} />
           </Button>
@@ -271,16 +298,16 @@ export default function Settings() {
         }
         centered
       >
-        <Stack>
-          <Text>We've sent a confirmation code to your new email. Enter it to continue.</Text>
+        <Stack align="center">
+          <Text>We've sent a confirmation code to {email}. Enter it to continue.</Text>
           <PinInput length={5} size={isMobile ? "md" : "lg"} onChange={setConfirmationCode} />
           <Button
-            variant="default"
-            flex={1}
-            disabled={confirmationCode.length < 5}
-            onClick={handleVerifyEmail}
+            loading={isLoading}
+            disabled={confirmationCode.length < 5 || isLoading}
+            onClick={() => handleChangeEmailStepTwo(confirmationCode, email)}
           >
-            <IconArrowRight className={"icon"} style={{ marginRight: rem(8) }} /> Finish
+            Finish
+            <IconArrowRight className={"icon"} style={{ marginLeft: rem(8) }} />
           </Button>
         </Stack>
       </Modal>

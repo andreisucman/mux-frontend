@@ -80,16 +80,25 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!status || status === AuthStateEnum.UNKNOWN) return;
 
     if (onProtectedPage) {
-      if (status === AuthStateEnum.EMAILCONFIRMATIONREQUIRED && pathname !== "/settings") {
-        router.replace("/verify-email");
-        return;
-      }
-
       if (status !== AuthStateEnum.AUTHENTICATED) {
         router.replace("/auth");
       }
     }
   }, [status]);
+
+  useEffect(() => {
+    if (!userDetailsState) return;
+    console.log("emailVerified in context", userDetailsState.emailVerified);
+
+    if (onProtectedPage) {
+      if (!userDetailsState.emailVerified) {
+        if (pathname !== "/settings") {
+          router.push("/verify-email");
+          return;
+        }
+      }
+    }
+  }, [userDetailsState?.emailVerified, pathname]);
 
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;

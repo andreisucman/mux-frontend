@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowRight } from "@tabler/icons-react";
 import { Button, PinInput, Stack, Text, Title } from "@mantine/core";
@@ -9,6 +9,7 @@ import { UserContext } from "@/context/UserContext";
 import verifyEmail from "@/functions/verifyEmail";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
+import { UserDataType } from "@/types/global";
 import classes from "./verify-email.module.css";
 
 export const runtime = "edge";
@@ -16,11 +17,11 @@ export const runtime = "edge";
 export default function VerifyEmail() {
   const router = useRouter();
   const [code, setCode] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const { userDetails } = useContext(UserContext);
-  const { email } = userDetails || {};
+  const [isLoading, setIsLoading] = useState(false);
+  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { email, emailVerified } = userDetails || {};
 
   const redirectUrl = searchParams.get("redirectUrl");
 
@@ -29,25 +30,28 @@ export default function VerifyEmail() {
       const decodedUrl = decodeURIComponent(redirectUrl);
       router.replace(decodedUrl);
     } else {
-      router.replace("/routine");
+      router.back();
     }
   }, []);
 
-  const handleVerifyEmail = useCallback(async () => {
+  const handleVerifyEmail = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
-      const isSucess = await verifyEmail({ code });
-
-      if (isSucess) handleRedirect(redirectUrl);
+      const isSuccess = await verifyEmail({ code });
+      setUserDetails((prev: UserDataType) => ({ ...prev, emailVerified: isSuccess }));
     } catch (err) {
       openErrorModal();
+      setIsLoading;
       console.log("Error in handleVerifyEmail: ", err);
-    } finally {
-      setIsLoading(false);
     }
-  }, [redirectUrl, isLoading, code]);
+  };
+
+  useEffect(() => {
+    if (!emailVerified) return;
+    handleRedirect(redirectUrl);
+  }, [emailVerified]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
