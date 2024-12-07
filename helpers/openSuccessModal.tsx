@@ -8,14 +8,14 @@ type Props = {
 };
 
 export default function openSuccessModal(props?: Props) {
-  const { title, description, onClose } = props || { title: "✔️ Success!" };
+  const { title, description, onClose } = props || {};
 
   try {
     modals.open({
       centered: true,
       title: (
         <Title order={5} component={"p"}>
-          {title}
+          {title || "✔️ Success!"}
         </Title>
       ),
       children: description,

@@ -1,4 +1,4 @@
-import { Title } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ClubLegalBody from "@/app/legal/club/ClubLegalBody";
 import PrivacyLegalBody from "@/app/legal/privacy/PrivacyLegalBody";
@@ -25,12 +25,12 @@ export default function openLegalBody(type: "club" | "terms" | "privacy") {
   modals.openContextModal({
     centered: true,
     modal: "general",
-    size: "md",
+    size: "lg",
     title: (
       <Title order={5} component={"p"}>
         {title}
       </Title>
     ),
-    innerProps: body,
+    innerProps: <Stack>{body}</Stack>,
   });
 }

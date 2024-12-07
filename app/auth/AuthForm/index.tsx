@@ -10,15 +10,13 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import PrivacyLegalBody from "@/app/legal/privacy/PrivacyLegalBody";
-import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import { UserContext } from "@/context/UserContext";
 import authenticate from "@/functions/authenticate";
 import signIn, { SignInStateType } from "@/functions/signIn";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
+import openLegalBody from "@/helpers/openLegalBody";
 import { validateEmail } from "@/helpers/utils";
 import classes from "./AuthForm.module.css";
 
@@ -27,20 +25,6 @@ type Props = {
   showTos: boolean;
   customStyles?: { [key: string]: any };
 };
-
-function openLegalBody(type: "privacy" | "terms") {
-  modals.openContextModal({
-    centered: true,
-    modal: "general",
-    size: "md",
-    title: (
-      <Title order={5} component={"p"}>
-        {"Terms of Service"}
-      </Title>
-    ),
-    innerProps: <Stack>{type === "terms" ? <TermsLegalBody /> : <PrivacyLegalBody />}</Stack>,
-  });
-}
 
 export default function AuthForm({ stateObject, customStyles }: Props) {
   const router = useRouter();
@@ -54,6 +38,9 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
   const secondaryButtonText = showResetPassword ? "Return" : "Reset password";
+
+  console.log("password",password)
+
 
   const onSocialButtonClick = useCallback(async () => {
     try {
@@ -113,6 +100,8 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       }
 
       authenticate({
+        email,
+        password,
         state,
         router,
         setStatus,
@@ -159,16 +148,22 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
           </>
         )}
         <Stack className={classes.footer}>
-          <Text component="div" lineClamp={2} size="sm">
-            By signing in, you accept our
-            <Text onClickCapture={() => openLegalBody("privacy")} style={{ cursor: "pointer" }}>
+          {!showResetPassword && <Text lineClamp={2} size="xs" ta="center">
+            By signing in, you accept our{" "}
+            <span
+              onClickCapture={() => openLegalBody("privacy")}
+              style={{ cursor: "pointer", fontWeight: 600 }}
+            >
               Privacy policy
-            </Text>{" "}
-            and
-            <Text onClickCapture={() => openLegalBody("terms")} style={{ cursor: "pointer" }}>
+            </span>{" "}
+            and{" "}
+            <span
+              onClickCapture={() => openLegalBody("terms")}
+              style={{ cursor: "pointer", fontWeight: 600 }}
+            >
               Terms of Service
-            </Text>
-          </Text>
+            </span>
+          </Text>}
           <Button type="submit" className={classes.button}>
             <IconMail className="icon" style={{ marginRight: rem(8) }} /> Sign in
           </Button>

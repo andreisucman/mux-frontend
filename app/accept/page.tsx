@@ -43,9 +43,8 @@ export default function AcceptIndexPage() {
           endpoint: "startTheFlow",
           method: "POST",
           body: {
-            userId,
-            tosAccepted,
             timeZone,
+            tosAccepted,
             fingerprint,
           },
         });
@@ -81,11 +80,14 @@ export default function AcceptIndexPage() {
 
   const checkboxLabel = useMemo(
     () => (
-      <Text component="div" lineClamp={2} size="sm">
-        I have read, understood and accept the <Text>Terms of Service</Text> and{" "}
-        <Text onClickCapture={() => openLegalBody("privacy")} style={{ cursor: "pointer" }}>
+      <Text lineClamp={2} size="sm">
+        I have read, understood and accept the <span>Terms of Service</span> and{" "}
+        <span
+          onClickCapture={() => openLegalBody("privacy")}
+          style={{ cursor: "pointer", fontWeight: 600 }}
+        >
           Privacy policy
-        </Text>
+        </span>
       </Text>
     ),
     []

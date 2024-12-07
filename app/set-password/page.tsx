@@ -37,7 +37,7 @@ export default function SetPassword() {
         }
 
         const response = await callTheServer({
-          endpoint: "/setPassword",
+          endpoint: "setPassword",
           method: "POST",
           body: {
             password,
@@ -47,13 +47,16 @@ export default function SetPassword() {
 
         if (response.status === 200) {
           if (response.error) {
-            openErrorModal({ description: response.error });
+            openErrorModal({
+              description: `Your access token is ${response.error}`,
+              // onClose: () => router.replace("/auth"),
+            });
             return;
           }
 
           openSuccessModal({
             description: response.message,
-            onClose: () => router.replace("/auth"),
+            // onClose: () => router.replace("/auth"),
           });
         }
       } catch (err) {
@@ -68,7 +71,7 @@ export default function SetPassword() {
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
         <Stack className={classes.content}>
-          <Title order={1}>Set password</Title>
+          <Title order={1}>Set new password</Title>
 
           <form onSubmit={handleSubmitSetPasswordForm} className={classes.form}>
             <PasswordInputWithStrength

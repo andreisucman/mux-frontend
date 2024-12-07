@@ -32,109 +32,6 @@ interface TaskTypeWithClick extends TaskType {
   onClick: () => void;
 }
 
-const fakeTasks = [
-  {
-    _id: "673ca0e00371638611b2f06e",
-    name: "Apply yogurt mask",
-    concern: "dehydration",
-    nearestConcerns: [
-      "dehydration",
-      "dry_skin",
-      "uneven_texture",
-      "dullness",
-      "wrinkles",
-      "hyperpigmentation",
-      "large_pores",
-    ],
-    requisite: "Record how you're applying a yogurt mask.",
-    restDays: 2,
-    part: "face",
-    userId: "6739751208956e398509eafd",
-    routineId: "673c2956735094d0b405cc72",
-    example: {
-      type: "image",
-      url: "https://mux-data.nyc3.digitaloceanspaces.com/Ms12Cg6cZdC9pc0pPIqth.jpg",
-    },
-    productsPersonalized: false,
-    proofEnabled: true,
-    status: "completed",
-    key: "apply_yogurt_mask",
-    description:
-      "A yogurt mask can help hydrate your skin and provide a gentle exfoliation, leaving your face feeling soft and refreshed. Yogurt contains lactic acid, which helps to brighten the skin and reduce the appearance of fine lines.",
-    instruction:
-      "1. In a bowl, mix 2 tablespoons of plain yogurt with 1 tablespoon of honey. \n2. Apply the mixture to your clean face, avoiding the eye area. \n3. Leave it on for 15-20 minutes. \n4. Rinse off with lukewarm water and pat your face dry.",
-    isCreated: true,
-    color: "#bbddcf",
-    type: "head",
-    revisionDate: "2024-12-19T14:29:50.606Z",
-    productTypes: ["yogurt mask"],
-    suggestions: [],
-    defaultSuggestions: [],
-    icon: "🟫",
-    startsAt: "2024-11-18T21:00:00.000Z",
-    expiresAt: "2024-11-19T21:00:00.000Z",
-    completedAt: "2024-11-18T21:00:00.000Z",
-    requiredSubmissions: [
-      {
-        submissionId: "673ca0e00371638611b2f06d",
-        name: "apply yogurt mask",
-        proofId: "673cc696ff6147c5d39782ee",
-        isSubmitted: true,
-      },
-    ],
-    isRecipe: false,
-    recipe: null,
-    nextCanStartDate: "2024-11-21T17:10:46.795Z",
-  },
-  {
-    _id: "673d585176ddcf40d4cac6e8",
-    name: "Moisturize lips with olive oil",
-    concern: "chapped_lips",
-    nearestConcerns: ["chapped_lips", "dry_skin"],
-    requisite: "Record how you're moisturizing your lips with olive oil.",
-    restDays: 0,
-    part: "mouth",
-    userId: "6739751208956e398509eafd",
-    routineId: "673c2956735094d0b405cc72",
-    example: {
-      type: "image",
-      url: "https://mux-data.nyc3.digitaloceanspaces.com/4-LF1Nn7q0jWGKpPKtRlt.jpg",
-    },
-    productsPersonalized: false,
-    proofEnabled: true,
-    status: "completed",
-    key: "moisturize_lips_with_olive_oil",
-    description:
-      "Moisturizing your lips with olive oil helps to keep them soft and hydrated, preventing dryness and chapping. Olive oil is rich in antioxidants and healthy fats, providing a protective barrier that locks in moisture and gives your lips a natural, healthy shine.",
-    instruction:
-      "1. Take a small amount of olive oil and apply it to your fingertips. \n2. Gently massage the oil into your lips. \n3. Allow it to absorb for a few minutes before applying any lip products.",
-    isCreated: true,
-    color: "#e0d9be",
-    type: "head",
-    revisionDate: "2024-12-20T03:32:31.273Z",
-    productTypes: ["lip oil"],
-    suggestions: [],
-    defaultSuggestions: [],
-    icon: "💋",
-    startsAt: "2024-11-19T21:00:00.000Z",
-    expiresAt: "2024-11-20T21:00:00.000Z",
-    completedAt: "2024-11-19T21:00:00.000Z",
-    requiredSubmissions: [
-      {
-        submissionId: "673d585176ddcf40d4cac6e7",
-        name: "moisturize lips with olive oil",
-        proofId: {
-          $oid: "673d79a4b3651680098ef035",
-        },
-        isSubmitted: true,
-      },
-    ],
-    isRecipe: false,
-    recipe: null,
-    nextCanStartDate: "2024-11-20T05:54:44.406Z",
-  },
-];
-
 export default function RoutineList({ type, serie, customStyles, disableAll }: Props) {
   const router = useRouter();
   const pathaname = usePathname();
@@ -143,7 +40,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
 
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "tasks"
-  >("tasks");
+  >("loading");
 
   const { nextScan, tasks, _id: userId, timeZone, demographics } = userDetails || {};
   const { sex } = demographics || {};
@@ -171,10 +68,9 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
     return Math.round(completedRelevantTasks.length / relevantTasks.length);
   }, [tasks?.length]);
 
-  //@ts-ignore
   const relevantTasks: TaskTypeWithClick[] | undefined = useMemo(
     () =>
-      fakeTasks
+      tasks
         ?.filter((task) => task.type === type)
         .map((fTask) => ({
           ...fTask,
@@ -261,21 +157,21 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
 
   useSWR(userId, fetchLatestRoutinesAndTasks);
 
-  // useEffect(() => {
-  //   if (!pageLoaded) return;
+  useEffect(() => {
+    if (!pageLoaded) return;
 
-  //   if (isAnalysisGoing) {
-  //     setDisplayComponent("wait");
-  //   } else if (showOverlay) {
-  //     setDisplayComponent("scanOverlay");
-  //   } else if (relevantTasks && relevantTasks.length === 0) {
-  //     setDisplayComponent("createTaskOverlay");
-  //   } else if (relevantTasks && relevantTasks.length > 0) {
-  //     setDisplayComponent("tasks");
-  //   } else if (relevantTasks === undefined) {
-  //     setDisplayComponent("loading");
-  //   }
-  // }, [isAnalysisGoing, showOverlay, relevantTasks, pageLoaded]);
+    if (isAnalysisGoing) {
+      setDisplayComponent("wait");
+    } else if (showOverlay) {
+      setDisplayComponent("scanOverlay");
+    } else if (relevantTasks && relevantTasks.length === 0) {
+      setDisplayComponent("createTaskOverlay");
+    } else if (relevantTasks && relevantTasks.length > 0) {
+      setDisplayComponent("tasks");
+    } else if (relevantTasks === undefined) {
+      setDisplayComponent("loading");
+    }
+  }, [isAnalysisGoing, showOverlay, relevantTasks, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 

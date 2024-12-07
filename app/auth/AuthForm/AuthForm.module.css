@@ -33,6 +33,7 @@
 .secondaryButton {
   font-size: var(--mantine-font-size-sm);
   color: var(--mantine-color-dark-2);
+  margin: auto;
 
   &:hover {
     color: white;

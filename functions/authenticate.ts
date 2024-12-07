@@ -7,6 +7,8 @@ import callTheServer from "./callTheServer";
 type AuthenticateProps = {
   code?: string;
   state: string | null;
+  email?: string;
+  password?: string;
   router: AppRouterInstance;
   setStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>>;
   setUserDetails: React.Dispatch<React.SetStateAction<UserDataType | null>>;
@@ -16,6 +18,8 @@ const authenticate = async ({
   code,
   state,
   router,
+  email,
+  password,
   setStatus,
   setUserDetails,
 }: AuthenticateProps) => {
@@ -27,10 +31,12 @@ const authenticate = async ({
       endpoint: "authenticate",
       method: "POST",
       body: {
+        state,
         code,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         localUserId,
-        state,
+        email,
+        password,
       },
     });
 
@@ -52,6 +58,8 @@ const authenticate = async ({
         return;
       }
 
+      console.log("response", response);
+
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
@@ -61,6 +69,8 @@ const authenticate = async ({
       if (redirectQuery) redirectUrl += `?${redirectQuery}`;
 
       const { emailVerified } = response.message;
+
+      console.log("response.message", response.message);
 
       if (!emailVerified) {
         router.push(`/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`);

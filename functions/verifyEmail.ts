@@ -1,10 +1,10 @@
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
 import callTheServer from "./callTheServer";
 
 type VerifyEmailProps = { code: string };
 
 const verifyEmail = async ({ code }: VerifyEmailProps) => {
+  let status = false;
   try {
     const response = await callTheServer({
       endpoint: "verifyEmail",
@@ -18,10 +18,12 @@ const verifyEmail = async ({ code }: VerifyEmailProps) => {
         return;
       }
 
-      openSuccessModal({ description: response.message });
+      status = true;
     }
   } catch (err) {
     openErrorModal();
+  } finally {
+    return status;
   }
 };
 

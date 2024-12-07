@@ -6,10 +6,9 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { Button, PinInput, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { UserContext } from "@/context/UserContext";
-import callTheServer from "@/functions/callTheServer";
+import verifyEmail from "@/functions/verifyEmail";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
 import classes from "./verify-email.module.css";
 
 export const runtime = "edge";
@@ -39,29 +38,16 @@ export default function VerifyEmail() {
     setIsLoading(true);
 
     try {
-      const response = await callTheServer({
-        endpoint: "verifyEmail",
-        method: "POST",
-        body: { code },
-      });
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({ description: response.error });
-          return;
-        }
+      const isSucess = await verifyEmail({ code });
 
-        openSuccessModal({
-          description: response.message,
-          onClose: () => handleRedirect(redirectUrl),
-        });
-      }
+      if (isSucess) handleRedirect(redirectUrl);
     } catch (err) {
       openErrorModal();
       console.log("Error in handleVerifyEmail: ", err);
     } finally {
       setIsLoading(false);
     }
-  }, [redirectUrl, isLoading]);
+  }, [redirectUrl, isLoading, code]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -70,9 +56,9 @@ export default function VerifyEmail() {
           <Title order={1} className={classes.title}>
             Enter the code from the email
           </Title>
-          {<Text>{`We've sent an email with the code to ${email}.`}</Text>}
+          {email && <Text ta="center">{`We've sent an email with the code to ${email}.`}</Text>}
           <PinInput length={5} size={isMobile ? "md" : "lg"} onChange={setCode} />
-          <Button disabled={code.length < 6} loading={isLoading} onClick={handleVerifyEmail}>
+          <Button disabled={code.length < 5} loading={isLoading} onClick={handleVerifyEmail}>
             Continue
             <IconArrowRight className={`icon ${classes.icon}`} />
           </Button>

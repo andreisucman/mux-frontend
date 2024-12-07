@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   IconArrowRight,
   IconAsterisk,
@@ -143,12 +143,20 @@ export default function Settings() {
   const handleVerifyEmail = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
-    await verifyEmail({ code: confirmationCode });
-    emailChangeModalsStack.close("confirmNewEmail");
+    const isSuccess = await verifyEmail({ code: confirmationCode });
+    if (isSuccess) {
+      emailChangeModalsStack.close("confirmNewEmail");
+      openSuccessModal({ description: "Your email has been verified." });
+    }
     setIsLoading(false);
   }, [confirmationCode]);
 
   const formattedDeleteOnDate = formatDate({ date: deleteOn || new Date() });
+
+  useEffect(() => {
+    if (!currentEmail) return;
+    setEmail(currentEmail);
+  }, [currentEmail]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
