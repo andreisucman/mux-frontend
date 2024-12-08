@@ -47,6 +47,9 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
   const formattedCurrentDate = formatDate({ date: createdAt });
   const formattedCompareDate = formatDate({ date: compareDate });
 
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style?followingUserId=${record.userId}`;
+  const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
+
   return (
     <Stack className={classes.container}>
       <SliderComparisonCarousel
@@ -80,8 +83,8 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
               handleTrackUser({
                 router,
                 status,
-                redirectPath: `/club/style?followingUserId=${record.userId}`,
-                cancelPath: `/${pathname}?${searchParams.toString()}`,
+                redirectUrl,
+                cancelUrl,
                 clubData: club,
                 followingUserId: record.userId,
                 subscriptions,

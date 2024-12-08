@@ -4,8 +4,8 @@ import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 
 type Props = {
-  redirectPath?: string;
-  cancelPath?: string;
+  redirectUrl?: string;
+  cancelUrl?: string;
   priceId: string;
   cb?: (...args: any) => void;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
@@ -14,21 +14,13 @@ type Props = {
 export default async function createCheckoutSession({
   cb,
   priceId,
-  redirectPath,
-  cancelPath,
+  redirectUrl,
+  cancelUrl,
   setUserDetails,
 }: Props) {
-  if (typeof window === "undefined") return;
   if (!priceId) return;
 
   try {
-    const redirectUrl = redirectPath
-      ? `${window.location.origin}${redirectPath}`
-      : window.location.href;
-    const cancelUrl = redirectPath
-      ? `${window.location.origin}${cancelPath}`
-      : window.location.href;
-
     const response = await callTheServer({
       endpoint: "createCheckoutSession",
       method: "POST",

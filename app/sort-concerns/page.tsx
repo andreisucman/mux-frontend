@@ -3,10 +3,10 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowRight, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Button, Group, Skeleton, Stack, Title } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
-import FilterDropdown from "@/components/FilterDropdown";
 import InstructionContainer from "@/components/InstructionContainer";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { SexEnum, UserDataType } from "@/types/global";
@@ -77,16 +77,12 @@ export default function SortConcerns() {
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
       <SkeletonWrapper>
-        <Group className={classes.heading}>
-          <Title order={1}>Sort concerns</Title>
-          <FilterDropdown
-            data={filterData}
-            icons={icons}
-            placeholder="Select type"
-            filterType="type"
-            addToQuery
-          />
-        </Group>
+        <PageHeaderWithReturn
+          title="Sort concerns"
+          filterData={filterData}
+          icons={icons}
+          showReturn
+        />
         <InstructionContainer
           sex={sex || SexEnum.FEMALE}
           title="Instructions"

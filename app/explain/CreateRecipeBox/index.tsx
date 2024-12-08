@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconBolt, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Button, Group, rem, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -22,6 +23,8 @@ type Props = {
 };
 
 export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }: Props) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { _id: userId } = userDetails || {};
   const { canPersonalize } = recipe || {};
@@ -53,10 +56,13 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
                 <IconSquareRoundedCheck className="icon" />
               );
 
+              const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
               const onClick = !!isTrialUsed
                 ? async () =>
                     createCheckoutSession({
                       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
+                      redirectUrl,
+                      cancelUrl: redirectUrl,
                       setUserDetails,
                     })
                 : () =>

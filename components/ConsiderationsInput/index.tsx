@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { ActionIcon, Text, TextInput } from "@mantine/core";
 import classes from "./ConsiderationsInput.module.css";
@@ -24,6 +24,11 @@ export function ConsiderationsInput({
   const isDirty = defaultValue.trim() !== value.trim();
   const charactersLeft = maxLength - value.trim().length;
 
+  useEffect(() => {
+    if (!defaultValue) return;
+    setValue(defaultValue);
+  }, [defaultValue]);
+
   return (
     <TextInput
       placeholder={placeholder}
@@ -37,13 +42,12 @@ export function ConsiderationsInput({
         <ActionIcon
           disabled={!isDirty}
           loading={isLoading}
-          className={classes.actionIcon}
           onClick={() => {
             if (value.trim().length > maxLength) return;
             saveValue(value, setIsLoading);
           }}
         >
-          <IconDeviceFloppy />
+          <IconDeviceFloppy className="icon" />
         </ActionIcon>
       }
       leftSection={
@@ -52,7 +56,6 @@ export function ConsiderationsInput({
         </Text>
       }
       leftSectionWidth={50}
-      rightSectionWidth={50}
     />
   );
 }

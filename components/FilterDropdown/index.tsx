@@ -30,12 +30,12 @@ export default function FilterDropdown({
   const [selectedValue, setSelectedValue] = useState<string>();
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const firstItem = data[0];
   const defaultValue = defaultSelected || firstItem?.value;
 
   const leftSectionIcon = useMemo(
-    () => (icons ? icons[selectedValue || defaultValue] : <></>),
+    () => (icons ? icons[selectedValue || defaultValue] : undefined),
     [icons, selectedValue, defaultValue]
   );
 

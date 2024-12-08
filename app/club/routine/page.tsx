@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff, IconPlus } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Group, Loader, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -27,6 +27,7 @@ type GetRoutinesProps = {
 };
 
 export default function ClubRoutine() {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -105,7 +106,7 @@ export default function ClubRoutine() {
 
         if (response.status === 200) {
           if (response.error === "subscription expired") {
-            const url = `/club/routine?${searchParams.toString()}`;
+            const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
             openSubscriptionModal({
               title: `Add the Peek License`,
               modalType: "peek",
@@ -116,8 +117,8 @@ export default function ClubRoutine() {
               onClick: () =>
                 createCheckoutSession({
                   priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-                  redirectPath: url,
-                  cancelPath: url,
+                  redirectUrl,
+                  cancelUrl: redirectUrl,
                   setUserDetails,
                 }),
               onClose: () => fetchUserData(setUserDetails),

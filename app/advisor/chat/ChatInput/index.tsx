@@ -61,12 +61,14 @@ export default function ChatInput({
   const query = searchParams.get("query");
 
   const handleCreateCheckoutSession = useCallback(async () => {
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+
     createCheckoutSession({
       priceId: isClub
         ? process.env.NEXT_PUBLIC_PEEK_PRICE_ID!
         : process.env.NEXT_PUBLIC_ADVISOR_PRICE_ID!,
-      redirectPath: `${pathname}${searchParams.toString()}`,
-      cancelPath: `${pathname}${searchParams.toString()}`,
+      redirectUrl,
+      cancelUrl: redirectUrl,
       setUserDetails,
     });
   }, [isClub, pathname, searchParams.toString()]);

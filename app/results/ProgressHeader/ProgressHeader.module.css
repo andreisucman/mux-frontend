@@ -6,12 +6,12 @@
 .left {
   align-items: center;
   align-items: flex-start;
+  margin-right: auto;
 }
 
 .right {
   flex: 1;
   justify-content: flex-end;
-  min-width: rem(300);
 
   @media (max-width: $mantine-breakpoint-xs) {
     max-width: unset;

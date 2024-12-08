@@ -32,6 +32,9 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
   const formattedDate = formatDate({ date: record.createdAt });
   const concernName = normalizeString(record.concern);
 
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?followingUserId=${record.userId}`;
+  const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
+
   return (
     <Stack className={classes.container}>
       <Text className={classes.taskName} lineClamp={2}>
@@ -66,8 +69,8 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
               router,
               status,
               clubData: club,
-              redirectPath: `/club/proof?followingUserId=${record.userId}`,
-              cancelPath: `/${pathname}?${searchParams.toString()}`,
+              redirectUrl,
+              cancelUrl,
               followingUserId: record.userId,
               setUserDetails,
               subscriptions,

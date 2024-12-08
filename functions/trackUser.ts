@@ -5,7 +5,7 @@ import callTheServer from "./callTheServer";
 
 type TrackUserProps = {
   followingUserId: string | null;
-  redirectPath: string;
+  redirectUrl: string;
   router: AppRouterInstance;
   clubData?: ClubDataType;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
@@ -13,7 +13,7 @@ type TrackUserProps = {
 export default async function trackUser({
   router,
   followingUserId,
-  redirectPath,
+  redirectUrl,
   clubData,
   setUserDetails,
 }: TrackUserProps) {
@@ -35,6 +35,6 @@ export default async function trackUser({
   } catch (err) {
     console.log("Error in trackUser: ", err);
   } finally {
-    router.push(`${redirectPath}?followingUserId=${followingUserId}`);
+    router.push(redirectUrl);
   }
 }

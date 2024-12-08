@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
-import openErrorModal from "@/helpers/openErrorModal";
 import SkeletonWrapper from "../SkeletonWrapper";
 import { individualResultTitles } from "./individualResultTitles";
 import ProgressGallery from "./ProgressGallery";
@@ -31,7 +30,7 @@ export default function ResultsProgress() {
   const handleFetchProgress = useCallback(
     async ({ type, part, skip, followingUserId, currentArray }: HandleFetchProgressProps) => {
       try {
-        const response = await fetchProgress({
+        const items = await fetchProgress({
           type,
           part,
           skip,
@@ -39,16 +38,12 @@ export default function ResultsProgress() {
           currentArrayLength: (currentArray && currentArray.length) || 0,
         });
 
-        if (response.status === 200) {
-          if (skip) {
-            setProgress([...(currentArray || []), ...response.message.slice(0, 20)]);
-          } else {
-            setProgress(response.message.slice(0, 20));
-          }
-          setHasMore(response.message.length === 21);
+        if (skip) {
+          setProgress([...(currentArray || []), ...items.slice(0, 20)]);
         } else {
-          openErrorModal();
+          setProgress(items.slice(0, 20));
         }
+        setHasMore(items.length === 21);
       } catch (err) {
         console.log("Error in handleFetchProgress: ", err);
       }

@@ -17,6 +17,8 @@ export default function PeekOverlay({ description }: Props) {
   const searchParams = useSearchParams();
   const { setUserDetails } = useContext(UserContext);
 
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+
   return (
     <Stack className={classes.container}>
       {description && <Text className={classes.text}>{description}</Text>}
@@ -26,8 +28,8 @@ export default function PeekOverlay({ description }: Props) {
         onClick={() =>
           createCheckoutSession({
             priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-            redirectPath: `${pathname}/${searchParams.toString()}`,
-            cancelPath: `${pathname}/${searchParams.toString()}`,
+            redirectUrl,
+            cancelUrl: redirectUrl,
             setUserDetails,
           })
         }

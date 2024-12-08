@@ -9,9 +9,8 @@ import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
-import openErrorModal from "@/helpers/openErrorModal";
-import ClubModerationLayout from "../ModerationLayout";
 import { clubResultTitles } from "../clubResultTitles";
+import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
 
@@ -31,7 +30,7 @@ export default function ClubStyle() {
 
   const handleFetchUsersStyles = useCallback(
     async ({ type, currentArray, styleName, skip, followingUserId }: HandleFetchStyleProps) => {
-      const data = await fetchUsersStyle({
+      const items = await fetchUsersStyle({
         type,
         styleName,
         currentArrayLength: currentArray?.length || 0,
@@ -39,16 +38,12 @@ export default function ClubStyle() {
         skip,
       });
 
-      if (data) {
-        if (skip) {
-          setStyles([...(styles || []), ...data.slice(0, 20)]);
-        } else {
-          setStyles(data.slice(0, 20));
-        }
-        setHasMore(data.length === 21);
+      if (skip) {
+        setStyles([...(styles || []), ...items.slice(0, 20)]);
       } else {
-        openErrorModal();
+        setStyles(items.slice(0, 20));
       }
+      setHasMore(items.length === 21);
     },
     []
   );

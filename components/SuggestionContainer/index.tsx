@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconListSearch, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Group, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -45,6 +45,7 @@ export default function SuggestionContainer({
   refetchTask,
   setSelectedAsins,
 }: Props) {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showWaitComponent, setShowWaitComponent] = useState(false);
@@ -54,9 +55,13 @@ export default function SuggestionContainer({
   const { demographics } = userDetails || {};
   const { sex } = demographics || {};
 
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+
   const handleCreateCheckoutSession = useCallback(async () => {
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_ANALYST_PRICE_ID!,
+      redirectUrl,
+      cancelUrl: redirectUrl,
       setUserDetails,
       cb: () => {
         const criteria: string | null = getFromLocalStorage("productCriteria");

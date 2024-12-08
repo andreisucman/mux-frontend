@@ -12,8 +12,8 @@ export type TrackUserProps = {
   status: string;
   router: AppRouterInstance;
   clubData: ClubDataType;
-  redirectPath: string;
-  cancelPath: string;
+  redirectUrl: string;
+  cancelUrl: string;
   followingUserId: string;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
   subscriptions?: UserSubscriptionsType | null;
@@ -22,8 +22,8 @@ export type TrackUserProps = {
 const handleTrackUser = async ({
   followingUserId,
   subscriptions,
-  redirectPath,
-  cancelPath,
+  redirectUrl,
+  cancelUrl,
   clubData,
   router,
   status,
@@ -36,7 +36,7 @@ const handleTrackUser = async ({
     const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions) || {};
 
     if (isSubscriptionActive) {
-      trackUser({ router, setUserDetails, followingUserId, clubData, redirectPath });
+      trackUser({ router, setUserDetails, followingUserId, clubData, redirectUrl });
     } else {
       openSubscriptionModal({
         title: `Add the Peek License`,
@@ -48,14 +48,14 @@ const handleTrackUser = async ({
         onClick: () =>
           createCheckoutSession({
             priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-            redirectPath,
-            cancelPath,
+            redirectUrl,
+            cancelUrl,
             setUserDetails,
             cb: (subscriptions) =>
               handleTrackUser({
                 router,
-                redirectPath,
-                cancelPath,
+                redirectUrl,
+                cancelUrl,
                 status,
                 clubData,
                 followingUserId,

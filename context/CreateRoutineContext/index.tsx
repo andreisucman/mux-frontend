@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import React, { createContext, useContext, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -30,9 +30,9 @@ export const CreateRoutineContext = createContext(defaultCreateRoutineContext);
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
+  
   const { demographics } = userDetails || {};
   const { sex } = demographics || {};
   const type = searchParams.get("type") || "head";
@@ -42,16 +42,19 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const { isSubscriptionActive, isTrialUsed } =
     checkSubscriptionActivity(["improvement", "peek"], subscriptions) || {};
 
-  async function handleCreateCheckoutSession() {
+  const handleCreateCheckoutSession = async () => {
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns?${searchParams.toString()}`;
+    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/routines?${searchParams.toString()}`;
+
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-      redirectPath: `/sort-concerns?type=${type}`,
-      cancelPath: `/routines?type=${type}`,
+      redirectUrl,
+      cancelUrl,
       setUserDetails,
     });
-  }
+  };
 
-  function openSelectRoutineType(parts: { part: string; date: Date | null }[]) {
+  const openSelectRoutineType = (parts: { part: string; date: Date | null }[]) => {
     modals.openContextModal({
       modal: "general",
       centered: true,
@@ -62,9 +65,12 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
       ),
       innerProps: <SelectPartForRoutineModalContent type={type as TypeEnum} parts={parts} />,
     });
-  }
+  };
 
-  function onCreateRoutineClick({ isSubscriptionActive, isTrialUsed }: OnCreateRoutineClickProps) {
+  const onCreateRoutineClick = ({
+    isSubscriptionActive,
+    isTrialUsed,
+  }: OnCreateRoutineClickProps) => {
     if (isLoading) return;
 
     if (isSubscriptionActive) {
@@ -109,7 +115,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
       });
     }
     setIsLoading(false);
-  }
+  };
 
   return (
     <CreateRoutineContext.Provider

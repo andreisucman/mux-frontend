@@ -36,7 +36,6 @@ export default function TextareaComponent({
         <LoadingOverlay visible={isLoading} className={classes.loadingOverlay} />
         <Textarea
           placeholder={placeholder}
-          maxRows={isUnbounded ? undefined : 10}
           readOnly={readOnly}
           minRows={2}
           flex={1}

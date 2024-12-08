@@ -9,6 +9,7 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons, partItems, typeIcons, typeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
 import fetchAutocompleteData from "@/functions/fetchAutocompleteData";
+import getUsersFilters from "@/functions/getUsersFilters";
 import modifyQuery from "@/helpers/modifyQuery";
 import TitleDropdown from "../../TitleDropdown";
 import classes from "./ProofHeader.module.css";
@@ -30,6 +31,8 @@ export default function ProofHeader({ showReturn, titles }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { width, ref } = useElementSize();
+  const [availableTypes, setAvailableTypes] = useState();
+  const [availableParts, setAvailableParts] = useState();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [typeFilterData, setTypeFilterData] = useState<FilterDataType>({ icons: {}, items: [] });
   const [partFilterData, setPartFilterData] = useState<FilterDataType>({ icons: {}, items: [] });
@@ -37,6 +40,7 @@ export default function ProofHeader({ showReturn, titles }: Props) {
 
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
+  const followingUserId = searchParams.get("followingUserId");
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -93,6 +97,16 @@ export default function ProofHeader({ showReturn, titles }: Props) {
 
     handleUpdatePartsFilterData(selectedType, data);
   }, [pathname, type]);
+
+  useEffect(() => {
+    getUsersFilters({ followingUserId, collection: "progress", fields: ["type", "part"] }).then(
+      (result) => {
+        const { availableParts, availableTypes } = result;
+        setAvailableTypes(availableTypes);
+        setAvailableParts(availableParts);
+      }
+    );
+  }, [followingUserId]);
 
   useEffect(() => {
     getAutocompleteData();

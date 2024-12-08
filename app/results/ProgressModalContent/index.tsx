@@ -31,6 +31,9 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: createdAt });
 
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?followingUserId=${followingUserId}`;
+  const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
+
   return (
     <Stack className={classes.container}>
       <SliderComparisonCarousel
@@ -52,8 +55,8 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
                 router,
                 status,
                 clubData: club,
-                redirectPath: `/club/progress?followingUserId=${record.userId}`,
-                cancelPath: `/${pathname}?${searchParams.toString()}`,
+                redirectUrl,
+                cancelUrl,
                 followingUserId: record.userId,
                 setUserDetails,
                 subscriptions,

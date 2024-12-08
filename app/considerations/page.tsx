@@ -3,7 +3,9 @@
 import React, { useCallback, useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconArrowRight, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Button, rem, Stack, Title } from "@mantine/core";
+import { Button, rem, Stack } from "@mantine/core";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -12,9 +14,8 @@ import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { UserDataType } from "@/types/global";
-import InstructionContainer from "../../components/InstructionContainer";
+import InstructionContainer from "@/components/InstructionContainer";
 import SkeletonWrapper from "../SkeletonWrapper";
-import SpecialConsiderationsCard from "./SpecialConsiderationsCard";
 import classes from "./considerations.module.css";
 
 export const runtime = "edge";
@@ -73,7 +74,7 @@ export default function Considerations() {
       setDisableButton(true);
 
       const { _id: userId, concerns, specialConsiderations } = userDetails;
-      const redirectUrl = `/routines?${searchParams.toString()}`;
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/routines?${searchParams.toString()}`;
 
       try {
         const response = await callTheServer({
@@ -105,8 +106,8 @@ export default function Considerations() {
               ? async () =>
                   createCheckoutSession({
                     priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-                    redirectPath: redirectUrl,
-                    cancelPath: redirectUrl,
+                    redirectUrl,
+                    cancelUrl: redirectUrl,
                     setUserDetails,
                   })
               : () =>
@@ -142,15 +143,15 @@ export default function Considerations() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <Title order={1}>Special considerations</Title>
+        <PageHeaderWithReturn title="Special considerations" showReturn />
         <InstructionContainer
           title="Instructions"
-          instruction={"Tell me any special considerations or preferences if any."}
-          description="I will consider them when creating your routine."
+          instruction={"Write any special considerations or preferences you have."}
+          description="Your routine will be adapted to them."
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>
-          <SpecialConsiderationsCard placeholder={placeholder} setText={setText} />
+          <TextareaComponent text={text} placeholder={placeholder} setText={setText} />
           <Button loading={disableButton} onClick={handleCreateRoutine} disabled={disableButton}>
             Next
             <IconArrowRight className="icon" style={{ marginLeft: rem(8) }} />

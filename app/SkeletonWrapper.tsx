@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Skeleton } from "@mantine/core";
+import { rem, Skeleton, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { protectedPaths } from "@/context/UserContext/protectedPaths";
 import { AuthStateEnum } from "@/context/UserContext/types";
@@ -12,13 +12,18 @@ type Props = {
 };
 
 export default function SkeletonWrapper({ children }: Props) {
-  const { status } = useContext(UserContext);
   const pathname = usePathname();
+  const { status } = useContext(UserContext);
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const onProtectedPath = protectedPaths.includes(pathname);
-  const showSkeleton = onProtectedPath && status !== AuthStateEnum.AUTHENTICATED;
+
+  useEffect(() => {
+    const showSkeleton = onProtectedPath && status !== AuthStateEnum.AUTHENTICATED;
+    setShowSkeleton(showSkeleton);
+  }, [status, onProtectedPath]);
 
   return (
-    <Skeleton visible={!showSkeleton} className="skeleton">
+    <Skeleton visible={showSkeleton} className="skeleton" style={{ gap: rem(16) }}>
       {children}
     </Skeleton>
   );

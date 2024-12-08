@@ -1,36 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  IconChevronLeft,
-  IconDental,
-  IconMan,
-  IconMoodNeutral,
-  IconMoodSmile,
-  IconWhirl,
-} from "@tabler/icons-react";
-import { ActionIcon, Group, Title } from "@mantine/core";
+import { IconChevronLeft } from "@tabler/icons-react";
+import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType } from "@/components/FilterDropdown/types";
+import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
+import { partIcons, partItems, positionItems, typeIcons } from "@/components/PageHeader/data";
+import callTheServer from "@/functions/callTheServer";
+import getUsersFilters from "@/functions/getUsersFilters";
 import modifyQuery from "@/helpers/modifyQuery";
 import TitleDropdown from "../TitleDropdown";
 import { PositionsFilterItemType } from "./types";
 import classes from "./ProgressHeader.module.css";
 
-const typeData = [
-  { label: "Head", icon: <IconMoodSmile className="icon" />, value: "head" },
-  { label: "Body", icon: <IconMan className="icon" />, value: "body" },
-];
-
-const partsData = [
-  { label: "Face", icon: <IconMoodNeutral className="icon" />, value: "face", type: "head" },
-  { label: "Mouth", icon: <IconDental className="icon" />, value: "mouth", type: "head" },
-  { label: "Scalp", icon: <IconWhirl className="icon" />, value: "scalp", type: "head" },
-];
-
-const positionsData = [
-  { label: "Front", value: "front", types: ["head", "body"], parts: ["face", "body"] },
-  { label: "Right", value: "right", types: ["head", "body"], parts: ["face", "body"] },
-  { label: "Left", value: "left", types: ["head", "body"], parts: ["face", "body"] },
+const typeItems = [
+  { label: "Head", value: "head" },
+  { label: "Body", value: "body" },
 ];
 
 type Props = {
@@ -46,39 +30,76 @@ export default function ProgressHeader({ titles, showReturn, isDisabled, onSelec
   const pathname = usePathname();
 
   const type = searchParams.get("type") || "head";
-  const part = searchParams.get("part") || "face";
-  const position = searchParams.get("position") || "front";
+  const part = searchParams.get("part");
+  const position = searchParams.get("position");
+  const followingUserId = searchParams.get("followingUserId");
 
-  const [relevantParts, setRelevantParts] = useState(partsData.filter((p) => p.type === type));
-  const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>(
-    positionsData.filter((p) => p.types.includes(type) && p.parts.includes(part))
-  );
+  const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
+  const [relevantTypes, setRelevantTypes] = useState<FilterItemType[]>([]);
+  const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
+  const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>([]);
 
   useEffect(() => {
-    const relParts = partsData.filter((p) => p.type === type);
-    setRelevantParts(relParts);
-
-    const relPositions = positionsData.filter(
-      (p) => p.types.includes(type) && p.parts.includes(part)
+    getUsersFilters({ followingUserId, collection: "progress", fields: ["type", "part"] }).then(
+      (result) => {
+        const { availableParts, availableTypes } = result;
+        setAvailableTypes(availableTypes);
+        setAvailableParts(availableParts);
+      }
     );
-    setRelevantPositions(relPositions);
+  }, [followingUserId]);
+
+  useEffect(() => {
+    const firstAvailableType = availableTypes[0];
+
+    const relevantTypes = availableTypes.filter(
+      (item) => item.value === type || firstAvailableType.value
+    );
+
+    setRelevantTypes(relevantTypes);
+
+    const firstRelevantType = relevantTypes[0];
+
+    const relevantParts = availableParts.filter((p) => p.type === type || firstRelevantType.value);
+
+    setRelevantParts(relevantParts);
+
+    if (relevantParts.length > 0) {
+      const firstRelevantPart = relevantParts[0];
+
+      const relevantPositions = positionItems.filter((p) => {
+        const relevantPartValue = part || firstRelevantPart?.value;
+
+        if (relevantPartValue) {
+          return p.types.includes(type) && p.parts.includes(relevantPartValue);
+        } else {
+          return p.types.includes(type);
+        }
+      });
+
+      setRelevantPositions(relevantPositions);
+    }
 
     const params = [];
 
-    if (relParts.length === 0) {
-      params.push({ name: "part", value: null, action: "delete" });
+    if (relevantPositions.length === 0) {
       params.push({ name: "position", value: null, action: "delete" });
     }
 
-    if (relPositions.length === 0) {
-      params.push({ name: "position", value: null, action: "delete" });
+    if (relevantParts.length === 0) {
+      params.push({ name: "part", value: null, action: "delete" });
+    }
+
+    if (relevantTypes.length === 0) {
+      params.push({ name: "type", value: null, action: "delete" });
     }
 
     if (params.length > 0) {
       const newQuery = modifyQuery({ params });
       router.replace(`${pathname}?${newQuery}`);
     }
-  }, [type, part, partsData, positionsData]);
+  }, [type, part, availableTypes.length]);
 
   return (
     <Group className={classes.container}>
@@ -90,18 +111,22 @@ export default function ProgressHeader({ titles, showReturn, isDisabled, onSelec
         )}
         <TitleDropdown titles={titles} />
       </Group>
-      <FilterDropdown
-        data={typeData}
-        filterType="type"
-        defaultSelected={typeData.find((item) => item.value === type)?.value}
-        onSelect={onSelect}
-        placeholder="Select type"
-        isDisabled={isDisabled}
-        addToQuery
-      />
+      {relevantTypes.length > 0 && (
+        <FilterDropdown
+          data={relevantTypes}
+          icons={typeIcons}
+          filterType="type"
+          defaultSelected={relevantTypes.find((item) => item.value === type)?.value}
+          onSelect={onSelect}
+          placeholder="Select type"
+          isDisabled={isDisabled}
+          addToQuery
+        />
+      )}
       {relevantParts.length > 0 && (
         <FilterDropdown
           data={relevantParts}
+          icons={partIcons}
           filterType="part"
           placeholder="Select part"
           defaultSelected={relevantParts.find((item) => item.value === part)?.value}
