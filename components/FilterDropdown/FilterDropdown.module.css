@@ -7,3 +7,11 @@
     max-width: unset;
   }
 }
+
+.dropdown {
+  padding: rem(8) 0 0 rem(8);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    padding: rem(8) 0 rem(8) rem(8);
+  }
+}

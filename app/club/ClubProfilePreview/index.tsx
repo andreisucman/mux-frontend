@@ -52,8 +52,6 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
     router.push(url);
   }, [followingUserId]);
 
-  console.log("v", data);
-
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Group className={classes.row} style={rowStyle}>

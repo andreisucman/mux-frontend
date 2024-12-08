@@ -29,8 +29,6 @@ export default function DataSharingSwitches({ title }: Props) {
 
       const newPrivacy = updateClubPrivacy({ club, part, type, value });
 
-      console.log("new privacy", newPrivacy)
-
       try {
         const response = await callTheServer({
           endpoint: "updateClubPrivacy",

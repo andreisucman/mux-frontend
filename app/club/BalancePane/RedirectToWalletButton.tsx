@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import classes from "./BalancePane.module.css";
 
 export default function RedirectToWalletButton() {
-  async function redirectToWallet() {
+  const router = useRouter();
+
+  const redirectToWallet = useCallback(async () => {
     try {
       const response = await callTheServer({
         endpoint: "redirectToWallet",
@@ -14,12 +17,12 @@ export default function RedirectToWalletButton() {
       });
 
       if (response.status === 200) {
-        window.location.href = response.message;
+        router.push(response.message);
       }
     } catch (err) {
       console.log("Error in redirectToWallet: ", err);
     }
-  }
+  }, []);
 
   return (
     <Button

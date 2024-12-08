@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
-import { Group, Select, SelectProps, Text } from "@mantine/core";
+import { Group, Select, SelectProps } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
@@ -78,6 +78,7 @@ export default function FilterDropdown({
       defaultValue={defaultValue}
       leftSection={leftSectionIcon}
       leftSectionWidth={40}
+      classNames={{ dropdown: classes.dropdown }}
     />
   );
 }

@@ -31,8 +31,6 @@ export default function ClubRegistration() {
   const { payouts } = clubData || {};
   const { detailsSubmitted, payoutsEnabled } = payouts || {};
 
-  console.log("clubData", clubData);
-
   const handleCreateConnectAccount = useCallback(async () => {
     try {
       const response = await callTheServer({
@@ -90,7 +88,7 @@ export default function ClubRegistration() {
               earnings. You can always change your data sharing preferences in the settings of the
               Club profile page.
             </Text>
-            <DataSharingSwitches title="Data privacy"/>
+            <DataSharingSwitches title="Data privacy" />
             <GlowingButton
               text="Done"
               icon={icons.rocket}

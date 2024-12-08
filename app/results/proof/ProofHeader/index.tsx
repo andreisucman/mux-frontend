@@ -82,9 +82,6 @@ export default function ProofHeader({ showReturn, titles }: Props) {
       setRawAutocompleteData(data);
       setSpotlightActions(actions);
 
-      console.log("data", data);
-      console.log("actions", actions);
-
       const uniqueTypes = Array.from(new Set(data.map((record) => record.type).filter(Boolean)));
 
       setTypeFilterData({
