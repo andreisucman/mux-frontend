@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Stack } from "@mantine/core";
+import { Loader, rem, Skeleton, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -120,7 +120,8 @@ export default function HistoryPage() {
               )}
             </>
           ) : (
-            <Loader m="auto" />
+            // <Loader m="auto" />
+            <Skeleton className="skeleton" flex={1}></Skeleton>
           )}
         </Stack>
       </SkeletonWrapper>

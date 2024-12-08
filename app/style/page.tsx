@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack,Skeleton } from "@mantine/core";
 import StyleGallery from "@/app/results/style/StyleGallery";
 import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
@@ -81,7 +81,8 @@ export default function AllStyle() {
           setStyles={setStyles}
         />
       ) : (
-        <Loader m="auto" />
+        // <Loader m="auto" />
+        <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </Stack>
   );

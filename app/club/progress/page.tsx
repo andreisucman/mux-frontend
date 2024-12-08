@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader } from "@mantine/core";
+import { Loader, Skeleton } from "@mantine/core";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import ProgressHeader from "@/app/results/ProgressHeader";
 import { SimpleProgressType } from "@/app/results/types";
@@ -69,7 +69,8 @@ export default function ClubProgress() {
           setProgress={setProgress}
         />
       ) : (
-        <Loader m="auto" />
+        // <Loader m="auto" />
+        <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </ClubModerationLayout>
   );

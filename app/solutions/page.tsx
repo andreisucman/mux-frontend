@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff, IconSearch } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Stack } from "@mantine/core";
+import { Loader, rem, Skeleton, Stack } from "@mantine/core";
 import { createSpotlight, Spotlight } from "@mantine/spotlight";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -143,7 +143,8 @@ export default function Solutions() {
             )}
           </>
         ) : (
-          <Loader m="auto" />
+          <Skeleton className="skeleton" flex={1}></Skeleton>
+          // <Loader m="auto" />
         )}
       </Stack>
       <Spotlight

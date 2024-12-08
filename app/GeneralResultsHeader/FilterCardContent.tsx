@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack, Skeleton } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { ExistingFiltersType } from "./types";
@@ -96,7 +96,8 @@ export default function FilterCardContent({ filters }: Props) {
           )}
         </>
       ) : (
-        <Loader m="auto" />
+        // <Loader m="auto" />
+        <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </Stack>
   );

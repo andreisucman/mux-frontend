@@ -105,11 +105,15 @@ export default function Club() {
                       ))}
                     </Stack>
                   ) : (
-                    <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
+                    <OverlayWithText
+                      text="Nothing found"
+                      icon={<IconCircleOff className="icon" />}
+                    />
                   )}
                 </>
               ) : (
-                <Loader m="auto" />
+                // <Loader m="auto" />
+                <Skeleton className="skeleton" flex={1}></Skeleton>
               )}
             </Stack>
           </Stack>

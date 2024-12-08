@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Stack, Title } from "@mantine/core";
+import { Loader, rem, Stack, Title, Skeleton } from "@mantine/core";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
@@ -90,7 +90,8 @@ export default function Rewards() {
           )}
         </>
       ) : (
-        <Loader m="auto" />
+        // <Loader m="auto" />
+        <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </Stack>
   );

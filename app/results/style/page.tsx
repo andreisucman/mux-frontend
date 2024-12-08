@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack, Skeleton } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
@@ -74,7 +74,8 @@ export default function ResultStyle() {
             isSelfPage
           />
         ) : (
-          <Loader m="auto" />
+          <Skeleton className="skeleton" flex={1}></Skeleton>
+          // <Loader m="auto" />
         )}
       </SkeletonWrapper>
     </Stack>

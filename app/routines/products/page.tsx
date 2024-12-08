@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconShoppingBag } from "@tabler/icons-react";
 import useSWR from "swr";
-import { Button, Loader, rem, Stack } from "@mantine/core";
+import { Button, Loader, rem, Skeleton, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -83,7 +83,8 @@ export default function Products() {
             )}
           </>
         ) : (
-          <Loader m="auto" />
+          // <Loader m="auto" />
+          <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
         {selectedAsins.length > 0 && (
           <Button

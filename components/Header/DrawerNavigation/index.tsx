@@ -129,7 +129,7 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
           children: [
             { title: "Profile", path: "/club" },
             { title: "About", path: "/club/about" },
-            { title: "Routines", path: "/club/routines" },
+            { title: "Routines", path: "/club/routine" },
           ],
         });
       } else {

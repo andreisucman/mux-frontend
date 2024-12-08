@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { List } from "masonic";
-import { ActionIcon, Loader, Stack } from "@mantine/core";
+import { ActionIcon, Loader, Stack, Skeleton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -107,7 +107,8 @@ export default function FollowHistoryModalContent() {
             )}
           </>
         ) : (
-          <Loader m="auto" />
+          // <Loader m="auto" />
+          <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
       </Stack>
       {hasMore && (

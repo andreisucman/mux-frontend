@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconHourglassHigh } from "@tabler/icons-react";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack, Skeleton } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCarousel from "@/components/UploadCarousel";
@@ -178,9 +178,10 @@ export default function ScanProgress() {
           )}
         </Stack>
       ) : (
-        <Stack className={classes.loaderWrapper}>
-          <Loader type="oval" />
-        </Stack>
+        <Skeleton className="skeleton" flex={1}></Skeleton>
+        // <Stack className={classes.loaderWrapper}>
+        //   <Loader type="oval" />
+        // </Stack>
       )}
     </>
   );

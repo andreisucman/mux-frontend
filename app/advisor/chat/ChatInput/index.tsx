@@ -1,8 +1,14 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconPlus, IconSend, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { ActionIcon, Group, Skeleton, Stack } from "@mantine/core";
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconPlus,
+  IconSend,
+  IconSquareRoundedCheck,
+} from "@tabler/icons-react";
+import { ActionIcon, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -52,6 +58,7 @@ export default function ChatInput({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [images, setImages] = useState<File[]>([]);
+  const [showChat, setShowChat] = useState(!!followingUserId);
 
   const { _id: userId, coachEnergy, demographics } = userDetails || {};
   const { sex } = demographics || {};
@@ -259,47 +266,62 @@ export default function ChatInput({
     [images.length]
   );
 
+  const dividerLabel = useMemo(
+    () => (
+      <Group style={{ cursor: "pointer" }}>
+        {showChat ? <IconChevronDown className="icon" /> : <IconChevronUp className="icon" />}
+        {showChat ? "Hide chat" : "Open chat"}
+      </Group>
+    ),
+    [showChat]
+  );
+
   useEffect(() => {
     if (!query) return;
     setCurrentMessage(query as string);
   }, [query]);
 
   return (
-    <Stack className={classes.container}>
-      {heading}
-      <form className={classes.enter} onSubmit={handleSubmit}>
-        <Group className={classes.inputGroup}>
-          <Group className={classes.uploadRow}>{previewImages}</Group>
-          <Textarea
-            ref={inputRef}
-            value={currentMessage}
-            className={classes.input}
-            onChange={(e) => setCurrentMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
-            minRows={1}
-            maxRows={4}
-            size="md"
-            placeholder="Type your message"
-            autoFocus
-            autosize
-            rightSection={
-              <ImageUploadButton
-                disabled={(images && images?.length >= 2) || false}
-                setImages={setImages}
+    <Stack>
+      <Divider label={dividerLabel} onClick={() => setShowChat((prev) => !prev)} />
+      <Collapse in={showChat}>
+        <Stack className={classes.container}>
+          {heading}
+          <form className={classes.enter} onSubmit={handleSubmit}>
+            <Group className={classes.inputGroup}>
+              <Group className={classes.uploadRow}>{previewImages}</Group>
+              <Textarea
+                ref={inputRef}
+                value={currentMessage}
+                className={classes.input}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                minRows={1}
+                maxRows={4}
+                size="md"
+                placeholder="Type your message"
+                autoFocus
+                autosize
+                rightSection={
+                  <ImageUploadButton
+                    disabled={(images && images?.length >= 2) || false}
+                    setImages={setImages}
+                  />
+                }
               />
-            }
-          />
-          <ActionIcon
-            type={"submit"}
-            variant="default"
-            disabled={disabled}
-            className={classes.submit}
-          >
-            <IconSend className="icon" />
-          </ActionIcon>
-        </Group>
-      </form>
-      <EnergyIndicator value={coachEnergy || 0} />
+              <ActionIcon
+                type={"submit"}
+                variant="default"
+                disabled={disabled}
+                className={classes.submit}
+              >
+                <IconSend className="icon" />
+              </ActionIcon>
+            </Group>
+          </form>
+          <EnergyIndicator value={coachEnergy || 0} />
+        </Stack>
+      </Collapse>
     </Stack>
   );
 }

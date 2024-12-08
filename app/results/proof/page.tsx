@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack, Skeleton } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
@@ -84,7 +84,8 @@ export default function ResultsProof() {
             isSelfPage
           />
         ) : (
-          <Loader m="auto" />
+          // <Loader m="auto" />
+          <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
       </SkeletonWrapper>
     </Stack>

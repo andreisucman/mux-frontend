@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack,Skeleton } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -135,9 +135,10 @@ export default function UploadStyle() {
           />
         </>
       ) : (
-        <Stack className={classes.loaderWrapper}>
-          <Loader type="oval" />
-        </Stack>
+        <Skeleton className="skeleton" flex={1}></Skeleton>
+        // <Stack className={classes.loaderWrapper}>
+        //   <Loader type="oval" />
+        // </Stack>
       )}
     </Stack>
   );
