@@ -15,10 +15,12 @@ import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeader from "@/components/PageHeader";
+import { typeItems } from "@/components/PageHeader/data";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
+import { typeIcons } from "@/helpers/icons";
 import { TaskType, UserDataType } from "@/types/global";
 import CalendarRow from "./CalendarRow";
 import DayRenderer from "./DayRenderer";
@@ -332,12 +334,10 @@ export default function Calendar() {
     }).then((tasks) => {
       setTasks(tasks);
 
-      const date = new Date(selectedDate || new Date());
-      const newTasks = getTasksOfThisDate(tasks, date, "active");
+      // const date = new Date(selectedDate || new Date());
+      // const newTasks = getTasksOfThisDate(tasks, date, "active");
 
-      if (!givenTaskKey) {
-        setSelectedTasks(newTasks);
-      }
+      setSelectedTasks(tasks);
     });
   }, [relevantRoutine?._id, timeZone, type]);
 
@@ -350,11 +350,12 @@ export default function Calendar() {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeader
+        <PageHeaderWithReturn
           title="Tasks calendar"
           isDisabled={mode === "individual"}
+          filterData={typeItems}
+          icons={typeIcons}
           showReturn
-          hidePartDropdown
         />
         <DatePicker
           level="month"

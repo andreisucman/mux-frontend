@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Group, Title, Stack, Text } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -45,10 +46,13 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
           </Text>
           <RedirectToWalletButton />
         </Group>
-        <Title order={2} className={classes.amount}>${displayBalance}</Title>
+        <Title order={2} className={classes.amount}>
+          ${displayBalance}
+        </Title>
       </Stack>
       <GlowingButton
         text={"Withdraw"}
+        icon={<IconDownload className="icon" />}
         disabled={!balance || !payoutsEnabled}
         onClick={onWithdraw}
       />

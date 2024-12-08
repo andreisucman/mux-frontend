@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { IconPencil, IconX } from "@tabler/icons-react";
 import { Button, Group, rem, Skeleton, Stack, Switch, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
@@ -186,7 +187,7 @@ export default function Explain() {
         setIsLoading(false);
       }
     },
-    [timeZone]
+    [timeZone, taskInfo]
   );
 
   const openEditTaskModal = useCallback(() => {
@@ -230,7 +231,7 @@ export default function Explain() {
         },
       ],
     });
-    router.push(`/calendar?${query}`);
+    router.push(`/routines/calendar?${query}`);
   }, [type, taskKey]);
 
   useEffect(() => {

@@ -106,7 +106,7 @@ export default function UploadCarousel({
       return (
         <Carousel.Slide key={index}>
           <UploadCard
-            sex={sex || SexEnum.FEMALE}
+            sex={sex || SexEnum.MALE}
             scanType={scanType}
             eyesBlurredUrl={eyesBlurredUrl}
             faceBlurredUrl={faceBlurredUrl}

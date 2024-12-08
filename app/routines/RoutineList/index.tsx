@@ -81,7 +81,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
             router.push(`/explain?${query}`);
           },
         })),
-    [type, pathaname]
+    [type, pathaname, tasks && tasks.length]
   );
 
   const fetchLatestRoutinesAndTasks = useCallback(async () => {
@@ -156,6 +156,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
   );
 
   useSWR(userId, fetchLatestRoutinesAndTasks);
+  console.log("relevant tasks", relevantTasks)
 
   useEffect(() => {
     if (!pageLoaded) return;
@@ -193,7 +194,7 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
           <Stack className={classes.content}>
             {displayComponent === "scanOverlay" && <UploadOverlay type={type as TypeEnum} />}
             {displayComponent === "createTaskOverlay" && (
-              <CreateTaskOverlay type={type as TypeEnum} handleSaveTask={handleSaveTask} />
+              <CreateTaskOverlay type={type as TypeEnum} timeZone={timeZone} handleSaveTask={handleSaveTask} />
             )}
             {displayComponent === "wait" && (
               <Stack className={classes.waitComponentWrapper}>

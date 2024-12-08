@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   IconBooks,
   IconDoorEnter,
+  IconDoorExit,
   IconInnerShadowBottom,
   IconLicense,
   IconRotateDot,
@@ -94,10 +95,11 @@ const legalLinks = [
 ];
 
 type Props = {
+  handleSignOut: () => void;
   closeDrawer: () => void;
 };
 
-export default function DrawerNavigation({ closeDrawer }: Props) {
+export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) {
   const router = useRouter();
   const { status, userDetails } = useContext(UserContext);
   const [linkClicked, setLinkClicked] = useState("");
@@ -188,6 +190,12 @@ export default function DrawerNavigation({ closeDrawer }: Props) {
               closeDrawer={closeDrawer}
             />
           ))}
+          {status === "authenticated" && (
+            <UnstyledButton className={classes.signInButton} onClick={handleSignOut}>
+              <IconDoorExit className="icon" stroke={1.25} />
+              Sign out
+            </UnstyledButton>
+          )}
         </>
       )}
       <Stack className={classes.footer}>

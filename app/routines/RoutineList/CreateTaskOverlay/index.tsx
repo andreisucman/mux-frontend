@@ -9,16 +9,17 @@ import classes from "./CreateTaskOverlay.module.css";
 
 type Props = {
   type: TypeEnum;
+  timeZone?: string;
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
   customStyles?: { [key: string]: any };
 };
 
-export default function CreateTaskOverlay({ type, customStyles, handleSaveTask }: Props) {
+export default function CreateTaskOverlay({ type, timeZone, customStyles, handleSaveTask }: Props) {
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
     useContext(CreateRoutineContext);
 
   const onCreateManuallyClick = () => {
-    openCreateNewTask(type, handleSaveTask);
+    openCreateNewTask({ type, timeZone, handleSaveTask });
   };
 
   return (

@@ -19,15 +19,17 @@ import classes from "./AddATaskContainer.module.css";
 
 type Props = {
   type: TypeEnum;
+  timeZone?: string;
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
 };
 
 type HandleCreateTaskProps = {
   timeZone?: string;
   isLoading: boolean;
+  description: string;
 };
 
-export default function AddATaskContainer({ type, handleSaveTask }: Props) {
+export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Props) {
   const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -37,35 +39,39 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
   const [date, setDate] = useState<Date | null>(new Date());
   const [step, setStep] = useState(1);
 
-  const { timeZone } = userDetails || {};
+  const handleCreateTask = useCallback(
+    async ({ timeZone, isLoading, description }: HandleCreateTaskProps) => {
+      console.log("{ timeZone, isLoading, description }", { timeZone, isLoading, description });
 
-  const handleCreateTask = useCallback(async ({ timeZone, isLoading }: HandleCreateTaskProps) => {
-    if (!timeZone) return;
-    if (isLoading) return;
+      if (!timeZone) return;
+      if (isLoading) return;
+      if (!description) return;
 
-    try {
-      setError("");
-      setIsLoading(true);
+      try {
+        setError("");
+        setIsLoading(true);
 
-      const response = await callTheServer({
-        endpoint: "createTaskFromDescription",
-        method: "POST",
-        body: { description, type, timeZone },
-      });
+        const response = await callTheServer({
+          endpoint: "createTaskFromDescription",
+          method: "POST",
+          body: { description, type, timeZone },
+        });
 
-      if (response.status === 200) {
-        if (response.error) {
-          setError(response.error);
-        } else {
-          setRawTask(response.message);
-          setStep(2);
+        if (response.status === 200) {
+          if (response.error) {
+            setError(response.error);
+          } else {
+            setRawTask(response.message);
+            setStep(2);
+          }
         }
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   const datesPreview = useMemo(() => {
     const dates: string[] = [];
@@ -124,7 +130,10 @@ export default function AddATaskContainer({ type, handleSaveTask }: Props) {
           <Stack className={classes.buttonsGroup}>
             {step === 1 && !rawTask && (
               <>
-                <Button variant="default" onClick={() => handleCreateTask({ isLoading, timeZone })}>
+                <Button
+                  variant="default"
+                  onClick={() => handleCreateTask({ isLoading, timeZone, description })}
+                >
                   <IconBulb className="icon" style={{ marginRight: rem(8) }} /> Create task
                 </Button>
                 <CreateWeeklyRoutineButton type={type} />

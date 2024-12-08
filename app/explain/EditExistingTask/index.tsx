@@ -1,6 +1,6 @@
 import React from "react";
 import { IconCalendar, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { rem, Stack, Text } from "@mantine/core";
+import { rem, Stack,Center, Text } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { daysFrom } from "@/helpers/utils";
@@ -30,9 +30,9 @@ export default function EditExistingTask({
   return (
     <Stack flex={1}>
       {readOnly && (
-        <Text ta="center">
+        <Center inline>
           <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(8) }} /> Task updated
-        </Text>
+        </Center>
       )}
       <TextareaComponent
         text={updatedDescription}

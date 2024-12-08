@@ -93,11 +93,7 @@ function Header() {
                   />
                 )}
                 {displayComponent === "userButton" && (
-                  <UserButton
-                    avatar={avatar}
-                    handleSignOut={handleSignOut}
-                    clubDetailsSubmitted={!!detailsSubmitted}
-                  />
+                  <UserButton avatar={avatar} clubDetailsSubmitted={!!detailsSubmitted} />
                 )}
               </>
             )}
@@ -125,7 +121,7 @@ function Header() {
           body: classes.drawerBody,
         }}
       >
-        <DrawerNavigation closeDrawer={close} />
+        <DrawerNavigation closeDrawer={close} handleSignOut={handleSignOut} />
       </Drawer>
     </>
   );

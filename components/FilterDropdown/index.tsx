@@ -79,6 +79,7 @@ export default function FilterDropdown({
       leftSection={leftSectionIcon}
       leftSectionWidth={40}
       classNames={{ dropdown: classes.dropdown }}
+      allowDeselect={false}
     />
   );
 }

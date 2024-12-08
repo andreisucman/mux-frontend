@@ -55,10 +55,12 @@ export default function AcceptIndexPage() {
             setIsLoading(false);
             return;
           }
+          
+          const { sex, ...otherData } = response.message;
 
           setUserDetails((prev: UserDataType) => ({
             ...prev,
-            ...response.message,
+            ...otherData,
           }));
 
           nprogress.start();

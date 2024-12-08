@@ -19,7 +19,7 @@
 .title {
   font-weight: 600;
   text-align: center;
-  size: var(--mantine-font-size-sm);
+  size: var(--mantine-font-size-xs);
 }
 
 .nameGroup {

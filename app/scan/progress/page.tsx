@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconHourglassHigh } from "@tabler/icons-react";
-import { Loader, Stack, Skeleton } from "@mantine/core";
+import { Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCarousel from "@/components/UploadCarousel";

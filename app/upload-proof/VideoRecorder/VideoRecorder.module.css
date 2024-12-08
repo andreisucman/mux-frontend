@@ -50,11 +50,6 @@
   min-height: rem(40);
   flex: 1;
   border-radius: var(--mantine-radius-lg);
-  opacity: 0.75;
-
-  &:hover {
-    opacity: 1;
-  }
 }
 
 .indicatorLabel {

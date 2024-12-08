@@ -9,11 +9,18 @@ import classes from "./PageHeaderWithReturn.module.css";
 type Props = {
   title: string;
   showReturn?: boolean;
+  isDisabled?: boolean;
   filterData?: FilterItemType[];
   icons?: { [key: string]: any };
 };
 
-export default function PageHeaderWithReturn({ title, showReturn, filterData, icons }: Props) {
+export default function PageHeaderWithReturn({
+  isDisabled,
+  title,
+  showReturn,
+  filterData,
+  icons,
+}: Props) {
   const router = useRouter();
 
   return (
@@ -24,12 +31,13 @@ export default function PageHeaderWithReturn({ title, showReturn, filterData, ic
             <IconChevronLeft className="icon" />
           </ActionIcon>
         )}
-        <Title order={1} lineClamp={2}>
+        <Title order={1} lineClamp={2} className={classes.title}>
           {title}
         </Title>
       </Group>
       {filterData && (
         <FilterDropdown
+          isDisabled={isDisabled}
           data={filterData}
           icons={icons}
           placeholder="Select type"

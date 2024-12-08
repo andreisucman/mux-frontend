@@ -30,7 +30,7 @@ export default function ButtonsGroup({
 }: Props) {
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
-  const { tasks } = userDetails || {};
+  const { tasks, timeZone } = userDetails || {};
   const relevantTasks = tasks?.filter((t) => t.type === type);
   const tooManyTasksForToday = relevantTasks && relevantTasks?.length >= 10;
 
@@ -83,7 +83,7 @@ export default function ButtonsGroup({
         variant="default"
         disabled={disableCreate || tooManyTasksForToday}
         size="xs"
-        onClick={() => openCreateNewTask(type, handleSaveTask)}
+        onClick={() => openCreateNewTask({ type, handleSaveTask, timeZone })}
       >
         <IconPlus style={{ width: rem(20) }} />
       </Button>
