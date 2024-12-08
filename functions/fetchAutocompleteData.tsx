@@ -51,7 +51,8 @@ const fetchAutocompleteData = async ({
             onClick: () => handleActionClick(value as string),
           });
         }
-        reply.data = response.mesage;
+
+        reply.data = response.message;
       }
     }
   } catch (err) {

@@ -31,8 +31,6 @@ export default function ProofHeader({ showReturn, titles }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { width, ref } = useElementSize();
-  const [availableTypes, setAvailableTypes] = useState();
-  const [availableParts, setAvailableParts] = useState();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [typeFilterData, setTypeFilterData] = useState<FilterDataType>({ icons: {}, items: [] });
   const [partFilterData, setPartFilterData] = useState<FilterDataType>({ icons: {}, items: [] });
@@ -73,44 +71,40 @@ export default function ProofHeader({ showReturn, titles }: Props) {
     []
   );
 
-  const getAutocompleteData = useCallback(async () => {
-    const { data, actions } = await fetchAutocompleteData({
-      endpoint: "getUsersProofAutocomplete",
-      fields: ["taskName", "concern", "part", "type"],
-      handleActionClick,
-    });
+  const getAutocompleteData = useCallback(
+    async (followingUserId: string | null) => {
+      const { data, actions } = await fetchAutocompleteData({
+        endpoint: `getUsersProofAutocomplete${followingUserId ? `/${followingUserId}` : ""}`,
+        fields: ["taskName", "concern", "part", "type"],
+        handleActionClick,
+      });
 
-    setRawAutocompleteData(data);
-    setSpotlightActions(actions);
+      setRawAutocompleteData(data);
+      setSpotlightActions(actions);
 
-    const uniqueTypes = Array.from(new Set(data.map((record) => record.type).filter(Boolean)));
+      console.log("data", data);
+      console.log("actions", actions);
 
-    setTypeFilterData({
-      icons: Object.keys(typeIcons).reduce(
-        (a: { [key: string]: React.ReactNode }, c: string) => ((a[c] = typeIcons[c]), a),
-        {}
-      ),
-      items: uniqueTypes.reduce((a, c) => a.push(typeItems.find((item) => item.value === c)), []),
-    });
+      const uniqueTypes = Array.from(new Set(data.map((record) => record.type).filter(Boolean)));
 
-    const selectedType = type || uniqueTypes[0];
+      setTypeFilterData({
+        icons: Object.keys(typeIcons).reduce(
+          (a: { [key: string]: React.ReactNode }, c: string) => ((a[c] = typeIcons[c]), a),
+          {}
+        ),
+        items: uniqueTypes.reduce((a, c) => a.push(typeItems.find((item) => item.value === c)), []),
+      });
 
-    handleUpdatePartsFilterData(selectedType, data);
-  }, [pathname, type]);
+      const selectedType = type || uniqueTypes[0];
+
+      handleUpdatePartsFilterData(selectedType, data);
+    },
+    [pathname, type]
+  );
 
   useEffect(() => {
-    getUsersFilters({ followingUserId, collection: "progress", fields: ["type", "part"] }).then(
-      (result) => {
-        const { availableParts, availableTypes } = result;
-        setAvailableTypes(availableTypes);
-        setAvailableParts(availableParts);
-      }
-    );
+    getAutocompleteData(followingUserId);
   }, [followingUserId]);
-
-  useEffect(() => {
-    getAutocompleteData();
-  }, []);
 
   useEffect(() => {
     if (!rawAutocompleteData) return;

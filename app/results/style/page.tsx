@@ -8,7 +8,6 @@ import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
-import openErrorModal from "@/helpers/openErrorModal";
 import { individualResultTitles } from "../individualResultTitles";
 import StyleGallery from "./StyleGallery";
 import StyleHeader from "./StyleHeader";
@@ -32,23 +31,19 @@ export default function ResultStyle() {
   const handleFetchStyles = useCallback(
     async ({ type, styleName, skip, currentArray }: HandleFetchStyleProps) => {
       try {
-        const response = await fetchUsersStyle({
+        const items = await fetchUsersStyle({
           type,
           styleName,
           currentArrayLength: currentArray?.length || 0,
           skip,
         });
 
-        if (response.status === 200) {
-          if (skip) {
-            setStyles([...(currentArray || []), ...response.message.slice(0, 20)]);
-          } else {
-            setStyles(response.message.slice(0, 20));
-          }
-          setHasMore(response.message.length === 21);
+        if (skip) {
+          setStyles([...(currentArray || []), ...items.slice(0, 20)]);
         } else {
-          openErrorModal();
+          setStyles(items.slice(0, 20));
         }
+        setHasMore(items.length === 21);
       } catch (err) {
         console.log("Error in handleFetchStyles: ", err);
       }

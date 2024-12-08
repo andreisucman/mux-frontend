@@ -26,4 +26,5 @@
 .dropdown {
   padding: 0;
   min-width: rem(140);
+  z-index: 1 !important;
 }
