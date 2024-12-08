@@ -90,7 +90,6 @@ export default function Rewards() {
           )}
         </>
       ) : (
-        // <Loader m="auto" />
         <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </Stack>

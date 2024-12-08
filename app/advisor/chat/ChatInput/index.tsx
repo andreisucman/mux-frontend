@@ -35,6 +35,7 @@ const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textare
 type Props = {
   isClub?: boolean;
   disabled?: boolean;
+  defaultOpen?: boolean;
   heading?: React.ReactNode;
   followingUserId?: string | null;
   conversation: MessageType[];
@@ -46,6 +47,7 @@ export default function ChatInput({
   isClub,
   heading,
   disabled,
+  defaultOpen,
   followingUserId,
   conversation,
   setIsTyping,
@@ -58,7 +60,7 @@ export default function ChatInput({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [images, setImages] = useState<File[]>([]);
-  const [showChat, setShowChat] = useState(!!followingUserId);
+  const [showChat, setShowChat] = useState(!!defaultOpen);
 
   const { _id: userId, coachEnergy, demographics } = userDetails || {};
   const { sex } = demographics || {};

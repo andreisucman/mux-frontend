@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Skeleton } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 import StyleGallery from "@/app/results/style/StyleGallery";
 import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
@@ -55,12 +55,15 @@ export default function ClubStyle() {
   }, [status, type, styleName, followingUserId]);
 
   return (
-    <ClubModerationLayout>
-      <StyleHeader
-        titles={clubResultTitles}
-        isDisabled={!styles || (styles && styles.length === 0)}
-        showReturn
-      />
+    <ClubModerationLayout
+      pageHeader={
+        <StyleHeader
+          titles={clubResultTitles}
+          isDisabled={!styles || (styles && styles.length === 0)}
+          showReturn
+        />
+      }
+    >
       {styles ? (
         <StyleGallery
           styles={styles}
@@ -69,7 +72,6 @@ export default function ClubStyle() {
           setStyles={setStyles}
         />
       ) : (
-        // <Loader m="auto" />
         <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </ClubModerationLayout>

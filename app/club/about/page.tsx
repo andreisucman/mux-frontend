@@ -8,10 +8,12 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { UserDataType } from "@/types/global";
+import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
 import QuestionsCarousel from "./QuestionsCarousel";
 import { SubmitAboutResponseType } from "./types";
+import ClubHeader from "../ClubHeader";
 import classes from "./about.module.css";
 
 export const runtime = "edge";
@@ -152,22 +154,26 @@ export default function ClubAbout() {
   }, [loadData, userDetails]);
 
   return (
-    <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
-      {questions && questions.length > 0 && (
-        <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
-      )}
+    <ClubModerationLayout
+      pageHeader={<ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />}
+    >
+      <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
+        {questions && questions.length > 0 && (
+          <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
+        )}
 
-      {followingUserId ? (
-        <DisplayClubAbout bioData={bioData} />
-      ) : (
-        <EditClubAbout
-          bioData={bioData}
-          loadData={loadData}
-          questions={questions}
-          setBioData={setBioData}
-          updateClubBio={updateClubBio}
-        />
-      )}
-    </Skeleton>
+        {followingUserId ? (
+          <DisplayClubAbout bioData={bioData} />
+        ) : (
+          <EditClubAbout
+            bioData={bioData}
+            loadData={loadData}
+            questions={questions}
+            setBioData={setBioData}
+            updateClubBio={updateClubBio}
+          />
+        )}
+      </Skeleton>
+    </ClubModerationLayout>
   );
 }

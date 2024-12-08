@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Skeleton } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import ProofHeader from "@/app/results/proof/ProofHeader";
 import { SimpleProofType } from "@/app/results/proof/types";
@@ -72,8 +72,7 @@ export default function ClubProof() {
   }, [status, followingUserId, type, part, concern, query]);
 
   return (
-    <ClubModerationLayout>
-      <ProofHeader showReturn titles={clubResultTitles} />
+    <ClubModerationLayout pageHeader={<ProofHeader showReturn titles={clubResultTitles} />}>
       {proof ? (
         <ProofGallery
           proof={proof}
@@ -82,7 +81,6 @@ export default function ClubProof() {
           setProof={setProof}
         />
       ) : (
-        // <Loader m="auto" />
         <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </ClubModerationLayout>

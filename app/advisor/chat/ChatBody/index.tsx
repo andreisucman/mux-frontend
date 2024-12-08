@@ -23,6 +23,7 @@ const ChatBody = () => {
           conversation={conversation}
           setConversation={setConversation}
           setIsTyping={setIsTyping}
+          defaultOpen={true}
         />
       </div>
     </section>

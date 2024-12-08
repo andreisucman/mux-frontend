@@ -107,7 +107,6 @@ export default function FollowHistoryModalContent() {
             )}
           </>
         ) : (
-          // <Loader m="auto" />
           <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
       </Stack>

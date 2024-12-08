@@ -70,7 +70,6 @@ export default function ResultsProgress() {
             isSelfPage
           />
         ) : (
-          // <Loader m="auto" />
           <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
       </SkeletonWrapper>

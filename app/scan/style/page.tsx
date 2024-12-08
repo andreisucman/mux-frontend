@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack,Skeleton } from "@mantine/core";
+import { Loader, Skeleton, Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -85,7 +85,9 @@ export default function UploadStyle() {
                 _id: response.message,
               }));
 
-              const redirectUrl = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
+              const redirectUrl = encodeURIComponent(
+                `/analysis/style?${type ? `type=${type}` : ""}`
+              );
               router.push(`/wait?type=${finalType}&redirectUrl=${redirectUrl}`);
             } else {
               setProgress(0);
@@ -136,9 +138,6 @@ export default function UploadStyle() {
         </>
       ) : (
         <Skeleton className="skeleton" flex={1}></Skeleton>
-        // <Stack className={classes.loaderWrapper}>
-        //   <Loader type="oval" />
-        // </Stack>
       )}
     </Stack>
   );

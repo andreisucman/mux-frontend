@@ -68,7 +68,7 @@ export default function ClubDataContextProvider({ children }: Props) {
     if (!userId) return;
     const { name, bio, avatar } = club || {};
 
-    if (!name || !bio || !avatar) return;
+    if (!name) return;
 
     const headCurrentScore = latestScores?.head?.overall || 0;
     const bodyCurrentScore = latestScores?.body?.overall || 0;
@@ -78,8 +78,8 @@ export default function ClubDataContextProvider({ children }: Props) {
     const data: ClubUserType = {
       _id: userId as string,
       name: name,
-      bio: bio,
-      avatar: avatar,
+      bio: bio!,
+      avatar: avatar!,
       scores: {
         headCurrentScore,
         headTotalProgress,

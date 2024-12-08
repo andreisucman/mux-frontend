@@ -89,10 +89,12 @@ export default function ClubSettings() {
 
   const handleUpdateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
-      let children = `You can update your ${type} once a ${type === "name" ? "month" : "week"} only. Are you sure?`;
+      let children = `You can update your ${type} once a ${type === "name" ? "month" : "week"} only. Continue?`;
       modals.openConfirmModal({
         children,
-        labels: { confirm: "yes", cancel: "no" },
+        title: <Title order={5} component={"p"}>Confirm operation</Title>,
+        centered: true,
+        labels: { confirm: "Yes", cancel: "No" },
         onConfirm: () => updateClubInfo({ type, data, setIsLoading }),
       });
     },
@@ -159,7 +161,7 @@ export default function ClubSettings() {
             }
           />
         </Group>
-        {/* <TextInput
+        <TextInput
           flex={1}
           maw={355}
           value={userIntro}
@@ -174,7 +176,7 @@ export default function ClubSettings() {
               <IconDeviceFloppy className="icon" />
             </ActionIcon>
           }
-        /> */}
+        />
         <DataSharingSwitches title="Data privacy" />
         <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
           <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club

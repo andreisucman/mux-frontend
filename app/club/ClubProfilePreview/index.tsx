@@ -1,10 +1,11 @@
 import React, { memo, useCallback } from "react";
-import { IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Group, rem, Stack, Text, Title } from "@mantine/core";
+import { IconMan, IconMoodSmile, IconSettings } from "@tabler/icons-react";
+import { ActionIcon, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
 import classes from "./ClubProfilePreview.module.css";
@@ -51,6 +52,8 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
     router.push(url);
   }, [followingUserId]);
 
+  console.log("v", data);
+
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Group className={classes.row} style={rowStyle}>
@@ -91,6 +94,9 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
             </Group>
           )}
         </Stack>
+        <ActionIcon variant="default" component={Link} href="/settings">
+          <IconSettings className="icon" />
+        </ActionIcon>
       </Group>
       {showButtons && (
         <MenuButtons

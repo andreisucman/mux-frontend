@@ -84,7 +84,6 @@ export default function ResultsProof() {
             isSelfPage
           />
         ) : (
-          // <Loader m="auto" />
           <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
       </SkeletonWrapper>

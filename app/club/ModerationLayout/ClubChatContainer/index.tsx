@@ -44,6 +44,7 @@ export default function ClubChatContainer({ disabled }: Props) {
       </Collapse>
       <ChatInput
         isClub={true}
+        defaultOpen={!!followingUserId}
         disabled={disabled}
         conversation={conversation}
         followingUserId={followingUserId}

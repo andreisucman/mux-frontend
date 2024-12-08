@@ -87,7 +87,6 @@ export default function AllProof() {
           setProof={setProof}
         />
       ) : (
-        // <Loader m="auto" />
         <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </Stack>

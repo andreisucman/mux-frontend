@@ -120,7 +120,6 @@ export default function HistoryPage() {
               )}
             </>
           ) : (
-            // <Loader m="auto" />
             <Skeleton className="skeleton" flex={1}></Skeleton>
           )}
         </Stack>

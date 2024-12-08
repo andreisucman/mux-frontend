@@ -2,15 +2,15 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Skeleton } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import ProgressHeader from "@/app/results/ProgressHeader";
 import { SimpleProgressType } from "@/app/results/types";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
-import ClubModerationLayout from "../ModerationLayout";
 import { clubResultTitles } from "../clubResultTitles";
+import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
 
@@ -59,8 +59,7 @@ export default function ClubProgress() {
   }, [status, followingUserId, type, part]);
 
   return (
-    <ClubModerationLayout>
-      <ProgressHeader titles={clubResultTitles} showReturn />
+    <ClubModerationLayout pageHeader={<ProgressHeader titles={clubResultTitles} showReturn />}>
       {progress ? (
         <ProgressGallery
           progress={progress}
@@ -69,7 +68,6 @@ export default function ClubProgress() {
           setProgress={setProgress}
         />
       ) : (
-        // <Loader m="auto" />
         <Skeleton className="skeleton" flex={1}></Skeleton>
       )}
     </ClubModerationLayout>

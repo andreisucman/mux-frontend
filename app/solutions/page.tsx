@@ -144,7 +144,6 @@ export default function Solutions() {
           </>
         ) : (
           <Skeleton className="skeleton" flex={1}></Skeleton>
-          // <Loader m="auto" />
         )}
       </Stack>
       <Spotlight

@@ -83,7 +83,6 @@ export default function Products() {
             )}
           </>
         ) : (
-          // <Loader m="auto" />
           <Skeleton className="skeleton" flex={1}></Skeleton>
         )}
         {selectedAsins.length > 0 && (

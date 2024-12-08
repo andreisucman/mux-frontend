@@ -75,7 +75,6 @@ export default function ResultStyle() {
           />
         ) : (
           <Skeleton className="skeleton" flex={1}></Skeleton>
-          // <Loader m="auto" />
         )}
       </SkeletonWrapper>
     </Stack>

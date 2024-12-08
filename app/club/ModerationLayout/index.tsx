@@ -2,7 +2,9 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
+import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
@@ -16,12 +18,13 @@ import classes from "./ClubModerationLayout.module.css";
 export const runtime = "edge";
 
 type Props = {
+  pageHeader: React.ReactNode;
   children: React.ReactNode;
   showChat?: boolean;
   showHeader?: boolean;
 };
 
-export default function ClubModerationLayout({ children, showChat, showHeader }: Props) {
+export default function ClubModerationLayout({ children, showChat, pageHeader }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
@@ -38,6 +41,10 @@ export default function ClubModerationLayout({ children, showChat, showHeader }:
 
   useEffect(() => {
     if (followingUserId) {
+      if (!youTrackData && followingUserId) {
+        setShowComponent("userNotFound");
+        return;
+      }
       if (isSubscriptionActive) {
         const follows = localFollowingUserId === followingUserId;
         if (follows) {
@@ -57,19 +64,25 @@ export default function ClubModerationLayout({ children, showChat, showHeader }:
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {showHeader && <ClubHeader title={"Club"} hideTypeDropdown={!isRoutine} showReturn />}
+      {pageHeader}
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData && !youTrackData}>
-        <ClubProfilePreview
-          type={followingUserId ? "peek" : "you"}
-          data={followingUserId ? youTrackData : youData}
-          customStyles={{ flex: 0 }}
-        />
-        {showComponent === "children" && children}
-        {showComponent === "subscriptionOverlay" && <PeekOverlay />}
-        {showComponent === "followOverlay" && (
-          <FollowOverlay followingUserId={followingUserId} description={followText} />
+        {showComponent === "userNotFound" ? (
+          <OverlayWithText text="User not found" icon={<IconUserOff className="icon" />} />
+        ) : (
+          <>
+            <ClubProfilePreview
+              type={followingUserId ? "peek" : "you"}
+              data={followingUserId ? youTrackData : youData}
+              customStyles={{ flex: 0 }}
+            />
+            {showComponent === "children" && children}
+            {showComponent === "subscriptionOverlay" && <PeekOverlay />}
+            {showComponent === "followOverlay" && (
+              <FollowOverlay followingUserId={followingUserId} description={followText} />
+            )}
+            {showChat && <ClubChatContainer disabled={showComponent !== "children"} />}
+          </>
         )}
-        {showChat && <ClubChatContainer disabled={showComponent !== "children"} />}
       </Skeleton>
     </Stack>
   );

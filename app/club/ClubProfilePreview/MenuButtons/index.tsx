@@ -54,7 +54,7 @@ function MenuButtons({
             [classes.activeButtonText]: showQuestions,
           })}
         >
-          {showQuestions ? "Questions" : "About"}
+          About
         </Text>
       </Button>
     </Group>

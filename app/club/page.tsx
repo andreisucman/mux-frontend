@@ -112,7 +112,6 @@ export default function Club() {
                   )}
                 </>
               ) : (
-                // <Loader m="auto" />
                 <Skeleton className="skeleton" flex={1}></Skeleton>
               )}
             </Stack>

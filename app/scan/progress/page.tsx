@@ -179,9 +179,6 @@ export default function ScanProgress() {
         </Stack>
       ) : (
         <Skeleton className="skeleton" flex={1}></Skeleton>
-        // <Stack className={classes.loaderWrapper}>
-        //   <Loader type="oval" />
-        // </Stack>
       )}
     </>
   );
