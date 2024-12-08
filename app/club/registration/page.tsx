@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconBuildingBank, IconRocket, IconSquareCheck } from "@tabler/icons-react";
-import { Group, Stack, Text, Title } from "@mantine/core";
+import { Group, rem, Stack, Text, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
@@ -31,6 +31,8 @@ export default function ClubRegistration() {
   const { payouts } = clubData || {};
   const { detailsSubmitted, payoutsEnabled } = payouts || {};
 
+  console.log("clubData", clubData);
+
   const handleCreateConnectAccount = useCallback(async () => {
     try {
       const response = await callTheServer({
@@ -39,7 +41,7 @@ export default function ClubRegistration() {
       });
 
       if (response.status === 200) {
-        window.location.href = response.message;
+        router.push(response.message);
       }
     } catch (err) {
       console.log("Error in handleCreateConnectAccount: ", err);
@@ -47,11 +49,6 @@ export default function ClubRegistration() {
   }, []);
 
   const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
-
-  useEffect(() => {
-    if (!userDetails) return;
-    if (!clubData) router.replace("/club/join");
-  }, [userDetails]);
 
   useEffect(() => {
     if (!clubData) return;
@@ -66,7 +63,7 @@ export default function ClubRegistration() {
         <PageHeader title="Club admission" showReturn hidePartDropdown hideTypeDropdown />
         <Stack className={classes.content}>
           <Stack>
-            <Title order={5}>1. Add your bank for payouts</Title>
+            <Title order={4}>1. Add your bank for payouts</Title>
             <Text>
               Register a wallet and connect your bank for receiving payments. You&apos;ll have to
               provide some personal information to verify your identity and age.
@@ -75,14 +72,15 @@ export default function ClubRegistration() {
               <GlowingButton
                 icon={detailsSubmitted ? icons.checkbox : icons.bank}
                 text={detailsSubmitted ? "Bank added" : "Add bank"}
-                disabled={disableFirst}
+                disabled={disableFirst || !clubData}
                 onClick={handleCreateConnectAccount}
+                containerStyles={{ flex: "unset" }}
               />
               {submittedNotEnabled && <RedirectToWalletButton />}
             </Group>
           </Stack>
           <Stack>
-            <Title order={5}>2. Decide which data to share</Title>
+            <Title order={4}>2. Decide which data to share</Title>
             <Text>
               This data will appear in the before-after cards on the main page as well as on your
               Club profile page.
@@ -92,12 +90,13 @@ export default function ClubRegistration() {
               earnings. You can always change your data sharing preferences in the settings of the
               Club profile page.
             </Text>
-            <DataSharingSwitches />
+            <DataSharingSwitches title="Data privacy"/>
             <GlowingButton
               text="Done"
               icon={icons.rocket}
-              disabled={disableSecond}
+              disabled={disableSecond || !clubData}
               onClick={() => router.push("/club")}
+              containerStyles={{ marginRight: "auto", marginTop: rem(4) }}
             />
           </Stack>
         </Stack>

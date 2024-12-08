@@ -9,6 +9,7 @@ type Props = {
   setHighlightTos: React.Dispatch<React.SetStateAction<boolean>>;
   tosAccepted: boolean;
   setTosAccepted: React.Dispatch<React.SetStateAction<boolean>>;
+  customStyles?: { [key: string]: any };
 };
 
 export default function TosCheckbox({
@@ -17,9 +18,13 @@ export default function TosCheckbox({
   tosAccepted,
   setHighlightTos,
   setTosAccepted,
+  customStyles,
 }: Props) {
   return (
-    <Stack className={cn(classes.container, { [classes.highlightTos]: highlightTos })}>
+    <Stack
+      className={cn(classes.container, { [classes.highlightTos]: highlightTos })}
+      style={customStyles ? customStyles : {}}
+    >
       <Checkbox
         label={label}
         styles={{ body: { alignItems: "center" } }}

@@ -54,7 +54,6 @@ export default function ClubProgress() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!followingUserId) return;
 
     handleFetchProgress({ type, part, followingUserId });
   }, [status, followingUserId, type, part]);

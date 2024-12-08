@@ -50,7 +50,6 @@ export default function ClubStyle() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!followingUserId) return;
 
     handleFetchUsersStyles({ type, styleName, followingUserId });
   }, [status, type, styleName, followingUserId]);

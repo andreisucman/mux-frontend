@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IconTargetArrow } from "@tabler/icons-react";
 import { rem, Stack, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -8,6 +8,8 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
+import { UserContext } from "@/context/UserContext";
+import { useRouter } from "@/helpers/custom-router";
 import openLegalBody from "@/helpers/openLegalBody";
 import Confirmation from "./Confirmation";
 import classes from "./join.module.css";
@@ -17,12 +19,16 @@ export const runtime = "edge";
 const tableData = {
   caption: "From their monthly subscription payment",
   head: ["Event", "Reward"],
-  body: [["New follower", "25%"]],
+  body: [["Follower", "25%"]],
 };
 
 export default function ClubJoin() {
+  const router = useRouter();
   const [tosAccepted, setTosAccepted] = useState(false);
   const [highlightTos, setHighlightTos] = useState(false);
+  const { userDetails } = useContext(UserContext);
+  const { club } = userDetails || {};
+  const { payouts } = club || {};
 
   const onStart = useCallback(() => {
     if (!tosAccepted) {
@@ -60,6 +66,14 @@ export default function ClubJoin() {
     []
   );
 
+  useEffect(() => {
+    if (payouts?.detailsSubmitted) {
+      router.replace("/club");
+    } else {
+      router.replace("/club/registration");
+    }
+  }, [club]);
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
@@ -83,6 +97,7 @@ export default function ClubJoin() {
           <GlowingButton
             text="Join the Club"
             icon={<IconTargetArrow className="icon" style={{ marginRight: rem(8) }} />}
+            containerStyles={{ margin: "auto" }}
             onClick={onStart}
           />
         </Stack>

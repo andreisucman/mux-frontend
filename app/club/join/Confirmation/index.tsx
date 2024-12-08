@@ -23,7 +23,7 @@ const tableData = {
     ],
     [
       <IconCash className="icon icon__title" />,
-      "You will earn a share of subscription fee from each follower. The payments will be deposited to your bank account.",
+      "You will earn a share of the subscription fee from each follower. The payments will be deposited to your bank account.",
     ],
     [
       <IconTargetOff className="icon icon__title" />,
@@ -47,6 +47,7 @@ export default function Confirmation() {
         <GlowingButton
           text="Join the Club"
           icon={<IconTargetArrow className="icon" style={{ marginRight: rem(8) }} />}
+          containerStyles={{ margin: "auto" }}
           onClick={() =>
             joinClub({
               router,

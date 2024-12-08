@@ -67,7 +67,6 @@ export default function ClubProof() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (!followingUserId) return;
 
     handleFetchProof({ followingUserId, type, part, concern, query });
   }, [status, followingUserId, type, part, concern, query]);

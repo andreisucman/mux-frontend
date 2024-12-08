@@ -37,7 +37,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
   const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
 
-  const setUserDetails = useCallback((value: React.SetStateAction<UserDataType | null>) => {
+  const setUserDetails = useCallback((value: React.SetStateAction<Partial<UserDataType | null>>) => {
     setUserDetailsState((prevState: Partial<UserDataType> | null) => {
       const newState = typeof value === "function" ? value(prevState as UserDataType) : value;
       saveToLocalStorage("userDetails", newState);
@@ -103,7 +103,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;
     if (error) return;
-    fetchUserData(setUserDetailsState);
+    fetchUserData(setUserDetails);
   });
 
   return (

@@ -1,10 +1,14 @@
 import React from "react";
 import { rem, Stack, Text, Title } from "@mantine/core";
 
-export default function PrivacyLegalBody() {
+type Props = {
+  addTitle?: boolean;
+};
+
+export default function PrivacyLegalBody({ addTitle }: Props) {
   return (
     <>
-      <Title order={1}>Privacy Policy</Title>
+      {addTitle && <Title order={1}>Privacy Policy</Title>}
       <Text size="sm" c="dimmed">
         Last updated: September 12, 2024
       </Text>

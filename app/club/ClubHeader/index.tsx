@@ -8,20 +8,20 @@ import {
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { typeIcons } from "@/components/PageHeader/data";
+import { typeIcons } from "@/helpers/icons";
 import { useRouter } from "@/helpers/custom-router";
 import classes from "./ClubHeader.module.css";
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   "/club/about": <IconUserCircle className="icon" />,
   "/club/routine": <IconClipboardText className="icon" />,
-  "/club/results": <IconTargetArrow className="icon" />,
+  "/club/progress": <IconTargetArrow className="icon" />,
 };
 
 const clubPageTypeData: { label: string; value: string }[] = [
   { label: "About", value: "/club/about" },
   { label: "Routine", value: "/club/routine" },
-  { label: "Results", value: "/club/results" },
+  { label: "Progress", value: "/club/progress" },
 ];
 
 const typeData: { label: string; value: string }[] = [

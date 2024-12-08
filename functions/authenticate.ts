@@ -11,7 +11,7 @@ type AuthenticateProps = {
   password?: string;
   router: AppRouterInstance;
   setStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>>;
-  setUserDetails: React.Dispatch<React.SetStateAction<UserDataType | null>>;
+  setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType | null>>>;
 };
 
 const authenticate = async ({

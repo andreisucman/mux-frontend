@@ -36,6 +36,7 @@ export default function ClubAbout() {
   const { questions } = bio || {};
 
   const loadData = followingUserId ? youTrackData : youData;
+
   const [bioData, setBioData] = useState<BioDataType>({
     philosophy: "",
     style: "",

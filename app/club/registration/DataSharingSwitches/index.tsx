@@ -29,6 +29,8 @@ export default function DataSharingSwitches({ title }: Props) {
 
       const newPrivacy = updateClubPrivacy({ club, part, type, value });
 
+      console.log("new privacy", newPrivacy)
+
       try {
         const response = await callTheServer({
           endpoint: "updateClubPrivacy",
@@ -52,7 +54,7 @@ export default function DataSharingSwitches({ title }: Props) {
         console.log("Error in updatePrivacy: ", err);
       }
     },
-    [typeof club]
+    [club]
   );
 
   return (

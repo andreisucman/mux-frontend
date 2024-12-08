@@ -4,10 +4,11 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { useRouter } from "@/helpers/custom-router";
+import { partIcons, typeIcons } from "@/helpers/icons";
 import FilterButton from "../FilterButton";
 import FilterDropdown from "../FilterDropdown";
 import SearchButton from "../SearchButton";
-import { partIcons, partItems, typeIcons, typeItems } from "./data";
+import { partItems, typeItems } from "./data";
 import classes from "./PageHeader.module.css";
 
 type Props = {

@@ -58,7 +58,7 @@ export default function ClubModerationLayout({ children, showChat, showHeader }:
   return (
     <Stack className={`${classes.container} smallPage`}>
       {showHeader && <ClubHeader title={"Club"} hideTypeDropdown={!isRoutine} showReturn />}
-      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData || !youTrackData}>
+      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData && !youTrackData}>
         <ClubProfilePreview
           type={followingUserId ? "peek" : "you"}
           data={followingUserId ? youTrackData : youData}

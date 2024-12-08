@@ -21,7 +21,7 @@ export const runtime = "edge";
 
 type GetRoutinesProps = {
   skip?: boolean;
-  userId?: string;
+  followingUserId: string | null;
   type?: string;
   routines?: RoutineType[];
 };
@@ -37,7 +37,7 @@ export default function ClubRoutine() {
   const { _id: userId, routines: currentUserRoutines } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
-  const followingUserId = searchParams.get("followingUserId") || userId;
+  const followingUserId = searchParams.get("followingUserId");
   const isSelf = userId === followingUserId;
 
   const openTaskDetails = useCallback(
@@ -93,38 +93,37 @@ export default function ClubRoutine() {
   }, []);
 
   const getTrackedRoutines = useCallback(
-    async ({ skip, userId, routines, type }: GetRoutinesProps) => {
-      if (!userId || !type) return;
+    async ({ skip, followingUserId, routines, type }: GetRoutinesProps) => {
+      if (!type) return;
       try {
-        let url = `getTrackedRoutines/${userId}/${type}`;
-        if (skip && routines) url += `?skip=${routines.length}`;
+        let endpoint = "getTrackedRoutines";
+
+        if (followingUserId) endpoint += `/${followingUserId}`;
+
+        const parts = [];
+
+        if (type) {
+          parts.push(`type=${type}`);
+        }
+
+        if (skip && routines) {
+          parts.push(`skip=${routines.length}`);
+        }
+
+        const query = parts.join("&");
+
+        if (query) endpoint += `?${query}`;
 
         const response = await callTheServer({
-          endpoint: url,
+          endpoint,
           method: "GET",
         });
 
         if (response.status === 200) {
-          if (response.error === "subscription expired") {
-            const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
-            openSubscriptionModal({
-              title: `Add the Peek License`,
-              modalType: "peek",
-              isCentered: true,
-              price: "19",
-              buttonText: "Add",
-              buttonIcon: <IconPlus className="icon" />,
-              onClick: () =>
-                createCheckoutSession({
-                  priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-                  redirectUrl,
-                  cancelUrl: redirectUrl,
-                  setUserDetails,
-                }),
-              onClose: () => fetchUserData(setUserDetails),
-            });
+          if (response.error) {
             return;
           }
+
           if (response.message) {
             setRoutines((prev) => [...(prev || []), ...response.message]);
             setHasMore(response.message.length === 9);
@@ -208,7 +207,7 @@ export default function ClubRoutine() {
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
-      userId: followingUserId,
+      followingUserId,
       routines,
       type,
     };
@@ -241,7 +240,7 @@ export default function ClubRoutine() {
                   onClick={() =>
                     getTrackedRoutines({
                       skip: true,
-                      userId: followingUserId,
+                      followingUserId,
                       routines,
                       type,
                     })

@@ -24,7 +24,7 @@ export default function QuestionSlide({ question, submitResponse }: Props) {
     () => (
       <Stack className={classes.headingStack}>
         <Text size="sm" c="dimmed">
-          {upperFirst(question.asking)} is asking:{" "}
+          Create biography:
         </Text>
 
         <div className={classes.questionText}>

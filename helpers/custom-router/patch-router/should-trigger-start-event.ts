@@ -23,7 +23,7 @@ export function shouldTriggerStartEvent(href: string, clickEvent?: React.MouseEv
   const target = getURL(href);
 
   if (clickEvent && isModifiedEvent(clickEvent)) return false; // modified events: fallback to browser behaviour
-  if (current.origin !== target.origin) return false; // external URL
+  // if (current.origin !== target.origin) return false; // external URL
   if (current.pathname === target.pathname && current.search === target.search) return false; // same URL
 
   return true;

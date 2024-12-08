@@ -8,7 +8,8 @@ import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotli
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import { partIcons, partItems, typeIcons, typeItems } from "@/components/PageHeader/data";
+import { partItems, typeItems } from "@/components/PageHeader/data";
+import { typeIcons, partIcons } from "@/helpers/icons";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";

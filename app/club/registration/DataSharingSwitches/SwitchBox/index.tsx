@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import { Stack, Switch } from "@mantine/core";
+import { Group, Stack, Switch } from "@mantine/core";
 import { partIconMap } from "@/context/CreateRoutineContext/SelectPartForRoutineModalContent/partIconMap";
 import { getPrivacyValue } from "@/helpers/clubPrivacy";
+import { getPartIcon, getTypeIcon, typeIcons } from "@/helpers/icons";
 import { HeadValuePartsBoolean } from "@/types/global";
 import classes from "./SwitchBox.module.css";
 
@@ -19,9 +20,10 @@ type Props = {
 
 export default function SwitchBox({ privacy, type, onChange }: Props) {
   const relevantTypePrivacy = privacy?.find((rec) => rec.name === type);
+
   const parts = relevantTypePrivacy?.parts;
 
-  const icon = partIconMap[relevantTypePrivacy?.name || ""];
+  const typeIcon = getTypeIcon(relevantTypePrivacy?.name || "", "icon__large");
   const switchedOn = getPrivacyValue({
     privacy,
     type,
@@ -29,7 +31,7 @@ export default function SwitchBox({ privacy, type, onChange }: Props) {
   });
 
   const partSwitches = useMemo(() => {
-    if (!parts || (parts && parts.length === 0)) return <></>;
+    if (!parts || (parts && parts.length <= 1)) return null;
 
     return parts.map((part, i) => {
       const switchedOn = getPrivacyValue({
@@ -38,10 +40,16 @@ export default function SwitchBox({ privacy, type, onChange }: Props) {
         partName: part.name,
       });
 
+      const partIcon = partIconMap[part.name];
+
       return (
         <Switch
           key={i}
-          label={`${partIconMap[part.name]} Share ${part.name} data`}
+          label={
+            <Group align="center" gap={8}>
+              {partIcon} Share {part.name} data
+            </Group>
+          }
           checked={switchedOn}
           onChange={(e) =>
             onChange({
@@ -53,17 +61,23 @@ export default function SwitchBox({ privacy, type, onChange }: Props) {
         />
       );
     });
-  }, [typeof parts]);
+  }, [privacy]);
 
   return (
     <Stack className={classes.container}>
       <Switch
-        label={`${icon} Share ${type} data`}
+        label={
+          <Group align="center" gap={8}>
+            {typeIcon} Share {type} data
+          </Group>
+        }
         size="md"
         checked={switchedOn}
         onChange={(e) => onChange({ value: e.currentTarget.checked, type })}
       />
-      <Stack className={classes.wrapper}>{partSwitches}</Stack>
+      {partSwitches && partSwitches.length > 0 && (
+        <Stack className={classes.wrapper}>{partSwitches}</Stack>
+      )}
     </Stack>
   );
 }

@@ -105,7 +105,7 @@ export default function Club() {
                       ))}
                     </Stack>
                   ) : (
-                    <OverlayWithText text="No peekers" icon={<IconCircleOff className="icon" />} />
+                    <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
                   )}
                 </>
               ) : (

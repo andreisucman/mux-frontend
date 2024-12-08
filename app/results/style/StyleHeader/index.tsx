@@ -8,7 +8,7 @@ import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import { typeIcons } from "@/components/PageHeader/data";
+import { typeIcons } from "@/helpers/icons";
 import callTheServer from "@/functions/callTheServer";
 import getUsersFilters from "@/functions/getUsersFilters";
 import TitleDropdown from "../../TitleDropdown";
