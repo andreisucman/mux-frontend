@@ -40,6 +40,7 @@ export type ClubDataType = {
   privacy: HeadValuePartsBoolean;
   nextAvatarUpdateAt: Date | null;
   nextNameUpdateAt: Date | null;
+  totalFollowers: number;
 };
 
 export type ClubUserType = {

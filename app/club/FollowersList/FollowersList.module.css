@@ -3,3 +3,8 @@
   flex: 1;
   overflow-y: auto;
 }
+
+.showAllButton {
+  font-size: rem(14);
+  margin: 0 auto;
+}

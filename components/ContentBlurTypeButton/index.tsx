@@ -30,8 +30,8 @@ type Props = {
 
 const displayTypes = [
   { label: "Original", value: "original" },
-  { label: "Eyes blurred", value: "eyes" },
-  { label: "Face blurred", value: "face" },
+  { label: "Blur eyes", value: "eyes" },
+  { label: "Blur face", value: "face" },
 ];
 
 export default function ContentBlurTypeButton({

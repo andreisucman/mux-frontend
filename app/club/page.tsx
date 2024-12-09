@@ -19,7 +19,7 @@ export default function Club() {
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   const { club } = userDetails || {};
-  const { followingUserId: localFollowingUserId, payouts } = club || {};
+  const { followingUserId: localFollowingUserId, payouts, totalFollowers } = club || {};
   const { rewardEarned, payoutsEnabled } = payouts || {};
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Club() {
           <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
           <Stack className={classes.followYou}>
             <Text c="dimmed" size="sm">
-              Follow you
+              Follow you ({totalFollowers || 0})
             </Text>
             <FollowersList />
           </Stack>
