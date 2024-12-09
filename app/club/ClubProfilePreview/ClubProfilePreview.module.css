@@ -1,12 +1,12 @@
 .container {
-  gap: 0;
-  padding: rem(8);
+  padding: rem(16);
   gap: rem(8);
-  background-color: var(--mantine-color-dark-6);
-  flex: 1;
   width: 100%;
+  gap: 0;
+  flex: 1;
 
   border-radius: var(--mantine-radius-lg);
+  background-color: var(--mantine-color-dark-6);
 }
 
 .row {
@@ -32,6 +32,6 @@
 
 .clubSettingsButton {
   position: absolute;
-  right:0;
-  top:0;
+  right: 0;
+  top: 0;
 }

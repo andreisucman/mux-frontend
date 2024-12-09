@@ -119,13 +119,19 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
 
   const finalAuthenticatedNavigation = useMemo(() => {
     const { payouts } = userDetails?.club || {};
-    const { detailsSubmitted } = payouts || {};
+    const { detailsSubmitted, disabledReason } = payouts || {};
     const finalNavigation: NavigationLinkType[] = [...defaultAuthenticatedNavigation];
 
     if (userDetails?.club) {
-      if (detailsSubmitted) {
+      if (disabledReason || !detailsSubmitted) {
         finalNavigation.push({
-          title: "Club",
+          title: "Club admission",
+          path: "/club/admission",
+          icon: <IconSocial stroke={1.25} className="icon" />,
+        });
+      } else if (detailsSubmitted) {
+        finalNavigation.push({
+          title: "Club profile",
           path: "/club",
           icon: <IconSocial stroke={1.25} className="icon" />,
           children: [
@@ -133,12 +139,6 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
             { title: "About", path: "/club/about" },
             { title: "Routines", path: "/club/routine" },
           ],
-        });
-      } else {
-        finalNavigation.push({
-          title: "Join club",
-          path: "/club/registration",
-          icon: <IconSocial stroke={1.25} className="icon" />,
         });
       }
     } else {

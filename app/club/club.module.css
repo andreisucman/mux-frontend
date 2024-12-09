@@ -16,18 +16,6 @@
   }
 }
 
-.followYouScrollContainer {
-  position: relative;
-  flex: 1;
-  overflow-y: auto;
-  min-height: rem(200);
-}
-
-.followYouScrollWrapper {
-  position: absolute;
-  inset: 0;
-}
-
 .skeleton {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
+import { IconCircleOff } from "@tabler/icons-react";
 import { SegmentedControl, Stack, Text } from "@mantine/core";
+import OverlayWithText from "@/components/OverlayWithText";
 import { segments } from "../segments";
 import classes from "./DisplayClubAbout.module.css";
 
@@ -22,11 +24,18 @@ export default function DisplayClubAbout({ bioData }: Props) {
     [showSegment]
   );
 
+  const value = bioData[currentSegment.value as keyof BioDataType];
+  const placeholder = `No ${currentSegment.value}`;
+
   return (
     <Stack className={classes.container}>
       <SegmentedControl data={segments} value={showSegment} onChange={setShowSegment} />
       <Stack className={classes.wrapper}>
-        <Text className={classes.text}>{bioData[currentSegment.value as keyof BioDataType]}</Text>
+        {value ? (
+          <Text className={classes.text}>{value}</Text>
+        ) : (
+          <OverlayWithText text={placeholder} icon={<IconCircleOff className="icon" />} />
+        )}
       </Stack>
     </Stack>
   );

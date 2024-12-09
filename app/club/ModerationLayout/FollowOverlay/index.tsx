@@ -41,13 +41,13 @@ export default function FollowOverlay({ followingUserId, description }: Props) {
   return (
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
-        <IconAlertTriangle className="icon" />
-        <Text>Peek to see</Text>
+        <IconAlertTriangle className="icon icon__title" />
+        <Text>Follow to see</Text>
         <Text size="sm" c="dimmed">
           {description}
         </Text>
-        <Button className={classes.button} onClick={handleTrackUser}>
-          <IconEye className="icon" style={{ marginRight: rem(8) }} /> Peek
+        <Button className={classes.button} onClick={handleTrackUser} mb={4}>
+          <IconEye className="icon" style={{ marginRight: rem(8) }} /> Follow
         </Button>
       </Stack>
     </Stack>

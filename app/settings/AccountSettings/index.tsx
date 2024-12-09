@@ -23,24 +23,17 @@ import {
   UnstyledButton,
   useModalsStack,
 } from "@mantine/core";
-import AddClubSocials from "../ClubSettings/AddClubSocials";
 import { useMediaQuery } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
+import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import { UserDataType } from "@/types/global";
 import classes from "./AccountSettings.module.css";
-
-type AskConfirmationProps = {
-  title: string;
-  body: string;
-  onConfirm: () => void;
-};
 
 export default function AccountSettings() {
   const router = useRouter();
@@ -88,20 +81,6 @@ export default function AccountSettings() {
     } catch (err) {
       console.log("Error in deleteAccount: ", err);
     }
-  };
-
-  const askConfirmation = ({ title, body, onConfirm }: AskConfirmationProps) => {
-    modals.openConfirmModal({
-      title: (
-        <Title order={5} component={"p"}>
-          {title}
-        </Title>
-      ),
-      centered: true,
-      children: <Text>{body}</Text>,
-      labels: { confirm: "Yes", cancel: "No" },
-      onConfirm,
-    });
   };
 
   const sendConfirmationCode = async () => {

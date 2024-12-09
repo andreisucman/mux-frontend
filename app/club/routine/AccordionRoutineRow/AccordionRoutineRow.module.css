@@ -24,6 +24,8 @@
 
 .name {
   font-size: var(--mantine-font-size-md);
+  gap: rem(8);
+  align-items: center;
 }
 
 .title {

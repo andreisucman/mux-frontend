@@ -27,8 +27,7 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
-  const clubContextData = useContext(ClubContext);
-  const { youData, youTrackData } = clubContextData;
+  const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
 
   const [showComponent, setShowComponent] = useState("followOverlay");
 
@@ -41,13 +40,12 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
 
   useEffect(() => {
-    if (!clubContextData) return;
+    if (!youTrackData && youTrackDataFetched) {
+      setShowComponent("userNotFound");
+      return;
+    }
 
     if (followingUserId) {
-      if (!youTrackData) {
-        setShowComponent("userNotFound");
-        return;
-      }
       if (isSubscriptionActive) {
         const follows = localFollowingUserId === followingUserId;
         if (follows) {
@@ -61,14 +59,22 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
     } else {
       setShowComponent("children");
     }
-  }, [isSubscriptionActive, localFollowingUserId, followingUserId, youTrackData]);
+  }, [
+    isSubscriptionActive,
+    localFollowingUserId,
+    followingUserId,
+    youTrackData,
+    youTrackDataFetched,
+  ]);
 
   const followText = `Follow to see ${isRoutine ? "their routines" : "their details"}.`;
+
+  const showSkeleton = (!followingUserId && !youData) || (followingUserId && !youTrackData);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
       {pageHeader}
-      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!youData && !youTrackData}>
+      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!!showSkeleton}>
         {showComponent === "userNotFound" ? (
           <OverlayWithText text="User not found" icon={<IconUserOff className="icon" />} />
         ) : (

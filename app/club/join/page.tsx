@@ -9,7 +9,10 @@ import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
+import joinClub from "@/functions/joinClub";
 import { useRouter } from "@/helpers/custom-router";
+import { formatDate } from "@/helpers/formatDate";
+import openErrorModal from "@/helpers/openErrorModal";
 import openLegalBody from "@/helpers/openLegalBody";
 import Confirmation from "./Confirmation";
 import classes from "./join.module.css";
@@ -26,9 +29,27 @@ export default function ClubJoin() {
   const router = useRouter();
   const [tosAccepted, setTosAccepted] = useState(false);
   const [highlightTos, setHighlightTos] = useState(false);
-  const { userDetails } = useContext(UserContext);
-  const { club } = userDetails || {};
+  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { club, canRejoinClubAfter } = userDetails || {};
   const { payouts } = club || {};
+
+  const cantJoinClubNow = new Date(canRejoinClubAfter || 0) > new Date();
+
+  const handleJoinClub = useCallback(() => {
+    if (cantJoinClubNow) {
+      const rejoinDate = formatDate({ date: new Date(canRejoinClubAfter || 0) });
+      openErrorModal({ description: `You can rejoin the Club after ${rejoinDate}.` });
+      return;
+    }
+
+    joinClub({
+      router,
+      userDetails,
+      setUserDetails,
+      redirectPath: "/club/admission",
+      closeModal: true,
+    });
+  }, [userDetails]);
 
   const onStart = useCallback(() => {
     if (!tosAccepted) {
@@ -44,14 +65,14 @@ export default function ClubJoin() {
     modals.openContextModal({
       centered: true,
       modal: "general",
-      innerProps: <Confirmation />,
+      innerProps: <Confirmation handleJoinClub={handleJoinClub} />,
       title: (
         <Title order={5} component={"p"}>
           When you join the Club
         </Title>
       ),
     });
-  }, [tosAccepted]);
+  }, [tosAccepted, userDetails, handleJoinClub]);
 
   const checkboxLabel = useMemo(
     () => (
@@ -68,11 +89,11 @@ export default function ClubJoin() {
 
   useEffect(() => {
     if (!club) return;
-    
+
     if (payouts?.detailsSubmitted) {
       router.replace("/club");
     } else {
-      router.replace("/club/registration");
+      router.replace("/club/admission");
     }
   }, [club]);
 

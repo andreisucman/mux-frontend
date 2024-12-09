@@ -30,7 +30,7 @@
 
 .label {
   cursor: default;
-  padding-bottom: rem(16);
+  padding: rem(16);
 }
 
 .getMoreButton {

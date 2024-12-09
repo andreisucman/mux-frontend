@@ -1,6 +1,7 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { genConfig, Sex } from "react-nice-avatar";
 import { modals } from "@mantine/modals";
+import openErrorModal from "@/helpers/openErrorModal";
 import { EthnicityEnum, UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
@@ -51,6 +52,11 @@ export default async function joinClub({
     });
 
     if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({ description: response.error });
+        return;
+      }
+      
       setUserDetails((prev: UserDataType | null) => ({
         ...prev,
         ...response.message,

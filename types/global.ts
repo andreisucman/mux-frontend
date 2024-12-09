@@ -240,6 +240,7 @@ export interface UserDataType extends DefaultUserType {
   coachEnergy: number;
   remainingCaloriesPerDay: number;
   deleteOn: Date | null;
+  canRejoinClubAfter: Date | null;
 }
 
 export type SubscriptionType = {

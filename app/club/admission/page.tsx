@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useRouter } from "@/helpers/custom-router";
 import { IconBuildingBank, IconInfoCircle, IconRocket, IconSquareCheck } from "@tabler/icons-react";
 import { Alert, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import RedirectToWalletButton from "../BalancePane/RedirectToWalletButton";
 import DataSharingSwitches from "./DataSharingSwitches";
-import classes from "./registration.module.css";
+import classes from "./admission.module.css";
 
 const icons = {
   checkbox: <IconSquareCheck className="icon" />,
@@ -22,16 +23,18 @@ const icons = {
 
 export const runtime = "edge";
 
-export default function ClubRegistration() {
+export default function ClubAdmission() {
   const pathname = usePathname();
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const [disableFirst, setDisableFirst] = useState(true);
   const [disableSecond, setDisableSecond] = useState(true);
 
-  const { club: clubData } = userDetails || {};
-  const { payouts } = clubData || {};
-  const { detailsSubmitted, payoutsEnabled } = payouts || {};
+  const { club } = userDetails || {};
+  const { payouts } = club || {};
+  const { detailsSubmitted, payoutsEnabled, disabledReason } = payouts || {};
+
+  const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
 
   const handleCreateConnectAccount = useCallback(async () => {
     try {
@@ -48,14 +51,12 @@ export default function ClubRegistration() {
     }
   }, []);
 
-  const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
-
-  useEffect(() => {
-    if (!clubData) return;
+  useShallowEffect(() => {
+    if (!userDetails) return;
 
     setDisableFirst(!!detailsSubmitted);
     setDisableSecond(!detailsSubmitted);
-  }, [clubData, pathname]);
+  }, [userDetails, pathname]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -72,19 +73,28 @@ export default function ClubRegistration() {
               <GlowingButton
                 icon={detailsSubmitted ? icons.checkbox : icons.bank}
                 text={detailsSubmitted ? "Bank added" : "Add bank"}
-                disabled={disableFirst || !clubData}
+                disabled={disableFirst}
                 onClick={handleCreateConnectAccount}
                 containerStyles={{ flex: "unset" }}
               />
             </Group>
           </Stack>
           {submittedNotEnabled && (
-            <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+            <Alert variant="default" icon={<IconInfoCircle className="icon" />}>
               <Stack gap={8}>
                 <Title order={5}>Verifying</Title>
                 Your information is still being verified. Meanwhile you can explore the club. If you
                 need to edit your information you can do it in the wallet.
-                <RedirectToWalletButton variant="outline" />
+                <RedirectToWalletButton variant="default" />
+              </Stack>
+            </Alert>
+          )}
+          {!payoutsEnabled && disabledReason && (
+            <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+              <Stack gap={8}>
+                <Title order={5}>Payouts disabled</Title>
+                Your payouts have been disabled. Please log into your wallet to fix that.
+                <RedirectToWalletButton variant="filled" />
               </Stack>
             </Alert>
           )}
@@ -104,7 +114,7 @@ export default function ClubRegistration() {
             <GlowingButton
               text="Done"
               icon={icons.rocket}
-              disabled={disableSecond || !clubData}
+              disabled={disableSecond}
               onClick={() => router.push("/club")}
               containerStyles={{ marginRight: "auto", marginTop: rem(4) }}
             />

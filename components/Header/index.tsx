@@ -64,6 +64,7 @@ function Header() {
     deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
     setUserDetails(null);
+    close();
   }, []);
 
   return (
@@ -93,7 +94,7 @@ function Header() {
                   />
                 )}
                 {displayComponent === "userButton" && (
-                  <UserButton avatar={avatar} clubDetailsSubmitted={!!detailsSubmitted} />
+                  <UserButton avatar={avatar} clubPayouts={payouts} />
                 )}
               </>
             )}

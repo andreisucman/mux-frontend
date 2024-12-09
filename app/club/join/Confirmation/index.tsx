@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import {
   IconCamera,
   IconCash,
@@ -10,9 +10,6 @@ import {
 } from "@tabler/icons-react";
 import { rem, Stack, Table } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
-import { UserContext } from "@/context/UserContext";
-import joinClub from "@/functions/joinClub";
-import { useRouter } from "@/helpers/custom-router";
 import classes from "./Confirmation.module.css";
 
 const tableData = {
@@ -36,10 +33,11 @@ const tableData = {
   ],
 };
 
-export default function Confirmation() {
-  const router = useRouter();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+type Props = {
+  handleJoinClub: () => void;
+};
 
+export default function Confirmation({ handleJoinClub }: Props) {
   return (
     <Stack flex={1}>
       <Table data={tableData} classNames={{ td: classes.td, th: classes.th }} />
@@ -48,15 +46,7 @@ export default function Confirmation() {
           text="Join the Club"
           icon={<IconTargetArrow className="icon" style={{ marginRight: rem(8) }} />}
           containerStyles={{ margin: "auto" }}
-          onClick={() =>
-            joinClub({
-              router,
-              userDetails,
-              setUserDetails,
-              redirectPath: "/club/registration",
-              closeModal: true,
-            })
-          }
+          onClick={handleJoinClub}
         />
       </Stack>
     </Stack>

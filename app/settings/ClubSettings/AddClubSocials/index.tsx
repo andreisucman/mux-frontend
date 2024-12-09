@@ -115,7 +115,7 @@ export default function AddClubSocials({ title }: Props) {
         <TextInput
           maw={355}
           value={name}
-          placeholder="Link name"
+          placeholder="Title"
           onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
         />
         <Group className={classes.valueGroup}>
@@ -123,7 +123,7 @@ export default function AddClubSocials({ title }: Props) {
             maw={355}
             value={value}
             error={error}
-            placeholder="https://"
+            placeholder="https://..."
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
               if (error) setError("");
               setValue(e.currentTarget.value);

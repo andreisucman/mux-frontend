@@ -65,10 +65,10 @@ export default function AccordionRoutineRow({
                   [classes.active]: routine.status === "active",
                 })}
               />
-              <Text className={classes.name}>
+              <Group className={classes.name}>
                 <IconClipboardText className="icon icon__small" />
                 {date}
-              </Text>
+              </Group>
             </Group>
             <StatsGroup
               completed={totalCompleted}

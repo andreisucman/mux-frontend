@@ -7,10 +7,15 @@ import classes from "./UserButton.module.css";
 
 type Props = {
   avatar?: { [key: string]: any };
-  clubDetailsSubmitted: boolean;
+  clubPayouts?: { detailsSubmitted: boolean; payoutsEnabled: boolean; disabledReason: string };
 };
 
-function UserButton({ avatar, clubDetailsSubmitted }: Props) {
+function UserButton({ avatar, clubPayouts }: Props) {
+  const { detailsSubmitted, disabledReason } = clubPayouts || {};
+
+  const clubUrl = disabledReason ? "/club/admission" : "/club";
+  const clubText = disabledReason ? "Club admission" : "Club profile";
+
   return (
     <Menu withArrow classNames={{ itemLabel: classes.itemLabel }}>
       <Menu.Target>
@@ -43,9 +48,9 @@ function UserButton({ avatar, clubDetailsSubmitted }: Props) {
           <IconScanFood className={`icon ${classes.icon}`} style={{ marginRight: rem(8) }} />
           Scan style
         </Menu.Item>
-        {clubDetailsSubmitted && (
-          <Menu.Item component={Link} href="/club">
-            <IconSocial className="icon icon__small" style={{ marginRight: rem(8) }} /> Club profile
+        {detailsSubmitted && (
+          <Menu.Item component={Link} href={clubUrl}>
+            <IconSocial className="icon icon__small" style={{ marginRight: rem(8) }} /> {clubText}
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/settings">

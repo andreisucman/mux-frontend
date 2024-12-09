@@ -8,12 +8,12 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { UserDataType } from "@/types/global";
+import ClubHeader from "../ClubHeader";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
 import QuestionsCarousel from "./QuestionsCarousel";
 import { SubmitAboutResponseType } from "./types";
-import ClubHeader from "../ClubHeader";
 import classes from "./about.module.css";
 
 export const runtime = "edge";
@@ -161,7 +161,6 @@ export default function ClubAbout() {
         {!followingUserId && questions && questions.length > 0 && (
           <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
         )}
-
         {followingUserId ? (
           <DisplayClubAbout bioData={bioData} />
         ) : (

@@ -25,8 +25,6 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
   const { headTotalProgress, bodyTotalProgress } = scores || {};
   const { questions } = bio || {};
 
-  console.log("bio",bio)
-
   const progessExists = headTotalProgress !== undefined || bodyTotalProgress !== undefined;
   const rowStyle: { [key: string]: any } = {};
 
@@ -77,9 +75,7 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
               {bio?.intro}
             </Text>
           )}
-
           {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
-
           {progessExists && (
             <Group wrap="nowrap">
               {headTotalProgress !== undefined && (
@@ -98,8 +94,14 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
           )}
         </Stack>
         {type === "you" && (
-          <ActionIcon variant="default" component={Link} href="/settings" className={classes.clubSettingsButton}>
-            <IconSettings className="icon" />
+          <ActionIcon
+            variant="default"
+            size="sm"
+            component={Link}
+            href="/settings"
+            className={classes.clubSettingsButton}
+          >
+            <IconSettings className="icon icon__small" />
           </ActionIcon>
         )}
       </Group>

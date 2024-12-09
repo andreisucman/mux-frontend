@@ -1,7 +1,12 @@
 .container {
+  display: flex;
+  align-items: center;
   flex-wrap: nowrap;
-  gap: rem(16);
-  flex: 1;
+  gap: rem(12);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  min-height: rem(60);
+  padding: 0 rem(16);
 }
 
 .icon {

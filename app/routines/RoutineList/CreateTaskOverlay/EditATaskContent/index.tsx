@@ -137,7 +137,7 @@ function EditATaskContent({
           placeholder="Pick date"
           size="sm"
           closeOnChange
-          leftSection={<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />}
+          leftSection={<IconCalendar className="icon" stroke={1.5} />}
         />
       </Stack>
       <Stack className={classes.box}>

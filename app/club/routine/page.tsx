@@ -3,12 +3,12 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Group, Loader, rem, Stack, Text } from "@mantine/core";
+import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import askConfirmation from "@/helpers/askConfirmation";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import ClubHeader from "../ClubHeader";
 import ClubModerationLayout from "../ModerationLayout";
@@ -48,13 +48,9 @@ export default function ClubRoutine() {
         modals.openContextModal({
           modal: "general",
           title: (
-            <Group gap={rem(8)}>
-              <IconWithColor
-                icon={task.icon}
-                customStyles={{ minHeight: rem(24), minWidth: rem(24) }}
-              />
-              <Text>{task.name} preview</Text>
-            </Group>
+            <Title order={5} component="p">
+              {task.name} preview
+            </Title>
           ),
           centered: true,
           innerProps: (
@@ -73,22 +69,6 @@ export default function ClubRoutine() {
     },
     [type, currentUserRoutines?.length]
   );
-
-  const handleReplaceRoutine = useCallback(async (routineId: string) => {
-    try {
-      modals.openConfirmModal({
-        title: "⚠️ Confirm routine replacement",
-        children:
-          "This action will replace your current routine with the selected one. Are you sure?",
-        labels: { confirm: "Yes", cancel: "No" },
-        onConfirm: () => replaceRoutine(routineId),
-        onCancel: () => modals.closeAll(),
-        centered: true,
-      });
-    } catch (err) {
-      console.log("Error in handleReplaceRoutine: ", err);
-    }
-  }, []);
 
   const getTrackedRoutines = useCallback(
     async ({ skip, followingUserId, routines, type }: GetRoutinesProps) => {
@@ -195,7 +175,13 @@ export default function ClubRoutine() {
             type={type as TypeEnum}
             routine={routine}
             isSelf={isSelf}
-            handleReplaceRoutine={handleReplaceRoutine}
+            handleReplaceRoutine={() =>
+              askConfirmation({
+                title: "Steal routine",
+                body: "This will replace your current routine with the selected one. Are you sure?",
+                onConfirm: () => replaceRoutine(routine._id),
+              })
+            }
             openTaskDetails={openTaskDetails}
           />
         );
@@ -261,7 +247,7 @@ export default function ClubRoutine() {
             )}
           </>
         ) : (
-          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+          <Loader style={{ margin: "auto" }} />
         )}
       </Stack>
     </ClubModerationLayout>

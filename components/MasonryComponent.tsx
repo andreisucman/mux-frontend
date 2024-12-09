@@ -8,7 +8,7 @@ type Props = {
   columnCount?: number;
   maxColumnCount?: number;
   columnGutter?: number;
-  columnWidth: number;
+  columnWidth?: number;
   items: any[];
   render: any;
 };

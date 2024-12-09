@@ -12,11 +12,13 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import DataSharingSwitches from "@/app/club/registration/DataSharingSwitches";
+import DataSharingSwitches from "@/app/club/admission/DataSharingSwitches";
 import AvatarComponent from "@/components/AvatarComponent";
 import AvatarEditor from "@/components/AvatarEditor";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import askConfirmation from "@/helpers/askConfirmation";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import AddClubSocials from "./AddClubSocials";
@@ -32,6 +34,7 @@ export type UpdateClubInfoProps = {
 const MAX_INTRO_CHARACTERS = 180;
 
 export default function ClubSettings() {
+  const router = useRouter();
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
@@ -49,18 +52,48 @@ export default function ClubSettings() {
   const isNameDirty = userName.trim() !== name?.trim();
   const isIntroDirty = userIntro.trim() !== intro?.trim();
 
+  const handleLeaveClub = useCallback(async () => {
+    try {
+      const response = await callTheServer({
+        endpoint: "leaveClub",
+        method: "POST",
+      });
+
+      if (response.status === 200) {
+        setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
+
+        router.push("/routines");
+        modals.closeAll();
+      }
+    } catch (err) {
+      openErrorModal({
+        description: "Please contact us at info@muxout.com",
+      });
+    }
+  }, [router, userDetails]);
+
   const openLeaveClubConfirmation = useCallback(() => {
     modals.openContextModal({
       centered: true,
       modal: "general",
-      innerProps: <LeaveClubConfirmation />,
+      innerProps: (
+        <LeaveClubConfirmation
+          handleLeaveClub={() =>
+            askConfirmation({
+              title: "Please confirm",
+              body: "You won't be able to rejoin for 7 days. Continue?",
+              onConfirm: handleLeaveClub,
+            })
+          }
+        />
+      ),
       title: (
         <Title order={5} component={"p"}>
           When you leave the Club
         </Title>
       ),
     });
-  }, []);
+  }, [userDetails, handleLeaveClub]);
 
   const updateIntro = useCallback(
     (text: string) =>

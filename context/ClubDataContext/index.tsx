@@ -2,16 +2,14 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import useSWR from "swr";
 import callTheServer from "@/functions/callTheServer";
 import { ClubUserType } from "@/types/global";
 import { UserContext } from "../UserContext";
 
 const defaultClubContext = {
+  youTrackDataFetched: false,
   youTrackData: null as ClubUserType | null,
   setYouTrackData: (args: any) => {},
-  trackYouData: null as ClubUserType[] | null,
-  setTrackYouData: (args: any) => {},
   youData: null as ClubUserType | null,
   setYouData: (args: any) => {},
 };
@@ -24,9 +22,9 @@ type Props = {
 
 export default function ClubDataContextProvider({ children }: Props) {
   const searchParams = useSearchParams();
-  const { status, userDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
+  const [youTrackDataFetched, setYouTrackDataFetched] = useState(false);
   const [youTrackData, setYouTrackData] = useState<ClubUserType | null>(null);
-  const [trackYouData, setTrackYouData] = useState<ClubUserType[] | null>(null);
   const [youData, setYouData] = useState<ClubUserType | null>(null);
 
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
@@ -43,24 +41,10 @@ export default function ClubDataContextProvider({ children }: Props) {
 
       if (response.status === 200) {
         setYouTrackData(response.message);
+        setYouTrackDataFetched(true);
       }
     } catch (err) {
       console.log("Error in getClubYouTrack: ", err);
-    }
-  }, []);
-
-  const getClubTrackYou = useCallback(async () => {
-    try {
-      const response = await callTheServer({
-        endpoint: "getClubTrackYou",
-        method: "GET",
-      });
-
-      if (response.status === 200) {
-        setTrackYouData(response.message);
-      }
-    } catch (err) {
-      console.log("Error in getClubTrackYou: ", err);
     }
   }, []);
 
@@ -96,19 +80,12 @@ export default function ClubDataContextProvider({ children }: Props) {
     getClubYouTrack(followingUserId);
   }, [followingUserId]);
 
-  useEffect(() => {
-    getClubTrackYou();
-  }, [status]);
-
-  useSWR(status, getClubTrackYou);
-
   return (
     <ClubContext.Provider
       value={{
+        youTrackDataFetched,
         youTrackData,
         setYouTrackData,
-        trackYouData,
-        setTrackYouData,
         youData,
         setYouData,
       }}
