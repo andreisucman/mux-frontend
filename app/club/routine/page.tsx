@@ -218,6 +218,7 @@ export default function ClubRoutine() {
                     content: classes.content,
                     chevron: classes.chevron,
                     label: classes.label,
+                    control: classes.control
                   }}
                 >
                   {accordionItems}

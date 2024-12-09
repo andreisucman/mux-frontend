@@ -58,7 +58,7 @@ function EditATaskContent({
     <Group>
       <Text>{previewData.slice(0, 3).join(", ")}</Text>
       {tasksLeft && tasksLeft > 1 && (
-        <Text size="xs" c="dimmed" ta="center">
+        <Text size="sm" c="dimmed" ta="center">
           and {tasksLeft} more days...
         </Text>
       )}
@@ -78,7 +78,7 @@ function EditATaskContent({
           setRawTask(updated as RawTaskType);
         }}
         heading={
-          <Text size="xs" c="dimmed">
+          <Text size="sm" c="dimmed">
             Description:
           </Text>
         }
@@ -96,7 +96,7 @@ function EditATaskContent({
           setRawTask(updated as RawTaskType);
         }}
         heading={
-          <Text size="xs" c="dimmed">
+          <Text size="sm" c="dimmed">
             Instruction:
           </Text>
         }
@@ -105,7 +105,7 @@ function EditATaskContent({
       />
       {!readOnly && (
         <Stack className={classes.box}>
-          <Text size="xs" c="dimmed">
+          <Text size="sm" c="dimmed">
             Frequency:
           </Text>
           <Group wrap="nowrap" align="center">
@@ -127,7 +127,7 @@ function EditATaskContent({
         </Stack>
       )}
       <Stack className={classes.box}>
-        <Text size="xs" c="dimmed">
+        <Text size="sm" c="dimmed">
           Choose a starting date:
         </Text>
         <DatePickerInput
@@ -141,7 +141,7 @@ function EditATaskContent({
         />
       </Stack>
       <Stack className={classes.box}>
-        <Text size="xs" c="dimmed">
+        <Text size="sm" c="dimmed">
           {previeTitle}
         </Text>
         {previewBody}

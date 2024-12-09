@@ -11,6 +11,7 @@
 .accordion {
   position: absolute;
   inset: 0;
+  background-color: none !important;
 }
 
 .active {
@@ -31,6 +32,10 @@
 .label {
   cursor: default;
   padding: rem(16);
+}
+
+.control {
+  background: none !important;
 }
 
 .getMoreButton {
