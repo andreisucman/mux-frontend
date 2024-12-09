@@ -34,7 +34,7 @@ function MenuButtons({
         className={cn(classes.button, { [classes.selected]: isProgress })}
         onClick={redirectToProgress}
       >
-        <IconClipboardData style={{ marginRight: rem(4) }} className={"icon"} />
+        <IconClipboardData style={{ marginRight: rem(4) }} className={"icon icon__small"} />
         <Text className={classes.buttonText}>Progress</Text>
       </Button>
       <Button
@@ -44,7 +44,7 @@ function MenuButtons({
         onClick={redirectToTrackingAbout}
       >
         <IconNotes
-          className={cn("icon", {
+          className={cn("icon", "icon__small", {
             [classes.activeIcon]: showQuestions,
           })}
           style={{ marginRight: rem(4) }}

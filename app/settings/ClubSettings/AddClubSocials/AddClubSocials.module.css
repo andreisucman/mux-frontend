@@ -1,0 +1,19 @@
+.container {
+  gap: rem(8);
+}
+
+.links {
+  max-width: rem(300);
+  overflow: auto;
+  gap: rem(8);
+}
+
+.addGroup {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}
+
+.valueGroup {
+  gap: rem(8);
+  flex-wrap: nowrap;
+}

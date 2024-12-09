@@ -19,6 +19,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
+import AddClubSocials from "./AddClubSocials";
 import LeaveClubConfirmation from "./LeaveClubConfirmation";
 import classes from "./ClubSettings.module.css";
 
@@ -74,6 +75,17 @@ export default function ClubSettings() {
     try {
       setIsLoading(true);
 
+      modals.closeAll();
+
+      if (type === "intro") {
+        updateIntro(data as string);
+      } else {
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          club: { ...prev.club, [type]: data },
+        }));
+      }
+
       const response = await callTheServer({
         endpoint: "updateClubData",
         method: "POST",
@@ -85,16 +97,6 @@ export default function ClubSettings() {
           openErrorModal({ description: response.error });
           return;
         }
-
-        if (type === "intro") {
-          updateIntro(data as string);
-        } else {
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            club: { ...prev.club, [type]: data },
-          }));
-        }
-        modals.closeAll();
       }
     } catch (err) {
       console.log("Error in updateClubInfo: ", err);
@@ -162,43 +164,49 @@ export default function ClubSettings() {
         Club
       </Title>
       <Stack className={classes.list}>
-        <Group>
-          <div className={classes.avatarWrapper} onClick={openAvatarEditor}>
-            <AvatarComponent avatar={avatar} size="md" />
-          </div>
+        <Stack gap={8}>
+          <Group>
+            <div className={classes.avatarWrapper} onClick={openAvatarEditor}>
+              <AvatarComponent avatar={avatar} size="md" />
+            </div>
+            <TextInput
+              flex={1}
+              maw={300}
+              value={userName}
+              disabled={!canUpdateName}
+              onChange={(e) => setUserName(e.currentTarget.value)}
+              rightSection={
+                <ActionIcon
+                  disabled={!isNameDirty || isLoading || !canUpdateName}
+                  onClick={() =>
+                    handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })
+                  }
+                >
+                  <IconDeviceFloppy className="icon" />
+                </ActionIcon>
+              }
+            />
+          </Group>
           <TextInput
             flex={1}
-            maw={300}
-            value={name}
-            disabled={!canUpdateName}
-            onChange={(e) => setUserName(e.currentTarget.value)}
+            maw={355}
+            value={userIntro}
+            onChange={(e) => handleEnterIntro(e.currentTarget.value)}
+            leftSection={<Text size="xs">{introCharactersLeft}</Text>}
+            leftSectionWidth={50}
             rightSection={
               <ActionIcon
-                disabled={!isNameDirty || isLoading || !canUpdateName}
-                onClick={() => handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })}
+                disabled={!isIntroDirty || userIntro.length === 0}
+                onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
               >
                 <IconDeviceFloppy className="icon" />
               </ActionIcon>
             }
           />
-        </Group>
-        <TextInput
-          flex={1}
-          maw={355}
-          value={userIntro}
-          onChange={(e) => handleEnterIntro(e.currentTarget.value)}
-          leftSection={<Text size="xs">{introCharactersLeft}</Text>}
-          leftSectionWidth={50}
-          rightSection={
-            <ActionIcon
-              disabled={!isIntroDirty || userIntro.length === 0}
-              onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
-            >
-              <IconDeviceFloppy className="icon" />
-            </ActionIcon>
-          }
-        />
+        </Stack>
+
         <DataSharingSwitches title="Data privacy" />
+        <AddClubSocials title="Socials" />
         <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
           <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club
         </UnstyledButton>

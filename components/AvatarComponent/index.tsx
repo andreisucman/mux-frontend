@@ -16,7 +16,7 @@ export default function AvatarComponent({ avatar, size = "md", customStyles }: P
     if (!avatar) return;
     const avatarConfig = genConfig(avatar);
     setConfig(avatarConfig);
-  }, [typeof avatar]);
+  }, [avatar]);
 
   return (
     config && (

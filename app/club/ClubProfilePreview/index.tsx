@@ -8,6 +8,7 @@ import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
+import SocialsDisplayLine from "./SocialsDisplayLine";
 import classes from "./ClubProfilePreview.module.css";
 
 type Props = {
@@ -23,6 +24,8 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
   const { scores, bio, _id: followingUserId, avatar, name } = data || {};
   const { headTotalProgress, bodyTotalProgress } = scores || {};
   const { questions } = bio || {};
+
+  console.log("bio",bio)
 
   const progessExists = headTotalProgress !== undefined || bodyTotalProgress !== undefined;
   const rowStyle: { [key: string]: any } = {};
@@ -75,6 +78,8 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
             </Text>
           )}
 
+          {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
+
           {progessExists && (
             <Group wrap="nowrap">
               {headTotalProgress !== undefined && (
@@ -93,7 +98,7 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
           )}
         </Stack>
         {type === "you" && (
-          <ActionIcon variant="default" component={Link} href="/settings">
+          <ActionIcon variant="default" component={Link} href="/settings" className={classes.clubSettingsButton}>
             <IconSettings className="icon" />
           </ActionIcon>
         )}

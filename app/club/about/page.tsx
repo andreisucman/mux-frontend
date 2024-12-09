@@ -158,7 +158,7 @@ export default function ClubAbout() {
       pageHeader={<ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />}
     >
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
-        {questions && questions.length > 0 && (
+        {!followingUserId && questions && questions.length > 0 && (
           <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
         )}
 

@@ -74,7 +74,7 @@ export default function AvatarEditor({
           <IconDeviceFloppy className={`${classes.icon} icon`} /> Save
         </Button>
         <Stack className={classes.content}>
-          <Fieldset legend="Hat" className={classes.filedset}>
+          <Fieldset legend="Skin color" className={classes.filedset}>
             <ColorInput
               flex={1}
               withEyeDropper={false}

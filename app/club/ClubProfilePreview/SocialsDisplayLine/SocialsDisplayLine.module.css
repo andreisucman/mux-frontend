@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+  height: rem(32);
+}
+
+.wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  flex-wrap: nowrap;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: rem(4);
+
+  &:hover {
+    color: white;
+  }
+}
+
+.label {
+  font-size: var(--mantine-font-size-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

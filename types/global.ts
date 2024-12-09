@@ -21,6 +21,7 @@ type ClubBioType = {
   tips: string;
   about: string;
   questions: { asking: string; question: string }[];
+  socials: { value: string; label: string }[];
 };
 
 export type ClubDataType = {

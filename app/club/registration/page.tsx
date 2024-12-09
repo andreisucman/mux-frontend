@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { IconBuildingBank, IconInfoCircle, IconRocket, IconSquareCheck } from "@tabler/icons-react";
-import { Alert, Button, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { Alert, Group, rem, Stack, Text, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
 import RedirectToWalletButton from "../BalancePane/RedirectToWalletButton";
 import DataSharingSwitches from "./DataSharingSwitches";
 import classes from "./registration.module.css";
@@ -22,6 +23,7 @@ const icons = {
 export const runtime = "edge";
 
 export default function ClubRegistration() {
+  const pathname = usePathname();
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const [disableFirst, setDisableFirst] = useState(true);
@@ -53,7 +55,7 @@ export default function ClubRegistration() {
 
     setDisableFirst(!!detailsSubmitted);
     setDisableSecond(!detailsSubmitted);
-  }, [clubData]);
+  }, [clubData, pathname]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -76,14 +78,16 @@ export default function ClubRegistration() {
               />
             </Group>
           </Stack>
-          {submittedNotEnabled && <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
-            <Stack gap={8}>
-              <Title order={5}>Verifying</Title>
-              Your information is still being verified. Meanwhile you can explore the club. If you
-              need to edit your information you can do it in the wallet.
-              <RedirectToWalletButton variant="outline" />
-            </Stack>
-          </Alert>}
+          {submittedNotEnabled && (
+            <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+              <Stack gap={8}>
+                <Title order={5}>Verifying</Title>
+                Your information is still being verified. Meanwhile you can explore the club. If you
+                need to edit your information you can do it in the wallet.
+                <RedirectToWalletButton variant="outline" />
+              </Stack>
+            </Alert>
+          )}
 
           <Stack>
             <Title order={4}>2. Decide which data to share</Title>

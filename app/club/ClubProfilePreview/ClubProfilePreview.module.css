@@ -32,6 +32,6 @@
 
 .clubSettingsButton {
   position: absolute;
-  right: rem(8);
-  top: rem(8);
+  right:0;
+  top:0;
 }

@@ -65,3 +65,23 @@ export const validateEmail = (val: string) => {
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailPattern.test(val);
 };
+
+export function validateUrl(url: string) {
+  if (!url) return false;
+  try {
+    const secure = url.startsWith("https://");
+    if (!secure) return false;
+
+    const parsedUrl = new URL(url);
+
+    const domain = parsedUrl.hostname;
+
+    const hasValidExtension = /\.[a-z]{2,}$/i.test(domain);
+
+    if (!hasValidExtension) return false;
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

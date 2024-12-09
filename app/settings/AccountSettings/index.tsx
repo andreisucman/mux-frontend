@@ -23,11 +23,13 @@ import {
   UnstyledButton,
   useModalsStack,
 } from "@mantine/core";
+import AddClubSocials from "../ClubSettings/AddClubSocials";
 import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
@@ -41,6 +43,7 @@ type AskConfirmationProps = {
 };
 
 export default function AccountSettings() {
+  const router = useRouter();
   const [showSkeleton, setShowSkeleton] = useState(true);
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
@@ -61,7 +64,7 @@ export default function AccountSettings() {
       });
 
       if (response.status === 200) {
-        window.location.href = response.message;
+        router.push(response.message);
       }
     } catch (err) {
       console.log("Error in redirectToBillingPortal: ", err);
