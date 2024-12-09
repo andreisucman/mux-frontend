@@ -53,6 +53,13 @@ export default function AvatarEditor({
     setBgColorOne(gradientColors[1]);
   }, [currentConfig.bgColor]);
 
+  const dropdownStyles = useMemo(
+    () => ({
+      maxWidth: "unset",
+    }),
+    []
+  );
+
   return (
     <Stack className={classes.container}>
       <Avatar {...updatedAvatar} style={{ width: rem(100), height: rem(100), margin: "auto" }} />
@@ -67,97 +74,120 @@ export default function AvatarEditor({
           <IconDeviceFloppy className={`${classes.icon} icon`} /> Save
         </Button>
         <Stack className={classes.content}>
-          <Fieldset legend="Hat">
+          <Fieldset legend="Hat" className={classes.filedset}>
+            <ColorInput
+              flex={1}
+              withEyeDropper={false}
+              value={updatedAvatar.faceColor}
+              placeholder="Skin color"
+              defaultValue={currentConfig.faceColor}
+              onChange={(value) => modifyConfig("faceColor", value)}
+            />
+          </Fieldset>
+
+          <Fieldset legend="Hat" className={classes.filedset}>
             <FilterDropdown
               data={options.hatStyle}
               placeholder="Hat"
               defaultSelected={currentConfig.hatStyle}
+              customStyles={dropdownStyles}
               onSelect={(value) => modifyConfig("hatStyle", value)}
             />
             <ColorInput
               flex={1}
               mt={12}
+              withEyeDropper={false}
               value={updatedAvatar.hatColor}
               placeholder="Hat color"
               defaultValue={currentConfig.hatColor}
               onChange={(value) => modifyConfig("hatColor", value)}
             />
           </Fieldset>
-          <Fieldset legend="Hair">
+          <Fieldset legend="Hair" className={classes.filedset}>
             <FilterDropdown
               data={options.hairStyle as { label: string; value: string }[]}
               placeholder="Hair"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.hairStyle}
               onSelect={(value) => modifyConfig("hairStyle", value)}
             />
             <ColorInput
               flex={1}
               mt={12}
+              withEyeDropper={false}
               value={updatedAvatar.hairColor}
               placeholder="Hair color"
               defaultValue={currentConfig.hairColor}
               onChange={(value) => modifyConfig("hairColor", value)}
             />
           </Fieldset>
-          <Fieldset legend="Ear">
+          <Fieldset legend="Ear" className={classes.filedset}>
             <FilterDropdown
               data={options.earSize}
               placeholder="Ear"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.earSize}
               onSelect={(value) => modifyConfig("earSize", value)}
             />
           </Fieldset>
-          <Fieldset legend="Eyes">
+          <Fieldset legend="Eyes" className={classes.filedset}>
             <FilterDropdown
               data={options.eyeStyle}
               placeholder="Eyes"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.eyeStyle}
               onSelect={(value) => modifyConfig("eyeStyle", value)}
             />
           </Fieldset>
-          <Fieldset legend="Glasses">
+          <Fieldset legend="Glasses" className={classes.filedset}>
             <FilterDropdown
               data={options.glassesStyle}
               placeholder="Glasses"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.glassesStyle}
               onSelect={(value) => modifyConfig("glassesStyle", value)}
             />
           </Fieldset>
-          <Fieldset legend="Nose">
+          <Fieldset legend="Nose" className={classes.filedset}>
             <FilterDropdown
               data={options.noseStyle}
               placeholder="Nose"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.noseStyle}
               onSelect={(value) => modifyConfig("noseStyle", value)}
             />
           </Fieldset>
-          <Fieldset legend="Mouth">
+          <Fieldset legend="Mouth" className={classes.filedset}>
             <FilterDropdown
               data={options.mouthStyle}
               placeholder="Mouth"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.mouthStyle}
               onSelect={(value) => modifyConfig("mouthStyle", value)}
             />
           </Fieldset>
-          <Fieldset legend="Shirt">
+          <Fieldset legend="Shirt" className={classes.filedset}>
             <FilterDropdown
               data={options.shirtStyle as { label: string; value: string }[]}
               placeholder="Shirt"
+              customStyles={dropdownStyles}
               defaultSelected={currentConfig.shirtStyle}
               onSelect={(value) => modifyConfig("shirtStyle", value)}
             />
             <ColorInput
               flex={1}
               mt={12}
+              withEyeDropper={false}
               value={updatedAvatar.shirtColor}
               placeholder="Shirt color"
               defaultValue={currentConfig.shirtColor}
               onChange={(value) => modifyConfig("shirtColor", value)}
             />
           </Fieldset>
-          <Fieldset legend="Background">
+          <Fieldset legend="Background" className={classes.filedset}>
             <ColorInput
               flex={1}
+              withEyeDropper={false}
               value={bgColorOne}
               placeholder="Color one"
               onChange={(value) => {
@@ -168,6 +198,7 @@ export default function AvatarEditor({
             <ColorInput
               mt={12}
               flex={1}
+              withEyeDropper={false}
               value={bgColorTwo}
               placeholder="Color two"
               onChange={(value) => {

@@ -62,7 +62,7 @@ export default function ChatMessagesButton() {
             )}
           </>
         ) : (
-          <Loader style={{ margin: "15vh auto 0" }} />
+          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}
       </Drawer>
     </>

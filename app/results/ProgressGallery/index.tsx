@@ -42,17 +42,6 @@ export default function ProgressGallery({
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;
 
-  const processedProgress = useMemo(
-    () =>
-      progress
-        ? progress.map((p) => ({
-            ...p,
-            images: p.images.filter((io) => io.position === position),
-            initialImages: p.initialImages.filter((io) => io.position === position),
-          }))
-        : [],
-    [position, appliedBlurType, progress && progress.length]
-  );
 
   const memoizedProgressCard = useCallback(
     (props: any) => (
@@ -63,7 +52,7 @@ export default function ProgressGallery({
         showTrackButton={!isSelfPage}
       />
     ),
-    [position, isSelfPage, appliedBlurType]
+    [position, isSelfPage, appliedBlurType, typeof progress]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
@@ -94,7 +83,7 @@ export default function ProgressGallery({
             columnGutter={16}
             columnWidth={gridColumnWidth}
             render={memoizedProgressCard}
-            items={processedProgress}
+            items={progress}
           />
         </InfiniteScroll>
       ) : (

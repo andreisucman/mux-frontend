@@ -15,6 +15,7 @@ type Props = {
   data: FilterItemType[];
   defaultSelected?: string | null;
   onSelect?: (key?: string | null) => void;
+  customStyles?: { [key: string]: any };
 };
 
 export default function FilterDropdown({
@@ -25,6 +26,7 @@ export default function FilterDropdown({
   addToQuery,
   filterType,
   defaultSelected,
+  customStyles,
   onSelect,
 }: Props) {
   const [selectedValue, setSelectedValue] = useState<string>();
@@ -78,6 +80,7 @@ export default function FilterDropdown({
       defaultValue={defaultValue}
       leftSection={leftSectionIcon}
       leftSectionWidth={40}
+      style={customStyles ? customStyles : {}}
       classNames={{ dropdown: classes.dropdown }}
       allowDeselect={false}
     />

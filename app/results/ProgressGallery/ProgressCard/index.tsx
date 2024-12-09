@@ -21,6 +21,8 @@ function ProgressCard({ data, showTrackButton, setProgress }: Props) {
   const { images, createdAt } = data;
   const firstImage = images[0];
 
+  console.log("firstImage")
+
   const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
@@ -50,18 +52,18 @@ function ProgressCard({ data, showTrackButton, setProgress }: Props) {
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
       <div className={classes.imageWrapper} ref={ref}>
-        <ContentBlurTypeButton
+        {firstImage && <ContentBlurTypeButton
           contentId={data._id}
           currentMain={firstImage.mainUrl}
           contentCategory={"progress"}
           position="top-left"
           setRecords={setProgress}
-        />
+        />}
         <span className={classes.date}>{formattedDate}</span>
         <ContentPublicityIndicator isPublic={data.isPublic} />
         <Image
           className={classes.image}
-          src={firstImage.mainUrl.url || "/"}
+          src={firstImage && firstImage.mainUrl.url || "/"}
           width={100}
           height={100}
           alt=""

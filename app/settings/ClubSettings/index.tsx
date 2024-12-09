@@ -61,6 +61,15 @@ export default function ClubSettings() {
     });
   }, []);
 
+  const updateIntro = useCallback(
+    (text: string) =>
+      setUserDetails((prev: UserDataType) => ({
+        ...(prev || {}),
+        club: { ...(prev.club || {}), bio: { ...(prev?.club?.bio || {}), intro: text } },
+      })),
+    []
+  );
+
   const updateClubInfo = useCallback(async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
     try {
       setIsLoading(true);
@@ -77,7 +86,14 @@ export default function ClubSettings() {
           return;
         }
 
-        setUserDetails((prev: UserDataType) => ({ ...prev, club: { ...prev.club, [type]: data } }));
+        if (type === "intro") {
+          updateIntro(data as string);
+        } else {
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            club: { ...prev.club, [type]: data },
+          }));
+        }
         modals.closeAll();
       }
     } catch (err) {
@@ -90,9 +106,14 @@ export default function ClubSettings() {
   const handleUpdateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
       let children = `You can update your ${type} once a ${type === "name" ? "month" : "week"} only. Continue?`;
+
       modals.openConfirmModal({
         children,
-        title: <Title order={5} component={"p"}>Confirm operation</Title>,
+        title: (
+          <Title order={5} component={"p"}>
+            Confirm operation
+          </Title>
+        ),
         centered: true,
         labels: { confirm: "Yes", cancel: "No" },
         onConfirm: () => updateClubInfo({ type, data, setIsLoading }),
@@ -171,7 +192,7 @@ export default function ClubSettings() {
           rightSection={
             <ActionIcon
               disabled={!isIntroDirty || userIntro.length === 0}
-              onClick={() => handleUpdateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
+              onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
             >
               <IconDeviceFloppy className="icon" />
             </ActionIcon>

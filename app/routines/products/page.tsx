@@ -1,9 +1,9 @@
 "use client";
 
-import useSWR from "swr";
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconShoppingBag } from "@tabler/icons-react";
+import useSWR from "swr";
 import { Button, Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -83,7 +83,7 @@ export default function Products() {
             )}
           </>
         ) : (
-          <Loader style={{ margin: "15vh auto 0" }} />
+          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}
         {selectedAsins.length > 0 && (
           <Button

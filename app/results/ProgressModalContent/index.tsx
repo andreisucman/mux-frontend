@@ -42,7 +42,7 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
         compareDate={formattedInitialDate}
         currentDate={formattedCompareDate}
       />
-      <LineProgressIndicators record={record} />
+      <LineProgressIndicators title="Progress" record={record} />
       {showTrackButton && club && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

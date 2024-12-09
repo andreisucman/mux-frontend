@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Group, rem, Loader, Stack, Text } from "@mantine/core";
+import { Accordion, ActionIcon, Group, Loader, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -261,7 +261,7 @@ export default function ClubRoutine() {
             )}
           </>
         ) : (
-          <Loader style={{ margin: "15vh auto 0" }} />
+          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}
       </Stack>
     </ClubModerationLayout>

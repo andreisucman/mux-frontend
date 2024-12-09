@@ -2,7 +2,9 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { IconCircleOff } from "@tabler/icons-react";
 import { Loader, Stack } from "@mantine/core";
+import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -57,20 +59,28 @@ export default function ResultsProgress() {
     handleFetchProgress({ type, part });
   }, [status, type, part]);
 
+  console.log("progress", progress);
+
   return (
     <Stack className={`${classes.container} mediumPage`}>
       <SkeletonWrapper>
         <ProgressHeader titles={individualResultTitles} showReturn />
         {progress ? (
-          <ProgressGallery
-            progress={progress}
-            hasMore={hasMore}
-            handleFetchProgress={handleFetchProgress}
-            setProgress={setProgress}
-            isSelfPage
-          />
+          <>
+            {progress.length > 0 ? (
+              <ProgressGallery
+                progress={progress}
+                hasMore={hasMore}
+                handleFetchProgress={handleFetchProgress}
+                setProgress={setProgress}
+                isSelfPage
+              />
+            ) : (
+              <OverlayWithText text="No progress data" icon={<IconCircleOff className="icon" />} />
+            )}
+          </>
         ) : (
-          <Loader style={{ margin: "15vh auto 0" }} />
+          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}
       </SkeletonWrapper>
     </Stack>
