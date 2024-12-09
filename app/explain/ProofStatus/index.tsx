@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import {
   IconArrowBackUp,
   IconCamera,
@@ -10,7 +10,7 @@ import {
   IconSunrise,
   IconSunset,
 } from "@tabler/icons-react";
-import { Button, Group, RingProgress, Text, ThemeIcon, rem } from "@mantine/core";
+import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -20,6 +20,7 @@ import classes from "./ProofStatus.module.css";
 type Props = {
   name: string;
   submissionId: string;
+  expiresAt: string | null;
   selectedTask: TaskType | null;
   notStarted: boolean;
   dayTime?: "morning" | "noon" | "evening";
@@ -29,6 +30,7 @@ type Props = {
 
 function ProofStatus({
   name,
+  expiresAt,
   submissionId,
   selectedTask,
   notStarted,
@@ -83,30 +85,37 @@ function ProofStatus({
     [dayTime]
   );
 
+  const taskExpired = new Date(expiresAt || 0) < new Date();
+
   const buttonData = useMemo(() => {
     let label = "";
     let icon = undefined;
 
-    if (isSubmitted) {
-      if (proofId) {
-        label = "View";
-        icon = <IconEye className="icon" style={{marginRight: rem(8)}} />;
-      } else {
-        label = "Undo";
-        icon = <IconArrowBackUp className="icon" style={{marginRight: rem(8)}} />;
-      }
+    if (taskExpired) {
+      label = "Expired";
+      icon = <IconEye className="icon" style={{ marginRight: rem(8) }} />;
     } else {
-      if (proofEnabled) {
-        label = "Upload proof";
-        icon = <IconCamera className="icon" style={{marginRight: rem(8)}} />;
+      if (isSubmitted) {
+        if (proofId) {
+          label = "View";
+          icon = <IconEye className="icon" style={{ marginRight: rem(8) }} />;
+        } else {
+          label = "Undo";
+          icon = <IconArrowBackUp className="icon" style={{ marginRight: rem(8) }} />;
+        }
       } else {
-        label = "Mark done";
-        icon = <IconSquareRoundedCheck className="icon" style={{marginRight: rem(8)}} />;
+        if (proofEnabled) {
+          label = "Upload proof";
+          icon = <IconCamera className="icon" style={{ marginRight: rem(8) }} />;
+        } else {
+          label = "Mark done";
+          icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(8) }} />;
+        }
       }
     }
 
     return { label, icon };
-  }, [isSubmitted, proofId, proofEnabled]);
+  }, [isSubmitted, proofId, proofEnabled, taskExpired]);
 
   const updateRequiredSubmission = useCallback(async () => {
     if (!taskId) return;
@@ -168,7 +177,7 @@ function ProofStatus({
       <Button
         variant={"default"}
         className={classes.ctaButton}
-        disabled={notStarted}
+        disabled={notStarted || taskExpired}
         onClick={updateRequiredSubmission}
       >
         {buttonData.icon}

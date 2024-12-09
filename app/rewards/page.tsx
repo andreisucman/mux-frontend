@@ -89,7 +89,7 @@ export default function Rewards() {
           )}
         </>
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader style={{margin: "15vh auto 0"}} />
       )}
     </Stack>
   );

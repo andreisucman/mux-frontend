@@ -9,9 +9,9 @@ import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partItems, typeItems } from "@/components/PageHeader/data";
-import { typeIcons, partIcons } from "@/helpers/icons";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
+import { partIcons, typeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import { normalizeString } from "@/helpers/utils";
@@ -190,6 +190,7 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
           }}
           overlayProps={{ blur: 0 }}
           highlightQuery
+          centered
           limit={10}
         />
       )}

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Skeleton } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import ProofHeader from "@/app/results/proof/ProofHeader";
 import { SimpleProofType } from "@/app/results/proof/types";
@@ -81,7 +81,7 @@ export default function ClubProof() {
           setProof={setProof}
         />
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader style={{ margin: "15vh auto 0" }} />
       )}
     </ClubModerationLayout>
   );

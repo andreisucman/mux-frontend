@@ -1,6 +1,9 @@
 .container {
   align-items: flex-start;
   justify-content: space-between;
+
+  min-height: rem(36);
+  align-items: center;
 }
 
 .left {
@@ -13,7 +16,7 @@
   min-width: rem(300);
 
   @media (max-width: $mantine-breakpoint-xs) {
-  flex: 1;
+    flex: 1;
     max-width: unset;
   }
 }

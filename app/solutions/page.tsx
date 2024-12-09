@@ -143,7 +143,7 @@ export default function Solutions() {
             )}
           </>
         ) : (
-          <Skeleton className="skeleton" flex={1}></Skeleton>
+          <Loader style={{ margin: "15vh auto 0" }} />
         )}
       </Stack>
       <Spotlight
@@ -154,6 +154,7 @@ export default function Solutions() {
           leftSection: <IconSearch className="icon" stroke={1.5} />,
           placeholder: "Search...",
         }}
+        centered
         highlightQuery
         overlayProps={{ blur: 0 }}
         limit={10}

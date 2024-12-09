@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack,Skeleton } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -70,7 +70,7 @@ export default function ResultsProgress() {
             isSelfPage
           />
         ) : (
-          <Skeleton className="skeleton" flex={1}></Skeleton>
+          <Loader style={{ margin: "15vh auto 0" }} />
         )}
       </SkeletonWrapper>
     </Stack>

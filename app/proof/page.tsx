@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Skeleton, Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { UserContext } from "@/context/UserContext";
@@ -87,7 +87,7 @@ export default function AllProof() {
           setProof={setProof}
         />
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader style={{ margin: "15vh auto 0" }} />
       )}
     </Stack>
   );

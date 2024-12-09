@@ -67,6 +67,8 @@ export default function ClubJoin() {
   );
 
   useEffect(() => {
+    if (!club) return;
+    
     if (payouts?.detailsSubmitted) {
       router.replace("/club");
     } else {

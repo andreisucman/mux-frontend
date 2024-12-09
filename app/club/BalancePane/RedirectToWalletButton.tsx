@@ -3,9 +3,12 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
-import classes from "./BalancePane.module.css";
 
-export default function RedirectToWalletButton() {
+type Props = {
+  variant: string;
+};
+
+export default function RedirectToWalletButton({ variant }: Props) {
   const router = useRouter();
 
   const redirectToWallet = useCallback(async () => {
@@ -26,9 +29,12 @@ export default function RedirectToWalletButton() {
 
   return (
     <Button
-      variant="default"
+      variant={variant}
       size="compact-sm"
-      className={classes.redirectToWalletButton}
+      ml="auto"
+      mb={2}
+      mr={2}
+      style={{ position: "relative", zIndex: 1 }}
       onClick={redirectToWallet}
     >
       Wallet

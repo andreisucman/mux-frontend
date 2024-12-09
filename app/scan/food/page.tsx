@@ -10,9 +10,9 @@ import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
-import ScanPageHeading from "../ScanPageHeading";
+import foodImage from "@/public/assets/placeholders/dark/food.svg";
+import ScanHeader from "../ScanHeader";
 import CalorieGoalController from "./CalorieGoal";
-import foodImage from "@/public/assets/placeholders/dark/food.svg"
 import classes from "./food.module.css";
 
 export default function ScanFoodPage() {
@@ -67,7 +67,7 @@ export default function ScanFoodPage() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <ScanPageHeading />
+      <ScanHeader />
       <CalorieGoalController
         calorieGoal={calorieGoal}
         setCalorieGoal={setCalorieGoal}
@@ -78,7 +78,11 @@ export default function ScanFoodPage() {
       <Stack className={classes.content}>
         <ProgressLoadingOverlay isLoading={isLoading} loaderType="bars" description="Analyzing" />
         {localUrl ? (
-          <ImageDisplayContainer handleDelete={() => setLocalUrl("")} image={localUrl} placeholder={foodImage} />
+          <ImageDisplayContainer
+            handleDelete={() => setLocalUrl("")}
+            image={localUrl}
+            placeholder={foodImage}
+          />
         ) : (
           <PhotoCapturer handleCapture={(base64string: string) => setLocalUrl(base64string)} />
         )}

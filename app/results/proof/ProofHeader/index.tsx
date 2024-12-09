@@ -155,6 +155,7 @@ export default function ProofHeader({ showReturn, titles }: Props) {
           placeholder: "Search...",
         }}
         highlightQuery
+        centered
         overlayProps={{ blur: 0 }}
         limit={10}
       />

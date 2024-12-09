@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCircleOff, IconPlus } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Group, Loader,Skeleton, rem, Stack, Text } from "@mantine/core";
+import { useSearchParams } from "next/navigation";
+import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
+import { Accordion, ActionIcon, Group, rem, Loader, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import createCheckoutSession from "@/functions/createCheckoutSession";
-import fetchUserData from "@/functions/fetchUserData";
-import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
+import ClubHeader from "../ClubHeader";
+import ClubModerationLayout from "../ModerationLayout";
 import AccordionRoutineRow from "./AccordionRoutineRow";
 import TaskInfoContainer from "./TaskInfoContainer";
 import classes from "./routine.module.css";
@@ -27,7 +26,6 @@ type GetRoutinesProps = {
 };
 
 export default function ClubRoutine() {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -215,51 +213,57 @@ export default function ClubRoutine() {
   }, [type, followingUserId]);
 
   return (
-    <Stack className={classes.container}>
-      {routines ? (
-        <>
-          {routines.length > 0 ? (
-            <Stack className={classes.wrapper}>
-              <Accordion
-                value={openValue}
-                onChange={setOpenValue}
-                chevron={false}
-                className={classes.accordion}
-                classNames={{
-                  content: classes.content,
-                  chevron: classes.chevron,
-                  label: classes.label,
-                }}
-              >
-                {accordionItems}
-              </Accordion>
-              {hasMore && (
-                <ActionIcon
-                  variant="default"
-                  className={classes.getMoreButton}
-                  onClick={() =>
-                    getTrackedRoutines({
-                      skip: true,
-                      followingUserId,
-                      routines,
-                      type,
-                    })
-                  }
+    <ClubModerationLayout
+      pageHeader={<ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />}
+      showChat
+      showHeader
+    >
+      <Stack className={classes.container}>
+        {routines ? (
+          <>
+            {routines.length > 0 ? (
+              <Stack className={classes.wrapper}>
+                <Accordion
+                  value={openValue}
+                  onChange={setOpenValue}
+                  chevron={false}
+                  className={classes.accordion}
+                  classNames={{
+                    content: classes.content,
+                    chevron: classes.chevron,
+                    label: classes.label,
+                  }}
                 >
-                  <IconArrowDown />
-                </ActionIcon>
-              )}
-            </Stack>
-          ) : (
-            <OverlayWithText
-              icon={<IconCircleOff className="icon" />}
-              text={`No ${type} routines`}
-            />
-          )}
-        </>
-      ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
-      )}
-    </Stack>
+                  {accordionItems}
+                </Accordion>
+                {hasMore && (
+                  <ActionIcon
+                    variant="default"
+                    className={classes.getMoreButton}
+                    onClick={() =>
+                      getTrackedRoutines({
+                        skip: true,
+                        followingUserId,
+                        routines,
+                        type,
+                      })
+                    }
+                  >
+                    <IconArrowDown />
+                  </ActionIcon>
+                )}
+              </Stack>
+            ) : (
+              <OverlayWithText
+                icon={<IconCircleOff className="icon" />}
+                text={`No ${type} routines`}
+              />
+            )}
+          </>
+        ) : (
+          <Loader style={{ margin: "15vh auto 0" }} />
+        )}
+      </Stack>
+    </ClubModerationLayout>
   );
 }

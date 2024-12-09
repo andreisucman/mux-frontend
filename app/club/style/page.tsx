@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Skeleton } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import StyleGallery from "@/app/results/style/StyleGallery";
 import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
@@ -72,7 +72,7 @@ export default function ClubStyle() {
           setStyles={setStyles}
         />
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader style={{margin: "15vh auto 0"}} />
       )}
     </ClubModerationLayout>
   );

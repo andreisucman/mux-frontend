@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Skeleton, Stack, Text } from "@mantine/core";
+import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -12,13 +12,14 @@ import {
 } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { getSupportedMimeType } from "@/helpers/utils";
+import { SexEnum } from "@/types/global";
 import RecordingStatus from "./RecordingStatus";
 import VideoRecorderResult from "./VideoRecorderResult";
 import classes from "./VideoRecorder.module.css";
-import { SexEnum } from "@/types/global";
 
 type Props = {
   sex: SexEnum;
+  taskExpired: boolean;
   instruction: string;
   uploadProof: (props: any) => void;
 };
@@ -44,7 +45,7 @@ const segments = [
   },
 ];
 
-export default function VideoRecorder({ sex, instruction, uploadProof }: Props) {
+export default function VideoRecorder({ sex, taskExpired, instruction, uploadProof }: Props) {
   const { blurType } = useContext(BlurChoicesContext);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
@@ -430,12 +431,18 @@ export default function VideoRecorder({ sex, instruction, uploadProof }: Props) 
                   className={classes.button}
                   style={{ flexGrow: 0, padding: 0 }}
                   miw={rem(50)}
+                  disabled={taskExpired}
                 >
                   <IconCameraRotate className="icon" />
                 </Button>
               )}
               {isRecording && (
-                <Button variant="default" onClick={handleStop} className={classes.button}>
+                <Button
+                  variant="default"
+                  onClick={handleStop}
+                  className={classes.button}
+                  disabled={taskExpired}
+                >
                   <IconPlayerStopFilled className="icon" style={{ marginRight: rem(8) }} /> Finish
                 </Button>
               )}
@@ -443,6 +450,7 @@ export default function VideoRecorder({ sex, instruction, uploadProof }: Props) 
                 <Button
                   onClick={captureType === "image" ? capturePhoto : startRecording}
                   className={classes.button}
+                  disabled={taskExpired}
                 >
                   {startIcon}
                   {startText}

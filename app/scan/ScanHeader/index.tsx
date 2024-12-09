@@ -1,16 +1,12 @@
 import React, { memo } from "react";
-import { IconChevronLeft, IconMan, IconMoodSmile } from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, rem } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
+import { typeIcons } from "@/helpers/icons";
 import { TypeEnum } from "@/types/global";
-import classes from "./ScanPageHeading.module.css";
-
-const icons = {
-  head: <IconMoodSmile className="icon" />,
-  body: <IconMan className="icon" />,
-};
+import classes from "./ScanHeader.module.css";
 
 const typeFilters = [
   { label: "Head", value: "head" },
@@ -29,7 +25,7 @@ type Props = {
   onSelect?: () => void;
 };
 
-function ScanPageHeading({ type, onSelect }: Props) {
+function ScanHeader({ type, onSelect }: Props) {
   const router = useRouter();
 
   return (
@@ -44,7 +40,7 @@ function ScanPageHeading({ type, onSelect }: Props) {
       {type && (
         <FilterDropdown
           data={typeFilters}
-          icons={icons}
+          icons={typeIcons}
           onSelect={onSelect}
           defaultSelected={typeFilters.find((rec) => rec.value === type)?.value}
           filterType={"type"}
@@ -56,4 +52,4 @@ function ScanPageHeading({ type, onSelect }: Props) {
   );
 }
 
-export default memo(ScanPageHeading);
+export default memo(ScanHeader);

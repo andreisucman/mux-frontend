@@ -1,6 +1,9 @@
 .container {
   align-items: center;
   justify-content: space-between;
+
+  min-height: rem(36);
+  align-items: center;
 }
 
 .left {

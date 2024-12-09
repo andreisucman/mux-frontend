@@ -46,10 +46,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
 
-  min-height: rem(40);
-  flex: 1;
   border-radius: var(--mantine-radius-lg);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex: 1;
+  }
 }
 
 .indicatorLabel {

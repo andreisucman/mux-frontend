@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { IconCircleOff, IconMessage } from "@tabler/icons-react";
-import { ActionIcon, Drawer, Skeleton, Title } from "@mantine/core";
+import { ActionIcon, Drawer, Loader, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
@@ -50,16 +50,20 @@ export default function ChatMessagesButton() {
         }}
         onClose={closeDrawer}
       >
-        <Skeleton visible={!conversations} className="skeleton">
-          {conversations && conversations.length > 0 ? (
-            <ConversationsDrawerContent
-              conversations={conversations}
-              setConversations={setConversations}
-            />
-          ) : (
-            <OverlayWithText icon={<IconCircleOff className="icon" />} text="No latest chats" />
-          )}
-        </Skeleton>
+        {conversations ? (
+          <>
+            {conversations.length > 0 ? (
+              <ConversationsDrawerContent
+                conversations={conversations}
+                setConversations={setConversations}
+              />
+            ) : (
+              <OverlayWithText icon={<IconCircleOff className="icon" />} text="No latest chats" />
+            )}
+          </>
+        ) : (
+          <Loader style={{ margin: "15vh auto 0" }} />
+        )}
       </Drawer>
     </>
   );

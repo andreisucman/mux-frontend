@@ -92,9 +92,11 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
             </Group>
           )}
         </Stack>
-        <ActionIcon variant="default" component={Link} href="/settings">
-          <IconSettings className="icon" />
-        </ActionIcon>
+        {type === "you" && (
+          <ActionIcon variant="default" component={Link} href="/settings">
+            <IconSettings className="icon" />
+          </ActionIcon>
+        )}
       </Group>
       {showButtons && (
         <MenuButtons

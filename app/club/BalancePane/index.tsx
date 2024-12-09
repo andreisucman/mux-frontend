@@ -44,7 +44,7 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
           <Text c="dimmed" size="sm">
             Your earnings
           </Text>
-          <RedirectToWalletButton />
+          <RedirectToWalletButton variant="default" />
         </Group>
         <Title order={2} className={classes.amount}>
           ${displayBalance}

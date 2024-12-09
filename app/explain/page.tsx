@@ -288,6 +288,7 @@ export default function Explain() {
                       selectedTask={taskInfo}
                       setTaskInfo={setTaskInfo}
                       notStarted={notStarted}
+                      expiresAt={taskInfo && taskInfo.expiresAt}
                     />
                   );
                 })}

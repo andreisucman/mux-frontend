@@ -8,7 +8,6 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
-import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
 import ClubChatContainer from "./ClubChatContainer";
 import FollowOverlay from "./FollowOverlay";
@@ -28,7 +27,9 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
-  const { youData, youTrackData } = useContext(ClubContext);
+  const clubContextData = useContext(ClubContext);
+  const { youData, youTrackData } = clubContextData;
+
   const [showComponent, setShowComponent] = useState("followOverlay");
 
   const followingUserId = searchParams.get("followingUserId");
@@ -40,8 +41,10 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
 
   useEffect(() => {
+    if (!clubContextData) return;
+
     if (followingUserId) {
-      if (!youTrackData && followingUserId) {
+      if (!youTrackData) {
         setShowComponent("userNotFound");
         return;
       }
@@ -58,7 +61,7 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
     } else {
       setShowComponent("children");
     }
-  }, [isSubscriptionActive, localFollowingUserId, followingUserId]);
+  }, [isSubscriptionActive, localFollowingUserId, followingUserId, youTrackData]);
 
   const followText = `Follow to see ${isRoutine ? "their routines" : "their details"}.`;
 

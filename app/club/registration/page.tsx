@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { IconBuildingBank, IconRocket, IconSquareCheck } from "@tabler/icons-react";
-import { Group, rem, Stack, Text, Title } from "@mantine/core";
+import { IconBuildingBank, IconInfoCircle, IconRocket, IconSquareCheck } from "@tabler/icons-react";
+import { Alert, Button, Group, rem, Stack, Text, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
@@ -53,7 +53,7 @@ export default function ClubRegistration() {
 
     setDisableFirst(!!detailsSubmitted);
     setDisableSecond(!detailsSubmitted);
-  }, [detailsSubmitted]);
+  }, [clubData]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -74,9 +74,17 @@ export default function ClubRegistration() {
                 onClick={handleCreateConnectAccount}
                 containerStyles={{ flex: "unset" }}
               />
-              {submittedNotEnabled && <RedirectToWalletButton />}
             </Group>
           </Stack>
+          {submittedNotEnabled && <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+            <Stack gap={8}>
+              <Title order={5}>Verifying</Title>
+              Your information is still being verified. Meanwhile you can explore the club. If you
+              need to edit your information you can do it in the wallet.
+              <RedirectToWalletButton variant="outline" />
+            </Stack>
+          </Alert>}
+
           <Stack>
             <Title order={4}>2. Decide which data to share</Title>
             <Text>

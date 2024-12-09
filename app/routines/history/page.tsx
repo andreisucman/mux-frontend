@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Skeleton, Stack } from "@mantine/core";
+import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -16,7 +16,7 @@ import CompletedRoutineRow from "../RoutineList/RoutineRow/CompletedRoutineRow";
 import { CompletedTaskType } from "./type";
 import classes from "./history.module.css";
 
-export default function HistoryPage() {
+export default function RoutinesHistoryPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [completedTasks, setCompletedTasks] = useState<CompletedTaskType[]>();
@@ -120,7 +120,7 @@ export default function HistoryPage() {
               )}
             </>
           ) : (
-            <Skeleton className="skeleton" flex={1}></Skeleton>
+            <Loader style={{margin: "15vh auto 0"}} />
           )}
         </Stack>
       </SkeletonWrapper>

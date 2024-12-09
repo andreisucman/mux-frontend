@@ -22,7 +22,3 @@
 .stack {
   gap: rem(12);
 }
-
-.redirectToWalletButton {
-  padding: 0 rem(16);
-}

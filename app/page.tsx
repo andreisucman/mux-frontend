@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Skeleton, Stack } from "@mantine/core";
+import { Loader, rem, Stack } from "@mantine/core";
 import ComparisonCarousel from "@/components/ComparisonCarousel";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -138,7 +138,7 @@ export default function BeforeAftersPage() {
           )}
         </>
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader style={{ margin: "15vh auto 0" }} />
       )}
     </Stack>
   );

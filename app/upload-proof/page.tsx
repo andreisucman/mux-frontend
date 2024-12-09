@@ -2,7 +2,9 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { IconHourglassLow } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
+import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
@@ -10,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
+import { useRouter } from "@/helpers/custom-router";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -34,10 +37,11 @@ type HandleUploadProps = {
 };
 
 export default function UploadProof() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [componentToDisplay, setComponentToDisplay] = useState<
-    "loading" | "waitComponent" | "videoRecorder" | "completed"
+    "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed"
   >("loading");
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
   const [existingProofRecord, setExistingProofRecord] = useState<ExistingProofRecordType | null>(
@@ -47,10 +51,12 @@ export default function UploadProof() {
   const taskId = searchParams.get("taskId");
   const submissionName = searchParams.get("submissionName");
   const submissionId = searchParams.get("submissionId");
-  const { status: taskStatus, requisite } = taskInfo || {};
+  const { status: taskStatus, expiresAt, requisite } = taskInfo || {};
 
   const { demographics } = userDetails || {};
   const { sex } = demographics || {};
+
+  const taskExpired = new Date(expiresAt || 0) < new Date();
 
   const fetchProofInfo = useCallback(async (taskId: string | null) => {
     if (!taskId) return;
@@ -129,6 +135,11 @@ export default function UploadProof() {
       return;
     }
 
+    if (taskExpired) {
+      setComponentToDisplay("expired");
+      return;
+    }
+
     const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
 
     let analysisStatus;
@@ -144,7 +155,7 @@ export default function UploadProof() {
     } else {
       setComponentToDisplay("videoRecorder");
     }
-  }, [taskId]);
+  }, [taskId, taskExpired]);
 
   return (
     <Stack flex={1} className="smallPage">
@@ -174,8 +185,17 @@ export default function UploadProof() {
             {componentToDisplay === "videoRecorder" && status === "authenticated" && (
               <VideoRecorder
                 sex={sex || SexEnum.FEMALE}
+                taskExpired={taskExpired}
                 instruction={requisite || ""}
                 uploadProof={uploadProof}
+              />
+            )}
+            {componentToDisplay === "expired" && (
+              <OverlayWithText
+                text="This task expired"
+                icon={<IconHourglassLow className="icon" />}
+                buttonText="Return"
+                onButtonClick={() => router.replace("/routines")}
               />
             )}
           </Stack>
