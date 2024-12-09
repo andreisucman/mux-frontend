@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { IconChevronLeft, IconHistory } from "@tabler/icons-react";
-import { ActionIcon, Group, rem, Title } from "@mantine/core";
+import { ActionIcon, Button, Group, rem, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useRouter } from "@/helpers/custom-router";
 import FollowHistoryModalContent from "../FollowHistoryModalContent";
@@ -19,6 +19,7 @@ export default function ClubProfileHeader() {
       ),
       centered: true,
       size: "sm",
+      styles: { body: { minHeight: rem(80) } },
       innerProps: <FollowHistoryModalContent />,
     });
   }, []);
@@ -32,9 +33,9 @@ export default function ClubProfileHeader() {
         <Title order={1}>Club profile</Title>
       </Group>
 
-      <ActionIcon onClick={openFollowHistory} size="md" variant="default">
-        <IconHistory className="icon" />
-      </ActionIcon>
+      <Button onClick={openFollowHistory} size="xs" variant="default">
+        <IconHistory className="icon icon__small" style={{ marginRight: rem(8) }} /> Follow history
+      </Button>
     </Group>
   );
 }

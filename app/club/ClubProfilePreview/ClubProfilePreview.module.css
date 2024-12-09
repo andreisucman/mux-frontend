@@ -2,7 +2,6 @@
   padding: rem(16);
   gap: rem(8);
   width: 100%;
-  gap: 0;
   flex: 1;
 
   border-radius: var(--mantine-radius-lg);
@@ -18,7 +17,7 @@
 
 .content {
   flex: 1;
-  gap: rem(4);
+  gap: rem(6);
   margin: auto;
 }
 

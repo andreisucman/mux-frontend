@@ -8,3 +8,10 @@
   font-size: rem(14);
   margin: 0 auto;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem(250), 1fr));
+  grid-template-rows: auto;
+  gap: rem(16);
+}

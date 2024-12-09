@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
+import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
-import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import fetchClubTrackYou from "@/functions/fetchClubTrackYou";
 import { ClubUserType } from "@/types/global";
@@ -43,13 +43,7 @@ export default function AllFollowersModalContent() {
               hasMore={hasMore}
               pageStart={0}
             >
-              <MasonryComponent
-                maxColumnCount={3}
-                columnWidth={250}
-                columnGutter={16}
-                render={FollowYouRow}
-                items={trackYouData}
-              />
+              <List items={trackYouData} rowGutter={16} render={FollowYouRow} />
             </InfiniteScroll>
           ) : (
             <OverlayWithText text="Nobody found" icon={<IconCircleOff className="icon" />} />

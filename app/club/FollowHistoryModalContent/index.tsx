@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { List } from "masonic";
-import { ActionIcon, Loader, Stack, Skeleton } from "@mantine/core";
+import { ActionIcon, Loader, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -103,11 +103,11 @@ export default function FollowHistoryModalContent() {
                 render={memoizedHistoryCard}
               />
             ) : (
-              <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
+              <OverlayWithText text="Nobody found" icon={<IconCircleOff className="icon" />} />
             )}
           </>
         ) : (
-          <Skeleton className="skeleton" flex={1}></Skeleton>
+          <Loader m="auto" />
         )}
       </Stack>
       {hasMore && (
