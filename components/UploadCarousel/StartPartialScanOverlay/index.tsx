@@ -1,6 +1,7 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconDental, IconFlag, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
-import { Button, Group, Stack, rem } from "@mantine/core";
+import { Button, Group, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -33,6 +34,7 @@ export default function StartPartialScanOverlay({
   innerStyles,
 }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { blurType } = useContext(BlurChoicesContext);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
@@ -41,7 +43,7 @@ export default function StartPartialScanOverlay({
 
   const uploadedParts = toAnalyze?.[type as TypeEnum.HEAD | TypeEnum.BODY];
 
-  async function handleStartAnalysis() {
+  const handleStartAnalysis = useCallback(async () => {
     try {
       if (!userId) throw new Error("Missing user id");
       setIsButtonLoading(true);
@@ -58,14 +60,14 @@ export default function StartPartialScanOverlay({
           setIsButtonLoading(false);
           return;
         }
-        const redirectUrl = encodeURIComponent(`/analysis?${location.search}`);
-        router.push(`/wait?redirectUrl=${redirectUrl}`);
+        const redirectUrl = encodeURIComponent(`/analysis?${searchParams.toString()}`);
+        router.push(`/wait?operationKey=${`type-${type}`}&redirectUrl=${redirectUrl}`);
       }
     } catch (err) {
       console.log("Error in handleStartAnalysis: ", err);
       setIsButtonLoading(false);
     }
-  }
+  }, [userId, type, blurType]);
 
   const toDisplay = useMemo(() => {
     const contentUrlTypes = uploadedParts?.flatMap((part) => part.contentUrlTypes);

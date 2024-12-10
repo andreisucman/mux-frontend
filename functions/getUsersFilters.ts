@@ -35,14 +35,15 @@ const getUsersFilters = async ({ followingUserId, collection, fields }: GetUsers
     });
 
     if (response.status === 200) {
+      const { type, part } = response.message;
+
       if (response.message) {
-        const { type: types, part: parts } = response.mesage;
-        if (types) {
-          result.availableTypes = typeItems.filter((item) => types.includes(item.value));
+        if (type) {
+          result.availableTypes = typeItems.filter((item) => type.includes(item.value));
         }
-        if (parts) {
+        if (part) {
           result.availableParts = partItems.filter(
-            (item) => types.includes(item.type) && parts.includes(item.value)
+            (item) => part.includes(item.type) && part.includes(item.value)
           );
         }
       }

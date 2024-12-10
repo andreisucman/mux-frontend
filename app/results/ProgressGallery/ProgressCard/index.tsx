@@ -8,27 +8,28 @@ import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
 import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
+import { SimpleProgressType } from "../../types";
 
 type Props = {
   showTrackButton: boolean;
-  data: SimpleBeforeAfterType;
-  setProgress: React.Dispatch<React.SetStateAction<SimpleBeforeAfterType[] | undefined>>;
+  data: SimpleProgressType;
+  setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
 function ProgressCard({ data, showTrackButton, setProgress }: Props) {
   const { width: containerWidth, ref } = useElementSize();
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const { images, updatedAt } = data;
+  const { images, createdAt } = data;
   const firstImage = images[0];
 
   const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
 
-  const formattedDate = useMemo(() => formatDate({ date: updatedAt }), [updatedAt]);
+  const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
 
   const handleContainerClick = useCallback(
     () =>
       openResultModal({
-        record: data,
+        record: data as SimpleProgressType,
         type: "progress",
         title: (
           <Title order={5} component={"p"}>

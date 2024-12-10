@@ -22,23 +22,23 @@
 }
 
 .topRight {
-  top: rem(12);
-  right: rem(12);
+  top: rem(16);
+  right: rem(16);
 }
 
 .topLeft {
-  top: rem(12);
-  left: rem(12);
+  top: rem(16);
+  left: rem(16);
 }
 
 .bottomRight {
-  bottom: rem(12);
-  right: rem(12);
+  bottom: rem(16);
+  right: rem(16);
 }
 
 .bottomLeft {
-  bottom: rem(12);
-  left: rem(12);
+  bottom: rem(16);
+  left: rem(16);
 }
 
 .content {

@@ -88,7 +88,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     if (!userDetailsState) return;
-    console.log("emailVerified in context", userDetailsState.emailVerified);
 
     if (onProtectedPage) {
       if (!userDetailsState.emailVerified) {

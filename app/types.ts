@@ -12,7 +12,8 @@ export type SimpleBeforeAfterType = {
   scoresDifference: { [key: string]: number };
   initialDate: string;
   isPublic: boolean;
-  updatedAt: Date;
+  updatedAt?: Date;
+  createdAt?: Date;
   demographics: DemographicsType;
   concerns: UserConcernType[];
   avatar?: { [key: string]: any };

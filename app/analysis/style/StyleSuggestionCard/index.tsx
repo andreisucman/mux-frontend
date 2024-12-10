@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { rem, Skeleton, Title } from "@mantine/core";
+import { Skeleton, Title } from "@mantine/core";
 import { StyleAnalysisType } from "@/types/global";
 import StyleExplanationContainer from "./StyleExplanationContainer";
 import StyleSuggestionIndicators from "./StyleSuggestionIndicators";
 import classes from "./StyleSuggestionCard.module.css";
 
 type Props = {
-  styleData: StyleAnalysisType | null;
+  styleData?: StyleAnalysisType | null;
   title?: string;
   titleStyles?: { [key: string]: any };
   customStyles?: { [key: string]: any };
@@ -17,15 +17,15 @@ type Props = {
 export default function StyleSuggestionCard({ title, styleData }: Props) {
   const {
     createdAt = "",
-    scores,
+    analysis,
     mainUrl = { name: "original", url: "" },
     _id = "",
     userId = "",
     urls = [],
   } = styleData || {};
 
-  const keys = Object.keys(scores || {});
-  const values = Object.values(scores || {});
+  const keys = Object.keys(analysis || {});
+  const values = Object.values(analysis || {});
 
   const record = {
     _id,
@@ -45,11 +45,7 @@ export default function StyleSuggestionCard({ title, styleData }: Props) {
         </Title>
       )}
       <StyleSuggestionIndicators record={record} />
-      <StyleExplanationContainer
-        title="Feedback"
-        styleData={styleData}
-        customStyles={{ gap: rem(4) }}
-      />
+      <StyleExplanationContainer title="Feedback" styleData={styleData} />
     </Skeleton>
   );
 }

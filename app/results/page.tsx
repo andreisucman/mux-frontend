@@ -59,8 +59,6 @@ export default function ResultsProgress() {
     handleFetchProgress({ type, part });
   }, [status, type, part]);
 
-  console.log("progress", progress);
-
   return (
     <Stack className={`${classes.container} mediumPage`}>
       <SkeletonWrapper>

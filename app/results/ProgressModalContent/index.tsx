@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { Stack } from "@mantine/core";
+import { SimpleBeforeAfterType } from "@/app/types";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
 import handleTrackUser from "@/functions/handleTrackUser";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
-import { SimpleBeforeAfterType } from "@/app/types";
 import LineProgressIndicators from "../LineProgressIndicators";
 import classes from "./ProgressModalContent.module.css";
 
@@ -25,11 +25,11 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const { club, subscriptions } = userDetails || {};
   const { followingUserId } = club || {};
 
-  const { userId, images, initialImages, updatedAt, initialDate } = record;
+  const { userId, images, initialImages, updatedAt, createdAt, initialDate } = record;
   const isTracked = followingUserId === userId;
 
   const formattedInitialDate = formatDate({ date: initialDate });
-  const formattedCompareDate = formatDate({ date: updatedAt });
+  const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?followingUserId=${followingUserId}`;
   const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;

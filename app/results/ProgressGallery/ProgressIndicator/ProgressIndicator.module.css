@@ -4,7 +4,6 @@
   overflow: hidden;
 
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: rem(8);
+  left: rem(8);
 }

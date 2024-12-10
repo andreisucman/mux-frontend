@@ -17,6 +17,10 @@ export default function WaitPage() {
   const { setUserDetails } = useContext(UserContext);
 
   const type = searchParams.get("type") || "head";
+  const operationKey = searchParams.get("operationKey");
+  const onErrorRedirect = searchParams.get("onErrorRedirectUrl") || "";
+  const onErrorRedirectUrl = decodeURIComponent(onErrorRedirect);
+
   const encodedRedirectUrl =
     searchParams.get("redirectUrl") || `/analysis${type ? `?type=${type}` : ""}`;
   const redirectUrl = decodeURIComponent(encodedRedirectUrl);
@@ -33,7 +37,7 @@ export default function WaitPage() {
           ...prev,
           ...userData,
         }));
-        
+
         if (redirectUrl) {
           router.replace(redirectUrl);
         }
@@ -53,11 +57,11 @@ export default function WaitPage() {
     <Stack flex={1} className="smallPage">
       <WaitComponent
         description="Analyzing your data"
-        operationKey={type}
-        onComplete={onComplete}
-        errorRedirectUrl="/scan"
-        onError={onError}
+        operationKey={operationKey || type}
+        errorRedirectUrl={onErrorRedirectUrl || "/scan"}
         hideDisclaimer={hideDisclaimer}
+        onComplete={onComplete}
+        onError={onError}
       />
     </Stack>
   );

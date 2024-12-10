@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Loader, Skeleton, Stack } from "@mantine/core";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Skeleton, Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -25,7 +25,6 @@ export default function UploadStyle() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
-
   const [progress, setProgress] = useState(0);
   const [localUrl, setLocalUrl] = useState("");
   const [originalUrl, setOriginalUrl] = useState("");
@@ -88,9 +87,18 @@ export default function UploadStyle() {
               const redirectUrl = encodeURIComponent(
                 `/analysis/style?${type ? `type=${type}` : ""}`
               );
-              router.push(`/wait?type=${finalType}&redirectUrl=${redirectUrl}`);
+              const onErrorRedirectUrl = encodeURIComponent(
+                `/scan/style?${searchParams.toString()}`
+              );
+              router.push(
+                `/wait?type=${type}&operationKey=${`style-${type}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}`
+              );
+              router.push(
+                `/wait?type=${finalType}&operationKey=${`style-${finalType}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
+              );
             } else {
               setProgress(0);
+              setIsLoading(false);
               openErrorModal({
                 description: response.error,
               });
@@ -99,7 +107,6 @@ export default function UploadStyle() {
         }
       } catch (err) {
         openErrorModal();
-      } finally {
         setIsLoading(false);
       }
     },

@@ -8,3 +8,28 @@
 .checkboxInput {
   cursor: pointer;
 }
+
+.button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* transition: background-color 150ms ease, border-color 150ms ease; */
+  border-radius: var(--mantine-radius-sm);
+  padding: var(--mantine-spacing-sm);
+  border-radius: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border: rem(1) solid transparent;
+
+  & * {
+    cursor: pointer;
+  }
+}
+
+.body {
+  flex: 1;
+  margin-left: rem(12);
+}
+
+.selected {
+  border: rem(1) solid var(--mantine-color-brand-7);
+}

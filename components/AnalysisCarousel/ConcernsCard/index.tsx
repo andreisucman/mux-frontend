@@ -1,23 +1,27 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { IconRotateDot } from "@tabler/icons-react";
 import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
 import GlowingButton from "@/components/GlowingButton";
+import { AuthStateEnum } from "@/context/UserContext/types";
+import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import { TypeEnum, UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
 
 type Props = {
   userId?: string;
+  status: AuthStateEnum;
   title: string;
   type: TypeEnum;
   concerns: UserConcernType[];
 };
 
-function ConcernsCard({ userId, concerns, type, title }: Props) {
+function ConcernsCard({ status, userId, concerns, type, title }: Props) {
+  const router = useRouter();
   const { height: containerHeight, ref } = useElementSize();
 
   const maxHeight = useMemo(() => {
@@ -25,6 +29,26 @@ function ConcernsCard({ userId, concerns, type, title }: Props) {
     const containerMaxHeight = containerHeight - 16 - 38;
     return Math.min(elementsMaxHeight, containerMaxHeight);
   }, [concerns.length, containerHeight > 0]);
+
+  const handleClick = useCallback(() => {
+    if (status === AuthStateEnum.LOADING) return;
+
+    if (status === AuthStateEnum.AUTHENTICATED) {
+      router.push("/routines");
+    } else {
+      openAuthModal({
+        stateObject: {
+          redirectPath: "/routines",
+          redirectQuery: `type=${type}`,
+          localUserId: userId,
+        },
+        title: "Start your change",
+      });
+    }
+  }, [status]);
+
+  const buttonText =
+    status === AuthStateEnum.AUTHENTICATED ? "Return to the routine" : "Create routine free";
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
@@ -38,19 +62,10 @@ function ConcernsCard({ userId, concerns, type, title }: Props) {
         <Stack className={classes.wrapper}>
           <ConcernsSortCard concerns={concerns} type={type} maxHeight={maxHeight} disabled />
           <GlowingButton
-            text="Create routine free"
+            text={buttonText}
             icon={<IconRotateDot className="icon" />}
-            onClick={() =>
-              openAuthModal({
-                stateObject: {
-                  redirectPath: "/routines",
-                  redirectQuery: `type=${type}`,
-                  localUserId: userId,
-                },
-                title: "Start your change",
-              })
-            }
-            containerStyles={{ flex: 0, maxWidth: rem(300), width: "100%", margin: "0 auto" }}
+            onClick={handleClick}
+            containerStyles={{ flex: 0, margin: "0 auto" }}
           />
         </Stack>
       </Stack>

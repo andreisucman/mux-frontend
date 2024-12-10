@@ -12,11 +12,6 @@ import TitleDropdown from "../TitleDropdown";
 import { PositionsFilterItemType } from "./types";
 import classes from "./ProgressHeader.module.css";
 
-const typeItems = [
-  { label: "Head", value: "head" },
-  { label: "Body", value: "body" },
-];
-
 type Props = {
   titles: { label: string; value: string }[];
   isDisabled?: boolean;
@@ -111,7 +106,7 @@ export default function ProgressHeader({ titles, showReturn, isDisabled, onSelec
         )}
         <TitleDropdown titles={titles} />
       </Group>
-      {relevantTypes.length > 0 && (
+      {relevantTypes.length > 1 && (
         <FilterDropdown
           data={relevantTypes}
           icons={typeIcons}
@@ -123,7 +118,7 @@ export default function ProgressHeader({ titles, showReturn, isDisabled, onSelec
           addToQuery
         />
       )}
-      {relevantParts.length > 0 && (
+      {relevantParts.length > 1 && (
         <FilterDropdown
           data={relevantParts}
           icons={partIcons}
@@ -135,7 +130,7 @@ export default function ProgressHeader({ titles, showReturn, isDisabled, onSelec
           addToQuery
         />
       )}
-      {relevantPositions.length > 0 && (
+      {relevantPositions.length > 1 && (
         <FilterDropdown
           data={relevantPositions}
           filterType="position"

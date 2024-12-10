@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import cs from "classnames";
+import cn from "classnames";
 import { Loader, Stack, UnstyledButton } from "@mantine/core";
 import classes from "./GlowingButton.module.css";
 
@@ -7,6 +7,7 @@ type Props = {
   addGradient?: boolean;
   text: string;
   icon?: any;
+  fontSize?: "sm" | "md";
   loading?: boolean;
   disabled?: boolean;
   children?: React.ReactNode;
@@ -19,6 +20,7 @@ type Props = {
 function GlowingButton({
   text,
   icon,
+  fontSize = "sm",
   loading,
   addGradient = true,
   disabled,
@@ -31,7 +33,7 @@ function GlowingButton({
   return (
     <Stack className={classes.container} style={containerStyles ? containerStyles : {}}>
       <div
-        className={cs(classes.button, classes.gradient, {
+        className={cn(classes.button, classes.gradient, {
           gradientSpin: addGradient,
           [classes.disabled]: disabled,
         })}
@@ -40,8 +42,9 @@ function GlowingButton({
       <UnstyledButton
         size="sm"
         disabled={disabled}
-        className={cs(classes.button, {
+        className={cn(classes.button, classes.sm, {
           [classes.disabled]: disabled,
+          [classes.md]: fontSize === "md",
         })}
         onClick={onClick}
         style={buttonStyles ? buttonStyles : {}}
@@ -51,7 +54,7 @@ function GlowingButton({
         ) : (
           <>
             {icon}
-            <span>{text}</span>
+            {text}
             {children && children}
           </>
         )}

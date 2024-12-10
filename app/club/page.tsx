@@ -27,7 +27,7 @@ export default function Club() {
     if (localFollowingUserId && !youTrackData) return;
     if (!youData) return;
     setShowSkeleton(false);
-  }, [rewardEarned, localFollowingUserId, youTrackData, youData]);
+  }, [userDetails, youTrackData, youData]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

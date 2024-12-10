@@ -99,6 +99,7 @@ export default function AnalysisCarousel({ type }: Props) {
             title="Areas of improvement"
             type={type as TypeEnum}
             userId={userId}
+            status={status}
           />
         )}
       </Carousel.Slide>

@@ -156,7 +156,6 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
   );
 
   useSWR(userId, fetchLatestRoutinesAndTasks);
-  console.log("relevant tasks", relevantTasks)
 
   useEffect(() => {
     if (!pageLoaded) return;

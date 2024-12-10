@@ -3,6 +3,9 @@
   gap: rem(8);
   width: 100%;
   flex: 1;
+  background-color: var(--mantine-color-dark-6);
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
 }
 
 .content {

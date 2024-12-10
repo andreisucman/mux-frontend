@@ -5,9 +5,16 @@
 
 .image {
   margin: auto;
-  max-width: rem(250);
-  max-height: rem(250);
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
+}
+
+.imageWrapper {
+  max-height: rem(150);
+  height: 100%;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
 }
 
 .button {
@@ -17,4 +24,14 @@
 
 .buttonGroup {
   flex: 0 1;
+}
+
+.icon {
+  margin-right: rem(8);
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
 }

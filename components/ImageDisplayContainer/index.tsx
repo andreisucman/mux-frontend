@@ -5,7 +5,7 @@ import classes from "./ImageDisplayContainer.module.css";
 
 type Props = {
   isLoadingOverlay?: boolean;
-  image?: string;
+  image?: string | null;
   handleDelete?: () => void;
   placeholder: any;
   customImageStyles?: { [key: string]: any };

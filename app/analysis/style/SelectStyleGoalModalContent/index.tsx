@@ -1,35 +1,43 @@
-import React, { memo, useCallback, useContext, useState } from "react";
+import React, { memo, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconFocus } from "@tabler/icons-react";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
-import { StyleGoalsType, TypeEnum } from "@/types/global";
+import { StyleAnalysisType, StyleGoalsType, TypeEnum } from "@/types/global";
 import { outlookStyles } from "./outlookStyles";
 import StyleGoalModalRow from "./StyleGoalModalRow";
 import classes from "./SelectStyleContent.module.css";
 
 type Props = {
+  userId: string;
+  relevantStyleAnalysis: StyleAnalysisType;
   type: TypeEnum;
   styleName?: string;
 };
 
-function SelectStyleGoalModalContent({ type, styleName }: Props) {
+function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styleName }: Props) {
   const router = useRouter();
-  const { userDetails } = useContext(UserContext);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [selectedGoal, setSelectedGoal] = useState<StyleGoalsType>();
 
-  const { _id: userId, latestStyleAnalysis } = userDetails || {};
-  const relevantStyleAnalysis = latestStyleAnalysis?.[type as "head"];
   const { _id: styleId } = relevantStyleAnalysis || {};
 
-  const startSuggestAnalysis = useCallback(async () => {
+  const startSuggestAnalysis = async () => {
     if (!selectedGoal) return;
 
     try {
       modals.closeAll();
+
+      console.log("startSuggestChangeAnalysis body", {
+        type,
+        userId,
+        analysisId: styleId,
+        goal: selectedGoal,
+      });
 
       const response = await callTheServer({
         endpoint: "startSuggestChangeAnalysis",
@@ -43,13 +51,17 @@ function SelectStyleGoalModalContent({ type, styleName }: Props) {
       });
 
       if (response.status === 200) {
-        router.push(`/wait?type=${type}&redirectUrl=${encodeURIComponent(`?type=${type}`)}`);
+        const redirectUrl = encodeURIComponent(`/analysis/style?type=${type}`);
+        const onErrorRedirectUrl = encodeURIComponent(`${pathname}?${searchParams.toString()}`);
+        router.push(
+          `/wait?type=${type}&operationKey=${`style-${type}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}`
+        );
         saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
       }
     } catch (err) {
       console.log("Error in startSuggestAnalysis: ", err);
     }
-  }, [styleId, type, selectedGoal?.name]);
+  };
 
   const styles = outlookStyles.filter((obj) => obj.name !== styleName);
 

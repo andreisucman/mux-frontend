@@ -7,7 +7,7 @@ type Props = {
   title: string;
   text?: string;
   size?: string;
-  styleData: StyleAnalysisType | null;
+  styleData?: StyleAnalysisType | null;
   controlTitle?: React.ReactNode;
   customStyles?: { [key: string]: any };
 };

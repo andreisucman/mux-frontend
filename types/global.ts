@@ -301,23 +301,30 @@ export type FormattedRatingType = {
 export type StyleAnalysisType = {
   _id: string;
   userId: string;
-  color: string;
+  createdAt: string;
+  compareDate: string;
   mainUrl: BlurredUrlType;
+  compareMainUrl: BlurredUrlType;
   urls: BlurredUrlType[];
+  compareUrls: BlurredUrlType[];
+  votes: number;
+  compareVotes: number;
   demographics: DemographicsType;
   type: TypeEnum;
-  goal: StyleGoalsType;
-  styleName?: string;
-  createdAt: string;
-  currentDescription?: string;
-  currentSuggestion?: string;
-  matchSuggestion?: string;
-  isPublic?: boolean;
-  clubName?: string;
-  scores?: { [key: string]: number };
-  avatar?: { [key: string]: any };
-  latestFaceScoreDifference?: number;
-  latestBodyScoreDifference?: number;
+  goal: StyleGoalsType | null;
+  hash: string;
+  styleName: string;
+  compareStyleName: string;
+  currentDescription: string;
+  currentSuggestion: string;
+  matchSuggestion: string;
+  isPublic: boolean;
+  latestHeadScoreDifference: number;
+  latestBodyScoreDifference: number;
+  analysis: { [key: string]: number } | null;
+  compareAnalysis: { [key: string]: number } | null;
+  clubName: string | null;
+  avatar: { [key: string]: any } | null;
 };
 
 export enum SexEnum {

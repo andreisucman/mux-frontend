@@ -41,8 +41,6 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
 
   const handleCreateTask = useCallback(
     async ({ timeZone, isLoading, description }: HandleCreateTaskProps) => {
-      console.log("{ timeZone, isLoading, description }", { timeZone, isLoading, description });
-
       if (!timeZone) return;
       if (isLoading) return;
       if (!description) return;
