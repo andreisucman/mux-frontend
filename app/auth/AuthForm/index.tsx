@@ -10,6 +10,7 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import authenticate from "@/functions/authenticate";
 import signIn, { SignInStateType } from "@/functions/signIn";
@@ -95,6 +96,8 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
         setStatus,
         setUserDetails,
       });
+
+      modals.closeAll();
     },
     [showResetPassword, password, email]
   );

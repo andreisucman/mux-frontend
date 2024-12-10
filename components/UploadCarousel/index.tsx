@@ -55,7 +55,7 @@ export default function UploadCarousel({
   const finalRequirements = requirements || [];
 
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "allDeselected" | "nothing" | "partialScanOverlay" | "carousel"
+    "loading" | "partialScanOverlay" | "carousel"
   >("loading");
   const { userDetails } = useContext(UserContext);
   const { blurType } = useContext(BlurChoicesContext);
@@ -161,14 +161,12 @@ export default function UploadCarousel({
   const showPartsSelector = type === "head" && scanType === "progress" && somethingUploaded;
 
   useEffect(() => {
-    if (somethingUploaded && scanType !== "style" && !allPartsEnabled) {
-      setDisplayComponent("partialScanOverlay");
-    } else if (!allPartsDeselected && somethingUploaded) {
+    if (finalRequirements.length > 0) {
       setDisplayComponent("carousel");
-    } else if (allPartsDeselected) {
-      setDisplayComponent("allDeselected");
-    } else if (requirements && requirements.length === 0) {
-      setDisplayComponent("nothing");
+    } else if (somethingUploaded && finalRequirements.length > 0) {
+      setDisplayComponent("partialScanOverlay");
+    } else {
+      setDisplayComponent("loading");
     }
   }, [
     somethingUploaded,
@@ -215,9 +213,6 @@ export default function UploadCarousel({
           userId={userId}
           distinctUploadedParts={distinctUploadedParts}
         />
-      )}
-      {(displayComponent === "allDeselected" || displayComponent === "nothing") && (
-        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
       )}
       {displayComponent === "loading" && <Loader m="auto" />}
     </Stack>

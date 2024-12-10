@@ -75,12 +75,7 @@ function WaitComponent({
 
             await delayExecution(1000);
 
-            setUserDetails((prev: UserDataType) => ({
-              ...prev,
-              ...otherData,
-            }));
-
-            if (onComplete) onComplete();
+            if (onComplete) onComplete(otherData);
           }
         }
       } catch (err) {

@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
-import { useRouter } from "@/helpers/custom-router";
 import WaitComponent from "@/components/WaitComponent";
+import { UserContext } from "@/context/UserContext";
+import { useRouter } from "@/helpers/custom-router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
+import { UserDataType } from "@/types/global";
 
 export const runtime = "edge";
 
 export default function WaitPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { setUserDetails } = useContext(UserContext);
 
   const type = searchParams.get("type") || "head";
   const encodedRedirectUrl =
@@ -23,15 +26,23 @@ export default function WaitPage() {
     return path !== "/analysis";
   }, [redirectUrl]);
 
-  const onComplete = useCallback(() => {
-    try {
-      if (redirectUrl) {
-        router.replace(redirectUrl);
+  const onComplete = useCallback(
+    (userData: UserDataType) => {
+      try {
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          ...userData,
+        }));
+        
+        if (redirectUrl) {
+          router.replace(redirectUrl);
+        }
+      } catch (e) {
+        console.error("Invalid redirect URL", e);
       }
-    } catch (e) {
-      console.error("Invalid redirect URL", e);
-    }
-  }, [type, redirectUrl, typeof router]);
+    },
+    [type, redirectUrl, typeof router]
+  );
 
   const onError = useCallback(() => {
     deleteFromLocalStorage("userDetails");
