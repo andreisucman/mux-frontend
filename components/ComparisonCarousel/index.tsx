@@ -33,7 +33,7 @@ export default function ComparisonCarousel({ data }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [comparisonObjects, setComparisonObjects] = useState<ComparisonSlideImageType[]>([]);
 
-  const formattedDate = useMemo(() => formatDate({ date: updatedAt }), []);
+  const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
 
   const slides = useMemo(
     () =>
@@ -80,7 +80,7 @@ export default function ComparisonCarousel({ data }: Props) {
       },
       {
         image: obj.mainUrl.url || "",
-        date: formatDate({ date: updatedAt }),
+        date: formatDate({ date: updatedAt || null }),
       },
     ]);
 

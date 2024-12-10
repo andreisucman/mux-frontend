@@ -5,13 +5,8 @@ import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
+import { TypeEnum } from "@/types/global";
 import classes from "./AnalysisHeader.module.css";
-
-type Props = {
-  showReturn?: boolean;
-  title: string;
-  onTypeChange: (newType?: null | string) => void;
-};
 
 const categoryIcons = {
   "/analysis": <IconProgress className="icon" />,
@@ -28,7 +23,14 @@ const categories = [
   { label: "Style", value: "/analysis/style" },
 ];
 
-export default function AnalysisHeader({ title, showReturn, onTypeChange }: Props) {
+type Props = {
+  showReturn?: boolean;
+  title: string;
+  type: string | null;
+  onTypeChange: (newType?: null | string) => void;
+};
+
+export default function AnalysisHeader({ title, type, showReturn, onTypeChange }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -52,6 +54,7 @@ export default function AnalysisHeader({ title, showReturn, onTypeChange }: Prop
       <FilterDropdown
         data={types}
         icons={typeIcons}
+        defaultSelected={type}
         filterType="type"
         placeholder="Select type"
         onSelect={onTypeChange}

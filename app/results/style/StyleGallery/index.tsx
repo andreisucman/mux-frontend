@@ -54,8 +54,6 @@ export default function StyleGallery({
     [styleName, appliedBlurType]
   );
 
-  const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
-
   return (
     <Stack className={classes.container}>
       {styles && styles.length > 0 ? (
@@ -69,18 +67,17 @@ export default function StyleGallery({
             handleFetchStyles({
               skip: hasMore,
               currentArray: styles,
-              type,
               followingUserId,
               styleName,
+              type,
             })
           }
           hasMore={hasMore}
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={3}
+            maxColumnCount={2}
             columnGutter={16}
-            columnWidth={gridColumnWidth}
             render={memoizedStyleCard}
             items={styles}
           />

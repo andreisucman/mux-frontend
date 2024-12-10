@@ -1,4 +1,5 @@
-import React from "react";
+import React from "react"
+import { rem } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ProgressModalContent from "@/app/results/ProgressModalContent";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
@@ -44,7 +45,7 @@ export default function openResultModal({
     centered: true,
     modal: "general",
     title,
-    size: "auto",
+    size: rem(1280),
     innerProps: content,
     fullScreen: isFullScreen,
     removeScrollProps: { allowPinchZoom: true },

@@ -36,10 +36,14 @@ export default function CardMetaPanel({
           {name}
         </Text>
       </Group>
-      <Group className={classes.scoreWrapper}>
-        <ScoreCell icon={<IconMoodSmile className="icon" />} score={headProgress} />
-        <ScoreCell icon={<IconMan className="icon" />} score={bodyProgress} />
-      </Group>
+      {headProgress && bodyProgress && (
+        <Group className={classes.scoreWrapper}>
+          {headProgress && (
+            <ScoreCell icon={<IconMoodSmile className="icon" />} score={headProgress} />
+          )}
+          {bodyProgress && <ScoreCell icon={<IconMan className="icon" />} score={bodyProgress} />}
+        </Group>
+      )}
     </UnstyledButton>
   );
 }

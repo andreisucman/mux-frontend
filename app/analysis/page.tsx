@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { IconMan, IconMoodSmile } from "@tabler/icons-react";
+import { Skeleton, Stack } from "@mantine/core";
 import AnalysisCarousel from "@/components/AnalysisCarousel";
+import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -13,38 +15,59 @@ import classes from "./analysis.module.css";
 
 export const runtime = "edge";
 
-export default function StartAnalysis() {
+export default function Analysis() {
+  const [displayComponent, setDisplayComponent] = useState<"loading" | "carousel" | "upload">(
+    "loading"
+  );
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "head";
 
   const { latestProgress } = userDetails || {};
+  const latestTypeProgress = latestProgress?.[(type as TypeEnum.BODY) || TypeEnum.HEAD];
+  const { overall, ...rest } = latestTypeProgress || {};
 
-  const handleChangeType = useCallback(
-    (newType?: string | null) => {
-      if (!newType) return;
-      // to change to scan if the analysis is missing for a type
-      const latestTypeProgress = latestProgress?.[(newType as TypeEnum.BODY) || TypeEnum.HEAD];
-      const { overall, ...rest } = latestTypeProgress || {};
-      const isEmpty = Object.values(rest)
+  const isEmpty = useMemo(
+    () =>
+      Object.values(rest)
         .filter(Boolean)
-        .every((v) => !v);
-
-      if (isEmpty) {
-        const newQuery = modifyQuery({
-          params: [{ name: "type", value: newType, action: "replace" }],
-        });
-        router.push(`/scan/progress${newQuery ? `?${newQuery}` : ""}`);
-      }
-    },
-    [latestProgress]
+        .every((v) => !v),
+    [rest]
   );
+
+  const text = `Scan your ${type}`;
+  const icon = type === "head" ? <IconMoodSmile className="icon" /> : <IconMan className="icon" />;
+
+  const handleChangeType = useCallback((newType?: string | null) => {
+    const newQuery = modifyQuery({
+      params: [{ name: "type", value: newType, action: "replace" }],
+    });
+    router.replace(`/analysis${newQuery ? `?${newQuery}` : ""}`);
+  }, []);
+
+  useEffect(() => {
+    if (rest !== null && isEmpty) {
+      setDisplayComponent("upload");
+    } else if (latestTypeProgress) {
+      setDisplayComponent("carousel");
+    }
+  }, [isEmpty]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} />
-      <AnalysisCarousel type={type as TypeEnum} />
+      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} />
+      <Skeleton visible={displayComponent === "loading"} className={`${classes.skeleton} skeleton`}>
+        {displayComponent === "upload" && (
+          <OverlayWithText
+            text={`No ${type} analysis`}
+            icon={icon}
+            buttonText={text}
+            onButtonClick={() => router.push(`/scan/progress?type=${type}`)}
+          />
+        )}
+        {displayComponent === "carousel" && <AnalysisCarousel type={type as TypeEnum} />}
+      </Skeleton>
     </Stack>
   );
 }

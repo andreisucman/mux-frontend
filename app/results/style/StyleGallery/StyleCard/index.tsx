@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Image, Skeleton, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
@@ -12,14 +13,31 @@ import classes from "./StyleCard.module.css";
 type Props = {
   showTrackButton: boolean;
   data: SimpleStyleType;
+  showDate?: boolean;
+  showBlur?: boolean;
+  showPublicity?: boolean;
+  showVotes?: boolean;
   setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
 };
 
-function StyleCard({ data, showTrackButton, setStyles }: Props) {
+function StyleCard({
+  data,
+  showBlur,
+  showDate,
+  showVotes,
+  showPublicity,
+  showTrackButton,
+  setStyles,
+}: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const { mainUrl, styleIcon, styleName, createdAt, votes, _id: styleId, isPublic } = data;
+  const { mainUrl, styleName, createdAt, votes, _id: styleId, isPublic } = data;
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
+
+  const styleIcon = useMemo(
+    () => outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon,
+    [styleName]
+  );
 
   const handleContainerClick = useCallback(
     () =>
@@ -45,17 +63,19 @@ function StyleCard({ data, showTrackButton, setStyles }: Props) {
   }, []);
 
   return (
-    <Skeleton visible={showSkeleton} className="skeleton">
+    <Skeleton visible={showSkeleton} className={`skeleton ${classes.container}`}>
       <div className={classes.imageWrapper}>
-        <ContentBlurTypeButton
-          contentId={styleId}
-          currentMain={mainUrl}
-          contentCategory={"style"}
-          position="top-left"
-          setRecords={setStyles}
-        />
-        <span className={classes.date}>{formattedDate}</span>
-        <ContentPublicityIndicator isPublic={isPublic} />
+        {showBlur && (
+          <ContentBlurTypeButton
+            contentId={styleId}
+            currentMain={mainUrl}
+            contentCategory={"style"}
+            position="top-left"
+            setRecords={setStyles}
+          />
+        )}
+        {showDate && <span className={classes.date}>{formattedDate}</span>}
+        {showPublicity && <ContentPublicityIndicator isPublic={isPublic} />}
         <Image
           className={classes.image}
           src={mainUrl.url || "/"}
@@ -64,11 +84,11 @@ function StyleCard({ data, showTrackButton, setStyles }: Props) {
           alt=""
           onClick={handleContainerClick}
         />
-        <VotesCountIndicator votes={votes} />
+        {showVotes && <VotesCountIndicator votes={votes} />}
+        <Title order={4} className={classes.styleName}>
+          {styleIcon} {upperFirst(styleName || "")}
+        </Title>
       </div>
-      <Title order={5} className={classes.styleName}>
-        {styleIcon} {upperFirst(styleName || "")}
-      </Title>
     </Skeleton>
   );
 }

@@ -81,7 +81,7 @@ export default function FilterDropdown({
       leftSection={leftSectionIcon}
       leftSectionWidth={40}
       style={customStyles ? customStyles : {}}
-      classNames={{ dropdown: classes.dropdown }}
+      classNames={{ dropdown: classes.dropdown, option: classes.option }}
       allowDeselect={false}
     />
   );

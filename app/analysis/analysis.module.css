@@ -11,3 +11,9 @@
     max-width: unset;
   }
 }
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+}

@@ -2,7 +2,6 @@
   cursor: pointer;
   position: relative;
 
-  width: 100%;
   overflow: hidden;
   gap: rem(12);
 }
@@ -28,8 +27,9 @@
 }
 
 .carouselViewport {
-  max-width: rem(580);
   margin: auto;
+  width: clamp(rem(300), 80%, rem(1080));
+
 }
 
 .carouselRoot {

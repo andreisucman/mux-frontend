@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff, IconFocus, IconTarget } from "@tabler/icons-react";
+import { IconFocus, IconMan, IconMoodSmile, IconTarget } from "@tabler/icons-react";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import GlowingButton from "@/components/GlowingButton";
@@ -111,20 +111,14 @@ export default function StyleScanResult() {
     }
   }, [styleId, isLoading, status, club, latestStyleAnalysis, userId, type]);
 
-  const handleChangeType = useCallback(
-    (newType?: string | null) => {
-      if (!newType) return;
-      const latestTypeAnalysis = latestStyleAnalysis?.[(newType as TypeEnum.BODY) || TypeEnum.HEAD];
+  const handleChangeType = useCallback((newType?: string | null) => {
+    if (!newType) return;
 
-      if (!latestTypeAnalysis) {
-        const newQuery = modifyQuery({
-          params: [{ name: "type", value: newType, action: "replace" }],
-        });
-        router.push(`/scan/style${newQuery ? `?${newQuery}` : ""}`);
-      }
-    },
-    [latestStyleAnalysis]
-  );
+    const newQuery = modifyQuery({
+      params: [{ name: "type", value: newType, action: "replace" }],
+    });
+    router.replace(`/analysis/style${newQuery ? `?${newQuery}` : ""}`);
+  }, []);
 
   const relevantOutlook = useMemo(
     () => outlookStyles.find((item) => item.name === styleName),
@@ -132,6 +126,8 @@ export default function StyleScanResult() {
   );
 
   const title = `Your ${type === "head" ? "head" : "outfit"} looks ${relevantOutlook?.icon} ${styleName}`;
+  const text = `Scan your ${type}`;
+  const icon = type === "head" ? <IconMoodSmile className="icon" /> : <IconMan className="icon" />;
 
   useEffect(() => {
     if (relevantAnalysis) {
@@ -143,7 +139,7 @@ export default function StyleScanResult() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} />
+      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} showReturn />
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={displayComponent === "loading"}>
         {displayComponent === "analysis" && (
           <>
@@ -175,7 +171,12 @@ export default function StyleScanResult() {
           </>
         )}
         {displayComponent === "empty" && (
-          <OverlayWithText text="Nothing found" icon={<IconCircleOff className="icon" />} />
+          <OverlayWithText
+            icon={icon}
+            buttonText={text}
+            text={`No ${type} analysis`}
+            onButtonClick={() => router.push(`/scan/style?type=${type}`)}
+          />
         )}
       </Skeleton>
     </Stack>

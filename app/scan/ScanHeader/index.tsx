@@ -16,7 +16,6 @@ const typeFilters = [
 const titles = [
   { label: "Scan progress", value: "/scan/progress" },
   { label: "Scan style", value: "/scan/style" },
-  { label: "Scan health", value: "/scan/health" },
   { label: "Scan food", value: "/scan/food" },
 ];
 

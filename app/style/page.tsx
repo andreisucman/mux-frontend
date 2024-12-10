@@ -2,9 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack,Skeleton } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import StyleGallery from "@/app/results/style/StyleGallery";
-import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import fetchStyle, { FetchStyleProps } from "@/functions/fetchStyle";
 import GeneralResultsHeader from "../GeneralResultsHeader";
@@ -14,12 +13,6 @@ export const runtime = "edge";
 interface HandleFetchStyleProps extends FetchStyleProps {
   currentArray?: SimpleStyleType[];
 }
-
-const titles = [
-  { label: "Progress", value: "/" },
-  { label: "Style", value: "/style" },
-  { label: "Proof", value: "/proof" },
-];
 
 export default function AllStyle() {
   const searchParams = useSearchParams();
@@ -81,7 +74,7 @@ export default function AllStyle() {
           setStyles={setStyles}
         />
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader m="0 auto" pt="25%" />
       )}
     </Stack>
   );

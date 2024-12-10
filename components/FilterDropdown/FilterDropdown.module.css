@@ -1,7 +1,7 @@
 .container {
   flex: 1;
-  max-width: rem(200);
-  min-width: rem(200);
+  max-width: rem(175);
+  min-width: rem(175);
 
   @media (max-width: $mantine-breakpoint-xs) {
     max-width: unset;
@@ -13,5 +13,11 @@
 
   @media (max-width: $mantine-breakpoint-xs) {
     padding: rem(8) 0 rem(8) rem(8);
+  }
+}
+
+.option {
+  &:hover {
+    background-color: var(--mantine-color-dark-5) !important;
   }
 }
