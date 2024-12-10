@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { rem, Stack, Title } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router";
 import { upperFirst } from "@mantine/hooks";
 import PageHeader from "@/components/PageHeader";
 import modifyQuery from "@/helpers/modifyQuery";

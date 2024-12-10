@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IconMedal2 } from "@tabler/icons-react";
+import { useRouter } from "@/helpers/custom-router";
 import { Group, Progress, Skeleton, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import { UserContext } from "@/context/UserContext";

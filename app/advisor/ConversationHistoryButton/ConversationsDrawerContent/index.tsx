@@ -1,7 +1,8 @@
 import React, { useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { IconMessage, IconTrash } from "@tabler/icons-react";
-import { ActionIcon, Skeleton, Stack, Text } from "@mantine/core";
+import { ActionIcon, Stack, Text } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
 import { formatDate } from "@/helpers/formatDate";
 import modifyQuery from "@/helpers/modifyQuery";

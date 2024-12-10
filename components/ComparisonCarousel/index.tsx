@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { Carousel } from "@mantine/carousel";
 import { Skeleton, Stack, Title, UnstyledButton } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
+import { SimpleBeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
-import { ProgressType } from "@/types/global";
 import AvatarComponent from "../AvatarComponent";
 import CardMetaPanel from "../CardMetaPanel";
 import ImageCard from "../ImageCard";
@@ -14,7 +14,7 @@ import { ComparisonSlideImageType } from "./types";
 import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
-  data: ProgressType;
+  data: SimpleBeforeAfterType;
 };
 
 export default function ComparisonCarousel({ data }: Props) {
@@ -24,24 +24,30 @@ export default function ComparisonCarousel({ data }: Props) {
     images,
     initialImages,
     initialDate,
-    createdAt,
+    updatedAt,
     avatar,
-    scoresDifference,
+    latestScoresDifference,
   } = data;
 
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [comparisonObjects, setComparisonObjects] = useState<ComparisonSlideImageType[]>([]);
 
-  const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
+  const formattedDate = useMemo(() => formatDate({ date: updatedAt }), []);
 
   const slides = useMemo(
     () =>
       comparisonObjects.map((obj, index) => (
         <Carousel.Slide key={index}>
-          <ImageCard image={obj.image} date={formattedDate} datePosition="top-left" showDate />
+          <ImageCard
+            image={obj.image}
+            date={formattedDate}
+            datePosition="top-left"
+            showDate
+            isStatic
+          />
         </Carousel.Slide>
       )),
-    [comparisonObjects]
+    [comparisonObjects.length]
   );
 
   const handleClickCarousel = useCallback(() => {
@@ -57,7 +63,7 @@ export default function ComparisonCarousel({ data }: Props) {
           onClick={() => modals.closeAll()}
         >
           <AvatarComponent avatar={avatar} size="xs" />
-          <Title order={5} ml="0" lineClamp={1}>
+          <Title order={5} ml="0" lineClamp={2}>
             {clubName} - {upperFirst(part)} - {formattedDate}
           </Title>
         </UnstyledButton>
@@ -73,12 +79,12 @@ export default function ComparisonCarousel({ data }: Props) {
       },
       {
         image: obj.mainUrl.url || "",
-        date: formatDate({ date: createdAt }),
+        date: formatDate({ date: updatedAt }),
       },
     ]);
 
     setComparisonObjects(objects || []);
-  }, [createdAt]);
+  }, [updatedAt, images && images.length]);
 
   useEffect(() => {
     const tId = setTimeout(() => {
@@ -88,8 +94,8 @@ export default function ComparisonCarousel({ data }: Props) {
   }, []);
 
   return (
-    <Stack className={classes.container}>
-      <Skeleton className="skeleton" visible={showSkeleton}>
+    <Skeleton className={"skeleton"} visible={showSkeleton}>
+      <Stack className={classes.container}>
         <Carousel
           slideSize={{ base: "50%" }}
           align="start"
@@ -105,15 +111,15 @@ export default function ComparisonCarousel({ data }: Props) {
         >
           {slides}
         </Carousel>
-      </Skeleton>
 
-      <CardMetaPanel
-        name={clubName || ""}
-        avatar={avatar}
-        userId={data.userId}
-        faceProgress={scoresDifference?.head?.overall || 0}
-        bodyProgress={scoresDifference?.body?.overall || 0}
-      />
-    </Stack>
+        <CardMetaPanel
+          name={clubName || ""}
+          avatar={avatar}
+          userId={data.userId}
+          faceProgress={latestScoresDifference?.head?.overall || 0}
+          bodyProgress={latestScoresDifference?.body?.overall || 0}
+        />
+      </Stack>
+    </Skeleton>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { IconFocus, IconTarget } from "@tabler/icons-react";
-import { Button, Group, Image, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Image, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import GlowingButton from "@/components/GlowingButton";
 import { UserContext } from "@/context/UserContext";
@@ -38,7 +39,11 @@ export default function StyleScanResult() {
     modals.openContextModal({
       modal: "general",
       centered: true,
-      title: <Title component={"p"} order={5}>Match style</Title>,
+      title: (
+        <Title component={"p"} order={5}>
+          Match style
+        </Title>
+      ),
       innerProps: <SelectStyleGoalModalContent type={type as TypeEnum} styleName={styleName} />,
     });
   }, [styleName, type]);

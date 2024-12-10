@@ -282,6 +282,10 @@ export type ProgressType = {
   isPublic: boolean;
 };
 
+export interface BeforeAfterType extends ProgressType {
+  updatedAt: string;
+}
+
 export type StyleGoalsType = {
   name: string;
   description: string;

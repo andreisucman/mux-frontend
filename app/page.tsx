@@ -126,7 +126,7 @@ export default function BeforeAftersPage() {
               pageStart={0}
             >
               <MasonryComponent
-                maxColumnCount={3}
+                maxColumnCount={1}
                 columnGutter={16}
                 columnWidth={300}
                 render={memoizedComparisonCarousel}

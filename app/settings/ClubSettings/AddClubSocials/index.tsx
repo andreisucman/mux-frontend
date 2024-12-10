@@ -132,7 +132,7 @@ export default function AddClubSocials({ title }: Props) {
           />
           <ActionIcon
             disabled={value.trim().length === 0}
-            onClick={() => addSocial({ label: name, value })}
+            onClick={() => addSocial({ label: name, value: value.toLowerCase() })}
           >
             <IconPlus className="icon" />
           </ActionIcon>

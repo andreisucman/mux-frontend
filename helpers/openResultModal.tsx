@@ -3,12 +3,12 @@ import { modals } from "@mantine/modals";
 import ProgressModalContent from "@/app/results/ProgressModalContent";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
 import { SimpleProofType } from "@/app/results/proof/types";
-import { SimpleProgressType } from "@/app/results/types";
 import StyleModalContent from "@/components/StyleModalContent";
+import { SimpleBeforeAfterType } from "@/app/types";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 
 type OpenViewModalProps = {
-  record: SimpleProgressType | SimpleProofType | SimpleStyleType;
+  record: SimpleBeforeAfterType | SimpleProofType | SimpleStyleType;
   title: React.ReactNode;
   type: "style" | "progress" | "proof";
   isFullScreen?: boolean;
@@ -32,7 +32,7 @@ export default function openResultModal({
         setRecords={setRecords!}
       />
     ) : type === "progress" ? (
-      <ProgressModalContent record={record as SimpleProgressType} showTrackButton={showTrackButton} />
+      <ProgressModalContent record={record as SimpleBeforeAfterType} showTrackButton={showTrackButton} />
     ) : (
       <ProofModalContent record={record as SimpleProofType} showTrackButton={showTrackButton} />
     );
@@ -40,7 +40,7 @@ export default function openResultModal({
     centered: true,
     modal: "general",
     title,
-    size: "xl",
+    size: "auto",
     innerProps: content,
     fullScreen: isFullScreen,
     removeScrollProps: { allowPinchZoom: true },

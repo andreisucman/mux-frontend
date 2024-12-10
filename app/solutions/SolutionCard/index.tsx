@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { IconChevronDown, IconScan } from "@tabler/icons-react";
 import {
   Button,

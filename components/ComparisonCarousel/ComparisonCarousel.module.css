@@ -4,12 +4,16 @@
 
   width: 100%;
   overflow: hidden;
-  gap: rem(0);
+  gap: rem(12);
 }
 
 .carousel {
   border-radius: rem(16);
   overflow: hidden;
+}
+
+.carouselRoot {
+  background-color: var(--mantine-color-dark-6) !important;
 }
 
 .modalHead {

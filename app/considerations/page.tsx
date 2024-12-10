@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { IconArrowRight, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
+import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
@@ -14,7 +16,6 @@ import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { UserDataType } from "@/types/global";
-import InstructionContainer from "@/components/InstructionContainer";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./considerations.module.css";
 

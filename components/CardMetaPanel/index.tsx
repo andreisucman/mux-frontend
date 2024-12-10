@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Group, Text, UnstyledButton } from "@mantine/core";
 import AvatarComponent from "../AvatarComponent";

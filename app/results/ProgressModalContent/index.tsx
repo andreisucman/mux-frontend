@@ -8,12 +8,12 @@ import { UserContext } from "@/context/UserContext";
 import handleTrackUser from "@/functions/handleTrackUser";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
+import { SimpleBeforeAfterType } from "@/app/types";
 import LineProgressIndicators from "../LineProgressIndicators";
-import { SimpleProgressType } from "../types";
 import classes from "./ProgressModalContent.module.css";
 
 type Props = {
-  record: SimpleProgressType;
+  record: SimpleBeforeAfterType;
   showTrackButton?: boolean;
 };
 
@@ -25,11 +25,11 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const { club, subscriptions } = userDetails || {};
   const { followingUserId } = club || {};
 
-  const { userId, images, initialImages, createdAt, initialDate } = record;
+  const { userId, images, initialImages, updatedAt, initialDate } = record;
   const isTracked = followingUserId === userId;
 
   const formattedInitialDate = formatDate({ date: initialDate });
-  const formattedCompareDate = formatDate({ date: createdAt });
+  const formattedCompareDate = formatDate({ date: updatedAt });
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?followingUserId=${followingUserId}`;
   const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;

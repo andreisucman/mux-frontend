@@ -1,31 +1,29 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Image, Skeleton, Title } from "@mantine/core";
 import { upperFirst, useElementSize } from "@mantine/hooks";
+import { SimpleBeforeAfterType } from "@/app/types";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
-import { SimpleProgressType } from "../../types";
 import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
 
 type Props = {
   showTrackButton: boolean;
-  data: SimpleProgressType;
-  setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
+  data: SimpleBeforeAfterType;
+  setProgress: React.Dispatch<React.SetStateAction<SimpleBeforeAfterType[] | undefined>>;
 };
 
 function ProgressCard({ data, showTrackButton, setProgress }: Props) {
   const { width: containerWidth, ref } = useElementSize();
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const { images, createdAt } = data;
+  const { images, updatedAt } = data;
   const firstImage = images[0];
-
-  console.log("firstImage")
 
   const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
 
-  const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
+  const formattedDate = useMemo(() => formatDate({ date: updatedAt }), [updatedAt]);
 
   const handleContainerClick = useCallback(
     () =>
@@ -52,18 +50,20 @@ function ProgressCard({ data, showTrackButton, setProgress }: Props) {
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
       <div className={classes.imageWrapper} ref={ref}>
-        {firstImage && <ContentBlurTypeButton
-          contentId={data._id}
-          currentMain={firstImage.mainUrl}
-          contentCategory={"progress"}
-          position="top-left"
-          setRecords={setProgress}
-        />}
+        {firstImage && (
+          <ContentBlurTypeButton
+            contentId={data._id}
+            currentMain={firstImage.mainUrl}
+            contentCategory={"progress"}
+            position="top-left"
+            setRecords={setProgress}
+          />
+        )}
         <span className={classes.date}>{formattedDate}</span>
         <ContentPublicityIndicator isPublic={data.isPublic} />
         <Image
           className={classes.image}
-          src={firstImage && firstImage.mainUrl.url || "/"}
+          src={(firstImage && firstImage.mainUrl.url) || "/"}
           width={100}
           height={100}
           alt=""

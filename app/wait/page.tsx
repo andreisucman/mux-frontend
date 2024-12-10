@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router";
 import WaitComponent from "@/components/WaitComponent";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 

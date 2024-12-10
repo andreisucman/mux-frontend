@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useContext } from "react";
-import { useRouter } from "next/navigation";
 import { IconCalendar, IconHistory, IconPlus, IconShoppingBag } from "@tabler/icons-react";
 import { Button, Group, rem } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router";
 import { UserContext } from "@/context/UserContext";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TypeEnum } from "@/types/global";

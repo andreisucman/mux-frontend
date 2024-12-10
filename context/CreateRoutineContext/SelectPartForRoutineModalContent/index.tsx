@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { IconStack2 } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
