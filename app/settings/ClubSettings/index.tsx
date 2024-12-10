@@ -237,7 +237,6 @@ export default function ClubSettings() {
             }
           />
         </Stack>
-
         <DataSharingSwitches title="Data privacy" />
         <AddClubSocials title="Socials" />
         <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>

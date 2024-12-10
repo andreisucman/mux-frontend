@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { Carousel } from "@mantine/carousel";
 import { Skeleton, Stack, Title, UnstyledButton } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { SimpleBeforeAfterType } from "@/app/types";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal from "@/helpers/openResultModal";
 import AvatarComponent from "../AvatarComponent";
@@ -26,7 +26,8 @@ export default function ComparisonCarousel({ data }: Props) {
     initialDate,
     updatedAt,
     avatar,
-    latestScoresDifference,
+    latestHeadScoreDifference,
+    latestBodyScoreDifference,
   } = data;
 
   const [showSkeleton, setShowSkeleton] = useState(true);
@@ -116,8 +117,8 @@ export default function ComparisonCarousel({ data }: Props) {
           name={clubName || ""}
           avatar={avatar}
           userId={data.userId}
-          faceProgress={latestScoresDifference?.head?.overall || 0}
-          bodyProgress={latestScoresDifference?.body?.overall || 0}
+          headProgress={latestHeadScoreDifference}
+          bodyProgress={latestBodyScoreDifference}
         />
       </Stack>
     </Skeleton>

@@ -1,7 +1,7 @@
 import React from "react";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Group, Text, UnstyledButton } from "@mantine/core";
+import Link from "@/helpers/custom-router/patch-router/link";
 import AvatarComponent from "../AvatarComponent";
 import ScoreCell from "../ScoreCell";
 import classes from "./CardMetaPanel.module.css";
@@ -10,7 +10,7 @@ type Props = {
   avatar?: { [key: string]: any } | null;
   userId: string;
   name: string;
-  faceProgress: number;
+  headProgress: number;
   bodyProgress: number;
   customStyles?: { [key: string]: any };
 };
@@ -19,7 +19,7 @@ export default function CardMetaPanel({
   avatar,
   userId,
   name,
-  faceProgress,
+  headProgress,
   bodyProgress,
   customStyles,
 }: Props) {
@@ -37,7 +37,7 @@ export default function CardMetaPanel({
         </Text>
       </Group>
       <Group className={classes.scoreWrapper}>
-        <ScoreCell icon={<IconMoodSmile className="icon" />} score={faceProgress} />
+        <ScoreCell icon={<IconMoodSmile className="icon" />} score={headProgress} />
         <ScoreCell icon={<IconMan className="icon" />} score={bodyProgress} />
       </Group>
     </UnstyledButton>

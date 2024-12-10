@@ -50,6 +50,9 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
 
+  console.log("typeFilterItems",typeFilterItems)
+  console.log("partFilterItems",partFilterItems)
+
   const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
 
