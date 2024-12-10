@@ -18,11 +18,5 @@
   flex: 1;
   width: 100%;
   object-fit: contain;
-  background-image: linear-gradient(
-    45deg,
-    var(--mantine-color-dark-7) 49.9%,
-    alpha(var(--mantine-color-brand-6), 0.5) 50%,
-    alpha(var(--mantine-color-brand-6), 0.5) 74.9%,
-    var(--mantine-color-dark-5) 75%
-  );
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }

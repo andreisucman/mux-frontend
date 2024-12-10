@@ -63,7 +63,11 @@ export function deleteFromLocalStorage(key: string, toDeleteKey?: string): void 
     try {
       const parsedValue = JSON.parse(rawValue);
       delete parsedValue[toDeleteKey];
-      localStorage.setItem(`MUX_${key}`, JSON.stringify(parsedValue));
+      if (Object.keys(parsedValue).length === 0) {
+        localStorage.removeItem(`MUX_${key}`);
+      } else {
+        localStorage.setItem(`MUX_${key}`, JSON.stringify(parsedValue));
+      }
     } catch (err) {
       console.log("Error in deleteFromLocalStorage: ", err);
     }

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
-import { Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { UploadProgressProps } from "@/app/scan/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCard from "@/components/UploadCard";
@@ -22,7 +22,7 @@ type Props = {
   type: TypeEnum;
   scanType: ScanTypeEnum;
   latestStyleImage?: string;
-  requirements: RequirementType[] | [];
+  requirements?: RequirementType[] | [];
   faceBlurredUrl: string;
   eyesBlurredUrl: string;
   originalUrl: string;
@@ -52,12 +52,17 @@ export default function UploadCarousel({
   setEyesBlurredUrl,
   setFaceBlurredUrl,
 }: Props) {
+  const finalRequirements = requirements || [];
+
+  const [displayComponent, setDisplayComponent] = useState<
+    "loading" | "allDeselected" | "nothing" | "partialScanOverlay" | "carousel"
+  >("loading");
   const { userDetails } = useContext(UserContext);
   const { blurType } = useContext(BlurChoicesContext);
   const { showFace, showMouth, showScalp, setShowPart } = useContext(UploadPartsChoicesContext);
 
   const { _id: userId, toAnalyze } = userDetails || {};
-  const nothingToScan =
+  const allPartsDeselected =
     toAnalyze &&
     toAnalyze[type as TypeEnum.BODY | TypeEnum.HEAD].length === 0 &&
     !showFace &&
@@ -71,16 +76,16 @@ export default function UploadCarousel({
   ] as string[];
 
   const faceExists = useMemo(
-    () => requirements.some((obj) => obj.part === "face"),
-    [requirements.length]
+    () => finalRequirements.some((obj) => obj.part === "face"),
+    [finalRequirements.length]
   );
   const mouthExists = useMemo(
-    () => requirements.some((obj) => obj.part === "mouth"),
-    [requirements.length]
+    () => finalRequirements.some((obj) => obj.part === "mouth"),
+    [finalRequirements.length]
   );
   const scalpExists = useMemo(
-    () => requirements.some((obj) => obj.part === "scalp"),
-    [requirements.length]
+    () => finalRequirements.some((obj) => obj.part === "scalp"),
+    [finalRequirements.length]
   );
 
   const handleDeleteImage = useCallback(() => {
@@ -90,7 +95,7 @@ export default function UploadCarousel({
     setFaceBlurredUrl("");
   }, []);
 
-  const slides = requirements
+  const slides = finalRequirements
     .map((item, index) => {
       if (!userDetails) return;
       if (!showFace && ["front", "right", "left"].includes(item.position)) return;
@@ -147,51 +152,74 @@ export default function UploadCarousel({
     })
     .filter(Boolean);
 
-  const somethingToScan =
+  const somethingUploaded =
+    slides &&
     slides.length === 0 &&
     toAnalyze &&
     toAnalyze?.[type as TypeEnum.BODY | TypeEnum.HEAD]?.length > 0;
   const allPartsEnabled = showFace && showMouth && showScalp;
-  const showPartsSelector = type === "head" && scanType === "progress" && somethingToScan;
+  const showPartsSelector = type === "head" && scanType === "progress" && somethingUploaded;
+
+  useEffect(() => {
+    if (somethingUploaded && scanType !== "style" && !allPartsEnabled) {
+      setDisplayComponent("partialScanOverlay");
+    } else if (!allPartsDeselected && somethingUploaded) {
+      setDisplayComponent("carousel");
+    } else if (allPartsDeselected) {
+      setDisplayComponent("allDeselected");
+    } else if (requirements && requirements.length === 0) {
+      setDisplayComponent("nothing");
+    }
+  }, [
+    somethingUploaded,
+    requirements && requirements.length,
+    scanType,
+    allPartsEnabled,
+    allPartsDeselected,
+    somethingUploaded,
+  ]);
 
   return (
     <Stack flex={1}>
-      {showPartsSelector && (
-        <SelectPartsCheckboxes
-          distinctUploadedParts={distinctUploadedParts}
-          showMouth={mouthExists && showMouth}
-          showScalp={scalpExists && showScalp}
-          showFace={faceExists && showFace}
-          setShowPart={setShowPart}
-        />
+      {displayComponent === "carousel" && (
+        <>
+          {showPartsSelector && (
+            <SelectPartsCheckboxes
+              distinctUploadedParts={distinctUploadedParts}
+              showMouth={mouthExists && showMouth}
+              showScalp={scalpExists && showScalp}
+              showFace={faceExists && showFace}
+              setShowPart={setShowPart}
+            />
+          )}
+          <Carousel
+            align="start"
+            slideGap={16}
+            slidesToScroll={1}
+            withControls={false}
+            withIndicators={true}
+            styles={{
+              container: { height: "100%" },
+              viewport: { height: "100%" },
+              control: { height: "100%" },
+              root: { height: "100%" },
+            }}
+          >
+            {slides}
+          </Carousel>
+        </>
       )}
-      {!nothingToScan && !somethingToScan && (
-        <Carousel
-          align="start"
-          slideGap={16}
-          slidesToScroll={1}
-          withControls={false}
-          withIndicators={true}
-          styles={{
-            container: { height: "100%" },
-            viewport: { height: "100%" },
-            control: { height: "100%" },
-            root: { height: "100%" },
-          }}
-        >
-          {slides}
-        </Carousel>
-      )}
-      {nothingToScan && (
-        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
-      )}
-      {somethingToScan && scanType !== "style" && !allPartsEnabled && (
+      {displayComponent === "partialScanOverlay" && (
         <StartPartialScanOverlay
           type={type as TypeEnum}
           userId={userId}
           distinctUploadedParts={distinctUploadedParts}
         />
       )}
+      {(displayComponent === "allDeselected" || displayComponent === "nothing") && (
+        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing to scan" />
+      )}
+      {displayComponent === "loading" && <Loader m="auto" />}
     </Stack>
   );
 }
