@@ -1,10 +1,10 @@
 import React from "react";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { IconStack2 } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import Timer from "@/components/Timer";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { TypeEnum } from "@/types/global";
 import { partIconMap } from "./partIconMap";
 
@@ -25,7 +25,7 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
           href={`/sort-concerns?type=${type}`}
           onClick={() => modals.closeAll()}
         >
-          <IconStack2 className="icon" style={{ marginRight: rem(8) }} /> All
+          <IconStack2 className="icon" style={{ marginRight: rem(6) }} /> All
         </Button>
       )}
       {parts.map((part, index) => {

@@ -17,11 +17,11 @@ export default function UploadOverlay({ type, customStyles }: Props) {
 
   const icon =
     type === "head" ? (
-      <IconMoodSmile className="icon" style={{ marginRight: rem(8) }} />
+      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
     ) : type === "body" ? (
-      <IconMan className="icon" style={{ marginRight: rem(8) }} />
+      <IconMan className="icon" style={{ marginRight: rem(6) }} />
     ) : (
-      <IconHeart className="icon" style={{ marginRight: rem(8) }} />
+      <IconHeart className="icon" style={{ marginRight: rem(6) }} />
     );
 
   const scanText = type === "head" ? "Scan head" : "Scan body";

@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "@/helpers/custom-router";
 import { IconPencil, IconX } from "@tabler/icons-react";
 import { Button, Group, rem, Skeleton, Stack, Switch, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
@@ -15,6 +14,7 @@ import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
+import { useRouter } from "@/helpers/custom-router";
 import getSuggestions from "@/helpers/getSuggestions";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -326,7 +326,7 @@ export default function Explain() {
                     className={classes.disableButton}
                     onClick={handleRedirectToCalendar}
                   >
-                    <IconX className="icon" style={{ marginRight: rem(8) }} />
+                    <IconX className="icon" style={{ marginRight: rem(6) }} />
                     Disable task
                   </Button>
                   <Button
@@ -335,7 +335,7 @@ export default function Explain() {
                     className={classes.disableButton}
                     onClick={openEditTaskModal}
                   >
-                    <IconPencil className="icon" style={{ marginRight: rem(8) }} />
+                    <IconPencil className="icon" style={{ marginRight: rem(6) }} />
                     Edit task
                   </Button>
                 </Group>

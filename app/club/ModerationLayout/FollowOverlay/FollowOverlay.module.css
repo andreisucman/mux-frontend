@@ -4,9 +4,15 @@
   align-items: center;
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
-  background-color: alpha(var(--mantine-color-dark-6), 0.75);
 
   background-size: 100%;
+  background-image: linear-gradient(
+    -45deg,
+    var(--mantine-color-dark-7) 49.9%,
+    alpha(var(--mantine-color-dark-6), 0.25) 50%,
+    alpha(var(--mantine-color-dark-6), 0.25) 74.9%,
+    alpha(var(--mantine-color-dark-6), 0.5) 75%
+  );
 }
 
 .wrapper {
@@ -15,7 +21,7 @@
   min-height: rem(200);
   justify-content: center;
   align-items: center;
-  background-color: alpha(var(--mantine-color-dark-5),0.5);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
   border-radius: var(--mantine-radius-lg);
   gap: rem(8);
 }

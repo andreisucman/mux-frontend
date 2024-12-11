@@ -124,7 +124,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
         </Text>
       ) : (
         <Button className={classes.button} disabled={!canPersonalize} onClick={openEditTaskModal}>
-          <IconPlus className="icon" style={{ marginRight: rem(8) }} /> Create recipe
+          <IconPlus className="icon" style={{ marginRight: rem(6) }} /> Create recipe
         </Button>
       )}
     </Group>

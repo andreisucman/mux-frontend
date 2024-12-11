@@ -28,7 +28,7 @@ export default function QuestionSlide({ question, submitResponse }: Props) {
         </Text>
 
         <div className={classes.questionText}>
-          <span style={{ marginRight: rem(8) }}>{question.question}</span>
+          <span style={{ marginRight: rem(6) }}>{question.question}</span>
           <RecordingButton
             setText={setText}
             setAudioBlobs={setAudioBlobs}
@@ -62,7 +62,7 @@ export default function QuestionSlide({ question, submitResponse }: Props) {
           })
         }
       >
-        <IconUpload className="icon" style={{ marginRight: rem(8) }} /> Submit answer
+        <IconUpload className="icon" style={{ marginRight: rem(6) }} /> Submit answer
       </Button>
     </Stack>
   );

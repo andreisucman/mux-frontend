@@ -448,9 +448,9 @@ export default function Calendar() {
             onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
           >
             {selectedStatus === "active" ? (
-              <IconX className="icon" style={{ marginRight: rem(8) }} />
+              <IconX className="icon" style={{ marginRight: rem(6) }} />
             ) : (
-              <IconCheck className="icon" style={{ marginRight: rem(8) }} />
+              <IconCheck className="icon" style={{ marginRight: rem(6) }} />
             )}
             {selectedStatus === "active" ? "Disable" : "Enable"} selected
           </Button>

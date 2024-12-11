@@ -31,7 +31,7 @@ export default function CreateTaskOverlay({ type, timeZone, customStyles, handle
           className={classes.button}
           onClick={onCreateManuallyClick}
         >
-          <IconPlus className="icon" style={{ marginRight: rem(8) }} /> Create a task manually
+          <IconPlus className="icon" style={{ marginRight: rem(6) }} /> Create a task manually
         </Button>
         <Button
           disabled={isLoading}
@@ -39,7 +39,7 @@ export default function CreateTaskOverlay({ type, timeZone, customStyles, handle
           className={classes.button}
           onClick={() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed })}
         >
-          <IconCalendarWeek className="icon" style={{ marginRight: rem(8) }} /> Create a routine for
+          <IconCalendarWeek className="icon" style={{ marginRight: rem(6) }} /> Create a routine for
           the week
         </Button>
       </Stack>

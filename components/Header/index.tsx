@@ -3,7 +3,7 @@
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
-import { ActionIcon, Burger, Drawer, Group, Title } from "@mantine/core";
+import { ActionIcon, Burger, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
@@ -89,7 +89,13 @@ function Header() {
                     text="Start"
                     aria-label="start analysis button"
                     disabled={hideStartButton}
-                    icon={<IconRocket stroke={1.5} className="icon icon__large" />}
+                    icon={
+                      <IconRocket
+                        stroke={1.5}
+                        className="icon icon__large"
+                        style={{ marginRight: rem(6) }}
+                      />
+                    }
                     onClick={() => router.push("/scan")}
                   />
                 )}

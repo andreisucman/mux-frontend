@@ -12,7 +12,6 @@
 .indicatorRowTargetIcon {
   font-size: 20;
   white-space: nowrap;
-  min-width: rem(55);
 }
 
 .indicatorRowProgressRoot {

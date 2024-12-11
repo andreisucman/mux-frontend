@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { useRouter } from "@/helpers/custom-router";
 import {
   IconArrowBackUp,
   IconCamera,
@@ -13,6 +12,7 @@ import {
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
@@ -93,23 +93,23 @@ function ProofStatus({
 
     if (taskExpired) {
       label = "Expired";
-      icon = <IconEye className="icon" style={{ marginRight: rem(8) }} />;
+      icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
       if (isSubmitted) {
         if (proofId) {
           label = "View";
-          icon = <IconEye className="icon" style={{ marginRight: rem(8) }} />;
+          icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
         } else {
           label = "Undo";
-          icon = <IconArrowBackUp className="icon" style={{ marginRight: rem(8) }} />;
+          icon = <IconArrowBackUp className="icon" style={{ marginRight: rem(6) }} />;
         }
       } else {
         if (proofEnabled) {
           label = "Upload proof";
-          icon = <IconCamera className="icon" style={{ marginRight: rem(8) }} />;
+          icon = <IconCamera className="icon" style={{ marginRight: rem(6) }} />;
         } else {
           label = "Mark done";
-          icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(8) }} />;
+          icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />;
         }
       }
     }

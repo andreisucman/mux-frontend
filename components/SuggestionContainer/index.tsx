@@ -213,13 +213,13 @@ export default function SuggestionContainer({
                     style={{ cursor: "pointer" }}
                     onClick={() => setShowOverlay(true)}
                   >
-                    <IconListSearch className="icon" style={{ marginRight: rem(8) }} /> Compare and
+                    <IconListSearch className="icon" style={{ marginRight: rem(6) }} /> Compare and
                     sort best
                   </Text>
                 )}
                 {productsPersonalized && (
                   <Text className={classes.title}>
-                    <IconSquareRoundedCheck style={{ marginRight: rem(8) }} /> Best sorted
+                    <IconSquareRoundedCheck style={{ marginRight: rem(6) }} /> Best sorted
                   </Text>
                 )}
               </>

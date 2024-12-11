@@ -132,7 +132,7 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
                   variant="default"
                   onClick={() => handleCreateTask({ isLoading, timeZone, description })}
                 >
-                  <IconBulb className="icon" style={{ marginRight: rem(8) }} /> Create task
+                  <IconBulb className="icon" style={{ marginRight: rem(6) }} /> Create task
                 </Button>
                 <CreateWeeklyRoutineButton type={type} />
               </>
@@ -151,13 +151,13 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
                   })
                 }
               >
-                <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(8) }} /> Save
+                <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} /> Save
                 task
               </Button>
             )}
             {step === 2 && rawTask && (
               <Button variant="default" onClick={() => setStep(1)}>
-                <IconArrowLeft style={{ marginRight: rem(8) }} /> Return
+                <IconArrowLeft style={{ marginRight: rem(6) }} /> Return
               </Button>
             )}
             {step === 1 && rawTask && (

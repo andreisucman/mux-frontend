@@ -44,7 +44,7 @@ export default function Confirmation({ handleJoinClub }: Props) {
       <Stack className={classes.checkboxWrapper}>
         <GlowingButton
           text="Join the Club"
-          icon={<IconTargetArrow className="icon" style={{ marginRight: rem(8) }} />}
+          icon={<IconTargetArrow className="icon" style={{ marginRight: rem(6) }} />}
           containerStyles={{ margin: "auto" }}
           onClick={handleJoinClub}
         />

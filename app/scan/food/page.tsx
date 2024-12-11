@@ -94,7 +94,7 @@ export default function ScanFoodPage() {
           handleClose={handleResetResult}
           actionChildren={
             <Button variant="default" w="100%" onClick={handleResetResult}>
-              <IconRotate className="icon" style={{ marginRight: rem(8) }} /> New scan
+              <IconRotate className="icon" style={{ marginRight: rem(6) }} /> New scan
             </Button>
           }
         />

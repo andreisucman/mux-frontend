@@ -1,14 +1,18 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
+import ProgressHeader from "@/app/results/ProgressHeader";
+import ProofHeader from "@/app/results/proof/ProofHeader";
+import StyleHeader from "@/app/results/style/StyleHeader";
 import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import ClubProfilePreview from "../ClubProfilePreview";
+import { clubResultTitles } from "../clubResultTitles";
 import ClubChatContainer from "./ClubChatContainer";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
@@ -17,27 +21,49 @@ import classes from "./ClubModerationLayout.module.css";
 export const runtime = "edge";
 
 type Props = {
-  pageHeader: React.ReactNode;
   children: React.ReactNode;
   showChat?: boolean;
   showHeader?: boolean;
 };
 
-export default function ClubModerationLayout({ children, showChat, pageHeader }: Props) {
+export default function ClubModerationLayout({ children, showChat }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
 
-  const [showComponent, setShowComponent] = useState("followOverlay");
+  const [showComponent, setShowComponent] = useState("loading");
 
   const followingUserId = searchParams.get("followingUserId");
-  const isRoutine = pathname.includes("/club/routine");
+
+  const pathnameParts = pathname.split("/");
+  const pageType = pathnameParts[pathnameParts.length - 1];
 
   const { subscriptions, club } = userDetails || {};
   const { followingUserId: localFollowingUserId } = club || {};
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
+
+  const titles: { [key: string]: React.ReactNode } = useMemo(
+    () => ({
+      style: (
+        <StyleHeader
+          titles={clubResultTitles}
+          isDisabled={showComponent !== "children"}
+          showReturn
+        />
+      ),
+      progress: (
+        <ProgressHeader
+          titles={clubResultTitles}
+          isDisabled={showComponent !== "children"}
+          showReturn
+        />
+      ),
+      proof: <ProofHeader showReturn titles={clubResultTitles} />,
+    }),
+    [showComponent]
+  );
 
   useEffect(() => {
     if (!youTrackData && youTrackDataFetched) {
@@ -67,14 +93,16 @@ export default function ClubModerationLayout({ children, showChat, pageHeader }:
     youTrackDataFetched,
   ]);
 
-  const followText = `Follow to see ${isRoutine ? "their routines" : "their details"}.`;
-
-  const showSkeleton = (!followingUserId && !youData) || (followingUserId && !youTrackData);
+  const followText = `Follow to see ${pageType === "routine" ? "their routines" : "their details"}.`;
+  const previewData = followingUserId ? youTrackData : youData;
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {pageHeader}
-      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!!showSkeleton}>
+      {titles[pageType]}
+      <Skeleton
+        className={`skeleton ${classes.skeleton}`}
+        visible={showComponent === "loading" || !previewData}
+      >
         {showComponent === "userNotFound" ? (
           <OverlayWithText text="User not found" icon={<IconUserOff className="icon" />} />
         ) : (

@@ -162,7 +162,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             </Text>
           )}
           <Button type="submit" className={classes.button}>
-            <IconMail className="icon" style={{ marginRight: rem(8) }} /> Sign in
+            <IconMail className="icon" style={{ marginRight: rem(6) }} /> Sign in
           </Button>
           <UnstyledButton
             className={classes.secondaryButton}

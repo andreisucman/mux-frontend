@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { Loader, Stack } from "@mantine/core";
 import { UploadProgressProps } from "@/app/scan/types";
-import OverlayWithText from "@/components/OverlayWithText";
 import UploadCard from "@/components/UploadCard";
 import SelectPartsCheckboxes from "@/components/UploadCarousel/SelectPartsCheckboxes";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -196,12 +194,6 @@ export default function UploadCarousel({
             slidesToScroll={1}
             withControls={false}
             withIndicators={true}
-            styles={{
-              container: { height: "100%" },
-              viewport: { height: "100%" },
-              control: { height: "100%" },
-              root: { height: "100%" },
-            }}
           >
             {slides}
           </Carousel>

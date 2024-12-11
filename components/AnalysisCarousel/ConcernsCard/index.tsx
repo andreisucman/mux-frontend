@@ -63,7 +63,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
           <ConcernsSortCard concerns={concerns} type={type} maxHeight={maxHeight} disabled />
           <GlowingButton
             text={buttonText}
-            icon={<IconRotateDot className="icon" />}
+            icon={<IconRotateDot className="icon" style={{ marginRight: rem(6) }} />}
             onClick={handleClick}
             containerStyles={{ flex: 0, margin: "0 auto" }}
           />

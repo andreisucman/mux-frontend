@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconFocus, IconMan, IconMoodSmile, IconTarget } from "@tabler/icons-react";
-import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
+import { Button, Group, Image, rem, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import GlowingButton from "@/components/GlowingButton";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -161,10 +161,11 @@ export default function StyleScanResult() {
               </Button>
               <GlowingButton
                 text="Publish"
-                icon={<IconTarget className={"icon"} />}
+                icon={<IconTarget className={"icon"} style={{ marginRight: rem(6) }} />}
                 disabled={isLoading}
                 loading={isLoading}
                 onClick={handlePublishToClub}
+                buttonStyles={{ fontSize: rem(14) }}
                 addGradient
               />
             </Group>

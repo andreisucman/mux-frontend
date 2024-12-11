@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 import { rem, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { UserContext } from "@/context/UserContext";
-import handleTrackUser from "@/functions/handleTrackUser";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { normalizeString } from "@/helpers/utils";
@@ -20,10 +19,8 @@ type Props = {
 
 export default function ProofModalContent({ record, showTrackButton }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
-  const { club, subscriptions } = userDetails || {};
+  const { userDetails } = useContext(UserContext);
+  const { club } = userDetails || {};
   const { followingUserId } = club || {};
 
   const { icon, createdAt, userId, mainUrl, mainThumbnail, concern, taskName } = record || {};
@@ -35,7 +32,11 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
   const concernName = normalizeString(concern);
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?followingUserId=${userId}`;
-  const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
+
+  const handleRedirect = () => {
+    router.push(redirectUrl);
+    modals.closeAll();
+  };
 
   return (
     <Stack className={classes.container}>
@@ -62,23 +63,7 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
           isStatic
         />
       )}
-      <ProofCardFooter
-        isTracked={isTracked}
-        handleTrack={() => {
-          if (showTrackButton && club) {
-            handleTrackUser({
-              router,
-              status,
-              clubData: club,
-              redirectUrl,
-              cancelUrl,
-              followingUserId: userId,
-              setUserDetails,
-              subscriptions,
-            });
-          }
-        }}
-      />
+      <ProofCardFooter isTracked={isTracked} handleTrack={handleRedirect} />
     </Stack>
   );
 }

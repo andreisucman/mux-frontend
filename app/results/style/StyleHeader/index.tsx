@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "@/helpers/custom-router";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -11,6 +10,7 @@ import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import callTheServer from "@/functions/callTheServer";
 import getUsersFilters from "@/functions/getUsersFilters";
+import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
 import TitleDropdown from "../../TitleDropdown";
 import StyleFilterContent from "./StyleFilterContent";
@@ -33,15 +33,6 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
   const followingUserId = searchParams.get("followingUserId");
   const styleName = searchParams.get("styleName");
   const type = searchParams.get("type");
-
-  useEffect(() => {
-    getUsersFilters({ followingUserId, collection: "progress", fields: ["type"] }).then(
-      (result) => {
-        const { availableTypes } = result;
-        setAvailableTypes(availableTypes);
-      }
-    );
-  }, [followingUserId]);
 
   const handleGetUsersStyleNames = useCallback(
     async (type: string | null, followingUserId: string | null) => {
@@ -81,10 +72,6 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
     []
   );
 
-  useEffect(() => {
-    handleGetUsersStyleNames(type, followingUserId);
-  }, [type, followingUserId]);
-
   const activeFiltersCount = styleName ? 1 : 0;
 
   const handleOpenStyleFilters = useCallback(() => {
@@ -99,6 +86,19 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
       centered: true,
     });
   }, []);
+
+  useEffect(() => {
+    getUsersFilters({ followingUserId, collection: "progress", fields: ["type"] }).then(
+      (result) => {
+        const { availableTypes } = result;
+        setAvailableTypes(availableTypes);
+      }
+    );
+  }, [followingUserId]);
+
+  useEffect(() => {
+    handleGetUsersStyleNames(type, followingUserId);
+  }, [type, followingUserId]);
 
   return (
     <Group className={classes.container}>

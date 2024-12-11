@@ -34,7 +34,7 @@ export default function ClubProfileHeader() {
       </Group>
 
       <Button onClick={openFollowHistory} size="xs" variant="default">
-        <IconHistory className="icon icon__small" style={{ marginRight: rem(8) }} /> Follow history
+        <IconHistory className="icon icon__small" style={{ marginRight: rem(6) }} /> Follow history
       </Button>
     </Group>
   );

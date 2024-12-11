@@ -32,7 +32,7 @@ const segments = [
     value: "image",
     label: (
       <span className={classes.indicatorLabel}>
-        <IconCamera className="icon" style={{ marginRight: rem(8) }} /> Photo
+        <IconCamera className="icon" style={{ marginRight: rem(6) }} /> Photo
       </span>
     ),
   },
@@ -40,7 +40,7 @@ const segments = [
     value: "video",
     label: (
       <span className={classes.indicatorLabel}>
-        <IconVideo className="icon" style={{ marginRight: rem(8) }} /> Video
+        <IconVideo className="icon" style={{ marginRight: rem(6) }} /> Video
       </span>
     ),
   },
@@ -407,9 +407,9 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
   const startText = captureType === "image" ? "Take the photo" : "Start recording";
   const startIcon =
     captureType === "image" ? (
-      <IconCamera className="icon" style={{ marginRight: rem(8) }} />
+      <IconCamera className="icon" style={{ marginRight: rem(6) }} />
     ) : (
-      <IconVideo className="icon" style={{ marginRight: rem(8) }} />
+      <IconVideo className="icon" style={{ marginRight: rem(6) }} />
     );
 
   return (
@@ -449,7 +449,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
                   className={classes.button}
                   disabled={taskExpired}
                 >
-                  <IconPlayerStopFilled className="icon" style={{ marginRight: rem(8) }} /> Finish
+                  <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
                 </Button>
               )}
               {showStartRecording && (

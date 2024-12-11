@@ -76,7 +76,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
             variant={"default"}
             className={classes.imageButton}
           >
-            <IconCamera className="icon" style={{ marginRight: rem(8) }} /> Upload photo
+            <IconCamera className="icon" style={{ marginRight: rem(6) }} /> Upload photo
             <input
               hidden
               id="upload_products_photo"
@@ -88,7 +88,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
         </Stack>
       </Stack>
       <Button loading={isLoading} disabled={isLoading} onClick={handleGenerate}>
-        <IconToolsKitchen2 className="icon" style={{ marginRight: rem(8) }} /> Generate recipe
+        <IconToolsKitchen2 className="icon" style={{ marginRight: rem(6) }} /> Generate recipe
       </Button>
     </Stack>
   );

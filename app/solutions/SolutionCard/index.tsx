@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { IconChevronDown, IconScan } from "@tabler/icons-react";
 import {
   Button,
@@ -16,6 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
 import SuggestionContainer from "@/components/SuggestionContainer";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { SolutionCardType } from "../types";
 import classes from "./SolutionCard.module.css";
 
@@ -78,7 +78,7 @@ export default function SolutionCard({ data }: Props) {
               Rate your appearance and get your improvement routine
             </Text>
             <Button component={Link} variant="default" href={"/scan"}>
-              <IconScan style={{ marginRight: rem(8) }} />
+              <IconScan style={{ marginRight: rem(6) }} />
               Scan now
             </Button>
           </Stack>

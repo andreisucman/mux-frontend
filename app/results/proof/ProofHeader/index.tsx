@@ -22,11 +22,12 @@ type FilterDataType = {
 type Props = {
   titles: { label: string; value: string }[];
   showReturn?: boolean;
+  isDisabled?: boolean;
 };
 
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
-export default function ProofHeader({ showReturn, titles }: Props) {
+export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -122,29 +123,34 @@ export default function ProofHeader({ showReturn, titles }: Props) {
           )}
           <TitleDropdown titles={titles} />
         </Group>
-        <Group className={classes.right} ref={ref}>
-          <SearchButton maxPillWidth={width / 2} onSearchClick={() => solutionsSpotlight.open()} />
-          {typeFilterData.items.length > 1 && (
-            <FilterDropdown
-              data={typeFilterData.items}
-              icons={typeFilterData.icons}
-              placeholder="Select type"
-              defaultSelected={typeFilterData.items.find((obj) => obj.value === type)?.value}
-              filterType="type"
-              addToQuery
+        {!isDisabled && (
+          <Group className={classes.right} ref={ref}>
+            <SearchButton
+              maxPillWidth={width / 2}
+              onSearchClick={() => solutionsSpotlight.open()}
             />
-          )}
-          {partFilterData.items.length > 1 && (
-            <FilterDropdown
-              data={partFilterData.items}
-              icons={partFilterData.icons}
-              placeholder="Select part"
-              defaultSelected={partFilterData.items.find((obj) => obj.value === part)?.value}
-              filterType="part"
-              addToQuery
-            />
-          )}
-        </Group>
+            {typeFilterData.items.length > 1 && (
+              <FilterDropdown
+                data={typeFilterData.items}
+                icons={typeFilterData.icons}
+                placeholder="Select type"
+                defaultSelected={typeFilterData.items.find((obj) => obj.value === type)?.value}
+                filterType="type"
+                addToQuery
+              />
+            )}
+            {partFilterData.items.length > 1 && (
+              <FilterDropdown
+                data={partFilterData.items}
+                icons={partFilterData.icons}
+                placeholder="Select part"
+                defaultSelected={partFilterData.items.find((obj) => obj.value === part)?.value}
+                filterType="part"
+                addToQuery
+              />
+            )}
+          </Group>
+        )}
       </Group>
       <Spotlight
         store={spotlightStore}

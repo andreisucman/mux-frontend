@@ -1,14 +1,14 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { IconCloudUpload, IconArrowBackUp } from "@tabler/icons-react";
+import { IconArrowBackUp, IconCloudUpload } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import BlurButtons from "@/components/BlurButtons";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { onBlurImageClick, onBlurVideoClick } from "@/functions/blur";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import ResultDisplayContainer from "./ResultDisplayContainer";
 import classes from "./VideoRecorderResult.module.css";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 type Props = {
   isVideoLoading: boolean;
@@ -208,7 +208,7 @@ export default function VideoRecorderResult({
     <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
       <Group className={classes.buttonGroup}>
         <Button onClick={handleSubmit} className={classes.button} disabled={isBlurLoading}>
-          <IconCloudUpload className="icon" style={{ marginRight: rem(8) }} /> Upload
+          <IconCloudUpload className="icon" style={{ marginRight: rem(6) }} /> Upload
         </Button>
         <ActionIcon
           variant="default"
@@ -217,7 +217,7 @@ export default function VideoRecorderResult({
           className={classes.button}
           style={{ flex: 0, minWidth: rem(40) }}
         >
-          <IconArrowBackUp className="icon"  />
+          <IconArrowBackUp className="icon" />
         </ActionIcon>
       </Group>
       <ResultDisplayContainer

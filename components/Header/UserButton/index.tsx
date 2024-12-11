@@ -38,23 +38,23 @@ function UserButton({ avatar, clubPayouts }: Props) {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item component={Link} href="/routines">
-          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(8) }} /> My routines
+          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(6) }} /> My routines
         </Menu.Item>
         <Menu.Item component={Link} href="/scan/food">
-          <IconScanStyle className={`icon ${classes.icon}`} style={{ marginRight: rem(8) }} />
+          <IconScanStyle className={`icon ${classes.icon}`} style={{ marginRight: rem(6) }} />
           Scan food
         </Menu.Item>
         <Menu.Item component={Link} href="/scan/style">
-          <IconScanFood className={`icon ${classes.icon}`} style={{ marginRight: rem(8) }} />
+          <IconScanFood className={`icon ${classes.icon}`} style={{ marginRight: rem(6) }} />
           Scan style
         </Menu.Item>
         {detailsSubmitted && (
           <Menu.Item component={Link} href={clubUrl}>
-            <IconSocial className="icon icon__small" style={{ marginRight: rem(8) }} /> {clubText}
+            <IconSocial className="icon icon__small" style={{ marginRight: rem(6) }} /> {clubText}
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/settings">
-          <IconSettings className="icon icon__small" style={{ marginRight: rem(8) }} /> Settings
+          <IconSettings className="icon icon__small" style={{ marginRight: rem(6) }} /> Settings
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

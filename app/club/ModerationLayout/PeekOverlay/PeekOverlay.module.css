@@ -2,10 +2,17 @@
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: var(--mantine-color-dark-6);
 
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
+
+  background-image: linear-gradient(
+    -45deg,
+    var(--mantine-color-dark-7) 49.9%,
+    alpha(var(--mantine-color-dark-6), 0.25) 50%,
+    alpha(var(--mantine-color-dark-6), 0.25) 74.9%,
+    alpha(var(--mantine-color-dark-6), 0.5) 75%
+  );
 }
 
 .text {

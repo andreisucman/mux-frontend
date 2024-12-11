@@ -1,6 +1,6 @@
 import React from "react";
 import { IconEye } from "@tabler/icons-react";
-import { Group, Stack } from "@mantine/core";
+import { Group, rem, Stack } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import classes from "./ProofCardFooter.module.css";
 
@@ -27,7 +27,7 @@ export default function ProofCardFooter({
             text={"Peek the routine"}
             addGradient={!isTracked}
             disabled={isTracked}
-            icon={<IconEye className={"icon"} />}
+            icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleTrack}
           />
         </div>

@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
-import { Stack } from "@mantine/core";
+import { rem, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { SimpleBeforeAfterType } from "@/app/types";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
-import handleTrackUser from "@/functions/handleTrackUser";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import LineProgressIndicators from "../LineProgressIndicators";
@@ -19,10 +18,8 @@ type Props = {
 
 export default function ProgressModalContent({ record, showTrackButton }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
-  const { club, subscriptions } = userDetails || {};
+  const { userDetails } = useContext(UserContext);
+  const { club } = userDetails || {};
   const { followingUserId } = club || {};
 
   const { userId, images, initialImages, updatedAt, createdAt, initialDate } = record;
@@ -32,7 +29,11 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?followingUserId=${followingUserId}`;
-  const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
+
+  const handleRedirect = () => {
+    router.push(redirectUrl);
+    modals.closeAll();
+};
 
   return (
     <Stack className={classes.container}>
@@ -49,19 +50,8 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
             text={"Peek the routine"}
             addGradient={!isTracked}
             disabled={isTracked}
-            icon={<IconEye className={"icon"} />}
-            onClick={() =>
-              handleTrackUser({
-                router,
-                status,
-                clubData: club,
-                redirectUrl,
-                cancelUrl,
-                followingUserId: record.userId,
-                setUserDetails,
-                subscriptions,
-              })
-            }
+            icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
+            onClick={handleRedirect}
           />
         </div>
       )}

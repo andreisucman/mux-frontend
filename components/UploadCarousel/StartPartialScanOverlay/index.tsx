@@ -101,7 +101,7 @@ export default function StartPartialScanOverlay({
           loading={isButtonLoading}
           disabled={isButtonLoading}
         >
-          <IconFlag className="icon" style={{ marginRight: rem(8) }} /> Start scan
+          <IconFlag className="icon" style={{ marginRight: rem(6) }} /> Start scan
         </Button>
       </Stack>
     </Stack>

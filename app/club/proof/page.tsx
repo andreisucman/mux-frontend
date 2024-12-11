@@ -72,7 +72,7 @@ export default function ClubProof() {
   }, [status, followingUserId, type, part, concern, query]);
 
   return (
-    <ClubModerationLayout pageHeader={<ProofHeader showReturn titles={clubResultTitles} />}>
+    <ClubModerationLayout>
       {proof ? (
         <ProofGallery
           proof={proof}

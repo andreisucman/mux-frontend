@@ -44,7 +44,7 @@ export default function ProductsCriteriaContainer({ taskKey, findProducts }: Pro
         editable
       />
       <Button variant="default" onClick={() => handleFindProducts(taskKey, text)}>
-        <IconListSearch className="icon" style={{ marginRight: rem(8) }} /> Compare and sort
+        <IconListSearch className="icon" style={{ marginRight: rem(6) }} /> Compare and sort
       </Button>
     </Stack>
   );

@@ -25,7 +25,7 @@ export default function CreateWeeklyRoutineButton({ type }: Props) {
       disabled={!!isInCooldown}
       onClick={() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed })}
     >
-      <IconCalendar className="icon" style={{ marginRight: rem(8) }} /> Create weekly routine
+      <IconCalendar className="icon" style={{ marginRight: rem(6) }} /> Create weekly routine
     </Button>
   );
 }

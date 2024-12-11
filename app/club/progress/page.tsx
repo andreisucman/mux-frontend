@@ -5,13 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { Skeleton, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ProgressGallery from "@/app/results/ProgressGallery";
-import ProgressHeader from "@/app/results/ProgressHeader";
 import { SimpleProgressType } from "@/app/results/types";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
 import openResultModal from "@/helpers/openResultModal";
-import { clubResultTitles } from "../clubResultTitles";
 import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
@@ -76,7 +74,7 @@ export default function ClubProgress() {
   }, [status, followingUserId, type, part]);
 
   return (
-    <ClubModerationLayout pageHeader={<ProgressHeader titles={clubResultTitles} showReturn />}>
+    <ClubModerationLayout>
       {progress ? (
         <ProgressGallery
           progress={progress}

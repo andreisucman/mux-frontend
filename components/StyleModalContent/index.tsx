@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
-import { Stack } from "@mantine/core";
+import { rem, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
-import handleTrackUser from "@/functions/handleTrackUser";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import GlowingButton from "../GlowingButton";
@@ -21,10 +20,8 @@ type Props = {
 
 export default function StyleModalContent({ record, showTrackButton, setRecords }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
-  const { subscriptions, club } = userDetails || {};
+  const { userDetails } = useContext(UserContext);
+  const { club } = userDetails || {};
   const { followingUserId } = club || {};
 
   const {
@@ -49,7 +46,11 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
   const hideVoting = styleName === compareStyleName;
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style?followingUserId=${record.userId}`;
-  const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
+
+  const handleRedirect = () => {
+    router.push(redirectUrl);
+    modals.closeAll();
+  };
 
   return (
     <Stack className={classes.container}>
@@ -80,19 +81,8 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
             text={"Peek lifestyle"}
             addGradient={!isTracked}
             disabled={isTracked}
-            icon={<IconEye className={"icon"} />}
-            onClick={() =>
-              handleTrackUser({
-                router,
-                status,
-                redirectUrl,
-                cancelUrl,
-                clubData: club,
-                followingUserId: record.userId,
-                subscriptions,
-                setUserDetails,
-              })
-            }
+            icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
+            onClick={handleRedirect}
           />
         </div>
       )}

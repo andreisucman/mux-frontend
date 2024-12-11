@@ -81,7 +81,7 @@ export default function EditTaskModal({
                 }
                 disabled={!isDirty}
               >
-                <IconRefresh className="icon" style={{ marginRight: rem(8) }} /> Update task
+                <IconRefresh className="icon" style={{ marginRight: rem(6) }} /> Update task
               </Button>
             </>
           )}

@@ -20,7 +20,7 @@ const props = {
   handleClose: () => {},
   actionChildren: (
     <Button variant="default" w="100%">
-      <IconRotate className="icon" style={{ marginRight: rem(8) }} /> New scan
+      <IconRotate className="icon" style={{ marginRight: rem(6) }} /> New scan
     </Button>
   ),
 };

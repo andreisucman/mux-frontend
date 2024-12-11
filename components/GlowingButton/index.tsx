@@ -7,7 +7,6 @@ type Props = {
   addGradient?: boolean;
   text: string;
   icon?: any;
-  fontSize?: "sm" | "md";
   loading?: boolean;
   disabled?: boolean;
   children?: React.ReactNode;
@@ -20,7 +19,6 @@ type Props = {
 function GlowingButton({
   text,
   icon,
-  fontSize = "sm",
   loading,
   addGradient = true,
   disabled,
@@ -40,11 +38,9 @@ function GlowingButton({
         style={overlayStyles ? overlayStyles : {}}
       />
       <UnstyledButton
-        size="sm"
         disabled={disabled}
-        className={cn(classes.button, classes.sm, {
+        className={cn(classes.button, {
           [classes.disabled]: disabled,
-          [classes.md]: fontSize === "md",
         })}
         onClick={onClick}
         style={buttonStyles ? buttonStyles : {}}

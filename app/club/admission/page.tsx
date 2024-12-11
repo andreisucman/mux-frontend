@@ -16,9 +16,9 @@ import DataSharingSwitches from "./DataSharingSwitches";
 import classes from "./admission.module.css";
 
 const icons = {
-  checkbox: <IconSquareCheck className="icon" />,
-  bank: <IconBuildingBank className="icon" />,
-  rocket: <IconRocket className="icon" />,
+  checkbox: <IconSquareCheck className="icon" style={{ marginRight: rem(6) }} />,
+  bank: <IconBuildingBank className="icon" style={{ marginRight: rem(6) }} />,
+  rocket: <IconRocket className="icon" style={{ marginRight: rem(6) }} />,
 };
 
 export const runtime = "edge";
@@ -116,7 +116,7 @@ export default function ClubAdmission() {
               icon={icons.rocket}
               disabled={disableSecond}
               onClick={() => router.push("/club")}
-              containerStyles={{ marginRight: "auto", marginTop: rem(4) }}
+              containerStyles={{ marginTop: rem(4) }}
             />
           </Stack>
         </Stack>

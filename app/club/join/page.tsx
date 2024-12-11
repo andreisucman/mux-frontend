@@ -119,7 +119,7 @@ export default function ClubJoin() {
           />
           <GlowingButton
             text="Join the Club"
-            icon={<IconTargetArrow className="icon" style={{ marginRight: rem(8) }} />}
+            icon={<IconTargetArrow className="icon" style={{ marginRight: rem(6) }} />}
             containerStyles={{ margin: "auto" }}
             onClick={onStart}
           />

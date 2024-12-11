@@ -135,6 +135,7 @@ export default function UploadCard({
             image={localUrl || latestStyleImage}
             isLoadingOverlay={isBlurLoading}
             placeholder={relevantPlaceholder && relevantPlaceholder.url}
+            customImageStyles={{ minHeight: rem(350) }}
           />
         </Stack>
 
@@ -156,7 +157,7 @@ export default function UploadCard({
                   disabled={isLoading}
                   variant={"default"}
                 >
-                  <IconCamera className="icon" style={{ marginRight: rem(8) }} />
+                  <IconCamera className="icon" style={{ marginRight: rem(6) }} />
                   Take a photo
                 </Button>
               )}
@@ -166,7 +167,7 @@ export default function UploadCard({
                   disabled={disableUpload || isLoading}
                   onClick={handleUpload}
                 >
-                  <IconUpload className="icon" style={{ marginRight: rem(8) }} />
+                  <IconUpload className="icon" style={{ marginRight: rem(6) }} />
                   Upload
                 </Button>
               )}

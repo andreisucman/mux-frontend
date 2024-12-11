@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IconMedal2 } from "@tabler/icons-react";
-import { useRouter } from "@/helpers/custom-router";
-import { Group, Progress, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { Group, Progress, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { calculateRewardTaskCompletion } from "@/helpers/calculateRewardTaskCompletion";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import { StreaksType } from "@/types/global";
@@ -84,9 +84,7 @@ export default function RewardCard({ data }: Props) {
         <Group className={classes.heading}>
           {value && <Text>${value}</Text>}
 
-          <Title order={5}>
-            {title}
-          </Title>
+          <Title order={5}>{title}</Title>
           <Text>
             ({redeemed}/{count})
           </Text>
@@ -107,7 +105,7 @@ export default function RewardCard({ data }: Props) {
           <GlowingButton
             text="Claim the reward"
             disabled={buttonDisabled}
-            icon={<IconMedal2 />}
+            icon={<IconMedal2 style={{ marginRight: rem(6) }} />}
             onClick={status === "authenticated" ? handleClaimReward : () => router.push("/auth")}
           />
         </Stack>

@@ -39,7 +39,7 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
                 [classes.disabled]: item.isDisabled,
               })}
             >
-              <IconGripVertical style={{ marginRight: rem(8) }} />
+              <IconGripVertical style={{ marginRight: rem(6) }} />
               <Text className={classes.symbol}>{index + 1}</Text>
             </div>
             <div

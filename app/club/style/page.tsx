@@ -2,13 +2,15 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader } from "@mantine/core";
+import { Loader, Title } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import StyleGallery from "@/app/results/style/StyleGallery";
 import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
+import openResultModal from "@/helpers/openResultModal";
 import { clubResultTitles } from "../clubResultTitles";
 import ClubModerationLayout from "../ModerationLayout";
 
@@ -48,6 +50,24 @@ export default function ClubStyle() {
     []
   );
 
+  const handleContainerClick = useCallback((data: SimpleStyleType) => {
+    const titleText =
+      data.styleName === data.compareStyleName
+        ? `${upperFirst(data.styleName)}`
+        : `${upperFirst(data.styleName)} vs ${upperFirst(data.compareStyleName)}`;
+
+    openResultModal({
+      record: data,
+      type: "style",
+      title: (
+        <Title order={5} ml="0" lineClamp={2}>
+          {titleText}
+        </Title>
+      ),
+      setRecords: setStyles,
+    });
+  }, []);
+
   useEffect(() => {
     if (status !== "authenticated") return;
 
@@ -55,19 +75,12 @@ export default function ClubStyle() {
   }, [status, type, styleName, followingUserId]);
 
   return (
-    <ClubModerationLayout
-      pageHeader={
-        <StyleHeader
-          titles={clubResultTitles}
-          isDisabled={!styles || (styles && styles.length === 0)}
-          showReturn
-        />
-      }
-    >
+    <ClubModerationLayout>
       {styles ? (
         <StyleGallery
           styles={styles}
           hasMore={hasMore}
+          handleContainerClick={handleContainerClick}
           handleFetchStyles={handleFetchUsersStyles}
           setStyles={setStyles}
         />
