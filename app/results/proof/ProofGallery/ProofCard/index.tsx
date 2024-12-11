@@ -1,31 +1,41 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Group, Skeleton, Stack, Text, Title, UnstyledButton } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import AvatarComponent from "@/components/AvatarComponent";
+import { Group, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
-import openResultModal from "@/helpers/openResultModal";
+import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
 import { SimpleProofType } from "../../types";
 import ProofCardFooter from "./ProofCardFooter";
+import ProofCardHeader from "./ProofCardHeader";
 import classes from "./ProofCard.module.css";
 
 type Props = {
-  isSelf: boolean;
   isMobile: boolean;
   isLite?: boolean;
+  showFooter?: boolean;
+  isPublicPage?: boolean;
+  showContentBlurType?: boolean;
+  showContentPublicity?: boolean;
   data: SimpleProofType;
-  handleContainerClick: (data: any, showTrackButton: boolean) => void;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
   contentChildren?: React.ReactNode;
 };
 
-function ProofCard({ data, isSelf, isLite, isMobile, contentChildren, setProof }: Props) {
+function ProofCard({
+  data,
+  isLite,
+  isMobile,
+  showFooter,
+  isPublicPage,
+  showContentBlurType,
+  showContentPublicity,
+  contentChildren,
+  setProof,
+}: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const {
     mainUrl,
@@ -48,22 +58,16 @@ function ProofCard({ data, isSelf, isLite, isMobile, contentChildren, setProof }
   const concernName = useMemo(() => normalizeString(concern), [concern]);
 
   const handleClick = useCallback(() => {
-    const title = isSelf ? (
+    const title = isPublicPage ? (
+      getRedirectModalTitle({
+        avatar,
+        redirectUrl: `/club/about?followingUserId=${userId}`,
+        title: clubName,
+      })
+    ) : (
       <Title order={5} component={"p"} lineClamp={1}>
         {`${icon} ${taskName}`}
       </Title>
-    ) : (
-      <UnstyledButton
-        className={classes.modalTitle}
-        component={Link}
-        href={`/club/about?followingUserId=${userId}`}
-        onClick={() => modals.closeAll()}
-      >
-        <AvatarComponent avatar={avatar} size="sm" />
-        <Title order={5} component={"p"}>
-          {clubName}
-        </Title>
-      </UnstyledButton>
     );
 
     openResultModal({
@@ -82,46 +86,40 @@ function ProofCard({ data, isSelf, isLite, isMobile, contentChildren, setProof }
   }, []);
 
   return (
-    <Skeleton visible={showSkeleton} className="skeleton">
-      <Stack className={classes.container}>
-        <Group className={classes.heading}>
-          <Text>{icon}</Text>
-          <Title order={5} className={classes.taskName} lineClamp={1}>
-            {taskName}
-          </Title>
-        </Group>
-        <Stack className={classes.content}>
-          {contentChildren}
-          {contentType === "video" ? (
-            <VideoPlayer
-              url={mainUrl?.url}
-              createdAt={formattedDate}
-              thumbnail={mainThumbnail?.url}
-              onClick={handleClick}
-              disabled
-            />
-          ) : (
-            <ImageCard
-              image={mainUrl?.url}
-              date={formattedDate}
-              datePosition="bottom-right"
-              onClick={handleClick}
-              showDate={false}
-            />
-          )}
-          {isSelf && (
-            <ContentBlurTypeButton
-              contentId={proofId}
-              currentMain={mainUrl}
-              contentCategory={"proof"}
-              position="top-left"
-              setRecords={setProof}
-            />
-          )}
-          {isSelf && <ContentPublicityIndicator isPublic={isPublic} />}
-        </Stack>
+    <Skeleton visible={showSkeleton} className={`${classes.container} skeleton`}>
+      <ProofCardHeader concernName={concernName} icon={icon} taskName={taskName} />
+      <Stack className={classes.content}>
+        {contentChildren}
+        {contentType === "video" ? (
+          <VideoPlayer
+            url={mainUrl?.url}
+            createdAt={createdAt}
+            thumbnail={mainThumbnail?.url}
+            onClick={handleClick}
+            disabled
+          />
+        ) : (
+          <ImageCard
+            image={mainUrl?.url}
+            date={formattedDate}
+            datePosition="bottom-right"
+            onClick={handleClick}
+            showDate={false}
+          />
+        )}
+        {showContentBlurType && (
+          <ContentBlurTypeButton
+            contentId={proofId}
+            currentMain={mainUrl}
+            contentCategory={"proof"}
+            position="top-left"
+            setRecords={setProof}
+          />
+        )}
+        {showContentPublicity && <ContentPublicityIndicator isPublic={isPublic} />}
+      </Stack>
+      {showFooter && (
         <ProofCardFooter
-          showConcern={false}
           metaPanel={
             isLite ? (
               <></>
@@ -130,15 +128,15 @@ function ProofCard({ data, isSelf, isLite, isMobile, contentChildren, setProof }
                 avatar={avatar}
                 userId={userId}
                 name={clubName}
-                bodyProgress={latestBodyScoreDifference?.overall || 0}
-                faceProgress={latestFaceScoreDifference?.overall || 0}
+                formattedDate={formattedDate}
+                bodyProgress={latestBodyScoreDifference || 0}
+                headProgress={latestFaceScoreDifference || 0}
+                customStyles={{ marginBottom: rem(16) }}
               />
             )
           }
-          concernName={concernName}
-          formattedDate={formattedDate}
         />
-      </Stack>
+      )}
     </Skeleton>
   );
 }

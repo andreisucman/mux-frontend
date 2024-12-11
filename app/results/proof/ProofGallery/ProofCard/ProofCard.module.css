@@ -1,22 +1,14 @@
 .container {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
 
-  gap: 0;
-  background-color: rgba(25, 25, 25, 0.4);
+  background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
   width: 100%;
   height: fit-content;
   overflow: hidden;
-}
-
-.heading {
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  font-size: var(--mantine-font-size-md);
-  gap: rem(8);
-  padding: rem(16) rem(12);
-  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
 .content {
@@ -25,12 +17,7 @@
   flex: 1;
   border-radius: 0;
   gap: 0;
-  padding-bottom: 177%;
-}
-
-.taskName {
-  font-weight: 600;
-  font-size: var(--mantine-font-size-md);
+  aspect-ratio: 3/2;
 }
 
 .modalTitle {

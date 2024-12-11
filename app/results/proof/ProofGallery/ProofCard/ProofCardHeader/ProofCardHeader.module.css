@@ -1,0 +1,22 @@
+.container {
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: var(--mantine-font-size-md);
+  gap: rem(8);
+  padding: rem(16) rem(16) 0;
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+}
+
+.icon {
+  transform: translateY(-7.5%);
+}
+
+.taskName {
+  font-weight: 600;
+  font-size: var(--mantine-font-size-md);
+}
+
+.concernName {
+  height: rem(22);
+  font-size: var(--mantine-font-size-sm);
+}

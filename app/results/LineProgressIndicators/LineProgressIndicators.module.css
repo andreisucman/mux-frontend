@@ -4,7 +4,6 @@
   overflow: auto;
   padding: rem(16);
   gap: rem(12);
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }
 
 .wrapper {

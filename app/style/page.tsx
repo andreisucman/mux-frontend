@@ -77,7 +77,7 @@ export default function AllStyle() {
       record: data,
       type: "style",
       title: modalTitle,
-      showTrackButton,
+      showTrackButton: true,
       setRecords: setStyles,
     });
   }, []);

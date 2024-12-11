@@ -48,12 +48,12 @@ function StyleCard({
     latestBodyScoreDifference,
   } = data;
 
+  const title = useMemo(() => {
+    const styleIcon = outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon;
+    return `${styleIcon} ${upperFirst(styleName || "")}`;
+  }, [styleName]);
+  
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
-
-  const styleIcon = useMemo(
-    () => outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon,
-    [styleName]
-  );
 
   useEffect(() => {
     const tId = setTimeout(() => {
@@ -64,6 +64,9 @@ function StyleCard({
 
   return (
     <Skeleton visible={showSkeleton} className={`skeleton ${classes.container}`}>
+      <Title order={5} className={classes.styleName}>
+        {title}
+      </Title>
       <div className={classes.imageWrapper}>
         {showBlur && (
           <ContentBlurTypeButton
@@ -85,9 +88,6 @@ function StyleCard({
           onClick={() => handleContainerClick(data, showTrackButton)}
         />
         {showVotes && <VotesCountIndicator votes={votes} />}
-        <Title order={4} className={classes.styleName}>
-          {styleIcon} {upperFirst(styleName || "")}
-        </Title>
       </div>
       {showMeta && (
         <CardMetaPanel

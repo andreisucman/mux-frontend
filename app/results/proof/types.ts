@@ -16,6 +16,6 @@ export type SimpleProofType = {
   icon: string;
   avatar: { [key: string]: any } | null;
   clubName: string;
-  latestFaceScoreDifference?: { [key: string]: number };
-  latestBodyScoreDifference?: { [key: string]: number };
+  latestFaceScoreDifference?: number;
+  latestBodyScoreDifference?: number;
 };

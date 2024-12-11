@@ -2,9 +2,9 @@
   display: flex;
   gap: rem(4);
   justify-content: space-between;
+  font-size: var(--mantine-font-size-sm);
 
   padding: 0 rem(4);
-  font-size: var(--mantine-font-size-md);
 
   position: absolute;
   top: rem(16);

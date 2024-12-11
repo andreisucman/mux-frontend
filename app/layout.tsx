@@ -42,23 +42,24 @@ export default function RootLayout({ children }: Props) {
       </head>
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID!} />
       <body>
+        <div className="bgPattern" />
         <MantineProvider theme={theme} defaultColorScheme="dark" forceColorScheme="dark">
           <Suspense fallback={<Loader m="auto" />}>
-            <ModalsProvider
-              modals={{
-                general: GeneralContextModal,
-              }}
-            >
-              <NavigationProgress />
-              <HandleOnComplete />
+            <UserContextProvider>
+              <ModalsProvider
+                modals={{
+                  general: GeneralContextModal,
+                }}
+              >
+                <NavigationProgress />
+                <HandleOnComplete />
 
-              <>
-                <UserContextProvider>
+                <>
                   <Header />
                   <Stack className={classes.container}>{children}</Stack>
-                </UserContextProvider>
-              </>
-            </ModalsProvider>
+                </>
+              </ModalsProvider>
+            </UserContextProvider>
           </Suspense>
         </MantineProvider>
       </body>

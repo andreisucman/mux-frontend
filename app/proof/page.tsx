@@ -85,6 +85,7 @@ export default function AllProof() {
           hasMore={hasMore}
           handleFetchProof={fetchProof}
           setProof={setProof}
+          isPublicPage
         />
       ) : (
         <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

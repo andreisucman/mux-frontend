@@ -51,7 +51,7 @@ export default function openResultModal({
     centered: true,
     modal: "general",
     title,
-    size: rem(1280),
+    size: rem(960),
     innerProps: content,
     fullScreen: isFullScreen,
     removeScrollProps: { allowPinchZoom: true },

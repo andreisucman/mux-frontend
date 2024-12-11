@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Carousel } from "@mantine/carousel";
-import { Skeleton, Stack } from "@mantine/core";
+import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { SimpleBeforeAfterType } from "@/app/types";
+import { partIconMap } from "@/context/CreateRoutineContext/SelectPartForRoutineModalContent/partIconMap";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import CardMetaPanel from "../CardMetaPanel";
@@ -31,6 +32,7 @@ export default function ComparisonCarousel({ data }: Props) {
   const [comparisonObjects, setComparisonObjects] = useState<ComparisonSlideImageType[]>([]);
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
+  const title = useMemo(() => `${upperFirst(part)}`, [part]);
 
   const slides = useMemo(
     () =>
@@ -82,6 +84,11 @@ export default function ComparisonCarousel({ data }: Props) {
   return (
     <Skeleton className={"skeleton"} visible={showSkeleton}>
       <Stack className={classes.container}>
+        <Group className={classes.title}>
+          {partIconMap[part]}
+          <Title order={5}>{title}</Title>
+        </Group>
+
         <Carousel
           slideSize={{ base: "50%" }}
           align="start"

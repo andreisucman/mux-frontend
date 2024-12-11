@@ -20,7 +20,7 @@ interface HandleFetchProofProps extends FetchProofProps {
 
 type Props = {
   hasMore: boolean;
-  isSelfPage?: boolean;
+  isPublicPage?: boolean;
   proof?: SimpleProofType[];
   handleFetchProof: (args: HandleFetchProofProps) => void;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
@@ -29,7 +29,7 @@ type Props = {
 export default function ProofGallery({
   proof,
   hasMore,
-  isSelfPage,
+  isPublicPage,
   setProof,
   handleFetchProof,
 }: Props) {
@@ -55,14 +55,15 @@ export default function ProofGallery({
         data={props.data}
         key={props.index}
         isMobile={!!isMobile}
-        isSelf={isSelf}
         setProof={setProof}
+        isPublicPage={isPublicPage}
+        showContentBlurType={!isPublicPage && isSelf}
+        showContentPublicity={!isPublicPage && isSelf}
+        showFooter={isPublicPage && !isSelf}
       />
     ),
-    [type, part, concern, isMobile, isSelf, appliedBlurType, isSelfPage]
+    [type, part, concern, isMobile, isSelf, appliedBlurType]
   );
-
-  const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
 
   return (
     <Stack className={classes.container}>
@@ -88,9 +89,8 @@ export default function ProofGallery({
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={3}
+            maxColumnCount={1}
             columnGutter={16}
-            columnWidth={gridColumnWidth}
             render={memoizedStyleCard}
             items={proof}
           />

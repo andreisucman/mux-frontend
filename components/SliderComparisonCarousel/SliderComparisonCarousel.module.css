@@ -1,6 +1,7 @@
 .container {
   position: relative;
   flex: 1;
+  background-color: alpha(var(--mantine-color-dark-5),0.5)
 }
 
 .date {

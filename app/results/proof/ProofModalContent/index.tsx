@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Stack, Text } from "@mantine/core";
-import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
+import { rem, Stack } from "@mantine/core";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { UserContext } from "@/context/UserContext";
@@ -10,6 +9,7 @@ import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { normalizeString } from "@/helpers/utils";
 import ProofCardFooter from "../ProofGallery/ProofCard/ProofCardFooter";
+import ProofCardHeader from "../ProofGallery/ProofCard/ProofCardHeader";
 import { SimpleProofType } from "../types";
 import classes from "./ProofModalContent.module.css";
 
@@ -26,42 +26,43 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
   const { club, subscriptions } = userDetails || {};
   const { followingUserId } = club || {};
 
-  const isTracked = followingUserId === record.userId;
-  const isSelf = userDetails?._id === record.userId;
+  const { icon, createdAt, userId, mainUrl, mainThumbnail, concern, taskName } = record || {};
 
-  const formattedDate = formatDate({ date: record.createdAt });
-  const concernName = normalizeString(record.concern);
+  const isTracked = followingUserId === userId;
+  const isSelf = userDetails?._id === userId;
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?followingUserId=${record.userId}`;
+  const formattedDate = formatDate({ date: createdAt });
+  const concernName = normalizeString(concern);
+
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?followingUserId=${userId}`;
   const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
 
   return (
     <Stack className={classes.container}>
-      <Text className={classes.taskName} lineClamp={2}>
-        {record.icon} {record.taskName}
-      </Text>
+      <ProofCardHeader
+        concernName={concernName}
+        icon={icon}
+        taskName={taskName}
+        customStyles={{ paddingBottom: rem(16) }}
+      />
       {record.contentType === "image" ? (
         <ImageCard
           date={formattedDate}
-          image={record.mainUrl.url}
+          image={mainUrl.url}
           datePosition="bottom-right"
           showDate={!isSelf}
           isStatic
         />
       ) : (
         <VideoPlayer
-          url={record.mainUrl.url}
-          createdAt={record.createdAt}
-          thumbnail={record.mainThumbnail.url}
-          showDate={!isSelf}
+          url={mainUrl.url}
+          createdAt={createdAt}
+          thumbnail={mainThumbnail.url}
+          showDate
           isStatic
         />
       )}
       <ProofCardFooter
-        showConcern={true}
-        disclaimer={<ContentPublicityIndicator isPublic={record.isPublic} />}
-        concernName={concernName}
-        formattedDate={formattedDate}
         isTracked={isTracked}
         handleTrack={() => {
           if (showTrackButton && club) {
@@ -71,13 +72,12 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
               clubData: club,
               redirectUrl,
               cancelUrl,
-              followingUserId: record.userId,
+              followingUserId: userId,
               setUserDetails,
               subscriptions,
             });
           }
         }}
-        isModal={true}
       />
     </Stack>
   );

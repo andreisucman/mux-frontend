@@ -1,42 +1,26 @@
 import React from "react";
 import { IconEye } from "@tabler/icons-react";
-import cn from "classnames";
-import { Group, Stack, Text } from "@mantine/core";
+import { Group, Stack } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import classes from "./ProofCardFooter.module.css";
 
 type Props = {
-  concernName: string;
   disclaimer?: React.ReactNode | string;
   metaPanel?: React.ReactNode;
-  formattedDate: string;
-  isModal?: boolean;
-  showConcern: boolean;
+  formattedDate?: string;
   isTracked?: boolean;
   handleTrack?: () => void;
 };
 
 export default function ProofCardFooter({
-  concernName,
   disclaimer,
   metaPanel,
   isTracked,
-  isModal,
   formattedDate,
-  showConcern,
   handleTrack,
 }: Props) {
   return (
     <Stack className={classes.container}>
-      {showConcern && (
-        <div
-          className={cn(classes.concernContainer, {
-            [classes.modalContainer]: isModal,
-          })}
-        >
-          <Text className={classes.text}>{`❗ ${concernName}`}</Text>
-        </div>
-      )}
       {handleTrack && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

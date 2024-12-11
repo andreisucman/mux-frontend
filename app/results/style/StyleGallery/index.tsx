@@ -82,7 +82,7 @@ export default function StyleGallery({
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={2}
+            maxColumnCount={1}
             columnGutter={16}
             render={memoizedStyleCard}
             items={styles}
