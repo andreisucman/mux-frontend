@@ -1,2 +1,11 @@
 .container {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  justify-content: space-between;
+  gap: rem(8);
+  padding: rem(16);
+  width: 100%;
 }

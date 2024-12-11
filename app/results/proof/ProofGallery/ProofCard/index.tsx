@@ -20,20 +20,12 @@ type Props = {
   isMobile: boolean;
   isLite?: boolean;
   data: SimpleProofType;
+  handleContainerClick: (data: any, showTrackButton: boolean) => void;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
-  showTrackButton?: boolean;
   contentChildren?: React.ReactNode;
 };
 
-function ProofCard({
-  data,
-  isSelf,
-  isLite,
-  isMobile,
-  contentChildren,
-  showTrackButton,
-  setProof,
-}: Props) {
+function ProofCard({ data, isSelf, isLite, isMobile, contentChildren, setProof }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const {
     mainUrl,

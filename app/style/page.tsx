@@ -3,9 +3,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import StyleGallery from "@/app/results/style/StyleGallery";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import fetchStyle, { FetchStyleProps } from "@/functions/fetchStyle";
+import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import GeneralResultsHeader from "../GeneralResultsHeader";
 
 export const runtime = "edge";
@@ -59,6 +61,27 @@ export default function AllStyle() {
     []
   );
 
+  const handleContainerClick = useCallback((data: SimpleStyleType, showTrackButton: boolean) => {
+    const titleText =
+      data.styleName === data.compareStyleName
+        ? `${upperFirst(data.styleName)}`
+        : `${upperFirst(data.styleName)} vs ${upperFirst(data.compareStyleName)}`;
+
+    const modalTitle = getRedirectModalTitle({
+      avatar: data.avatar,
+      redirectUrl: `/club/about?followingUserId=${data.userId}`,
+      title: `${data.clubName} - ${titleText}`,
+    });
+
+    openResultModal({
+      record: data,
+      type: "style",
+      title: modalTitle,
+      showTrackButton,
+      setRecords: setStyles,
+    });
+  }, []);
+
   useEffect(() => {
     handleFetchStyles({ type, styleName, sex, ageInterval, ethnicity });
   }, [type, styleName, sex, ageInterval, ethnicity]);
@@ -70,8 +93,10 @@ export default function AllStyle() {
         <StyleGallery
           styles={styles}
           hasMore={hasMore}
+          handleContainerClick={handleContainerClick}
           handleFetchStyles={handleFetchStyles}
           setStyles={setStyles}
+          showMeta
         />
       ) : (
         <Loader m="0 auto" pt="25%" />

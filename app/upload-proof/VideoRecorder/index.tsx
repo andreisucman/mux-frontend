@@ -5,6 +5,7 @@ import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import base64ToBlob from "@/helpers/base64ToBlob";
+import { deleteFromIndexedDb, getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -196,7 +197,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
       setOriginalUrl(imageData);
       setLocalUrl(imageData);
       setRecordedBlob(blob);
-      saveToLocalStorage("proofRecords", { image: imageData }, "add");
+      saveToIndexedDb("proofImage", imageData);
     } catch (err) {
       console.log("Error in capturePhoto: ", err);
     }
@@ -250,7 +251,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
     setFaceBlurredUrl("");
     setRecordedBlob(null);
     setRecordingTime(RECORDING_TIME);
-    deleteFromLocalStorage("proofRecords", "video");
+    deleteFromIndexedDb("proofVideo");
 
     parts.current = [];
   }, [isVideoLoading, stopBothVideoAndAudio]);
@@ -262,7 +263,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
     setFaceBlurredUrl("");
     setRecordedBlob(null);
     setIsRecording(false);
-    deleteFromLocalStorage("proofRecords", "image");
+    deleteFromIndexedDb("proofImage");
   }, [captureType]);
 
   const saveVideo = useCallback(
@@ -270,7 +271,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = function () {
-        saveToLocalStorage("proofRecords", { video: reader.result }, "add");
+        saveToIndexedDb("proofVideo", reader.result);
       };
     },
     [captureType]
@@ -284,7 +285,6 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
       recordedBlob,
       captureType,
       blurType,
-      deleteFromLocalStorage,
     });
     setEyesBlurredUrl("");
     setFaceBlurredUrl("");
@@ -298,12 +298,14 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
   }, []);
 
   const handleChangeCaptureType = useCallback(
-    (captureType: string) => {
+    async (captureType: string) => {
       if (isRecording) return;
-      setCaptureType(captureType);
+      setCaptureType(captureType as string);
       saveToLocalStorage("captureType", captureType);
 
-      const savedRecords: { [key: string]: any } | null = getFromLocalStorage("proofRecords");
+      const savedVideo = await getFromIndexedDb("proofVideo");
+      const savedImage = await getFromIndexedDb("proofImage");
+      const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
 
       if (savedRecords) {
         const newTypeRecord = savedRecords[captureType];
@@ -348,28 +350,32 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
 
   useEffect(() => {
     if (!captureType) return;
+    const loadSaved = async () => {
+      const savedImage = await getFromIndexedDb("proofImage");
+      const savedVideo = await getFromIndexedDb("proofVideo");
+      const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
 
-    const savedRecords: { [key: string]: any } | null = getFromLocalStorage("proofRecords");
+      let typeRecord;
+      let blob = null;
 
-    let typeRecord;
-    let blob = null;
+      if (savedRecords) {
+        typeRecord = savedRecords[captureType];
 
-    if (savedRecords) {
-      typeRecord = savedRecords[captureType];
+        if (typeRecord) {
+          const blob = base64ToBlob(
+            typeRecord,
+            captureType === "image" ? "image/jpeg" : "video/webm"
+          );
 
-      if (typeRecord) {
-        const blob = base64ToBlob(
-          typeRecord,
-          captureType === "image" ? "image/jpeg" : "video/webm"
-        );
-
-        setRecordedBlob(blob);
+          setRecordedBlob(blob);
+        }
       }
-    }
 
-    setOriginalUrl(typeRecord ? typeRecord : "");
-    setLocalUrl(typeRecord ? typeRecord : "");
-    setRecordedBlob(blob);
+      setOriginalUrl(typeRecord ? typeRecord : "");
+      setLocalUrl(typeRecord ? typeRecord : "");
+      setRecordedBlob(blob);
+    };
+    loadSaved();
   }, [captureType]);
 
   useEffect(() => {

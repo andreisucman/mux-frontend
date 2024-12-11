@@ -13,6 +13,7 @@ import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
+import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -101,7 +102,7 @@ export default function UploadProof() {
           saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
         }
 
-        deleteFromLocalStorage("proofRecords", captureType);
+        deleteFromIndexedDb(captureType === "image" ? "proofImage" : "proofVideo");
       } catch (err) {
         console.log("Error in uploadProof: ", err);
         setComponentToDisplay("videoRecorder");
@@ -130,12 +131,14 @@ export default function UploadProof() {
   }, [taskId]);
 
   useEffect(() => {
-    if (!taskId) {
+    if (!taskId) return;
+
+    if (!taskInfo) {
       setComponentToDisplay("loading");
       return;
     }
 
-    if (taskExpired) {
+    if (taskInfo && taskExpired) {
       setComponentToDisplay("expired");
       return;
     }
@@ -155,7 +158,7 @@ export default function UploadProof() {
     } else {
       setComponentToDisplay("videoRecorder");
     }
-  }, [taskId, taskExpired]);
+  }, [taskId, taskInfo, taskExpired]);
 
   return (
     <Stack flex={1} className="smallPage">
@@ -179,7 +182,11 @@ export default function UploadProof() {
                 operationKey={taskId || ""}
                 description="Checking your upload"
                 onComplete={handleCompleteUpload}
-                onError={() => setComponentToDisplay("videoRecorder")}
+                hideDisclaimer
+                onError={() => {
+                  setComponentToDisplay("videoRecorder");
+                  deleteFromLocalStorage("runningAnalyses", taskId || "");
+                }}
               />
             )}
             {componentToDisplay === "videoRecorder" && status === "authenticated" && (

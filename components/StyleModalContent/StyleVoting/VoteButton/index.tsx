@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IconCaretUp } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
 import classes from "./VoteButton.module.css";
 
 type Props = {
@@ -15,23 +15,16 @@ type Props = {
   handleVote: (styleId: string, votedFor: "current" | "compare") => void;
 };
 
-export default function VoteButton({
-  styleId,
-  votedFor,
-  styleIcon,
-  styleName,
-  votes,
-  handleVote,
-}: Props) {
+export default function VoteButton({ styleId, votedFor, styleName, votes, handleVote }: Props) {
+  const styleIcon = useMemo(
+    () => outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon,
+    [styleName]
+  );
   return (
     <Group className={cn(classes.group, { [classes.selected]: votedFor === "current" })}>
-      <Group className={classes.name}>
-        <span className={classes.icon}>{styleIcon}</span>
-        {upperFirst(styleName)}
-      </Group>
+      <span className={classes.icon}>{styleIcon}</span>
       <Group className={classes.action}>
         <span className={classes.votes}>{votes}</span>
-
         <ActionIcon
           size="lg"
           variant={"default"}

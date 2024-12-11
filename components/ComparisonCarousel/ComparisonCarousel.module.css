@@ -15,21 +15,9 @@
   background-color: var(--mantine-color-dark-6) !important;
 }
 
-.modalHead {
-  display: flex;
-  gap: rem(8);
-  align-items: center;
-
-  & p {
-    cursor: pointer;
-    font-weight: 600;
-  }
-}
-
 .carouselViewport {
   margin: auto;
-  width: clamp(rem(300), 80%, rem(1080));
-
+  width: clamp(rem(300), 90%, rem(1280));
 }
 
 .carouselRoot {

@@ -12,6 +12,17 @@ export function getRingColor(score: number, isPotential?: boolean) {
       : "green.9";
 }
 
+export function getLineIndicatorColor(score: number) {
+  let color = "var(--mantine-color-green-7)";
+  if (score < 7) {
+    color = "var(--mantine-color-orange-7)";
+  }
+  if (score < 3) {
+    color = "var(--mantine-color-red-7)";
+  }
+  return color;
+}
+
 export function calculateCircleRadius(rectWidth: number, rectHeight: number, numCircles: number) {
   let circlesPerRow = Math.ceil(Math.sqrt(numCircles * (rectWidth / rectHeight)));
   let circlesPerCol = Math.ceil(numCircles / circlesPerRow);

@@ -3,10 +3,12 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack, Title } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
+import openResultModal from "@/helpers/openResultModal";
 import SkeletonWrapper from "../SkeletonWrapper";
 import { individualResultTitles } from "./individualResultTitles";
 import ProgressGallery from "./ProgressGallery";
@@ -53,6 +55,21 @@ export default function ResultsProgress() {
     []
   );
 
+  const handleContainerClick = useCallback(
+    (data: SimpleProgressType, showTrackButton: boolean) =>
+      openResultModal({
+        record: data,
+        type: "progress",
+        title: (
+          <Title order={5} component={"p"}>
+            {upperFirst(data.part)} progress
+          </Title>
+        ),
+        showTrackButton,
+      }),
+    []
+  );
+
   useEffect(() => {
     if (status !== "authenticated") return;
 
@@ -69,6 +86,7 @@ export default function ResultsProgress() {
               <ProgressGallery
                 progress={progress}
                 hasMore={hasMore}
+                handleContainerClick={handleContainerClick}
                 handleFetchProgress={handleFetchProgress}
                 setProgress={setProgress}
                 isSelfPage

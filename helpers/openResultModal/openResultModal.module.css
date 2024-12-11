@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  gap: rem(8);
+  align-items: center;
+  flex-wrap: nowrap;
+
+  & p {
+    cursor: pointer;
+    font-weight: 600;
+  }
+}

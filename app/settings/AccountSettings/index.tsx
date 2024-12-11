@@ -285,7 +285,7 @@ export default function AccountSettings() {
             onClick={() => handleChangeEmailStepTwo(confirmationCode, email)}
           >
             Finish
-            <IconArrowRight className={"icon"} style={{ marginLeft: rem(8) }} />
+            <IconArrowRight className={"icon icon__small"} style={{ marginLeft: rem(8) }} />
           </Button>
         </Stack>
       </Modal>

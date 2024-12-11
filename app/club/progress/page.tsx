@@ -2,13 +2,15 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Skeleton } from "@mantine/core";
+import { Skeleton, Title } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import ProgressHeader from "@/app/results/ProgressHeader";
 import { SimpleProgressType } from "@/app/results/types";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
+import openResultModal from "@/helpers/openResultModal";
 import { clubResultTitles } from "../clubResultTitles";
 import ClubModerationLayout from "../ModerationLayout";
 
@@ -52,6 +54,21 @@ export default function ClubProgress() {
     []
   );
 
+  const handleContainerClick = useCallback(
+    (data: SimpleProgressType, showTrackButton: boolean) =>
+      openResultModal({
+        record: data,
+        type: "progress",
+        title: (
+          <Title order={5} component={"p"}>
+            {upperFirst(data.part)} progress
+          </Title>
+        ),
+        showTrackButton,
+      }),
+    []
+  );
+
   useEffect(() => {
     if (status !== "authenticated") return;
 
@@ -64,6 +81,7 @@ export default function ClubProgress() {
         <ProgressGallery
           progress={progress}
           hasMore={hasMore}
+          handleContainerClick={handleContainerClick}
           handleFetchProgress={handleFetchProgress}
           setProgress={setProgress}
         />

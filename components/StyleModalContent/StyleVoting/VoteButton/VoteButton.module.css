@@ -1,17 +1,10 @@
 .group {
   border-radius: var(--mantine-radius-lg);
-  padding: 0 rem(16);
-  min-height: rem(48);
-  border: rem(1) solid var(--mantine-color-dark-6);
+  width: fit-content;
 }
 
 .selected {
   background-color: var(--mantine-color-dark-6);
-}
-
-.name {
-  gap: rem(8);
-  font-weight: 600;
 }
 
 .action {

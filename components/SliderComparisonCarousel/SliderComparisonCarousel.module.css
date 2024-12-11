@@ -3,18 +3,16 @@
   flex: 1;
 }
 
-.firstDate {
+.date {
   position: absolute;
   top: rem(16);
   right: rem(16);
   z-index: 1;
+  font-size: var(--mantine-font-size-sm);
 }
 
 .lastDate {
-  position: absolute;
-  top: rem(16);
   left: rem(16);
-  z-index: 1;
 }
 
 .control {

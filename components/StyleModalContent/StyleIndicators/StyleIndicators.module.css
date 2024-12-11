@@ -1,6 +1,12 @@
 .container {
   width: 100%;
+  padding: rem(16);
   gap: 0;
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+}
+
+.stack {
+  gap: rem(8);
 }
 
 .indicatorRowContainer {
@@ -9,9 +15,7 @@
 }
 
 .indicatorRowTargetIcon {
-  font-size: 20;
   white-space: nowrap;
-  min-width: rem(55);
 }
 
 .indicatorRowProgressRoot {

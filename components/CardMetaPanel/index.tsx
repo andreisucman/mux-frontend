@@ -9,9 +9,10 @@ import classes from "./CardMetaPanel.module.css";
 type Props = {
   avatar?: { [key: string]: any } | null;
   userId: string;
-  name: string;
+  name: string | null;
   headProgress: number;
   bodyProgress: number;
+  formattedDate: string;
   customStyles?: { [key: string]: any };
 };
 
@@ -19,6 +20,7 @@ export default function CardMetaPanel({
   avatar,
   userId,
   name,
+  formattedDate,
   headProgress,
   bodyProgress,
   customStyles,
@@ -36,14 +38,17 @@ export default function CardMetaPanel({
           {name}
         </Text>
       </Group>
-      {headProgress && bodyProgress && (
+      {headProgress !== undefined && bodyProgress !== undefined && (
         <Group className={classes.scoreWrapper}>
-          {headProgress && (
+          {headProgress !== undefined && (
             <ScoreCell icon={<IconMoodSmile className="icon" />} score={headProgress} />
           )}
-          {bodyProgress && <ScoreCell icon={<IconMan className="icon" />} score={bodyProgress} />}
+          {bodyProgress !== undefined && (
+            <ScoreCell icon={<IconMan className="icon" />} score={bodyProgress} />
+          )}
         </Group>
       )}
+      <Text size="sm" c="dimmed">{formattedDate}</Text>
     </UnstyledButton>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
-import { rem, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import handleTrackUser from "@/functions/handleTrackUser";
 import { useRouter } from "@/helpers/custom-router";
@@ -37,7 +37,7 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
     styleIcon,
     styleName,
     compareIcon,
-    compareName,
+    compareStyleName,
     votes,
     compareVotes,
   } = record;
@@ -46,32 +46,34 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
 
   const formattedCurrentDate = formatDate({ date: createdAt });
   const formattedCompareDate = formatDate({ date: compareDate });
+  const hideVoting = styleName === compareStyleName;
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style?followingUserId=${record.userId}`;
   const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}?${searchParams.toString()}`;
 
   return (
     <Stack className={classes.container}>
-      <SliderComparisonCarousel
-        currentImages={[mainUrl.url || ""]}
-        compareImages={[compareMainUrl.url || ""]}
-        compareDate={formattedCompareDate}
-        currentDate={formattedCurrentDate}
-      />
-      <StyleIndicators
-        record={record as SimpleStyleType}
-        customStyles={{ padding: rem(16), gap: rem(4) }}
-      />
-      <StyleVoting
-        compareIcon={compareIcon}
-        compareVotes={compareVotes}
-        compareName={compareName}
-        votes={votes}
-        styleName={styleName}
-        styleIcon={styleIcon}
-        styleId={styleId}
-        setRecords={setRecords}
-      />
+      <Stack className={classes.content}>
+        <SliderComparisonCarousel
+          currentImages={[mainUrl.url || ""]}
+          compareImages={[compareMainUrl.url || ""]}
+          compareDate={formattedCompareDate}
+          currentDate={formattedCurrentDate}
+        />
+        {!hideVoting && (
+          <StyleVoting
+            compareIcon={compareIcon}
+            compareVotes={compareVotes}
+            compareName={compareStyleName}
+            votes={votes}
+            styleName={styleName}
+            styleIcon={styleIcon}
+            styleId={styleId}
+            setRecords={setRecords}
+          />
+        )}
+      </Stack>
+      <StyleIndicators title="Analysis" record={record as SimpleStyleType} />
       {showTrackButton && club && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

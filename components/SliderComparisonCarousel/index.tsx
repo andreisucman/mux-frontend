@@ -25,10 +25,7 @@ export default function SliderComparisonCarousel({
     () =>
       currentImages.map((url, index) => (
         <Carousel.Slide key={index}>
-          <SliderComparisonCard
-            srcOne={url}
-            srcTwo={compareImages[index]}
-          />
+          <SliderComparisonCard srcOne={url} srcTwo={compareImages[index]} />
         </Carousel.Slide>
       )),
     [currentImages.length]
@@ -36,8 +33,8 @@ export default function SliderComparisonCarousel({
 
   return (
     <Stack className={classes.container}>
-      <span className={classes.lastDate}>{lastDate}</span>
-      <span className={classes.firstDate}>{firstDate}</span>
+      <span className={`${classes.date} ${classes.lastDate}`}>{lastDate}</span>
+      <span className={classes.date}>{firstDate}</span>
       <Carousel
         align="center"
         height="50vh"

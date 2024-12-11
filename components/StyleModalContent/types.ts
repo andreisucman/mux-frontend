@@ -10,11 +10,15 @@ export type SimpleStyleType = {
   compareMainUrl: BlurredUrlType;
   urls: BlurredUrlType[];
   styleName: string;
-  compareName: string;
+  compareStyleName: string;
   analysis: { [key: string]: number };
   compareAnalysis: { [key: string]: number };
   votes: number;
   compareVotes: number;
   createdAt: string;
   compareDate: string;
+  avatar: { [key: string]: any } | null;
+  clubName: string | null;
+  latestHeadScoreDifference: number;
+  latestBodyScoreDifference: number;
 };

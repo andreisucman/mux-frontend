@@ -1,8 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  border-radius: var(--mantine-radius-lg);
-  background-color: var(--mantine-color-dark-6);
+  gap: rem(16);
 }
 
 .imageWrapper {
@@ -11,15 +10,18 @@
 
   display: flex;
   overflow: hidden;
+  justify-content: center;
   margin: auto;
-  width: clamp(rem(100), 60%, rem(800));
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  width: 100%;
 }
 
 .image {
-  width: 100%;
+  width: clamp(rem(300), 80%, rem(480));
   height: 100%;
-  aspect-ratio: 9/16;
   display: block;
+  object-fit: contain;
 }
 
 .date {

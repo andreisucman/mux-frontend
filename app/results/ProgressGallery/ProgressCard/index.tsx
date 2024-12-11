@@ -1,45 +1,28 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Image, Skeleton, Title } from "@mantine/core";
-import { upperFirst, useElementSize } from "@mantine/hooks";
-import { SimpleBeforeAfterType } from "@/app/types";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import { Image, Skeleton } from "@mantine/core";
+import { useElementSize } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { formatDate } from "@/helpers/formatDate";
-import openResultModal from "@/helpers/openResultModal";
+import { SimpleProgressType } from "../../types";
 import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
-import { SimpleProgressType } from "../../types";
 
 type Props = {
-  showTrackButton: boolean;
   data: SimpleProgressType;
+  showTrackButton: boolean;
   setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
+  handleContainerClick: (data: any, showTrackButton: boolean) => void;
 };
 
-function ProgressCard({ data, showTrackButton, setProgress }: Props) {
+function ProgressCard({ data, showTrackButton, setProgress, handleContainerClick }: Props) {
   const { width: containerWidth, ref } = useElementSize();
   const [showSkeleton, setShowSkeleton] = useState(true);
   const { images, createdAt } = data;
   const firstImage = images[0];
 
   const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
-
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
-
-  const handleContainerClick = useCallback(
-    () =>
-      openResultModal({
-        record: data as SimpleProgressType,
-        type: "progress",
-        title: (
-          <Title order={5} component={"p"}>
-            {upperFirst(data.part)} progress
-          </Title>
-        ),
-        showTrackButton,
-      }),
-    [data.part]
-  );
 
   useEffect(() => {
     const tId = setTimeout(() => {
@@ -68,7 +51,7 @@ function ProgressCard({ data, showTrackButton, setProgress }: Props) {
           width={100}
           height={100}
           alt=""
-          onClick={handleContainerClick}
+          onClick={() => handleContainerClick(data, showTrackButton)}
         />
         <ProgressIndicator record={data} ringSize={ringSize} />
       </div>

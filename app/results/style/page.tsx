@@ -2,12 +2,14 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack } from "@mantine/core";
+import { Loader, Stack, Title } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
+import openResultModal from "@/helpers/openResultModal";
 import { individualResultTitles } from "../individualResultTitles";
 import StyleGallery from "./StyleGallery";
 import StyleHeader from "./StyleHeader";
@@ -51,6 +53,22 @@ export default function ResultStyle() {
     []
   );
 
+  const handleContainerClick = useCallback(
+    (data: SimpleStyleType, showTrackButton: boolean) =>
+      openResultModal({
+        record: data,
+        type: "style",
+        title: (
+          <Title order={5} component={"p"}>
+            {upperFirst(data.styleName)} style preview
+          </Title>
+        ),
+        showTrackButton,
+        setRecords: setStyles,
+      }),
+    []
+  );
+
   useEffect(() => {
     if (status !== "authenticated") return;
 
@@ -69,6 +87,7 @@ export default function ResultStyle() {
           <StyleGallery
             styles={styles}
             hasMore={hasMore}
+            handleContainerClick={handleContainerClick}
             handleFetchStyles={handleFetchStyles}
             setStyles={setStyles}
             isSelfPage

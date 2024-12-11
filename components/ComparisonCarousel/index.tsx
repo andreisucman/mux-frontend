@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Carousel } from "@mantine/carousel";
-import { Skeleton, Stack, Title, UnstyledButton } from "@mantine/core";
+import { Skeleton, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
 import { SimpleBeforeAfterType } from "@/app/types";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
-import openResultModal from "@/helpers/openResultModal";
-import AvatarComponent from "../AvatarComponent";
+import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import CardMetaPanel from "../CardMetaPanel";
 import ImageCard from "../ImageCard";
 import { ComparisonSlideImageType } from "./types";
@@ -39,36 +36,24 @@ export default function ComparisonCarousel({ data }: Props) {
     () =>
       comparisonObjects.map((obj, index) => (
         <Carousel.Slide key={index}>
-          <ImageCard
-            image={obj.image}
-            date={formattedDate}
-            datePosition="top-left"
-            showDate
-            isStatic
-          />
+          <ImageCard image={obj.image} datePosition="top-left" showDate isStatic />
         </Carousel.Slide>
       )),
     [comparisonObjects.length]
   );
 
   const handleClickCarousel = useCallback(() => {
+    const modalTitle = getRedirectModalTitle({
+      avatar,
+      redirectUrl: `/club/routine?followingUserId=${data.userId}`,
+      title: `${clubName} - ${upperFirst(part)} - ${formattedDate}`,
+    });
+
     openResultModal({
       record: data,
       type: "progress",
       showTrackButton: true,
-      title: (
-        <UnstyledButton
-          className={classes.modalHead}
-          component={Link}
-          href={`/club/routine?followingUserId=${data.userId}`}
-          onClick={() => modals.closeAll()}
-        >
-          <AvatarComponent avatar={avatar} size="xs" />
-          <Title order={5} ml="0" lineClamp={2}>
-            {clubName} - {upperFirst(part)} - {formattedDate}
-          </Title>
-        </UnstyledButton>
-      ),
+      title: modalTitle,
     });
   }, [clubName, part, formattedDate]);
 
@@ -117,6 +102,7 @@ export default function ComparisonCarousel({ data }: Props) {
           name={clubName || ""}
           avatar={avatar}
           userId={data.userId}
+          formattedDate={formattedDate}
           headProgress={latestHeadScoreDifference}
           bodyProgress={latestBodyScoreDifference}
         />

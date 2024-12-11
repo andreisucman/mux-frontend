@@ -1,9 +1,14 @@
 .container {
-  max-height: rem(600);
   width: 100%;
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
+  gap: 0;
+}
+
+.content {
+  position: relative;
+  flex: 1;
   gap: 0;
 }
 

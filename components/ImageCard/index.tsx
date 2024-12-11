@@ -32,7 +32,14 @@ export default function ImageCard({
       onClick={onClick}
     >
       <div className={classes.imageWrapper}>
-        <Image className={cn(classes.image, { [classes.static]: isStatic })} src={image || ""} width={300} height={400} alt="" priority />
+        <Image
+          className={cn(classes.image, { [classes.static]: isStatic })}
+          src={image || ""}
+          width={300}
+          height={400}
+          alt=""
+          priority
+        />
       </div>
 
       {showDate && date && (

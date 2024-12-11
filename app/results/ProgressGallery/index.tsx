@@ -21,6 +21,7 @@ type Props = {
   hasMore: boolean;
   isSelfPage?: boolean;
   progress?: SimpleProgressType[];
+  handleContainerClick: (data: any, showTrackButton: boolean) => void;
   handleFetchProgress: (props: HandleFetchProgressProps) => void;
   setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
@@ -30,6 +31,7 @@ export default function ProgressGallery({
   hasMore,
   isSelfPage,
   setProgress,
+  handleContainerClick,
   handleFetchProgress,
 }: Props) {
   const searchParams = useSearchParams();
@@ -42,14 +44,14 @@ export default function ProgressGallery({
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;
 
-
   const memoizedProgressCard = useCallback(
     (props: any) => (
       <ProgressCard
         data={props.data}
         key={props.index}
-        setProgress={setProgress}
         showTrackButton={!isSelfPage}
+        setProgress={setProgress}
+        handleContainerClick={handleContainerClick}
       />
     ),
     [position, isSelfPage, appliedBlurType, typeof progress]

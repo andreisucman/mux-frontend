@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -20,7 +20,9 @@ interface HandleFetchStyleProps extends FetchStyleProps {
 type Props = {
   hasMore: boolean;
   isSelfPage?: boolean;
+  showMeta?: boolean;
   styles?: SimpleStyleType[];
+  handleContainerClick: (data: any, showTrackButton: boolean) => void;
   handleFetchStyles: (props: HandleFetchStyleProps) => void;
   setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
 };
@@ -28,8 +30,10 @@ type Props = {
 export default function StyleGallery({
   styles,
   hasMore,
+  showMeta,
   isSelfPage,
   setStyles,
+  handleContainerClick,
   handleFetchStyles,
 }: Props) {
   const searchParams = useSearchParams();
@@ -47,7 +51,9 @@ export default function StyleGallery({
       <StyleCard
         data={props.data}
         key={props.index}
+        showMeta={showMeta}
         setStyles={setStyles}
+        handleContainerClick={handleContainerClick}
         showTrackButton={!isSelfPage}
       />
     ),

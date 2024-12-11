@@ -59,7 +59,7 @@ export default function ProofDisplayContainer({
           isStatic
         />
       )}
-      <ContentPublicityIndicator isPublic={isPublic} />
+      <ContentPublicityIndicator isPublic={isPublic} position="bottom-right" />
     </Stack>
   );
 }

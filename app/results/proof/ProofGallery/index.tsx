@@ -57,7 +57,6 @@ export default function ProofGallery({
         isMobile={!!isMobile}
         isSelf={isSelf}
         setProof={setProof}
-        showTrackButton={!isSelfPage}
       />
     ),
     [type, part, concern, isMobile, isSelf, appliedBlurType, isSelfPage]
