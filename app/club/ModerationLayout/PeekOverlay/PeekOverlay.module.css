@@ -7,11 +7,11 @@
   border-radius: var(--mantine-radius-lg);
 
   background-image: linear-gradient(
-    -45deg,
-    var(--mantine-color-dark-7) 49.9%,
-    alpha(var(--mantine-color-dark-6), 0.25) 50%,
-    alpha(var(--mantine-color-dark-6), 0.25) 74.9%,
-    alpha(var(--mantine-color-dark-6), 0.5) 75%
+    45deg,
+    alpha(var(--mantine-color-dark-6), 0.75) 49.9%,
+    alpha(var(--mantine-color-dark-5), 0.75) 50%,
+    alpha(var(--mantine-color-dark-5), 0.5) 74.9%,
+    alpha(var(--mantine-color-dark-5), 0.25) 75%
   );
 }
 

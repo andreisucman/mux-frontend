@@ -199,11 +199,7 @@ export default function ClubRoutine() {
   }, [type, followingUserId]);
 
   return (
-    <ClubModerationLayout
-      pageHeader={<ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />}
-      showChat
-      showHeader
-    >
+    <ClubModerationLayout showChat showHeader>
       <Stack className={classes.container}>
         {routines ? (
           <>
@@ -218,7 +214,7 @@ export default function ClubRoutine() {
                     content: classes.content,
                     chevron: classes.chevron,
                     label: classes.label,
-                    control: classes.control
+                    control: classes.control,
                   }}
                 >
                   {accordionItems}

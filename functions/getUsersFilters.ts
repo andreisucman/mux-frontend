@@ -35,7 +35,7 @@ const getUsersFilters = async ({ followingUserId, collection, fields }: GetUsers
     });
 
     if (response.status === 200) {
-      const { type, part } = response.message;
+      const { type, part } = response.message || {};
 
       if (response.message) {
         if (type) {

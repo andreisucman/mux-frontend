@@ -12,7 +12,6 @@ import {
   IconMessage2,
   IconScaleOutline,
   IconShoppingCart,
-  IconSquareRoundedCheck,
   IconToolsKitchen2,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
@@ -57,10 +56,6 @@ export const freePlanContent = [
 ];
 
 export const peekLicenseContent = [
-  {
-    icon: <IconSquareRoundedCheck className="icon icon__large" style={style} />,
-    description: "Everything from the Free plan, plus...",
-  },
   {
     icon: <IconHandGrab className="icon icon__large" style={style} />,
     description: "See and steal the most effective routines of the club members.",

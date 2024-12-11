@@ -8,7 +8,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
-import PageHeader from "@/components/PageHeader";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
@@ -259,7 +259,7 @@ export default function Explain() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title={name || ""} showReturn hidePartDropdown hideTypeDropdown />
+        <PageHeaderWithReturn title={name || ""} showReturn />
 
         <Skeleton className="skeleton" visible={!taskInfo}>
           <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>

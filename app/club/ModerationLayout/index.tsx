@@ -11,6 +11,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
+import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
 import { clubResultTitles } from "../clubResultTitles";
 import ClubChatContainer from "./ClubChatContainer";
@@ -60,10 +61,21 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
           showReturn
         />
       ),
-      proof: <ProofHeader showReturn titles={clubResultTitles} />,
+      proof: (
+        <ProofHeader
+          showReturn
+          isDisabled={showComponent !== "children"}
+          titles={clubResultTitles}
+        />
+      ),
+      about: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
+      routine: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
     }),
     [showComponent]
   );
+
+  const followText = `Follow to see ${pageType === "routine" ? "their routines" : "their details"}.`;
+  const previewData = followingUserId ? youTrackData : youData;
 
   useEffect(() => {
     if (!youTrackData && youTrackDataFetched) {
@@ -92,9 +104,6 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
     youTrackData,
     youTrackDataFetched,
   ]);
-
-  const followText = `Follow to see ${pageType === "routine" ? "their routines" : "their details"}.`;
-  const previewData = followingUserId ? youTrackData : youData;
 
   return (
     <Stack className={`${classes.container} smallPage`}>
