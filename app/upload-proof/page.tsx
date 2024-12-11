@@ -117,7 +117,7 @@ export default function UploadProof() {
     if (taskInfo) setTaskInfo(taskInfo);
   }, []);
 
-  const handleCompleteUpload = useCallback(async (taskId: string) => {
+  const handleCompleteUpload = useCallback(async (taskId: string | null) => {
     if (!taskId) return;
     await fetchProofInfo(taskId);
     handleFetchTaskInfo(taskId);
@@ -176,7 +176,7 @@ export default function UploadProof() {
               <WaitComponent
                 operationKey={taskId || ""}
                 description="Checking your upload"
-                onComplete={handleCompleteUpload}
+                onComplete={() => handleCompleteUpload(taskId)}
                 hideDisclaimer
                 onError={() => {
                   setComponentToDisplay("videoRecorder");

@@ -1,5 +1,4 @@
 .container {
-  flex-wrap: nowrap;
   align-items: center;
   font-size: var(--mantine-font-size-md);
   gap: rem(8);

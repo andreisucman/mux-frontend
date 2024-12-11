@@ -31,7 +31,7 @@ export default function PageHeaderWithReturn({
             <IconChevronLeft className="icon" />
           </ActionIcon>
         )}
-        <Title order={1} lineClamp={2} className={classes.title}>
+        <Title order={1} lineClamp={3} className={classes.title}>
           {title}
         </Title>
       </Group>

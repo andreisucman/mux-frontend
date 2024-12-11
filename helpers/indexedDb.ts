@@ -3,12 +3,7 @@ import { del, get, keys, set } from "idb-keyval";
 export async function getFromIndexedDb(key: string) {
   try {
     if (!key) return;
-
-    const cache = await get(key);
-
-    if (cache) {
-      return cache.data;
-    }
+    return await get(`MUX-${key}`);
   } catch (err) {
     console.log("Error while getting from indexedDb");
   }
@@ -23,7 +18,7 @@ export async function getAllFromIndexedDb() {
       if (`${key}`.includes("MUX")) {
         const record = await get(key);
         if (record) {
-          allRecords.push(record.data);
+          allRecords.push(record);
         }
       }
     }
@@ -39,7 +34,7 @@ export async function deleteAllFromIndexedDb() {
     const allKeys = await keys();
 
     for (const key of allKeys) {
-      if (key) await del(key);
+      if (key) await del(`MUX-${key}`);
     }
     return true;
   } catch (err) {
@@ -50,7 +45,7 @@ export async function deleteAllFromIndexedDb() {
 export async function deleteFromIndexedDb(key: string) {
   try {
     if (key) {
-      await del(key);
+      await del(`MUX-${key}`);
     }
   } catch (err) {
     console.log("Error while deleting individual key from indexedDb");
@@ -61,7 +56,7 @@ export async function saveToIndexedDb(key: string, data: any) {
   if (!key) return;
 
   try {
-    await set(`MUX-${key}`, { data });
+    await set(`MUX-${key}`, data);
     return data;
   } catch (error) {
     /* Handle any errors from the callback */

@@ -107,7 +107,7 @@ export default function Explain() {
     } catch (err) {
       console.log(`Error: ${err}`);
     }
-  }, []);
+  }, [taskInfo]);
 
   const handleFetchTaskProducts = useCallback(async (taskId: string) => {
     try {
@@ -123,7 +123,7 @@ export default function Explain() {
     } catch (err) {
       console.log(`Error in handleFetchTaskProducts: `, err);
     }
-  }, []);
+  }, [taskInfo]);
 
   const handleFetchTaskInfo = useCallback(async (taskId: string) => {
     const newTaskInfo = await fetchTaskInfo(taskId);

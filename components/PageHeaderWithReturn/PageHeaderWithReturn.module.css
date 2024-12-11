@@ -14,5 +14,6 @@
 }
 
 .title {
-  white-space: nowrap;
+  /* white-space: nowrap; disabled at explain
+}*/
 }
