@@ -74,8 +74,8 @@ export default function SolutionCard({ data }: Props) {
           </Stack>
 
           <Stack className={classes.ctaBox}>
-            <Text className={classes.ctaText}>
-              Rate your appearance and get your improvement routine
+            <Text className={classes.ctaText}>  
+              Get your improvement routine
             </Text>
             <Button component={Link} variant="default" href={"/scan"}>
               <IconScan style={{ marginRight: rem(6) }} />

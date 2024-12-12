@@ -6,7 +6,7 @@
   justify-content: space-evenly;
   gap: rem(2);
   min-height: rem(32);
-  min-width: rem(32);
+  min-width: rem(26);
 
   @media (max-width: $mantine-breakpoint-sm) {
     min-height: rem(28);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
 import { Group, Select, SelectProps } from "@mantine/core";
@@ -14,7 +14,7 @@ type Props = {
   addToQuery?: boolean;
   allowDeselect?: boolean;
   data: FilterItemType[];
-  defaultSelected?: string | null;
+  selectedValue?: string | null;
   onSelect?: (key?: string | null) => void;
   customStyles?: { [key: string]: any };
 };
@@ -27,14 +27,13 @@ export default function FilterDropdown({
   isDisabled,
   addToQuery,
   filterType,
-  defaultSelected,
+  selectedValue,
   customStyles,
   onSelect,
 }: Props) {
-  const [icon, setIcon] = useState<React.ReactNode>();
-  const [selectedValue, setSelectedValue] = useState<string | null>();
   const router = useRouter();
   const pathname = usePathname();
+  const icon = icons && icons[selectedValue || ""];
 
   const handleSelect = useCallback(
     (newValue: string | null) => {
@@ -51,8 +50,15 @@ export default function FilterDropdown({
           params.push({ name: filterType, value: newValue, action: "replace" });
         }
 
-        if (filterType === "type" && newValue) {
-          params.push({ name: "part", value: null, action: "delete" });
+        if (filterType === "type") {
+          params.push(
+            { name: "part", value: null, action: "delete" },
+            { name: "position", value: null, action: "delete" }
+          );
+        }
+
+        if (filterType === "part") {
+          params.push({ name: "position", value: null, action: "delete" });
         }
 
         const newQuery = modifyQuery({
@@ -62,7 +68,6 @@ export default function FilterDropdown({
         router.replace(`${pathname}?${newQuery}`);
       }
 
-      setSelectedValue(newValue);
       if (onSelect) onSelect(newValue);
     },
     [pathname, addToQuery, allowDeselect]
@@ -77,14 +82,6 @@ export default function FilterDropdown({
       </Group>
     );
   };
-
-  useEffect(() => {
-    setSelectedValue(defaultSelected);
-
-    const value = selectedValue || defaultSelected;
-
-    setIcon(value && icons ? icons[value] : undefined);
-  }, [defaultSelected, selectedValue]);
 
   return (
     <Select

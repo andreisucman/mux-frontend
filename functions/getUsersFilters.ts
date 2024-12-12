@@ -43,7 +43,7 @@ const getUsersFilters = async ({ followingUserId, collection, fields }: GetUsers
         }
         if (part) {
           result.availableParts = partItems.filter(
-            (item) => part.includes(item.type) && part.includes(item.value)
+            (item) => type.includes(item.type) && part.includes(item.value)
           );
         }
       }

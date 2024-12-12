@@ -11,7 +11,12 @@ export const partItems = [
 ];
 
 export const positionItems = [
-  { label: "Front", value: "front", types: ["head", "body"], parts: ["face", "body"] },
+  {
+    label: "Front",
+    value: "front",
+    types: ["head", "body"],
+    parts: ["face", "body", "scalp", "mouth"],
+  },
   { label: "Right", value: "right", types: ["head", "body"], parts: ["face", "body"] },
   { label: "Left", value: "left", types: ["head", "body"], parts: ["face", "body"] },
   { label: "Back", value: "back", types: ["body"], parts: ["body"] },

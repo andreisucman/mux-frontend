@@ -2,8 +2,9 @@ import callTheServer from "./callTheServer";
 
 export type FetchProgressProps = {
   followingUserId?: string | null;
-  type: string;
+  type: string | null;
   part: string | null;
+  position: string | null;
   skip?: boolean;
   currentArrayLength?: number;
 };
@@ -12,6 +13,7 @@ export default async function fetchProgress({
   followingUserId,
   type,
   part,
+  position,
   skip,
   currentArrayLength,
 }: FetchProgressProps) {
@@ -28,9 +30,17 @@ export default async function fetchProgress({
       queryParams.push(`part=${part}`);
     }
 
+    if (position) {
+      queryParams.push(`position=${position}`);
+    }
+
     if (skip && currentArrayLength) {
       queryParams.push(`skip=${currentArrayLength}`);
     }
+
+    const query = queryParams.join("&");
+
+    if (query) finalEndpoint += `?${query}`;
 
     const response = await callTheServer({
       endpoint: finalEndpoint,
