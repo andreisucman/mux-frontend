@@ -3,7 +3,7 @@
   width: 100%;
   overflow: hidden;
   display: flex;
-  padding: 0 rem(16);
+  padding: 0 rem(16) rem(16);
   flex-wrap: wrap;
   align-items: center;
 }

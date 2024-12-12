@@ -24,15 +24,24 @@ export default function ClubProgress() {
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const part = searchParams.get("part");
+  const position = searchParams.get("position");
   const followingUserId = searchParams.get("followingUserId");
 
   const handleFetchProgress = useCallback(
-    async ({ type, part, currentArray, followingUserId, skip }: HandleFetchProgressProps) => {
+    async ({
+      type,
+      part,
+      currentArray,
+      position,
+      followingUserId,
+      skip,
+    }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
         part,
         type,
+        position,
         currentArrayLength: (currentArray && currentArray.length) || 0,
         followingUserId,
         skip,
@@ -53,7 +62,7 @@ export default function ClubProgress() {
   );
 
   const handleContainerClick = useCallback(
-    (data: SimpleProgressType, showTrackButton: boolean) =>
+    (data: SimpleProgressType) =>
       openResultModal({
         record: data,
         type: "progress",
@@ -62,7 +71,6 @@ export default function ClubProgress() {
             {upperFirst(data.part)} progress
           </Title>
         ),
-        showTrackButton,
       }),
     []
   );
@@ -70,7 +78,7 @@ export default function ClubProgress() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProgress({ type, part, followingUserId });
+    handleFetchProgress({ type, part, position, followingUserId });
   }, [status, followingUserId, type, part]);
 
   return (

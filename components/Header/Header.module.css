@@ -8,12 +8,13 @@
   display: flex;
   width: 100%;
   align-items: center;
-  padding: 0 rem(16);
+  padding: 0 rem(24);
   min-height: rem(66);
   background-color: alpha(var(--mantine-color-dark-8));
 
   @media (max-width: $mantine-breakpoint-sm) {
     min-height: rem(60);
+    padding: 0 rem(16);
   }
 }
 

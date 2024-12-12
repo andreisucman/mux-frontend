@@ -5,13 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import StyleGallery from "@/app/results/style/StyleGallery";
-import StyleHeader from "@/app/results/style/StyleHeader";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
 import openResultModal from "@/helpers/openResultModal";
-import { clubResultTitles } from "../clubResultTitles";
 import ClubModerationLayout from "../ModerationLayout";
 
 export const runtime = "edge";
@@ -83,6 +81,7 @@ export default function ClubStyle() {
           handleContainerClick={handleContainerClick}
           handleFetchStyles={handleFetchUsersStyles}
           setStyles={setStyles}
+          isSelf={!followingUserId}
         />
       ) : (
         <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

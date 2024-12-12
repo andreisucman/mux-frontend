@@ -81,6 +81,7 @@ export default function ResultsProof() {
             hasMore={hasMore}
             handleFetchProof={fetchProof}
             setProof={setProof}
+            columns={2}
           />
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Group, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
@@ -131,7 +131,6 @@ function ProofCard({
                 formattedDate={formattedDate}
                 bodyProgress={latestBodyScoreDifference || 0}
                 headProgress={latestFaceScoreDifference || 0}
-                customStyles={{ marginBottom: rem(16) }}
               />
             )
           }

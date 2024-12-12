@@ -80,6 +80,7 @@ export default function ClubProof() {
           handleFetchProof={handleFetchProof}
           setProof={setProof}
           isPublicPage
+          columns={2}
         />
       ) : (
         <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

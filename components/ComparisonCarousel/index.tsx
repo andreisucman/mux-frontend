@@ -43,7 +43,7 @@ export default function ComparisonCarousel({ data }: Props) {
     openResultModal({
       record: data,
       type: "progress",
-      showTrackButton: true,
+      isPublic: true,
       title: modalTitle,
     });
   }, [clubName, part, formattedDate]);

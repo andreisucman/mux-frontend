@@ -18,8 +18,8 @@ type OpenViewModalProps = {
   record: SimpleBeforeAfterType | SimpleProofType | SimpleStyleType | SimpleProgressType;
   title: React.ReactNode;
   type: "style" | "progress" | "proof";
+  isPublic?: boolean;
   isFullScreen?: boolean;
-  showTrackButton?: boolean;
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
@@ -27,24 +27,24 @@ export default function openResultModal({
   record,
   title,
   type,
+  isPublic,
   isFullScreen,
-  showTrackButton,
   setRecords,
 }: OpenViewModalProps) {
   const content =
     type === "style" ? (
       <StyleModalContent
         record={record as SimpleStyleType}
-        showTrackButton={showTrackButton}
+        showTrackButton={isPublic}
         setRecords={setRecords!}
       />
     ) : type === "progress" ? (
       <ProgressModalContent
         record={record as SimpleBeforeAfterType}
-        showTrackButton={showTrackButton}
+        showTrackButton={isPublic}
       />
     ) : (
-      <ProofModalContent record={record as SimpleProofType} showTrackButton={showTrackButton} />
+      <ProofModalContent record={record as SimpleProofType} isPublic={isPublic} />
     );
 
   modals.openContextModal({

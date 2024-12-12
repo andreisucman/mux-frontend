@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { ActionIcon, Group, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
-import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
-import FilterButton from "@/components/FilterButton";
+import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import callTheServer from "@/functions/callTheServer";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons } from "@/helpers/icons";
+import { styleIcons, typeIcons } from "@/helpers/icons";
 import TitleDropdown from "../../TitleDropdown";
-import StyleFilterContent from "./StyleFilterContent";
 import classes from "./StyleHeader.module.css";
 
 type Props = {
@@ -27,122 +21,66 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
   const router = useRouter();
   const searchParams = useSearchParams();
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
-  const [availableStyleItems, setAvailableStyleItems] = useState<FilterItemType[]>([]);
-  const [styleIconsMap, setStyleIconsMap] = useState<{ [key: string]: any }>();
+  const [availableStyles, setAvailableStyles] = useState<FilterItemType[]>([]);
 
   const followingUserId = searchParams.get("followingUserId");
   const styleName = searchParams.get("styleName");
   const type = searchParams.get("type");
 
-  const handleGetUsersStyleNames = useCallback(
-    async (type: string | null, followingUserId: string | null) => {
-      try {
-        let endpoint = "getUsersStyleNames";
-
-        if (followingUserId) endpoint += `/${followingUserId}`;
-        if (type) endpoint += `?type=${type}`;
-
-        const response = await callTheServer({
-          endpoint,
-          method: "GET",
-        });
-
-        if (response.status === 200) {
-          if (response.message) {
-            const { styleNames } = response.message;
-
-            const styleItems = outlookStyles
-              .filter((item) => styleNames.includes(item.name))
-              .map((item) => ({ label: upperFirst(item.name), value: item.name }));
-
-            setAvailableStyleItems(styleItems);
-
-            const styleIcons = styleItems.reduce((a: { [key: string]: string }, c) => {
-              a[c.value] = outlookStyles.find((item) => item.name === c.value)?.name || ""; // Use optional chaining to handle undefined
-              return a;
-            }, {});
-
-            setStyleIconsMap(styleIcons);
-          }
-        }
-      } catch (err) {
-        console.log("Error in handleGetUsersStyleNames: ", err);
-      }
-    },
-    []
-  );
-
-  const activeFiltersCount = styleName ? 1 : 0;
-
-  const handleOpenStyleFilters = useCallback(() => {
-    modals.openContextModal({
-      modal: "general",
-      title: (
-        <Title order={5} component={"p"}>
-          Style filters
-        </Title>
-      ),
-      innerProps: <StyleFilterContent />,
-      centered: true,
-    });
-  }, []);
-
   useEffect(() => {
-    getUsersFilters({ followingUserId, collection: "progress", fields: ["type"] }).then(
-      (result) => {
-        const { availableTypes } = result;
-        setAvailableTypes(availableTypes);
-      }
-    );
+    getUsersFilters({
+      followingUserId,
+      collection: "style",
+      fields: ["type"],
+    }).then((result) => {
+      const { availableTypes } = result;
+      setAvailableTypes(availableTypes);
+    });
   }, [followingUserId]);
 
   useEffect(() => {
-    handleGetUsersStyleNames(type, followingUserId);
+    getUsersFilters({
+      followingUserId,
+      collection: "style",
+      fields: ["styleName"],
+      type,
+    }).then((result) => {
+      const { availableStyleNames } = result;
+      setAvailableStyles(availableStyleNames);
+    });
   }, [type, followingUserId]);
 
   return (
     <Group className={classes.container}>
-      <Group className={classes.left}>
-        {showReturn && (
-          <ActionIcon variant="default" onClick={() => router.back()}>
-            <IconChevronLeft className="icon" />
-          </ActionIcon>
-        )}
-        <TitleDropdown titles={titles} />
-      </Group>
-      {!isDisabled && (
-        <Group className={classes.right}>
-          <FilterButton
-            onFilterClick={handleOpenStyleFilters}
-            activeFiltersCount={activeFiltersCount}
-            isDisabled={isDisabled}
-          />
-          {availableTypes.length > 0 && (
-            <FilterDropdown
-              filterType="type"
-              data={availableTypes}
-              icons={typeIcons}
-              defaultSelected={type}
-              onSelect={onSelect}
-              placeholder="Filter by type"
-              isDisabled={isDisabled}
-              addToQuery
-            />
-          )}
-          {availableStyleItems.length > 0 && (
-            <FilterDropdown
-              data={availableStyleItems}
-              filterType="styleName"
-              icons={styleIconsMap}
-              defaultSelected={styleName}
-              onSelect={onSelect}
-              placeholder="Filter by style"
-              isDisabled={isDisabled}
-              addToQuery
-            />
-          )}
-        </Group>
+      {showReturn && (
+        <ActionIcon variant="default" onClick={() => router.back()}>
+          <IconChevronLeft className="icon" />
+        </ActionIcon>
       )}
+      <TitleDropdown titles={titles} />
+
+      <FilterDropdown
+        filterType="type"
+        data={availableTypes}
+        icons={typeIcons}
+        selectedValue={type}
+        onSelect={onSelect}
+        placeholder="Filter by type"
+        isDisabled={isDisabled || availableTypes.length === 0}
+        allowDeselect
+        addToQuery
+      />
+      <FilterDropdown
+        data={availableStyles}
+        filterType="styleName"
+        icons={styleIcons}
+        selectedValue={styleName}
+        onSelect={onSelect}
+        placeholder="Filter by style"
+        isDisabled={isDisabled || availableStyles.length === 0}
+        allowDeselect
+        addToQuery
+      />
     </Group>
   );
 }

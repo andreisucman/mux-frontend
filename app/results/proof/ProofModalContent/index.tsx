@@ -14,10 +14,10 @@ import classes from "./ProofModalContent.module.css";
 
 type Props = {
   record: SimpleProofType;
-  showTrackButton?: boolean;
+  isPublic?: boolean;
 };
 
-export default function ProofModalContent({ record, showTrackButton }: Props) {
+export default function ProofModalContent({ record, isPublic }: Props) {
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const { club } = userDetails || {};
@@ -44,6 +44,7 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
         concernName={concernName}
         icon={icon}
         taskName={taskName}
+        hideTitle={!isPublic}
         customStyles={{ paddingBottom: rem(16) }}
       />
       {record.contentType === "image" ? (
@@ -63,7 +64,7 @@ export default function ProofModalContent({ record, showTrackButton }: Props) {
           isStatic
         />
       )}
-      <ProofCardFooter isTracked={isTracked} handleTrack={handleRedirect} />
+      {isPublic && <ProofCardFooter isTracked={isTracked} handleTrack={handleRedirect} />}
     </Stack>
   );
 }

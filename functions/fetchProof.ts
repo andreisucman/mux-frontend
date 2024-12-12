@@ -3,7 +3,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 
 export type FetchProofProps = {
   followingUserId?: string | null;
-  type: string;
+  type: string | null;
   part: string | null;
   query: string | null;
   concern: string | null;

@@ -5,7 +5,6 @@
   overflow: hidden;
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
-  padding-bottom: rem(16);
 }
 
 .carousel {
@@ -23,8 +22,6 @@
   flex-direction: column;
   margin: auto;
   aspect-ratio: 3/2;
-
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }
 
 .title {

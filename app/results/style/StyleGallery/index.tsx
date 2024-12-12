@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
@@ -19,7 +18,9 @@ interface HandleFetchStyleProps extends FetchStyleProps {
 
 type Props = {
   hasMore: boolean;
-  isSelfPage?: boolean;
+  columns?: number;
+  isSelf?: boolean;
+  isPublic?: boolean;
   showMeta?: boolean;
   styles?: SimpleStyleType[];
   handleContainerClick: (data: any, showTrackButton: boolean) => void;
@@ -30,16 +31,17 @@ type Props = {
 export default function StyleGallery({
   styles,
   hasMore,
+  columns,
   showMeta,
-  isSelfPage,
+  isSelf,
+  isPublic,
   setStyles,
   handleContainerClick,
   handleFetchStyles,
 }: Props) {
   const searchParams = useSearchParams();
-  const isMobile = useMediaQuery("(max-width: 36em)");
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const styleName = searchParams.get("styleName");
   const followingUserId = searchParams.get("followingUserId");
 
@@ -54,7 +56,11 @@ export default function StyleGallery({
         showMeta={showMeta}
         setStyles={setStyles}
         handleContainerClick={handleContainerClick}
-        showTrackButton={!isSelfPage}
+        showTrackButton={!!isPublic}
+        showBlur={!isPublic && !!isSelf}
+        showDate={!isPublic}
+        showPublicity={!isPublic && !!isSelf}
+        showVotes={!isPublic}
       />
     ),
     [styleName, appliedBlurType]
@@ -82,7 +88,7 @@ export default function StyleGallery({
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={1}
+            maxColumnCount={columns || 1}
             columnGutter={16}
             render={memoizedStyleCard}
             items={styles}

@@ -54,7 +54,7 @@ export default function ResultStyle() {
   );
 
   const handleContainerClick = useCallback(
-    (data: SimpleStyleType, showTrackButton: boolean) =>
+    (data: SimpleStyleType) =>
       openResultModal({
         record: data,
         type: "style",
@@ -63,7 +63,6 @@ export default function ResultStyle() {
             {upperFirst(data.styleName)} style preview
           </Title>
         ),
-        showTrackButton,
         setRecords: setStyles,
       }),
     []
@@ -90,7 +89,8 @@ export default function ResultStyle() {
             handleContainerClick={handleContainerClick}
             handleFetchStyles={handleFetchStyles}
             setStyles={setStyles}
-            isSelfPage
+            columns={2}
+            isSelf
           />
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

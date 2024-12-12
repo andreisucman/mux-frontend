@@ -77,7 +77,7 @@ export default function AllStyle() {
       record: data,
       type: "style",
       title: modalTitle,
-      showTrackButton: true,
+      isPublic: true,
       setRecords: setStyles,
     });
   }, []);
@@ -96,6 +96,7 @@ export default function AllStyle() {
           handleContainerClick={handleContainerClick}
           handleFetchStyles={handleFetchStyles}
           setStyles={setStyles}
+          isPublic
           showMeta
         />
       ) : (

@@ -62,21 +62,19 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
 
   return (
     <Group className={classes.container}>
-      <Group className={classes.left}>
-        {showReturn && (
-          <ActionIcon variant="default" onClick={() => router.back()}>
-            <IconChevronLeft className="icon" />
-          </ActionIcon>
-        )}
-        <TitleDropdown titles={titles} />
-      </Group>
+      {showReturn && (
+        <ActionIcon variant="default" onClick={() => router.back()}>
+          <IconChevronLeft className="icon" />
+        </ActionIcon>
+      )}
+      <TitleDropdown titles={titles} />
       <FilterDropdown
         data={availableTypes}
         icons={typeIcons}
         filterType="type"
         selectedValue={type}
         placeholder="Filter by type"
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || availableTypes.length === 0}
         onSelect={onSelectType}
         allowDeselect
         addToQuery
@@ -88,7 +86,7 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
         placeholder="Filter by part"
         selectedValue={part}
         onSelect={onSelectPart}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || relevantParts.length === 0}
         allowDeselect
         addToQuery
       />
@@ -97,7 +95,7 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
         filterType="position"
         placeholder="Filter by position"
         selectedValue={position}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || relevantPositions.length === 0}
         allowDeselect
         addToQuery
       />

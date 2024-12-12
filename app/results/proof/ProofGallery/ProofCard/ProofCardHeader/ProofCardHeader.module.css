@@ -19,3 +19,9 @@
   height: rem(22);
   font-size: var(--mantine-font-size-sm);
 }
+
+.absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

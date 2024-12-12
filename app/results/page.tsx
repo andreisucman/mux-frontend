@@ -66,7 +66,7 @@ export default function ResultsProgress() {
   );
 
   const handleContainerClick = useCallback(
-    (data: SimpleProgressType, showTrackButton: boolean) =>
+    (data: SimpleProgressType) =>
       openResultModal({
         record: data,
         type: "progress",
@@ -75,7 +75,6 @@ export default function ResultsProgress() {
             {upperFirst(data.part)} progress
           </Title>
         ),
-        showTrackButton,
       }),
     []
   );

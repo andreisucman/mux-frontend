@@ -6,7 +6,7 @@
   min-height: rem(32);
   border: rem(1) solid var(--mantine-color-dark-6);
   width: fit-content;
-  gap: 0;
+  gap: rem(4);
 }
 
 .bottomLeft {

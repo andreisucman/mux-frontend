@@ -3,7 +3,8 @@
   flex-direction: column;
   gap: rem(16);
   background-color: var(--mantine-color-dark-6);
-  padding-bottom: rem(16);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
 }
 
 .imageWrapper {
@@ -28,9 +29,10 @@
 
 .date {
   position: absolute;
-  bottom: rem(8);
-  right: rem(8);
+  bottom: rem(16);
+  right: rem(16);
   z-index: 2;
+  font-size: var(--mantine-font-size-sm);
 }
 
 .styleName {

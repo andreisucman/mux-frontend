@@ -19,6 +19,17 @@ export const partIcons: { [key: string]: React.ReactNode } = {
   scalp: <IconWhirl className="icon" />,
 };
 
+export const styleIcons: { [key: string]: string } = {
+  rugged: "🛠️",
+  athletic: "🎽",
+  bohemian: "🌿",
+  edgy: "💥",
+  professional: "💼",
+  classic: "🎩",
+  minimalist: "🧑",
+  casual: "🌊",
+};
+
 const getTypeIcon = (key: string, className: string) => {
   switch (key) {
     case "head":

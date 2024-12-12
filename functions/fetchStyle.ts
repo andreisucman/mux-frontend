@@ -6,7 +6,7 @@ export type FetchStyleProps = {
   styleName?: string | null;
   currentArrayLength?: number;
   skip?: boolean;
-  type: string;
+  type: string | null;
   sex?: string | null;
   ageInterval?: string | null;
   ethnicity?: string | null;

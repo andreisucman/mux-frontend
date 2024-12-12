@@ -5,17 +5,3 @@
   min-height: rem(36);
   align-items: center;
 }
-
-.left {
-  align-items: center;
-  align-items: flex-start;
-}
-
-.right {
-  justify-content: flex-end;
-
-  @media (max-width: $mantine-breakpoint-xs) {
-    flex: 1;
-    max-width: unset;
-  }
-}

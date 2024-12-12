@@ -20,6 +20,7 @@ interface HandleFetchProofProps extends FetchProofProps {
 
 type Props = {
   hasMore: boolean;
+  columns?: number;
   isPublicPage?: boolean;
   proof?: SimpleProofType[];
   handleFetchProof: (args: HandleFetchProofProps) => void;
@@ -29,6 +30,7 @@ type Props = {
 export default function ProofGallery({
   proof,
   hasMore,
+  columns,
   isPublicPage,
   setProof,
   handleFetchProof,
@@ -39,7 +41,7 @@ export default function ProofGallery({
 
   const { _id: userId } = userDetails || {};
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
@@ -89,7 +91,7 @@ export default function ProofGallery({
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={1}
+            maxColumnCount={columns || 1}
             columnGutter={16}
             render={memoizedStyleCard}
             items={proof}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
 import { Group, Select, SelectProps } from "@mantine/core";
@@ -70,7 +70,7 @@ export default function FilterDropdown({
 
       if (onSelect) onSelect(newValue);
     },
-    [pathname, addToQuery, allowDeselect]
+    [pathname, addToQuery, allowDeselect, onSelect]
   );
 
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {

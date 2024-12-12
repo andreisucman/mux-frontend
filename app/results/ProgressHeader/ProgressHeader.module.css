@@ -4,18 +4,3 @@
   min-height: rem(36);
   align-items: center;
 }
-
-.left {
-  align-items: center;
-  align-items: flex-start;
-  margin-right: auto;
-}
-
-.right {
-  flex: 1;
-  justify-content: flex-end;
-
-  @media (max-width: $mantine-breakpoint-xs) {
-    max-width: unset;
-  }
-}
