@@ -3,7 +3,7 @@
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
-import { ActionIcon, Burger, Drawer, Group, rem, Title } from "@mantine/core";
+import { ActionIcon, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
+import Burger from "./Burger";
 import UserButton from "./UserButton";
 import classes from "./Header.module.css";
 
@@ -104,9 +105,7 @@ function Header() {
                 )}
               </>
             )}
-            <div onClick={toggle} className={classes.burger}>
-              <Burger />
-            </div>
+            <Burger onClick={toggle} />
           </Group>
         </div>
       </header>

@@ -122,9 +122,9 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
               filterType="type"
               data={availableTypes}
               icons={typeIcons}
-              defaultSelected={availableTypes.find((item) => item.value === type)?.value}
+              defaultSelected={type}
               onSelect={onSelect}
-              placeholder="Select type"
+              placeholder="Filter by type"
               isDisabled={isDisabled}
               addToQuery
             />
@@ -134,9 +134,9 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
               data={availableStyleItems}
               filterType="styleName"
               icons={styleIconsMap}
-              defaultSelected={availableStyleItems.find((item) => item.value === styleName)?.value}
+              defaultSelected={styleName}
               onSelect={onSelect}
-              placeholder="Select style"
+              placeholder="Filter by style"
               isDisabled={isDisabled}
               addToQuery
             />

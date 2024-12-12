@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
 import { Group, Select, SelectProps } from "@mantine/core";
@@ -9,9 +9,10 @@ import classes from "./FilterDropdown.module.css";
 type Props = {
   icons?: { [key: string]: React.ReactNode };
   placeholder: string;
-  filterType?: string;
+  filterType: string;
   isDisabled?: boolean;
   addToQuery?: boolean;
+  allowDeselect?: boolean;
   data: FilterItemType[];
   defaultSelected?: string | null;
   onSelect?: (key?: string | null) => void;
@@ -21,6 +22,7 @@ type Props = {
 export default function FilterDropdown({
   data,
   icons,
+  allowDeselect,
   placeholder,
   isDisabled,
   addToQuery,
@@ -29,34 +31,41 @@ export default function FilterDropdown({
   customStyles,
   onSelect,
 }: Props) {
-  const [selectedValue, setSelectedValue] = useState<string>();
+  const [icon, setIcon] = useState<React.ReactNode>();
+  const [selectedValue, setSelectedValue] = useState<string | null>();
   const router = useRouter();
   const pathname = usePathname();
 
-  const firstItem = data[0];
-  const defaultValue = defaultSelected || firstItem?.value;
-
-  const leftSectionIcon = useMemo(
-    () => (icons ? icons[selectedValue || defaultValue] : undefined),
-    [icons, selectedValue, defaultValue]
-  );
-
   const handleSelect = useCallback(
-    (key: string | null) => {
-      if (!key) return;
+    (newValue: string | null) => {
+      if (addToQuery) {
+        const params = [];
 
-      if (addToQuery && filterType) {
+        if (allowDeselect) {
+          params.push({
+            name: filterType,
+            value: newValue,
+            action: newValue ? "replace" : "delete",
+          });
+        } else {
+          params.push({ name: filterType, value: newValue, action: "replace" });
+        }
+
+        if (filterType === "type" && newValue) {
+          params.push({ name: "part", value: null, action: "delete" });
+        }
+
         const newQuery = modifyQuery({
-          params: [{ name: filterType, value: key, action: "replace" }],
+          params,
         });
 
         router.replace(`${pathname}?${newQuery}`);
       }
 
-      setSelectedValue(key);
-      if (onSelect) onSelect(key);
+      setSelectedValue(newValue);
+      if (onSelect) onSelect(newValue);
     },
-    [pathname, addToQuery]
+    [pathname, addToQuery, allowDeselect]
   );
 
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {
@@ -69,6 +78,14 @@ export default function FilterDropdown({
     );
   };
 
+  useEffect(() => {
+    setSelectedValue(defaultSelected);
+
+    const value = selectedValue || defaultSelected;
+
+    setIcon(value && icons ? icons[value] : undefined);
+  }, [defaultSelected, selectedValue]);
+
   return (
     <Select
       className={classes.container}
@@ -77,12 +94,13 @@ export default function FilterDropdown({
       placeholder={placeholder}
       renderOption={renderSelectOption}
       onChange={handleSelect}
-      defaultValue={defaultValue}
-      leftSection={leftSectionIcon}
+      value={selectedValue}
+      leftSection={icon}
       leftSectionWidth={40}
+      withScrollArea={false}
       style={customStyles ? customStyles : {}}
       classNames={{ dropdown: classes.dropdown, option: classes.option }}
-      allowDeselect={false}
+      allowDeselect={allowDeselect}
     />
   );
 }

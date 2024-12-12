@@ -356,6 +356,7 @@ export default function Calendar() {
           filterData={typeItems}
           icons={typeIcons}
           showReturn
+          nowrap
         />
         <DatePicker
           level="month"

@@ -1,0 +1,21 @@
+.container {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: rem(2);
+  min-height: rem(32);
+  min-width: rem(32);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    min-height: rem(28);
+    min-width: rem(28);
+  }
+}
+
+.stick {
+  height: rem(2);
+  width: 100%;
+  background-color: #fff;
+}

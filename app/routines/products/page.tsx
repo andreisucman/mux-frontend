@@ -29,11 +29,12 @@ export default function Products() {
   const type = searchParams.get("type");
 
   const fetchProducts = useCallback(async (type: TypeEnum) => {
-    if (!type) return;
-
     try {
+      let endpoint = "getTasksProducts";
+      if (type) endpoint += `?type=${type}`;
+
       const response = await callTheServer({
-        endpoint: `getTasksProducts?type=${type}`,
+        endpoint,
         method: "GET",
       });
 

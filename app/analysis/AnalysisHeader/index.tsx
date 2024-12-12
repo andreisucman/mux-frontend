@@ -48,6 +48,7 @@ export default function AnalysisHeader({ title, type, showReturn, onTypeChange }
         data={categories}
         icons={categoryIcons}
         defaultSelected={pathname}
+        filterType="category"
         placeholder="Select category"
         onSelect={(url?: string | null) => router.replace(url || "/")}
       />

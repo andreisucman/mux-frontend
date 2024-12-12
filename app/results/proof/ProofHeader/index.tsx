@@ -125,16 +125,13 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
         </Group>
         {!isDisabled && (
           <Group className={classes.right} ref={ref}>
-            <SearchButton
-              maxPillWidth={width / 2}
-              onSearchClick={() => solutionsSpotlight.open()}
-            />
+            <SearchButton onSearchClick={() => solutionsSpotlight.open()} />
             {typeFilterData.items.length > 1 && (
               <FilterDropdown
                 data={typeFilterData.items}
                 icons={typeFilterData.icons}
-                placeholder="Select type"
-                defaultSelected={typeFilterData.items.find((obj) => obj.value === type)?.value}
+                placeholder="Filter by type"
+                defaultSelected={type}
                 filterType="type"
                 addToQuery
               />

@@ -3,9 +3,12 @@
 import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { rem, Stack, Title } from "@mantine/core";
-import { useRouter } from "@/helpers/custom-router";
 import { upperFirst } from "@mantine/hooks";
 import PageHeader from "@/components/PageHeader";
+import { typeItems } from "@/components/PageHeader/data";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import { useRouter } from "@/helpers/custom-router";
+import { typeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import SkeletonWrapper from "../SkeletonWrapper";
 import ChatMessagesButton from "./ConversationHistoryButton";
@@ -57,10 +60,11 @@ export default function Advisor() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader
+        <PageHeaderWithReturn
           title={"Advisor"}
+          filterData={typeItems}
+          icons={typeIcons}
           children={<ChatMessagesButton />}
-          hidePartDropdown
           showReturn
         />
         <Title order={3}>Free style</Title>
@@ -69,7 +73,6 @@ export default function Advisor() {
           color={freeStyleQuestion.color}
           icon={"❓"}
           onClick={freeStyleQuestion.onClick}
-          customStyles={{ maxHeight: rem(60) }}
         />
         <QuestionsList
           type={type as string}

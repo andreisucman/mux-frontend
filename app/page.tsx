@@ -24,7 +24,7 @@ export default function BeforeAftersPage() {
   const [beforeAfters, setBeforeAfters] = useState<SimpleBeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
   const ageInterval = searchParams.get("ageInterval");
@@ -36,6 +36,8 @@ export default function BeforeAftersPage() {
     async (props?: FetchBeforeAftersProps) => {
       const { skip, existingCount } = props || {};
       try {
+        setBeforeAfters(undefined);
+
         let finalEndpoint = "getBeforeAfters";
         const queryParams = [];
 
@@ -94,12 +96,12 @@ export default function BeforeAftersPage() {
         console.log("Error in fetchBeforeAfters: ", err);
       }
     },
-    [type, part, sex, ageInterval, ethnicity, concern, bodyType]
+    [searchParams.toString()]
   );
 
   const memoizedComparisonCarousel = useCallback(
     (props: any) => <ComparisonCarousel data={props.data} key={props.index} />,
-    []
+    [searchParams.toString()]
   );
 
   useEffect(() => {
@@ -108,7 +110,7 @@ export default function BeforeAftersPage() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <GeneralResultsHeader />
+      <GeneralResultsHeader showFilter />
       {beforeAfters ? (
         <>
           {beforeAfters.length > 0 ? (

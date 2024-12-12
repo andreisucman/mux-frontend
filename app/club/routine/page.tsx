@@ -168,26 +168,30 @@ export default function ClubRoutine() {
 
   const accordionItems = useMemo(
     () =>
-      routines?.map((routine) => {
-        return (
-          <AccordionRoutineRow
-            key={routine._id}
-            type={type as TypeEnum}
-            routine={routine}
-            isSelf={isSelf}
-            handleReplaceRoutine={() =>
-              askConfirmation({
-                title: "Steal routine",
-                body: "This will replace your current routine with the selected one. Are you sure?",
-                onConfirm: () => replaceRoutine(routine._id),
-              })
-            }
-            openTaskDetails={openTaskDetails}
-          />
-        );
-      }),
-    [type, routines?.[0]?.type]
+      routines
+        ?.filter((routine) => routine.type === type)
+        .map((routine) => {
+          return (
+            <AccordionRoutineRow
+              key={routine._id}
+              type={type as TypeEnum}
+              routine={routine}
+              isSelf={isSelf}
+              handleReplaceRoutine={() =>
+                askConfirmation({
+                  title: "Steal routine",
+                  body: "This will replace your current routine with the selected one. Are you sure?",
+                  onConfirm: () => replaceRoutine(routine._id),
+                })
+              }
+              openTaskDetails={openTaskDetails}
+            />
+          );
+        }),
+    [type, typeof routines]
   );
+
+  console.log("accordionItems", accordionItems);
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
@@ -201,9 +205,9 @@ export default function ClubRoutine() {
   return (
     <ClubModerationLayout showChat showHeader>
       <Stack className={classes.container}>
-        {routines ? (
+        {accordionItems ? (
           <>
-            {routines.length > 0 ? (
+            {accordionItems.length > 0 ? (
               <Stack className={classes.wrapper}>
                 <Accordion
                   value={openValue}

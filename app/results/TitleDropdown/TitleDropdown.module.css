@@ -6,6 +6,7 @@
 .head {
   cursor: pointer;
   gap: rem(8);
+  margin-right: auto;
 }
 
 .content {

@@ -7,6 +7,7 @@ export type ExistingFiltersType = {
   ageInterval: string[];
   sex: string[];
   type: string[];
+  part: string[];
   styleName: string[];
   taskName: string[];
 };

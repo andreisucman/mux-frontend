@@ -8,7 +8,6 @@ import { formatDate } from "@/helpers/formatDate";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import CardMetaPanel from "../CardMetaPanel";
 import ImageCard from "../ImageCard";
-import { ComparisonSlideImageType } from "./types";
 import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
@@ -28,21 +27,11 @@ export default function ComparisonCarousel({ data }: Props) {
     latestBodyScoreDifference,
   } = data;
 
+  const [slides, setSlides] = useState<React.ReactNode[]>();
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const [comparisonObjects, setComparisonObjects] = useState<ComparisonSlideImageType[]>([]);
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
   const title = useMemo(() => `${upperFirst(part)}`, [part]);
-
-  const slides = useMemo(
-    () =>
-      comparisonObjects.map((obj, index) => (
-        <Carousel.Slide key={index}>
-          <ImageCard image={obj.image} datePosition="top-left" showDate isStatic />
-        </Carousel.Slide>
-      )),
-    [comparisonObjects.length]
-  );
 
   const handleClickCarousel = useCallback(() => {
     const modalTitle = getRedirectModalTitle({
@@ -71,18 +60,18 @@ export default function ComparisonCarousel({ data }: Props) {
       },
     ]);
 
-    setComparisonObjects(objects || []);
+    const newSlides = objects.map((object, index) => (
+      <Carousel.Slide key={index}>
+        <ImageCard image={object.image} datePosition="top-left" showDate isStatic />
+      </Carousel.Slide>
+    ));
+
+    setSlides(newSlides);
+    setShowSkeleton(false);
   }, [updatedAt, images && images.length]);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
-
   return (
-    <Skeleton className={"skeleton"} visible={showSkeleton}>
+    <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
         <Group className={classes.title}>
           {partIconMap[part]}
@@ -94,7 +83,7 @@ export default function ComparisonCarousel({ data }: Props) {
           align="start"
           withControls={false}
           slidesToScroll={2}
-          withIndicators={slides.length > 2}
+          withIndicators={slides && slides.length > 2}
           className={classes.carousel}
           onClick={handleClickCarousel}
           classNames={{

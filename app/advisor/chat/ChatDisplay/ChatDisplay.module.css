@@ -2,7 +2,7 @@
   position: relative;
   flex: 1;
   overflow: auto;
-  background-color: var(--mantine-color-dark-6);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
   border-radius: var(--mantine-radius-lg);
 }
 
@@ -16,4 +16,21 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.bgText {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  font-size: clamp(48px, 10vw, 72px);
+  font-weight: 600;
+  color: white;
+  opacity: 0.05;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  inset: 0;
+  z-index: -1;
 }

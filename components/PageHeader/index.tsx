@@ -40,8 +40,8 @@ export default function PageHeader({
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
 
-  const type = searchParams.get("type") || "head";
-  const part = searchParams.get("part") || "face";
+  const type = searchParams.get("type");
+  const part = searchParams.get("part");
 
   const [relevantParts, setRelevantParts] = useState(partItems.filter((p) => p.type === type));
   const showRightSide = !hideTypeDropdown || onSearchClick || onFilterClick || children;
@@ -73,7 +73,7 @@ export default function PageHeader({
       {showRightSide && (
         <Group className={classes.right} ref={ref}>
           {children}
-          {onSearchClick && <SearchButton onSearchClick={onSearchClick} maxPillWidth={width / 2} />}
+          {onSearchClick && <SearchButton onSearchClick={onSearchClick} />}
           {onFilterClick && (
             <FilterButton onFilterClick={onFilterClick} activeFiltersCount={activeFiltersCount} />
           )}
@@ -82,8 +82,8 @@ export default function PageHeader({
               data={typeItems}
               icons={typeIcons}
               filterType="type"
-              placeholder="Select type"
-              defaultSelected={typeItems.find((item) => item.value === type)?.value}
+              placeholder="Filter by type"
+              defaultSelected={type}
               onSelect={onSelect}
               isDisabled={isDisabled}
               addToQuery
@@ -94,8 +94,8 @@ export default function PageHeader({
               data={relevantParts}
               icons={partIcons}
               filterType="part"
-              placeholder="Select part"
-              defaultSelected={relevantParts.find((item) => item.value === part)?.value}
+              placeholder="Filter by part"
+              defaultSelected={part}
               onSelect={onSelect}
               isDisabled={isDisabled}
               addToQuery

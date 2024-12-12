@@ -18,7 +18,7 @@ export default function QuestionRow({ color, title, icon, customStyles, onClick 
       onClick={onClick ? onClick : undefined}
       style={customStyles ? customStyles : {}}
     >
-      <IconWithColor icon={icon || ""} color={color} customStyles={{ minWidth: rem(40) }} />
+      <IconWithColor icon={icon || ""} color={color} customStyles={{ minWidth: rem(40), minHeight: rem(70) }} />
       <Stack className={classes.wrapper}>
         <Text className={classes.title} lineClamp={2}>
           {title}

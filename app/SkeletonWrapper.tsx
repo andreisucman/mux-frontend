@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { rem, Skeleton, Stack } from "@mantine/core";
+import { rem, Skeleton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { protectedPaths } from "@/context/UserContext/protectedPaths";
 import { AuthStateEnum } from "@/context/UserContext/types";

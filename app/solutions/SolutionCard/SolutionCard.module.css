@@ -1,6 +1,6 @@
 .container {
   gap: 0;
-  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  background-color: alpha(var(--mantine-color-dark-6), 0.75);
   border-radius: var(--mantine-radius-lg);
   min-width: rem(300);
 }

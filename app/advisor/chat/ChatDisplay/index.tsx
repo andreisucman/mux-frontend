@@ -95,6 +95,7 @@ export default function ChatDisplay({
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
       >
         {conversationList}
+        <span className={classes.bgText}>Ask advisor</span>
         {isTyping && <Loader ml="auto" mr={rem(16)} type="dots" />}
       </Stack>
     </Stack>

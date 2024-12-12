@@ -1,8 +1,12 @@
 .container {
-  justify-content: flex-end;
-  gap: rem(8);
+  position: relative;
 }
 
-.pill {
-  background-color: var(--mantine-color-dark-6);
+.indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+
+  transform: translate(-50%, -50%);
 }

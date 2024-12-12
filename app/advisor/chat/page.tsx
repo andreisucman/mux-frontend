@@ -13,14 +13,14 @@ export const runtime = "edge";
 export default function Chat() {
   return (
     <Stack className={`${classes.container} smallPage`}>
+      <PageHeader
+        title={"Advisor"}
+        children={<ChatMessagesButton />}
+        showReturn
+        hidePartDropdown
+        hideTypeDropdown
+      />
       <SkeletonWrapper>
-        <PageHeader
-          title={"Advisor"}
-          children={<ChatMessagesButton />}
-          showReturn
-          hidePartDropdown
-          hideTypeDropdown
-        />
         <ChatBody />
       </SkeletonWrapper>
     </Stack>

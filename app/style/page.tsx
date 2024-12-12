@@ -88,7 +88,7 @@ export default function AllStyle() {
 
   return (
     <Stack className={"mediumPage"} flex={1}>
-      <GeneralResultsHeader />
+      <GeneralResultsHeader hidePartDropdown showFilter />
       {styles ? (
         <StyleGallery
           styles={styles}

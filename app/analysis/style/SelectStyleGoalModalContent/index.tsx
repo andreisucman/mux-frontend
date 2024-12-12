@@ -32,13 +32,6 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
     try {
       modals.closeAll();
 
-      console.log("startSuggestChangeAnalysis body", {
-        type,
-        userId,
-        analysisId: styleId,
-        goal: selectedGoal,
-      });
-
       const response = await callTheServer({
         endpoint: "startSuggestChangeAnalysis",
         method: "POST",

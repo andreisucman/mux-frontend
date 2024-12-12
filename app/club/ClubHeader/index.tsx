@@ -78,6 +78,7 @@ export default function ClubHeader({
         defaultSelected={clubPageTypeData.find((item) => item.value === pathname)?.value}
         onSelect={handleRedirect}
         placeholder="Select page"
+        filterType="page"
         isDisabled={isDisabled}
       />
       {!hideTypeDropdown && (

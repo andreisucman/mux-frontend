@@ -41,7 +41,7 @@ function ScanHeader({ type, onSelect }: Props) {
           data={typeFilters}
           icons={typeIcons}
           onSelect={onSelect}
-          defaultSelected={typeFilters.find((rec) => rec.value === type)?.value}
+          defaultSelected={type}
           filterType={"type"}
           placeholder="Select type"
           addToQuery

@@ -45,7 +45,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
 
-  const titles: { [key: string]: React.ReactNode } = useMemo(
+  const headers: { [key: string]: React.ReactNode } = useMemo(
     () => ({
       style: (
         <StyleHeader
@@ -69,7 +69,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         />
       ),
       about: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
-      routine: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
+      routine: <ClubHeader title={"Club"} showReturn />,
     }),
     [showComponent]
   );
@@ -107,7 +107,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {titles[pageType]}
+      {headers[pageType]}
       <Skeleton
         className={`skeleton ${classes.skeleton}`}
         visible={showComponent === "loading" || !previewData}

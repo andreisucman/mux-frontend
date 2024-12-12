@@ -35,9 +35,11 @@ export default function Solutions() {
   const searchParams = useSearchParams();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionType[]>([]);
   const [solutions, setSolutions] = useState<SolutionCardType[]>();
-  const [hasMore, setHasMore] = useState(false);
 
   const query = searchParams.get("query");
+
+  const [hasMore, setHasMore] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(query || "");
 
   const fetchSolutions = useCallback(async ({ skip, query, solutions }: FetchSolutionsProps) => {
     try {
@@ -80,6 +82,7 @@ export default function Solutions() {
     (value: string) => {
       const newQuery = modifyQuery({ params: [{ name: "query", value, action: "replace" }] });
       router.replace(`${pathname}?${newQuery}`);
+      setSearchQuery(value);
     },
     [pathname]
   );
@@ -91,12 +94,25 @@ export default function Solutions() {
       handleActionClick,
     });
 
+    console.log("actions", actions);
+
     setSpotlightActions(actions);
   }, [pathname]);
 
   const memoizedSolutionsCard = useCallback(
     (props: any) => <SolutionCard data={props.data} key={props.index} />,
     []
+  );
+
+  const handleSearch = useCallback(
+    (searchQuery: string) => {
+      const newQuery = modifyQuery({
+        params: [{ name: "query", value: searchQuery, action: searchQuery ? "replace" : "delete" }],
+      });
+      router.replace(`${pathname}?${newQuery}`);
+      solutionsSpotlight.close();
+    },
+    [pathname]
   );
 
   useEffect(() => {
@@ -150,12 +166,23 @@ export default function Solutions() {
         store={spotlightStore}
         actions={spotlightActions}
         nothingFound="Nothing found"
+        onQueryChange={(query: string) => {
+          if (query === "") {
+            handleSearch(query);
+          }
+        }}
         searchProps={{
           leftSection: <IconSearch className="icon" stroke={1.5} />,
           placeholder: "Search...",
+          value: searchQuery || "",
+          onChange: (e: React.FormEvent<HTMLInputElement>) => setSearchQuery(e.currentTarget.value),
+          onKeyDown: (e: React.KeyboardEvent) => {
+            if (e.key !== "Enter") return;
+            handleSearch(searchQuery || "");
+          },
         }}
         centered
-        highlightQuery
+        clearQueryOnClose={false}
         overlayProps={{ blur: 0 }}
         limit={10}
       />

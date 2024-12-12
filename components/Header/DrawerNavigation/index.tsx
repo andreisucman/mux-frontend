@@ -26,7 +26,7 @@ const defaultNavigation = [
     children: [
       { title: "Progress", path: "/" },
       { title: "Style", path: "/style" },
-      { title: "Uploads", path: "uploads" },
+      { title: "Proof", path: "/proof" },
     ],
   },
   {
@@ -65,7 +65,7 @@ const defaultAuthenticatedNavigation = [
     children: [
       { title: "Progress", path: "/results" },
       { title: "Style", path: "/results/style" },
-      { title: "Uploads", path: "/results/proof" },
+      { title: "Proof", path: "/results/proof" },
       { title: "Analysis", path: "/analysis" },
     ],
   },

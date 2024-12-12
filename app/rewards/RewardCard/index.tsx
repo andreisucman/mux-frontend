@@ -78,6 +78,8 @@ export default function RewardCard({ data }: Props) {
     setButtonDisabled(completion?.value !== 100);
   }, [completion]);
 
+  const finalValue = Math.round(Number(completion?.value)) || 0;
+
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
       <Stack className={classes.container}>
@@ -93,12 +95,9 @@ export default function RewardCard({ data }: Props) {
           <Text>{condition}</Text>
           <Group className={classes.row}>
             {icon}
-            <Progress.Root className={classes.progressRoot}>
-              <Progress.Section
-                value={Number(completion?.value) || 0}
-                color={"var(--mantine-color-green-9)"}
-              >
-                <Progress.Label>{completion?.value || 0}%</Progress.Label>
+            <Progress.Root size={20} className={classes.progressRoot}>
+              <Progress.Section value={finalValue} color={"var(--mantine-color-green-9)"}>
+                <Progress.Label>{finalValue}%</Progress.Label>
               </Progress.Section>
             </Progress.Root>
           </Group>

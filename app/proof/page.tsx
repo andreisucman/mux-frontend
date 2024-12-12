@@ -78,7 +78,7 @@ export default function AllProof() {
 
   return (
     <Stack className={"mediumPage"} flex={1}>
-      <GeneralResultsHeader />
+      <GeneralResultsHeader showFilter showSearch />
       {proof ? (
         <ProofGallery
           proof={proof}

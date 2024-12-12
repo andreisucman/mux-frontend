@@ -1,5 +1,4 @@
 .container {
   background-color: var(--mantine-background-dark-6);
-  min-height: rem(400);
   border-radius: var(--mantine-border-radius-lg);
 }

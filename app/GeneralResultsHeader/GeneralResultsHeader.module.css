@@ -3,18 +3,11 @@
 
   min-height: rem(36);
   align-items: center;
+  width: 100%;
 }
 
 .wrapper {
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-}
-
-.right {
-  justify-content: flex-end;
-
-  @media (max-width: $mantine-breakpoint-xs) {
-    flex: 1;
-    max-width: unset;
-  }
+  flex: 1;
 }

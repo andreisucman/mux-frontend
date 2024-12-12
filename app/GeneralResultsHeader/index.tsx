@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
 import { Group, Title } from "@mantine/core";
-import { useElementSize } from "@mantine/hooks";
+import { useElementSize, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
@@ -35,27 +35,36 @@ const titles = [
 type Props = {
   showFilter?: boolean;
   showSearch?: boolean;
+  hideTypeDropdown?: boolean;
+  hidePartDropdown?: boolean;
   onSelect?: (item?: FilterItemType) => void;
 };
 
 const [spotlightStore, spotlight] = createSpotlight();
 
-export default function GeneralResultsHeader({ showFilter, showSearch }: Props) {
+export default function GeneralResultsHeader({
+  showFilter,
+  showSearch,
+  hideTypeDropdown,
+  hidePartDropdown,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { width, ref } = useElementSize();
+
+  const type = searchParams.get("type");
+  const part = searchParams.get("part");
+  const query = searchParams.get("query");
+
   const [typeFilterItems, setTypeFilterItems] = useState<FilterItemType[]>();
   const [partFilterItems, setPartFilterItems] = useState<FilterItemType[]>();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
-
-  const type = searchParams.get("type") || "head";
-  const part = searchParams.get("part");
+  const [searchQuery, setSearchQuery] = useState(query || "");
 
   const paramsCount = useMemo(() => {
-    const allParams = Array.from(searchParams.values());
-    const requiredParams = allParams.filter((param) => !["type", "part"].includes(param));
+    const allParams = Array.from(searchParams.keys());
+    const requiredParams = allParams.filter((param) => !["type", "part", "query"].includes(param));
     return requiredParams.length;
   }, [searchParams.toString()]);
 
@@ -63,6 +72,18 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
     (value: string) => {
       const newQuery = modifyQuery({ params: [{ name: "query", value, action: "replace" }] });
       router.replace(`${pathname}?${newQuery}`);
+      setSearchQuery(value);
+    },
+    [pathname]
+  );
+
+  const handleSearch = useCallback(
+    (searchQuery: string) => {
+      const newQuery = modifyQuery({
+        params: [{ name: "query", value: searchQuery, action: searchQuery ? "replace" : "delete" }],
+      });
+      router.replace(`${pathname}?${newQuery}`);
+      spotlight.close();
     },
     [pathname]
   );
@@ -80,12 +101,16 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
       let actions: SpotlightActionData[] = [];
 
       if (keys.length > 0) {
-        actions = keys.map((filter) => ({
-          id: filter as string,
-          label: normalizeString(filter as string).toLowerCase(),
-          leftSection: <IconSearch className={"icon"} stroke={1.5} />,
-          onClick: () => handleActionClick(filter as string),
-        }));
+        actions = keys.map((filter) => {
+          const normalizedLabel = normalizeString(filter as string);
+
+          return {
+            id: filter as string,
+            label: normalizedLabel.toLowerCase(),
+            leftSection: <IconSearch className={"icon"} stroke={1.5} />,
+            onClick: () => handleActionClick(normalizedLabel as string),
+          };
+        });
       }
 
       return actions;
@@ -130,67 +155,78 @@ export default function GeneralResultsHeader({ showFilter, showSearch }: Props) 
           Filters
         </Title>
       ),
+      centered: true,
       innerProps: <FilterCardContent filters={filters} />,
     });
-  }, [typeof filters]);
+  }, [filters]);
 
   useEffect(() => {
     getExistingFilters(pathname, type);
-  }, [pathname, type]);
+  }, []);
 
-  const showRightPart = useMemo(() => {
-    const anyTypeFilter = typeFilterItems && typeFilterItems.length > 1;
-    const anyPartFilter = partFilterItems && partFilterItems.length > 1;
-    return (showFilter && (anyTypeFilter || anyPartFilter)) || showSearch;
-  }, [typeFilterItems, partFilterItems, showFilter, showSearch]);
+  useShallowEffect(() => {
+    if (!filters) return;
+    setPartFilterItems(partItems.filter((part) => part.type === type));
+  }, [type, filters]);
 
   return (
     <Group className={classes.container}>
       <Group className={classes.wrapper}>
         <TitleDropdown titles={titles} />
-        {showRightPart && (
-          <Group className={classes.right} ref={ref}>
-            {typeFilterItems && typeFilterItems.length > 1 && (
-              <FilterDropdown
-                data={typeFilterItems || []}
-                icons={typeIcons}
-                placeholder="Select type"
-                defaultSelected={type}
-                filterType="type"
-                addToQuery
-              />
-            )}
-            {partFilterItems && partFilterItems.length > 1 && (
-              <FilterDropdown
-                data={partFilterItems || []}
-                icons={partIcons}
-                placeholder="Select part"
-                defaultSelected={part}
-                filterType="type"
-                addToQuery
-              />
-            )}
-            {showSearch && (
-              <SearchButton maxPillWidth={width / 2} onSearchClick={() => spotlight.open()} />
-            )}
-            {showFilter && (
-              <FilterButton activeFiltersCount={paramsCount} onFilterClick={openFiltersCard} />
-            )}
-          </Group>
+        {!hideTypeDropdown && (
+          <FilterDropdown
+            data={typeFilterItems || []}
+            icons={typeIcons}
+            placeholder="Filter by type"
+            defaultSelected={type}
+            filterType="type"
+            allowDeselect
+            addToQuery
+            isDisabled={typeFilterItems && typeFilterItems.length === 0}
+          />
+        )}
+        {!hidePartDropdown && (
+          <FilterDropdown
+            data={partFilterItems || []}
+            icons={partIcons}
+            placeholder="Filter by part"
+            defaultSelected={part}
+            filterType="part"
+            allowDeselect
+            addToQuery
+            isDisabled={partFilterItems && partFilterItems.length === 0}
+          />
+        )}
+        {showSearch && <SearchButton onSearchClick={() => spotlight.open()} />}
+        {showFilter && (
+          <FilterButton activeFiltersCount={paramsCount} onFilterClick={openFiltersCard} />
         )}
       </Group>
+
       {showSearch && (
         <Spotlight
           store={spotlightStore}
           actions={spotlightActions}
           nothingFound="Nothing found"
+          onQueryChange={(query: string) => {
+            if (query === "") {
+              handleSearch(query);
+            }
+          }}
           searchProps={{
             leftSection: <IconSearch className="icon" stroke={1.5} />,
             placeholder: "Search...",
+            value: searchQuery || "",
+            onChange: (e: React.FormEvent<HTMLInputElement>) =>
+              setSearchQuery(e.currentTarget.value),
+            onKeyDown: (e: React.KeyboardEvent) => {
+              if (e.key !== "Enter") return;
+              handleSearch(searchQuery);
+            },
           }}
-          overlayProps={{ blur: 0 }}
-          highlightQuery
           centered
+          clearQueryOnClose={false}
+          overlayProps={{ blur: 0 }}
           limit={10}
         />
       )}
