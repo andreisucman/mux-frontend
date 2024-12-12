@@ -9,9 +9,10 @@ import { AuthStateEnum } from "@/context/UserContext/types";
 
 type Props = {
   children: React.ReactNode;
+  show?: boolean;
 };
 
-export default function SkeletonWrapper({ children }: Props) {
+export default function SkeletonWrapper({ children, show }: Props) {
   const pathname = usePathname();
   const { status } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
@@ -23,7 +24,7 @@ export default function SkeletonWrapper({ children }: Props) {
   }, [status, onProtectedPath]);
 
   return (
-    <Skeleton visible={showSkeleton} className="skeleton" style={{ gap: rem(16) }}>
+    <Skeleton visible={show || showSkeleton} className="skeleton" style={{ gap: rem(16) }}>
       {children}
     </Skeleton>
   );

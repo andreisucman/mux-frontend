@@ -3,7 +3,7 @@ import { Carousel } from "@mantine/carousel";
 import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { SimpleBeforeAfterType } from "@/app/types";
-import { partIconMap } from "@/context/CreateRoutineContext/SelectPartForRoutineModalContent/partIconMap";
+import { partIcons } from "@/helpers/icons";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import CardMetaPanel from "../CardMetaPanel";
@@ -74,7 +74,7 @@ export default function ComparisonCarousel({ data }: Props) {
     <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
         <Group className={classes.title}>
-          {partIconMap[part]}
+          {partIcons[part]}
           <Title order={5}>{title}</Title>
         </Group>
 

@@ -2,8 +2,8 @@
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowRight, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Button, Stack } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
+import { Button, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -17,16 +17,6 @@ import classes from "./sort-concerns.module.css";
 
 export const runtime = "edge";
 
-const icons = {
-  head: <IconMoodSmile className="icon" />,
-  body: <IconMan className="icon" />,
-};
-
-const filterData = [
-  { label: "Head", value: "head" },
-  { label: "Body", value: "body" },
-];
-
 export default function SortConcerns() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,7 +24,7 @@ export default function SortConcerns() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const part = searchParams.get("part");
 
   const { concerns, demographics } = userDetails || {};
@@ -55,7 +45,7 @@ export default function SortConcerns() {
     }
 
     return selectedConcerns;
-  }, [concerns?.length, type, part]);
+  }, [concerns, type, part]);
 
   const activeConcerns = useMemo(
     () => selectedConcerns?.filter((obj) => !obj.isDisabled),
@@ -76,17 +66,12 @@ export default function SortConcerns() {
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
-      <SkeletonWrapper>
-        <PageHeaderWithReturn
-          title="Sort concerns"
-          filterData={filterData}
-          icons={icons}
-          showReturn
-        />
+      <SkeletonWrapper show={!selectedConcerns}>
+        <PageHeaderWithReturn title="Sort concerns" showReturn />
         <InstructionContainer
           sex={sex || SexEnum.FEMALE}
           title="Instructions"
-          instruction={"These are the potential concerns identified from your photos."}
+          instruction={`These are the potential ${type ? type : ""} concerns identified from your photos.`}
           description="Drag and drop to change their importance or click the minus sign to ignore."
           customStyles={{ flex: 0 }}
         />
@@ -97,7 +82,7 @@ export default function SortConcerns() {
             isLoading || !selectedConcerns || (activeConcerns && activeConcerns.length === 0)
           }
         >
-          Next <IconArrowRight className="icon" />
+          Next <IconArrowRight className="icon" style={{ marginLeft: rem(6) }} />
         </Button>
         <ConcernsSortCard
           concerns={selectedConcerns || []}

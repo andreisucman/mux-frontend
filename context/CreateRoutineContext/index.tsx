@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Title } from "@mantine/core";
+import { Title, rem } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -32,7 +32,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  
+
   const { demographics } = userDetails || {};
   const { sex } = demographics || {};
   const type = searchParams.get("type") || "head";
@@ -88,11 +88,10 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     } else {
       const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
       const buttonIcon = !!isTrialUsed ? (
-        <IconPlus className="icon" />
+        <IconPlus className="icon" style={{ marginRight: rem(6) }} />
       ) : (
-        <IconSquareRoundedCheck className="icon" />
+        <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
       );
-      const coachIcon = sex === "male" ? "🦸‍♂️" : "🦸‍♀️";
 
       const onClick = !!isTrialUsed
         ? handleCreateCheckoutSession
@@ -103,7 +102,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
             });
 
       openSubscriptionModal({
-        title: `${coachIcon} Add the Improvement Coach`,
+        title: `Add the Improvement Coach`,
         price: "3",
         isCentered: true,
         modalType: "improvement",

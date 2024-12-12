@@ -47,7 +47,7 @@ export default function ConcernsSortCard({
         concerns: updatedConcerns,
       }));
     },
-    [typeof userDetails, userDetails?.concerns?.length]
+    [userDetails]
   );
 
   return (

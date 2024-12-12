@@ -62,7 +62,11 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
               handleUpdateConcern({ ...item, isDisabled: !item.isDisabled });
             }}
           >
-            {item.isDisabled ? <IconCirclePlus /> : <IconCircleMinus />}
+            {item.isDisabled ? (
+              <IconCirclePlus className="icon" />
+            ) : (
+              <IconCircleMinus className="icon" />
+            )}
           </ActionIcon>
         </div>
       )}

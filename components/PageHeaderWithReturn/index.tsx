@@ -50,7 +50,7 @@ export default function PageHeaderWithReturn({
           isDisabled={isDisabled}
           data={filterData}
           icons={icons}
-          defaultSelected={type}
+          selectedValue={type}
           placeholder="Select type"
           filterType="type"
           addToQuery

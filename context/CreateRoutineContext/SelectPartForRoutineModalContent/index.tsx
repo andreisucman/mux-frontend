@@ -1,12 +1,12 @@
 import React from "react";
 import { IconStack2 } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Group, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import Timer from "@/components/Timer";
 import Link from "@/helpers/custom-router/patch-router/link";
+import { partIcons } from "@/helpers/icons";
 import { TypeEnum } from "@/types/global";
-import { partIconMap } from "./partIconMap";
 
 type Props = {
   parts: { part: string; date: Date | null }[];
@@ -31,11 +31,14 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
       {parts.map((part, index) => {
         const { part: key, date } = part;
         const isCooldown = date && new Date(date) > new Date();
-        const text = `${partIconMap[key]} ${upperFirst(key)}`;
+        const icon = partIcons[key];
+        const text = upperFirst(key);
         const render = !!isCooldown ? (
-          <Timer date={date} text={`${partIconMap[key]} Next routine after`} showDays />
+          <Timer date={date} text={`${partIcons[key]} Next routine after`} showDays />
         ) : (
-          text
+          <Group gap={8}>
+            {icon} {text}
+          </Group>
         );
         return (
           <Button

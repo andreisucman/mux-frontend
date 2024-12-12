@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Group, Stack, Switch } from "@mantine/core";
-import { partIconMap } from "@/context/CreateRoutineContext/SelectPartForRoutineModalContent/partIconMap";
 import { getPrivacyValue } from "@/helpers/clubPrivacy";
+import { partIcons } from "@/helpers/icons";
 import { getPartIcon, getTypeIcon, typeIcons } from "@/helpers/icons";
 import { HeadValuePartsBoolean } from "@/types/global";
 import classes from "./SwitchBox.module.css";
@@ -40,7 +40,7 @@ export default function SwitchBox({ privacy, type, onChange }: Props) {
         partName: part.name,
       });
 
-      const partIcon = partIconMap[part.name];
+      const partIcon = partIcons[part.name];
 
       return (
         <Switch

@@ -73,7 +73,6 @@ export default function openSubscriptionModal({
           customHeadingStyles={{
             borderRadius: 0,
           }}
-          customPriceGroupStyles={{ color: "#262626" }}
           onClick={onClick}
         />
       </Stack>

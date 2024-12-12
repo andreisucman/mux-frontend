@@ -51,7 +51,6 @@ export default function PricingCard({
         })}
         style={customHeadingStyles ? customHeadingStyles : {}}
       >
-        {price && <div className={classes.neon} />}
         <Title order={4} className={classes.name}>
           {name}
         </Title>
@@ -61,10 +60,7 @@ export default function PricingCard({
               className={cn(classes.priceGroup)}
               style={customPriceGroupStyles ? customPriceGroupStyles : {}}
             >
-              <Title order={3}>${price}</Title>/{" "}
-              <Text size="sm" mt={rem(2)}>
-                month
-              </Text>
+              <Title order={3}>${price}</Title>/ <Text>month</Text>
             </Group>
           )}
         </>
