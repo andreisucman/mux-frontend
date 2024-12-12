@@ -135,7 +135,6 @@ export default function UploadCard({
             image={localUrl || latestStyleImage}
             isLoadingOverlay={isBlurLoading}
             placeholder={relevantPlaceholder && relevantPlaceholder.url}
-            customImageStyles={{ minHeight: rem(350) }}
           />
         </Stack>
 

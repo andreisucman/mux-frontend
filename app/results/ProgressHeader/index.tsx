@@ -41,14 +41,18 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
   }, [followingUserId]);
 
   const onSelectType = (type?: string | null) => {
-    if (!type) return;
-    const relevantParts = partItems.filter((part) => part.type === type);
+    let relevantParts: FilterPartItemType[] = [];
+    if (type) {
+      relevantParts = partItems.filter((part) => part.type === type);
+    }
     setRelevantParts(relevantParts);
   };
 
   const onSelectPart = (part?: string | null) => {
-    if (!part) return;
-    const relevantPositions = positionItems.filter((position) => position.parts.includes(part));
+    let relevantPositions: PositionsFilterItemType[] = [];
+    if (part) {
+      relevantPositions = positionItems.filter((position) => position.parts.includes(part));
+    }
     setRelevantPositions(relevantPositions);
   };
 

@@ -15,6 +15,7 @@ import { onBlurImageClick } from "@/functions/blur";
 import { ScanTypeEnum, SexEnum, TypeEnum } from "@/types/global";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
 import { RequirementType } from "./types";
+import classes from "./UploadCarousel.module.css";
 
 type Props = {
   type: TypeEnum;
@@ -194,6 +195,11 @@ export default function UploadCarousel({
             slidesToScroll={1}
             withControls={false}
             withIndicators={true}
+            classNames={{
+              root: classes.root,
+              viewport: classes.viewport,
+              container: classes.container,
+            }}
           >
             {slides}
           </Carousel>

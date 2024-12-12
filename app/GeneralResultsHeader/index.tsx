@@ -7,7 +7,7 @@ import { modals } from "@mantine/modals";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType } from "@/components/FilterDropdown/types";
+import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import { partItems, typeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
@@ -166,7 +166,14 @@ export default function GeneralResultsHeader({
 
   useShallowEffect(() => {
     if (!filters) return;
-    setPartFilterItems(partItems.filter((part) => part.type === type));
+
+    let partFilterItems: FilterPartItemType[] = [];
+
+    if (type) {
+      partFilterItems = partItems.filter((part) => part.type === type);
+    }
+
+    setPartFilterItems(partFilterItems);
   }, [type, filters]);
 
   return (
@@ -178,7 +185,7 @@ export default function GeneralResultsHeader({
             data={typeFilterItems || []}
             icons={typeIcons}
             placeholder="Filter by type"
-            defaultSelected={type}
+            selectedValue={type}
             filterType="type"
             allowDeselect
             addToQuery
@@ -190,7 +197,7 @@ export default function GeneralResultsHeader({
             data={partFilterItems || []}
             icons={partIcons}
             placeholder="Filter by part"
-            defaultSelected={part}
+            selectedValue={part}
             filterType="part"
             allowDeselect
             addToQuery
