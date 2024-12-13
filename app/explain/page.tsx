@@ -83,47 +83,53 @@ export default function Explain() {
   const instruction = taskInstruction || recipeInstruction;
   const description = taskDescription || recipeDescription;
 
-  const switchProofUpload = useCallback(async (proofEnabled: boolean, taskId?: string | null) => {
-    if (!taskId) return;
-
-    try {
-      const response = await callTheServer({
-        endpoint: "updateProofUpload",
-        method: "POST",
-        body: {
-          taskId,
-          proofEnabled,
-        },
-      });
-
-      if (response.status === 200) {
-        const updatedTask = {
-          ...taskInfo,
-          proofEnabled,
-        } as TaskType;
-
-        setTaskInfo(updatedTask);
-      }
-    } catch (err) {
-      console.log(`Error: ${err}`);
-    }
-  }, [taskInfo]);
-
-  const handleFetchTaskProducts = useCallback(async (taskId: string) => {
-    try {
+  const switchProofUpload = useCallback(
+    async (proofEnabled: boolean, taskId?: string | null) => {
       if (!taskId) return;
-      const response = await callTheServer({
-        endpoint: "getTaskProducts",
-        method: "POST",
-        body: { taskId },
-      });
 
-      const updatedTask = { ...taskInfo, ...response.message };
-      setTaskInfo(updatedTask);
-    } catch (err) {
-      console.log(`Error in handleFetchTaskProducts: `, err);
-    }
-  }, [taskInfo]);
+      try {
+        const response = await callTheServer({
+          endpoint: "updateProofUpload",
+          method: "POST",
+          body: {
+            taskId,
+            proofEnabled,
+          },
+        });
+
+        if (response.status === 200) {
+          const updatedTask = {
+            ...taskInfo,
+            proofEnabled,
+          } as TaskType;
+
+          setTaskInfo(updatedTask);
+        }
+      } catch (err) {
+        console.log(`Error: ${err}`);
+      }
+    },
+    [taskInfo]
+  );
+
+  const handleFetchTaskProducts = useCallback(
+    async (taskId: string) => {
+      try {
+        if (!taskId) return;
+        const response = await callTheServer({
+          endpoint: "getTaskProducts",
+          method: "POST",
+          body: { taskId },
+        });
+
+        const updatedTask = { ...taskInfo, ...response.message };
+        setTaskInfo(updatedTask);
+      } catch (err) {
+        console.log(`Error in handleFetchTaskProducts: `, err);
+      }
+    },
+    [taskInfo]
+  );
 
   const handleFetchTaskInfo = useCallback(async (taskId: string) => {
     const newTaskInfo = await fetchTaskInfo(taskId);
@@ -316,7 +322,7 @@ export default function Explain() {
                     items={finalSuggestions}
                     taskKey={taskKey || ""}
                     productsPersonalized={productsPersonalized}
-                    refetchTask={handleFetchTaskProducts}
+                    refetchTask={() => handleFetchTaskInfo(taskId || "")}
                   />
                 )}
                 <Group className={classes.buttonsGroup}>

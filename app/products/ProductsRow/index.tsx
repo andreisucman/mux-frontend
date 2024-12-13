@@ -27,7 +27,7 @@ export default function ProductsRow({
 
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const finalSuggestions = defaultSuggestions?.length > 0 ? defaultSuggestions : suggestions;
+  const finalSuggestions = suggestions?.length > 0 ? suggestions : defaultSuggestions;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
 
@@ -59,7 +59,7 @@ export default function ProductsRow({
   }, []);
 
   return (
-    <Skeleton visible={showSkeleton} className="skeleton">
+    <Skeleton visible={showSkeleton}>
       <Stack className={classes.container}>
         <Group className={classes.upperPart} style={customStyles ? customStyles : {}}>
           <Text className={classes.date}>Starts: {date}</Text>

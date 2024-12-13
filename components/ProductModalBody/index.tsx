@@ -20,14 +20,10 @@ export default function ProductModalBody({ item, allItems }: Props) {
 
   const compareItems = allItems.filter((i) => i.suggestion === item.suggestion);
 
-  function handleAlternativeClick(suggestion: SuggestionType) {
-    setSelectedSuggestion(suggestion);
-  }
-
   const icon = showAlternatives ? (
-    <IconArrowLeft className={"icon"} />
+    <IconArrowLeft className={"icon"} style={{ marginRight: rem(6) }} />
   ) : (
-    <IconVersions className={"icon"} />
+    <IconVersions className={"icon"} style={{ marginRight: rem(6) }} />
   );
 
   return (
@@ -67,7 +63,7 @@ export default function ProductModalBody({ item, allItems }: Props) {
 
           <TableSelection
             suggestions={compareItems.sort((a, b) => a.rank - b.rank)}
-            handleAlternativeClick={handleAlternativeClick}
+            handleAlternativeClick={setSelectedSuggestion}
           />
         </>
       ) : (

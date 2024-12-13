@@ -19,6 +19,8 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
   const added = selectedAsins?.includes(item.asin);
   const modalTitle = `Product preview`;
 
+  console.log("item",item)
+
   const handleAddToCard = useCallback(
     (e: any) => {
       e.stopPropagation();
@@ -30,23 +32,22 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
     [added]
   );
 
+  const openProductModal = useCallback(() => {
+    modals.openContextModal({
+      centered: true,
+      modal: "general",
+      title: (
+        <Title order={5} component={"p"} lineClamp={1}>
+          {modalTitle}
+        </Title>
+      ),
+      innerProps: <ProductModalBody item={item} allItems={allItems} />,
+      withinPortal: false,
+    });
+  }, [modalTitle, item]);
+
   return (
-    <Stack
-      className={classes.container}
-      onClick={() => {
-        modals.openContextModal({
-          centered: true,
-          modal: "general",
-          title: (
-            <Title order={5} component={"p"} lineClamp={1}>
-              {modalTitle}
-            </Title>
-          ),
-          innerProps: <ProductModalBody item={item} allItems={allItems} />,
-          withinPortal: false,
-        });
-      }}
-    >
+    <Stack className={classes.container} onClick={openProductModal}>
       {showOnCellAtc && (
         <Button
           component="label"

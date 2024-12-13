@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconListSearch, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Group, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
@@ -52,9 +52,6 @@ export default function SuggestionContainer({
   const [showOverlay, setShowOverlay] = useState(false);
   const type = searchParams.get("type");
 
-  const { demographics } = userDetails || {};
-  const { sex } = demographics || {};
-
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
   const handleCreateCheckoutSession = useCallback(async () => {
@@ -95,22 +92,21 @@ export default function SuggestionContainer({
 
             const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
             const buttonIcon = !!isTrialUsed ? (
-              <IconPlus className="icon" />
+              <IconPlus className="icon" style={{ marginRight: rem(6) }} />
             ) : (
-              <IconSquareRoundedCheck className="icon" />
+              <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
             );
-
-            const coachIcon = sex === "male" ? "🦸🏿‍♂️" : "🦸🏾";
 
             const onClick = !!isTrialUsed
               ? handleCreateCheckoutSession
               : () =>
                   startSubscriptionTrial({
                     subscriptionName: "analyst",
+                    onComplete: () => findProducts(taskKey, criteria),
                   });
 
             openSubscriptionModal({
-              title: `${coachIcon} Add the Analyst Coach`,
+              title: `Add the Analyst Coach`,
               modalType: "analyst",
               isCentered: true,
               price: "4",
@@ -152,6 +148,20 @@ export default function SuggestionContainer({
     });
   }, []);
 
+  const waitComponentStyles = useMemo(
+    () => ({
+      position: "absolute",
+      inset: 0,
+      justifyContent: "center",
+      zIndex: 1,
+      backgroundColor: "rgba(0,0,0,0.25)",
+      borderRadius: " 1rem",
+    }),
+    []
+  );
+
+  const showPersonalize = !showOverlay && !productsPersonalized;
+
   useEffect(() => {
     if (productsPersonalized === undefined) return;
     setShowOverlay(!productsPersonalized);
@@ -174,8 +184,6 @@ export default function SuggestionContainer({
     }
   }, [taskKey]);
 
-  const showPersonalize = !showOverlay && !productsPersonalized;
-
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       {taskKey && (
@@ -188,6 +196,8 @@ export default function SuggestionContainer({
                 if (refetchTask) refetchTask();
                 setShowWaitComponent(false);
               }}
+              customContainerStyles={waitComponentStyles}
+              hideDisclaimer
             />
           )}
           {showOverlay && !showWaitComponent && (
@@ -219,7 +229,8 @@ export default function SuggestionContainer({
                 )}
                 {productsPersonalized && (
                   <Text className={classes.title}>
-                    <IconSquareRoundedCheck style={{ marginRight: rem(6) }} /> Best sorted
+                    <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} /> Best
+                    sorted
                   </Text>
                 )}
               </>

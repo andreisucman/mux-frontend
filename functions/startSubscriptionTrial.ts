@@ -1,10 +1,9 @@
 import { modals } from "@mantine/modals";
-import { OnCreateRoutineClickProps } from "@/context/CreateRoutineContext";
 import callTheServer from "./callTheServer";
 
 type Props = {
   subscriptionName: "improvement" | "advisor" | "analyst" | "peek";
-  onComplete?: (args: OnCreateRoutineClickProps) => void;
+  onComplete?: (args: any) => void;
 };
 
 export default async function startSubscriptionTrial({ subscriptionName, onComplete }: Props) {
