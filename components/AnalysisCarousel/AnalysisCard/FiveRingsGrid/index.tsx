@@ -26,8 +26,8 @@ export default function FiveRingsGrid({
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
-    return isMobile ? size : size * 0.525;
-  }, [containerWidth > 0, containerHeight > 0, ringObjects.length, isMobile]);
+    return isMobile ? size : size * 0.8;
+  }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
   return (
     <Stack className={classes.container}>

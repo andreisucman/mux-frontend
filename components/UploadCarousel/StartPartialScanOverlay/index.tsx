@@ -1,13 +1,13 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconDental, IconFlag, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
-import { Button, Group, rem, Stack } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { Button, rem, Stack, Text } from "@mantine/core";
 import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import getPartialScanUploadText from "@/helpers/getPartialScanUploadText";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
 import classes from "./StartPartialScanOverlay.module.css";
@@ -79,24 +79,16 @@ export default function StartPartialScanOverlay({
     return toDisplay;
   }, [uploadedParts?.length]);
 
+  const analysisString = getPartialScanUploadText(distinctUploadedParts);
+
   return (
     <Stack className={classes.container} style={outerStyles ? outerStyles : {}}>
       <Stack className={classes.wrapper} style={innerStyles ? innerStyles : {}} c="dimmed">
         {uploadedParts && uploadedParts.length > 0 && (
           <ImageCardStack images={toDisplay.map((part) => part.url || "")} />
         )}
-        <Group className={classes.somethingToScanContainer}>
-          Analyze the{" "}
-          {distinctUploadedParts.map((partName, i) => (
-            <Group className={classes.somethingToScanCell} key={partName}>
-              {iconsMap[partName]}
-              {upperFirst(partName)}
-            </Group>
-          ))}
-        </Group>
+        <Text mb={rem(12)}>{analysisString}</Text>
         <Button
-          size="md"
-          className={classes.button}
           onClick={handleStartAnalysis}
           loading={isButtonLoading}
           disabled={isButtonLoading}

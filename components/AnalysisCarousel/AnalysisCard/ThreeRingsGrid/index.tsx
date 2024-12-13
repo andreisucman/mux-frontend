@@ -27,7 +27,7 @@ export default function ThreeRingsGrid({
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
     return isMobile ? size : size * 0.8;
-  }, [containerWidth > 0, containerHeight > 0, ringObjects.length, isMobile]);
+  }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
   return (
     <Stack className={classes.container}>

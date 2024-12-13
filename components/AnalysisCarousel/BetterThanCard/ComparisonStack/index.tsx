@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { Group, Highlight, Stack, Title } from "@mantine/core";
+import { Group, Highlight, Stack } from "@mantine/core";
 import AreaChart from "@/components/AreaChart";
 import RingComponent from "@/components/RingComponent";
 import classes from "./ComparisonStack.module.css";
@@ -22,7 +22,7 @@ function ComparisonStack({
   highlightText,
   higherThanNumber,
 }: Props) {
-  const fontSize = useMemo(() => Math.min(ringSize * 0.3, 24), [ringSize]);
+  const fontSize = useMemo(() => Math.min(ringSize * 0.3, 20), [ringSize]);
   return (
     <Stack className={classes.container}>
       <Group className={classes.row}>

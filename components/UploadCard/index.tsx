@@ -23,6 +23,7 @@ type OnBlurClickProps = {
 type Props = {
   sex: SexEnum;
   type?: string;
+  part?: string;
   scanType?: ScanTypeEnum;
   localUrl: string;
   eyesBlurredUrl: string;
@@ -46,6 +47,7 @@ export default function UploadCard({
   sex,
   scanType,
   type,
+  part,
   localUrl,
   originalUrl,
   progress,
@@ -113,9 +115,10 @@ export default function UploadCard({
         item.sex.includes(sex) &&
         scanType === item.scanType &&
         item.type === type &&
+        item.part === part &&
         item.position === position
     );
-  }, [sex, type, position, scanType]);
+  }, [sex, part, type, position, scanType]);
 
   return (
     <Stack className={classes.container}>

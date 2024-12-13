@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: space-evenly;
   gap: rem(2);
-  min-height: rem(32);
+  height: rem(28);
   min-width: rem(26);
 
   @media (max-width: $mantine-breakpoint-sm) {

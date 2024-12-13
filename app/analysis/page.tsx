@@ -47,12 +47,14 @@ export default function Analysis() {
   }, []);
 
   useEffect(() => {
+    if (!type || !userDetails) return;
+
     if (rest !== null && isEmpty) {
       setDisplayComponent("upload");
     } else if (latestTypeProgress) {
       setDisplayComponent("carousel");
     }
-  }, [isEmpty]);
+  }, [isEmpty, type, userDetails]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

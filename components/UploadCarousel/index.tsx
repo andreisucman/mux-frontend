@@ -98,8 +98,8 @@ export default function UploadCarousel({
     .map((item, index) => {
       if (!userDetails) return;
       if (!showFace && ["front", "right", "left"].includes(item.position)) return;
-      if (!showMouth && item.position === "mouth") return;
-      if (!showScalp && item.position === "scalp") return;
+      if (!showMouth && item.part === "mouth") return;
+      if (!showScalp && item.part === "scalp") return;
 
       const { demographics } = userDetails || {};
       const { sex } = demographics || {};
@@ -117,6 +117,7 @@ export default function UploadCarousel({
             isLoading={isLoading}
             progress={progress}
             type={item.type}
+            part={item.part}
             originalUrl={originalUrl}
             instruction={item.instruction}
             localUrl={localUrl}
@@ -156,14 +157,15 @@ export default function UploadCarousel({
     slides.length === 0 &&
     toAnalyze &&
     toAnalyze?.[type as TypeEnum.BODY | TypeEnum.HEAD]?.length > 0;
+
   const allPartsEnabled = showFace && showMouth && showScalp;
-  const showPartsSelector = type === "head" && scanType === "progress" && somethingUploaded;
+  const showPartsSelector = type === "head" && scanType === "progress";
 
   useEffect(() => {
-    if (finalRequirements.length > 0) {
-      setDisplayComponent("carousel");
-    } else if (somethingUploaded && finalRequirements.length > 0) {
+    if (somethingUploaded && finalRequirements.length > 0) {
       setDisplayComponent("partialScanOverlay");
+    } else if (finalRequirements.length > 0) {
+      setDisplayComponent("carousel");
     } else {
       setDisplayComponent("loading");
     }
@@ -178,17 +180,17 @@ export default function UploadCarousel({
 
   return (
     <Stack flex={1}>
+      {displayComponent !== "loading" && showPartsSelector && (
+        <SelectPartsCheckboxes
+          distinctUploadedParts={distinctUploadedParts}
+          showMouth={mouthExists && showMouth}
+          showScalp={scalpExists && showScalp}
+          showFace={faceExists && showFace}
+          setShowPart={setShowPart}
+        />
+      )}
       {displayComponent === "carousel" && (
         <>
-          {showPartsSelector && (
-            <SelectPartsCheckboxes
-              distinctUploadedParts={distinctUploadedParts}
-              showMouth={mouthExists && showMouth}
-              showScalp={scalpExists && showScalp}
-              showFace={faceExists && showFace}
-              setShowPart={setShowPart}
-            />
-          )}
           <Carousel
             align="start"
             slideGap={16}

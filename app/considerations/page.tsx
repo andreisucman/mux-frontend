@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "@/helpers/custom-router";
 import { IconArrowRight, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -13,22 +12,30 @@ import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
+import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
-import { UserDataType } from "@/types/global";
+import { UserConcernType, UserDataType, UserSubscriptionsType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./considerations.module.css";
 
 export const runtime = "edge";
 
+type CreateRoutineProps = {
+  type: string | null;
+  concerns?: UserConcernType[];
+  subscriptions?: UserSubscriptionsType;
+  specialConsiderations: string;
+};
+
 export default function Considerations() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [text, setText] = useState("");
-  const [disableButton, setDisableButton] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
 
-  const { demographics } = userDetails || {};
+  const { demographics, specialConsiderations } = userDetails || {};
   const { sex } = demographics || {};
 
   const type = searchParams.get("type");
@@ -39,10 +46,11 @@ export default function Considerations() {
       ? "(Optional) Vegetarian, pregnancy, diabetes, allergy, etc..."
       : "(Optional) Vegetarian, diabetes, allergy, surgery, etc...";
 
-  const handleCreateRoutine = useCallback(() => {
+  const handleCreateRoutine = () => {
     updateSpecialConsiderations(text);
-    createRoutine(userDetails);
-  }, []);
+    const { concerns, subscriptions } = userDetails || {};
+    createRoutine({ concerns, subscriptions, specialConsiderations: text, type });
+  };
 
   const updateSpecialConsiderations = useCallback(async (text: string) => {
     try {
@@ -67,22 +75,17 @@ export default function Considerations() {
   }, []);
 
   const createRoutine = useCallback(
-    async (userDetails: Partial<UserDataType> | null) => {
-      if (!type) return;
-      if (disableButton) return;
-      if (!userDetails) return;
+    async ({ type, concerns, subscriptions, specialConsiderations }: CreateRoutineProps) => {
+      if (isLoading || !type || !concerns || !subscriptions) return;
+      setIsLoading(true);
 
-      setDisableButton(true);
-
-      const { _id: userId, concerns, specialConsiderations } = userDetails;
       const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
 
       try {
         const response = await callTheServer({
-          endpoint: "createRoutineRoute",
+          endpoint: "createRoutine",
           method: "POST",
           body: {
-            userId,
             type,
             part,
             concerns,
@@ -92,7 +95,6 @@ export default function Considerations() {
 
         if (response.status === 200) {
           if (response.error === "subscription expired") {
-            const { subscriptions } = userDetails || {};
             const { improvement } = subscriptions || {};
             const { isTrialUsed } = improvement || {};
 
@@ -118,13 +120,13 @@ export default function Considerations() {
 
             openSubscriptionModal({
               title: `Add the Improvement Coach`,
-              price: "3",
+              price: "4",
               isCentered: true,
               modalType: "improvement",
               underButtonText: "No credit card required",
-              onClick,
               buttonText,
               buttonIcon,
+              onClick,
               onClose: () => fetchUserData(setUserDetails),
             });
 
@@ -133,13 +135,18 @@ export default function Considerations() {
           saveToLocalStorage("runningAnalyses", { [type]: true }, "add");
           router.replace(redirectUrl);
         }
-        setDisableButton(false);
       } catch (err) {
-        setDisableButton(false);
+        setIsLoading(false);
       }
     },
-    [type, part, disableButton]
+    [type, part, isLoading]
   );
+
+  useEffect(() => {
+    if (!specialConsiderations) return;
+
+    setText(specialConsiderations || "");
+  }, [specialConsiderations]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -153,7 +160,7 @@ export default function Considerations() {
         />
         <Stack className={classes.wrapper}>
           <TextareaComponent text={text} placeholder={placeholder} setText={setText} />
-          <Button loading={disableButton} onClick={handleCreateRoutine} disabled={disableButton}>
+          <Button loading={isLoading} onClick={handleCreateRoutine} disabled={isLoading}>
             Next
             <IconArrowRight className="icon" style={{ marginLeft: rem(8) }} />
           </Button>

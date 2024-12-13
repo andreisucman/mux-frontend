@@ -49,7 +49,7 @@ export default function CalendarRow({
   }, []);
 
   return (
-    <Skeleton visible={showSkeleton} className={"skeleton"} style={{ flex: 0 }}>
+    <Skeleton visible={showSkeleton}>
       <Group
         className={classes.container}
         onClick={() => selectTask(task)}

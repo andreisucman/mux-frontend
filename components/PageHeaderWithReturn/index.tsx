@@ -51,7 +51,7 @@ export default function PageHeaderWithReturn({
           data={filterData}
           icons={icons}
           selectedValue={type}
-          placeholder="Select type"
+          placeholder="Filter by type"
           filterType="type"
           addToQuery
           allowDeselect

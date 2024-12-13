@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "@/helpers/custom-router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 

@@ -23,12 +23,13 @@ const icons: { [key: string]: React.ReactNode } = {
 export default function StartButton({ onClick, scanType, type }: Props) {
   const { userDetails } = useContext(UserContext);
   const { demographics } = userDetails || {};
-  const { sex = "female" } = demographics || {};
+  const { sex } = demographics || {};
 
   const relevantPlaceholder = useMemo(
     () =>
       placeholders.find(
-        (item) => item.sex.includes(sex) && item.scanType === scanType && item.type === type
+        (item) =>
+          item.sex.includes(sex || "female") && item.scanType === scanType && item.type === type
       ),
     [sex, scanType, type]
   );

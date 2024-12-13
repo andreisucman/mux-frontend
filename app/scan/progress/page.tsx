@@ -44,6 +44,8 @@ export default function ScanProgress() {
     scanType: finalType as "head" | "body",
   });
 
+  console.log("availableRequirements",availableRequirements)
+
   const checkBackDate = formatDate({ date: nextScanDate, hideYear: true });
 
   const handleUpload = useCallback(
@@ -173,7 +175,7 @@ export default function ScanProgress() {
           ) : (
             <OverlayWithText
               icon={<IconHourglassHigh className="icon" />}
-              text={`Check back after ${checkBackDate}.`}
+              text={`Next ${type ? type : ""} scan is after ${checkBackDate}.`}
             />
           )}
         </Stack>

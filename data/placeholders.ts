@@ -23,11 +23,13 @@ import maleScalp from "@/public/assets/placeholders/dark/male-scalp.svg";
 import maleStyleBody from "@/public/assets/placeholders/dark/male-style-body.svg";
 import maleStyleHead from "@/public/assets/placeholders/dark/male-style-head.svg";
 import { PositionEnum, ScanTypeEnum, TypeEnum } from "@/types/global";
+import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 
 export const placeholders: {
   sex: string[];
   scanType: ScanTypeEnum;
   type?: TypeEnum;
+  part?: PartEnum;
   position?: PositionEnum;
   url: StaticImageData;
 }[] = [
@@ -35,6 +37,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.FACE,
     position: PositionEnum.FRONT,
     url: maleHeadFront,
   },
@@ -42,6 +45,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.FACE,
     position: PositionEnum.RIGHT,
     url: maleHeadRight,
   },
@@ -49,6 +53,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.FACE,
     position: PositionEnum.LEFT,
     url: maleHeadLeft,
   },
@@ -56,14 +61,16 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
-    position: PositionEnum.SCALP,
+    part: PartEnum.SCALP,
+    position: PositionEnum.FRONT,
     url: maleScalp,
   },
   {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
-    position: PositionEnum.MOUTH,
+    part: PartEnum.MOUTH,
+    position: PositionEnum.FRONT,
     url: maleMouth,
   },
   {
@@ -77,6 +84,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.STYLE,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.FRONT,
     url: maleStyleBody,
   },
@@ -84,6 +92,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.FRONT,
     url: maleBodyFront,
   },
@@ -91,6 +100,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.RIGHT,
     url: maleBodyRight,
   },
@@ -98,6 +108,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.LEFT,
     url: maleBodyLeft,
   },
@@ -105,6 +116,7 @@ export const placeholders: {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.BACK,
     url: maleBodyBack,
   },
@@ -112,6 +124,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.FACE,
     position: PositionEnum.FRONT,
     url: femaleHeadFront,
   },
@@ -119,6 +132,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.FACE,
     position: PositionEnum.RIGHT,
     url: femaleHeadRight,
   },
@@ -140,6 +154,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.FACE,
     position: PositionEnum.LEFT,
     url: femaleHeadLeft,
   },
@@ -147,6 +162,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.SCALP,
     position: PositionEnum.SCALP,
     url: femaleScalp,
   },
@@ -154,6 +170,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
+    part: PartEnum.MOUTH,
     position: PositionEnum.MOUTH,
     url: femaleMouth,
   },
@@ -161,6 +178,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.FRONT,
     url: femaleBodyFront,
   },
@@ -168,6 +186,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.RIGHT,
     url: femaleBodyRight,
   },
@@ -175,6 +194,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.LEFT,
     url: femaleBodyLeft,
   },
@@ -182,6 +202,7 @@ export const placeholders: {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
+    part: PartEnum.BODY,
     position: PositionEnum.BACK,
     url: femaleBodyBack,
   },

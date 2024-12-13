@@ -13,15 +13,3 @@
   gap: rem(4);
   transform: translateY(-25%);
 }
-
-.somethingToScanContainer {
-  justify-content: center;
-  margin: 0 0 rem(16) 0;
-  gap: rem(8);
-  position: relative;
-  z-index: 1;
-}
-
-.somethingToScanCell {
-  gap: rem(4);
-}

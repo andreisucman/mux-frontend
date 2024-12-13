@@ -11,7 +11,11 @@ import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import {
+  deleteFromLocalStorage,
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskType, TypeEnum, UserDataType } from "@/types/global";
 import ButtonsGroup from "./ButtonsGroup";
@@ -207,6 +211,10 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
                   onComplete={() => {
                     setDisplayComponent(relevantTasks ? "tasks" : "createTaskOverlay");
                     fetchLatestRoutinesAndTasks();
+                  }}
+                  onError={() => {
+                    setDisplayComponent("loading");
+                    deleteFromLocalStorage("runningAnalyses", type || "");
                   }}
                 />
               </Stack>

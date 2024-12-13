@@ -41,7 +41,7 @@ export default function UploadProof() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
-  const [componentToDisplay, setComponentToDisplay] = useState<
+  const [componentToDisplay, setDisplayComponent] = useState<
     "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed"
   >("loading");
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
@@ -80,7 +80,7 @@ export default function UploadProof() {
       if (status !== "authenticated") return;
 
       try {
-        setComponentToDisplay("waitComponent");
+        setDisplayComponent("waitComponent");
 
         const urlArray = await uploadToSpaces({
           itemsArray: [recordedBlob],
@@ -94,7 +94,7 @@ export default function UploadProof() {
         });
 
         if (response.status !== 200) {
-          setComponentToDisplay("videoRecorder");
+          setDisplayComponent("videoRecorder");
           openErrorModal({
             description: response.error,
           });
@@ -105,7 +105,7 @@ export default function UploadProof() {
         deleteFromIndexedDb(captureType === "image" ? "proofImage" : "proofVideo");
       } catch (err) {
         console.log("Error in uploadProof: ", err);
-        setComponentToDisplay("videoRecorder");
+        setDisplayComponent("videoRecorder");
         saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
       }
     },
@@ -121,7 +121,7 @@ export default function UploadProof() {
     if (!taskId) return;
     await fetchProofInfo(taskId);
     handleFetchTaskInfo(taskId);
-    setComponentToDisplay("completed");
+    setDisplayComponent("completed");
   }, []);
 
   useEffect(() => {
@@ -134,12 +134,12 @@ export default function UploadProof() {
     if (!taskId) return;
 
     if (!taskInfo) {
-      setComponentToDisplay("loading");
+      setDisplayComponent("loading");
       return;
     }
 
     if (taskInfo && taskExpired) {
-      setComponentToDisplay("expired");
+      setDisplayComponent("expired");
       return;
     }
 
@@ -152,11 +152,11 @@ export default function UploadProof() {
     }
 
     if (analysisStatus) {
-      setComponentToDisplay("waitComponent");
+      setDisplayComponent("waitComponent");
     } else if (taskStatus === "completed") {
-      setComponentToDisplay("completed");
+      setDisplayComponent("completed");
     } else {
-      setComponentToDisplay("videoRecorder");
+      setDisplayComponent("videoRecorder");
     }
   }, [taskId, taskInfo, taskExpired]);
 
@@ -179,7 +179,7 @@ export default function UploadProof() {
                 onComplete={() => handleCompleteUpload(taskId)}
                 hideDisclaimer
                 onError={() => {
-                  setComponentToDisplay("videoRecorder");
+                  setDisplayComponent("videoRecorder");
                   deleteFromLocalStorage("runningAnalyses", taskId || "");
                 }}
               />

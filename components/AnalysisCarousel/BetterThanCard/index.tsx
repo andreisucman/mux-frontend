@@ -40,13 +40,12 @@ function BetterThanCard({ currentlyHigherThan, progressRecord, ageInterval, titl
 
   const fewRows = partCircleObjects.length === 1;
 
-  const ringSize = useMemo(
-    () =>
-      fewRows
-        ? containerWidth * 0.3
-        : Math.min(containerHeight * 0.08, containerHeight / partCircleObjects.length),
-    [containerHeight > 0]
-  );
+  const ringSize = useMemo(() => {
+    const size = fewRows
+      ? Math.max(100, containerWidth * 0.1)
+      : Math.min(containerHeight * 0.08, containerHeight / partCircleObjects.length);
+    return size;
+  }, [containerHeight]);
 
   const percentage = Math.round(currentlyHigherThan.overall);
   const highlight = `${percentage}%`;

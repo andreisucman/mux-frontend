@@ -11,8 +11,9 @@ import {
   IconZzz,
 } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
+import { ActionIcon, Button, Group, Loader, rem, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import { typeItems } from "@/components/PageHeader/data";
@@ -46,10 +47,11 @@ export default function Calendar() {
   const givenTaskKey = searchParams.get("key");
   const givenMode = searchParams.get("mode");
 
+  const [displayComponent, setDisplayComponent] = useState<"loading" | "list" | "empty">("loading");
   const [selectedStatus, setSelectedStatus] = useState("active");
   const [tasksToUpdate, setTasksToUpdate] = useState<TaskType[]>([]);
   const [selectedTasks, setSelectedTasks] = useState<TaskType[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [mode, setMode] = useState(givenMode || "all");
   const [tasks, setTasks] = useState<TaskType[]>();
   const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +105,6 @@ export default function Calendar() {
   const handleChangeMode = useCallback(
     (mode: string, taskKey?: string) => {
       if (!timeZone) return;
-
       setMode(mode);
       if (mode === "individual" && taskKey) {
         setSelectedTaskKey(taskKey);
@@ -120,21 +121,11 @@ export default function Calendar() {
           mode: mode as string,
           timeZone,
         }).then((tasks) => {
-          const date = new Date(selectedDate || new Date());
-          const newTasks = getTasksOfThisDate(tasks, date, selectedStatus);
-          setSelectedTasks(newTasks);
+          setSelectedTasks(tasks);
         });
       }
     },
-    [
-      timeZone,
-      tasks?.length,
-      relevantRoutine?._id,
-      selectedStatus,
-      selectedDate,
-      selectedTaskKey,
-      type,
-    ]
+    [timeZone, tasks, mode, relevantRoutine, selectedStatus, selectedDate, selectedTaskKey, type]
   );
 
   const handleChangeStatus = useCallback(
@@ -155,8 +146,15 @@ export default function Calendar() {
         setTasks(tasks);
 
         if (mode === "all") {
-          const date = new Date(selectedDate || new Date());
-          const newTasks = getTasksOfThisDate(tasks, date, status);
+          let newTasks: TaskType[] = [];
+
+          if (selectedDate) {
+            const date = new Date(selectedDate || new Date());
+            newTasks = getTasksOfThisDate(tasks, date, status);
+          } else {
+            newTasks = tasks;
+          }
+
           setSelectedTasks(newTasks);
         } else {
           setSelectedTaskKey(taskKey);
@@ -170,6 +168,8 @@ export default function Calendar() {
 
   const loadTasks = useCallback(
     async ({ date, status, type, key, mode, timeZone, routineId }: LoadTasksProps) => {
+      setDisplayComponent("loading");
+
       try {
         let endpoint = "getCalendarTasks";
 
@@ -208,13 +208,15 @@ export default function Calendar() {
               }),
             };
           });
+          setDisplayComponent("list");
+
           return updated;
         }
       } catch (err) {
         console.log("Error in loadTasks:", err);
       }
     },
-    [selectedStatus]
+    [selectedStatus, type]
   );
 
   const updateTasks = useCallback(
@@ -249,11 +251,9 @@ export default function Calendar() {
         }
       } catch (err) {
         setIsLoading(false);
-
-        console.log("Error in updateTasks:", err);
       }
     },
-    [isLoading]
+    [isLoading, type]
   );
 
   const getTasksOfThisDate = useCallback(
@@ -272,19 +272,32 @@ export default function Calendar() {
 
       return filteredTasks;
     },
-    []
+    [type]
   );
 
   const handleSelectDate = useCallback(
     (date: Date | null) => {
       if (!date) return;
       setTasksToUpdate([]);
-      const selectedDate = new Date(date) || new Date();
-      const newTasks = getTasksOfThisDate(tasks, selectedDate, selectedStatus);
-      setSelectedDate(selectedDate);
+
+      const isSameDate = date.toDateString() === selectedDate?.toDateString();
+
+      const newDate = date ? new Date(date) : new Date();
+
+      let newTasks: TaskType[] = [];
+
+      if (isSameDate) {
+        if (tasks) {
+          newTasks = tasks;
+        }
+      } else {
+        newTasks = getTasksOfThisDate(tasks, newDate, selectedStatus);
+      }
+
+      setSelectedDate(isSameDate ? null : newDate);
       setSelectedTasks(newTasks);
     },
-    [selectedStatus, tasks?.length]
+    [selectedStatus, selectedDate, tasks, type]
   );
 
   const emptyIcon = useMemo(
@@ -305,7 +318,7 @@ export default function Calendar() {
     handleChangeMode("all");
     setSelectedTaskKey(undefined);
     setTasksToUpdate([]);
-  }, []);
+  }, [timeZone]);
 
   const handleShowByStatus = useCallback(
     (status: "active" | "expired" | "disabled") => {
@@ -318,11 +331,15 @@ export default function Calendar() {
     [mode, selectedTaskKey, timeZone, relevantRoutine?._id]
   );
 
-  useEffect(() => {
+  useShallowEffect(() => {
     if (!timeZone) return;
     if (!relevantRoutine) {
-      return setSelectedTasks([]);
+      setSelectedTasks([]);
+      setTasks([]);
+      setDisplayComponent("list");
+      return;
     }
+    setTasks(undefined);
 
     loadTasks({
       status: selectedStatus,
@@ -334,12 +351,9 @@ export default function Calendar() {
     }).then((tasks) => {
       setTasks(tasks);
 
-      // const date = new Date(selectedDate || new Date());
-      // const newTasks = getTasksOfThisDate(tasks, date, "active");
-
       setSelectedTasks(tasks);
     });
-  }, [relevantRoutine?._id, timeZone, type]);
+  }, [relevantRoutine, timeZone, type]);
 
   useEffect(() => {
     if (!givenTaskKey) return;
@@ -349,15 +363,15 @@ export default function Calendar() {
 
   return (
     <Stack flex={1} className="smallPage">
-      <SkeletonWrapper>
-        <PageHeaderWithReturn
-          title="Tasks calendar"
-          isDisabled={mode === "individual"}
-          filterData={typeItems}
-          icons={typeIcons}
-          showReturn
-          nowrap
-        />
+      <PageHeaderWithReturn
+        title="Tasks calendar"
+        isDisabled={mode === "individual"}
+        filterData={typeItems}
+        icons={typeIcons}
+        showReturn
+        nowrap
+      />
+      <SkeletonWrapper show={!selectedTasks}>
         <DatePicker
           level="month"
           m="auto"
@@ -419,9 +433,10 @@ export default function Calendar() {
           </ActionIcon>
         </Group>
 
-        {selectedTasks.length > 0 ? (
-          <Stack className={classes.content}>
-            {selectedTasks && (
+        <Stack className={classes.content}>
+          {displayComponent === "loading" && <Loader m="0 auto" pt="15%" />}
+          {displayComponent === "list" && (
+            <>
               <Stack className={classes.list}>
                 {selectedTasks.map((record, index) => {
                   return (
@@ -436,26 +451,28 @@ export default function Calendar() {
                   );
                 })}
               </Stack>
-            )}
-          </Stack>
-        ) : (
-          <OverlayWithText icon={emptyIcon} text={emptyText} />
-        )}
+              {tasksToUpdate.length > 0 && (
+                <Button
+                  mt={16}
+                  loading={isLoading}
+                  disabled={disableButton || isLoading}
+                  onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
+                >
+                  {selectedStatus === "active" ? (
+                    <IconX className="icon" style={{ marginRight: rem(6) }} />
+                  ) : (
+                    <IconCheck className="icon" style={{ marginRight: rem(6) }} />
+                  )}
+                  {selectedStatus === "active" ? "Disable" : "Enable"} selected
+                </Button>
+              )}
+            </>
+          )}
 
-        {tasksToUpdate.length > 0 && (
-          <Button
-            loading={isLoading}
-            disabled={disableButton || isLoading}
-            onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
-          >
-            {selectedStatus === "active" ? (
-              <IconX className="icon" style={{ marginRight: rem(6) }} />
-            ) : (
-              <IconCheck className="icon" style={{ marginRight: rem(6) }} />
-            )}
-            {selectedStatus === "active" ? "Disable" : "Enable"} selected
-          </Button>
-        )}
+          {displayComponent !== "loading" && selectedTasks.length === 0 && (
+            <OverlayWithText icon={emptyIcon} text={emptyText} />
+          )}
+        </Stack>
       </SkeletonWrapper>
     </Stack>
   );

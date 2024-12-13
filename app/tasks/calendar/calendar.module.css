@@ -2,11 +2,7 @@
   position: relative;
   min-height: rem(250);
   flex: 1;
-}
-
-.list {
-  position: absolute;
-  inset: 0;
+  gap: 0;
 }
 
 .icon {

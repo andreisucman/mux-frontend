@@ -54,13 +54,12 @@ function BetterThanCardPotential({
   const highlightText = `Overall you can look better than ${percentage}% of users in the ${ageInterval} age group.`;
   const fewRows = partCircleObjects.length === 1;
 
-  const ringSize = useMemo(
-    () =>
-      fewRows
-        ? containerWidth * 0.3
-        : Math.min(containerHeight * 0.08, containerHeight / partCircleObjects.length),
-    [containerHeight > 0]
-  );
+  const ringSize = useMemo(() => {
+    const size = fewRows
+      ? Math.max(100, containerWidth * 0.1)
+      : Math.min(containerHeight * 0.08, containerHeight / partCircleObjects.length);
+    return size;
+  }, [containerHeight]);
 
   const verdictTitle = useMemo(
     () => getAppearanceVerdict(potentialRecord.overall as number, true),

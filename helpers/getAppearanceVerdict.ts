@@ -2,19 +2,15 @@ export default function getAppearanceVerdict(score: number, isPotential?: boolea
   let text = "";
 
   if (score > 0) {
-    text = "You could use some work";
+    text = "Your look could use some work";
   }
 
   if (score > 40) {
     text = `You ${isPotential ? "can look" : "look"} okay`;
   }
 
-  if (score > 60) {
-    text = `You ${isPotential ? "can look" : "look"} good`;
-  }
-
   if (score > 80) {
-    text = `You ${isPotential ? "can look" : "look"} excellent`;
+    text = `You ${isPotential ? "can look better" : "look good"}`;
   }
 
   return text;

@@ -67,7 +67,7 @@ export default function ScanIndexPage() {
       <Stack className={classes.wrapper}>
         <Group align="center">
           <Title order={1}>Scan yourself</Title>
-          <SegmentedControl value={sex} data={sexes} onChange={(value)=>handleChangeSex(value)} />
+          <SegmentedControl value={sex || "female"} data={sexes} onChange={(value)=>handleChangeSex(value)} />
         </Group>
         <Group className={classes.content}>
           <StartButton
