@@ -35,7 +35,7 @@ export default function ClubRoutines() {
 
   const type = searchParams.get("type") || "head";
   const followingUserId = searchParams.get("followingUserId");
-  const isSelf = userId === followingUserId;
+  const isSelf = !followingUserId ||  userId === followingUserId;
 
   const openTaskDetails = useCallback(
     (task: AllTaskType, routineId: string) => {
@@ -187,7 +187,7 @@ export default function ClubRoutines() {
             />
           );
         }),
-    [type, routines]
+    [type, routines, isSelf]
   );
 
   useEffect(() => {

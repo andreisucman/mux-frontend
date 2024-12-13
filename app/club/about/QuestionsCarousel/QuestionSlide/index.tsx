@@ -23,8 +23,8 @@ export default function QuestionSlide({ question, submitResponse }: Props) {
   const heading = useMemo(
     () => (
       <Stack className={classes.headingStack}>
-        <Text size="sm" c="dimmed">
-          Create biography:
+        <Text size="xs" c="dimmed">
+          Create bio:
         </Text>
 
         <div className={classes.questionText}>

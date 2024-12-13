@@ -33,21 +33,19 @@ export default function Club() {
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
         <ClubProfileHeader />
-        <Skeleton className={`${classes.skeleton} skeleton`} visible={showSkeleton}>
-          <Group className={classes.top}>
-            <ClubProfilePreview data={youData} type="you" showButtons />
-            {localFollowingUserId && (
-              <ClubProfilePreview data={youTrackData} type="peek" showButtons />
-            )}
-          </Group>
-          <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
-          <Stack className={classes.followYou}>
-            <Text c="dimmed" size="sm">
-              Follow you ({totalFollowers || 0})
-            </Text>
-            <FollowersList />
-          </Stack>
-        </Skeleton>
+        <Group className={classes.top}>
+          <ClubProfilePreview data={youData} type="you" showButtons />
+          {localFollowingUserId && (
+            <ClubProfilePreview data={youTrackData} type="peek" showButtons />
+          )}
+        </Group>
+        <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
+        <Stack className={classes.followYou}>
+          <Text c="dimmed" size="sm">
+            Follow you ({totalFollowers || 0})
+          </Text>
+          <FollowersList />
+        </Stack>
       </SkeletonWrapper>
     </Stack>
   );

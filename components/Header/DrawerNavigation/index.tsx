@@ -77,7 +77,7 @@ const defaultAuthenticatedNavigation = [
   {
     title: "My advisor",
     icon: <IconInnerShadowBottom stroke={1.25} className="icon" />,
-    path: "/advisor",
+    path: "/advisor?type=head",
   },
 ];
 

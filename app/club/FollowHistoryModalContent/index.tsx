@@ -107,7 +107,7 @@ export default function FollowHistoryModalContent() {
             )}
           </>
         ) : (
-          <Loader m="auto" />
+          <Loader m="1.6rem auto" />
         )}
       </Stack>
       {hasMore && (

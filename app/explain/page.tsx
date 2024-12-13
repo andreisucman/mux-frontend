@@ -264,7 +264,7 @@ export default function Explain() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper>
+      <SkeletonWrapper show={!name}>
         <PageHeaderWithReturn title={name || ""} showReturn />
 
         <Skeleton className="skeleton" visible={!taskInfo}>

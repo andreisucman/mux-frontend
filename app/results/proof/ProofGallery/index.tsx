@@ -46,7 +46,7 @@ export default function ProofGallery({
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
   const followingUserId = searchParams.get("followingUserId");
-  const isSelf = userId === followingUserId;
+  const isSelf = !followingUserId || userId === followingUserId;
 
   const modelObject = proof && proof[0];
   const appliedBlurType = modelObject?.mainUrl.name;

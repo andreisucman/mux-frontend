@@ -210,6 +210,7 @@ export interface UserDataType extends DefaultUserType {
   email?: string | null;
   emailVerified?: boolean;
   auth?: string;
+  country: string | null;
   club: ClubDataType | null;
   concerns: UserConcernType[];
   demographics: DemographicsType;

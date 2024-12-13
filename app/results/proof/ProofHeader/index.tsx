@@ -116,6 +116,7 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
             filterType="type"
             onSelect={onSelectType}
             allowDeselect
+            isDisabled={isDisabled || availableTypes.length === 0}
             addToQuery
           />
           <FilterDropdown
@@ -128,7 +129,10 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
             allowDeselect
             addToQuery
           />
-          <SearchButton onSearchClick={() => solutionsSpotlight.open()} />
+          <SearchButton
+            onSearchClick={() => solutionsSpotlight.open()}
+            isDisabled={isDisabled || availableTypes.length === 0}
+          />
         </>
       </Group>
       <Spotlight

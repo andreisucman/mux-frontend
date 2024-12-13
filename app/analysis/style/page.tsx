@@ -126,8 +126,19 @@ export default function StyleScanResult() {
   );
 
   const title = `Your ${type === "head" ? "head" : "outfit"} looks ${relevantOutlook?.icon} ${styleName}`;
-  const text = `Scan your ${type}`;
-  const icon = type === "head" ? <IconMoodSmile className="icon" /> : <IconMan className="icon" />;
+  const icon =
+    type === "head" ? (
+      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
+    ) : (
+      <IconMan className="icon" style={{ marginRight: rem(6) }} />
+    );
+
+  const overlayButton = (
+    <Button mt={8} variant="default" onClick={() => router.push(`/scan/style?type=${type}`)}>
+      {icon}
+      {type ? `Scan your ${type === "head" ? "head" : "outfit"}` : "Scan"}
+    </Button>
+  );
 
   useEffect(() => {
     if (relevantAnalysis) {
@@ -172,12 +183,7 @@ export default function StyleScanResult() {
           </>
         )}
         {displayComponent === "empty" && (
-          <OverlayWithText
-            icon={icon}
-            buttonText={text}
-            text={`No ${type} analysis`}
-            onButtonClick={() => router.push(`/scan/style?type=${type}`)}
-          />
+          <OverlayWithText text={`No ${type} style analysis`} button={overlayButton} />
         )}
       </Skeleton>
     </Stack>

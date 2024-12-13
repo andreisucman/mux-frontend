@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconHourglassLow } from "@tabler/icons-react";
-import { Skeleton, Stack } from "@mantine/core";
+import { Button, Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import WaitComponent from "@/components/WaitComponent";
@@ -124,6 +124,12 @@ export default function UploadProof() {
     setDisplayComponent("completed");
   }, []);
 
+  const overlayButton = (
+    <Button mt={8} variant="default" onClick={() => router.replace("/tasks")}>
+      Return
+    </Button>
+  );
+
   useEffect(() => {
     if (!taskId) return;
     handleFetchTaskInfo(taskId);
@@ -196,8 +202,7 @@ export default function UploadProof() {
               <OverlayWithText
                 text="This task expired"
                 icon={<IconHourglassLow className="icon" />}
-                buttonText="Return"
-                onButtonClick={() => router.replace("/tasks")}
+                button={overlayButton}
               />
             )}
           </Stack>

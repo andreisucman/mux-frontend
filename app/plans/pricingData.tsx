@@ -11,7 +11,7 @@ import {
   IconHandLoveYou,
   IconMessage2,
   IconScaleOutline,
-  IconShoppingCart,
+  IconShoppingBag,
   IconToolsKitchen2,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
@@ -85,7 +85,7 @@ export const improvementCoachContent = [
 
 export const analystCoachContent = [
   {
-    icon: <IconShoppingCart className="icon icon__large" style={style} />,
+    icon: <IconShoppingBag className="icon icon__large" style={style} />,
     description:
       "Chooses the best products for your tasks based on your criteria and special considerations.",
   },

@@ -54,6 +54,7 @@ export default function AccordionRoutineRow({
     }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
   }, []);
 
+  console.log("isself",isSelf)
   return (
     <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
@@ -80,7 +81,8 @@ export default function AccordionRoutineRow({
             variant="default"
             size="compact-sm"
             component="div"
-            className={classes.button}
+            disabled={isSelf}
+            className={cn(classes.button, {[classes.disabled]: isSelf})}
             onClick={(e) => handleStealClick(e, routine._id)}
           >
             <IconHandGrab className="icon icon__small" />{" "}

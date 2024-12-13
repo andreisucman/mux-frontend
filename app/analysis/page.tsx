@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Skeleton, Stack } from "@mantine/core";
+import { Button, rem, Skeleton, Stack } from "@mantine/core";
 import AnalysisCarousel from "@/components/AnalysisCarousel";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -36,8 +36,19 @@ export default function Analysis() {
     [rest]
   );
 
-  const text = `Scan your ${type}`;
-  const icon = type === "head" ? <IconMoodSmile className="icon" /> : <IconMan className="icon" />;
+  const icon =
+    type === "head" ? (
+      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
+    ) : (
+      <IconMan className="icon" style={{ marginRight: rem(6) }} />
+    );
+
+  const overlayButton = (
+    <Button mt={8} variant="default" onClick={() => router.push(`/scan/progress?type=${type}`)}>
+      {icon}
+      {type ? `Scan your ${type}` : "Scan"}
+    </Button>
+  );
 
   const handleChangeType = useCallback((newType?: string | null) => {
     const newQuery = modifyQuery({
@@ -61,12 +72,7 @@ export default function Analysis() {
       <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} />
       <Skeleton visible={displayComponent === "loading"} className={`${classes.skeleton} skeleton`}>
         {displayComponent === "upload" && (
-          <OverlayWithText
-            text={`No ${type} analysis`}
-            icon={icon}
-            buttonText={text}
-            onButtonClick={() => router.push(`/scan/progress?type=${type}`)}
-          />
+          <OverlayWithText text={`No ${type} analysis`} button={overlayButton} />
         )}
         {displayComponent === "carousel" && <AnalysisCarousel type={type as TypeEnum} />}
       </Skeleton>

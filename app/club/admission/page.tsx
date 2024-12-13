@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 import { IconBuildingBank, IconInfoCircle, IconRocket, IconSquareCheck } from "@tabler/icons-react";
 import { Alert, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
+import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
@@ -30,7 +32,7 @@ export default function ClubAdmission() {
   const [disableFirst, setDisableFirst] = useState(true);
   const [disableSecond, setDisableSecond] = useState(true);
 
-  const { club } = userDetails || {};
+  const { club, country } = userDetails || {};
   const { payouts } = club || {};
   const { detailsSubmitted, payoutsEnabled, disabledReason } = payouts || {};
 
@@ -50,6 +52,20 @@ export default function ClubAdmission() {
       console.log("Error in handleCreateConnectAccount: ", err);
     }
   }, []);
+
+  const openCountrySelectModal = useCallback(() => {
+    if (!country) {
+      modals.openContextModal({
+        modal: "general",
+        centered: true,
+        innerProps: <SelectCountry onClick={handleCreateConnectAccount} />,
+        title: <Title component={"p"} order={5}>Enter your country</Title>,
+      });
+      return;
+    }
+
+    handleCreateConnectAccount();
+  }, [country]);
 
   useShallowEffect(() => {
     if (!userDetails) return;
@@ -74,7 +90,7 @@ export default function ClubAdmission() {
                 icon={detailsSubmitted ? icons.checkbox : icons.bank}
                 text={detailsSubmitted ? "Bank added" : "Add bank"}
                 disabled={disableFirst}
-                onClick={handleCreateConnectAccount}
+                onClick={openCountrySelectModal}
                 containerStyles={{ flex: "unset" }}
               />
             </Group>
@@ -116,7 +132,7 @@ export default function ClubAdmission() {
               icon={icons.rocket}
               disabled={disableSecond}
               onClick={() => router.push("/club")}
-              containerStyles={{ marginTop: rem(4) }}
+              containerStyles={{ alignSelf: "flex-start", marginTop: rem(4) }}
             />
           </Stack>
         </Stack>

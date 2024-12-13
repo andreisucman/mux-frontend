@@ -16,7 +16,7 @@
   /* transition: background-color 150ms ease, border-color 150ms ease; */
   border-radius: var(--mantine-radius-sm);
   padding: var(--mantine-spacing-sm);
-  border-radius: rem(16);
+  border-radius: var(--mantine-radius-lg);
   background-color: var(--mantine-color-dark-6);
   border: rem(1) solid transparent;
 

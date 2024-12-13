@@ -40,6 +40,10 @@
   width: 100%;
 }
 
+.disabled {
+  pointer-events: none;
+}
+
 .buttonText {
   cursor: pointer;
   margin-left: rem(4);

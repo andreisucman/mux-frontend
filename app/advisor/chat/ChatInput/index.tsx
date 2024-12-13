@@ -195,7 +195,11 @@ export default function ChatInput({
 
         if (response.status === 200) {
           if (response.error) {
-            if (response.error === "subscription expired") {
+            if (response.error === "not following") {
+              openErrorModal({
+                description: "Follow this user before asking questions about them.",
+              });
+            } else if (response.error === "subscription expired") {
               handleAddSubscription();
             } else if (response.error === "coach is tired") {
               openCoachIsTiredModal();

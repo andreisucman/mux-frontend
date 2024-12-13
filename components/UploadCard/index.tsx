@@ -110,14 +110,27 @@ export default function UploadCard({
   }, [loadLocally]);
 
   const relevantPlaceholder = useMemo(() => {
-    return placeholders.find(
-      (item) =>
-        item.sex.includes(sex) &&
-        scanType === item.scanType &&
-        item.type === type &&
-        item.part === part &&
-        item.position === position
-    );
+    let placeholder;
+
+    if (scanType === "progress") {
+      placeholder = placeholders.find(
+        (item) =>
+          item.sex.includes(sex) &&
+          scanType === item.scanType &&
+          item.type === type &&
+          item.part === part &&
+          item.position === position
+      );
+    } else {
+      placeholder = placeholders.find(
+        (item) =>
+          item.sex.includes(sex) &&
+          scanType === item.scanType &&
+          item.type === type &&
+          item.position === position
+      );
+    }
+    return placeholder;
   }, [sex, part, type, position, scanType]);
 
   return (

@@ -82,7 +82,7 @@ export default function Solutions() {
     (value: string) => {
       const newQuery = modifyQuery({ params: [{ name: "query", value, action: "replace" }] });
       router.replace(`${pathname}?${newQuery}`);
-      setSearchQuery(value);
+      setSearchQuery(value?.split("_")?.join(" "));
     },
     [pathname]
   );
