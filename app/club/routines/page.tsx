@@ -10,11 +10,10 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
-import ClubHeader from "../ClubHeader";
 import ClubModerationLayout from "../ModerationLayout";
 import AccordionRoutineRow from "./AccordionRoutineRow";
 import TaskInfoContainer from "./TaskInfoContainer";
-import classes from "./routine.module.css";
+import classes from "./routines.module.css";
 
 export const runtime = "edge";
 
@@ -25,7 +24,7 @@ type GetRoutinesProps = {
   routines?: RoutineType[];
 };
 
-export default function ClubRoutine() {
+export default function ClubRoutines() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -188,10 +187,8 @@ export default function ClubRoutine() {
             />
           );
         }),
-    [type, typeof routines]
+    [type, routines]
   );
-
-  console.log("accordionItems", accordionItems);
 
   useEffect(() => {
     const payload: GetRoutinesProps = {

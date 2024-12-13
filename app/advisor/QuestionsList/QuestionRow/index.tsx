@@ -1,6 +1,6 @@
 import React from "react";
-import { Group, Stack, Text, rem } from "@mantine/core";
-import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
+import { Group, rem, Stack, Text } from "@mantine/core";
+import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./QuestionRow.module.css";
 
 type Props = {
@@ -18,7 +18,11 @@ export default function QuestionRow({ color, title, icon, customStyles, onClick 
       onClick={onClick ? onClick : undefined}
       style={customStyles ? customStyles : {}}
     >
-      <IconWithColor icon={icon || ""} color={color} customStyles={{ minWidth: rem(40), minHeight: rem(70) }} />
+      <IconWithColor
+        icon={icon || ""}
+        color={color}
+        customStyles={{ minWidth: rem(40), minHeight: rem(70) }}
+      />
       <Stack className={classes.wrapper}>
         <Text className={classes.title} lineClamp={2}>
           {title}

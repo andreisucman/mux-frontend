@@ -15,7 +15,7 @@ export default function AuthPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
-        <AuthForm stateObject={{ localUserId: userId, redirectPath: "/routines" }} />
+        <AuthForm stateObject={{ localUserId: userId, redirectPath: "/tasks" }} />
       </Stack>
     </Stack>
   );

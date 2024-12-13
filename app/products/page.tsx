@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconShoppingBag } from "@tabler/icons-react";
-import useSWR from "swr";
 import { Button, Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -50,7 +49,9 @@ export default function Products() {
     }
   }, []);
 
-  useSWR(`${type}-${status}`, () => fetchProducts(type as TypeEnum));
+  useEffect(() => {
+    fetchProducts(type as TypeEnum);
+  }, [type, status]);
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
@@ -79,7 +80,7 @@ export default function Products() {
             ) : (
               <OverlayWithText
                 icon={<IconCircleOff className="icon" />}
-                text={`No suggested products for your ${type} routine.`}
+                text={`No suggested products for your ${type ? type : ""} routine.`}
               />
             )}
           </>

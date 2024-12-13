@@ -44,7 +44,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
 
   const handleCreateCheckoutSession = async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns?${searchParams.toString()}`;
-    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/routines?${searchParams.toString()}`;
+    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
 
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,

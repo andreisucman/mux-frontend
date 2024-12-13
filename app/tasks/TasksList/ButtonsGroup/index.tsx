@@ -45,7 +45,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/routines/products?${query}`);
+          router.push(`/products?${query}`);
         }}
       >
         <IconShoppingBag style={{ width: rem(20) }} />
@@ -59,7 +59,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/routines/calendar?${query}`);
+          router.push(`/tasks/calendar?${query}`);
         }}
       >
         <IconCalendar style={{ width: rem(20) }} />
@@ -73,7 +73,7 @@ export default function ButtonsGroup({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/routines/history?${query}`);
+          router.push(`/tasks/history?${query}`);
         }}
       >
         <IconHistory style={{ width: rem(20) }} />

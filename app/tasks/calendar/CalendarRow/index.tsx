@@ -3,7 +3,7 @@ import { IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import { TaskType } from "@/types/global";
-import IconWithColor from "../../RoutineList/CreateTaskOverlay/IconWithColor";
+import IconWithColor from "../../TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./CalendarRow.module.css";
 
 type Props = {

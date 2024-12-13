@@ -62,7 +62,7 @@ export default function ClubSettings() {
       if (response.status === 200) {
         setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
 
-        router.push("/routines");
+        router.push("/tasks");
         modals.closeAll();
       }
     } catch (err) {

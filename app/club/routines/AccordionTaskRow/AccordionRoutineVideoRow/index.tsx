@@ -4,16 +4,14 @@ import { useMediaQuery } from "@mantine/hooks";
 import ProofCard from "@/app/results/proof/ProofGallery/ProofCard";
 import { SimpleProofType } from "@/app/results/proof/types";
 import callTheServer from "@/functions/callTheServer";
-import fetchUsersProof from "@/functions/fetchUsersProof";
 import classes from "./AccordionRoutineVideoRow.module.css";
 
 type Props = {
   routineId: string;
   taskKey: string;
-  isSelf: boolean;
 };
 
-function AccordionRoutineVideoRow({ routineId, taskKey, isSelf }: Props) {
+function AccordionRoutineVideoRow({ routineId, taskKey }: Props) {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const [videos, setVideos] = useState<SimpleProofType[]>();
 
@@ -44,13 +42,7 @@ function AccordionRoutineVideoRow({ routineId, taskKey, isSelf }: Props) {
     <Group className={classes.container}>
       <Group className={classes.wrapper}>
         {videos?.map((video) => (
-          <ProofCard
-            data={video}
-            key={video._id}
-            isMobile={!!isMobile}
-            setProof={setVideos}
-            isSelf={isSelf}
-          />
+          <ProofCard data={video} key={video._id} isMobile={!!isMobile} setProof={setVideos} />
         ))}
       </Group>
     </Group>

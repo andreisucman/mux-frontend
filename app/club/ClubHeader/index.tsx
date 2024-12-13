@@ -8,19 +8,19 @@ import {
 } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { typeIcons } from "@/helpers/icons";
 import { useRouter } from "@/helpers/custom-router";
+import { typeIcons } from "@/helpers/icons";
 import classes from "./ClubHeader.module.css";
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   "/club/about": <IconUserCircle className="icon" />,
-  "/club/routine": <IconClipboardText className="icon" />,
+  "/club/routines": <IconClipboardText className="icon" />,
   "/club/progress": <IconTargetArrow className="icon" />,
 };
 
 const clubPageTypeData: { label: string; value: string }[] = [
   { label: "About", value: "/club/about" },
-  { label: "Routine", value: "/club/routine" },
+  { label: "Routine", value: "/club/routines" },
   { label: "Progress", value: "/club/progress" },
 ];
 
@@ -75,7 +75,7 @@ export default function ClubHeader({
       <FilterDropdown
         icons={pageTypeIcons}
         data={clubPageTypeData}
-        defaultSelected={clubPageTypeData.find((item) => item.value === pathname)?.value}
+        selectedValue={clubPageTypeData.find((item) => item.value === pathname)?.value}
         onSelect={handleRedirect}
         placeholder="Select page"
         filterType="page"
@@ -86,7 +86,7 @@ export default function ClubHeader({
           icons={typeIcons}
           data={typeData}
           filterType="type"
-          defaultSelected={typeData.find((item) => item.value === type)?.value}
+          selectedValue={typeData.find((item) => item.value === type)?.value}
           onSelect={onSelect}
           placeholder="Select type"
           isDisabled={isDisabled}

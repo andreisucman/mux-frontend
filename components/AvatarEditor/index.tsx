@@ -89,7 +89,7 @@ export default function AvatarEditor({
             <FilterDropdown
               data={options.hatStyle}
               placeholder="Hat"
-              defaultSelected={currentConfig.hatStyle}
+              selectedValue={currentConfig.hatStyle}
               customStyles={dropdownStyles}
               onSelect={(value) => modifyConfig("hatStyle", value)}
             />
@@ -108,7 +108,7 @@ export default function AvatarEditor({
               data={options.hairStyle as { label: string; value: string }[]}
               placeholder="Hair"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.hairStyle}
+              selectedValue={currentConfig.hairStyle}
               onSelect={(value) => modifyConfig("hairStyle", value)}
             />
             <ColorInput
@@ -126,7 +126,7 @@ export default function AvatarEditor({
               data={options.earSize}
               placeholder="Ear"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.earSize}
+              selectedValue={currentConfig.earSize}
               onSelect={(value) => modifyConfig("earSize", value)}
             />
           </Fieldset>
@@ -135,7 +135,7 @@ export default function AvatarEditor({
               data={options.eyeStyle}
               placeholder="Eyes"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.eyeStyle}
+              selectedValue={currentConfig.eyeStyle}
               onSelect={(value) => modifyConfig("eyeStyle", value)}
             />
           </Fieldset>
@@ -144,7 +144,7 @@ export default function AvatarEditor({
               data={options.glassesStyle}
               placeholder="Glasses"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.glassesStyle}
+              selectedValue={currentConfig.glassesStyle}
               onSelect={(value) => modifyConfig("glassesStyle", value)}
             />
           </Fieldset>
@@ -153,7 +153,7 @@ export default function AvatarEditor({
               data={options.noseStyle}
               placeholder="Nose"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.noseStyle}
+              selectedValue={currentConfig.noseStyle}
               onSelect={(value) => modifyConfig("noseStyle", value)}
             />
           </Fieldset>
@@ -162,7 +162,7 @@ export default function AvatarEditor({
               data={options.mouthStyle}
               placeholder="Mouth"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.mouthStyle}
+              selectedValue={currentConfig.mouthStyle}
               onSelect={(value) => modifyConfig("mouthStyle", value)}
             />
           </Fieldset>
@@ -171,7 +171,7 @@ export default function AvatarEditor({
               data={options.shirtStyle as { label: string; value: string }[]}
               placeholder="Shirt"
               customStyles={dropdownStyles}
-              defaultSelected={currentConfig.shirtStyle}
+              selectedValue={currentConfig.shirtStyle}
               onSelect={(value) => modifyConfig("shirtStyle", value)}
             />
             <ColorInput

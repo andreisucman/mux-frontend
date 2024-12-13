@@ -72,6 +72,7 @@ export default function ProgressGallery({
             handleFetchProgress({
               type,
               part,
+              position,
               skip: hasMore,
               currentArray: progress,
               followingUserId,

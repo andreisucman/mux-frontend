@@ -61,7 +61,7 @@ const authenticate = async ({
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
-      let redirectUrl = "/routines";
+      let redirectUrl = "/tasks";
 
       if (redirectPath) redirectUrl = redirectPath;
       if (redirectQuery) redirectUrl += `?${redirectQuery}`;

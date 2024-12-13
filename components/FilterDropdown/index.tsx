@@ -9,7 +9,7 @@ import classes from "./FilterDropdown.module.css";
 type Props = {
   icons?: { [key: string]: React.ReactNode };
   placeholder: string;
-  filterType: string;
+  filterType?: string;
   isDisabled?: boolean;
   addToQuery?: boolean;
   allowDeselect?: boolean;
@@ -41,13 +41,17 @@ export default function FilterDropdown({
         const params = [];
 
         if (allowDeselect) {
-          params.push({
-            name: filterType,
-            value: newValue,
-            action: newValue ? "replace" : "delete",
-          });
+          if (filterType) {
+            params.push({
+              name: filterType,
+              value: newValue,
+              action: newValue ? "replace" : "delete",
+            });
+          }
         } else {
-          params.push({ name: filterType, value: newValue, action: "replace" });
+          if (filterType) {
+            params.push({ name: filterType, value: newValue, action: "replace" });
+          }
         }
 
         if (filterType === "type") {

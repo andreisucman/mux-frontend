@@ -83,7 +83,7 @@ export default function PageHeader({
               icons={typeIcons}
               filterType="type"
               placeholder="Filter by type"
-              defaultSelected={type}
+              selectedValue={type}
               onSelect={onSelect}
               isDisabled={isDisabled}
               addToQuery
@@ -95,7 +95,7 @@ export default function PageHeader({
               icons={partIcons}
               filterType="part"
               placeholder="Filter by part"
-              defaultSelected={part}
+              selectedValue={part}
               onSelect={onSelect}
               isDisabled={isDisabled}
               addToQuery

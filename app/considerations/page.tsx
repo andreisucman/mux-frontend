@@ -75,7 +75,7 @@ export default function Considerations() {
       setDisableButton(true);
 
       const { _id: userId, concerns, specialConsiderations } = userDetails;
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/routines?${searchParams.toString()}`;
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
 
       try {
         const response = await callTheServer({

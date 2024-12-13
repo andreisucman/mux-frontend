@@ -8,6 +8,7 @@ import {
   IconRotateDot,
   IconScan,
   IconSettings,
+  IconShoppingBag,
   IconSocial,
   IconTargetArrow,
   IconTrophy,
@@ -48,14 +49,13 @@ const defaultNavigation = [
 
 const defaultAuthenticatedNavigation = [
   {
-    title: "My routines",
-    path: "/routines",
+    title: "My tasks",
+    path: "/tasks",
     icon: <IconRotateDot stroke={1.25} className="icon" />,
     children: [
-      { title: "Current", path: "/routines" },
-      { title: "Calendar", path: "/routines/calendar" },
-      { title: "History", path: "/routines/history" },
-      { title: "Products", path: "/routines/products" },
+      { title: "Current", path: "/tasks" },
+      { title: "Calendar", path: "/tasks/calendar" },
+      { title: "History", path: "/tasks/history" },
     ],
   },
   {
@@ -70,7 +70,12 @@ const defaultAuthenticatedNavigation = [
     ],
   },
   {
-    title: "Advisor",
+    title: "My products",
+    path: "/products",
+    icon: <IconShoppingBag stroke={1.25} className="icon" />,
+  },
+  {
+    title: "My advisor",
     icon: <IconInnerShadowBottom stroke={1.25} className="icon" />,
     path: "/advisor",
   },
@@ -137,7 +142,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           children: [
             { title: "Profile", path: "/club" },
             { title: "About", path: "/club/about" },
-            { title: "Routines", path: "/club/routine" },
+            { title: "Routines", path: "/club/routines" },
           ],
         });
       }

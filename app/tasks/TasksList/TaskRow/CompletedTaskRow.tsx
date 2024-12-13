@@ -3,11 +3,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { IconCheck } from "@tabler/icons-react";
 import { ActionIcon, Group, rem, RingProgress, Skeleton, Stack, Text } from "@mantine/core";
-import { CompletedTaskType } from "@/app/routines/history/type";
+import { CompletedTaskType } from "@/app/tasks/history/type";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { formatDate } from "@/helpers/formatDate";
 import IconWithColor from "../CreateTaskOverlay/IconWithColor";
-import classes from "./RoutineRow.module.css";
+import classes from "./TaskRow.module.css";
 
 interface Props extends CompletedTaskType {
   onClick?: () => void;

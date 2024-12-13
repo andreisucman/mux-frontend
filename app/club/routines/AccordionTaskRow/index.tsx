@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { IconBinoculars } from "@tabler/icons-react";
 import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
-import IconWithColor from "@/app/routines/RoutineList/CreateTaskOverlay/IconWithColor";
+import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import { AllTaskType, TypeEnum } from "@/types/global";
 import StatsGroup from "../StatsGroup";
 import AccordionRoutineVideoRow from "./AccordionRoutineVideoRow";
@@ -10,12 +10,11 @@ import classes from "./AccordionTaskRow.module.css";
 type Props = {
   type: TypeEnum;
   data: AllTaskType;
-  isSelf: boolean;
   routineId: string;
   onClick: (task: AllTaskType, routineId: string) => void;
 };
 
-export default function AccordionTaskRow({ routineId, isSelf, data, onClick }: Props) {
+export default function AccordionTaskRow({ routineId, data, onClick }: Props) {
   const [openCollapse, setOpenCollapse] = useState(false);
   const { icon, color, name, total, completed } = data;
 
@@ -56,7 +55,7 @@ export default function AccordionTaskRow({ routineId, isSelf, data, onClick }: P
         />
       </Group>
       <Collapse in={openCollapse}>
-        <AccordionRoutineVideoRow routineId={routineId} taskKey={data.key} isSelf={isSelf} />
+        <AccordionRoutineVideoRow routineId={routineId} taskKey={data.key} />
       </Collapse>
     </Stack>
   );

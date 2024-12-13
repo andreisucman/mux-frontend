@@ -47,7 +47,7 @@ export default function AnalysisHeader({ title, type, showReturn, onTypeChange }
       <FilterDropdown
         data={categories}
         icons={categoryIcons}
-        defaultSelected={pathname}
+        selectedValue={pathname}
         filterType="category"
         placeholder="Select category"
         onSelect={(url?: string | null) => router.replace(url || "/")}
@@ -55,7 +55,7 @@ export default function AnalysisHeader({ title, type, showReturn, onTypeChange }
       <FilterDropdown
         data={types}
         icons={typeIcons}
-        defaultSelected={type}
+        selectedValue={type}
         filterType="type"
         placeholder="Select type"
         onSelect={onTypeChange}

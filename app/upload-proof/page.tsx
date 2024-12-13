@@ -197,7 +197,7 @@ export default function UploadProof() {
                 text="This task expired"
                 icon={<IconHourglassLow className="icon" />}
                 buttonText="Return"
-                onButtonClick={() => router.replace("/routines")}
+                onButtonClick={() => router.replace("/tasks")}
               />
             )}
           </Stack>

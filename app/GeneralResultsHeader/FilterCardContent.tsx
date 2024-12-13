@@ -3,10 +3,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Skeleton, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import modifyQuery from "@/helpers/modifyQuery";
-import { modals } from "@mantine/modals";
 import { ExistingFiltersType } from "./types";
 import classes from "./FilterCardContent.module.css";
 
@@ -67,7 +67,7 @@ export default function FilterCardContent({ filters }: Props) {
           {sexFilters.length > 0 && (
             <FilterDropdown
               data={sexFilters}
-              defaultSelected={ageInterval}
+              selectedValue={ageInterval}
               filterType="sex"
               placeholder="Select sex"
               customStyles={styles}
@@ -77,7 +77,7 @@ export default function FilterCardContent({ filters }: Props) {
           {ethnicityFilters.length > 0 && (
             <FilterDropdown
               data={ethnicityFilters}
-              defaultSelected={ethnicity}
+              selectedValue={ethnicity}
               filterType="ethnicity"
               placeholder="Select ethnicity"
               customStyles={styles}
@@ -87,7 +87,7 @@ export default function FilterCardContent({ filters }: Props) {
           {ageIntervalFilters.length > 0 && (
             <FilterDropdown
               data={ageIntervalFilters}
-              defaultSelected={ageInterval}
+              selectedValue={ageInterval}
               filterType="ageInterval"
               placeholder="Select age interval"
               customStyles={styles}
@@ -97,7 +97,7 @@ export default function FilterCardContent({ filters }: Props) {
           {concernFilters.length > 0 && (
             <FilterDropdown
               data={concernFilters}
-              defaultSelected={concern}
+              selectedValue={concern}
               filterType="concern"
               placeholder="Select concern"
               customStyles={styles}
@@ -107,7 +107,7 @@ export default function FilterCardContent({ filters }: Props) {
           {bodyTypeFilters.length > 0 && (
             <FilterDropdown
               data={bodyTypeFilters}
-              defaultSelected={bodyType}
+              selectedValue={bodyType}
               filterType="bodyType"
               placeholder="Select body type"
               customStyles={styles}
@@ -117,7 +117,7 @@ export default function FilterCardContent({ filters }: Props) {
           {styleNameFilters.length > 0 && (
             <FilterDropdown
               data={styleNameFilters}
-              defaultSelected={styleName}
+              selectedValue={styleName}
               filterType="styleName"
               placeholder="Select style name"
               customStyles={styles}

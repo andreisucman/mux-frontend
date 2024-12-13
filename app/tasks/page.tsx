@@ -9,11 +9,11 @@ import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 import { ConsiderationsInput } from "../../components/ConsiderationsInput";
 import SkeletonWrapper from "../SkeletonWrapper";
-import RoutineList from "./RoutineList";
+import RoutineList from "./TasksList";
 
 export const runtime = "edge";
 
-export default function Routines() {
+export default function Tasks() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { specialConsiderations } = userDetails || {};
@@ -61,7 +61,7 @@ export default function Routines() {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeader title="My routines" hidePartDropdown />
+        <PageHeader title="My tasks" hidePartDropdown />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}

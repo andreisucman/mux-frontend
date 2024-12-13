@@ -41,7 +41,7 @@ function ScanHeader({ type, onSelect }: Props) {
           data={typeFilters}
           icons={typeIcons}
           onSelect={onSelect}
-          defaultSelected={type}
+          selectedValue={type}
           filterType={"type"}
           placeholder="Select type"
           addToQuery

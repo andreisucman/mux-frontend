@@ -7,10 +7,10 @@
 /results, // p
 /results/styles, // p
 /results/proof, // p
-/routines, // p
-/routines/history, // p
-/routines/calendar, // p
-/routines/products, // p
+/tasks, // p
+/tasks/history, // p
+/tasks/calendar, // p
+/products, // p
 /explain, // p
 /upload-proof, // p
 /sort-concerns // p

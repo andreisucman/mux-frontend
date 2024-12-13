@@ -6,14 +6,14 @@ import { IconCircleOff } from "@tabler/icons-react";
 import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
-import { useRouter } from "@/helpers/custom-router";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import CompletedRoutineRow from "../RoutineList/RoutineRow/CompletedRoutineRow";
+import CompletedRoutineRow from "../TasksList/TaskRow/CompletedTaskRow";
 import { CompletedTaskType } from "./type";
 import classes from "./history.module.css";
 

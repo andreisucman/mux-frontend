@@ -34,11 +34,11 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
     if (status === AuthStateEnum.LOADING) return;
 
     if (status === AuthStateEnum.AUTHENTICATED) {
-      router.push("/routines");
+      router.push("/tasks");
     } else {
       openAuthModal({
         stateObject: {
-          redirectPath: "/routines",
+          redirectPath: "/tasks",
           redirectQuery: `type=${type}`,
           localUserId: userId,
         },

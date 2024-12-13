@@ -231,7 +231,7 @@ export default function Explain() {
         },
       ],
     });
-    router.push(`/routines/calendar?${query}`);
+    router.push(`/tasks/calendar?${query}`);
   }, [type, taskKey]);
 
   useEffect(() => {
@@ -249,7 +249,7 @@ export default function Explain() {
 
   useShallowEffect(() => {
     if (!pageLoaded) return;
-    if (!taskId) router.push(`/routines?${searchParams.toString()}`);
+    if (!taskId) router.push(`/tasks?${searchParams.toString()}`);
   }, [searchParams.toString(), pageLoaded]);
 
   useEffect(() => {

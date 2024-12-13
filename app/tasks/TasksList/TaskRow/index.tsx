@@ -8,7 +8,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
 import { RequiredSubmissionType } from "@/types/global";
 import IconWithColor from "../CreateTaskOverlay/IconWithColor";
-import classes from "./RoutineRow.module.css";
+import classes from "./TaskRow.module.css";
 
 type Props = {
   color: string;
@@ -24,7 +24,7 @@ type Props = {
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export default function RoutineRow({
+export default function TaskRow({
   color,
   name,
   icon,

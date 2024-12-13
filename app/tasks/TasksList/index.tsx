@@ -17,9 +17,9 @@ import { TaskType, TypeEnum, UserDataType } from "@/types/global";
 import ButtonsGroup from "./ButtonsGroup";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import { HandleSaveTaskProps } from "./CreateTaskOverlay/AddATaskContainer/types";
-import RoutineRow from "./RoutineRow";
 import StreakStatus from "./StreakStatus";
-import classes from "./RoutineList.module.css";
+import RoutineRow from "./TaskRow";
+import classes from "./TasksList.module.css";
 
 type Props = {
   serie?: number;
@@ -32,7 +32,7 @@ interface TaskTypeWithClick extends TaskType {
   onClick: () => void;
 }
 
-export default function RoutineList({ type, serie, customStyles, disableAll }: Props) {
+export default function TasksList({ type, serie, customStyles, disableAll }: Props) {
   const router = useRouter();
   const pathaname = usePathname();
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -193,7 +193,11 @@ export default function RoutineList({ type, serie, customStyles, disableAll }: P
           <Stack className={classes.content}>
             {displayComponent === "scanOverlay" && <UploadOverlay type={type as TypeEnum} />}
             {displayComponent === "createTaskOverlay" && (
-              <CreateTaskOverlay type={type as TypeEnum} timeZone={timeZone} handleSaveTask={handleSaveTask} />
+              <CreateTaskOverlay
+                type={type as TypeEnum}
+                timeZone={timeZone}
+                handleSaveTask={handleSaveTask}
+              />
             )}
             {displayComponent === "wait" && (
               <Stack className={classes.waitComponentWrapper}>

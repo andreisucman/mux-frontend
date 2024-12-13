@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
-import { TaskType } from "@/types/global";
+import SuggestionContainer from "@/components/SuggestionContainer";
 import callTheServer from "@/functions/callTheServer";
 import { formatDate } from "@/helpers/formatDate";
-import IconWithColor from "../../RoutineList/CreateTaskOverlay/IconWithColor";
-import SuggestionContainer from "@/components/SuggestionContainer";
+import { TaskType } from "@/types/global";
+import IconWithColor from "../../tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./ProductsRow.module.css";
 
 type Props = {
