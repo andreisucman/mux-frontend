@@ -8,7 +8,7 @@ import ComparisonStack from "./ComparisonStack";
 import classes from "./BetterThanCard.module.css";
 
 type Props = {
-  userId?: string;
+  userId: string | null;
   ageInterval?: string;
   title: string;
   type: TypeEnum;

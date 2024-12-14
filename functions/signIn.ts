@@ -4,7 +4,7 @@ import callTheServer from "./callTheServer";
 export type SignInStateType = {
   redirectPath?: string;
   redirectQuery?: string;
-  localUserId?: string;
+  localUserId?: string | null;
 };
 
 type Props = {

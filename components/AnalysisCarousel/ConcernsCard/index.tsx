@@ -13,7 +13,7 @@ import { TypeEnum, UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
 
 type Props = {
-  userId?: string;
+  userId: string | null;
   status: AuthStateEnum;
   title: string;
   type: TypeEnum;

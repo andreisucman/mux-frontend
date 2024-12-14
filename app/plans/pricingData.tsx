@@ -10,6 +10,7 @@ import {
   IconHandGrab,
   IconHandLoveYou,
   IconMessage2,
+  IconNotebook,
   IconScaleOutline,
   IconShoppingBag,
   IconToolsKitchen2,
@@ -61,10 +62,13 @@ export const peekLicenseContent = [
     description: "See and steal the most effective routines of the club members.",
   },
   {
+    icon: <IconNotebook className="icon icon__large" style={style} />,
+    description: "See the progress diary of the club members.",
+  },
+  {
     icon: <IconEye className="icon icon__large" style={style} />,
     description: "Check the personality, style and tips of the club members.",
   },
-
   {
     icon: <IconMessage2 className="icon icon__large" style={style} />,
     description: "Ask questions to your advisor about the club members.",

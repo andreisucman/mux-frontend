@@ -203,7 +203,7 @@ export default function UploadCarousel({
       {displayComponent === "partialScanOverlay" && (
         <StartPartialScanOverlay
           type={type as TypeEnum}
-          userId={userId}
+          userId={userId || null}
           distinctUploadedParts={distinctUploadedParts}
         />
       )}

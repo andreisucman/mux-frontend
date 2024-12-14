@@ -61,7 +61,7 @@ export default function AnalysisCarousel({ type }: Props) {
       <Carousel.Slide key={"currentBetterThanCard"}>
         {progressRecord && typeCurrentlyHigherThan && (
           <BetterThanCard
-            userId={userId}
+            userId={userId || null}
             ageInterval={ageInterval}
             progressRecord={progressRecord}
             currentlyHigherThan={typeCurrentlyHigherThan}
@@ -79,7 +79,7 @@ export default function AnalysisCarousel({ type }: Props) {
       <Carousel.Slide key={"potentialBetterCard"}>
         {potentialRecord && typePotentiallyHigherThan && (
           <BetterThanCardPotential
-            userId={userId}
+            userId={userId || null}
             ageInterval={ageInterval}
             potentialRecord={potentialRecord}
             potentiallyHigherThan={typePotentiallyHigherThan}
@@ -98,7 +98,7 @@ export default function AnalysisCarousel({ type }: Props) {
             concerns={concerns}
             title="Areas of improvement"
             type={type as TypeEnum}
-            userId={userId}
+            userId={userId || null}
             status={status}
           />
         )}
@@ -115,11 +115,11 @@ export default function AnalysisCarousel({ type }: Props) {
 
     return slides;
   }, [
-    typeof progressRecord,
-    typeof potentialRecord,
-    typeof currentlyHigherThan,
-    typeof potentiallyHigherThan,
-    typeof concerns,
+    progressRecord,
+    potentialRecord,
+    currentlyHigherThan,
+    potentiallyHigherThan,
+    concerns,
     userId,
     status,
     type,

@@ -80,7 +80,6 @@ export default function PricingCard({
               text={buttonText}
               disabled={!price}
               addGradient={addGradient}
-              loading={isLoading}
               onClick={handleClick}
               containerStyles={{ marginTop: rem(4) }}
             />

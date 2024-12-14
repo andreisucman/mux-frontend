@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconDental, IconFlag, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
+import { IconFlag } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
 import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -14,16 +14,10 @@ import classes from "./StartPartialScanOverlay.module.css";
 
 type Props = {
   type: TypeEnum;
-  userId?: string;
+  userId: string | null;
   distinctUploadedParts: string[];
   outerStyles?: { [key: string]: unknown };
   innerStyles?: { [key: string]: unknown };
-};
-
-const iconsMap: { [key: string]: React.ReactNode } = {
-  face: <IconMoodNeutral className={classes.somethingToScanIcon} />,
-  mouth: <IconDental className={classes.somethingToScanIcon} />,
-  scalp: <IconWhirl className={classes.somethingToScanIcon} />,
 };
 
 export default function StartPartialScanOverlay({
@@ -88,11 +82,7 @@ export default function StartPartialScanOverlay({
           <ImageCardStack images={toDisplay.map((part) => part.url || "")} />
         )}
         <Text mb={rem(12)}>{analysisString}</Text>
-        <Button
-          onClick={handleStartAnalysis}
-          loading={isButtonLoading}
-          disabled={isButtonLoading}
-        >
+        <Button onClick={handleStartAnalysis} loading={isButtonLoading} disabled={isButtonLoading}>
           <IconFlag className="icon" style={{ marginRight: rem(6) }} /> Start scan
         </Button>
       </Stack>

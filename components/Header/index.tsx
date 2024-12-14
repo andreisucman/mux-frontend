@@ -101,7 +101,7 @@ function Header() {
                   />
                 )}
                 {displayComponent === "userButton" && (
-                  <UserButton avatar={avatar} clubPayouts={payouts} />
+                  <UserButton avatar={avatar || null} clubPayouts={payouts} />
                 )}
               </>
             )}

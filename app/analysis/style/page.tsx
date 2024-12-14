@@ -174,7 +174,6 @@ export default function StyleScanResult() {
                 text="Publish"
                 icon={<IconTarget className={"icon"} style={{ marginRight: rem(6) }} />}
                 disabled={isLoading}
-                loading={isLoading}
                 onClick={handlePublishToClub}
                 buttonStyles={{ fontSize: rem(14) }}
                 addGradient

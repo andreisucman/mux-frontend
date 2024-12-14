@@ -41,6 +41,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   const pageType = pathnameParts[pathnameParts.length - 1];
 
   const { subscriptions, club } = userDetails || {};
+
   const { followingUserId: localFollowingUserId } = club || {};
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
@@ -75,7 +76,6 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   );
 
   const followText = `Follow to see ${pageType === "routine" ? "their routines" : "their details"}.`;
-  const previewData = followingUserId ? youTrackData : youData;
 
   useEffect(() => {
     if (!youTrackData && youTrackDataFetched) {
@@ -108,17 +108,14 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   return (
     <Stack className={`${classes.container} smallPage`}>
       {headers[pageType]}
-      <Skeleton
-        className={`skeleton ${classes.skeleton}`}
-        visible={showComponent === "loading" || !previewData}
-      >
+      <Skeleton className={`skeleton ${classes.skeleton}`} visible={showComponent === "loading"}>
         {showComponent === "userNotFound" ? (
           <OverlayWithText text="User not found" icon={<IconUserOff className="icon" />} />
         ) : (
           <>
             <ClubProfilePreview
               type={followingUserId ? "follow" : "you"}
-              data={followingUserId ? youTrackData : youData}
+              data={youTrackData || youData}
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}

@@ -6,11 +6,11 @@ import Link from "@/helpers/custom-router/patch-router/link";
 import classes from "./UserButton.module.css";
 
 type Props = {
-  avatar?: { [key: string]: any };
+  avatar: { [key: string]: any } | null;
   clubPayouts?: { detailsSubmitted: boolean; payoutsEnabled: boolean; disabledReason: string };
 };
 
-function UserButton({ avatar, clubPayouts }: Props) {
+function UserButton({ avatar = null, clubPayouts }: Props) {
   const { detailsSubmitted, disabledReason } = clubPayouts || {};
 
   const clubUrl = disabledReason ? "/club/admission" : "/club";

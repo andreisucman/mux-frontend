@@ -21,7 +21,7 @@ type Props = {
 
 function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: Props) {
   const router = useRouter();
-  const { scores, bio, _id: followingUserId, avatar, name } = data || {};
+  const { scores, bio, _id: followingUserId, name, avatar } = data || {};
   const { headTotalProgress, bodyTotalProgress } = scores || {};
   const { questions } = bio || {};
 
