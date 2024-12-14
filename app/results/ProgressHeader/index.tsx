@@ -8,7 +8,7 @@ import { partItems, positionItems } from "@/components/PageHeader/data";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons, typeIcons } from "@/helpers/icons";
 import TitleDropdown from "../TitleDropdown";
-import { PositionsFilterItemType } from "./types";
+import { PositionsFilterItemType } from "../proof/ProofHeader/types";
 import classes from "./ProgressHeader.module.css";
 
 type Props = {

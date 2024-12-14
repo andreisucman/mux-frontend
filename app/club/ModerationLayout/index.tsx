@@ -4,9 +4,6 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
-import ProgressHeader from "@/app/results/ProgressHeader";
-import ProofHeader from "@/app/results/proof/ProofHeader";
-import StyleHeader from "@/app/results/style/StyleHeader";
 import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
@@ -14,6 +11,9 @@ import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
 import { clubResultTitles } from "../clubResultTitles";
+import ClubProgressHeader from "../progress/ClubProgressHeader";
+import ClubProofHeader from "../proof/ClubProofHeader";
+import ClubStyleHeader from "../style/ClubStyleHeader";
 import ClubChatContainer from "./ClubChatContainer";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
@@ -48,22 +48,21 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   const headers: { [key: string]: React.ReactNode } = useMemo(
     () => ({
       style: (
-        <StyleHeader
+        <ClubStyleHeader
           titles={clubResultTitles}
           isDisabled={showComponent !== "children"}
           showReturn
         />
       ),
       progress: (
-        <ProgressHeader
+        <ClubProgressHeader
           titles={clubResultTitles}
           isDisabled={showComponent !== "children"}
-          hideDropdowns={showComponent !== "children"}
           showReturn
         />
       ),
       proof: (
-        <ProofHeader
+        <ClubProofHeader
           showReturn
           isDisabled={showComponent !== "children"}
           titles={clubResultTitles}
@@ -114,7 +113,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         ) : (
           <>
             <ClubProfilePreview
-              type={isSelf ? "you" : "follow"}
+              type={isSelf ? "you" : "user"}
               data={isSelf ? youData : youTrackData}
               customStyles={{ flex: 0 }}
             />

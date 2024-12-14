@@ -21,3 +21,12 @@ export const positionItems = [
   { label: "Left", value: "left", types: ["head", "body"], parts: ["face", "body"] },
   { label: "Back", value: "back", types: ["body"], parts: ["body"] },
 ];
+
+export const clubPageTypeItems: { label: string; value: string }[] = [
+  { label: "About", value: "/club/about" },
+  { label: "Routines", value: "/club/routines" },
+  {
+    label: "Results",
+    value: "/club/progress",
+  },
+];

@@ -28,6 +28,8 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   "/club/about": <IconUserCircle className="icon" />,
   "/club/routines": <IconClipboardText className="icon" />,
   "/club/progress": <IconTargetArrow className="icon" />,
+  "/club/style": <IconTargetArrow className="icon" />,
+  "/club/proof": <IconTargetArrow className="icon" />,
 };
 
 export const styleIcons: { [key: string]: string } = {

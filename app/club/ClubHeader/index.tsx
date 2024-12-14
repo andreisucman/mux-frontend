@@ -3,21 +3,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
+import { typeItems } from "@/components/PageHeader/data";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons, pageTypeIcons } from "@/helpers/icons";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
+import { pageTypeIcons, typeIcons } from "@/helpers/icons";
 import classes from "./ClubHeader.module.css";
-
-const clubPageTypeData: { label: string; value: string }[] = [
-  { label: "About", value: "/club/about" },
-  { label: "Routine", value: "/club/routines" },
-  { label: "Progress", value: "/club/progress" },
-];
-
-const typeData: { label: string; value: string }[] = [
-  { label: "Head", value: "head" },
-  { label: "Body", value: "body" },
-  { label: "Health", value: "health" },
-];
 
 type Props = {
   title: string;
@@ -63,8 +53,8 @@ export default function ClubHeader({
       </Group>
       <FilterDropdown
         icons={pageTypeIcons}
-        data={clubPageTypeData}
-        selectedValue={clubPageTypeData.find((item) => item.value === pathname)?.value}
+        data={clubPageTypeItems}
+        selectedValue={pathname}
         onSelect={handleRedirect}
         placeholder="Select page"
         filterType="page"
@@ -73,9 +63,9 @@ export default function ClubHeader({
       {!hideTypeDropdown && (
         <FilterDropdown
           icons={typeIcons}
-          data={typeData}
+          data={typeItems}
           filterType="type"
-          selectedValue={typeData.find((item) => item.value === type)?.value}
+          selectedValue={typeItems.find((item) => item.value === type)?.value}
           onSelect={onSelect}
           placeholder="Select type"
           isDisabled={isDisabled}
