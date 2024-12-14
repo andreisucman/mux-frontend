@@ -13,7 +13,7 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import CompletedRoutineRow from "../TasksList/TaskRow/CompletedTaskRow";
+import CompletedTaskRow from "../TasksList/TaskRow/CompletedTaskRow";
 import { CompletedTaskType } from "./type";
 import classes from "./history.module.css";
 
@@ -108,7 +108,7 @@ export default function RoutinesHistoryPage() {
                       rowGutter={16}
                       render={(props: any) => {
                         const { key, ...rest } = props.data;
-                        return <CompletedRoutineRow {...rest} key={key} />;
+                        return <CompletedTaskRow {...rest} key={key} />;
                       }}
                     />
                   )}

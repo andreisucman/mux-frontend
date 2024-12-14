@@ -113,7 +113,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         ) : (
           <>
             <ClubProfilePreview
-              type={isSelf ? "you" : "user"}
+              type={isSelf ? "you" : "member"}
               data={isSelf ? youData : youTrackData}
               customStyles={{ flex: 0 }}
             />

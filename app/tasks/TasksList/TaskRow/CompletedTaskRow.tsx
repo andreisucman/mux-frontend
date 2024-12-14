@@ -15,7 +15,7 @@ interface Props extends CompletedTaskType {
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export default function CompletedRoutineRow({
+export default function CompletedTaskRow({
   color,
   name,
   icon,

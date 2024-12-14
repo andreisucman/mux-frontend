@@ -1,0 +1,33 @@
+.container {
+  cursor: pointer;
+  align-items: center;
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+  flex-wrap: nowrap;
+  gap: 0;
+  flex: 1;
+  width: 100%;
+  max-height: rem(50);
+  border: rem(1) solid var(--mantine-color-dark-5);
+  background-color: var(--mantine-color-dark-6);
+
+  &:hover {
+    background-color: var(--mantine-color-dark-5);
+  }
+}
+
+.wrapper {
+  gap: 0;
+  padding: 0 rem(8) 0 rem(16);
+  width: 100%;
+}
+
+.title {
+  cursor: pointer;
+  font-size: var(--mantine-font-size-md);
+}
+
+.label {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,32 @@
+.wrapper {
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+}
+
+.labelGroup {
+  cursor: pointer;
+  gap: rem(8);
+  align-items: center;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.audio {
+  width: 100%;
+}
+
+.header {
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  margin-right: rem(8);
+}
