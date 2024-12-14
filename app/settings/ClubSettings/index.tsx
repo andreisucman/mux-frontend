@@ -204,7 +204,7 @@ export default function ClubSettings() {
             </div>
             <TextInput
               flex={1}
-              maw={300}
+              maw={370}
               value={userName}
               disabled={!canUpdateName}
               onChange={(e) => setUserName(e.currentTarget.value)}
@@ -222,7 +222,7 @@ export default function ClubSettings() {
           </Group>
           <TextInput
             flex={1}
-            maw={355}
+            maw={425}
             value={userIntro}
             onChange={(e) => handleEnterIntro(e.currentTarget.value)}
             leftSection={<Text size="xs">{introCharactersLeft}</Text>}

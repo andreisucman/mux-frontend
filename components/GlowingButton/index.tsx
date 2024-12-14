@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import cn from "classnames";
 import { Loader, Stack, UnstyledButton } from "@mantine/core";
 import classes from "./GlowingButton.module.css";
@@ -7,10 +7,9 @@ type Props = {
   addGradient?: boolean;
   text: string;
   icon?: any;
-  loading?: boolean;
   disabled?: boolean;
   children?: React.ReactNode;
-  onClick?: (props?: any) => any;
+  onClick: (props?: any) => any;
   buttonStyles?: { [key: string]: any };
   containerStyles?: { [key: string]: any };
   overlayStyles?: { [key: string]: any };
@@ -19,7 +18,6 @@ type Props = {
 function GlowingButton({
   text,
   icon,
-  loading,
   addGradient = true,
   disabled,
   containerStyles,
@@ -28,6 +26,17 @@ function GlowingButton({
   children,
   onClick,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = () => {
+    setIsLoading(true);
+    onClick();
+    const tId = setTimeout(() => {
+      setIsLoading(false);
+      clearTimeout(tId);
+    }, 10000);
+  };
+
   return (
     <Stack className={classes.container} style={containerStyles ? containerStyles : {}}>
       <div
@@ -38,14 +47,14 @@ function GlowingButton({
         style={overlayStyles ? overlayStyles : {}}
       />
       <UnstyledButton
-        disabled={disabled}
+        disabled={disabled || isLoading}
         className={cn(classes.button, {
-          [classes.disabled]: disabled,
+          [classes.disabled]: disabled || isLoading,
         })}
-        onClick={onClick}
+        onClick={handleClick}
         style={buttonStyles ? buttonStyles : {}}
       >
-        {loading ? (
+        {isLoading ? (
           <Loader color="white" size="sm" />
         ) : (
           <>

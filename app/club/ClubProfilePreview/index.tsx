@@ -12,7 +12,7 @@ import SocialsDisplayLine from "./SocialsDisplayLine";
 import classes from "./ClubProfilePreview.module.css";
 
 type Props = {
-  type: "you" | "peek";
+  type: "you" | "follow";
   isMini?: boolean;
   data: ClubUserType | null;
   showButtons?: boolean;

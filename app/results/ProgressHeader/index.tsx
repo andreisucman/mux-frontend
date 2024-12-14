@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
@@ -31,6 +31,28 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
   const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
   const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>([]);
 
+  const onSelectType = useCallback(
+    (type?: string | null) => {
+      let relevantParts: FilterPartItemType[] = [];
+      if (type) {
+        relevantParts = partItems.filter((part) => part.type === type);
+      }
+      setRelevantParts(relevantParts);
+    },
+    [partItems]
+  );
+
+  const onSelectPart = useCallback(
+    (part?: string | null) => {
+      let relevantPositions: PositionsFilterItemType[] = [];
+      if (part) {
+        relevantPositions = positionItems.filter((position) => position.parts.includes(part));
+      }
+      setRelevantPositions(relevantPositions);
+    },
+    [positionItems]
+  );
+
   useEffect(() => {
     getUsersFilters({ followingUserId, collection: "progress", fields: ["type"] }).then(
       (result) => {
@@ -40,29 +62,19 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
     );
   }, [followingUserId]);
 
-  const onSelectType = (type?: string | null) => {
-    let relevantParts: FilterPartItemType[] = [];
-    if (type) {
-      relevantParts = partItems.filter((part) => part.type === type);
-    }
-    setRelevantParts(relevantParts);
-  };
-
-  const onSelectPart = (part?: string | null) => {
-    let relevantPositions: PositionsFilterItemType[] = [];
-    if (part) {
-      relevantPositions = positionItems.filter((position) => position.parts.includes(part));
-    }
-    setRelevantPositions(relevantPositions);
-  };
-
   useEffect(() => {
+    if (availableTypes.length === 0) return;
     onSelectType(type);
-  }, []);
+  }, [type, availableTypes.length]);
 
   useEffect(() => {
+    if (relevantParts.length === 0) return;
     onSelectPart(part);
-  }, []);
+  }, [part, relevantParts.length]);
+
+  const typesDisabled = isDisabled || availableTypes.length === 0;
+  const partsDisabled = isDisabled || relevantParts.length === 0;
+  const positionsDisabled = isDisabled || relevantPositions.length === 0;
 
   return (
     <Group className={classes.container}>
@@ -74,23 +86,23 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
       <TitleDropdown titles={titles} />
       <FilterDropdown
         data={availableTypes}
-        icons={typeIcons}
+        icons={typesDisabled ? undefined : typeIcons}
         filterType="type"
         selectedValue={type}
         placeholder="Filter by type"
-        isDisabled={isDisabled || availableTypes.length === 0}
+        isDisabled={typesDisabled}
         onSelect={onSelectType}
         allowDeselect
         addToQuery
       />
       <FilterDropdown
         data={relevantParts}
-        icons={partIcons}
+        icons={partsDisabled ? undefined :partIcons}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
         onSelect={onSelectPart}
-        isDisabled={isDisabled || relevantParts.length === 0}
+        isDisabled={partsDisabled}
         allowDeselect
         addToQuery
       />
@@ -99,7 +111,7 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
         filterType="position"
         placeholder="Filter by position"
         selectedValue={position}
-        isDisabled={isDisabled || relevantPositions.length === 0}
+        isDisabled={positionsDisabled}
         allowDeselect
         addToQuery
       />

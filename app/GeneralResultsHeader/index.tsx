@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
 import { Group, Title } from "@mantine/core";
-import { useElementSize, useShallowEffect } from "@mantine/hooks";
+import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
@@ -21,9 +21,9 @@ import { ExistingFiltersType } from "./types";
 import classes from "./GeneralResultsHeader.module.css";
 
 const collectionMap: { [key: string]: string } = {
-  "/": "BeforeAfter",
-  "/style": "StyleAnalysis",
-  "/proof": "Proof",
+  "/": "progress",
+  "/style": "style",
+  "/proof": "proof",
 };
 
 const titles = [
@@ -56,8 +56,8 @@ export default function GeneralResultsHeader({
   const part = searchParams.get("part");
   const query = searchParams.get("query");
 
-  const [typeFilterItems, setTypeFilterItems] = useState<FilterItemType[]>();
-  const [partFilterItems, setPartFilterItems] = useState<FilterItemType[]>();
+  const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
+  const [relevantParts, setRelevantParts] = useState<FilterItemType[]>([]);
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
   const [searchQuery, setSearchQuery] = useState(query || "");
@@ -67,6 +67,11 @@ export default function GeneralResultsHeader({
     const requiredParams = allParams.filter((param) => !["type", "part", "query"].includes(param));
     return requiredParams.length;
   }, [searchParams.toString()]);
+
+  const additionalFiltersActive = useMemo(() => {
+    const { type, part, ...otherFilters } = filters || {};
+    return Object.values(otherFilters || {}).some((value: any) => value.length > 0);
+  }, [filters]);
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -134,10 +139,10 @@ export default function GeneralResultsHeader({
         const relevantTypeItems = typeItems.filter((item) =>
           response.message.type.includes(item.value)
         );
-        setTypeFilterItems(relevantTypeItems);
+        setAvailableTypes(relevantTypeItems);
 
         const relevantParts = partItems.filter((part) => response.message.type.includes(part.type));
-        setPartFilterItems(relevantParts.filter((item) => item.type === type));
+        setRelevantParts(relevantParts.filter((item) => item.type === type));
       }
     } catch (err) {
       console.log("Error in getExistingFilters: ", err);
@@ -173,8 +178,11 @@ export default function GeneralResultsHeader({
       partFilterItems = partItems.filter((part) => part.type === type);
     }
 
-    setPartFilterItems(partFilterItems);
+    setRelevantParts(partFilterItems);
   }, [type, filters]);
+
+  const typesDisabled = availableTypes.length === 0;
+  const partsDisabled = relevantParts.length === 0;
 
   return (
     <Group className={classes.container}>
@@ -182,31 +190,40 @@ export default function GeneralResultsHeader({
         <TitleDropdown titles={titles} />
         {!hideTypeDropdown && (
           <FilterDropdown
-            data={typeFilterItems || []}
-            icons={typeIcons}
+            data={availableTypes}
+            icons={typesDisabled ? undefined : typeIcons}
             placeholder="Filter by type"
             selectedValue={type}
             filterType="type"
             allowDeselect
             addToQuery
-            isDisabled={typeFilterItems && typeFilterItems.length === 0}
+            isDisabled={typesDisabled}
           />
         )}
         {!hidePartDropdown && (
           <FilterDropdown
-            data={partFilterItems || []}
-            icons={partIcons}
+            data={relevantParts}
+            icons={partsDisabled ? undefined : partIcons}
             placeholder="Filter by part"
             selectedValue={part}
             filterType="part"
             allowDeselect
             addToQuery
-            isDisabled={partFilterItems && partFilterItems.length === 0}
+            isDisabled={partsDisabled}
           />
         )}
-        {showSearch && <SearchButton onSearchClick={() => spotlight.open()} />}
+        {showSearch && (
+          <SearchButton
+            onSearchClick={() => spotlight.open()}
+            isDisabled={spotlightActions.length === 0}
+          />
+        )}
         {showFilter && (
-          <FilterButton activeFiltersCount={paramsCount} onFilterClick={openFiltersCard} />
+          <FilterButton
+            activeFiltersCount={paramsCount}
+            onFilterClick={openFiltersCard}
+            isDisabled={!additionalFiltersActive}
+          />
         )}
       </Group>
 

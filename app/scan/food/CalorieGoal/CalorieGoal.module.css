@@ -31,4 +31,5 @@
   height: rem(28);
   width: rem(34);
   border: none;
+  z-index: 1;
 }

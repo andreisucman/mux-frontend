@@ -34,6 +34,16 @@ function SelectPartsCheckboxes({
     return isUploaded("scalp", distinctUploadedParts);
   }, [distinctUploadedParts.length]);
 
+  const checkboxStyles = useMemo(
+    () => ({
+      labelWrapper: { width: "100%" },
+      root: { width: "100%" },
+      label: { paddingLeft: "0.35rem" },
+      body: { alignItems: "center" },
+    }),
+    []
+  );
+
   return (
     <Group className={classes.container}>
       <Checkbox
@@ -45,12 +55,7 @@ function SelectPartsCheckboxes({
           </Group>
         }
         onChange={() => setShowPart("face", !showFace)}
-        styles={{
-          labelWrapper: { width: "100%" },
-          root: { width: "100%" },
-          label: { paddingLeft: "0.35rem" },
-          body: { alignItems: "center" },
-        }}
+        styles={checkboxStyles}
       />
       <Checkbox
         checked={mouthUploaded || showMouth}
@@ -61,12 +66,7 @@ function SelectPartsCheckboxes({
           </Group>
         }
         onChange={() => setShowPart("mouth", !showMouth)}
-        styles={{
-          labelWrapper: { width: "100%" },
-          root: { width: "100%" },
-          label: { paddingLeft: "0.35rem" },
-          body: { alignItems: "center" },
-        }}
+        styles={checkboxStyles}
       />
       <Checkbox
         checked={scalpUploaded || showScalp}
@@ -77,12 +77,7 @@ function SelectPartsCheckboxes({
           </Group>
         }
         onChange={() => setShowPart("scalp", !showScalp)}
-        styles={{
-          labelWrapper: { width: "100%" },
-          root: { width: "100%" },
-          label: { paddingLeft: "0.35rem" },
-          body: { alignItems: "center" },
-        }}
+        styles={checkboxStyles}
       />
     </Group>
   );

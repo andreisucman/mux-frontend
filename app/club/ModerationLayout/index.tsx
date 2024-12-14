@@ -69,7 +69,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         />
       ),
       about: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
-      routine: <ClubHeader title={"Club"} showReturn />,
+      routines: <ClubHeader title={"Club"} showReturn />,
     }),
     [showComponent]
   );
@@ -117,7 +117,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         ) : (
           <>
             <ClubProfilePreview
-              type={followingUserId ? "peek" : "you"}
+              type={followingUserId ? "follow" : "you"}
               data={followingUserId ? youTrackData : youData}
               customStyles={{ flex: 0 }}
             />

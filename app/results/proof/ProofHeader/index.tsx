@@ -98,6 +98,9 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
     });
   }, [followingUserId]);
 
+  const typesDisabled = isDisabled || availableTypes.length === 0;
+  const partsDisabled = isDisabled || relevantParts.length === 0;
+
   return (
     <>
       <Group className={classes.container}>
@@ -110,28 +113,28 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
         <>
           <FilterDropdown
             data={availableTypes}
-            icons={typeIcons}
+            icons={typesDisabled ? undefined : typeIcons}
             placeholder="Filter by type"
             selectedValue={type}
             filterType="type"
             onSelect={onSelectType}
             allowDeselect
-            isDisabled={isDisabled || availableTypes.length === 0}
+            isDisabled={typesDisabled}
             addToQuery
           />
           <FilterDropdown
             data={relevantParts}
-            icons={partIcons}
+            icons={partsDisabled ? undefined : partIcons}
             placeholder="Filter by part"
             selectedValue={part}
             filterType="part"
-            isDisabled={isDisabled || relevantParts.length === 0}
+            isDisabled={partsDisabled}
             allowDeselect
             addToQuery
           />
           <SearchButton
             onSearchClick={() => solutionsSpotlight.open()}
-            isDisabled={isDisabled || availableTypes.length === 0}
+            isDisabled={isDisabled || spotlightActions.length === 0}
           />
         </>
       </Group>

@@ -6,7 +6,7 @@ import { Button, Group, rem, Text } from "@mantine/core";
 import classes from "./MenuButtons.module.css";
 
 type Props = {
-  type: "you" | "peek";
+  type: "you" | "follow";
   hasQuestions: boolean;
   isVertical?: boolean;
   redirectToProgress: () => void;

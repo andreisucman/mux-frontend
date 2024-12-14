@@ -187,7 +187,7 @@ export default function AccountSettings() {
         )}
         <Stack className={classes.list}>
           <TextInput
-            maw={355}
+            maw={425}
             value={email}
             onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}
             readOnly={auth === "g"}

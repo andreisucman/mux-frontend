@@ -59,7 +59,11 @@ export default function ClubAdmission() {
         modal: "general",
         centered: true,
         innerProps: <SelectCountry onClick={handleCreateConnectAccount} />,
-        title: <Title component={"p"} order={5}>Enter your country</Title>,
+        title: (
+          <Title component={"p"} order={5}>
+            Enter your country
+          </Title>
+        ),
       });
       return;
     }

@@ -27,6 +27,9 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
   const styleName = searchParams.get("styleName");
   const type = searchParams.get("type");
 
+  const typesDisabled = isDisabled || availableTypes.length === 0;
+  const stylesDisabled = isDisabled || availableStyles.length === 0;
+
   useEffect(() => {
     getUsersFilters({
       followingUserId,
@@ -62,22 +65,22 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
       <FilterDropdown
         filterType="type"
         data={availableTypes}
-        icons={typeIcons}
+        icons={typesDisabled ? undefined : typeIcons}
         selectedValue={type}
         onSelect={onSelect}
         placeholder="Filter by type"
-        isDisabled={isDisabled || availableTypes.length === 0}
+        isDisabled={typesDisabled}
         allowDeselect
         addToQuery
       />
       <FilterDropdown
         data={availableStyles}
         filterType="styleName"
-        icons={styleIcons}
+        icons={stylesDisabled ? undefined : styleIcons}
         selectedValue={styleName}
         onSelect={onSelect}
         placeholder="Filter by style"
-        isDisabled={isDisabled || availableStyles.length === 0}
+        isDisabled={stylesDisabled}
         allowDeselect
         addToQuery
       />

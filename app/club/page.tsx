@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
-import { Group, Skeleton, Stack, Text } from "@mantine/core";
+import React, { useContext } from "react";
+import { Group, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -15,28 +15,20 @@ export const runtime = "edge";
 
 export default function Club() {
   const { userDetails } = useContext(UserContext);
-  const { youTrackData, youData } = useContext(ClubContext);
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  const { youTrackData, youData, youTrackDataFetched } = useContext(ClubContext);
 
   const { club } = userDetails || {};
   const { followingUserId: localFollowingUserId, payouts, totalFollowers } = club || {};
   const { rewardEarned, payoutsEnabled } = payouts || {};
 
-  useEffect(() => {
-    if (typeof rewardEarned !== "number") return;
-    if (localFollowingUserId && !youTrackData) return;
-    if (!youData) return;
-    setShowSkeleton(false);
-  }, [userDetails, youTrackData, youData]);
-
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper>
+      <SkeletonWrapper show={!youTrackDataFetched}>
         <ClubProfileHeader />
         <Group className={classes.top}>
           <ClubProfilePreview data={youData} type="you" showButtons />
           {localFollowingUserId && (
-            <ClubProfilePreview data={youTrackData} type="peek" showButtons />
+            <ClubProfilePreview data={youTrackData} type="follow" showButtons />
           )}
         </Group>
         <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />

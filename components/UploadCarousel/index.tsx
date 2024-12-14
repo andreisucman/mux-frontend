@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { Loader, Stack } from "@mantine/core";
+import { useShallowEffect } from "@mantine/hooks";
 import { UploadProgressProps } from "@/app/scan/types";
 import UploadCard from "@/components/UploadCard";
 import SelectPartsCheckboxes from "@/components/UploadCarousel/SelectPartsCheckboxes";
@@ -13,6 +15,7 @@ import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import { onBlurImageClick } from "@/functions/blur";
 import { ScanTypeEnum, SexEnum, TypeEnum } from "@/types/global";
+import OverlayWithText from "../OverlayWithText";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
 import { RequirementType } from "./types";
 import classes from "./UploadCarousel.module.css";
@@ -21,7 +24,7 @@ type Props = {
   type: TypeEnum;
   scanType: ScanTypeEnum;
   latestStyleImage?: string;
-  requirements?: RequirementType[] | [];
+  requirements: RequirementType[];
   faceBlurredUrl: string;
   eyesBlurredUrl: string;
   originalUrl: string;
@@ -51,22 +54,14 @@ export default function UploadCarousel({
   setEyesBlurredUrl,
   setFaceBlurredUrl,
 }: Props) {
-  const finalRequirements = requirements || [];
-
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "partialScanOverlay" | "carousel"
+    "loading" | "partialScanOverlay" | "carousel" | "empty"
   >("loading");
   const { userDetails } = useContext(UserContext);
   const { blurType } = useContext(BlurChoicesContext);
   const { showFace, showMouth, showScalp, setShowPart } = useContext(UploadPartsChoicesContext);
 
   const { _id: userId, toAnalyze } = userDetails || {};
-  const allPartsDeselected =
-    toAnalyze &&
-    toAnalyze[type as TypeEnum.BODY | TypeEnum.HEAD].length === 0 &&
-    !showFace &&
-    !showMouth &&
-    !showScalp;
 
   const uploadedParts = toAnalyze && toAnalyze[type as TypeEnum.BODY | TypeEnum.HEAD];
 
@@ -75,16 +70,16 @@ export default function UploadCarousel({
   ] as string[];
 
   const faceExists = useMemo(
-    () => finalRequirements.some((obj) => obj.part === "face"),
-    [finalRequirements.length]
+    () => requirements.some((obj) => obj.part === "face"),
+    [requirements.length]
   );
   const mouthExists = useMemo(
-    () => finalRequirements.some((obj) => obj.part === "mouth"),
-    [finalRequirements.length]
+    () => requirements.some((obj) => obj.part === "mouth"),
+    [requirements.length]
   );
   const scalpExists = useMemo(
-    () => finalRequirements.some((obj) => obj.part === "scalp"),
-    [finalRequirements.length]
+    () => requirements.some((obj) => obj.part === "scalp"),
+    [requirements.length]
   );
 
   const handleDeleteImage = useCallback(() => {
@@ -94,10 +89,10 @@ export default function UploadCarousel({
     setFaceBlurredUrl("");
   }, []);
 
-  const slides = finalRequirements
+  const slides = requirements
     .map((item, index) => {
       if (!userDetails) return;
-      if (!showFace && ["front", "right", "left"].includes(item.position)) return;
+      if (!showFace && item.part === "face") return;
       if (!showMouth && item.part === "mouth") return;
       if (!showScalp && item.part === "scalp") return;
 
@@ -158,25 +153,20 @@ export default function UploadCarousel({
     toAnalyze &&
     toAnalyze?.[type as TypeEnum.BODY | TypeEnum.HEAD]?.length > 0;
 
-  const allPartsEnabled = showFace && showMouth && showScalp;
+  const allPartsDisalbed = !showFace && !showMouth && !showScalp;
   const showPartsSelector = type === "head" && scanType === "progress";
 
-  useEffect(() => {
-    if (somethingUploaded && finalRequirements.length > 0) {
+  useShallowEffect(() => {
+    if (somethingUploaded && requirements.length > 0) {
       setDisplayComponent("partialScanOverlay");
-    } else if (finalRequirements.length > 0) {
+    } else if (allPartsDisalbed) {
+      setDisplayComponent("empty");
+    } else if (requirements.length > 0) {
       setDisplayComponent("carousel");
     } else {
       setDisplayComponent("loading");
     }
-  }, [
-    somethingUploaded,
-    requirements && requirements.length,
-    scanType,
-    allPartsEnabled,
-    allPartsDeselected,
-    somethingUploaded,
-  ]);
+  }, [somethingUploaded, requirements, scanType, allPartsDisalbed, somethingUploaded]);
 
   return (
     <Stack flex={1}>
@@ -206,6 +196,9 @@ export default function UploadCarousel({
             {slides}
           </Carousel>
         </>
+      )}
+      {displayComponent === "empty" && (
+        <OverlayWithText text="All parts deselected" icon={<IconCircleOff className="icon" />} />
       )}
       {displayComponent === "partialScanOverlay" && (
         <StartPartialScanOverlay

@@ -103,7 +103,7 @@ export default function ChatInput({
       <IconSquareRoundedCheck className="icon" />
     );
 
-    const onClick = isClub
+    const onClick = followingUserId
       ? handleCreateCheckoutSession
       : !!isTrialUsed
         ? handleCreateCheckoutSession
@@ -113,15 +113,15 @@ export default function ChatInput({
             });
 
     const payload = {
-      title: isClub ? `Add the Peek License` : `Add the Advisor Coach`,
-      modalType: isClub ? "peek" : ("guru" as "peek"),
+      title: followingUserId ? `Add the Peek License` : `Add the Advisor Coach`,
+      modalType: followingUserId ? "peek" : ("advisor" as "peek"),
       isCentered: true,
-      price: isClub ? "19" : "5",
+      price: followingUserId ? "19" : "5",
       buttonText,
       buttonIcon,
       onClick,
       onClose: () => fetchUserData(setUserDetails),
-      underButtonText: isClub ? "" : "No credit card required",
+      underButtonText: followingUserId ? "" : "No credit card required",
     };
 
     openSubscriptionModal(payload);
@@ -184,7 +184,7 @@ export default function ChatInput({
           taskName,
         };
 
-        if (isClub) payload.userId = followingUserId;
+        if (followingUserId) payload.userId = followingUserId;
 
         const response = await callTheServer({
           endpoint: "addMessage",

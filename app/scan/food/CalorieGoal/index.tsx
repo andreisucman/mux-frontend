@@ -59,6 +59,7 @@ export default function CalorieGoalController({
           data={segments}
           value={goalType}
           onChange={setGoalType}
+          styles={{ root: { zIndex: 1 } }}
         />
       </Group>
       <Slider
