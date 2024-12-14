@@ -30,7 +30,7 @@ export default function CardMetaPanel({
       className={classes.container}
       style={customStyles ? customStyles : {}}
       component={Link}
-      href={`/club/about?followingUserId=${userId}`}
+      href={`/club/about?id=${userId}`}
     >
       <Group className={classes.nameWrapper}>
         <AvatarComponent avatar={avatar} size="xs" />

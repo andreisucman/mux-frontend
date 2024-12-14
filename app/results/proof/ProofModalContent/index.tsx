@@ -31,7 +31,7 @@ export default function ProofModalContent({ record, isPublic }: Props) {
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?followingUserId=${userId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?id=${userId}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);

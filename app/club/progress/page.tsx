@@ -27,7 +27,7 @@ export default function ClubProgress() {
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const handleFetchProgress = useCallback(
     async ({

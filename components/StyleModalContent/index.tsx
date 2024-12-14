@@ -45,7 +45,7 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
   const formattedCompareDate = formatDate({ date: compareDate });
   const hideVoting = styleName === compareStyleName;
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style?followingUserId=${record.userId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style?id=${record.userId}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);

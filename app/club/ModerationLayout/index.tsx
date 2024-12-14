@@ -32,17 +32,16 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
-
   const [showComponent, setShowComponent] = useState("loading");
-
-  const followingUserId = searchParams.get("followingUserId");
 
   const pathnameParts = pathname.split("/");
   const pageType = pathnameParts[pathnameParts.length - 1];
 
-  const { subscriptions, club } = userDetails || {};
-
+  const { _id: userId, subscriptions, club } = userDetails || {};
   const { followingUserId: localFollowingUserId } = club || {};
+
+  const followingUserId = searchParams.get("id");
+  const isSelf = userId === followingUserId;
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
 
@@ -59,6 +58,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         <ProgressHeader
           titles={clubResultTitles}
           isDisabled={showComponent !== "children"}
+          hideDropdowns={showComponent !== "children"}
           showReturn
         />
       ),
@@ -70,7 +70,9 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         />
       ),
       about: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
-      routines: <ClubHeader title={"Club"} showReturn />,
+      routines: (
+        <ClubHeader title={"Club"} showReturn hideTypeDropdown={showComponent !== "children"} />
+      ),
     }),
     [showComponent]
   );
@@ -78,24 +80,22 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   const followText = `Follow to see ${pageType === "routine" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
-    if (!youTrackData && youTrackDataFetched) {
+    if (!youTrackDataFetched) return;
+
+    if (youTrackData === null || !followingUserId) {
       setShowComponent("userNotFound");
       return;
     }
 
-    if (followingUserId) {
-      if (isSubscriptionActive) {
-        const follows = localFollowingUserId === followingUserId;
-        if (follows) {
-          setShowComponent("children");
-        } else {
-          setShowComponent("followOverlay");
-        }
+    if (isSubscriptionActive) {
+      const follows = localFollowingUserId === followingUserId;
+      if (follows) {
+        setShowComponent("children");
       } else {
-        setShowComponent("subscriptionOverlay");
+        setShowComponent("followOverlay");
       }
     } else {
-      setShowComponent("children");
+      setShowComponent("subscriptionOverlay");
     }
   }, [
     isSubscriptionActive,
@@ -114,16 +114,18 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         ) : (
           <>
             <ClubProfilePreview
-              type={followingUserId ? "follow" : "you"}
-              data={youTrackData || youData}
+              type={isSelf ? "you" : "follow"}
+              data={isSelf ? youData : youTrackData}
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}
             {showComponent === "subscriptionOverlay" && <PeekOverlay />}
             {showComponent === "followOverlay" && (
-              <FollowOverlay followingUserId={followingUserId} description={followText} />
+              <FollowOverlay followingUserId={followingUserId as string} description={followText} />
             )}
-            {showChat && <ClubChatContainer disabled={showComponent !== "children"} />}
+            {showComponent === "children" && showChat && (
+              <ClubChatContainer disabled={showComponent !== "children"} />
+            )}
           </>
         )}
       </Skeleton>

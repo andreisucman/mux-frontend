@@ -33,7 +33,7 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const handleActionClick = useCallback(
     (value: string) => {

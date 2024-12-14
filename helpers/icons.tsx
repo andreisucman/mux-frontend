@@ -1,9 +1,12 @@
 import {
+  IconClipboardText,
   IconDental,
   IconHeart,
   IconMan,
   IconMoodNeutral,
   IconMoodSmile,
+  IconTargetArrow,
+  IconUserCircle,
   IconWhirl,
 } from "@tabler/icons-react";
 
@@ -19,6 +22,12 @@ export const partIcons: { [key: string]: React.ReactNode } = {
   scalp: <IconWhirl className="icon" />,
   body: <IconMan className="icon" />,
   health: <IconHeart className="icon" />,
+};
+
+export const pageTypeIcons: { [key: string]: React.ReactNode } = {
+  "/club/about": <IconUserCircle className="icon" />,
+  "/club/routines": <IconClipboardText className="icon" />,
+  "/club/progress": <IconTargetArrow className="icon" />,
 };
 
 export const styleIcons: { [key: string]: string } = {

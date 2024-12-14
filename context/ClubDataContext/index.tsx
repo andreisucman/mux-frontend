@@ -8,7 +8,7 @@ import { UserContext } from "../UserContext";
 
 const defaultClubContext = {
   youTrackDataFetched: false,
-  youTrackData: null as ClubUserType | null,
+  youTrackData: null as ClubUserType | null | undefined,
   setYouTrackData: (args: any) => {},
   youData: null as ClubUserType | null,
   setYouData: (args: any) => {},
@@ -24,13 +24,11 @@ export default function ClubDataContextProvider({ children }: Props) {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const [youTrackDataFetched, setYouTrackDataFetched] = useState(false);
-  const [youTrackData, setYouTrackData] = useState<ClubUserType | null>(null);
+  const [youTrackData, setYouTrackData] = useState<ClubUserType | null | undefined>();
   const [youData, setYouData] = useState<ClubUserType | null>(null);
 
+  const followingUserId = searchParams.get("id");
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
-  const { followingUserId: localFollowingUserId } = club || {};
-
-  const followingUserId = searchParams.get("followingUserId") || localFollowingUserId;
 
   const getClubYouTrack = useCallback(async (followingUserId: string) => {
     try {
@@ -41,8 +39,10 @@ export default function ClubDataContextProvider({ children }: Props) {
 
       if (response.status === 200) {
         setYouTrackData(response.message);
-        setYouTrackDataFetched(true);
+      } else {
+        setYouTrackData(null);
       }
+      setYouTrackDataFetched(true);
     } catch (err) {
       console.log("Error in getClubYouTrack: ", err);
     }
@@ -76,8 +76,7 @@ export default function ClubDataContextProvider({ children }: Props) {
   }, [userId]);
 
   useEffect(() => {
-    if (!followingUserId) return;
-    getClubYouTrack(followingUserId);
+    getClubYouTrack(followingUserId as string);
   }, [followingUserId]);
 
   return (

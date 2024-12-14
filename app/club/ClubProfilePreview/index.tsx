@@ -14,7 +14,7 @@ import classes from "./ClubProfilePreview.module.css";
 type Props = {
   type: "you" | "follow";
   isMini?: boolean;
-  data: ClubUserType | null;
+  data?: ClubUserType | null;
   showButtons?: boolean;
   customStyles?: { [key: string]: any };
 };
@@ -33,8 +33,7 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
   const redirectToProgress = useCallback(() => {
     if (!data) return;
 
-    let url = `/club/progress?followingUserId=${followingUserId}`;
-    if (type === "you") url = `/results`;
+    let url = `/club/progress?id=${followingUserId}`;
 
     if (!!headTotalProgress) {
       url += `&type=head`;
@@ -47,10 +46,7 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
   const redirectToTrackingAbout = useCallback(() => {
     if (!data) return;
 
-    let url = `/club/about?followingUserId=${followingUserId}`;
-    if (type === "you") url = `/club/about`;
-
-    router.push(url);
+    router.push(`/club/about?id=${followingUserId}`);
   }, [followingUserId]);
 
   return (

@@ -29,7 +29,7 @@ export default function ClubProof() {
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const handleFetchProof = useCallback(
     async ({

@@ -45,7 +45,7 @@ export default function ProofGallery({
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
   const isSelf = !followingUserId || userId === followingUserId;
 
   const modelObject = proof && proof[0];

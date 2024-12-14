@@ -8,7 +8,6 @@
   gap: rem(16);
 }
 
-
 .skeleton {
   display: flex;
   flex-direction: column;

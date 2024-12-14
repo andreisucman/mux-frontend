@@ -1,22 +1,11 @@
 import React, { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import {
-  IconChevronLeft,
-  IconClipboardText,
-  IconTargetArrow,
-  IconUserCircle,
-} from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons } from "@/helpers/icons";
+import { typeIcons, pageTypeIcons } from "@/helpers/icons";
 import classes from "./ClubHeader.module.css";
-
-export const pageTypeIcons: { [key: string]: React.ReactNode } = {
-  "/club/about": <IconUserCircle className="icon" />,
-  "/club/routines": <IconClipboardText className="icon" />,
-  "/club/progress": <IconTargetArrow className="icon" />,
-};
 
 const clubPageTypeData: { label: string; value: string }[] = [
   { label: "About", value: "/club/about" },

@@ -68,7 +68,7 @@ const handleTrackUser = async ({
     }
   } else {
     signIn({
-      stateObject: { redirectPath: `/club`, redirectQuery: `followingUserId=${followingUserId}` },
+      stateObject: { redirectPath: `/club`, redirectQuery: `id=${followingUserId}` },
       router,
     });
   }

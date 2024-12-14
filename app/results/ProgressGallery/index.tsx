@@ -36,10 +36,10 @@ export default function ProgressGallery({
 }: Props) {
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const part = searchParams.get("part");
-  const position = searchParams.get("position") || "front";
-  const followingUserId = searchParams.get("followingUserId") || "front";
+  const position = searchParams.get("position");
+  const followingUserId = searchParams.get("id");
 
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;

@@ -21,7 +21,7 @@ type BioDataType = {
 
 type Props = {
   questions?: AboutQuestionType[];
-  loadData: ClubUserType | null;
+  youData: ClubUserType | null;
   bioData: BioDataType;
   updateClubBio: (dirtyParts: string[], bioData: BioDataType) => Promise<void>;
   setBioData: React.Dispatch<React.SetStateAction<BioDataType>>;
@@ -29,7 +29,7 @@ type Props = {
 
 export default function EditClubAbout({
   questions,
-  loadData,
+  youData,
   bioData,
   updateClubBio,
   setBioData,
@@ -37,11 +37,11 @@ export default function EditClubAbout({
   const searchParams = useSearchParams();
 
   const [showSegment, setShowSegment] = useState("philosophy");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const dirtyParts = Object.keys(bioData)
     .map((key) =>
-      bioData[key as keyof BioDataType] === (loadData?.bio as { [key: string]: any })?.[key]
+      bioData[key as keyof BioDataType] === (youData?.bio as { [key: string]: any })?.[key]
         ? null
         : key
     )

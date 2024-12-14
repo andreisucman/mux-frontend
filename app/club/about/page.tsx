@@ -8,7 +8,6 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { UserDataType } from "@/types/global";
-import ClubHeader from "../ClubHeader";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
@@ -31,13 +30,12 @@ export default function ClubAbout() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const followingUserId = searchParams.get("followingUserId");
-
-  const { club } = userDetails || {};
+  const { _id: userId, club } = userDetails || {};
   const { bio } = club || {};
   const { questions } = bio || {};
 
-  const loadData = followingUserId ? youTrackData : youData;
+  const followingUserId = searchParams.get("id");
+  const isSelf = userId === followingUserId;
 
   const [bioData, setBioData] = useState<BioDataType>({
     philosophy: "",
@@ -135,40 +133,51 @@ export default function ClubAbout() {
   );
 
   useEffect(() => {
-    if (!loadData) return;
+    if (!youData && !youTrackData) return;
 
-    const { philosophy = "", style = "", tips = "", about = "" } = loadData.bio || {};
+    let bio: { [key: string]: any } = {};
+
+    if (isSelf) {
+      bio = youData?.bio || {};
+    } else {
+      bio = youTrackData?.bio || {};
+    }
 
     setBioData({
-      philosophy,
-      style,
-      tips,
-      about,
+      philosophy: bio?.philosophy || "",
+      style: bio?.style || "",
+      tips: bio?.tips || "",
+      about: bio?.about || "",
     });
-  }, [followingUserId, youData, youTrackData]);
+  }, [isSelf, youData, youTrackData]);
 
   useEffect(() => {
-    if (!loadData || !userDetails) return;
+    let showSkeleton = true;
 
-    setShowSkeleton(false);
-  }, [loadData, userDetails]);
+    if (isSelf && youData) showSkeleton = false;
+    if (!isSelf && youTrackData) showSkeleton = false;
+
+    setShowSkeleton(showSkeleton);
+  }, [isSelf, userDetails]);
 
   return (
     <ClubModerationLayout>
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
-        {!followingUserId && questions && questions.length > 0 && (
-          <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
-        )}
-        {followingUserId ? (
-          <DisplayClubAbout bioData={bioData} />
+        {isSelf ? (
+          <>
+            {questions && questions.length > 0 && (
+              <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
+            )}
+            <EditClubAbout
+              bioData={bioData}
+              youData={youData}
+              questions={questions}
+              setBioData={setBioData}
+              updateClubBio={updateClubBio}
+            />
+          </>
         ) : (
-          <EditClubAbout
-            bioData={bioData}
-            loadData={loadData}
-            questions={questions}
-            setBioData={setBioData}
-            updateClubBio={updateClubBio}
-          />
+          <DisplayClubAbout bioData={bioData} />
         )}
       </Skeleton>
     </ClubModerationLayout>

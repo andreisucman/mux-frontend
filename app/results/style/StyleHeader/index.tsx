@@ -23,7 +23,7 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableStyles, setAvailableStyles] = useState<FilterItemType[]>([]);
 
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
   const styleName = searchParams.get("styleName");
   const type = searchParams.get("type");
 

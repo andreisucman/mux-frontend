@@ -21,8 +21,8 @@ function MenuButtons({
   redirectToTrackingAbout,
 }: Props) {
   const pathname = usePathname();
-  const isAbout = pathname.includes("/club/about");
-  const isProgress = pathname.includes("/club/progress");
+  const isAbout = pathname.startsWith("/club/about");
+  const isProgress = pathname.startsWith("/club/progress");
 
   const showQuestions = type === "you" && hasQuestions && !isAbout;
 

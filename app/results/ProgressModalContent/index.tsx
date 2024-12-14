@@ -28,7 +28,7 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?followingUserId=${followingUserId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?id=${followingUserId}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);

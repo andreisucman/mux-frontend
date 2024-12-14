@@ -43,7 +43,7 @@ export default function StyleGallery({
 
   const type = searchParams.get("type");
   const styleName = searchParams.get("styleName");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const modelObject = styles && styles[0];
   const appliedBlurType = modelObject?.mainUrl.name;

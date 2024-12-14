@@ -49,7 +49,7 @@ export default function FollowHistoryModalContent() {
         }
 
         const query = modifyQuery({
-          params: [{ name: "followingUserId", value: userId, action: "replace" }],
+          params: [{ name: "id", value: userId, action: "replace" }],
         });
         router.push(`/club?${query}`);
         modals.closeAll();

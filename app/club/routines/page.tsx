@@ -34,7 +34,7 @@ export default function ClubRoutines() {
   const { _id: userId, routines: currentUserRoutines } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
   const isSelf = !followingUserId ||  userId === followingUserId;
 
   const openTaskDetails = useCallback(

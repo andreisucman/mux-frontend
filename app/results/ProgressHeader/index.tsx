@@ -14,18 +14,19 @@ import classes from "./ProgressHeader.module.css";
 type Props = {
   titles: { label: string; value: string }[];
   isDisabled?: boolean;
+  hideDropdowns?: boolean;
   showReturn?: boolean;
   onSelect?: (value?: string | null) => void;
 };
 
-export default function ProgressHeader({ titles, showReturn, isDisabled }: Props) {
+export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDisabled }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
@@ -84,37 +85,41 @@ export default function ProgressHeader({ titles, showReturn, isDisabled }: Props
         </ActionIcon>
       )}
       <TitleDropdown titles={titles} />
-      <FilterDropdown
-        data={availableTypes}
-        icons={typesDisabled ? undefined : typeIcons}
-        filterType="type"
-        selectedValue={type}
-        placeholder="Filter by type"
-        isDisabled={typesDisabled}
-        onSelect={onSelectType}
-        allowDeselect
-        addToQuery
-      />
-      <FilterDropdown
-        data={relevantParts}
-        icons={partsDisabled ? undefined :partIcons}
-        filterType="part"
-        placeholder="Filter by part"
-        selectedValue={part}
-        onSelect={onSelectPart}
-        isDisabled={partsDisabled}
-        allowDeselect
-        addToQuery
-      />
-      <FilterDropdown
-        data={relevantPositions}
-        filterType="position"
-        placeholder="Filter by position"
-        selectedValue={position}
-        isDisabled={positionsDisabled}
-        allowDeselect
-        addToQuery
-      />
+      {!hideDropdowns && (
+        <>
+          <FilterDropdown
+            data={availableTypes}
+            icons={typesDisabled ? undefined : typeIcons}
+            filterType="type"
+            selectedValue={type}
+            placeholder="Filter by type"
+            isDisabled={typesDisabled}
+            onSelect={onSelectType}
+            allowDeselect
+            addToQuery
+          />
+          <FilterDropdown
+            data={relevantParts}
+            icons={partsDisabled ? undefined : partIcons}
+            filterType="part"
+            placeholder="Filter by part"
+            selectedValue={part}
+            onSelect={onSelectPart}
+            isDisabled={partsDisabled}
+            allowDeselect
+            addToQuery
+          />
+          <FilterDropdown
+            data={relevantPositions}
+            filterType="position"
+            placeholder="Filter by position"
+            selectedValue={position}
+            isDisabled={positionsDisabled}
+            allowDeselect
+            addToQuery
+          />
+        </>
+      )}
     </Group>
   );
 }

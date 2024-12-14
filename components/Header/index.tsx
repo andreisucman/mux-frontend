@@ -90,6 +90,8 @@ function Header() {
                     text="Start"
                     aria-label="start analysis button"
                     disabled={hideStartButton}
+                    buttonStyles={{ minWidth: "unset" }}
+                    overlayStyles={{ minWidth: "unset" }}
                     icon={
                       <IconRocket
                         stroke={1.5}

@@ -110,6 +110,8 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
   const [linkClicked, setLinkClicked] = useState("");
   const year = new Date().getFullYear();
 
+  const { _id: userId } = userDetails || {};
+
   const handleClickLink = useCallback(
     (path: string) => {
       setLinkClicked(path === linkClicked ? "" : path);
@@ -141,8 +143,8 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           icon: <IconSocial stroke={1.25} className="icon" />,
           children: [
             { title: "Profile", path: "/club" },
-            { title: "About", path: "/club/about" },
-            { title: "Routines", path: "/club/routines" },
+            { title: "About", path: `/club/about?id=${userId}` },
+            { title: "Routines", path: `/club/routines?id=${userId}` },
           ],
         });
       }

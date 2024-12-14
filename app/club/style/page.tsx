@@ -26,7 +26,7 @@ export default function ClubStyle() {
 
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
-  const followingUserId = searchParams.get("followingUserId");
+  const followingUserId = searchParams.get("id");
 
   const handleFetchUsersStyles = useCallback(
     async ({ type, currentArray, styleName, skip, followingUserId }: HandleFetchStyleProps) => {

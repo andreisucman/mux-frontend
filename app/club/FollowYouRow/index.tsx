@@ -27,7 +27,7 @@ function FollowYouRow({ data }: Props) {
 
   return (
     <Skeleton className={`skeleton ${classes.skeleton}`} visible={showSkeleton}>
-      <Link className={classes.container} href={`/club/about?followingUserId=${_id}`}>
+      <Link className={classes.container} href={`/club/about?id=${_id}`}>
         <AvatarComponent avatar={avatar} size="sm" />
         <Text lineClamp={1} className={classes.name}>
           {name}
