@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  gap: 0;
+  gap: rem(4)
 }
 
 .indicatorRowContainer {

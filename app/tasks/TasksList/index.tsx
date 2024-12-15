@@ -2,8 +2,9 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
+import { IconNote } from "@tabler/icons-react";
 import useSWR from "swr";
-import { Group, Skeleton, Stack } from "@mantine/core";
+import { Button, Group, rem, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import WaitComponent from "@/components/WaitComponent";
@@ -11,6 +12,7 @@ import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
+import Link from "@/helpers/custom-router/patch-router/link";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -70,7 +72,13 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
       tasks?.filter((task) => task.type === type && task.status === "completed") || [];
 
     return Math.round(completedRelevantTasks.length / relevantTasks.length);
-  }, [tasks?.length]);
+  }, [tasks]);
+
+  const noActiveTasksForToday = useMemo(() => {
+    const activeTasks =
+      tasks?.filter((task) => task.type === type && task.status === "active") || [];
+    return activeTasks.length === 0;
+  }, [tasks]);
 
   const relevantTasks: TaskTypeWithClick[] | undefined = useMemo(
     () =>
@@ -85,12 +93,10 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
             router.push(`/explain?${query}`);
           },
         })),
-    [type, pathaname, tasks && tasks.length]
+    [type, tasks, pathaname, userDetails]
   );
 
   const fetchLatestRoutinesAndTasks = useCallback(async () => {
-    if (!userId) return;
-
     try {
       const response = await callTheServer({
         endpoint: `getUserData`,
@@ -106,7 +112,9 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
     } catch (err) {
       console.log("Error in fetchLatestRoutinesAndTasks: ", err);
     }
-  }, [userId]);
+  }, []);
+
+  console.log("noActiveTasksForToday", noActiveTasksForToday);
 
   const handleSaveTask = useCallback(
     async ({
@@ -223,6 +231,13 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
               <Stack className={classes.scrollArea}>
                 {relevantTasks && (
                   <Stack className={classes.listWrapper}>
+                    {" "}
+                    {noActiveTasksForToday && (
+                      <Button component={Link} href={`/diary?type=${type}`} c="white">
+                        <IconNote className="icon" style={{ marginRight: rem(8) }} /> Add a diary
+                        note for today
+                      </Button>
+                    )}
                     {relevantTasks.map((record, index: number) => (
                       <RoutineRow
                         key={index}

@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
@@ -91,9 +90,6 @@ export default function UploadStyle() {
                 `/scan/style?${searchParams.toString()}`
               );
               router.push(
-                `/wait?type=${type}&operationKey=${`style-${type}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}`
-              );
-              router.push(
                 `/wait?type=${finalType}&operationKey=${`style-${finalType}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
               );
             } else {
@@ -110,7 +106,7 @@ export default function UploadStyle() {
         setIsLoading(false);
       }
     },
-    [userId, setUserDetails]
+    [userId, setUserDetails, type]
   );
 
   const handleResetOnChangeType = useCallback(() => {

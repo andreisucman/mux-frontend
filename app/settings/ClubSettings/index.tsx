@@ -22,6 +22,7 @@ import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import AddClubSocials from "./AddClubSocials";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import LeaveClubConfirmation from "./LeaveClubConfirmation";
 import classes from "./ClubSettings.module.css";
 
@@ -35,7 +36,6 @@ const MAX_INTRO_CHARACTERS = 180;
 
 export default function ClubSettings() {
   const router = useRouter();
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const { club } = userDetails || {};
@@ -182,12 +182,7 @@ export default function ClubSettings() {
     setUserIntro(text);
   };
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   const introCharactersLeft = MAX_INTRO_CHARACTERS - userIntro.length;
 

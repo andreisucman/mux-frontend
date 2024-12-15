@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { Button, Group, Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import classes from "./FollowHistoryModalCard.module.css";
 
 type Props = {
@@ -15,14 +16,8 @@ type Props = {
 
 export default function FollowHistoryModalCard({ data, onClick }: Props) {
   const { avatar, name, followingUserId } = data;
-  const [showSkeleton, setShowSkeleton] = useState(true);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton} className="skeleton">

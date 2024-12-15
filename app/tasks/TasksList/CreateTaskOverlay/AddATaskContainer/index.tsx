@@ -88,6 +88,12 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
 
   const tasksLeft = datesPreview.length - 3;
 
+  const { nextScan } = userDetails || {};
+
+  const typeNextScan = nextScan?.find((obj) => obj.type === type);
+  const isCreateRoutineInCooldown =
+    typeNextScan && typeNextScan.date && new Date(typeNextScan.date) > new Date();
+
   return (
     <Stack className={classes.container}>
       {error && (
@@ -134,7 +140,7 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
                 >
                   <IconBulb className="icon" style={{ marginRight: rem(6) }} /> Create task
                 </Button>
-                <CreateWeeklyRoutineButton type={type} />
+                {!isCreateRoutineInCooldown && <CreateWeeklyRoutineButton type={type} />}
               </>
             )}
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IconChevronDown, IconScan } from "@tabler/icons-react";
 import {
   Button,
@@ -16,13 +16,13 @@ import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import Link from "@/helpers/custom-router/patch-router/link";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { SolutionCardType } from "../types";
 import classes from "./SolutionCard.module.css";
 
 type Props = { data: SolutionCardType };
 
 export default function SolutionCard({ data }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const [opened, { toggle: toggleCollapse }] = useDisclosure(true);
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
@@ -35,12 +35,7 @@ export default function SolutionCard({ data }: Props) {
     },
   ];
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
@@ -74,9 +69,7 @@ export default function SolutionCard({ data }: Props) {
           </Stack>
 
           <Stack className={classes.ctaBox}>
-            <Text className={classes.ctaText}>  
-              Get your improvement routine
-            </Text>
+            <Text className={classes.ctaText}>Get your improvement routine</Text>
             <Button component={Link} variant="default" href={"/scan"}>
               <IconScan style={{ marginRight: rem(6) }} />
               Scan now

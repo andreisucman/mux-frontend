@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { TaskType } from "@/types/global";
 import IconWithColor from "../../TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./CalendarRow.module.css";
@@ -23,7 +24,6 @@ export default function CalendarRow({
   selectTask,
   handleChangeMode,
 }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const { key: taskKey, color, icon, name, startsAt, _id: taskId } = task;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
@@ -41,12 +41,7 @@ export default function CalendarRow({
     [taskId, tasksToUpdate.length]
   );
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton}>

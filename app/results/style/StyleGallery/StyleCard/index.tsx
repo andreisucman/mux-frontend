@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useMemo } from "react";
 import { Image, Skeleton, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
@@ -8,6 +8,7 @@ import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import VotesCountIndicator from "@/components/VotesCountIndicator";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import classes from "./StyleCard.module.css";
 
 type Props = {
@@ -33,7 +34,6 @@ function StyleCard({
   handleContainerClick,
   setStyles,
 }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const {
     mainUrl,
     styleName,
@@ -52,15 +52,9 @@ function StyleCard({
     const styleIcon = outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon;
     return `${styleIcon} ${upperFirst(styleName || "")}`;
   }, [styleName]);
-  
-  const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton} className={`skeleton ${classes.container}`}>

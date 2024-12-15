@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import callTheServer from "@/functions/callTheServer";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { TaskType } from "@/types/global";
 import IconWithColor from "../../tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./ProductsRow.module.css";
@@ -24,8 +25,6 @@ export default function ProductsRow({
 }: Props) {
   const { color, icon, name, productsPersonalized, suggestions, defaultSuggestions, startsAt } =
     task;
-
-  const [showSkeleton, setShowSkeleton] = useState(true);
 
   const finalSuggestions = suggestions?.length > 0 ? suggestions : defaultSuggestions;
 
@@ -51,12 +50,7 @@ export default function ProductsRow({
     }
   }, [task?._id]);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton}>

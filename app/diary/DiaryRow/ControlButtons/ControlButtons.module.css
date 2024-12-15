@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+}
+
+.icon {
+  margin-right: rem(6);
+}
+
+.buttons {
+  flex: 1;
+}
+
+.button {
+  flex: 1;
+}
+
+.controls {
+  flex: 1;
+}
+
+.audio {
+  width: 100%;
+}
+
+.loadingOverlay {
+  border-radius: var(--mantine-radius-lg);
+}

@@ -368,6 +368,7 @@ export default function Calendar() {
         isDisabled={mode === "individual"}
         filterData={typeItems}
         icons={typeIcons}
+        selectedValue={type}
         showReturn
         nowrap
       />

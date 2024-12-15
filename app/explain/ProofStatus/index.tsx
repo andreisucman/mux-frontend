@@ -43,7 +43,7 @@ function ProofStatus({
 
   const relevantSubmission = useMemo(
     () => requiredSubmissions?.find((s) => s.submissionId === submissionId),
-    [submissionId]
+    [selectedTask]
   );
 
   const { proofId, isSubmitted } = relevantSubmission || {};
@@ -57,7 +57,7 @@ function ProofStatus({
       ) : (
         <Text className={classes.title}>0%</Text>
       ),
-    [isSubmitted]
+    [selectedTask]
   );
 
   const sections = useMemo(
@@ -70,7 +70,7 @@ function ProofStatus({
               color: "gray.3",
             },
           ],
-    [isSubmitted]
+    [selectedTask]
   );
 
   const dayTimeIcon = useMemo(
@@ -82,8 +82,10 @@ function ProofStatus({
       ) : dayTime === "evening" ? (
         <IconSunset />
       ) : undefined,
-    [dayTime]
+    [selectedTask]
   );
+
+  console.log("selectedTask", selectedTask);
 
   const taskExpired = new Date(expiresAt || 0) < new Date();
 
@@ -95,6 +97,7 @@ function ProofStatus({
       label = "Expired";
       icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
+      console.log("isSubmitted", isSubmitted);
       if (isSubmitted) {
         if (proofId) {
           label = "View";
@@ -115,12 +118,13 @@ function ProofStatus({
     }
 
     return { label, icon };
-  }, [isSubmitted, proofId, proofEnabled, taskExpired]);
+  }, [selectedTask, relevantSubmission]);
 
   const updateRequiredSubmission = useCallback(async () => {
     if (!taskId) return;
 
     try {
+      console.log("proofEnabled", proofEnabled);
       if (proofEnabled) {
         const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
 
@@ -144,9 +148,10 @@ function ProofStatus({
           body: {
             taskId,
             submissionId,
-            isSubmitted,
+            isSubmitted: !isSubmitted,
           },
         });
+        console.log("response", response);
 
         if (response.status === 200) {
           const updatedTask = {
@@ -159,7 +164,7 @@ function ProofStatus({
     } catch (err) {
       console.log("Error in updateRequiredSubmission: ", err);
     }
-  }, [taskId, submissionId, isSubmitted]);
+  }, [taskId, submissionId, isSubmitted, proofEnabled]);
 
   return (
     <Group className={classes.container}>

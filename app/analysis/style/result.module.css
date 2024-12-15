@@ -5,14 +5,15 @@
 
 .image {
   margin: auto;
-  max-width: rem(250);
-  max-height: rem(250);
   object-fit: contain;
+  height: 100%;
 }
 
 .imageWrapper {
-  height: 100%;
   width: 100%;
+  aspect-ratio: 16/9;
+  min-height: rem(150);
+  max-height: rem(165);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 }

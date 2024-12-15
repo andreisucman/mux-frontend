@@ -32,12 +32,12 @@ import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { UserDataType } from "@/types/global";
 import classes from "./AccountSettings.module.css";
 
 export default function AccountSettings() {
   const router = useRouter();
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -160,13 +160,7 @@ export default function AccountSettings() {
     setEmail(currentEmail);
   }, [currentEmail]);
 
-  useEffect(() => {
-    if (!userId) return;
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, [userId]);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton}>

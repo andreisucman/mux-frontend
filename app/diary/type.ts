@@ -1,9 +1,15 @@
-import { CompletedTaskType } from "../tasks/history/type";
+export type DiaryTaskType = {
+  _id: string;
+  name: string;
+  icon: string;
+  color: string;
+};
 
 export type DiaryRecordType = {
-  _id: string;
-  audio: string;
-  text: string;
-  createdAt: string;
-  tasks: CompletedTaskType[];
+  _id: string | null;
+  type: string;
+  audio: string | null;
+  transcription: string | null;
+  createdAt: string | Date;
+  tasks: DiaryTaskType[];
 };

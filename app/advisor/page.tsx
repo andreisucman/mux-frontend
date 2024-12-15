@@ -64,6 +64,7 @@ export default function Advisor() {
           title={"Advisor"}
           filterData={typeItems}
           icons={typeIcons}
+          selectedValue={type}
           children={<ChatMessagesButton />}
           showReturn
         />

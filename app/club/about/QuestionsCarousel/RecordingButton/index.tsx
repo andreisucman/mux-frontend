@@ -8,12 +8,30 @@ import classes from "./RecordingButton.module.css";
 const DEFAULT_RECORDING_MILLISECONDS = 120000;
 
 type Props = {
-  setText: React.Dispatch<React.SetStateAction<string>>;
+  variant?: "default" | "filled";
+  size?: "compact-xs" | "compact-sm" | "sm";
+  transcribeOnEnd?: boolean;
+  defaultRecordingMs?: number;
+  customContainerStyles?: { [key: string]: any };
+  customButtonStyles?: { [key: string]: any };
+  setText?: React.Dispatch<React.SetStateAction<string>>;
+  setLocalUrl?: React.Dispatch<React.SetStateAction<string | null>>;
   setAudioBlobs: React.Dispatch<React.SetStateAction<Blob[] | null>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }: Props) {
+export default function RecordingButton({
+  variant = "default",
+  size = "compact-xs",
+  transcribeOnEnd = false,
+  defaultRecordingMs = DEFAULT_RECORDING_MILLISECONDS,
+  customButtonStyles,
+  customContainerStyles,
+  setText,
+  setLocalUrl,
+  setAudioBlobs,
+  setIsLoading,
+}: Props) {
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
@@ -23,7 +41,7 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
         audio: true,
         video: false,
       });
-      const mediaRecorder = new MediaRecorder(stream);
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
 
@@ -35,9 +53,14 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
 
       mediaRecorder.onstop = () => {
         console.log("Recording stopped, processing data...");
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const audioBlob = new Blob(audioChunks);
         setAudioBlobs((prev) => [...(prev || []), audioBlob]);
-        handleTranscribe(audioBlob);
+        if (setLocalUrl) {
+          setLocalUrl(URL.createObjectURL(audioBlob));
+        }
+        if (transcribeOnEnd) {
+          handleTranscribe(audioBlob);
+        }
       };
 
       mediaRecorder.start();
@@ -45,7 +68,7 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
       handleStopRecording();
       console.log("Error in handleStartRecording: ", err);
     }
-  }, []);
+  }, [transcribeOnEnd]);
 
   const handleStopRecording = useCallback(async () => {
     const mediaRecorder = mediaRecorderRef.current;
@@ -55,13 +78,13 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
       setIsRecording(false);
       console.log("Recording stopped");
     } else {
-      console.log("No active recording to stop.");
+      console.log("No active recordings to stop.");
     }
-  }, []);
+  }, [setLocalUrl]);
 
   const handleTranscribe = useCallback(async (audioBlob: Blob) => {
     try {
-      setIsLoading(true);
+      if (setIsLoading) setIsLoading(true);
 
       const formData = new FormData();
       formData.append("file", audioBlob);
@@ -74,13 +97,13 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
       });
 
       if (response.status === 200) {
-        setText((prev: string) => prev + ` ${response.message}`);
+        if (setText) setText((prev: string) => prev + ` ${response.message}`);
       } else {
         console.log("Transcription failed:", response.message);
       }
-      setIsLoading(false);
+      if (setIsLoading) setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
+      if (setIsLoading) setIsLoading(false);
       console.log("Error in handleTranscribe:", err);
     }
   }, []);
@@ -94,12 +117,13 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
   }, [isRecording]);
 
   return (
-    <Group className={classes.container}>
+    <Group className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
       <Button
-        variant="default"
+        size={size}
+        variant={variant}
         className={classes.button}
         classNames={{ label: classes.buttonLabel }}
-        size="compact-xs"
+        style={customButtonStyles ? customButtonStyles : {}}
         onClick={handleClickRecord}
       >
         <div
@@ -108,16 +132,16 @@ export default function RecordingButton({ setText, setAudioBlobs, setIsLoading }
           })}
         />
         {isRecording ? "Stop" : "Record"}
+        {isRecording && (
+          <Timer
+            date={defaultRecordingMs}
+            onComplete={handleStopRecording}
+            customStyles={{ fontSize: rem(14) }}
+            onlyMinutes
+            onlyCountdown
+          />
+        )}
       </Button>
-      {isRecording && (
-        <Timer
-          date={DEFAULT_RECORDING_MILLISECONDS}
-          onlyMinutes
-          onlyCountdown
-          onComplete={handleStopRecording}
-          customStyles={{ fontSize: rem(14) }}
-        />
-      )}
     </Group>
   );
 }

@@ -1,43 +1,25 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff } from "@tabler/icons-react";
+import { IconCircleOff, IconPlus } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Skeleton, Stack } from "@mantine/core";
+import { Button, Loader, rem, Skeleton, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeader from "@/components/PageHeader";
+import { typeItems } from "@/components/PageHeader/data";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
+import { formatDate } from "@/helpers/formatDate";
+import { typeIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
+import { TypeEnum } from "@/types/global";
 import DiaryRow from "./DiaryRow";
 import { DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
-
-const fakeRows = [
-  {
-    _id: "",
-    audio: "",
-    text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi nemo nam sint, laborum eaque, tenetur quod asperiores, expedita voluptatum aliquid nulla reprehenderit autem. Laborum numquam deleniti hic quaerat at, iste asperiores amet itaque quasi alias harum quis? Officia accusantium blanditiis quos. In aut nihil neque quas voluptate rem veritatis corrupti.",
-    createdAt: "2024-12-13T18:24:38.188+00:00",
-    tasks: [
-      {
-        name: "Lorem ipsum",
-        description:
-          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi nemo nam sint, laborum eaque, tenetur quod asperiores, expedita voluptatum aliquid nulla reprehenderit autem.",
-        completedAt: "2024-12-13T18:24:38.188+00:00",
-        color: "#bc3bc3",
-        icon: "💪",
-        _id: "abc123",
-        type: "head",
-        key: "2",
-      },
-    ],
-  },
-];
 
 const List = dynamic(() => import("masonic").then((mod) => mod.List), {
   ssr: false,
@@ -46,19 +28,31 @@ const List = dynamic(() => import("masonic").then((mod) => mod.List), {
 
 export default function DiaryPage() {
   const router = useRouter();
+  const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
-  const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>(fakeRows);
+  const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
+  const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type");
+  const type = searchParams.get("type") || TypeEnum.HEAD;
+  const { timeZone } = userDetails || {};
 
-  type FetchCompletedTasksProps = {
+  const formattedToday = useMemo(() => formatDate({ date: new Date() }), []);
+
+  const disableAddNew = useMemo(() => {
+    if (!diaryRecords || !diaryRecords[0]) return;
+    const firstDate = diaryRecords[0].createdAt;
+    const formattedFirstDate = formatDate({ date: firstDate });
+    return formattedFirstDate === formattedToday;
+  }, [formattedToday, diaryRecords]);
+
+  type FetchDiaryRecordsProps = {
     type: string | null;
     loadMore?: boolean;
   };
 
   const fetchDiaryRecords = useCallback(
-    async (props: FetchCompletedTasksProps | undefined) => {
+    async (props: FetchDiaryRecordsProps | undefined) => {
       const { loadMore, type } = props || {};
       try {
         let endpoint = "getDiaryRecords";
@@ -92,22 +86,82 @@ export default function DiaryPage() {
     [type, hasMore, diaryRecords?.length]
   );
 
-  // useEffect(() => {
-  //   fetchDiaryRecords({ type });
-  // }, [type]);
+  const createDiaryRecord = useCallback(async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const response = await callTheServer({
+        endpoint: "createDiaryRecord",
+        method: "POST",
+        body: { type, timeZone },
+      });
+
+      console.log("respnse", response);
+
+      if (response.status === 200) {
+        setIsLoading(false);
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          return;
+        }
+
+        const emptyDiaryRecord = {
+          _id: null,
+          type,
+          audio: null,
+          transcription: null,
+          createdAt: new Date(),
+          tasks: response.message,
+        };
+
+        setDiaryRecords((prev: DiaryRecordType[] | undefined) => [
+          emptyDiaryRecord,
+          ...(prev || []),
+        ]);
+      } else {
+        setIsLoading(false);
+        openErrorModal();
+      }
+    } catch (err) {
+      setIsLoading(false);
+      openErrorModal();
+      console.log("Error in createDiaryRecord: ", err);
+    }
+  }, [isLoading, timeZone, type]);
+
+  const memoizedDiaryRow = useCallback(
+    (props: any) => <DiaryRow data={props.data} index={props.index} type={type as TypeEnum} />,
+    [type, isLoading, diaryRecords]
+  );
+
+  useEffect(() => {
+    fetchDiaryRecords({ type });
+  }, [type]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader
-          title="Progress diary"
-          onSelect={() => setDiaryRecords([])}
+        <PageHeaderWithReturn
+          title="Diary"
+          filterData={typeItems}
+          icons={typeIcons}
+          selectedValue={type}
+          nowrap
           showReturn
-          hidePartDropdown
         />
         <Stack className={classes.content}>
           {diaryRecords ? (
             <>
+              {
+                <Button
+                  onClick={createDiaryRecord}
+                  disabled={disableAddNew || isLoading}
+                  loading={isLoading}
+                >
+                  <IconPlus className={`${classes.icon} icon`} /> Add a note for today
+                </Button>
+              }
               {diaryRecords.length > 0 ? (
                 <InfiniteScroll
                   loader={
@@ -119,18 +173,15 @@ export default function DiaryPage() {
                   useWindow={true}
                   hasMore={hasMore}
                   pageStart={0}
+                  className={classes.infiniteScroll}
                 >
                   {diaryRecords && (
-                    <List
-                      items={diaryRecords}
-                      rowGutter={16}
-                      render={(props: any) => <DiaryRow data={props.data} index={props.index} />}
-                    />
+                    <List items={diaryRecords} rowGutter={16} render={memoizedDiaryRow} className={classes.list} />
                   )}
                 </InfiniteScroll>
               ) : (
                 <OverlayWithText
-                  text={`No diary records for ${type}`}
+                  text={`No diary notes for ${type}`}
                   icon={<IconCircleOff className="icon" />}
                 />
               )}

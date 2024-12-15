@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
@@ -7,6 +7,7 @@ import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { normalizeString } from "@/helpers/utils";
 import { SimpleProofType } from "../../types";
 import ProofCardFooter from "./ProofCardFooter";
@@ -21,7 +22,7 @@ type Props = {
   showContentBlurType?: boolean;
   showContentPublicity?: boolean;
   data: SimpleProofType;
-  setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
+  setProof?: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
   contentChildren?: React.ReactNode;
 };
 
@@ -36,7 +37,6 @@ function ProofCard({
   contentChildren,
   setProof,
 }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const {
     mainUrl,
     concern,
@@ -78,12 +78,7 @@ function ProofCard({
     });
   }, []);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton} className={`${classes.container} skeleton`}>

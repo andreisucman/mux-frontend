@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { IconHourglassHigh } from "@tabler/icons-react";
-import { Skeleton, Stack } from "@mantine/core";
+import { usePathname, useSearchParams } from "next/navigation";
+import { IconHourglassHigh, IconMan, IconMoodSmile } from "@tabler/icons-react";
+import { Button, rem, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCarousel from "@/components/UploadCarousel";
@@ -23,6 +23,7 @@ export const runtime = "edge";
 
 export default function ScanProgress() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
@@ -148,6 +149,14 @@ export default function ScanProgress() {
     }
   }, [availableRequirements?.length, userId, needsScan]);
 
+  const scanOtherTypeIcon =
+    type === "head" ? (
+      <IconMan className="icon" style={{ marginRight: rem(6) }} />
+    ) : (
+      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
+    );
+  const scanOtherTypeUrl = `${pathname}${type ? (type === "head" ? "?type=body" : "?type=head") : ""}`;
+
   return (
     <>
       {availableRequirements ? (
@@ -174,6 +183,11 @@ export default function ScanProgress() {
             <OverlayWithText
               icon={<IconHourglassHigh className="icon" />}
               text={`The next ${type ? type : ""} scan is after ${checkBackDate}.`}
+              button={
+                <Button mt={8} variant="default" onClick={() => router.replace(scanOtherTypeUrl)}>
+                  {scanOtherTypeIcon} Scan {type === "head" ? "body" : "head"}
+                </Button>
+              }
             />
           )}
         </Stack>

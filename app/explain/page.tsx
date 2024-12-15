@@ -112,25 +112,6 @@ export default function Explain() {
     [taskInfo]
   );
 
-  const handleFetchTaskProducts = useCallback(
-    async (taskId: string) => {
-      try {
-        if (!taskId) return;
-        const response = await callTheServer({
-          endpoint: "getTaskProducts",
-          method: "POST",
-          body: { taskId },
-        });
-
-        const updatedTask = { ...taskInfo, ...response.message };
-        setTaskInfo(updatedTask);
-      } catch (err) {
-        console.log(`Error in handleFetchTaskProducts: `, err);
-      }
-    },
-    [taskInfo]
-  );
-
   const handleFetchTaskInfo = useCallback(async (taskId: string) => {
     const newTaskInfo = await fetchTaskInfo(taskId);
     if (newTaskInfo) setTaskInfo(newTaskInfo);

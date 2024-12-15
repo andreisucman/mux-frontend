@@ -17,14 +17,14 @@
   display: flex;
   width: 100%;
   justify-content: center;
-  gap: rem(4);
+  gap: rem(8);
 }
 
 .indicator {
   width: rem(12);
   height: rem(12);
   border-radius: 1000px;
-  background-color: var(--mantine-color-gray-3);
+  background-color: white;
 }
 
 .indicatorActive {

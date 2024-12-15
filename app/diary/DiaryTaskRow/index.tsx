@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IconCheck } from "@tabler/icons-react";
-import { ActionIcon, Group, rem, RingProgress, Skeleton, Stack, Text } from "@mantine/core";
-import { CompletedTaskType } from "@/app/tasks/history/type";
+import { Group, rem, RingProgress, Skeleton, Stack, Text, ThemeIcon } from "@mantine/core";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
+import { DiaryTaskType } from "../type";
 import classes from "./DiaryTaskRow.module.css";
 
-export default function DiaryTaskRow({ color, name, icon }: CompletedTaskType) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
-
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+export default function DiaryTaskRow({ color, name, icon }: DiaryTaskType) {
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton className="skeleton" visible={showSkeleton}>
@@ -37,15 +31,16 @@ export default function DiaryTaskRow({ color, name, icon }: CompletedTaskType) {
 
         <Stack>
           <RingProgress
-            size={50}
+            size={45}
             thickness={6}
             label={
-              <ActionIcon c="green.7" variant="transparent" radius="xl">
+              <ThemeIcon c="green.7" variant="transparent" radius="xl">
                 <IconCheck stroke={3} className="icon" />
-              </ActionIcon>
+              </ThemeIcon>
             }
             classNames={{ label: classes.label }}
             sections={[{ value: 100, color: "green.7" }]}
+            mr={4}
           />
         </Stack>
       </Group>

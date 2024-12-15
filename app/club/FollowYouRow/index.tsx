@@ -1,9 +1,10 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import { IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
 import Link from "@/helpers/custom-router/patch-router/link";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { ClubUserType } from "@/types/global";
 import classes from "./FollowYouRow.module.css";
 
@@ -12,18 +13,12 @@ type Props = {
 };
 
 function FollowYouRow({ data }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const { _id, name, avatar, scores } = data;
 
   const headScore = scores.headTotalProgress;
   const bodyScore = scores.bodyTotalProgress;
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton className={`skeleton ${classes.skeleton}`} visible={showSkeleton}>

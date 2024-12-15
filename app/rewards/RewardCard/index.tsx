@@ -8,6 +8,7 @@ import { calculateRewardTaskCompletion } from "@/helpers/calculateRewardTaskComp
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { StreaksType } from "@/types/global";
 import { RewardCardType } from "../types";
 import { defaultStreaks } from "./defaultStreaks";
@@ -20,7 +21,6 @@ type Props = {
 export default function RewardCard({ data }: Props) {
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const [streaks, setStreaks] = useState<StreaksType>();
   const { status, userDetails } = useContext(UserContext);
   const { left, icon, count, value, title, condition, requisite } = data;
@@ -59,13 +59,6 @@ export default function RewardCard({ data }: Props) {
   }, []);
 
   useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
-
-  useEffect(() => {
     if (status === "authenticated") {
       const { streaks } = userDetails || {};
       if (streaks) setStreaks(streaks);
@@ -77,6 +70,8 @@ export default function RewardCard({ data }: Props) {
   useEffect(() => {
     setButtonDisabled(completion?.value !== 100);
   }, [completion]);
+
+  const showSkeleton = useShowSkeleton();
 
   const finalValue = Math.round(Number(completion?.value)) || 0;
 

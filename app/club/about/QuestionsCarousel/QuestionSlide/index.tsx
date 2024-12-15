@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { IconUpload } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { AboutQuestionType } from "../../EditClubAbout";
 import { SubmitAboutResponseType } from "../../types";
@@ -30,6 +29,7 @@ export default function QuestionSlide({ question, submitResponse }: Props) {
         <div className={classes.questionText}>
           <span style={{ marginRight: rem(6) }}>{question.question}</span>
           <RecordingButton
+            transcribeOnEnd
             setText={setText}
             setAudioBlobs={setAudioBlobs}
             setIsLoading={setIsLoading}

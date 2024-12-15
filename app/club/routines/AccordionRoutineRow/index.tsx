@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { IconClipboardText, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, Button, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AllTaskType, RoutineType, TypeEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import StatsGroup from "../StatsGroup";
@@ -23,8 +24,6 @@ export default function AccordionRoutineRow({
   openTaskDetails,
   handleReplaceRoutine,
 }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
-
   const date = useMemo(() => formatDate({ date: routine.createdAt }), [routine.createdAt]);
 
   const totalTotal = useMemo(
@@ -47,14 +46,8 @@ export default function AccordionRoutineRow({
     handleReplaceRoutine(routineId);
   }, []);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
-  console.log("isself",isSelf)
   return (
     <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
@@ -82,7 +75,7 @@ export default function AccordionRoutineRow({
             size="compact-sm"
             component="div"
             disabled={isSelf}
-            className={cn(classes.button, {[classes.disabled]: isSelf})}
+            className={cn(classes.button, { [classes.disabled]: isSelf })}
             onClick={(e) => handleStealClick(e, routine._id)}
           >
             <IconHandGrab className="icon icon__small" />{" "}

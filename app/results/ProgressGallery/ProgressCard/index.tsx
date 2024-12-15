@@ -1,9 +1,10 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useMemo } from "react";
 import { Image, Skeleton } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { SimpleProgressType } from "../../types";
 import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
@@ -17,20 +18,14 @@ type Props = {
 
 function ProgressCard({ data, showTrackButton, setProgress, handleContainerClick }: Props) {
   const { width: containerWidth, ref } = useElementSize();
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const { images, createdAt } = data;
   const firstImage = images[0];
 
   const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
-
+  const showSkeleton = useShowSkeleton();
+  
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
       <div className={classes.imageWrapper} ref={ref}>

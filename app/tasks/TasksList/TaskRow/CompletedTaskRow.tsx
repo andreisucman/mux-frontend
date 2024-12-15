@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { IconCheck } from "@tabler/icons-react";
 import { ActionIcon, Group, rem, RingProgress, Skeleton, Stack, Text } from "@mantine/core";
 import { CompletedTaskType } from "@/app/tasks/history/type";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import IconWithColor from "../CreateTaskOverlay/IconWithColor";
 import classes from "./TaskRow.module.css";
 
@@ -23,8 +24,6 @@ export default function CompletedTaskRow({
   description,
   onClick,
 }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
-
   const completionDate = useMemo(() => {
     const date = convertUTCToLocal({
       utcDate: new Date(completedAt),
@@ -34,12 +33,7 @@ export default function CompletedTaskRow({
     return formatDate({ date });
   }, [completedAt]);
 
-  useEffect(() => {
-    const tId = setTimeout(() => {
-      setShowSkeleton(false);
-      clearTimeout(tId);
-    }, Number(process.env.NEXT_PUBLIC_SKELETON_DURATION));
-  }, []);
+  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton className="skeleton" visible={showSkeleton}>

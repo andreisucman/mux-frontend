@@ -13,9 +13,11 @@ type Props = {
   showReturn?: boolean;
   isDisabled?: boolean;
   nowrap?: boolean;
+  selectedValue?: string | null;
   children?: React.ReactNode;
   filterData?: FilterItemType[];
   icons?: { [key: string]: any };
+  onSelect?: (key?: string | null) => void;
 };
 
 export default function PageHeaderWithReturn({
@@ -25,12 +27,11 @@ export default function PageHeaderWithReturn({
   showReturn,
   children,
   filterData,
+  selectedValue,
   icons,
+  onSelect,
 }: Props) {
-  const searchParams = useSearchParams();
   const router = useRouter();
-
-  const type = searchParams.get("type");
 
   return (
     <Group className={classes.container}>
@@ -50,9 +51,10 @@ export default function PageHeaderWithReturn({
           isDisabled={isDisabled}
           data={filterData}
           icons={icons}
-          selectedValue={type}
+          selectedValue={selectedValue}
           placeholder="Filter by type"
           filterType="type"
+          onSelect={onSelect}
           addToQuery
           allowDeselect
         />

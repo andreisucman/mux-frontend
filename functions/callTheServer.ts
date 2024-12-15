@@ -37,6 +37,13 @@ const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Prop
       return { message: null, error: null };
     }
 
+    if (response.status === 413) {
+      openErrorModal({
+        description: "The uploaded file is too large. Try decreasing the resolution or length.",
+      });
+      return { message: null, error: null };
+    }
+
     const text = await response?.text();
 
     const data = text && text.length ? JSON.parse(text) : { message: null, error: null };

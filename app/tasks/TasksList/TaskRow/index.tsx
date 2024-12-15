@@ -46,12 +46,12 @@ export default function TaskRow({
         submitted &&
         Math.round((submitted?.length / requiredSubmissions?.length) * 100)) ||
       0,
-    [requiredSubmissions?.length]
+    [isCompleted, requiredSubmissions?.length]
   );
 
   const dayTimeSpecified = useMemo(
     () => requiredSubmissions && requiredSubmissions?.filter((s) => s.dayTime).length > 0,
-    [requiredSubmissions?.length]
+    [isCompleted, requiredSubmissions?.length]
   );
 
   const ringLabel = useMemo(
