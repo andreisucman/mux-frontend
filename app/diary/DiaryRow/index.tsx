@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { IconChevronDown, IconChevronUp, IconNote } from "@tabler/icons-react";
-import { Collapse, Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
+import React, { useCallback, useState } from "react";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { Collapse, Divider, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
-import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { TypeEnum } from "@/types/global";
-import DiaryTaskRow from "../DiaryTaskRow";
 import { DiaryRecordType } from "../type";
 import ControlButtons from "./ControlButtons";
+import DiaryActivityRow from "./DiaryActivityRow";
 import classes from "./DiaryRow.module.css";
 
 type Props = {
@@ -22,17 +20,10 @@ type Props = {
 export default function DiaryRow({ data, type, index }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
   const [isUploading, setIsUploading] = useState(false);
-  const [containerOpen, { toggle: toggleContainerCollapse }] = useDisclosure(index === 0);
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
   const [tasksOpen, { toggle: toggleTasksCollapse }] = useDisclosure(true);
 
-  const { audio, transcription, createdAt, tasks } = diaryRecord;
-
-  const containerChevron = containerOpen ? (
-    <IconChevronUp className="icon icon__small" />
-  ) : (
-    <IconChevronDown className="icon icon__small" />
-  );
+  const { audio, transcription, activity } = diaryRecord;
 
   const transcriptionChevron = transcriptionOpen ? (
     <IconChevronUp className="icon icon__small" />
@@ -46,9 +37,8 @@ export default function DiaryRow({ data, type, index }: Props) {
     <IconChevronDown className="icon icon__small" />
   );
 
-  const tasksLabel = tasksOpen ? "Hide tasks" : "Show tasks";
+  const tasksLabel = tasksOpen ? "Hide activity" : "Show activity";
   const transcriptionLabel = transcriptionOpen ? "Hide transcription" : "Show transcription";
-  const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
 
   const handleSubmit = useCallback(
     async (blobs: Blob[] | null) => {
@@ -64,7 +54,7 @@ export default function DiaryRow({ data, type, index }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls[0], taskIds: data.tasks.map((t) => t._id), type },
+          body: { audio: audioUrls[0], type, activity: data.activity },
         });
 
         if (response.status === 200) {
@@ -87,36 +77,26 @@ export default function DiaryRow({ data, type, index }: Props) {
     [isUploading]
   );
 
-  const showSkeleton = useShowSkeleton();
-
   return (
     <Stack className={classes.container}>
-      <Group className={classes.header} onClick={toggleContainerCollapse}>
-        <Title order={5} className={classes.title}>
-          <IconNote className={`${classes.icon} icon`} /> {formattedDate}
-        </Title>
-        {containerChevron}
-      </Group>
-      <Collapse in={containerOpen}>
-        <Stack>
-          {audio ? (
-            <audio src={audio || ""} controls className={classes.audio} />
-          ) : (
-            <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />
-          )}
-          <Divider
-            label={
-              <Group c="dimmed" className={classes.labelGroup} onClick={toggleTasksCollapse}>
-                {tasksChevron}
-                {tasksLabel}
-              </Group>
-            }
-          />
-          <Collapse in={tasksOpen}>
-            {tasks.map((task, index) => (
-              <DiaryTaskRow {...task} key={String(index)} />
-            ))}
-          </Collapse>
+      {audio ? (
+        <audio src={audio || ""} controls className={classes.audio} />
+      ) : (
+        <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />
+      )}
+      <Divider
+        label={
+          <Group c="dimmed" className={classes.labelGroup} onClick={toggleTasksCollapse}>
+            {tasksChevron}
+            {tasksLabel}
+          </Group>
+        }
+      />
+      <Collapse in={tasksOpen}>
+        <DiaryActivityRow activities={activity} />
+      </Collapse>
+      {transcription && (
+        <>
           <Divider
             label={
               <Group
@@ -132,8 +112,8 @@ export default function DiaryRow({ data, type, index }: Props) {
           <Collapse in={transcriptionOpen}>
             <Text>{transcription}</Text>
           </Collapse>
-        </Stack>
-      </Collapse>
+        </>
+      )}
     </Stack>
   );
 }

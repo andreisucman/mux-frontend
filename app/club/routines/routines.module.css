@@ -8,14 +8,14 @@
   flex: 1;
 }
 
+.active {
+  background-color: var(--mantine-color-green-7);
+}
+
 .accordion {
   position: absolute;
   inset: 0;
   background-color: none !important;
-}
-
-.active {
-  background-color: var(--mantine-color-green-7);
 }
 
 .content {

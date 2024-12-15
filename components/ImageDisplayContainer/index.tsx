@@ -7,7 +7,7 @@ type Props = {
   isLoadingOverlay?: boolean;
   image?: string | null;
   handleDelete?: () => void;
-  placeholder: any;
+  placeholder?: any;
   customImageStyles?: { [key: string]: any };
   customStyles?: { [key: string]: any };
 };

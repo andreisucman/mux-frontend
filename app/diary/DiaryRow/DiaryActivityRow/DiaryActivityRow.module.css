@@ -1,0 +1,10 @@
+.container {
+  padding: 0;
+  overflow: auto;
+  /* min-height: rem(300); */
+}
+
+.wrapper {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}

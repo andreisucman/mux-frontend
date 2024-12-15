@@ -3,9 +3,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff, IconPlus } from "@tabler/icons-react";
+import { IconCircleOff, IconNote, IconPlus } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Button, Loader, rem, Skeleton, Stack } from "@mantine/core";
+import { Accordion, Button, Loader, rem, Skeleton, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import { typeItems } from "@/components/PageHeader/data";
@@ -28,6 +28,7 @@ const List = dynamic(() => import("masonic").then((mod) => mod.List), {
 
 export default function DiaryPage() {
   const router = useRouter();
+  const [openValue, setOpenValue] = useState<string | null>(null);
   const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
@@ -76,6 +77,9 @@ export default function DiaryPage() {
 
         if (response.status === 200) {
           setDiaryRecords(response.message);
+          if (response.message.length > 0) {
+            setOpenValue(response.message[0]._id);
+          }
           setHasMore(response.message.length === 9);
         }
       } catch (err) {
@@ -97,8 +101,6 @@ export default function DiaryPage() {
         body: { type, timeZone },
       });
 
-      console.log("respnse", response);
-
       if (response.status === 200) {
         setIsLoading(false);
         if (response.error) {
@@ -107,18 +109,19 @@ export default function DiaryPage() {
         }
 
         const emptyDiaryRecord = {
-          _id: null,
+          _id: "temp",
           type,
           audio: null,
           transcription: null,
           createdAt: new Date(),
-          tasks: response.message,
+          activity: response.message,
         };
 
         setDiaryRecords((prev: DiaryRecordType[] | undefined) => [
           emptyDiaryRecord,
           ...(prev || []),
         ]);
+        setOpenValue(emptyDiaryRecord._id);
       } else {
         setIsLoading(false);
         openErrorModal();
@@ -131,13 +134,58 @@ export default function DiaryPage() {
   }, [isLoading, timeZone, type]);
 
   const memoizedDiaryRow = useCallback(
-    (props: any) => <DiaryRow data={props.data} index={props.index} type={type as TypeEnum} />,
+    (props: any) => {
+      const formattedDate = useMemo(() => formatDate({ date: props.data.createdAt }), []);
+      return (
+        <Accordion.Item value={props.data._id}>
+          <Accordion.Control>
+            <Title order={5} className={classes.title}>
+              <IconNote className={`${classes.icon} icon`} /> {formattedDate}
+            </Title>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <DiaryRow data={props.data} index={props.index} type={type as TypeEnum} />
+          </Accordion.Panel>
+        </Accordion.Item>
+      );
+    },
     [type, isLoading, diaryRecords]
   );
 
   useEffect(() => {
     fetchDiaryRecords({ type });
   }, [type]);
+
+  // {
+  //   diaryRecords.length > 0 ? (
+  //     <InfiniteScroll
+  //       loader={
+  //         <Stack mb={rem(16)} key={0}>
+  //           <Loader type="oval" m="auto" />
+  //         </Stack>
+  //       }
+  //       loadMore={() => fetchDiaryRecords({ type, loadMore: true })}
+  //       useWindow={true}
+  //       hasMore={hasMore}
+  //       pageStart={0}
+  //       className={classes.infiniteScroll}
+  //     >
+  //       {diaryRecords && (
+  //         <List
+  //           items={diaryRecords}
+  //           rowGutter={16}
+  //           render={memoizedDiaryRow}
+  //           className={classes.list}
+  //         />
+  //       )}
+  //     </InfiniteScroll>
+  //   ) : (
+  //     <OverlayWithText
+  //       text={`No diary notes for ${type}`}
+  //       icon={<IconCircleOff className="icon" />}
+  //     />
+  //   );
+  // }
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -150,42 +198,33 @@ export default function DiaryPage() {
           nowrap
           showReturn
         />
+        <Button
+          onClick={createDiaryRecord}
+          disabled={disableAddNew || isLoading}
+          loading={isLoading}
+        >
+          <IconPlus className={`${classes.icon} icon`} /> Add a note for today
+        </Button>
         <Stack className={classes.content}>
           {diaryRecords ? (
-            <>
-              {
-                <Button
-                  onClick={createDiaryRecord}
-                  disabled={disableAddNew || isLoading}
-                  loading={isLoading}
-                >
-                  <IconPlus className={`${classes.icon} icon`} /> Add a note for today
-                </Button>
-              }
-              {diaryRecords.length > 0 ? (
-                <InfiniteScroll
-                  loader={
-                    <Stack mb={rem(16)} key={0}>
-                      <Loader type="oval" m="auto" />
-                    </Stack>
-                  }
-                  loadMore={() => fetchDiaryRecords({ type, loadMore: true })}
-                  useWindow={true}
-                  hasMore={hasMore}
-                  pageStart={0}
-                  className={classes.infiniteScroll}
-                >
-                  {diaryRecords && (
-                    <List items={diaryRecords} rowGutter={16} render={memoizedDiaryRow} className={classes.list} />
-                  )}
-                </InfiniteScroll>
-              ) : (
-                <OverlayWithText
-                  text={`No diary notes for ${type}`}
-                  icon={<IconCircleOff className="icon" />}
-                />
-              )}
-            </>
+            <Accordion
+              value={openValue}
+              onChange={setOpenValue}
+              className={classes.accordion}
+              classNames={{
+                root: classes.root,
+                item: classes.item,
+                control: classes.control,
+                content: classes.accordionContent,
+              }}
+            >
+              <List
+                items={diaryRecords}
+                rowGutter={16}
+                render={memoizedDiaryRow}
+                className={classes.list}
+              />
+            </Accordion>
           ) : (
             <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
           )}

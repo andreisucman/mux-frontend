@@ -88,7 +88,6 @@ export default function StyleVoting({
         handleVote={handleVote}
         styleIcon={styleIcon}
         styleId={styleId}
-        styleName={styleName}
         votedFor={votedFor}
         votes={votes}
         type={"current"}
@@ -97,7 +96,6 @@ export default function StyleVoting({
         handleVote={handleVote}
         styleIcon={compareIcon}
         styleId={styleId}
-        styleName={compareName}
         votedFor={votedFor}
         votes={compareVotes}
         type={"compare"}

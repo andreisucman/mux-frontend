@@ -37,6 +37,7 @@ function StyleCard({
   const {
     mainUrl,
     styleName,
+    styleIcon,
     createdAt,
     votes,
     _id: styleId,

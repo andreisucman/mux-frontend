@@ -9,17 +9,12 @@ type Props = {
   styleId: string;
   votedFor: "current" | "compare" | null;
   styleIcon: string;
-  styleName: string;
   votes: number;
   type: "current" | "compare";
   handleVote: (styleId: string, votedFor: "current" | "compare") => void;
 };
 
-export default function VoteButton({ styleId, votedFor, styleName, votes, handleVote }: Props) {
-  const styleIcon = useMemo(
-    () => outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon,
-    [styleName]
-  );
+export default function VoteButton({ styleId, votedFor, styleIcon, votes, handleVote }: Props) {
   return (
     <Group className={cn(classes.group, { [classes.selected]: votedFor === "current" })}>
       <span className={classes.icon}>{styleIcon}</span>
