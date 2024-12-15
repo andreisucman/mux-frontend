@@ -69,6 +69,9 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
         />
       ),
       about: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
+      diary: (
+        <ClubHeader title={"Club"} hideTypeDropdown={showComponent !== "children"} showReturn />
+      ),
       routines: (
         <ClubHeader title={"Club"} showReturn hideTypeDropdown={showComponent !== "children"} />
       ),

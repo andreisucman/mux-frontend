@@ -12,29 +12,3 @@
   flex: 1;
   position: relative;
 }
-
-.accordion {
-  position: absolute;
-  inset: 0;
-  background-color: none !important;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: rem(16);
-}
-
-.accordionContent {
-  padding-top: rem(16);
-}
-
-.root,
-.item {
-  border: none;
-}
-
-.control {
-  background: var(--mantine-color-dark-6);
-  border-radius: var(--mantine-radius-lg);
-}

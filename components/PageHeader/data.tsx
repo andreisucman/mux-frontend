@@ -29,4 +29,8 @@ export const clubPageTypeItems: { label: string; value: string }[] = [
     label: "Results",
     value: "/club/progress",
   },
+  {
+    label: "Diary",
+    value: "/club/diary",
+  },
 ];
