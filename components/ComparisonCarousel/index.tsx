@@ -3,18 +3,20 @@ import { Carousel } from "@mantine/carousel";
 import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { SimpleBeforeAfterType } from "@/app/types";
-import { partIcons } from "@/helpers/icons";
 import { formatDate } from "@/helpers/formatDate";
+import { partIcons } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import CardMetaPanel from "../CardMetaPanel";
 import ImageCard from "../ImageCard";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
   data: SimpleBeforeAfterType;
+  minHeight: number;
 };
 
-export default function ComparisonCarousel({ data }: Props) {
+export default function ComparisonCarousel({ data, minHeight }: Props) {
   const {
     clubName,
     part,
@@ -28,7 +30,6 @@ export default function ComparisonCarousel({ data }: Props) {
   } = data;
 
   const [slides, setSlides] = useState<React.ReactNode[]>();
-  const [showSkeleton, setShowSkeleton] = useState(true);
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
   const title = useMemo(() => `${upperFirst(part)}`, [part]);
@@ -67,11 +68,12 @@ export default function ComparisonCarousel({ data }: Props) {
     ));
 
     setSlides(newSlides);
-    setShowSkeleton(false);
   }, [updatedAt, images && images.length]);
 
+  const showSkeleton = useShowSkeleton();
+
   return (
-    <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
+    <Skeleton className={"skeleton"} visible={showSkeleton || !slides} mih={minHeight}>
       <Stack className={classes.container}>
         <Group className={classes.title}>
           {partIcons[part]}

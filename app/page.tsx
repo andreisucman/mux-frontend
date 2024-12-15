@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
+import { useElementSize } from "@mantine/hooks";
 import ComparisonCarousel from "@/components/ComparisonCarousel";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -21,6 +22,7 @@ type FetchBeforeAftersProps = {
 
 export default function BeforeAftersPage() {
   const searchParams = useSearchParams();
+  const { ref, width } = useElementSize();
   const [beforeAfters, setBeforeAfters] = useState<SimpleBeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
 
@@ -100,8 +102,10 @@ export default function BeforeAftersPage() {
   );
 
   const memoizedComparisonCarousel = useCallback(
-    (props: any) => <ComparisonCarousel data={props.data} key={props.index} />,
-    [searchParams.toString()]
+    (props: any) => (
+      <ComparisonCarousel data={props.data} key={props.index} minHeight={width * 0.75} />
+    ),
+    [searchParams.toString(), width]
   );
 
   useEffect(() => {
@@ -109,7 +113,7 @@ export default function BeforeAftersPage() {
   }, [type, part, sex, ageInterval, ethnicity, bodyType, concern]);
 
   return (
-    <Stack className={`${classes.container} mediumPage`}>
+    <Stack className={`${classes.container} mediumPage`} ref={ref}>
       <GeneralResultsHeader showFilter />
       {beforeAfters ? (
         <>
@@ -125,6 +129,7 @@ export default function BeforeAftersPage() {
               }
               useWindow={true}
               hasMore={hasMore}
+              className={classes.inviniteScroll}
               pageStart={0}
             >
               <MasonryComponent

@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { MasonryScroller, useContainerPosition, usePositioner, useResizeObserver } from "masonic";
 import { useViewportSize } from "@mantine/hooks";
+import classes from "./MasonryComponent.module.css";
 
 type Props = {
   columnCount?: number;
@@ -41,6 +42,7 @@ export default function MasonryComponent({
       offset={offset}
       items={items}
       render={render}
+      className={classes.container}
     />
   );
 }

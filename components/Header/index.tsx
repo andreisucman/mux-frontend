@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
+import SearchButton from "../SearchButton";
 import Burger from "./Burger";
 import UserButton from "./UserButton";
 import classes from "./Header.module.css";
@@ -76,11 +77,12 @@ function Header() {
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>
             {displayComponent !== "none" && (
               <>
+                <SearchButton size="lg" />
                 <ActionIcon
                   variant="default"
+                  size="lg"
                   visibleFrom={status === "authenticated" ? undefined : "xs"}
                   onClick={() => router.push("/")}
-                  className={classes.button}
                   aria-label="go to results page button"
                 >
                   <IconTargetArrow stroke={1.25} className="icon icon__large" />

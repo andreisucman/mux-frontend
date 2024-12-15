@@ -7,16 +7,17 @@ import classes from "./SearchButton.module.css";
 type Props = {
   onSearchClick?: () => void;
   isDisabled?: boolean;
+  size?: "sm" | "md" | "lg" | "xl";
 };
 
-export default function SearchButton({ onSearchClick,isDisabled }: Props) {
+export default function SearchButton({ onSearchClick, size = "md", isDisabled }: Props) {
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
 
   return (
     <Group className={classes.container}>
       {query && <Indicator size={12} className={classes.indicator} />}
-      <ActionIcon variant="default" onClick={onSearchClick} disabled={isDisabled}>
+      <ActionIcon size={size} variant="default" onClick={onSearchClick} disabled={isDisabled}>
         <IconSearch className="icon" />
       </ActionIcon>
     </Group>

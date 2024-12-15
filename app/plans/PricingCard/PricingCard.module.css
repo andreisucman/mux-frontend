@@ -3,6 +3,8 @@
   width: 100%;
   gap: 0;
   border-radius: var(--mantine-radius-lg);
+  background-color: var(--mantine-color-dark-6);
+  box-shadow:  0 0 rem(8) rem(4) rgba(20, 20, 20, 0.1);
   overflow: hidden;
 }
 
