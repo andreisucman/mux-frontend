@@ -72,6 +72,7 @@ export default function ClubStyleFilterCardContent({ userName }: Props) {
         selectedValue={type}
         placeholder="Filter by type"
         isDisabled={typesDisabled}
+        customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />
@@ -82,6 +83,7 @@ export default function ClubStyleFilterCardContent({ userName }: Props) {
         selectedValue={styleName}
         placeholder="Filter by style"
         isDisabled={stylesDisabled}
+        customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />

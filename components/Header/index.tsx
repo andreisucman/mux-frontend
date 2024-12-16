@@ -1,10 +1,11 @@
 "use client";
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { createSpotlight } from "@mantine/spotlight";
 import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
 import Logo from "@/components/Header/Logo";
@@ -12,6 +13,7 @@ import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
+import AvatarComponent from "../AvatarComponent";
 import SearchButton from "../SearchButton";
 import Burger from "./Burger";
 import UserButton from "./UserButton";
@@ -28,9 +30,12 @@ const hideStartButtonRoutes = [
   "/settings",
 ];
 
+const [spotlightStore, userSpotlight] = createSpotlight();
+
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
@@ -68,6 +73,17 @@ function Header() {
     close();
   }, []);
 
+  const constructUserActions = (list: { avatar: any; name: string }[]) => {
+    const actions = list.map((item) => ({
+      id: item.name as string,
+      label: item.name,
+      leftSection: <AvatarComponent avatar={item.avatar} size="sm" />,
+      onClick: () => router.push(`/club/${item.name}`),
+    }));
+
+    return actions;
+  };
+
   return (
     <>
       <header className={classes.container}>
@@ -76,7 +92,13 @@ function Header() {
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>
             {displayComponent !== "none" && (
               <>
-                <SearchButton size="lg" />
+                <SearchButton
+                  size="lg"
+                  collection="user"
+                  spotlight={userSpotlight}
+                  spotlightStore={spotlightStore}
+                  customConstructAction={constructUserActions}
+                />
                 <ActionIcon
                   variant="default"
                   size="lg"

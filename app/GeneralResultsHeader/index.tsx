@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconSearch } from "@tabler/icons-react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Group, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import { createSpotlight, Spotlight, SpotlightActionData } from "@mantine/spotlight";
+import { createSpotlight } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
@@ -12,9 +11,7 @@ import { partItems, typeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
 import { partIcons, typeIcons } from "@/helpers/icons";
-import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import { normalizeString } from "@/helpers/utils";
 import TitleDropdown from "../results/TitleDropdown";
 import FilterCardContent from "./FilterCardContent";
 import { ExistingFiltersType } from "./types";
@@ -40,7 +37,7 @@ type Props = {
   onSelect?: (item?: FilterItemType) => void;
 };
 
-const [spotlightStore, spotlight] = createSpotlight();
+const [spotlightStore, proofSpotlight] = createSpotlight();
 
 export default function GeneralResultsHeader({
   showFilter,
@@ -48,19 +45,15 @@ export default function GeneralResultsHeader({
   hideTypeDropdown,
   hidePartDropdown,
 }: Props) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
-  const query = searchParams.get("query");
 
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterItemType[]>([]);
-  const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
-  const [searchQuery, setSearchQuery] = useState(query || "");
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
@@ -73,56 +66,6 @@ export default function GeneralResultsHeader({
     return Object.values(otherFilters || {}).some((value: any) => value.length > 0);
   }, [filters]);
 
-  const handleActionClick = useCallback(
-    (value: string) => {
-      const newQuery = modifyQuery({ params: [{ name: "query", value, action: "replace" }] });
-      router.replace(`${pathname}?${newQuery}`);
-      setSearchQuery(value);
-    },
-    [pathname]
-  );
-
-  const handleSearch = useCallback(
-    (searchQuery: string) => {
-      const newQuery = modifyQuery({
-        params: [{ name: "query", value: searchQuery, action: searchQuery ? "replace" : "delete" }],
-      });
-      router.replace(`${pathname}?${newQuery}`);
-      spotlight.close();
-    },
-    [pathname]
-  );
-
-  const createSpotlightActions = useCallback(
-    (existingFilters: ExistingFiltersType) => {
-      const { concern, taskName } = existingFilters;
-
-      const keys = [];
-
-      if (pathname === "/proof") {
-        keys.push(...concern, ...taskName);
-      }
-
-      let actions: SpotlightActionData[] = [];
-
-      if (keys.length > 0) {
-        actions = keys.map((filter) => {
-          const normalizedLabel = normalizeString(filter as string);
-
-          return {
-            id: filter as string,
-            label: normalizedLabel.toLowerCase(),
-            leftSection: <IconSearch className={"icon"} stroke={1.5} />,
-            onClick: () => handleActionClick(normalizedLabel as string),
-          };
-        });
-      }
-
-      return actions;
-    },
-    [pathname]
-  );
-
   const getExistingFilters = useCallback(async (pathname: string, type: string | null) => {
     try {
       const response = await callTheServer({
@@ -132,9 +75,6 @@ export default function GeneralResultsHeader({
 
       if (response.status === 200) {
         setFilters(response.message);
-
-        const actions = createSpotlightActions(response.message);
-        setSpotlightActions(actions);
 
         const relevantTypeItems = typeItems.filter((item) =>
           response.message.type.includes(item.value)
@@ -214,8 +154,9 @@ export default function GeneralResultsHeader({
         )}
         {showSearch && (
           <SearchButton
-            onSearchClick={() => spotlight.open()}
-            isDisabled={spotlightActions.length === 0}
+            collection="proof"
+            spotlight={proofSpotlight}
+            spotlightStore={spotlightStore}
           />
         )}
         {showFilter && (
@@ -226,34 +167,6 @@ export default function GeneralResultsHeader({
           />
         )}
       </Group>
-
-      {showSearch && (
-        <Spotlight
-          store={spotlightStore}
-          actions={spotlightActions}
-          nothingFound="Nothing found"
-          onQueryChange={(query: string) => {
-            if (query === "") {
-              handleSearch(query);
-            }
-          }}
-          searchProps={{
-            leftSection: <IconSearch className="icon" stroke={1.5} />,
-            placeholder: "Search...",
-            value: searchQuery || "",
-            onChange: (e: React.FormEvent<HTMLInputElement>) =>
-              setSearchQuery(e.currentTarget.value),
-            onKeyDown: (e: React.KeyboardEvent) => {
-              if (e.key !== "Enter") return;
-              handleSearch(searchQuery);
-            },
-          }}
-          centered
-          clearQueryOnClose={false}
-          overlayProps={{ blur: 0 }}
-          limit={10}
-        />
-      )}
     </Group>
   );
 }

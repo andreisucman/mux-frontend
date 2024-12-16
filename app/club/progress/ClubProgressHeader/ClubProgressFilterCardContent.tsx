@@ -94,6 +94,7 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
         placeholder="Filter by type"
         isDisabled={typesDisabled}
         onSelect={onSelectType}
+        customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />
@@ -105,6 +106,7 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
         selectedValue={part}
         onSelect={onSelectPart}
         isDisabled={partsDisabled}
+        customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />
@@ -114,6 +116,7 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
         placeholder="Filter by position"
         selectedValue={position}
         isDisabled={positionsDisabled}
+        customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />

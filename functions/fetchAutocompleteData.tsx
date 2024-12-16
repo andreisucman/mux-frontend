@@ -6,6 +6,7 @@ import callTheServer from "./callTheServer";
 type Props = {
   endpoint: string;
   fields: string[];
+  query?: string;
   handleActionClick: (key: string) => void;
 };
 
@@ -18,12 +19,29 @@ const fetchAutocompleteData = async ({
   handleActionClick,
   endpoint,
   fields,
+  query,
 }: Props): Promise<Response> => {
   const reply: Response = { actions: [], data: [] };
 
   try {
+    let finalEndpoint = endpoint;
+
+    const parts = [];
+
     const fieldsString = fields.join(",");
-    const finalEndpoint = `${endpoint}?fields=${fieldsString}`;
+
+    if (fieldsString) {
+      parts.push(`fields=${fieldsString}`);
+    }
+
+    if (query) {
+      parts.push(`query=${query}`);
+    }
+
+    if (parts.length > 0) {
+      const queryString = parts.join("&");
+      finalEndpoint += `?${queryString}`;
+    }
 
     const response = await callTheServer({
       endpoint: finalEndpoint,

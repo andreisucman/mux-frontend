@@ -82,6 +82,7 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
         onSelect={onSelectType}
         allowDeselect
         isDisabled={typesDisabled}
+        customStyles={{ maxWidth: "unset" }}
         addToQuery
       />
       <FilterDropdown
@@ -91,6 +92,7 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
         selectedValue={part}
         filterType="part"
         isDisabled={partsDisabled}
+        customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />

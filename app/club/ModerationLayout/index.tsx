@@ -98,24 +98,42 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
   const followText = `Follow to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
+    console.log("youTrackDataFetched", youTrackDataFetched);
+
     if (!youTrackDataFetched) return;
+
+    console.log("youTrackData === null || !userName", youTrackData === null || !userName);
 
     if (youTrackData === null || !userName) {
       setShowComponent("userNotFound");
       return;
     }
+    console.log("isSelf", isSelf);
 
-    if (isSubscriptionActive) {
-      const follows = followingUserName === userName;
-      if (follows) {
-        setShowComponent("children");
-      } else {
-        setShowComponent("followOverlay");
-      }
+    if (isSelf) {
+      setShowComponent("children");
     } else {
-      setShowComponent("subscriptionOverlay");
+      if (isSubscriptionActive) {
+        const follows = followingUserName === userName;
+        if (follows) {
+          setShowComponent("children");
+        } else {
+          setShowComponent("followOverlay");
+        }
+      } else {
+        setShowComponent("subscriptionOverlay");
+      }
     }
-  }, [isSubscriptionActive, followingUserName, userName, youTrackData, youTrackDataFetched]);
+  }, [
+    isSubscriptionActive,
+    followingUserName,
+    userName,
+    isSelf,
+    youTrackData,
+    youTrackDataFetched,
+  ]);
+
+  console.log("show",showComponent)
 
   return (
     <Stack className={`${classes.container} smallPage`}>

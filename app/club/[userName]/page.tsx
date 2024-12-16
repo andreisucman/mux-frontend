@@ -158,7 +158,7 @@ export default function ClubAbout(props: Props) {
   useEffect(() => {
     let showSkeleton = true;
 
-    if (isSelf && youData) showSkeleton = false;
+    if (isSelf) showSkeleton = false;
     if (!isSelf && youTrackData) showSkeleton = false;
 
     setShowSkeleton(showSkeleton);
