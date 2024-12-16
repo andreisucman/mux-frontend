@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -22,7 +22,6 @@ type Props = {
 export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDisabled }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userName } = useParams();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
@@ -55,11 +54,11 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
   );
 
   useEffect(() => {
-    getUsersFilters({ userName, collection: "progress", fields: ["type"] }).then((result) => {
+    getUsersFilters({ collection: "progress", fields: ["type"] }).then((result) => {
       const { availableTypes } = result;
       setAvailableTypes(availableTypes);
     });
-  }, [userName]);
+  }, []);
 
   useEffect(() => {
     if (availableTypes.length === 0) return;

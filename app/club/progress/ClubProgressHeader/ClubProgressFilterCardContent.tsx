@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -12,11 +12,14 @@ import { partIcons, typeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./ClubProgressFilterCardContent.module.css";
 
-export default function ClubProgressFilterCardContent() {
+type Props = {
+  userName?: string;
+};
+
+export default function ClubProgressFilterCardContent({ userName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { userName } = useParams();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
@@ -61,12 +64,10 @@ export default function ClubProgressFilterCardContent() {
   };
 
   useEffect(() => {
-    getUsersFilters({ userName, collection: "progress", fields: ["type"] }).then(
-      (result) => {
-        const { availableTypes } = result;
-        setAvailableTypes(availableTypes);
-      }
-    );
+    getUsersFilters({ userName, collection: "progress", fields: ["type"] }).then((result) => {
+      const { availableTypes } = result;
+      setAvailableTypes(availableTypes);
+    });
   }, [userName]);
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { Skeleton } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
@@ -25,17 +24,16 @@ type BioDataType = {
 };
 
 type Props = {
-  params: { userName: string };
+  params: Promise<{ userName: string }>;
 };
 
-export default function ClubAbout({ params }: Props) {
+export default function ClubAbout(props: Props) {
+  const params = use(props.params);
   const { youTrackData, youData, setYouData } = useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   const { userName } = params;
-
-  console.log("params",params)
 
   const { name, club } = userDetails || {};
   const { bio } = club || {};

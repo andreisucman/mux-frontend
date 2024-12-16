@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Loader } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
@@ -17,14 +17,18 @@ interface HandleFetchProofProps extends FetchProofProps {
   currentArray?: SimpleProofType[];
 }
 
-export default function ClubProof() {
-  const { userName } = useParams();
-  const searchParams = useSearchParams();
+type Props = {
+  params: Promise<{ userName: string }>;
+};
+
+export default function ClubProof(props: Props) {
+  const { userName } = use(props.params);
   const { status, userDetails } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");

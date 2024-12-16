@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { useParams } from "next/navigation";
 import { Collapse, rem, Stack, Text } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import ChatDisplay from "@/app/advisor/chat/ChatDisplay";
@@ -8,10 +7,9 @@ import { MessageType } from "@/app/advisor/types";
 import { UserContext } from "@/context/UserContext";
 import classes from "./ClubChatContainer.module.css";
 
-type Props = { disabled?: boolean };
+type Props = { disabled?: boolean; userName?: string | string[] };
 
-export default function ClubChatContainer({ disabled }: Props) {
-  const { userName } = useParams();
+export default function ClubChatContainer({ userName, disabled }: Props) {
   const { userDetails } = useContext(UserContext);
   const { ref: focusRef, focused } = useFocusWithin();
   const [isTyping, setIsTyping] = useState(false);

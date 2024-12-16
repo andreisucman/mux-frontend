@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -10,11 +10,14 @@ import { styleIcons, typeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./ClubStyleFilterCardContent.module.css";
 
-export default function ClubStyleFilterCardContent() {
+type Props = {
+  userName?: string;
+};
+
+export default function ClubStyleFilterCardContent({ userName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { userName } = useParams();
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableStyles, setAvailableStyles] = useState<FilterItemType[]>([]);
 

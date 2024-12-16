@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Loader, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -23,7 +23,6 @@ interface HandleFetchProgressProps extends FetchProgressProps {
 }
 
 export default function ResultsProgress() {
-  const { userName } = useParams();
   const searchParams = useSearchParams();
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();

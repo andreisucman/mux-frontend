@@ -15,9 +15,10 @@ type Props = {
   titles: { label: string; value: string }[];
   isDisabled?: boolean;
   showReturn?: boolean;
+  userName?: string;
 };
 
-export default function ClubProgressHeader({ titles, showReturn, isDisabled }: Props) {
+export default function ClubProgressHeader({ titles, userName, showReturn, isDisabled }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -48,9 +49,9 @@ export default function ClubProgressHeader({ titles, showReturn, isDisabled }: P
         </Title>
       ),
       centered: true,
-      innerProps: <ClubProgressFilterCardContent />,
+      innerProps: <ClubProgressFilterCardContent userName={userName} />,
     });
-  }, []);
+  }, [userName]);
 
   return (
     <Group className={classes.container}>

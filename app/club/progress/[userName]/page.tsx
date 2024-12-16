@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ProgressGallery from "@/app/results/ProgressGallery";
@@ -18,8 +18,14 @@ interface HandleFetchProgressProps extends FetchProgressProps {
   currentArray?: SimpleProgressType[];
 }
 
-export default function ClubProgress() {
-  const { userName } = useParams();
+type Props = {
+  params: Promise<{ userName: string }>;
+};
+
+export default function ClubProgress(props: Props) {
+  const params = use(props.params);
+  const { userName } = params;
+
   const searchParams = useSearchParams();
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
@@ -30,14 +36,7 @@ export default function ClubProgress() {
   const position = searchParams.get("position");
 
   const handleFetchProgress = useCallback(
-    async ({
-      type,
-      part,
-      currentArray,
-      position,
-      userName,
-      skip,
-    }: HandleFetchProgressProps) => {
+    async ({ type, part, currentArray, position, userName, skip }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
         part,
         type,

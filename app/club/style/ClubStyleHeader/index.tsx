@@ -11,12 +11,6 @@ import { pageTypeIcons } from "@/helpers/icons";
 import ClubStyleFilterCardContent from "./ClubStyleFilterCardContent";
 import classes from "./ClubStyleHeader.module.css";
 
-type Props = {
-  titles: { label: string; value: string }[];
-  isDisabled?: boolean;
-  showReturn?: boolean;
-};
-
 const clubPageTypeItems: { label: string; value: string }[] = [
   { label: "About", value: "/club/about" },
   { label: "Routines", value: "/club/routines" },
@@ -26,7 +20,14 @@ const clubPageTypeItems: { label: string; value: string }[] = [
   },
 ];
 
-export default function ClubStyleHeader({ showReturn, isDisabled, titles }: Props) {
+type Props = {
+  titles: { label: string; value: string }[];
+  isDisabled?: boolean;
+  showReturn?: boolean;
+  userName?: string;
+};
+
+export default function ClubStyleHeader({ showReturn, userName, isDisabled, titles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -46,7 +47,7 @@ export default function ClubStyleHeader({ showReturn, isDisabled, titles }: Prop
         </Title>
       ),
       centered: true,
-      innerProps: <ClubStyleFilterCardContent />,
+      innerProps: <ClubStyleFilterCardContent userName={userName} />,
     });
   }, []);
 

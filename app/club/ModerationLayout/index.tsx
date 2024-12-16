@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -25,7 +25,7 @@ type Props = {
   children: React.ReactNode;
   showChat?: boolean;
   showHeader?: boolean;
-  userName?: string | string[];
+  userName?: string;
 };
 
 export default function ClubModerationLayout({ children, userName, showChat }: Props) {
@@ -51,6 +51,7 @@ export default function ClubModerationLayout({ children, userName, showChat }: P
         <ClubStyleHeader
           titles={clubResultTitles}
           isDisabled={showComponent !== "children"}
+          userName={userName}
           showReturn
         />
       ),
@@ -58,14 +59,16 @@ export default function ClubModerationLayout({ children, userName, showChat }: P
         <ClubProgressHeader
           titles={clubResultTitles}
           isDisabled={showComponent !== "children"}
+          userName={userName}
           showReturn
         />
       ),
       proof: (
         <ClubProofHeader
-          showReturn
           isDisabled={showComponent !== "children"}
           titles={clubResultTitles}
+          userName={userName}
+          showReturn
         />
       ),
       "": <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
@@ -120,7 +123,7 @@ export default function ClubModerationLayout({ children, userName, showChat }: P
               <FollowOverlay userName={userName as string} description={followText} />
             )}
             {showComponent === "children" && showChat && (
-              <ClubChatContainer disabled={showComponent !== "children"} />
+              <ClubChatContainer disabled={showComponent !== "children"} userName={userName} />
             )}
           </>
         )}

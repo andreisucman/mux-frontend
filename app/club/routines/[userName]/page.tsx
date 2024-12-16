@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -24,8 +24,12 @@ type GetRoutinesProps = {
   routines?: RoutineType[];
 };
 
-export default function ClubRoutines() {
-  const { userName } = useParams();
+type Props = {
+  params: Promise<{ userName: string }>;
+};
+
+export default function ClubRoutines(props: Props) {
+  const { userName } = use(props.params);
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();

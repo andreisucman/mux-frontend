@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
@@ -20,6 +20,7 @@ interface HandleFetchProgressProps extends FetchProgressProps {
 type Props = {
   hasMore: boolean;
   isSelfPage?: boolean;
+  userName?: string;
   progress?: SimpleProgressType[];
   handleContainerClick: (data: any, showTrackButton: boolean) => void;
   handleFetchProgress: (props: HandleFetchProgressProps) => void;
@@ -29,12 +30,12 @@ type Props = {
 export default function ProgressGallery({
   progress,
   hasMore,
+  userName,
   isSelfPage,
   setProgress,
   handleContainerClick,
   handleFetchProgress,
 }: Props) {
-  const { userName } = useParams();
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type");

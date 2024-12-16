@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useCallback, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -10,11 +10,14 @@ import { partIcons, typeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./ClubProofFilterCardContent.module.css";
 
-export default function ClubProofFilterCardContent() {
+type Props = {
+  userName?: string;
+};
+
+export default function ClubProofFilterCardContent({ userName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { userName } = useParams();
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
@@ -22,7 +25,7 @@ export default function ClubProofFilterCardContent() {
   const part = searchParams.get("part");
   const type = searchParams.get("type");
 
-  const handleResetFilters = () => {
+  const handleResetFilters = useCallback(() => {
     const query = modifyQuery({
       params: [
         { name: "type", value: null, action: "delete" },
@@ -33,18 +36,21 @@ export default function ClubProofFilterCardContent() {
 
     router.replace(`${pathname}?${query}`);
     modals.closeAll();
-  };
+  }, [pathname, modals]);
 
-  const onSelectType = (type?: string | null) => {
-    let relevantParts: FilterPartItemType[];
+  const onSelectType = useCallback(
+    (type?: string | null) => {
+      let relevantParts: FilterPartItemType[];
 
-    if (!type) {
-      relevantParts = [];
-    } else {
-      relevantParts = availableParts.filter((part) => part.type === type);
-    }
-    setRelevantParts(relevantParts);
-  };
+      if (!type) {
+        relevantParts = [];
+      } else {
+        relevantParts = availableParts.filter((part) => part.type === type);
+      }
+      setRelevantParts(relevantParts);
+    },
+    [availableParts]
+  );
 
   useEffect(() => {
     getUsersFilters({

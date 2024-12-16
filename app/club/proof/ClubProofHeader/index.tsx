@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft, IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -17,6 +17,7 @@ import classes from "./ProofHeader.module.css";
 type Props = {
   titles: { label: string; value: string }[];
   showReturn?: boolean;
+  userName?: string;
   isDisabled?: boolean;
 };
 
@@ -31,10 +32,9 @@ const clubPageTypeItems: { label: string; value: string }[] = [
 
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
-export default function ClubProofHeader({ showReturn, isDisabled, titles }: Props) {
+export default function ClubProofHeader({ userName, showReturn, isDisabled, titles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const { userName } = useParams();
   const searchParams = useSearchParams();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -92,9 +92,9 @@ export default function ClubProofHeader({ showReturn, isDisabled, titles }: Prop
         </Title>
       ),
       centered: true,
-      innerProps: <ClubProofFilterCardContent />,
+      innerProps: <ClubProofFilterCardContent userName={userName} />,
     });
-  }, []);
+  }, [userName]);
 
   useEffect(() => {
     getAutocompleteData(userName);

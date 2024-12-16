@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import StyleGallery from "@/app/results/style/StyleGallery";
@@ -18,8 +18,12 @@ interface HandleFetchStyleProps extends FetchStyleProps {
   currentArray?: SimpleStyleType[];
 }
 
-export default function ClubStyle() {
-  const { userName } = useParams();
+type Props = {
+  params: Promise<{ userName: string }>;
+};
+
+export default function ClubStyle(props: Props) {
+  const { userName } = use(props.params);
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [styles, setStyles] = useState<SimpleStyleType[]>();
