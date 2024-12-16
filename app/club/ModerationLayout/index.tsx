@@ -31,8 +31,6 @@ type Props = {
 export default function ClubModerationLayout({ children, userName, showChat }: Props) {
   const pathname = usePathname();
 
-  console.log("userName", userName);
-
   const { userDetails } = useContext(UserContext);
   const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");

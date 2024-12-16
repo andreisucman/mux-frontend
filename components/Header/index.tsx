@@ -35,9 +35,8 @@ function Header() {
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
 
-  const { club } = userDetails || {};
-  const { avatar, payouts } = club || {};
-  const { detailsSubmitted } = payouts || {};
+  const { club, avatar } = userDetails || {};
+  const { payouts } = club || {};
 
   const hideStartButton = useMemo(
     () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),
@@ -92,8 +91,6 @@ function Header() {
                     text="Start"
                     aria-label="start analysis button"
                     disabled={hideStartButton}
-                    buttonStyles={{ minWidth: "unset" }}
-                    overlayStyles={{ minWidth: "unset" }}
                     icon={
                       <IconRocket
                         stroke={1.5}

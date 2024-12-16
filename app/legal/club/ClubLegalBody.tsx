@@ -93,7 +93,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>3. Income from Followers:</Title>
         <ul>
           <li>
-            You will earn 25% of the Peek license subscription fee for each user that follows you in
+            You will earn 50% of the Peek license subscription fee for each user that follows you in
             the club.
           </li>
           <li>
@@ -181,7 +181,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>2. Earnings from Followers:</Title>
         <ul>
           <li>
-            You will receive 25% of the app&apos;s subscription fee for each user who follows you.
+            You will receive 50% of the app&apos;s subscription fee for each user who follows you.
             This percentage is calculated based on the amount collected from the user&apos;s
             subscription.
           </li>

@@ -22,7 +22,7 @@ export const runtime = "edge";
 const tableData = {
   caption: "From their monthly subscription payment",
   head: ["Event", "Reward"],
-  body: [["Follower", "25%"]],
+  body: [["Follower", "50%"]],
 };
 
 export default function ClubJoin() {

@@ -20,9 +20,9 @@ import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { UserDataType } from "@/types/global";
 import AddClubSocials from "./AddClubSocials";
-import useShowSkeleton from "@/helpers/useShowSkeleton";
 import LeaveClubConfirmation from "./LeaveClubConfirmation";
 import classes from "./ClubSettings.module.css";
 
@@ -38,8 +38,8 @@ export default function ClubSettings() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { club } = userDetails || {};
-  const { avatar, name, bio, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
+  const { club, avatar, name } = userDetails || {};
+  const { bio, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
   const { intro } = bio || {};
 
   const [userName, setUserName] = useState<string>(name || "");

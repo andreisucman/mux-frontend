@@ -10,7 +10,7 @@
   justify-content: center;
 
   position: relative;
-  min-width: rem(150);
+  min-width: rem(105);
   font-size: var(--mantine-font-size-md);
   height: rem(34);
   padding: 0 rem(16);

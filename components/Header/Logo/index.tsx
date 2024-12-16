@@ -19,7 +19,7 @@ function Logo({ customStyles }: Props) {
         src={logoSrc}
         width={190}
         height={32}
-        alt="MaxYouOut logo"
+        alt="Muxout logo"
         className={classes.logo}
         priority={true}
       />

@@ -216,7 +216,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
             isSmall
           />
         ))}
-        <Text className={classes.copyright}>&copy; {year} Maxyouout. All rights reserved</Text>
+        <Text className={classes.copyright}>&copy; {year} Muxout. All rights reserved</Text>
       </Stack>
     </Stack>
   );

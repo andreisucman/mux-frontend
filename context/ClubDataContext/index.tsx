@@ -33,14 +33,12 @@ export default function ClubDataContextProvider({ children }: Props) {
   const getClubYouTrack = useCallback(async (userName?: string) => {
     try {
       const response = await callTheServer({
-        endpoint: `getClubYouTrack/${userName ? userName : ""}`,
+        endpoint: `getClubYouTrack${userName ? `/${userName}` : ""}`,
         method: "GET",
       });
 
       if (response.status === 200) {
         setYouTrackData(response.message);
-      } else {
-        setYouTrackData(null);
       }
       setYouTrackDataFetched(true);
     } catch (err) {

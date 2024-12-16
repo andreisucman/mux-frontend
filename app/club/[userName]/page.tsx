@@ -24,11 +24,18 @@ type BioDataType = {
   about: string;
 };
 
-export default function ClubAbout() {
-  const { userName } = useParams();
+type Props = {
+  params: { userName: string };
+};
+
+export default function ClubAbout({ params }: Props) {
   const { youTrackData, youData, setYouData } = useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
+
+  const { userName } = params;
+
+  console.log("params",params)
 
   const { name, club } = userDetails || {};
   const { bio } = club || {};
