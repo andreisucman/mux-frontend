@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useShallowEffect } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import { ClubUserType } from "@/types/global";
 import { UserContext } from "../UserContext";
@@ -21,19 +22,18 @@ type Props = {
 };
 
 export default function ClubDataContextProvider({ children }: Props) {
-  const searchParams = useSearchParams();
+  const { userName } = useParams();
   const { userDetails } = useContext(UserContext);
   const [youTrackDataFetched, setYouTrackDataFetched] = useState(false);
   const [youTrackData, setYouTrackData] = useState<ClubUserType | null | undefined>();
   const [youData, setYouData] = useState<ClubUserType | null>(null);
 
-  const followingUserId = searchParams.get("id");
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
 
-  const getClubYouTrack = useCallback(async (followingUserId: string) => {
+  const getClubYouTrack = useCallback(async (userName?: string) => {
     try {
       const response = await callTheServer({
-        endpoint: `getClubYouTrack/${followingUserId}`,
+        endpoint: `getClubYouTrack/${userName ? userName : ""}`,
         method: "GET",
       });
 
@@ -48,9 +48,11 @@ export default function ClubDataContextProvider({ children }: Props) {
     }
   }, []);
 
-  useEffect(() => {
-    if (!userId) return;
-    const { name, bio, avatar } = club || {};
+  useShallowEffect(() => {
+    if (!userDetails) return;
+
+    const { name, avatar } = userDetails || {};
+    const { bio } = club || {};
 
     if (!name) return;
 
@@ -61,7 +63,7 @@ export default function ClubDataContextProvider({ children }: Props) {
 
     const data: ClubUserType = {
       _id: userId as string,
-      name: name,
+      name,
       bio: bio!,
       avatar: avatar!,
       scores: {
@@ -73,11 +75,11 @@ export default function ClubDataContextProvider({ children }: Props) {
     };
 
     setYouData(data);
-  }, [userId]);
+  }, [userDetails]);
 
   useEffect(() => {
-    getClubYouTrack(followingUserId as string);
-  }, [followingUserId]);
+    getClubYouTrack(userName as string);
+  }, [userName]);
 
   return (
     <ClubContext.Provider

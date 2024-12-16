@@ -21,7 +21,7 @@ export default function AllProof() {
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");

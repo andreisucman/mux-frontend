@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -7,8 +7,8 @@ import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/
 import { partItems, positionItems } from "@/components/PageHeader/data";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons, typeIcons } from "@/helpers/icons";
-import TitleDropdown from "../TitleDropdown";
 import { PositionsFilterItemType } from "../proof/ProofHeader/types";
+import TitleDropdown from "../TitleDropdown";
 import classes from "./ProgressHeader.module.css";
 
 type Props = {
@@ -22,11 +22,11 @@ type Props = {
 export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDisabled }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { userName } = useParams();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
-  const followingUserId = searchParams.get("id");
 
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
@@ -55,13 +55,11 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
   );
 
   useEffect(() => {
-    getUsersFilters({ followingUserId, collection: "progress", fields: ["type"] }).then(
-      (result) => {
-        const { availableTypes } = result;
-        setAvailableTypes(availableTypes);
-      }
-    );
-  }, [followingUserId]);
+    getUsersFilters({ userName, collection: "progress", fields: ["type"] }).then((result) => {
+      const { availableTypes } = result;
+      setAvailableTypes(availableTypes);
+    });
+  }, [userName]);
 
   useEffect(() => {
     if (availableTypes.length === 0) return;

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -25,11 +25,14 @@ type Props = {
   children: React.ReactNode;
   showChat?: boolean;
   showHeader?: boolean;
+  userName?: string | string[];
 };
 
-export default function ClubModerationLayout({ children, showChat }: Props) {
+export default function ClubModerationLayout({ children, userName, showChat }: Props) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+
+  console.log("userName", userName);
+
   const { userDetails } = useContext(UserContext);
   const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");
@@ -37,11 +40,10 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   const pathnameParts = pathname.split("/");
   const pageType = pathnameParts[pathnameParts.length - 1];
 
-  const { _id: userId, subscriptions, club } = userDetails || {};
-  const { followingUserId: localFollowingUserId } = club || {};
+  const { name, subscriptions, club } = userDetails || {};
+  const { followingUserName } = club || {};
 
-  const followingUserId = searchParams.get("id");
-  const isSelf = userId === followingUserId;
+  const isSelf = name === userName;
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
 
@@ -68,7 +70,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
           titles={clubResultTitles}
         />
       ),
-      about: <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
+      "": <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
       diary: (
         <ClubHeader title={"Club"} hideTypeDropdown={showComponent !== "children"} showReturn />
       ),
@@ -84,13 +86,13 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
   useEffect(() => {
     if (!youTrackDataFetched) return;
 
-    if (youTrackData === null || !followingUserId) {
+    if (youTrackData === null || !userName) {
       setShowComponent("userNotFound");
       return;
     }
 
     if (isSubscriptionActive) {
-      const follows = localFollowingUserId === followingUserId;
+      const follows = followingUserName === userName;
       if (follows) {
         setShowComponent("children");
       } else {
@@ -99,13 +101,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
     } else {
       setShowComponent("subscriptionOverlay");
     }
-  }, [
-    isSubscriptionActive,
-    localFollowingUserId,
-    followingUserId,
-    youTrackData,
-    youTrackDataFetched,
-  ]);
+  }, [isSubscriptionActive, followingUserName, userName, youTrackData, youTrackDataFetched]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -123,7 +119,7 @@ export default function ClubModerationLayout({ children, showChat }: Props) {
             {showComponent === "children" && children}
             {showComponent === "subscriptionOverlay" && <PeekOverlay />}
             {showComponent === "followOverlay" && (
-              <FollowOverlay followingUserId={followingUserId as string} description={followText} />
+              <FollowOverlay userName={userName as string} description={followText} />
             )}
             {showComponent === "children" && showChat && (
               <ClubChatContainer disabled={showComponent !== "children"} />

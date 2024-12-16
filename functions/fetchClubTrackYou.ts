@@ -21,6 +21,10 @@ const fetchClubTrackYou = async (props?: GetClubTrackYouProps) => {
       method: "GET",
     });
 
+    if (response.status !== 200) {
+      throw new Error(response.error);
+    }
+
     return response.message;
   } catch (err) {
     openErrorModal();

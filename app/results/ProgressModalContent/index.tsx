@@ -20,20 +20,20 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const { club } = userDetails || {};
-  const { followingUserId } = club || {};
+  const { followingUserName } = club || {};
 
-  const { userId, images, initialImages, updatedAt, createdAt, initialDate } = record;
-  const isTracked = followingUserId === userId;
+  const { userName, images, initialImages, updatedAt, createdAt, initialDate } = record;
+  const isTracked = followingUserName === userName;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress?id=${followingUserId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress/${userName}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);
     modals.closeAll();
-};
+  };
 
   return (
     <Stack className={classes.container}>

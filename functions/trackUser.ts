@@ -4,7 +4,7 @@ import { ClubDataType, UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 type TrackUserProps = {
-  followingUserId: string | null;
+  userName?: string | string[];
   redirectUrl: string;
   router: AppRouterInstance;
   clubData?: ClubDataType;
@@ -12,7 +12,7 @@ type TrackUserProps = {
 };
 export default async function trackUser({
   router,
-  followingUserId,
+  userName,
   redirectUrl,
   clubData,
   setUserDetails,
@@ -21,14 +21,14 @@ export default async function trackUser({
     const response = await callTheServer({
       endpoint: "trackUser",
       method: "POST",
-      body: { followingUserId },
+      body: { followingUserName: userName },
     });
 
     if (response.status === 200) {
       if (response.error) return;
 
       if (clubData) {
-        const newClub = { ...clubData, followingUserId };
+        const newClub = { ...clubData, followingUserName: userName };
         setUserDetails((prev) => ({ ...prev, newClub }));
       }
     }

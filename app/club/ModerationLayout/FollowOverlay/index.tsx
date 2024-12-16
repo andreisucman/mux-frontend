@@ -7,24 +7,26 @@ import { ClubDataType, UserDataType } from "@/types/global";
 import classes from "./FollowOverlay.module.css";
 
 type Props = {
-  followingUserId: string | null;
+  userName?: string;
   description: string;
 };
 
-export default function FollowOverlay({ followingUserId, description }: Props) {
+export default function FollowOverlay({ userName, description }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const handleTrackUser = useCallback(async () => {
     try {
+      if (!userName) throw new Error("User name is missing");
+
       const response = await callTheServer({
         endpoint: "trackUser",
         method: "POST",
-        body: { followingUserId },
+        body: { followingUserName: userName },
       });
 
       if (response.status === 200) {
         const { club } = userDetails || {};
-        const newClub = { ...club, followingUserId };
+        const newClub = { ...club, userName };
 
         if (club) {
           setUserDetails((prev: UserDataType) => ({
@@ -36,7 +38,7 @@ export default function FollowOverlay({ followingUserId, description }: Props) {
     } catch (err) {
       console.log("Error in handleTrackUser: ", err);
     }
-  }, [followingUserId]);
+  }, [userName, userDetails]);
 
   return (
     <Stack className={classes.container}>

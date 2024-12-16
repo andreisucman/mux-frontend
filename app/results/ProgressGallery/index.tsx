@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
@@ -34,12 +34,12 @@ export default function ProgressGallery({
   handleContainerClick,
   handleFetchProgress,
 }: Props) {
+  const { userName } = useParams();
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
-  const followingUserId = searchParams.get("id");
 
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;
@@ -75,7 +75,7 @@ export default function ProgressGallery({
               position,
               skip: hasMore,
               currentArray: progress,
-              followingUserId,
+              userName,
             })
           }
           hasMore={hasMore}

@@ -1,26 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { PositionsFilterItemType } from "@/app/results/proof/ProofHeader/types";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import { partItems, positionItems } from "@/components/PageHeader/data";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons, typeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
-import { PositionsFilterItemType } from "@/app/results/proof/ProofHeader/types";
 import classes from "./ClubProgressFilterCardContent.module.css";
 
 export default function ClubProgressFilterCardContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { userName } = useParams();
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
-  const followingUserId = searchParams.get("id");
 
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
@@ -61,13 +61,13 @@ export default function ClubProgressFilterCardContent() {
   };
 
   useEffect(() => {
-    getUsersFilters({ followingUserId, collection: "progress", fields: ["type"] }).then(
+    getUsersFilters({ userName, collection: "progress", fields: ["type"] }).then(
       (result) => {
         const { availableTypes } = result;
         setAvailableTypes(availableTypes);
       }
     );
-  }, [followingUserId]);
+  }, [userName]);
 
   useEffect(() => {
     if (availableTypes.length === 0) return;

@@ -33,7 +33,6 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
-  const followingUserId = searchParams.get("id");
 
   const handleActionClick = useCallback(
     (value: string) => {
@@ -55,9 +54,9 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
   };
 
   const getAutocompleteData = useCallback(
-    async (followingUserId: string | null) => {
+    async (userName?: string | string[]) => {
       const { actions } = await fetchAutocompleteData({
-        endpoint: `getUsersProofAutocomplete${followingUserId ? `/${followingUserId}` : ""}`,
+        endpoint: `getUsersProofAutocomplete${userName ? `/${userName}` : ""}`,
         fields: ["taskName", "concern"],
         handleActionClick,
       });
@@ -79,12 +78,11 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
   );
 
   useEffect(() => {
-    getAutocompleteData(followingUserId);
-  }, [followingUserId]);
+    getAutocompleteData();
+  }, []);
 
   useEffect(() => {
     getUsersFilters({
-      followingUserId,
       collection: "proof",
       fields: ["type", "part"],
     }).then((result) => {
@@ -96,7 +94,7 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
         setRelevantParts(availableParts.filter((part) => part.type === type));
       }
     });
-  }, [followingUserId]);
+  }, []);
 
   const typesDisabled = isDisabled || availableTypes.length === 0;
   const partsDisabled = isDisabled || relevantParts.length === 0;

@@ -2,7 +2,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 
 export type FetchStyleProps = {
-  followingUserId?: string | null;
+  followingUserName?: string | string[];
   styleName?: string | null;
   currentArrayLength?: number;
   skip?: boolean;

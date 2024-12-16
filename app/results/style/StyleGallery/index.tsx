@@ -17,6 +17,7 @@ interface HandleFetchStyleProps extends FetchStyleProps {
 }
 
 type Props = {
+  userName?: string | string[];
   hasMore: boolean;
   columns?: number;
   isSelf?: boolean;
@@ -35,6 +36,7 @@ export default function StyleGallery({
   showMeta,
   isSelf,
   isPublic,
+  userName,
   setStyles,
   handleContainerClick,
   handleFetchStyles,
@@ -43,7 +45,6 @@ export default function StyleGallery({
 
   const type = searchParams.get("type");
   const styleName = searchParams.get("styleName");
-  const followingUserId = searchParams.get("id");
 
   const modelObject = styles && styles[0];
   const appliedBlurType = modelObject?.mainUrl.name;
@@ -79,7 +80,7 @@ export default function StyleGallery({
             handleFetchStyles({
               skip: hasMore,
               currentArray: styles,
-              followingUserId,
+              followingUserName: userName,
               styleName,
               type,
             })

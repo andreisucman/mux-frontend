@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { Button, rem, SegmentedControl, Stack } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
@@ -23,6 +22,7 @@ type Props = {
   questions?: AboutQuestionType[];
   youData: ClubUserType | null;
   bioData: BioDataType;
+  isSelf: boolean;
   updateClubBio: (dirtyParts: string[], bioData: BioDataType) => Promise<void>;
   setBioData: React.Dispatch<React.SetStateAction<BioDataType>>;
 };
@@ -31,13 +31,11 @@ export default function EditClubAbout({
   questions,
   youData,
   bioData,
+  isSelf,
   updateClubBio,
   setBioData,
 }: Props) {
-  const searchParams = useSearchParams();
-
   const [showSegment, setShowSegment] = useState("philosophy");
-  const followingUserId = searchParams.get("id");
 
   const dirtyParts = Object.keys(bioData)
     .map((key) =>
@@ -47,8 +45,8 @@ export default function EditClubAbout({
     )
     .filter(Boolean);
 
-  const editingDisabled = !!followingUserId || (questions && questions?.length > 0);
   const currentSegment = segments.find((segment) => segment.value === showSegment) || segments[0];
+  const editingDisabled = !isSelf || (questions && questions?.length > 0);
 
   return (
     <Stack className={classes.wrapper}>
@@ -66,7 +64,7 @@ export default function EditClubAbout({
         isUnbounded
       />
 
-      {!followingUserId && (
+      {isSelf && (
         <Button
           w="100%"
           onClick={() => updateClubBio(dirtyParts as string[], bioData)}

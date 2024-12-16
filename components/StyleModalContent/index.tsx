@@ -22,7 +22,7 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const { club } = userDetails || {};
-  const { followingUserId } = club || {};
+  const { followingUserName } = club || {};
 
   const {
     _id: styleId,
@@ -30,8 +30,8 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
     mainUrl,
     createdAt,
     compareDate,
-    userId,
     styleIcon,
+    userName,
     styleName,
     compareIcon,
     compareStyleName,
@@ -39,13 +39,13 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
     compareVotes,
   } = record;
 
-  const isTracked = followingUserId === userId;
+  const isTracked = userName === followingUserName;
 
   const formattedCurrentDate = formatDate({ date: createdAt });
   const formattedCompareDate = formatDate({ date: compareDate });
   const hideVoting = styleName === compareStyleName;
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style?id=${record.userId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style/${record.userId}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);

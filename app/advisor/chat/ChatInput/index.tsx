@@ -37,7 +37,7 @@ type Props = {
   disabled?: boolean;
   defaultOpen?: boolean;
   heading?: React.ReactNode;
-  followingUserId?: string | null;
+  userName?: string | string[];
   conversation: MessageType[];
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
@@ -48,7 +48,7 @@ export default function ChatInput({
   heading,
   disabled,
   defaultOpen,
-  followingUserId,
+  userName,
   conversation,
   setIsTyping,
   setConversation,
@@ -103,7 +103,7 @@ export default function ChatInput({
       <IconSquareRoundedCheck className="icon" />
     );
 
-    const onClick = followingUserId
+    const onClick = userName
       ? handleCreateCheckoutSession
       : !!isTrialUsed
         ? handleCreateCheckoutSession
@@ -113,15 +113,15 @@ export default function ChatInput({
             });
 
     const payload = {
-      title: followingUserId ? `Add the Peek License` : `Add the Advisor Coach`,
-      modalType: followingUserId ? "peek" : ("advisor" as "peek"),
+      title: userName ? `Add the Peek License` : `Add the Advisor Coach`,
+      modalType: userName ? "peek" : ("advisor" as "peek"),
       isCentered: true,
-      price: followingUserId ? "19" : "5",
+      price: userName ? "19" : "5",
       buttonText,
       buttonIcon,
       onClick,
       onClose: () => fetchUserData(setUserDetails),
-      underButtonText: followingUserId ? "" : "No credit card required",
+      underButtonText: userName ? "" : "No credit card required",
     };
 
     openSubscriptionModal(payload);
@@ -184,7 +184,7 @@ export default function ChatInput({
           taskName,
         };
 
-        if (followingUserId) payload.userId = followingUserId;
+        if (userName) payload.userName = userName;
 
         const response = await callTheServer({
           endpoint: "addMessage",

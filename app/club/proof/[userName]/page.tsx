@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Loader } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
-import ProofHeader from "@/app/results/proof/ProofHeader";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import openErrorModal from "@/helpers/openErrorModal";
-import { clubResultTitles } from "../clubResultTitles";
-import ClubModerationLayout from "../ModerationLayout";
+import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
 
@@ -20,8 +18,9 @@ interface HandleFetchProofProps extends FetchProofProps {
 }
 
 export default function ClubProof() {
+  const { userName } = useParams();
   const searchParams = useSearchParams();
-  const { status } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
@@ -29,25 +28,19 @@ export default function ClubProof() {
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
-  const followingUserId = searchParams.get("id");
+
+  const { name } = userDetails || {};
+  const isSelf = name === userName;
 
   const handleFetchProof = useCallback(
-    async ({
-      type,
-      part,
-      followingUserId,
-      concern,
-      currentArray,
-      query,
-      skip,
-    }: HandleFetchProofProps) => {
+    async ({ type, part, userName, concern, currentArray, query, skip }: HandleFetchProofProps) => {
       const data = await fetchUsersProof({
         concern,
         part,
         query,
         type,
         currentArrayLength: (currentArray && currentArray.length) || 0,
-        followingUserId,
+        userName,
         skip,
       });
 
@@ -68,17 +61,19 @@ export default function ClubProof() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProof({ followingUserId, type, part, concern, query });
-  }, [status, followingUserId, type, part, concern, query]);
+    handleFetchProof({ userName, type, part, concern, query });
+  }, [status, userName, type, part, concern, query]);
 
   return (
-    <ClubModerationLayout>
+    <ClubModerationLayout userName={userName}>
       {proof ? (
         <ProofGallery
           proof={proof}
           hasMore={hasMore}
+          userName={userName}
           handleFetchProof={handleFetchProof}
           setProof={setProof}
+          isSelf={isSelf}
           isPublicPage
           columns={2}
         />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -14,11 +14,11 @@ export default function ClubProofFilterCardContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { userName } = useParams();
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
 
-  const followingUserId = searchParams.get("id");
   const part = searchParams.get("part");
   const type = searchParams.get("type");
 
@@ -48,7 +48,7 @@ export default function ClubProofFilterCardContent() {
 
   useEffect(() => {
     getUsersFilters({
-      followingUserId,
+      userName,
       collection: "proof",
       fields: ["type", "part"],
     }).then((result) => {
@@ -60,7 +60,7 @@ export default function ClubProofFilterCardContent() {
         setRelevantParts(availableParts.filter((part) => part.type === type));
       }
     });
-  }, [followingUserId]);
+  }, [userName]);
 
   const typesDisabled = availableTypes.length === 0;
   const partsDisabled = relevantParts.length === 0;

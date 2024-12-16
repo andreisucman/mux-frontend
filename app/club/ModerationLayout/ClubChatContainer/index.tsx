@@ -1,24 +1,26 @@
 import React, { useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Collapse, rem, Stack, Text } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import ChatDisplay from "@/app/advisor/chat/ChatDisplay";
 import ChatInput from "@/app/advisor/chat/ChatInput";
 import { MessageType } from "@/app/advisor/types";
-import { ClubContext } from "@/context/ClubDataContext";
+import { UserContext } from "@/context/UserContext";
 import classes from "./ClubChatContainer.module.css";
 
 type Props = { disabled?: boolean };
 
 export default function ClubChatContainer({ disabled }: Props) {
-  const searchParams = useSearchParams();
+  const { userName } = useParams();
+  const { userDetails } = useContext(UserContext);
   const { ref: focusRef, focused } = useFocusWithin();
-  const { youTrackData } = useContext(ClubContext);
   const [isTyping, setIsTyping] = useState(false);
   const [conversation, setConversation] = useState<MessageType[]>([]);
 
-  const followingUserId = searchParams.get("id");
-  const name = followingUserId ? `the ${youTrackData?.name}'s` : "your";
+  const { name } = userDetails || {};
+  const isSelf = name === userName;
+
+  const text = userName ? `the ${userName}'s` : "your";
   const openChat = disabled ? false : focused && conversation.length > 0;
 
   return (
@@ -31,7 +33,7 @@ export default function ClubChatContainer({ disabled }: Props) {
       >
         <Stack className={classes.chatDisplayWrapper}>
           <Text className={classes.disclaimer} c="dimmed">
-            Answers are based on {name} info
+            Answers are based on {text} info
           </Text>
           <ChatDisplay
             isTyping={isTyping}
@@ -44,10 +46,10 @@ export default function ClubChatContainer({ disabled }: Props) {
       </Collapse>
       <ChatInput
         isClub={true}
-        defaultOpen={!!followingUserId}
+        defaultOpen={!isSelf}
         disabled={disabled}
         conversation={conversation}
-        followingUserId={followingUserId}
+        userName={userName}
         setConversation={setConversation}
         setIsTyping={setIsTyping}
       />

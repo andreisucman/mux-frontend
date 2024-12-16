@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import DiaryContent from "@/app/diary/DiaryContent";
 import { DiaryRecordType } from "@/app/diary/type";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
-import ClubModerationLayout from "../ModerationLayout";
+import ClubModerationLayout from "../../ModerationLayout";
 
 export default function DiaryPage() {
-  const [openValue, setOpenValue] = useState<string | null>(null);
+  const { userName } = useParams();
   const searchParams = useSearchParams();
+
+  const [openValue, setOpenValue] = useState<string | null>(null);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [hasMore, setHasMore] = useState(false);
 
@@ -42,7 +44,7 @@ export default function DiaryPage() {
   }, [type]);
 
   return (
-    <ClubModerationLayout>
+    <ClubModerationLayout userName={userName}>
       <DiaryContent
         diaryRecords={diaryRecords}
         openValue={openValue}

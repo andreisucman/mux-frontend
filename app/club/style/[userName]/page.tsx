@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import StyleGallery from "@/app/results/style/StyleGallery";
@@ -10,7 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import { FetchStyleProps } from "@/functions/fetchStyle";
 import fetchUsersStyle from "@/functions/fetchUsersStyle";
 import openResultModal from "@/helpers/openResultModal";
-import ClubModerationLayout from "../ModerationLayout";
+import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
 
@@ -19,22 +19,26 @@ interface HandleFetchStyleProps extends FetchStyleProps {
 }
 
 export default function ClubStyle() {
+  const { userName } = useParams();
   const searchParams = useSearchParams();
-  const { status } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [styles, setStyles] = useState<SimpleStyleType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const { name } = userDetails || {};
+
+  const isSelf = name === userName;
+
+  const type = searchParams.get("type");
   const styleName = searchParams.get("styleName");
-  const followingUserId = searchParams.get("id");
 
   const handleFetchUsersStyles = useCallback(
-    async ({ type, currentArray, styleName, skip, followingUserId }: HandleFetchStyleProps) => {
+    async ({ type, currentArray, styleName, skip, followingUserName }: HandleFetchStyleProps) => {
       const items = await fetchUsersStyle({
         type,
         styleName,
         currentArrayLength: currentArray?.length || 0,
-        followingUserId,
+        followingUserName,
         skip,
       });
 
@@ -69,11 +73,11 @@ export default function ClubStyle() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchUsersStyles({ type, styleName, followingUserId });
-  }, [status, type, styleName, followingUserId]);
+    handleFetchUsersStyles({ type, styleName, followingUserName: userName });
+  }, [status, type, styleName, userName]);
 
   return (
-    <ClubModerationLayout>
+    <ClubModerationLayout userName={userName}>
       {styles ? (
         <StyleGallery
           styles={styles}
@@ -81,7 +85,7 @@ export default function ClubStyle() {
           handleContainerClick={handleContainerClick}
           handleFetchStyles={handleFetchUsersStyles}
           setStyles={setStyles}
-          isSelf={!followingUserId}
+          isSelf={isSelf}
         />
       ) : (
         <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

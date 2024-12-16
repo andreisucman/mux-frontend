@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import PageHeader from "@/components/PageHeader";
@@ -11,6 +12,7 @@ import classes from "./chat.module.css";
 export const runtime = "edge";
 
 export default function Chat() {
+  const { userName } = useParams();
   return (
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader
@@ -21,7 +23,7 @@ export default function Chat() {
         hideTypeDropdown
       />
       <SkeletonWrapper>
-        <ChatBody />
+        <ChatBody userName={userName} />
       </SkeletonWrapper>
     </Stack>
   );

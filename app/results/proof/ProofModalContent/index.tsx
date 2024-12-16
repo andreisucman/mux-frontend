@@ -20,18 +20,18 @@ type Props = {
 export default function ProofModalContent({ record, isPublic }: Props) {
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
-  const { club } = userDetails || {};
-  const { followingUserId } = club || {};
+  const { club, name } = userDetails || {};
+  const { followingUserName } = club || {};
 
-  const { icon, createdAt, userId, mainUrl, mainThumbnail, concern, taskName } = record || {};
+  const { icon, createdAt, mainUrl, mainThumbnail, concern, taskName, userName } = record || {};
 
-  const isTracked = followingUserId === userId;
-  const isSelf = userDetails?._id === userId;
+  const isTracked = followingUserName === userName;
+  const isSelf = name === userName;
 
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof?id=${userId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof/${userName}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);

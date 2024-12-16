@@ -39,10 +39,7 @@ export default function openResultModal({
         setRecords={setRecords!}
       />
     ) : type === "progress" ? (
-      <ProgressModalContent
-        record={record as SimpleBeforeAfterType}
-        showTrackButton={isPublic}
-      />
+      <ProgressModalContent record={record as SimpleBeforeAfterType} showTrackButton={isPublic} />
     ) : (
       <ProofModalContent record={record as SimpleProofType} isPublic={isPublic} />
     );

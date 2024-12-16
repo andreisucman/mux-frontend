@@ -23,7 +23,6 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableStyles, setAvailableStyles] = useState<FilterItemType[]>([]);
 
-  const followingUserId = searchParams.get("id");
   const styleName = searchParams.get("styleName");
   const type = searchParams.get("type");
 
@@ -32,18 +31,16 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
 
   useEffect(() => {
     getUsersFilters({
-      followingUserId,
       collection: "style",
       fields: ["type"],
     }).then((result) => {
       const { availableTypes } = result;
       setAvailableTypes(availableTypes);
     });
-  }, [followingUserId]);
+  }, []);
 
   useEffect(() => {
     getUsersFilters({
-      followingUserId,
       collection: "style",
       fields: ["styleName"],
       type,
@@ -51,7 +48,7 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
       const { availableStyleNames } = result;
       setAvailableStyles(availableStyleNames);
     });
-  }, [type, followingUserId]);
+  }, [type]);
 
   return (
     <Group className={classes.container}>

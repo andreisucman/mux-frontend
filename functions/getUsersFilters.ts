@@ -5,18 +5,13 @@ import { partItems, typeItems } from "@/components/PageHeader/data";
 import callTheServer from "./callTheServer";
 
 type GetUsersFiltersProps = {
-  followingUserId: string | null;
+  userName?: string | string[];
   collection: string;
   fields?: string[];
   type?: string | null;
 };
 
-const getUsersFilters = async ({
-  followingUserId,
-  type,
-  collection,
-  fields,
-}: GetUsersFiltersProps) => {
+const getUsersFilters = async ({ userName, type, collection, fields }: GetUsersFiltersProps) => {
   let result = {
     availableTypes: [] as FilterItemType[],
     availableParts: [] as FilterPartItemType[],
@@ -27,7 +22,7 @@ const getUsersFilters = async ({
 
     let endpoint = "getUsersFilters";
 
-    if (followingUserId) endpoint += `/${followingUserId}`;
+    if (userName) endpoint += `/${userName}`;
 
     const parts = [];
 

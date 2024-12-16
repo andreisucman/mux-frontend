@@ -26,28 +26,19 @@ export default function ResultsProof() {
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
 
   const handleFetchProof = useCallback(
-    async ({
-      followingUserId,
-      type,
-      part,
-      concern,
-      currentArray,
-      query,
-      skip,
-    }: HandleFetchProofProps) => {
+    async ({ type, part, concern, currentArray, query, skip }: HandleFetchProofProps) => {
       const data = await fetchUsersProof({
         concern,
         part,
         query,
         type,
         currentArrayLength: currentArray?.length || 0,
-        followingUserId,
         skip,
       });
 

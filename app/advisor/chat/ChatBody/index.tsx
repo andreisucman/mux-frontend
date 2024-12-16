@@ -6,10 +6,14 @@ import ChatDisplay from "../ChatDisplay";
 import ChatInput from "../ChatInput";
 import classes from "./ChatBody.module.css";
 
-const ChatBody = () => {
+type Props = {
+  userName?: string | string[];
+};
+
+const ChatBody = ({ userName }: Props) => {
+  const chatRef = useRef<HTMLScriptElement>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [conversation, setConversation] = useState<MessageType[]>([]);
-  const chatRef = useRef<HTMLScriptElement>(null);
 
   return (
     <section className={classes.container} ref={chatRef}>
@@ -23,7 +27,8 @@ const ChatBody = () => {
           conversation={conversation}
           setConversation={setConversation}
           setIsTyping={setIsTyping}
-          defaultOpen={true}
+          userName={userName}
+          defaultOpen
         />
       </div>
     </section>

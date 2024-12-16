@@ -1,8 +1,8 @@
-import callTheServer from "./callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
+import callTheServer from "./callTheServer";
 
 export type FetchProofProps = {
-  followingUserId?: string | null;
+  userName?: string | string[];
   type: string | null;
   part: string | null;
   query: string | null;

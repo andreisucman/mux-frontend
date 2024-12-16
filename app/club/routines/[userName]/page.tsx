@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -10,32 +10,32 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
-import ClubModerationLayout from "../ModerationLayout";
-import AccordionRoutineRow from "./AccordionRoutineRow";
-import TaskInfoContainer from "./TaskInfoContainer";
+import ClubModerationLayout from "../../ModerationLayout";
+import AccordionRoutineRow from "../AccordionRoutineRow";
+import TaskInfoContainer from "../TaskInfoContainer";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
 
 type GetRoutinesProps = {
   skip?: boolean;
-  followingUserId: string | null;
+  followingUserName?: string | string[];
   type?: string;
   routines?: RoutineType[];
 };
 
 export default function ClubRoutines() {
+  const { userName } = useParams();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
 
-  const { _id: userId, routines: currentUserRoutines } = userDetails || {};
+  const { name, routines: currentUserRoutines } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
-  const followingUserId = searchParams.get("id");
-  const isSelf = !followingUserId ||  userId === followingUserId;
+  const isSelf = name === userName;
 
   const openTaskDetails = useCallback(
     (task: AllTaskType, routineId: string) => {
@@ -70,12 +70,12 @@ export default function ClubRoutines() {
   );
 
   const getTrackedRoutines = useCallback(
-    async ({ skip, followingUserId, routines, type }: GetRoutinesProps) => {
+    async ({ skip, followingUserName, routines, type }: GetRoutinesProps) => {
       if (!type) return;
       try {
         let endpoint = "getTrackedRoutines";
 
-        if (followingUserId) endpoint += `/${followingUserId}`;
+        if (followingUserName) endpoint += `/${followingUserName}`;
 
         const parts = [];
 
@@ -144,7 +144,7 @@ export default function ClubRoutines() {
         const response = await callTheServer({
           endpoint: "addTaskToRoutine",
           method: "POST",
-          body: { taskKey, routineId, total, followingUserId, type },
+          body: { taskKey, routineId, total, followingUserName: userName, type },
         });
 
         if (response.status === 200) {
@@ -192,12 +192,12 @@ export default function ClubRoutines() {
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
-      followingUserId,
+      followingUserName: userName,
       routines,
       type,
     };
     getTrackedRoutines(payload);
-  }, [type, followingUserId]);
+  }, [type, userName]);
 
   return (
     <ClubModerationLayout showChat showHeader>
@@ -227,7 +227,7 @@ export default function ClubRoutines() {
                     onClick={() =>
                       getTrackedRoutines({
                         skip: true,
-                        followingUserId,
+                        followingUserName: userName,
                         routines,
                         type,
                       })

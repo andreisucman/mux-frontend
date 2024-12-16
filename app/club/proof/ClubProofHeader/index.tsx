@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft, IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -29,17 +29,15 @@ const clubPageTypeItems: { label: string; value: string }[] = [
   },
 ];
 
-
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
 export default function ClubProofHeader({ showReturn, isDisabled, titles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
+  const { userName } = useParams();
   const searchParams = useSearchParams();
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const followingUserId = searchParams.get("id");
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
@@ -55,9 +53,9 @@ export default function ClubProofHeader({ showReturn, isDisabled, titles }: Prop
     [pathname]
   );
 
-  const getAutocompleteData = useCallback(async (followingUserId: string | null) => {
+  const getAutocompleteData = useCallback(async (userName?: string | string[]) => {
     const { actions } = await fetchAutocompleteData({
-      endpoint: `getUsersProofAutocomplete${followingUserId ? `/${followingUserId}` : ""}`,
+      endpoint: `getUsersProofAutocomplete${userName ? `/${userName}` : ""}`,
       fields: ["taskName", "concern"],
       handleActionClick,
     });
@@ -99,8 +97,8 @@ export default function ClubProofHeader({ showReturn, isDisabled, titles }: Prop
   }, []);
 
   useEffect(() => {
-    getAutocompleteData(followingUserId);
-  }, [followingUserId]);
+    getAutocompleteData(userName);
+  }, [userName]);
 
   return (
     <>

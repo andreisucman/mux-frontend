@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Skeleton, Title } from "@mantine/core";
+import { useParams, useSearchParams } from "next/navigation";
+import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
@@ -10,7 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openErrorModal from "@/helpers/openErrorModal";
 import openResultModal from "@/helpers/openResultModal";
-import ClubModerationLayout from "../ModerationLayout";
+import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
 
@@ -19,6 +19,7 @@ interface HandleFetchProgressProps extends FetchProgressProps {
 }
 
 export default function ClubProgress() {
+  const { userName } = useParams();
   const searchParams = useSearchParams();
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
@@ -27,7 +28,6 @@ export default function ClubProgress() {
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
-  const followingUserId = searchParams.get("id");
 
   const handleFetchProgress = useCallback(
     async ({
@@ -35,7 +35,7 @@ export default function ClubProgress() {
       part,
       currentArray,
       position,
-      followingUserId,
+      userName,
       skip,
     }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
@@ -43,7 +43,7 @@ export default function ClubProgress() {
         type,
         position,
         currentArrayLength: (currentArray && currentArray.length) || 0,
-        followingUserId,
+        userName,
         skip,
       });
 
@@ -78,11 +78,11 @@ export default function ClubProgress() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProgress({ type, part, position, followingUserId });
-  }, [status, followingUserId, type, part]);
+    handleFetchProgress({ type, part, position, userName });
+  }, [status, userName, type, part]);
 
   return (
-    <ClubModerationLayout>
+    <ClubModerationLayout userName={userName}>
       {progress ? (
         <ProgressGallery
           progress={progress}
@@ -92,7 +92,7 @@ export default function ClubProgress() {
           setProgress={setProgress}
         />
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader m="0 auto" pt="15%" />
       )}
     </ClubModerationLayout>
   );

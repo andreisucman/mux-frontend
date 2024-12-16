@@ -18,7 +18,7 @@ export default function Club() {
   const { youTrackData, youData, youTrackDataFetched } = useContext(ClubContext);
 
   const { club } = userDetails || {};
-  const { followingUserId: localFollowingUserId, payouts, totalFollowers } = club || {};
+  const { followingUserName, payouts, totalFollowers } = club || {};
   const { rewardEarned, payoutsEnabled } = payouts || {};
 
   return (
@@ -27,8 +27,8 @@ export default function Club() {
         <ClubProfileHeader />
         <Group className={classes.top}>
           <ClubProfilePreview data={youData} type="you" showButtons />
-          {localFollowingUserId && (
-            <ClubProfilePreview data={youTrackData} type="follow" showButtons />
+          {followingUserName && (
+            <ClubProfilePreview data={youTrackData} type="member" showButtons />
           )}
         </Group>
         <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />

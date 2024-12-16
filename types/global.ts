@@ -26,8 +26,7 @@ type ClubBioType = {
 
 export type ClubDataType = {
   followingUserId: string;
-  name: string;
-  avatar: { [key: string]: any };
+  followingUserName: string;
   bio: ClubBioType;
   payouts: {
     connectId: string;
@@ -209,6 +208,8 @@ export interface UserDataType extends DefaultUserType {
   email?: string | null;
   emailVerified?: boolean;
   auth?: string;
+  name: string;
+  avatar: { [key: string]: any };
   country: string | null;
   club: ClubDataType | null;
   concerns: UserConcernType[];

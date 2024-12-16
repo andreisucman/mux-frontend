@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Skeleton } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
@@ -25,17 +25,16 @@ type BioDataType = {
 };
 
 export default function ClubAbout() {
-  const searchParams = useSearchParams();
+  const { userName } = useParams();
   const { youTrackData, youData, setYouData } = useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const { _id: userId, club } = userDetails || {};
+  const { name, club } = userDetails || {};
   const { bio } = club || {};
   const { questions } = bio || {};
 
-  const followingUserId = searchParams.get("id");
-  const isSelf = userId === followingUserId;
+  const isSelf = name === userName;
 
   const [bioData, setBioData] = useState<BioDataType>({
     philosophy: "",
@@ -94,7 +93,7 @@ export default function ClubAbout() {
         console.log("Error in submitResponse: ", err);
       }
     },
-    [questions?.length]
+    [userDetails]
   );
 
   const updateClubBio = useCallback(
@@ -129,7 +128,7 @@ export default function ClubAbout() {
         console.log("Error in updateClubBio: ", err);
       }
     },
-    [followingUserId]
+    [userDetails, youData]
   );
 
   useEffect(() => {
@@ -161,7 +160,7 @@ export default function ClubAbout() {
   }, [isSelf, userDetails]);
 
   return (
-    <ClubModerationLayout>
+    <ClubModerationLayout userName={userName}>
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
         {isSelf ? (
           <>
@@ -170,6 +169,7 @@ export default function ClubAbout() {
             )}
             <EditClubAbout
               bioData={bioData}
+              isSelf={isSelf}
               youData={youData}
               questions={questions}
               setBioData={setBioData}

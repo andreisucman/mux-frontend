@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconFilterOff } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -14,10 +14,10 @@ export default function ClubStyleFilterCardContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { userName } = useParams();
   const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableStyles, setAvailableStyles] = useState<FilterItemType[]>([]);
 
-  const followingUserId = searchParams.get("id");
   const styleName = searchParams.get("styleName");
   const type = searchParams.get("type");
 
@@ -39,18 +39,18 @@ export default function ClubStyleFilterCardContent() {
 
   useEffect(() => {
     getUsersFilters({
-      followingUserId,
+      userName,
       collection: "style",
       fields: ["type"],
     }).then((result) => {
       const { availableTypes } = result;
       setAvailableTypes(availableTypes);
     });
-  }, [followingUserId]);
+  }, [userName]);
 
   useEffect(() => {
     getUsersFilters({
-      followingUserId,
+      userName,
       collection: "style",
       fields: ["styleName"],
       type,
@@ -58,7 +58,7 @@ export default function ClubStyleFilterCardContent() {
       const { availableStyleNames } = result;
       setAvailableStyles(availableStyleNames);
     });
-  }, [type, followingUserId]);
+  }, [type, userName]);
 
   return (
     <Stack className={classes.container}>

@@ -9,9 +9,11 @@ export default async function fetchTaskInfo(taskId: string | null) {
       method: "GET",
     });
 
-    if (response.status === 200) {
-      return response.message;
+    if (response.status !== 200) {
+      throw new Error(response.error);
     }
+
+    return response.message;
   } catch (err: any) {
     console.log("Error in fetchTaskInfo: ", err);
   }

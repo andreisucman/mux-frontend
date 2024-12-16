@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
-import callTheServer from "./callTheServer";
 import { resizeImage } from "@/helpers/image";
+import callTheServer from "./callTheServer";
 
 type Props = {
   itemsArray: (string | File | Blob)[];
@@ -70,9 +70,11 @@ export default async function uploadToSpaces({ itemsArray, imageSize, mime }: Pr
       body: formData,
     });
 
-    if (response.status === 200) {
-      return response.message;
+    if (response.status !== 200) {
+      throw new Error(response.error);
     }
+
+    return response.message;
   } catch (err: any) {
     console.error("Error while uploading files:", err);
   }

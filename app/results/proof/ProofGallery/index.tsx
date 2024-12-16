@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -8,7 +8,6 @@ import { Loader, rem, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import { SimpleProofType } from "../types";
 import ProofCard from "./ProofCard";
@@ -21,6 +20,8 @@ interface HandleFetchProofProps extends FetchProofProps {
 type Props = {
   hasMore: boolean;
   columns?: number;
+  userName?: string | string[];
+  isSelf?: boolean;
   isPublicPage?: boolean;
   proof?: SimpleProofType[];
   handleFetchProof: (args: HandleFetchProofProps) => void;
@@ -31,22 +32,19 @@ export default function ProofGallery({
   proof,
   hasMore,
   columns,
+  userName,
+  isSelf,
   isPublicPage,
   setProof,
   handleFetchProof,
 }: Props) {
-  const { userDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
-
-  const { _id: userId } = userDetails || {};
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
-  const followingUserId = searchParams.get("id");
-  const isSelf = !followingUserId || userId === followingUserId;
 
   const modelObject = proof && proof[0];
   const appliedBlurType = modelObject?.mainUrl.name;
@@ -78,7 +76,7 @@ export default function ProofGallery({
           }
           loadMore={() =>
             handleFetchProof({
-              followingUserId,
+              userName,
               currentArray: proof,
               concern,
               type,
