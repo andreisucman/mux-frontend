@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import DiaryContent from "@/app/diary/DiaryContent";
 import { DiaryRecordType } from "@/app/diary/type";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
+import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
 import ClubModerationLayout from "../ModerationLayout";
 
@@ -16,12 +17,14 @@ export default function DiaryPage() {
 
   const type = searchParams.get("type") || TypeEnum.HEAD;
 
-  useEffect(() => {
-    fetchDiaryRecords({
-      type,
-      currentArrayLength: diaryRecords?.length,
-      skip: hasMore,
-    }).then((response) => {
+  const handleFetchDiaryRecords = useCallback(async () => {
+    try {
+      const response = await fetchDiaryRecords({
+        type,
+        currentArrayLength: diaryRecords?.length,
+        skip: hasMore,
+      });
+
       if (response.status === 200) {
         setDiaryRecords(response.message);
         if (response.message.length > 0) {
@@ -29,12 +32,24 @@ export default function DiaryPage() {
         }
         setHasMore(response.message.length === 9);
       }
-    });
+    } catch (err) {
+      openErrorModal();
+    }
+  }, [diaryRecords, hasMore, type]);
+
+  useEffect(() => {
+    handleFetchDiaryRecords();
   }, [type]);
 
   return (
     <ClubModerationLayout>
-      <DiaryContent diaryRecords={diaryRecords} openValue={openValue} setOpenValue={setOpenValue} />
+      <DiaryContent
+        diaryRecords={diaryRecords}
+        openValue={openValue}
+        setOpenValue={setOpenValue}
+        hasMore={hasMore}
+        handleFetchDiaryRecords={handleFetchDiaryRecords}
+      />
     </ClubModerationLayout>
   );
 }

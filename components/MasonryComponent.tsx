@@ -42,7 +42,6 @@ export default function MasonryComponent({
       offset={offset}
       items={items}
       render={render}
-      className={classes.container}
     />
   );
 }

@@ -129,7 +129,6 @@ export default function BeforeAftersPage() {
               }
               useWindow={true}
               hasMore={hasMore}
-              className={classes.inviniteScroll}
               pageStart={0}
             >
               <MasonryComponent

@@ -278,7 +278,7 @@ export type ProgressType = {
   explanation: string;
   specialConsiderations: string | null;
   avatar?: { [key: string]: string };
-  clubName?: string;
+  userName?: string;
   isPublic: boolean;
 };
 
@@ -323,7 +323,7 @@ export type StyleAnalysisType = {
   latestBodyScoreDifference: number;
   analysis: { [key: string]: number } | null;
   compareAnalysis: { [key: string]: number } | null;
-  clubName: string | null;
+  userName: string | null;
   avatar: { [key: string]: any } | null;
 };
 

@@ -75,12 +75,14 @@ export default function DiaryPage() {
     }
   }, [isLoading, timeZone, type]);
 
-  useEffect(() => {
-    fetchDiaryRecords({
-      type,
-      currentArrayLength: diaryRecords?.length,
-      skip: hasMore,
-    }).then((response) => {
+  const handleFetchDiaryRecords = useCallback(async () => {
+    try {
+      const response = await fetchDiaryRecords({
+        type,
+        currentArrayLength: diaryRecords?.length,
+        skip: hasMore,
+      });
+
       if (response.status === 200) {
         setDiaryRecords(response.message);
         if (response.message.length > 0) {
@@ -88,7 +90,13 @@ export default function DiaryPage() {
         }
         setHasMore(response.message.length === 9);
       }
-    });
+    } catch (err) {
+      openErrorModal();
+    }
+  }, [diaryRecords, hasMore, type]);
+
+  useEffect(() => {
+    handleFetchDiaryRecords();
   }, [type]);
 
   useEffect(() => {
@@ -117,10 +125,12 @@ export default function DiaryPage() {
           <IconPlus className={`${classes.icon} icon`} /> Add a note for today
         </Button>
         <DiaryContent
+          hasMore={hasMore}
           diaryRecords={diaryRecords}
           isLoading={isLoading}
           openValue={openValue}
           setOpenValue={setOpenValue}
+          handleFetchDiaryRecords={handleFetchDiaryRecords}
         />
       </SkeletonWrapper>
     </Stack>

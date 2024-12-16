@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { IconNote } from "@tabler/icons-react";
-import { Accordion, Loader, Skeleton, Stack, Title } from "@mantine/core";
+import { IconArrowDown, IconNote } from "@tabler/icons-react";
+import { Accordion, ActionIcon, Loader, Skeleton, Stack, Title } from "@mantine/core";
+import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import { formatDate } from "@/helpers/formatDate";
 import { TypeEnum } from "@/types/global";
 import DiaryRow from "../DiaryRow";
@@ -15,13 +16,22 @@ const List = dynamic(() => import("masonic").then((mod) => mod.List), {
 });
 
 type Props = {
+  hasMore: boolean;
   diaryRecords?: DiaryRecordType[];
   isLoading?: boolean;
   openValue: string | null;
   setOpenValue: React.Dispatch<React.SetStateAction<string | null>>;
+  handleFetchDiaryRecords: () => void;
 };
 
-export default function DiaryContent({ diaryRecords, isLoading, openValue, setOpenValue }: Props) {
+export default function DiaryContent({
+  hasMore,
+  diaryRecords,
+  isLoading,
+  openValue,
+  setOpenValue,
+  handleFetchDiaryRecords,
+}: Props) {
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
 
@@ -47,24 +57,35 @@ export default function DiaryContent({ diaryRecords, isLoading, openValue, setOp
   return (
     <Stack className={classes.content}>
       {diaryRecords ? (
-        <Accordion
-          value={openValue}
-          onChange={setOpenValue}
-          className={classes.accordion}
-          classNames={{
-            root: classes.root,
-            item: classes.item,
-            control: classes.control,
-            content: classes.accordionContent,
-          }}
-        >
-          <List
-            items={diaryRecords}
-            rowGutter={16}
-            render={memoizedDiaryRow}
-            className={classes.list}
-          />
-        </Accordion>
+        <>
+          <Accordion
+            value={openValue}
+            onChange={setOpenValue}
+            className={classes.accordion}
+            classNames={{
+              root: classes.root,
+              item: classes.item,
+              control: classes.control,
+              content: classes.accordionContent,
+            }}
+          >
+            <List
+              items={diaryRecords}
+              rowGutter={16}
+              render={memoizedDiaryRow}
+              className={classes.list}
+            />
+          </Accordion>
+          {hasMore && (
+            <ActionIcon
+              variant="default"
+              className={classes.getMoreButton}
+              onClick={handleFetchDiaryRecords}
+            >
+              <IconArrowDown />
+            </ActionIcon>
+          )}
+        </>
       ) : (
         <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
       )}

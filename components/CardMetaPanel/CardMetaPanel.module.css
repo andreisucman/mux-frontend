@@ -24,7 +24,7 @@
   gap: rem(8);
 }
 
-.clubName {
+.userName {
   font-weight: 600;
   text-overflow: ellipsis;
 }

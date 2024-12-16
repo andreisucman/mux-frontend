@@ -43,14 +43,13 @@ function StyleCard({
     _id: styleId,
     userId,
     isPublic,
-    clubName,
+    userName,
     avatar,
     latestHeadScoreDifference,
     latestBodyScoreDifference,
   } = data;
 
   const title = useMemo(() => {
-    const styleIcon = outlookStyles.find((item) => item.name === styleName.toLowerCase())?.icon;
     return `${styleIcon} ${upperFirst(styleName || "")}`;
   }, [styleName]);
 
@@ -86,7 +85,7 @@ function StyleCard({
       </div>
       {showMeta && (
         <CardMetaPanel
-          name={clubName}
+          name={userName}
           avatar={avatar}
           userId={userId}
           formattedDate={formattedDate}

@@ -41,7 +41,7 @@ function ProofCard({
     mainUrl,
     concern,
     avatar,
-    clubName,
+    userName,
     isPublic,
     icon,
     taskName,
@@ -62,7 +62,7 @@ function ProofCard({
       getRedirectModalTitle({
         avatar,
         redirectUrl: `/club/about?id=${userId}`,
-        title: clubName,
+        title: userName,
       })
     ) : (
       <Title order={5} component={"p"} lineClamp={1}>
@@ -122,7 +122,7 @@ function ProofCard({
               <CardMetaPanel
                 avatar={avatar}
                 userId={userId}
-                name={clubName}
+                name={userName}
                 formattedDate={formattedDate}
                 bodyProgress={latestBodyScoreDifference || 0}
                 headProgress={latestFaceScoreDifference || 0}

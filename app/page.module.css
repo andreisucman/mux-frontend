@@ -2,9 +2,3 @@
   position: relative;
   flex: 1;
 }
-
-.infiniteScroller {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}

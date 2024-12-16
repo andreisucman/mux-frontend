@@ -70,7 +70,7 @@ export default function AllStyle() {
     const modalTitle = getRedirectModalTitle({
       avatar: data.avatar,
       redirectUrl: `/club/about?id=${data.userId}`,
-      title: `${data.clubName} - ${titleText}`,
+      title: `${data.userName} - ${titleText}`,
     });
 
     openResultModal({

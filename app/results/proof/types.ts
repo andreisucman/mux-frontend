@@ -15,7 +15,7 @@ export type SimpleProofType = {
   isPublic: boolean;
   icon: string;
   avatar: { [key: string]: any } | null;
-  clubName: string;
+  userName: string;
   latestFaceScoreDifference?: number;
   latestBodyScoreDifference?: number;
 };

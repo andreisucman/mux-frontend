@@ -18,7 +18,7 @@ export type SimpleStyleType = {
   createdAt: string;
   compareDate: string;
   avatar: { [key: string]: any } | null;
-  clubName: string | null;
+  userName: string | null;
   latestHeadScoreDifference: number;
   latestBodyScoreDifference: number;
 };

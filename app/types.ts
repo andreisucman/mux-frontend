@@ -17,7 +17,7 @@ export type SimpleBeforeAfterType = {
   demographics: DemographicsType;
   concerns: UserConcernType[];
   avatar: { [key: string]: any } | null;
-  clubName: string | null;
+  userName: string | null;
   latestBodyScoreDifference: number;
   latestHeadScoreDifference: number;
 };

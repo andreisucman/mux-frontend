@@ -6,9 +6,9 @@ import { SimpleBeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import CardMetaPanel from "../CardMetaPanel";
 import ImageCard from "../ImageCard";
-import useShowSkeleton from "@/helpers/useShowSkeleton";
 import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 
 export default function ComparisonCarousel({ data, minHeight }: Props) {
   const {
-    clubName,
+    userName,
     part,
     images,
     initialImages,
@@ -38,7 +38,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
     const modalTitle = getRedirectModalTitle({
       avatar,
       redirectUrl: `/club/routines?id=${data.userId}`,
-      title: `${clubName} - ${upperFirst(part)} - ${formattedDate}`,
+      title: `${userName} - ${upperFirst(part)} - ${formattedDate}`,
     });
 
     openResultModal({
@@ -47,7 +47,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
       isPublic: true,
       title: modalTitle,
     });
-  }, [clubName, part, formattedDate]);
+  }, [userName, part, formattedDate]);
 
   useEffect(() => {
     const objects = images?.flatMap((obj, i) => [
@@ -97,7 +97,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
         </Carousel>
 
         <CardMetaPanel
-          name={clubName || ""}
+          name={userName || ""}
           avatar={avatar}
           userId={data.userId}
           formattedDate={formattedDate}
