@@ -165,7 +165,7 @@ export default function ClubAbout(props: Props) {
   }, [isSelf, userDetails]);
 
   return (
-    <ClubModerationLayout userName={userName}>
+    <ClubModerationLayout userName={userName} pageType="about">
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
         {isSelf ? (
           <>

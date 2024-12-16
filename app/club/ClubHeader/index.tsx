@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { typeItems } from "@/components/PageHeader/data";
+import { clubPageTypeItems, typeItems } from "@/components/PageHeader/data";
 import { useRouter } from "@/helpers/custom-router";
-import { clubPageTypeItems } from "@/components/PageHeader/data";
+import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons, typeIcons } from "@/helpers/icons";
 import classes from "./ClubHeader.module.css";
 
@@ -13,6 +13,7 @@ type Props = {
   title: string;
   isDisabled?: boolean;
   showReturn?: boolean;
+  pageType: string;
   hideTypeDropdown?: boolean;
   onSelect?: (value?: string | null) => void;
 };
@@ -22,21 +23,24 @@ export default function ClubHeader({
   showReturn,
   hideTypeDropdown,
   isDisabled,
+  pageType,
   onSelect,
 }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
+  const { userName } = useParams();
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type") || "head";
+  const type = searchParams.get("type");
 
   const handleRedirect = useCallback(
     (value?: string | null) => {
       if (!value) return;
 
-      router.push(`${value}?${searchParams.toString()}`);
+      const path = getPageTypeRedirect(value, userName);
+
+      router.push(`${path}?${searchParams.toString()}`);
     },
-    [searchParams.toString()]
+    [userName, searchParams.toString()]
   );
 
   return (
@@ -54,7 +58,7 @@ export default function ClubHeader({
       <FilterDropdown
         icons={pageTypeIcons}
         data={clubPageTypeItems}
-        selectedValue={pathname}
+        selectedValue={pageType}
         onSelect={handleRedirect}
         placeholder="Select page"
         filterType="page"

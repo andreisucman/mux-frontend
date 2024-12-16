@@ -11,6 +11,7 @@ import SearchButton from "@/components/SearchButton";
 import fetchAutocompleteData from "@/functions/fetchAutocompleteData";
 import { pageTypeIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
+import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import ClubProofFilterCardContent from "./ClubProofFilterCardContent";
 import classes from "./ProofHeader.module.css";
 
@@ -22,12 +23,10 @@ type Props = {
 };
 
 const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "/club/about" },
-  { label: "Routines", value: "/club/routines" },
-  {
-    label: "Results",
-    value: "/club/proof",
-  },
+  { label: "About", value: "about" },
+  { label: "Routines", value: "routines" },
+  { label: "Results", value: "proof" },
+  { label: "Diary", value: "diary" },
 ];
 
 const [spotlightStore, solutionsSpotlight] = createSpotlight();
@@ -78,9 +77,11 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
     (value?: string | null) => {
       if (!value) return;
 
-      router.push(`${value}?${searchParams.toString()}`);
+      const path = getPageTypeRedirect(value, userName);
+
+      router.push(`${path}?${searchParams.toString()}`);
     },
-    [searchParams.toString()]
+    [userName, searchParams.toString()]
   );
 
   const openFiltersCard = useCallback(() => {
@@ -121,7 +122,7 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
         <FilterDropdown
           icons={pageTypeIcons}
           data={clubPageTypeItems}
-          selectedValue={clubPageTypeItems.find((item) => item.value === pathname)?.value}
+          selectedValue={"proof"}
           onSelect={handleRedirect}
           placeholder="Select page"
           filterType="page"

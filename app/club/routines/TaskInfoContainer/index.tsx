@@ -45,7 +45,11 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
     return previews;
   }, [date]);
 
-  const finalIcon = isEdit ? <IconCircleCheck className="icon" /> : <IconPlus className="icon" />;
+  const finalIcon = isEdit ? (
+    <IconCircleCheck className="icon" />
+  ) : (
+    <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+  );
 
   return (
     <Stack flex={1}>

@@ -7,17 +7,16 @@ import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
+import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
 import ClubStyleFilterCardContent from "./ClubStyleFilterCardContent";
 import classes from "./ClubStyleHeader.module.css";
 
 const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "/club/about" },
-  { label: "Routines", value: "/club/routines" },
-  {
-    label: "Results",
-    value: "/club/style",
-  },
+  { label: "About", value: "about" },
+  { label: "Routines", value: "routines" },
+  { label: "Results", value: "style" },
+  { label: "Diary", value: "diary" },
 ];
 
 type Props = {
@@ -29,7 +28,6 @@ type Props = {
 
 export default function ClubStyleHeader({ showReturn, userName, isDisabled, titles }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const paramsCount = useMemo(() => {
@@ -55,9 +53,11 @@ export default function ClubStyleHeader({ showReturn, userName, isDisabled, titl
     (value?: string | null) => {
       if (!value) return;
 
-      router.push(`${value}?${searchParams.toString()}`);
+      const path = getPageTypeRedirect(value, userName);
+
+      router.push(`${path}?${searchParams.toString()}`);
     },
-    [searchParams.toString()]
+    [userName, searchParams.toString()]
   );
 
   return (
@@ -76,7 +76,7 @@ export default function ClubStyleHeader({ showReturn, userName, isDisabled, titl
       <FilterDropdown
         icons={pageTypeIcons}
         data={clubPageTypeItems}
-        selectedValue={clubPageTypeItems.find((item) => item.value === pathname)?.value}
+        selectedValue={"style"}
         onSelect={handleRedirect}
         placeholder="Select page"
         filterType="page"

@@ -101,42 +101,45 @@ export default function ClubSettings() {
         ...(prev || {}),
         club: { ...(prev.club || {}), bio: { ...(prev?.club?.bio || {}), intro: text } },
       })),
-    []
+    [userDetails]
   );
 
-  const updateClubInfo = useCallback(async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
-    try {
-      setIsLoading(true);
+  const updateClubInfo = useCallback(
+    async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
+      try {
+        setIsLoading(true);
 
-      modals.closeAll();
+        modals.closeAll();
 
-      if (type === "intro") {
-        updateIntro(data as string);
-      } else {
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          club: { ...prev.club, [type]: data },
-        }));
-      }
-
-      const response = await callTheServer({
-        endpoint: "updateClubData",
-        method: "POST",
-        body: { [type]: data },
-      });
-
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({ description: response.error });
-          return;
+        if (type === "intro") {
+          updateIntro(data as string);
+        } else {
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            club: { ...prev.club, [type]: data },
+          }));
         }
+
+        const response = await callTheServer({
+          endpoint: "updateClubData",
+          method: "POST",
+          body: { [type]: data },
+        });
+
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal({ description: response.error });
+            return;
+          }
+        }
+      } catch (err) {
+        console.log("Error in updateClubInfo: ", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.log("Error in updateClubInfo: ", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [userDetails]
+  );
 
   const handleUpdateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
@@ -175,7 +178,7 @@ export default function ClubSettings() {
         />
       ),
     });
-  }, []);
+  }, [canUpdateAvatar, avatar]);
 
   const handleEnterIntro = (text: string) => {
     if (text.length > MAX_INTRO_CHARACTERS) return;

@@ -1,13 +1,13 @@
 .title {
-    display: flex;
-    align-items: center;
-    gap: rem(8);
-  }
-  
-  .content {
-    flex: 1;
-    position: relative;
-  }
+  display: flex;
+  align-items: center;
+  gap: rem(8);
+}
+
+.content {
+  flex: 1;
+  position: relative;
+}
 
 .accordion {
   position: absolute;
@@ -21,16 +21,15 @@
   gap: rem(16);
 }
 
-.accordionContent {
-  padding-top: rem(16);
+.item {
+  border: rem(1) solid var(--mantine-color-dark-5);
+  border-radius: var(--mantine-radius-lg);
 }
 
-.root,
-.item {
+.root {
   border: none;
 }
 
 .control {
-  background: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 }

@@ -23,14 +23,8 @@ export const positionItems = [
 ];
 
 export const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "/club/about" },
-  { label: "Routines", value: "/club/routines" },
-  {
-    label: "Results",
-    value: "/club/progress",
-  },
-  {
-    label: "Diary",
-    value: "/club/diary",
-  },
+  { label: "About", value: "about" },
+  { label: "Routines", value: "routines" },
+  { label: "Results", value: "progress" },
+  { label: "Diary", value: "diary" },
 ];

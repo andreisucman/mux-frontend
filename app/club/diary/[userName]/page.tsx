@@ -49,7 +49,7 @@ export default function DiaryPage(props: Props) {
   }, [type]);
 
   return (
-    <ClubModerationLayout userName={userName}>
+    <ClubModerationLayout userName={userName} pageType="diary">
       <DiaryContent
         diaryRecords={diaryRecords}
         openValue={openValue}

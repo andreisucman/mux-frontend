@@ -26,12 +26,12 @@ export const partIcons: { [key: string]: React.ReactNode } = {
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
-  "/club/about": <IconUserCircle className="icon" />,
-  "/club/routines": <IconClipboardText className="icon" />,
-  "/club/progress": <IconTargetArrow className="icon" />,
-  "/club/style": <IconTargetArrow className="icon" />,
-  "/club/proof": <IconTargetArrow className="icon" />,
-  "/club/diary": <IconNotebook className="icon" />,
+  about: <IconUserCircle className="icon" />,
+  routines: <IconClipboardText className="icon" />,
+  progress: <IconTargetArrow className="icon" />,
+  style: <IconTargetArrow className="icon" />,
+  proof: <IconTargetArrow className="icon" />,
+  diary: <IconNotebook className="icon" />,
 };
 
 export const styleIcons: { [key: string]: string } = {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useShallowEffect } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import { ClubUserType } from "@/types/global";
@@ -18,10 +19,10 @@ export const ClubContext = createContext(defaultClubContext);
 
 type Props = {
   children: React.ReactNode;
-  userName?: string;
 };
 
-export default function ClubDataContextProvider({ children, userName }: Props) {
+export default function ClubDataContextProvider({ children }: Props) {
+  const { userName } = useParams();
   const { userDetails } = useContext(UserContext);
   const [youTrackDataFetched, setYouTrackDataFetched] = useState(false);
   const [youTrackData, setYouTrackData] = useState<ClubUserType | null | undefined>();

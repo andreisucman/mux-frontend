@@ -8,7 +8,7 @@ import {
   IconSend,
   IconSquareRoundedCheck,
 } from "@tabler/icons-react";
-import { ActionIcon, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
+import { ActionIcon, Collapse, Divider, Group, rem, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -98,7 +98,7 @@ export default function ChatInput({
 
     const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
     const buttonIcon = !!isTrialUsed ? (
-      <IconPlus className="icon" />
+      <IconPlus className="icon" style={{ marginRight: rem(6) }} />
     ) : (
       <IconSquareRoundedCheck className="icon" />
     );

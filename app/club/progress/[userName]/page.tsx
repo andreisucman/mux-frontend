@@ -81,7 +81,7 @@ export default function ClubProgress(props: Props) {
   }, [status, userName, type, part]);
 
   return (
-    <ClubModerationLayout userName={userName}>
+    <ClubModerationLayout userName={userName} pageType="progress">
       {progress ? (
         <ProgressGallery
           progress={progress}

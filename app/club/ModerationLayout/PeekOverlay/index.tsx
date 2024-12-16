@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconPlus } from "@tabler/icons-react";
-import { Stack, Text } from "@mantine/core";
+import { rem, Stack, Text } from "@mantine/core";
 import PricingCard from "@/app/plans/PricingCard";
 import { peekLicenseContent } from "@/app/plans/pricingData";
 import { UserContext } from "@/context/UserContext";
@@ -33,7 +33,7 @@ export default function PeekOverlay({ description }: Props) {
             setUserDetails,
           })
         }
-        icon={<IconPlus className="icon" />}
+        icon={<IconPlus className="icon" style={{ marginRight: rem(6) }} />}
         price="19"
         name={"Peek License"}
         addGradient

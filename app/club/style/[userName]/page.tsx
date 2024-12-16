@@ -81,7 +81,7 @@ export default function ClubStyle(props: Props) {
   }, [status, type, styleName, userName]);
 
   return (
-    <ClubModerationLayout userName={userName}>
+    <ClubModerationLayout pageType="style" userName={userName}>
       {styles ? (
         <StyleGallery
           styles={styles}

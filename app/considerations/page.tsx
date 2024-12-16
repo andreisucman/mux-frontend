@@ -100,7 +100,7 @@ export default function Considerations() {
 
             const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
             const buttonIcon = !!isTrialUsed ? (
-              <IconPlus className="icon" />
+              <IconPlus className="icon" style={{ marginRight: rem(6) }} />
             ) : (
               <IconSquareRoundedCheck className="icon" />
             );

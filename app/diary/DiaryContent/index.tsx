@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { IconArrowDown, IconNote } from "@tabler/icons-react";
+import { IconArrowDown, IconCircle, IconCircleOff, IconNote } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Skeleton, Stack, Title } from "@mantine/core";
+import OverlayWithText from "@/components/OverlayWithText";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import { formatDate } from "@/helpers/formatDate";
 import { TypeEnum } from "@/types/global";
@@ -69,12 +70,19 @@ export default function DiaryContent({
               content: classes.accordionContent,
             }}
           >
-            <List
-              items={diaryRecords}
-              rowGutter={16}
-              render={memoizedDiaryRow}
-              className={classes.list}
-            />
+            {diaryRecords.length > 0 ? (
+              <List
+                items={diaryRecords}
+                rowGutter={16}
+                render={memoizedDiaryRow}
+                className={classes.list}
+              />
+            ) : (
+              <OverlayWithText
+                text={`No diary records${type ? ` for ${type}` : ""}`}
+                icon={<IconCircleOff className="icon" />}
+              />
+            )}
           </Accordion>
           {hasMore && (
             <ActionIcon

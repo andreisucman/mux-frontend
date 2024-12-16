@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -10,7 +9,6 @@ import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
-import { clubResultTitles } from "../clubResultTitles";
 import ClubProgressHeader from "../progress/ClubProgressHeader";
 import ClubProofHeader from "../proof/ClubProofHeader";
 import ClubStyleHeader from "../style/ClubStyleHeader";
@@ -26,17 +24,13 @@ type Props = {
   showChat?: boolean;
   showHeader?: boolean;
   userName?: string;
+  pageType: "about" | "routines" | "diary" | "progress" | "proof" | "style";
 };
 
-export default function ClubModerationLayout({ children, userName, showChat }: Props) {
-  const pathname = usePathname();
-
+export default function ClubModerationLayout({ children, pageType, userName, showChat }: Props) {
   const { userDetails } = useContext(UserContext);
   const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");
-
-  const pathnameParts = pathname.split("/");
-  const pageType = pathnameParts[pathnameParts.length - 1];
 
   const { name, subscriptions, club } = userDetails || {};
   const { followingUserName } = club || {};
@@ -44,6 +38,15 @@ export default function ClubModerationLayout({ children, userName, showChat }: P
   const isSelf = name === userName;
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
+
+  const clubResultTitles = useMemo(
+    () => [
+      { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
+      { label: "Style", value: `/club/style${userName ? `/${userName}` : ""}` },
+      { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
+    ],
+    [userName]
+  );
 
   const headers: { [key: string]: React.ReactNode } = useMemo(
     () => ({
@@ -71,18 +74,28 @@ export default function ClubModerationLayout({ children, userName, showChat }: P
           showReturn
         />
       ),
-      "": <ClubHeader title={"Club"} hideTypeDropdown={true} showReturn />,
+      about: <ClubHeader title={"Club"} hideTypeDropdown={true} pageType="about" showReturn />,
       diary: (
-        <ClubHeader title={"Club"} hideTypeDropdown={showComponent !== "children"} showReturn />
+        <ClubHeader
+          title={"Club"}
+          hideTypeDropdown={showComponent !== "children"}
+          pageType="diary"
+          showReturn
+        />
       ),
       routines: (
-        <ClubHeader title={"Club"} showReturn hideTypeDropdown={showComponent !== "children"} />
+        <ClubHeader
+          title={"Club"}
+          hideTypeDropdown={showComponent !== "children"}
+          pageType="routines"
+          showReturn
+        />
       ),
     }),
     [showComponent]
   );
 
-  const followText = `Follow to see ${pageType === "routine" ? "their routines" : "their details"}.`;
+  const followText = `Follow to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
     if (!youTrackDataFetched) return;

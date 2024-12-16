@@ -84,17 +84,22 @@ export default function DiaryRow({ data, type, index }: Props) {
       ) : (
         <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />
       )}
-      <Divider
-        label={
-          <Group c="dimmed" className={classes.labelGroup} onClick={toggleTasksCollapse}>
-            {tasksChevron}
-            {tasksLabel}
-          </Group>
-        }
-      />
-      <Collapse in={tasksOpen}>
-        <DiaryActivityRow activities={activity} />
-      </Collapse>
+      {activity.length > 0 && (
+        <>
+          <Divider
+            label={
+              <Group c="dimmed" className={classes.labelGroup} onClick={toggleTasksCollapse}>
+                {tasksChevron}
+                {tasksLabel}
+              </Group>
+            }
+          />
+          <Collapse in={tasksOpen}>
+            <DiaryActivityRow activities={activity} />
+          </Collapse>
+        </>
+      )}
+
       {transcription && (
         <>
           <Divider

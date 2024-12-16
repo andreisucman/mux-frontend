@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
-import { clubPageTypeItems } from "@/components/PageHeader/data";
+import { useRouter } from "@/helpers/custom-router";
+import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
 import ClubProgressFilterCardContent from "./ClubProgressFilterCardContent";
 import classes from "./ProgressHeader.module.css";
@@ -18,9 +19,15 @@ type Props = {
   userName?: string;
 };
 
+const clubPageTypeItems: { label: string; value: string }[] = [
+  { label: "About", value: "about" },
+  { label: "Routines", value: "routines" },
+  { label: "Results", value: "progress" },
+  { label: "Diary", value: "diary" },
+];
+
 export default function ClubProgressHeader({ titles, userName, showReturn, isDisabled }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const paramsCount = useMemo(() => {
@@ -35,9 +42,11 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
     (value?: string | null) => {
       if (!value) return;
 
-      router.push(`${value}?${searchParams.toString()}`);
+      const path = getPageTypeRedirect(value, userName);
+
+      router.push(`${path}?${searchParams.toString()}`);
     },
-    [searchParams.toString()]
+    [userName, searchParams.toString()]
   );
 
   const openFiltersCard = useCallback(() => {
@@ -69,7 +78,7 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
       <FilterDropdown
         icons={pageTypeIcons}
         data={clubPageTypeItems}
-        selectedValue={clubPageTypeItems.find((item) => item.value === pathname)?.value}
+        selectedValue={"progress"}
         onSelect={handleRedirect}
         placeholder="Select page"
         filterType="page"

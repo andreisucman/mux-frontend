@@ -29,7 +29,8 @@ type Props = {
 };
 
 export default function ClubRoutines(props: Props) {
-  const { userName } = use(props.params);
+  const params = use(props.params);
+  const { userName } = params;
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -116,29 +117,32 @@ export default function ClubRoutines(props: Props) {
         console.log("Error in getTrackedRoutines: ", err);
       }
     },
-    []
+    [routines]
   );
 
-  const replaceRoutine = useCallback(async (routineId: string) => {
-    try {
-      const response = await callTheServer({
-        endpoint: "replaceRoutine",
-        method: "POST",
-        body: { type, routineId },
-      });
+  const replaceRoutine = useCallback(
+    async (routineId: string) => {
+      try {
+        const response = await callTheServer({
+          endpoint: "replaceRoutine",
+          method: "POST",
+          body: { type, routineId },
+        });
 
-      if (response.status === 200) {
-        const { routines, tasks } = response.message;
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          routines,
-          tasks,
-        }));
+        if (response.status === 200) {
+          const { routines, tasks } = response.message;
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            routines,
+            tasks,
+          }));
+        }
+      } catch (err) {
+        console.log("Error in replaceRoutine: ", err);
       }
-    } catch (err) {
-      console.log("Error in replaceRoutine: ", err);
-    }
-  }, []);
+    },
+    [userDetails]
+  );
 
   const handleAddToMyRoutine = useCallback(
     async (taskKey: string, routineId: string, total: number, startsAt: Date | null) => {
@@ -166,7 +170,7 @@ export default function ClubRoutines(props: Props) {
         return false;
       }
     },
-    [type]
+    [type, userDetails]
   );
 
   const accordionItems = useMemo(
@@ -204,7 +208,7 @@ export default function ClubRoutines(props: Props) {
   }, [type, userName]);
 
   return (
-    <ClubModerationLayout showChat showHeader>
+    <ClubModerationLayout pageType="routines" userName={userName} showChat showHeader>
       <Stack className={classes.container}>
         {accordionItems ? (
           <>

@@ -85,8 +85,6 @@ function ProofStatus({
     [selectedTask]
   );
 
-  console.log("selectedTask", selectedTask);
-
   const taskExpired = new Date(expiresAt || 0) < new Date();
 
   const buttonData = useMemo(() => {
@@ -97,7 +95,6 @@ function ProofStatus({
       label = "Expired";
       icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
-      console.log("isSubmitted", isSubmitted);
       if (isSubmitted) {
         if (proofId) {
           label = "View";
@@ -124,7 +121,6 @@ function ProofStatus({
     if (!taskId) return;
 
     try {
-      console.log("proofEnabled", proofEnabled);
       if (proofEnabled) {
         const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
 
@@ -151,7 +147,6 @@ function ProofStatus({
             isSubmitted: !isSubmitted,
           },
         });
-        console.log("response", response);
 
         if (response.status === 200) {
           const updatedTask = {

@@ -1,5 +1,6 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { IconPlus } from "@tabler/icons-react";
+import { rem } from "@mantine/core";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { ClubDataType, UserDataType, UserSubscriptionsType } from "@/types/global";
@@ -44,7 +45,7 @@ const handleTrackUser = async ({
         isCentered: true,
         price: "19",
         buttonText: "Add",
-        buttonIcon: <IconPlus className="icon" />,
+        buttonIcon: <IconPlus className="icon" style={{ marginRight: rem(6) }} />,
         onClick: () =>
           createCheckoutSession({
             priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,

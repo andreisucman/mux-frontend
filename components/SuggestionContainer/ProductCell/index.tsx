@@ -19,8 +19,6 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
   const added = selectedAsins?.includes(item.asin);
   const modalTitle = `Product preview`;
 
-  console.log("item",item)
-
   const handleAddToCard = useCallback(
     (e: any) => {
       e.stopPropagation();

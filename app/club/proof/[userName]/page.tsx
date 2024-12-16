@@ -69,7 +69,7 @@ export default function ClubProof(props: Props) {
   }, [status, userName, type, part, concern, query]);
 
   return (
-    <ClubModerationLayout userName={userName}>
+    <ClubModerationLayout userName={userName} pageType="proof">
       {proof ? (
         <ProofGallery
           proof={proof}
