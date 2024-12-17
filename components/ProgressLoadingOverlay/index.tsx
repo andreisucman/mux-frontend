@@ -1,21 +1,26 @@
 import React, { useMemo } from "react";
 import { Loader, LoadingOverlay, Stack, Text } from "@mantine/core";
+import Disclaimer from "../WaitComponent/Disclaimer";
 import classes from "./ProgressLoadingOverlay.module.css";
 
 type Props = {
   isLoading: boolean;
   progress?: number;
   description?: string;
+  showDisclaimer?: boolean;
   loaderType?: "bars" | "oval";
-  customStyle?: { [key: string]: any };
+  customStyles?: { [key: string]: any };
+  customContainerStyles?: { [key: string]: any };
 };
 
 export default function ProgressLoadingOverlay({
   isLoading,
   progress,
   description,
-  customStyle,
+  showDisclaimer,
+  customStyles,
   loaderType = "oval",
+  customContainerStyles,
 }: Props) {
   const text = useMemo(() => {
     let text = "";
@@ -36,13 +41,17 @@ export default function ProgressLoadingOverlay({
   return (
     <LoadingOverlay
       visible={isLoading}
-      style={customStyle ? customStyle : {}}
+      style={customStyles ? customStyles : {}}
       classNames={{ overlay: classes.overlay }}
       loaderProps={{
         children: (
-          <Stack className={classes.container}>
+          <Stack
+            className={classes.container}
+            style={customContainerStyles ? customContainerStyles : {}}
+          >
             <Loader type={loaderType} />
             {text && <Text>{text}</Text>}
+            {showDisclaimer && <Disclaimer />}
           </Stack>
         ),
       }}

@@ -198,7 +198,7 @@ export default function ContentBlurTypeButton({
 
   return (
     <Stack className={classes.container}>
-      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress} />
+      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress}/>
       <Menu
         trigger="click"
         withinPortal={false}

@@ -1,6 +1,8 @@
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { Group, SegmentedControl, Slider, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./CalorieGoal.module.css";
 
 type Props = {
@@ -19,16 +21,12 @@ export default function CalorieGoalController({
   disabled,
 }: Props) {
   const { status, userDetails } = useContext(UserContext);
-  const { remainingCaloriesPerDay } = userDetails || {};
 
   const segments = useMemo(() => {
     let data = [
       { label: "Per portion", value: "portion" },
-      { label: "Remaining today", value: "remaining", disabled: true },
+      { label: "Remaining today", value: "remaining" },
     ];
-    if (status === "authenticated") {
-      data = data.map((item) => (item.value === "remaining" ? { ...item, disabled: false } : item));
-    }
     return data;
   }, [status]);
 
@@ -36,16 +34,45 @@ export default function CalorieGoalController({
     (calorieGoal: number) => {
       if (goalType === "remaining") return;
       setCalorieGoal(calorieGoal);
+      saveToLocalStorage("calorieGoal", calorieGoal);
     },
     [goalType]
   );
 
-  useEffect(() => {
-    if (status !== "authenticated") return;
-    if (!remainingCaloriesPerDay) return;
+  const handleChangeGoal = useCallback(
+    (value: string) => {
+      if (value === "portion") {
+        setGoalType("portion");
+        return;
+      }
 
-    setCalorieGoal(remainingCaloriesPerDay);
-  }, [status, remainingCaloriesPerDay]);
+      if (status !== "authenticated") {
+        openErrorModal({ description: "You need to login to see your estimated calorie norm." });
+        return;
+      }
+      const { latestProgress, remainingCaloriesPerDay } = userDetails || {};
+      const { body } = latestProgress || {};
+
+      if (body?.overall === 0) {
+        openErrorModal({
+          description: "You need to scan your body to get your estimated calorie norm.",
+        });
+        return;
+      }
+
+      setGoalType("remaining");
+      setCalorieGoal(remainingCaloriesPerDay || 0);
+    },
+    [status, userDetails]
+  );
+
+  useEffect(() => {
+    const savedCalorieGoal = getFromLocalStorage("calorieGoal");
+
+    if (savedCalorieGoal) {
+      setCalorieGoal(Number(savedCalorieGoal));
+    }
+  }, []);
 
   return (
     <Stack className={classes.container}>
@@ -58,7 +85,7 @@ export default function CalorieGoalController({
           size="xs"
           data={segments}
           value={goalType}
-          onChange={setGoalType}
+          onChange={handleChangeGoal}
           styles={{ root: { zIndex: 1 } }}
         />
       </Group>

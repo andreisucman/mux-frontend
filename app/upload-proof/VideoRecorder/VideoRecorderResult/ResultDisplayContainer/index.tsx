@@ -22,7 +22,7 @@ export default function ResultDisplayContainer({
   progress = 0,
   captureType,
 }: Props) {
-  const isImage = url.startsWith("data:image/jpeg");
+  const isImage = url.startsWith("data:image/");
   return (
     <div className={classes.container}>
       <Skeleton className="skeleton" visible={!captureType}>

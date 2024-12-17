@@ -1,7 +1,17 @@
 import React, { useMemo } from "react";
-import { CloseButton, Highlight, Overlay, Stack, Table, Text } from "@mantine/core";
+import { IconRotate, IconTarget } from "@tabler/icons-react";
+import {
+  Button,
+  CloseButton,
+  Group,
+  Highlight,
+  Overlay,
+  rem,
+  Stack,
+  Table,
+  Text,
+} from "@mantine/core";
 import PieChartComponent from "@/components/PieChart";
-import percentageToFraction from "@/helpers/percentageToFraction";
 import classes from "./CalorieResultOverlay.module.css";
 
 export type FoodAnalysisType = {
@@ -15,16 +25,16 @@ export type FoodAnalysisType = {
 
 type Props = {
   data: FoodAnalysisType;
-  actionChildren: React.ReactNode;
   calorieGoal: number;
-  handleClose: () => void;
+  handleResetResult: () => void;
+  handleUploadAsProof: () => void;
 };
 
 export default function CalorieResultOverlay({
   data,
   calorieGoal,
-  actionChildren,
-  handleClose,
+  handleResetResult,
+  handleUploadAsProof,
 }: Props) {
   const { shouldEat, energy, proteins, carbohydrates, fats, explanation } = data;
 
@@ -46,7 +56,7 @@ export default function CalorieResultOverlay({
 
     if (shouldEat) {
       const eatShare = calorieGoal > energy ? 100 : Math.round((calorieGoal / energy) * 100);
-      const eatFraction = percentageToFraction(eatShare);
+
       response.chartShares = [{ name: "eat", value: 100 }];
 
       if (energy > calorieGoal) {
@@ -55,13 +65,9 @@ export default function CalorieResultOverlay({
           { name: "skip", value: 100 - eatShare },
         ];
       }
-      response.eatFraction = eatFraction;
+      response.eatFraction = `${eatShare}%`;
       response.titleText =
-        eatFraction === "everything"
-          ? "Eat everything"
-          : eatFraction
-            ? `Eat ${eatFraction} of it`
-            : "Skip it";
+        eatShare === 100 ? "Eat everything" : eatShare ? `Eat ${eatShare}% of it` : "Skip it";
     } else {
       response.titleText = "Skip it";
       response.chartShares = [
@@ -78,18 +84,27 @@ export default function CalorieResultOverlay({
       children={
         <>
           <Stack className={classes.container}>
-            <PieChartComponent data={displayData.chartShares} />
+            <CloseButton className={classes.close} onClick={handleResetResult} />
             <Highlight highlight={displayData.eatFraction} ta="center" fz={32} fw={600}>
               {displayData.titleText}
             </Highlight>
-            {explanation && <Text>{explanation}</Text>}
-            <Table
-              data={tableData}
-              classNames={{ table: classes.table, td: classes.td, th: classes.th }}
-            />
-            {actionChildren}
+            {explanation && <Text ta="center">{explanation}</Text>}
+            <PieChartComponent data={displayData.chartShares} />
+            <Stack className={classes.tableStack}>
+              <Text ml={8} fz="sm" c="dimmed">
+                Analysis:
+              </Text>
+              <Table data={tableData} />
+            </Stack>
+            <Group className={classes.buttons}>
+              <Button className={classes.button} variant="default" onClick={handleResetResult}>
+                <IconRotate className="icon" style={{ marginRight: rem(6) }} /> New scan
+              </Button>
+              <Button className={classes.button} variant="default" onClick={handleUploadAsProof}>
+                <IconTarget className="icon" style={{ marginRight: rem(6) }} /> Upload as proof
+              </Button>
+            </Group>
           </Stack>
-          <CloseButton className={classes.close} onClick={handleClose} />
         </>
       }
     />

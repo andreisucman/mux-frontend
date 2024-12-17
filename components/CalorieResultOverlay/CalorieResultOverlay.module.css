@@ -2,24 +2,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.container {
-  align-items: center;
-  max-width: rem(400);
   padding: rem(16);
 }
 
-.table {
-  max-width: rem(300);
+.container {
+  position: relative;
+  align-items: center;
+  max-width: rem(400);
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
 }
 
-.th {
-  white-space: nowrap;
+.tableStack {
+  gap: rem(4);
+  width: 100%;
 }
 
 .close {
   position: absolute;
   top: rem(16);
   right: rem(16);
+}
+
+.buttons {
+  width: 100%;
+}
+
+.button {
+  flex: 1;
 }

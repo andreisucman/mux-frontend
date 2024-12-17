@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconNote } from "@tabler/icons-react";
 import useSWR from "swr";
 import { Button, Group, rem, Skeleton, Stack } from "@mantine/core";
@@ -18,7 +18,6 @@ import {
   getFromLocalStorage,
   saveToLocalStorage,
 } from "@/helpers/localStorage";
-import modifyQuery from "@/helpers/modifyQuery";
 import { TaskType, TypeEnum, UserDataType } from "@/types/global";
 import ButtonsGroup from "./ButtonsGroup";
 import CreateTaskOverlay from "./CreateTaskOverlay";
@@ -41,6 +40,7 @@ interface TaskTypeWithClick extends TaskType {
 export default function TasksList({ type, serie, customStyles, disableAll }: Props) {
   const router = useRouter();
   const pathaname = usePathname();
+  const searchParams = useSearchParams();
   const [pageLoaded, setPageLoaded] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
@@ -78,7 +78,7 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
     const activeTasks =
       tasks?.filter((task) => task.type === type && task.status === "active") || [];
     return activeTasks.length === 0;
-  }, [tasks]);
+  }, [tasks, type]);
 
   const relevantTasks: TaskTypeWithClick[] | undefined = useMemo(
     () =>
@@ -87,10 +87,7 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
         .map((fTask) => ({
           ...fTask,
           onClick: () => {
-            const query = modifyQuery({
-              params: [{ name: "taskId", value: fTask._id, action: "replace" }],
-            });
-            router.push(`/explain?${query}`);
+            router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
           },
         })),
     [type, tasks, pathaname, userDetails]
@@ -113,8 +110,6 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
       console.log("Error in fetchLatestRoutinesAndTasks: ", err);
     }
   }, []);
-
-  console.log("noActiveTasksForToday", noActiveTasksForToday);
 
   const handleSaveTask = useCallback(
     async ({
