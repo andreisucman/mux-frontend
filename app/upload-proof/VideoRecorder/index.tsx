@@ -6,11 +6,7 @@ import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import base64ToBlob from "@/helpers/base64ToBlob";
 import { deleteFromIndexedDb, getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import {
-  deleteFromLocalStorage,
-  getFromLocalStorage,
-  saveToLocalStorage,
-} from "@/helpers/localStorage";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { getSupportedMimeType } from "@/helpers/utils";
 import { SexEnum } from "@/types/global";
@@ -22,14 +18,13 @@ type Props = {
   sex: SexEnum;
   taskExpired: boolean;
   instruction: string;
+  silhouette: string;
   uploadProof: (props: any) => void;
 };
 
 const RECORDING_TIME = 15000;
 const beepUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/beep.mp3`;
 const shutterUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
-const beep = new Audio(beepUrl);
-const shutter = new Audio(shutterUrl);
 
 const segments = [
   {
@@ -50,7 +45,13 @@ const segments = [
   },
 ];
 
-export default function VideoRecorder({ sex, taskExpired, instruction, uploadProof }: Props) {
+export default function VideoRecorder({
+  sex,
+  taskExpired,
+  instruction,
+  silhouette,
+  uploadProof,
+}: Props) {
   const { blurType } = useContext(BlurChoicesContext);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
@@ -107,6 +108,8 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
       .getUserMedia(constraints)
       .then((stream) => {
         if (!videoRef.current) return;
+        const beep = new Audio(beepUrl);
+
         beep.play();
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
@@ -185,6 +188,8 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
     if (!context) return;
 
     try {
+      const shutter = new Audio(shutterUrl);
+
       shutter.play();
       const video = videoRef.current;
       if (!video.videoWidth || !video.videoHeight) return;
@@ -210,6 +215,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
 
   const handleStop = useCallback(() => {
     if (isVideoLoading) return;
+    const beep = new Audio(beepUrl);
     beep.play();
 
     if (timeoutIdRef.current) {
@@ -434,7 +440,15 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
         <Skeleton visible={isVideoLoading} className="skeleton">
           <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
             {isRecording && <RecordingStatus recordingTime={recordingTime} />}
-            <div className={classes.captureOverlay} />
+            {silhouette && (
+              <div
+                className={classes.silhouetteOverlay}
+                style={{
+                  mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
+                  maskComposite: "exclude",
+                }}
+              />
+            )}
             <video ref={videoRef} className={classes.video} autoPlay muted></video>
             <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
               {!isRecording && hasMultipleCameras && (

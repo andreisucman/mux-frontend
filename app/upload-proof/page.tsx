@@ -196,6 +196,7 @@ export default function UploadProof() {
                 taskExpired={taskExpired}
                 instruction={requisite || ""}
                 uploadProof={uploadProof}
+                silhouette="/assets/silhouettes/rectangle.webp"
               />
             )}
             {componentToDisplay === "expired" && (

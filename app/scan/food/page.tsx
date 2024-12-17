@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { IconMenu2, IconRotate } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import CalorieResultOverlay, { FoodAnalysisType } from "@/components/CalorieResultOverlay";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import PhotoCapturer from "@/components/PhotoCapturer";
 import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
+import { silhouettes } from "@/data/silhouettes";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
 import foodImage from "@/public/assets/placeholders/dark/food.svg";
+import { ScanTypeEnum } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import CalorieGoalController from "./CalorieGoal";
 import classes from "./food.module.css";
@@ -65,6 +67,11 @@ export default function ScanFoodPage() {
     setLocalUrl("");
   }, []);
 
+  const silhouette = useMemo(
+    () => silhouettes.find((rec) => rec.scanType === ScanTypeEnum.FOOD),
+    []
+  );
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <ScanHeader />
@@ -84,7 +91,10 @@ export default function ScanFoodPage() {
             placeholder={foodImage}
           />
         ) : (
-          <PhotoCapturer handleCapture={(base64string: string) => setLocalUrl(base64string)} />
+          <PhotoCapturer
+            handleCapture={(base64string: string) => setLocalUrl(base64string)}
+            silhouette={silhouette?.url || ""}
+          />
         )}
       </Stack>
       {analysisResult && (

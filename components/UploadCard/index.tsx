@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Progress, rem, Stack, Title } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import BlurButtons from "@/components/BlurButtons";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
@@ -10,7 +11,9 @@ import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { placeholders } from "@/data/placeholders";
+import { silhouettes } from "@/data/silhouettes";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import getPlaceholderOrOverlay from "@/helpers/getPlaceholderOrSilhouette";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
@@ -68,11 +71,22 @@ export default function UploadCard({
   const router = useRouter();
   const { blurType } = useContext(BlurChoicesContext);
   const [isBlurLoading, setIsBlurLoading] = useState(false);
+  const { width, height } = useViewportSize();
 
   const disableUpload =
     (blurType === "eyes" && !eyesBlurredUrl && type === "head") ||
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
     !localUrl;
+
+  const relevantPlaceholder = useMemo(
+    () => getPlaceholderOrOverlay({ sex, part, type, position, scanType, data: placeholders }),
+    [sex, part, type, position, scanType]
+  );
+  
+  const relevantSilhouette = useMemo(
+    () => getPlaceholderOrOverlay({ sex, part, type, position, scanType, data: silhouettes }),
+    [sex, part, type, position, scanType]
+  );
 
   const loadLocally = useCallback(
     async (base64string: string) => {
@@ -105,33 +119,12 @@ export default function UploadCard({
           Take a photo
         </Title>
       ),
-      innerProps: <PhotoCapturer handleCapture={loadLocally} />,
+      size: "xl",
+      innerProps: (
+        <PhotoCapturer handleCapture={loadLocally} silhouette={relevantSilhouette?.url || ""} />
+      ),
     });
-  }, [loadLocally]);
-
-  const relevantPlaceholder = useMemo(() => {
-    let placeholder;
-
-    if (scanType === "progress") {
-      placeholder = placeholders.find(
-        (item) =>
-          item.sex.includes(sex) &&
-          scanType === item.scanType &&
-          item.type === type &&
-          item.part === part &&
-          item.position === position
-      );
-    } else {
-      placeholder = placeholders.find(
-        (item) =>
-          item.sex.includes(sex) &&
-          scanType === item.scanType &&
-          item.type === type &&
-          item.position === position
-      );
-    }
-    return placeholder;
-  }, [sex, part, type, position, scanType]);
+  }, [loadLocally, relevantSilhouette, width, height]);
 
   return (
     <Stack className={classes.container}>

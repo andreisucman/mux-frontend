@@ -6,19 +6,21 @@ import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
 
 type Props = {
+  silhouette: string;
   handleCapture: (base64string: string) => void;
 };
 
 const TIMER_SECONDS = 5;
 const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
-export default function PhotoCapturer({ handleCapture }: Props) {
+export default function PhotoCapturer({ handleCapture, silhouette }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
+  const [cameraAspectRatio, setCamerAspectRatio] = useState<number>();
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
@@ -108,6 +110,12 @@ export default function PhotoCapturer({ handleCapture }: Props) {
       }
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
+
+      const videoTrack = stream.getVideoTracks()[0];
+      const settings = videoTrack.getSettings();
+
+      setCamerAspectRatio(settings.aspectRatio);
+
       if (videoDevices.length > 1) {
         setHasMultipleCameras(true);
       }
@@ -141,9 +149,17 @@ export default function PhotoCapturer({ handleCapture }: Props) {
   }, []);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
       <video ref={videoRef} autoPlay muted></video>
-      <div className={classes.captureOverlay} />
+      {silhouette && (
+        <div
+          className={classes.silhouetteOverlay}
+          style={{
+            mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
+            maskComposite: "exclude",
+          }}
+        />
+      )}
       {timerStarted && (
         <div className={classes.timerOverlay}>
           <Text fz={40}>{secondsLeft}</Text>

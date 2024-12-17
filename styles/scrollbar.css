@@ -1,17 +1,17 @@
-* {
+.scrollbar {
   scrollbar-width: thin;
   scrollbar-color: alpha(var(--mantine-color-dark-5), 0.75) transparent;
 }
 
-*::-webkit-scrollbar {
+.scrollbar::-webkit-scrollbar {
   width: rem(8);
   height: rem(8);
 }
 
-*::-webkit-scrollbar-track {
+.scrollbar::-webkit-scrollbar-track {
 }
 
-*::-webkit-scrollbar-thumb {
+.scrollbar::-webkit-scrollbar-thumb {
   box-shadow: 0 0 rem(8) rem(4) alpha(var(--mantine-color-dark-9), 0.1);
   border-radius: rem(100);
 }
