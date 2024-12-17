@@ -16,6 +16,7 @@ export default function SolutionsHeader() {
         spotlightStore={spotlightStore}
         spotlight={solutionsSpotlight}
         collection={"solution"}
+        searchPlaceholder="Search solutions"
         showActivityIndicator
       />
     </Group>

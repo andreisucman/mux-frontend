@@ -10,10 +10,12 @@ type Props = {
 };
 
 const TIMER_SECONDS = 5;
+const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
 export default function PhotoCapturer({ handleCapture }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
@@ -82,6 +84,9 @@ export default function PhotoCapturer({ handleCapture }: Props) {
 
       const imageData = canvas.toDataURL("image/jpeg");
 
+      const audio = new Audio(audioUrl);
+      audio.play();
+
       handleCapture(imageData);
     } catch (err) {
       console.log("Error in capturePhoto: ", err);
@@ -145,6 +150,7 @@ export default function PhotoCapturer({ handleCapture }: Props) {
         </div>
       )}
       <Group className={classes.buttonGroup}>
+        <audio ref={audioRef} src={audioUrl} preload="auto" />
         <Button
           variant="default"
           disabled={timerStarted}

@@ -155,8 +155,10 @@ export default function GeneralResultsHeader({
         {showSearch && (
           <SearchButton
             collection="proof"
+            searchPlaceholder="Search proof"
             spotlight={proofSpotlight}
             spotlightStore={spotlightStore}
+            showActivityIndicator
           />
         )}
         {showFilter && (

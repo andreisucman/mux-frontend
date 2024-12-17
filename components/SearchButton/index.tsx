@@ -13,6 +13,7 @@ type Props = {
   size?: "sm" | "md" | "lg" | "xl";
   showActivityIndicator?: boolean;
   collection: string;
+  searchPlaceholder: string;
   userName?: string;
   spotlightStore: SpotlightStore;
   spotlight: any;
@@ -24,6 +25,7 @@ export default function SearchButton({
   isDisabled,
   collection,
   showActivityIndicator,
+  searchPlaceholder,
   userName,
   spotlightStore,
   spotlight,
@@ -106,7 +108,7 @@ export default function SearchButton({
               });
             }
           }
-
+          console.log("actions", actions);
           setSpotlightActions(actions);
         }
       }
@@ -130,14 +132,14 @@ export default function SearchButton({
       <Spotlight
         store={spotlightStore}
         actions={spotlightActions}
-        nothingFound="Nothing found"
         onQueryChange={(query: string) => {
           setSearchQuery(query);
-          getAutocompleteData(collection, query);
+          if (query) getAutocompleteData(collection, query);
         }}
+        nothingFound="Nothing found"
         searchProps={{
           leftSection: <IconSearch className="icon" stroke={1.5} />,
-          placeholder: "Search...",
+          placeholder: searchPlaceholder,
           onKeyDown: (e: React.KeyboardEvent) => {
             if (e.key !== "Enter") return;
             if (searchQuery.length > 0) return;
@@ -145,6 +147,7 @@ export default function SearchButton({
           },
         }}
         overlayProps={{ blur: 0 }}
+        scrollable={false}
         limit={10}
         centered
       />

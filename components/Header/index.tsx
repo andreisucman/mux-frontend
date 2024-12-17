@@ -95,6 +95,7 @@ function Header() {
                 <SearchButton
                   size="lg"
                   collection="user"
+                  searchPlaceholder="Search users"
                   spotlight={userSpotlight}
                   spotlightStore={spotlightStore}
                   customConstructAction={constructUserActions}

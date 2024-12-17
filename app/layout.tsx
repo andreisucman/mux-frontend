@@ -1,8 +1,8 @@
-import "@/styles/mantine.css";
-import "@mantine/carousel/styles.css";
-import "@mantine/dates/styles.css";
-import "@mantine/nprogress/styles.css";
-import "@mantine/spotlight/styles.css";
+import "@mantine/core/styles.layer.css";
+import "@mantine/carousel/styles.layer.css";
+import "@mantine/dates/styles.layer.css";
+import "@mantine/nprogress/styles.layer.css";
+import "@mantine/spotlight/styles.layer.css";
 import "@/styles/global.css";
 
 import React, { Suspense } from "react";

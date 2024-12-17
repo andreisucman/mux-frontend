@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
+import { createSpotlight } from "@mantine/spotlight";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import SearchButton from "@/components/SearchButton";
@@ -15,6 +16,8 @@ type Props = {
   showReturn?: boolean;
   isDisabled?: boolean;
 };
+
+const [spotlightStore, proofSpotlight] = createSpotlight();
 
 export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
   const router = useRouter();
@@ -89,7 +92,13 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
             allowDeselect
             addToQuery
           />
-          {/* <SearchButton isDisabled={isDisabled} endpoint={"getProofAutocomplete"} /> */}
+          <SearchButton
+            collection="proof"
+            searchPlaceholder="Search proof"
+            spotlight={proofSpotlight}
+            spotlightStore={spotlightStore}
+            showActivityIndicator
+          />
         </>
       </Group>
     </>

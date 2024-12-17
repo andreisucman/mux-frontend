@@ -26,6 +26,10 @@ type Props = {
 };
 
 const RECORDING_TIME = 15000;
+const beepUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/beep.mp3`;
+const shutterUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
+const beep = new Audio(beepUrl);
+const shutter = new Audio(shutterUrl);
 
 const segments = [
   {
@@ -103,7 +107,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
       .getUserMedia(constraints)
       .then((stream) => {
         if (!videoRef.current) return;
-
+        beep.play();
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
 
@@ -181,6 +185,7 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
     if (!context) return;
 
     try {
+      shutter.play();
       const video = videoRef.current;
       if (!video.videoWidth || !video.videoHeight) return;
 
@@ -205,6 +210,8 @@ export default function VideoRecorder({ sex, taskExpired, instruction, uploadPro
 
   const handleStop = useCallback(() => {
     if (isVideoLoading) return;
+    beep.play();
+
     if (timeoutIdRef.current) {
       clearTimeout(timeoutIdRef.current);
       timeoutIdRef.current = null;

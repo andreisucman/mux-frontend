@@ -80,6 +80,7 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
         <SearchButton
           isDisabled={isDisabled}
           collection="proof"
+          searchPlaceholder="Search proof"
           userName={userName}
           spotlight={proofSpotlight}
           spotlightStore={spotlightStore}
