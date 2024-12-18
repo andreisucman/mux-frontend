@@ -13,14 +13,8 @@ export default withBundleAnalyzer({
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
   images: {
-    dangerouslyAllowSVG: true,
+    // dangerouslyAllowSVG: true,
     remotePatterns: [
-      {
-        hostname: "placehold.co",
-        pathname: "**",
-        protocol: "https",
-        port: "",
-      },
       {
         hostname: "mux.nyc3.cdn.digitaloceanspaces.com",
         pathname: "**",
