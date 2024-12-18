@@ -5,26 +5,3 @@
 .content {
   flex: 1;
 }
-
-.icon {
-  margin-right: rem(8);
-}
-
-.stack {
-  display: flex;
-  flex-direction: column;
-  padding: rem(16);
-  gap: rem(16);
-  background-color: var(--mantine-color-dark-6);
-  border-radius: var(--mantine-radius-lg);
-}
-
-.item {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-
-  &:hover {
-    color: white;
-  }
-}
