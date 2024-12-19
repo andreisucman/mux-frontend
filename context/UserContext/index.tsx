@@ -37,13 +37,16 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
   const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
 
-  const setUserDetails = useCallback((value: React.SetStateAction<Partial<UserDataType | null>>) => {
-    setUserDetailsState((prevState: Partial<UserDataType> | null) => {
-      const newState = typeof value === "function" ? value(prevState as UserDataType) : value;
-      saveToLocalStorage("userDetails", newState);
-      return newState;
-    });
-  }, []);
+  const setUserDetails = useCallback(
+    (value: React.SetStateAction<Partial<UserDataType | null>>) => {
+      setUserDetailsState((prevState: Partial<UserDataType> | null) => {
+        const newState = typeof value === "function" ? value(prevState as UserDataType) : value;
+        saveToLocalStorage("userDetails", newState);
+        return newState;
+      });
+    },
+    []
+  );
 
   const updateAuthenticationStatus = useCallback((isLoggedInCookie: boolean) => {
     setStatus(isLoggedInCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED);
@@ -88,6 +91,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     if (!userDetailsState) return;
+    if (code) return;
 
     if (onProtectedPage) {
       if (!userDetailsState.emailVerified) {
@@ -97,7 +101,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
         }
       }
     }
-  }, [userDetailsState?.emailVerified, pathname]);
+  }, [userDetailsState?.emailVerified, pathname, code]);
 
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;

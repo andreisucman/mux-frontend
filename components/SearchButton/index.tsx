@@ -108,7 +108,6 @@ export default function SearchButton({
               });
             }
           }
-          console.log("actions", actions);
           setSpotlightActions(actions);
         }
       }

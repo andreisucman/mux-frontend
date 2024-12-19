@@ -1,6 +1,6 @@
 .scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.75) transparent;
+  scrollbar-color: var(--mantine-color-dark-5) transparent;
 
   overflow: auto;
 }

@@ -6,7 +6,6 @@ import { useRouter } from "@/helpers/custom-router";
 import { partIcons, typeIcons } from "@/helpers/icons";
 import FilterButton from "../FilterButton";
 import FilterDropdown from "../FilterDropdown";
-import SearchButton from "../SearchButton";
 import { partItems, typeItems } from "./data";
 import classes from "./PageHeader.module.css";
 
@@ -17,7 +16,6 @@ type Props = {
   hideTypeDropdown?: boolean;
   hidePartDropdown?: boolean;
   filterNames?: string[];
-  searchCollection?: string;
   children?: React.ReactNode;
   onSelect?: (value?: string | null) => void;
   onFilterClick?: () => void;
@@ -31,14 +29,13 @@ export default function PageHeader({
   isDisabled,
   filterNames = [],
   children,
-  searchCollection,
   onSelect,
   onFilterClick,
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type");
+  const type = searchParams.get("type") || "head";
   const part = searchParams.get("part");
 
   const [relevantParts, setRelevantParts] = useState(partItems.filter((p) => p.type === type));

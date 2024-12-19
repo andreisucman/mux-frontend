@@ -52,7 +52,7 @@ function ProofStatus({
     () =>
       isSubmitted ? (
         <ThemeIcon c="green.7" variant="transparent" radius="xl" size="sm">
-          <IconCheck stroke={4} className={"icon"} />
+          <IconCheck stroke={4} className={"icon icon__small"} />
         </ThemeIcon>
       ) : (
         <Text className={classes.title}>0%</Text>
@@ -164,7 +164,7 @@ function ProofStatus({
   return (
     <Group className={classes.container}>
       <RingProgress
-        size={45}
+        size={40}
         thickness={5}
         label={ringLabel}
         classNames={{ label: classes.ringLabel }}

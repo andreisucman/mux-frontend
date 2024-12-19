@@ -13,14 +13,15 @@ import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import { formatDate } from "@/helpers/formatDate";
 import { typeIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
-import { TypeEnum } from "@/types/global";
+import setUtcMidnight from "@/helpers/setUtcMidnight";
+import { TypeEnum, UserDataType } from "@/types/global";
 import DiaryContent from "./DiaryContent";
 import { DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
 export default function DiaryPage() {
   const [openValue, setOpenValue] = useState<string | null>(null);
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const searchParams = useSearchParams();
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [isLoading, setIsLoading] = useState(false);
@@ -64,6 +65,16 @@ export default function DiaryPage() {
           ...(prev || []),
         ]);
         setOpenValue(emptyDiaryRecord._id);
+
+        const defaultTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const nextDiaryRecordAfter = setUtcMidnight({
+          date: new Date(),
+          isNextDay: true,
+          timeZone: timeZone || defaultTimeZone,
+        });
+
+        setUserDetails((prev: UserDataType) => ({ ...prev, nextDiaryRecordAfter }));
       } else {
         setIsLoading(false);
         openErrorModal();
@@ -100,9 +111,9 @@ export default function DiaryPage() {
   }, [type]);
 
   useEffect(() => {
-    if (!diaryRecords || !diaryRecords[0]) return;
-    const firstDate = diaryRecords[0].createdAt;
-    const formattedFirstDate = formatDate({ date: firstDate });
+    if (!diaryRecords) return;
+    const firstDate = diaryRecords[0] && diaryRecords[0].createdAt;
+    const formattedFirstDate = formatDate({ date: firstDate || new Date(0) });
     setDisableAddNew(formattedFirstDate === formattedToday);
   }, [formattedToday, diaryRecords]);
 

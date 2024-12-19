@@ -98,7 +98,7 @@ export default function AcceptIndexPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <Title order={1}>Review the Terms</Title>
-      <Stack className={classes.content}>
+      <Stack className={`${classes.content} scrollbar`}>
         <TermsLegalBody />
       </Stack>
       <TosCheckbox

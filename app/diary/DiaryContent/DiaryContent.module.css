@@ -32,4 +32,5 @@
 
 .control {
   border-radius: var(--mantine-radius-lg);
+  background: none !important;
 }

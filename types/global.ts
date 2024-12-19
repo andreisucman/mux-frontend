@@ -243,6 +243,7 @@ export interface UserDataType extends DefaultUserType {
   remainingCaloriesPerDay: number;
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;
+  nextDiaryRecordAfter: Date | null;
 }
 
 export type SubscriptionType = {

@@ -48,7 +48,14 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
     "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "tasks"
   >("loading");
 
-  const { nextScan, tasks, _id: userId, timeZone, demographics } = userDetails || {};
+  const {
+    nextScan,
+    nextDiaryRecordAfter,
+    tasks,
+    _id: userId,
+    timeZone,
+    demographics,
+  } = userDetails || {};
   const { sex } = demographics || {};
 
   const finalNextScanType = type === "head" ? type : "body";
@@ -71,14 +78,8 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
     const completedRelevantTasks =
       tasks?.filter((task) => task.type === type && task.status === "completed") || [];
 
-    return Math.round(completedRelevantTasks.length / relevantTasks.length);
+    return Math.round((completedRelevantTasks.length / relevantTasks.length) * 100);
   }, [tasks]);
-
-  const noActiveTasksForToday = useMemo(() => {
-    const activeTasks =
-      tasks?.filter((task) => task.type === type && task.status === "active") || [];
-    return activeTasks.length === 0;
-  }, [tasks, type]);
 
   const relevantTasks: TaskTypeWithClick[] | undefined = useMemo(
     () =>
@@ -92,6 +93,16 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
         })),
     [type, tasks, pathaname, userDetails]
   );
+
+  const canAddDiaryRecord = useMemo(() => {
+    const activeTasks =
+      tasks?.filter((task) => task.type === type && task.status === "active") || [];
+    const datePassed =
+      !nextDiaryRecordAfter ||
+      (nextDiaryRecordAfter && new Date() > new Date(nextDiaryRecordAfter));
+
+    return datePassed && tasks && tasks.length > 0 && activeTasks.length === 0;
+  }, [nextDiaryRecordAfter, tasks, type]);
 
   const fetchLatestRoutinesAndTasks = useCallback(async () => {
     try {
@@ -226,8 +237,7 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
               <Stack className={classes.scrollArea}>
                 {relevantTasks && (
                   <Stack className={classes.listWrapper}>
-                    {" "}
-                    {noActiveTasksForToday && (
+                    {canAddDiaryRecord && (
                       <Button component={Link} href={`/diary?type=${type}`} c="white">
                         <IconNote className="icon" style={{ marginRight: rem(8) }} /> Add a diary
                         note for today
