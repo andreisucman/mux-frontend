@@ -19,7 +19,6 @@ type ClubBioType = {
   philosophy: string;
   style: string;
   tips: string;
-  about: string;
   questions: { asking: string; question: string }[];
   socials: { value: string; label: string }[];
 };

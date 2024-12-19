@@ -115,7 +115,7 @@ export default function TaskRow({
 
   const timerDate = started ? new Date(localExpiryDate) : new Date(localStartDate);
 
-  const timerText = isCompleted ? "Resets after" : started ? "Expires in" : "Starts in";
+  const timerText = isCompleted ? "Archived after" : started ? "Expires in" : "Starts in";
 
   const dayTimeIcons = useMemo(() => {
     return requiredSubmissions?.map((submission, index) => {

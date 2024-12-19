@@ -2,15 +2,18 @@ import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 
 type FetchDiaryRecordsProps = {
+  userName?: string;
   type: string | null;
   currentArrayLength?: number;
   skip?: boolean;
 };
 
 const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
-  const { skip, type, currentArrayLength } = props || {};
+  const { skip, userName, type, currentArrayLength } = props || {};
   try {
     let endpoint = "getDiaryRecords";
+
+    if (userName) endpoint += `/${userName}`;
 
     const parts = [];
 

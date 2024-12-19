@@ -27,6 +27,7 @@ export default function DiaryPage(props: Props) {
   const handleFetchDiaryRecords = useCallback(async () => {
     try {
       const response = await fetchDiaryRecords({
+        userName,
         type,
         currentArrayLength: diaryRecords?.length,
         skip: hasMore,

@@ -20,7 +20,6 @@ type BioDataType = {
   philosophy: string;
   style: string;
   tips: string;
-  about: string;
 };
 
 type Props = {
@@ -45,7 +44,6 @@ export default function ClubAbout(props: Props) {
     philosophy: "",
     style: "",
     tips: "",
-    about: "",
   });
 
   const submitResponse = useCallback(
@@ -89,7 +87,6 @@ export default function ClubAbout(props: Props) {
             philosophy: bio.philosophy,
             style: bio.style,
             tips: bio.tips,
-            about: bio.about,
           });
         }
         setIsLoading(false);
@@ -151,7 +148,6 @@ export default function ClubAbout(props: Props) {
       philosophy: bio?.philosophy || "",
       style: bio?.style || "",
       tips: bio?.tips || "",
-      about: bio?.about || "",
     });
   }, [isSelf, youData, youTrackData]);
 

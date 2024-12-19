@@ -15,7 +15,6 @@ type BioDataType = {
   philosophy: string;
   style: string;
   tips: string;
-  about: string;
 };
 
 type Props = {

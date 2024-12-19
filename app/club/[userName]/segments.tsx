@@ -11,8 +11,4 @@ export const segments = [
     value: "tips",
     label: "Tips",
   },
-  {
-    value: "about",
-    label: "About",
-  },
 ];

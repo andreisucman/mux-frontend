@@ -134,7 +134,7 @@ export default function AddClubSocials({ title }: Props) {
             disabled={value.trim().length === 0}
             onClick={() => addSocial({ label: name, value: value.toLowerCase() })}
           >
-            <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+            <IconPlus className="icon" />
           </ActionIcon>
         </Group>
       </Group>

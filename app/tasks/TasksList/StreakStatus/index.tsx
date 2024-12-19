@@ -12,8 +12,6 @@ type Props = {
 export default function StreakStatus({ completionPercent, customRingStyles, serie }: Props) {
   const sections = [];
 
-  console.log("completionPercent",completionPercent)
-
   sections.push(
     { value: completionPercent, color: "var(--mantine-color-green-7)" },
     {

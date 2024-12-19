@@ -32,7 +32,7 @@ export default function TextareaComponent({
   return (
     <Stack className={classes.container}>
       {heading}
-      <Stack className={classes.wrapper}>
+      <Stack className={`${classes.wrapper} scrollbar`}>
         <LoadingOverlay visible={isLoading} className={classes.loadingOverlay} />
         <Textarea
           placeholder={placeholder}
