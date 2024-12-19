@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
 import { Loader, Stack } from "@mantine/core";
@@ -8,10 +8,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { UploadProgressProps } from "@/app/scan/types";
 import UploadCard from "@/components/UploadCard";
 import SelectPartsCheckboxes from "@/components/UploadCarousel/SelectPartsCheckboxes";
-import { BlurChoicesContext } from "@/context/BlurChoicesContext";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { UploadPartsChoicesContext } from "@/context/UploadPartsChoicesContext";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import { onBlurImageClick } from "@/functions/blur";
 import { ScanTypeEnum, SexEnum, TypeEnum } from "@/types/global";
@@ -25,17 +22,9 @@ type Props = {
   scanType: ScanTypeEnum;
   latestStyleImage?: string;
   requirements: RequirementType[];
-  faceBlurredUrl: string;
-  eyesBlurredUrl: string;
-  originalUrl: string;
-  localUrl: string;
   isLoading: boolean;
   progress: number;
-  setLocalUrl: React.Dispatch<React.SetStateAction<string>>;
-  setOriginalUrl: React.Dispatch<React.SetStateAction<string>>;
-  setEyesBlurredUrl: React.Dispatch<React.SetStateAction<string>>;
-  setFaceBlurredUrl: React.Dispatch<React.SetStateAction<string>>;
-  handleUpload: (args: UploadProgressProps) => void;
+  handleUpload: (args: UploadProgressProps) => Promise<void>;
 };
 
 export default function UploadCarousel({
@@ -44,21 +33,12 @@ export default function UploadCarousel({
   requirements,
   isLoading,
   progress,
-  localUrl,
-  faceBlurredUrl,
-  eyesBlurredUrl,
-  originalUrl,
   handleUpload,
-  setLocalUrl,
-  setOriginalUrl,
-  setEyesBlurredUrl,
-  setFaceBlurredUrl,
 }: Props) {
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "partialScanOverlay" | "carousel" | "empty"
   >("loading");
   const { userDetails } = useContext(UserContext);
-  const { blurType } = useContext(BlurChoicesContext);
   const { showFace, showMouth, showScalp, setShowPart } = useContext(UploadPartsChoicesContext);
 
   const { _id: userId, toAnalyze } = userDetails || {};
@@ -82,13 +62,6 @@ export default function UploadCarousel({
     [requirements.length]
   );
 
-  const handleDeleteImage = useCallback(() => {
-    setLocalUrl("");
-    setOriginalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
-  }, []);
-
   const slides = requirements
     .map((item, index) => {
       if (!userDetails) return;
@@ -99,48 +72,19 @@ export default function UploadCarousel({
       const { demographics } = userDetails || {};
       const { sex } = demographics || {};
 
-      const blurredImage =
-        blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
-
       return (
         <Carousel.Slide key={index}>
           <UploadCard
             sex={sex || SexEnum.MALE}
             scanType={scanType}
-            eyesBlurredUrl={eyesBlurredUrl}
-            faceBlurredUrl={faceBlurredUrl}
             isLoading={isLoading}
             progress={progress}
             type={item.type}
             part={item.part}
-            originalUrl={originalUrl}
             instruction={item.instruction}
-            localUrl={localUrl}
             position={item.position}
-            handleUpload={async () =>
-              handleUpload({
-                url: originalUrl,
-                type: item.type as TypeEnum,
-                part: item.part as PartEnum,
-                position: item.position,
-                blurType: blurType as BlurTypeEnum,
-                blurredImage,
-              })
-            }
-            setOriginalUrl={setOriginalUrl}
-            setLocalUrl={setLocalUrl}
-            onBlurClick={({ originalUrl, blurType }) =>
-              onBlurImageClick({
-                originalUrl,
-                eyesBlurredUrl,
-                faceBlurredUrl,
-                blurType,
-                setEyesBlurredUrl,
-                setFaceBlurredUrl,
-                setLocalUrl,
-              })
-            }
-            handleDelete={handleDeleteImage}
+            handleUpload={handleUpload}
+            onBlurClick={onBlurImageClick}
           />
         </Carousel.Slide>
       );

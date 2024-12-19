@@ -128,8 +128,6 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
     youTrackDataFetched,
   ]);
 
-  console.log("show", showComponent);
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       {headers[pageType]}

@@ -4,7 +4,7 @@ import callTheServer from "./callTheServer";
 import uploadToSpaces from "./uploadToSpaces";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
-type OnBlurClickProps = {
+export type OnBlurClickProps = {
   blurType: BlurTypeEnum;
   originalUrl: string;
   faceBlurredUrl: string;

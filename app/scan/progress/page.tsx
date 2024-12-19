@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconHourglassHigh, IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Button, rem, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
@@ -23,15 +23,10 @@ export const runtime = "edge";
 
 export default function ScanProgress() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const [progress, setProgress] = useState(0);
-  const [localUrl, setLocalUrl] = useState("");
-  const [originalUrl, setOriginalUrl] = useState("");
-  const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
-  const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const { _id: userId, requiredProgress, nextScan } = userDetails || {};
@@ -104,10 +99,6 @@ export default function ScanProgress() {
                   ...prev,
                   ...response.message,
                 }));
-                setLocalUrl("");
-                setOriginalUrl("");
-                setFaceBlurredUrl("");
-                setEyesBlurredUrl("");
               }
               if (response.error) {
                 openErrorModal({
@@ -134,13 +125,6 @@ export default function ScanProgress() {
     [userDetails, setUserDetails]
   );
 
-  const handleResetOnChangeType = useCallback(() => {
-    setLocalUrl("");
-    setOriginalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
-  }, []);
-
   useShallowEffect(() => {
     if (!userId) return;
     if (!needsScan) return;
@@ -162,22 +146,14 @@ export default function ScanProgress() {
     <>
       {availableRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
-          <ScanHeader type={finalType as TypeEnum} onSelect={handleResetOnChangeType} />
+          <ScanHeader type={finalType as TypeEnum} />
           {needsScan ? (
             <UploadCarousel
               requirements={availableRequirements || []}
               type={type as TypeEnum}
               progress={progress}
-              localUrl={localUrl}
-              originalUrl={originalUrl}
-              eyesBlurredUrl={eyesBlurredUrl}
-              faceBlurredUrl={faceBlurredUrl}
               isLoading={isLoading}
               scanType={ScanTypeEnum.PROGRESS}
-              setLocalUrl={setLocalUrl}
-              setOriginalUrl={setOriginalUrl}
-              setEyesBlurredUrl={setEyesBlurredUrl}
-              setFaceBlurredUrl={setFaceBlurredUrl}
               handleUpload={handleUpload}
             />
           ) : (
