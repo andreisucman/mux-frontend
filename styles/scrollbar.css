@@ -1,14 +1,16 @@
 .scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: alpha(var(--mantine-color-dark-5), 0.75) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.75) transparent;
+
+  overflow: auto;
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: rem(8);
-  height: rem(8);
+  width: 8px;
+  height: 8px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  box-shadow: 0 0 rem(8) rem(4) alpha(var(--mantine-color-dark-9), 0.1);
-  border-radius: rem(100);
+  box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
 }

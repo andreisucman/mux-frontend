@@ -247,7 +247,7 @@ export interface UserDataType extends DefaultUserType {
 
 export type SubscriptionType = {
   isTrialUsed: boolean;
-  subscriptionId: string;
+  subscriptionId: string | null;
   validUntil: Date | null;
 };
 

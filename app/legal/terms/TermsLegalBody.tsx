@@ -169,7 +169,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
           You agree that we have no obligation to use or respond to any Submissions, and any use of
           Submissions is entirely at our discretion.
         </Text>
-        <Title order={3}>Responsibility for Your Submissions</Title>
+        <Title id="responsibility-for-your-submissions" order={3}>Responsibility for Your Submissions</Title>
         <Text>
           By submitting content, including images and videos of your body and head, through our
           Services, you:
@@ -500,7 +500,6 @@ export default function TermsLegalBody({ addTitle }: Props) {
               Use any automated system, such as scripts, bots, or scrapers, to interact with the
               Services without our prior approval.
             </li>
-            <li>Remove or alter any copyright or other proprietary notices within the Services.</li>
             <li>Remove or alter any copyright or other proprietary notices within the Services.</li>
             <li>
               Upload or transmit any material that acts as an unauthorized data collection

@@ -3,6 +3,7 @@ import cn from "classnames";
 import { Button, Group, rem } from "@mantine/core";
 import Timer from "@/components/Timer";
 import callTheServer from "@/functions/callTheServer";
+import uploadToSpaces from "@/functions/uploadToSpaces";
 import classes from "./RecordingButton.module.css";
 
 const DEFAULT_RECORDING_MILLISECONDS = 120000;
@@ -86,14 +87,12 @@ export default function RecordingButton({
     try {
       if (setIsLoading) setIsLoading(true);
 
-      const formData = new FormData();
-      formData.append("file", audioBlob);
+      const fileUrls = await uploadToSpaces({ itemsArray: [audioBlob] });
 
       const response = await callTheServer({
-        server: "processing",
         endpoint: "transcribe",
         method: "POST",
-        body: formData,
+        body: { url: fileUrls[0] },
       });
 
       if (response.status === 200) {

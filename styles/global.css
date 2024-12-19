@@ -19,6 +19,16 @@ body {
   margin: auto;
 }
 
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+}
+
 .bgPattern {
   position: fixed;
   inset: 0;
