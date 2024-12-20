@@ -4,7 +4,7 @@ type Props = {
   recordingTime: number;
 };
 
-export default function useGetCountdown({ recordingTime }: Props) {
+export default function useGetCountdown({ recordingTime = 15000 }: Props) {
   const [countdown, setCountdown] = useState({
     days: "00",
     hours: "00",

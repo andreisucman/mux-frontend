@@ -46,23 +46,6 @@ export default function Tasks() {
     []
   );
 
-  const { streaks } = userDetails || {};
-  const {
-    healthStreak = 0,
-    faceStreak = 0,
-    scalpStreak = 0,
-    mouthStreak = 0,
-    bodyStreak = 0,
-  } = streaks || {};
-
-  const streak = useMemo(() => {
-    return type === "health"
-      ? healthStreak
-      : type === "body"
-        ? bodyStreak
-        : faceStreak + scalpStreak + mouthStreak;
-  }, [type, healthStreak, bodyStreak, faceStreak, scalpStreak, mouthStreak]);
-
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
@@ -73,7 +56,7 @@ export default function Tasks() {
           saveValue={updateSpecialConsiderations}
           maxLength={300}
         />
-        <TasksList serie={streak} type={type as string} />
+        <TasksList type={type as string} />
       </SkeletonWrapper>
     </Stack>
   );

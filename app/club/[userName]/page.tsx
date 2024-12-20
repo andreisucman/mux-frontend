@@ -1,11 +1,13 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
-import { Skeleton } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
@@ -31,6 +33,7 @@ export default function ClubAbout(props: Props) {
   const { youTrackData, youData, setYouData } = useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [showQuestions, setShowQuestions] = useState(true);
 
   const { userName } = params;
 
@@ -45,6 +48,14 @@ export default function ClubAbout(props: Props) {
     style: "",
     tips: "",
   });
+
+  const chevron = showQuestions ? (
+    <IconChevronUp className="icon" />
+  ) : (
+    <IconChevronDown className="icon" />
+  );
+
+  const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions:";
 
   const submitResponse = useCallback(
     async ({ question, reply, audioBlobs, setIsLoading, setText }: SubmitAboutResponseType) => {
@@ -133,6 +144,14 @@ export default function ClubAbout(props: Props) {
     [userDetails, youData]
   );
 
+  const toggleQuestions = useCallback(() => {
+    setShowQuestions((prev) => {
+      console.log("prev", prev);
+      saveToLocalStorage("showAboutQuestions", !prev);
+      return !prev;
+    });
+  }, []);
+
   useEffect(() => {
     if (!youData && !youTrackData) return;
 
@@ -160,13 +179,31 @@ export default function ClubAbout(props: Props) {
     setShowSkeleton(showSkeleton);
   }, [isSelf, userDetails]);
 
+  useEffect(() => {
+    const savedShowQuestions = getFromLocalStorage("showAboutQuestions");
+    setShowQuestions(!!savedShowQuestions);
+  }, []);
+
+  console.log("showQuestions", showQuestions);
+
   return (
     <ClubModerationLayout userName={userName} pageType="about">
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
         {isSelf ? (
           <>
             {questions && questions.length > 0 && (
-              <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
+              <Stack className={classes.carouselContainer}>
+                <Group className={classes.carouselHeader} onClick={toggleQuestions}>
+                  <Text size="xs" c="dimmed">
+                    {questionsTitle}
+                  </Text>
+                  {chevron}
+                </Group>
+
+                <Collapse in={showQuestions}>
+                  <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
+                </Collapse>
+              </Stack>
             )}
             <EditClubAbout
               bioData={bioData}

@@ -35,8 +35,8 @@ const renderCustomizedLabel = ({
 }: RenderCustomizedLabelProps) => {
   if (value === 0) return;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + (radius / 2) * Math.cos(-midAngle * RADIAN);
-  const y = cy + (radius / 2) * Math.sin(-midAngle * RADIAN) + 5;
+  const x = cx + (radius / 2) * Math.cos(-midAngle * RADIAN) - 5;
+  const y = cy + (radius / 2) * Math.sin(-midAngle * RADIAN);
 
   return (
     <text

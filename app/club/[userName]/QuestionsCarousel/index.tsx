@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Carousel } from "@mantine/carousel";
 import { SubmitAboutResponseType } from "../types";
 import QuestionSlide from "./QuestionSlide";
-import classes from "./QuestionsCarousel.module.css";
 
 type Props = {
   questions: { asking: string; question: string }[];
@@ -29,7 +28,6 @@ export default function QuestionsCarousel({ questions, submitResponse }: Props) 
       withControls={false}
       slideGap={16}
       slidesToScroll={1}
-      className={classes.carousel}
     >
       {slides}
     </Carousel>

@@ -18,6 +18,7 @@
 
 .title {
   font-weight: 600;
+  font-size: rem(12);
   text-align: center;
   size: var(--mantine-font-size-xs);
 }

@@ -16,7 +16,7 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
-import foodImage from "@/public/assets/placeholders/dark/food.svg";
+import foodImage from "@/public/assets/placeholders/food.svg";
 import { ScanTypeEnum } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import CalorieGoalController from "./CalorieGoal";
@@ -39,17 +39,18 @@ export default function ScanFoodPage() {
     if (!localUrl) return;
     setIsLoading(true);
 
-    const fileUrls = await uploadToSpaces({
-      itemsArray: [localUrl],
-      mime: "image/webp",
-    });
-
     try {
+      const fileUrls = await uploadToSpaces({
+        itemsArray: [localUrl],
+        mime: "image/webp",
+      });
+
       const response = await callTheServer({
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          url: fileUrls[0],
+          // url: fileUrls[0],
+          url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/food.jpg",
         },
       });
 

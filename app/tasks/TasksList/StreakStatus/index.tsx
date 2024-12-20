@@ -1,15 +1,14 @@
 import React from "react";
 import { IconFlameFilled } from "@tabler/icons-react";
-import { Group, RingProgress, Text } from "@mantine/core";
+import { RingProgress } from "@mantine/core";
 import classes from "./StreakStatus.module.css";
 
 type Props = {
   completionPercent: number;
-  serie: number;
   customRingStyles?: { [key: string]: any };
 };
 
-export default function StreakStatus({ completionPercent, customRingStyles, serie }: Props) {
+export default function StreakStatus({ completionPercent, customRingStyles }: Props) {
   const sections = [];
 
   sections.push(
@@ -21,21 +20,18 @@ export default function StreakStatus({ completionPercent, customRingStyles, seri
   );
 
   return (
-    <Group className={classes.container}>
-      <RingProgress
-        size={30}
-        thickness={3}
-        label={
-          <IconFlameFilled
-            className={classes.icon}
-            color={completionPercent === 100 ? "var(--mantine-color-orange-7)" : undefined}
-          />
-        }
-        sections={sections}
-        styles={customRingStyles}
-        classNames={{ label: classes.label }}
-      />
-      <Text className={classes.text}>{serie || 0}</Text>
-    </Group>
+    <RingProgress
+      size={30}
+      thickness={3}
+      label={
+        <IconFlameFilled
+          className={classes.icon}
+          color={completionPercent === 100 ? "var(--mantine-color-orange-7)" : undefined}
+        />
+      }
+      sections={sections}
+      styles={customRingStyles}
+      classNames={{ label: classes.label }}
+    />
   );
 }

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { IconUpload } from "@tabler/icons-react";
-import { Button, rem, Stack, Text } from "@mantine/core";
+import { Button, rem, Stack } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { AboutQuestionType } from "../../EditClubAbout";
 import { SubmitAboutResponseType } from "../../types";
@@ -21,21 +21,15 @@ export default function QuestionSlide({ question, submitResponse }: Props) {
 
   const heading = useMemo(
     () => (
-      <Stack className={classes.headingStack}>
-        <Text size="xs" c="dimmed">
-          Create bio:
-        </Text>
-
-        <div className={classes.questionText}>
-          <span style={{ marginRight: rem(6) }}>{question.question}</span>
-          <RecordingButton
-            transcribeOnEnd
-            setText={setText}
-            setAudioBlobs={setAudioBlobs}
-            setIsLoading={setIsLoading}
-          />
-        </div>
-      </Stack>
+      <div className={classes.questionText}>
+        <span style={{ marginRight: rem(6) }}>{question.question}</span>
+        <RecordingButton
+          transcribeOnEnd
+          setText={setText}
+          setAudioBlobs={setAudioBlobs}
+          setIsLoading={setIsLoading}
+        />
+      </div>
     ),
     [question.asking, question.question]
   );

@@ -29,9 +29,3 @@
   inset: 0;
   height: 100%;
 }
-
-.waitComponentWrapper {
-  flex: 1;
-  border-radius: var(--mantine-radius-lg);
-  border: rem(1) solid var(--mantine-color-dark-5);
-}

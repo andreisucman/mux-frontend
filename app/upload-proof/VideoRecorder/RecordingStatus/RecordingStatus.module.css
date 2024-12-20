@@ -3,7 +3,7 @@
   bottom: rem(8);
   right: rem(16);
   align-items: center;
-  z-index: 1;
+  z-index: 3;
 }
 
 .time {

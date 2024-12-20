@@ -2,14 +2,6 @@
   position: relative;
   height: 100%;
   gap: rem(12);
-  padding: rem(16);
-  border: rem(1) solid var(--mantine-color-dark-5) !important;
-  border-radius: var(--mantine-radius-lg);
-}
-
-.headingStack {
-  gap: rem(4);
-  align-items: flex-start;
 }
 
 .questionText {
@@ -18,9 +10,4 @@
 
 .submitButton {
   min-height: rem(24);
-}
-
-.textareaWrapper {
-  position: relative;
-  gap: 0;
 }

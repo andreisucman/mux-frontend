@@ -62,8 +62,6 @@ export default function UploadCard({
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [localUrl, setLocalUrl] = useState("");
 
-  console.log("originalUrl", originalUrl, "localUrl", localUrl);
-
   const disableUpload =
     (blurType === "eyes" && !eyesBlurredUrl && type === "head") ||
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
@@ -116,8 +114,8 @@ export default function UploadCard({
     setFaceBlurredUrl("");
   }, []);
 
-  const handleClickUpload = useCallback(() => {
-    handleUpload({ blurType, part, position, type, url: originalUrl, blurredImage });
+  const handleClickUpload = useCallback(async () => {
+    await handleUpload({ blurType, part, position, type, url: originalUrl, blurredImage });
     handleDeleteImage();
   }, [blurType, part, position, type, originalUrl, blurredImage]);
 

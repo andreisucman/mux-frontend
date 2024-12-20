@@ -87,12 +87,12 @@ export const questions = {
     },
     {
       icon: "👞",
-      question: "Is the color of these shoes appropriate for this panths?",
+      question: "Is the color of these shoes appropriate for these trousers?",
       color: "#909ca4",
     },
     {
       icon: "🧥",
-      question: "Will a regular or a slim fit jacked look better based on my weight?",
+      question: "Will a regular or a slim fit jacked look better with my weight?",
       color: "#b28f9d",
     },
   ],

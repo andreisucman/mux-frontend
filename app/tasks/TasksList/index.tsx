@@ -37,7 +37,7 @@ interface TaskTypeWithClick extends TaskType {
   onClick: () => void;
 }
 
-export default function TasksList({ type, serie, customStyles, disableAll }: Props) {
+export default function TasksList({ type, customStyles, disableAll }: Props) {
   const router = useRouter();
   const pathaname = usePathname();
   const searchParams = useSearchParams();
@@ -79,7 +79,7 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
       tasks?.filter((task) => task.type === type && task.status === "completed") || [];
 
     return Math.round((completedRelevantTasks.length / relevantTasks.length) * 100);
-  }, [tasks]);
+  }, [tasks, type]);
 
   const relevantTasks: TaskTypeWithClick[] | undefined = useMemo(
     () =>
@@ -196,7 +196,7 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Group className={classes.titleGroup}>
-        <StreakStatus completionPercent={taskCompletionPercent} serie={serie || 0} />
+        <StreakStatus completionPercent={taskCompletionPercent} />
         <ButtonsGroup
           type={type as TypeEnum}
           disableCalendar={disableAll}
@@ -218,20 +218,18 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
               />
             )}
             {displayComponent === "wait" && (
-              <Stack className={classes.waitComponentWrapper}>
-                <WaitComponent
-                  operationKey={type}
-                  description="Creating your task(s)"
-                  onComplete={() => {
-                    setDisplayComponent("loading");
-                    fetchLatestRoutinesAndTasks();
-                  }}
-                  onError={() => {
-                    setDisplayComponent("loading");
-                    deleteFromLocalStorage("runningAnalyses", type || "");
-                  }}
-                />
-              </Stack>
+              <WaitComponent
+                operationKey={type}
+                description="Creating your task(s)"
+                onComplete={() => {
+                  setDisplayComponent("loading");
+                  fetchLatestRoutinesAndTasks();
+                }}
+                onError={() => {
+                  setDisplayComponent("loading");
+                  deleteFromLocalStorage("runningAnalyses", type || "");
+                }}
+              />
             )}
             {displayComponent === "tasks" && (
               <Stack className={classes.scrollArea}>

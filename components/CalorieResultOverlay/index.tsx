@@ -16,6 +16,7 @@ import classes from "./CalorieResultOverlay.module.css";
 
 export type FoodAnalysisType = {
   shouldEat: boolean;
+  amount: number;
   energy: number;
   proteins: number;
   carbohydrates: number;
@@ -36,10 +37,11 @@ export default function CalorieResultOverlay({
   handleResetResult,
   handleUploadAsProof,
 }: Props) {
-  const { shouldEat, energy, proteins, carbohydrates, fats, explanation } = data;
+  const { shouldEat, amount, energy, proteins, carbohydrates, fats, explanation } = data;
 
   const tableData = {
     body: [
+      ["Amount", `${amount}g`],
       ["Calories", `${energy}kcal`],
       ["Protein", `${proteins}g`],
       ["Carbohydrates", `${carbohydrates}g`],
@@ -100,7 +102,7 @@ export default function CalorieResultOverlay({
               <Button className={classes.button} variant="default" onClick={handleResetResult}>
                 <IconRotate className="icon" style={{ marginRight: rem(6) }} /> New scan
               </Button>
-              <Button className={classes.button} variant="default" onClick={handleUploadAsProof}>
+              <Button className={classes.button} onClick={handleUploadAsProof}>
                 <IconTarget className="icon" style={{ marginRight: rem(6) }} /> Upload as proof
               </Button>
             </Group>
