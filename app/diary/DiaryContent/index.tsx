@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCircle, IconCircleOff, IconNote } from "@tabler/icons-react";
+import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Skeleton, Stack, Title } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
-import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import { formatDate } from "@/helpers/formatDate";
 import { TypeEnum } from "@/types/global";
 import DiaryRow from "../DiaryRow";
@@ -20,6 +19,7 @@ type Props = {
   hasMore: boolean;
   diaryRecords?: DiaryRecordType[];
   isLoading?: boolean;
+  timeZone?: string;
   openValue: string | null;
   setOpenValue: React.Dispatch<React.SetStateAction<string | null>>;
   handleFetchDiaryRecords: () => void;
@@ -30,11 +30,12 @@ export default function DiaryContent({
   diaryRecords,
   isLoading,
   openValue,
+  timeZone,
   setOpenValue,
   handleFetchDiaryRecords,
 }: Props) {
   const searchParams = useSearchParams();
-  const type = searchParams.get("type");
+  const type = searchParams.get("type") || "head";
 
   const memoizedDiaryRow = useCallback(
     (props: any) => {
@@ -47,7 +48,12 @@ export default function DiaryContent({
             </Title>
           </Accordion.Control>
           <Accordion.Panel>
-            <DiaryRow data={props.data} index={props.index} type={type as TypeEnum} />
+            <DiaryRow
+              data={props.data}
+              index={props.index}
+              type={type as TypeEnum}
+              timeZone={timeZone}
+            />
           </Accordion.Panel>
         </Accordion.Item>
       );

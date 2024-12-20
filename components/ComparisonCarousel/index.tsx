@@ -38,7 +38,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
     const modalTitle = getRedirectModalTitle({
       avatar,
       redirectUrl: `/club/routines?id=${data.userId}`,
-      title: `${userName} - ${upperFirst(part)} - ${formattedDate}`,
+      title: `${userName} - ${upperFirst(part)}`,
     });
 
     openResultModal({
@@ -62,7 +62,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
     ]);
 
     const newSlides = objects.map((object, index) => (
-      <Carousel.Slide key={index}>
+      <Carousel.Slide key={index} onClick={handleClickCarousel}>
         <ImageCard image={object.image} datePosition="top-left" showDate isStatic />
       </Carousel.Slide>
     ));
@@ -83,14 +83,14 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
         <Carousel
           slideSize={{ base: "50%" }}
           align="start"
-          withControls={false}
+          withControls
           slidesToScroll={2}
           withIndicators={slides && slides.length > 2}
           className={classes.carousel}
-          onClick={handleClickCarousel}
           classNames={{
             viewport: classes.carouselViewport,
             root: classes.carouselRoot,
+            control: "carouselControl"
           }}
         >
           {slides}

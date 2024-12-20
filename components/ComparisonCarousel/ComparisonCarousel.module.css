@@ -28,3 +28,12 @@
   gap: rem(8);
   padding: rem(16) rem(16) 0;
 }
+
+.carouselControl {
+  background-color: alpha(var(--mantine-color-dark-6), 0.75);
+  color: white;
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-dark-6), 1);
+  }
+}

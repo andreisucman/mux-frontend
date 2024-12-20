@@ -24,7 +24,7 @@ export default function StreakStatus({ completionPercent, customRingStyles, seri
     <Group className={classes.container}>
       <RingProgress
         size={30}
-        thickness={4}
+        thickness={3}
         label={
           <IconFlameFilled
             className={classes.icon}

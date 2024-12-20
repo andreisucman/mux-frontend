@@ -129,12 +129,12 @@ export default function UploadCarousel({
             align="start"
             slideGap={16}
             slidesToScroll={1}
-            withControls={false}
-            withIndicators={true}
+            withControls
             classNames={{
               root: classes.root,
               viewport: classes.viewport,
               container: classes.container,
+              control: "carouselControl"
             }}
           >
             {slides}

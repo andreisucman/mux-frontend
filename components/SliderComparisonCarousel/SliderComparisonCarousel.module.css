@@ -16,11 +16,7 @@
 }
 
 .control {
-  opacity: 25%;
-
   &[data-inactive] {
-    cursor: default;
-    opacity: 0;
     display: none;
   }
 }

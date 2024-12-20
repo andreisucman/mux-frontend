@@ -97,3 +97,18 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   margin: auto;
 }
+
+.carouselControl {
+  background-color: alpha(var(--mantine-color-dark-6), 0.75);
+  color: white;
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-dark-6), 1);
+  }
+
+  &[data-inactive] {
+    cursor: default;
+    opacity: 0;
+    visibility: hidden;
+  }
+}

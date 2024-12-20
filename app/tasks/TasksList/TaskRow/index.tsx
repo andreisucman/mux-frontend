@@ -199,7 +199,7 @@ export default function TaskRow({
       )}
       <RingProgress
         size={85}
-        thickness={9}
+        thickness={8}
         label={ringLabel}
         className={classes.ringProgress}
         styles={{ label: { display: "flex", justifyContent: "center" } }}

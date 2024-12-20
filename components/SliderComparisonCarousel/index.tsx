@@ -40,7 +40,7 @@ export default function SliderComparisonCarousel({
         height="50vh"
         orientation="vertical"
         className={classes.carousel}
-        classNames={{ control: classes.control, controls: classes.controls, slide: classes.slide }}
+        classNames={{ control: `carouselControl ${classes.control}`, controls: classes.controls, slide: classes.slide }}
       >
         {slides}
       </Carousel>

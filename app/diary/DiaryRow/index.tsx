@@ -15,9 +15,10 @@ type Props = {
   data: DiaryRecordType;
   index: number;
   type: TypeEnum;
+  timeZone?: string;
 };
 
-export default function DiaryRow({ data, type, index }: Props) {
+export default function DiaryRow({ data, type, timeZone }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
   const [isUploading, setIsUploading] = useState(false);
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
@@ -54,7 +55,7 @@ export default function DiaryRow({ data, type, index }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls[0], type, activity: data.activity },
+          body: { audio: audioUrls[0], type, timeZone, activity: data.activity },
         });
 
         if (response.status === 200) {
@@ -74,7 +75,7 @@ export default function DiaryRow({ data, type, index }: Props) {
         console.log("Error in handleSubmit: ", err);
       }
     },
-    [isUploading]
+    [isUploading, timeZone, type]
   );
 
   return (

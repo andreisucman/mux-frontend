@@ -140,6 +140,7 @@ export default function DiaryPage() {
           diaryRecords={diaryRecords}
           isLoading={isLoading}
           openValue={openValue}
+          timeZone={timeZone}
           setOpenValue={setOpenValue}
           handleFetchDiaryRecords={handleFetchDiaryRecords}
         />

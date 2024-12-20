@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
@@ -9,7 +9,7 @@ import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 import { ConsiderationsInput } from "../../components/ConsiderationsInput";
 import SkeletonWrapper from "../SkeletonWrapper";
-import RoutineList from "./TasksList";
+import TasksList from "./TasksList";
 
 export const runtime = "edge";
 
@@ -47,16 +47,21 @@ export default function Tasks() {
   );
 
   const { streaks } = userDetails || {};
-  const { healthStreak, faceStreak, bodyStreak } = streaks || {};
+  const {
+    healthStreak = 0,
+    faceStreak = 0,
+    scalpStreak = 0,
+    mouthStreak = 0,
+    bodyStreak = 0,
+  } = streaks || {};
 
-  const streak =
-    type === "health"
+  const streak = useMemo(() => {
+    return type === "health"
       ? healthStreak
-      : type === "head"
-        ? faceStreak
-        : type === "body"
-          ? bodyStreak
-          : undefined;
+      : type === "body"
+        ? bodyStreak
+        : faceStreak + scalpStreak + mouthStreak;
+  }, [type, healthStreak, bodyStreak, faceStreak, scalpStreak, mouthStreak]);
 
   return (
     <Stack flex={1} className="smallPage">
@@ -68,7 +73,7 @@ export default function Tasks() {
           saveValue={updateSpecialConsiderations}
           maxLength={300}
         />
-        <RoutineList serie={streak} type={type as string} />
+        <TasksList serie={streak} type={type as string} />
       </SkeletonWrapper>
     </Stack>
   );

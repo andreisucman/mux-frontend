@@ -11,10 +11,3 @@
   flex: 1;
   height: 100%;
 }
-
-.control {
-  &[data-inactive] {
-    cursor: default;
-    opacity: 0;
-  }
-}

@@ -21,5 +21,6 @@
   width: rem(12);
   height: rem(12);
   display: flex;
-  margin-left: rem(1);
+  margin-left: rem(3);
+  color: var(--mantine-color-gray-3);
 }

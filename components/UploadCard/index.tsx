@@ -62,10 +62,15 @@ export default function UploadCard({
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [localUrl, setLocalUrl] = useState("");
 
+  console.log("originalUrl", originalUrl, "localUrl", localUrl);
+
   const disableUpload =
     (blurType === "eyes" && !eyesBlurredUrl && type === "head") ||
     (blurType === "face" && !faceBlurredUrl && type === "body") ||
     !localUrl;
+
+  const blurredImage =
+    blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
 
   const relevantPlaceholder = useMemo(
     () => getPlaceholderOrOverlay({ sex, part, type, position, scanType, data: placeholders }),
@@ -111,6 +116,11 @@ export default function UploadCard({
     setFaceBlurredUrl("");
   }, []);
 
+  const handleClickUpload = useCallback(() => {
+    handleUpload({ blurType, part, position, type, url: originalUrl, blurredImage });
+    handleDeleteImage();
+  }, [blurType, part, position, type, originalUrl, blurredImage]);
+
   const openPhotoCapturer = useCallback(() => {
     modals.openContextModal({
       modal: "general",
@@ -127,9 +137,6 @@ export default function UploadCard({
       ),
     });
   }, [loadLocally, relevantSilhouette, width, height]);
-
-  const blurredImage =
-    blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
 
   return (
     <Stack className={classes.container}>
@@ -178,9 +185,7 @@ export default function UploadCard({
                 <Button
                   className={classes.button}
                   disabled={disableUpload || isLoading}
-                  onClick={() =>
-                    handleUpload({ blurType, part, position, type, url: originalUrl, blurredImage })
-                  }
+                  onClick={handleClickUpload}
                 >
                   <IconUpload className="icon" style={{ marginRight: rem(6) }} />
                   Upload

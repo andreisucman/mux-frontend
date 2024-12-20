@@ -223,7 +223,7 @@ export default function TasksList({ type, serie, customStyles, disableAll }: Pro
                   operationKey={type}
                   description="Creating your task(s)"
                   onComplete={() => {
-                    setDisplayComponent(relevantTasks ? "tasks" : "createTaskOverlay");
+                    setDisplayComponent("loading");
                     fetchLatestRoutinesAndTasks();
                   }}
                   onError={() => {

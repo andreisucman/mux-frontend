@@ -137,7 +137,7 @@ export default function AnalysisCarousel({ type }: Props) {
           classNames={{
             root: classes.root,
             controls: classes.controls,
-            control: classes.control,
+            control: "carouselControl",
             viewport: classes.viewport,
             container: classes.container,
           }}

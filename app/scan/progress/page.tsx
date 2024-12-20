@@ -88,6 +88,11 @@ export default function ScanProgress() {
                 blurType,
                 blurredImage,
                 image: finalUrl,
+                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/front-man.webp",
+                // image:"https://mux-data.nyc3.cdn.digitaloceanspaces.com/man-right.webp",
+                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/man-left.webp",
+                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/mouth-man.webp",
+                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/top-man.webp",
                 userId,
               },
             });
