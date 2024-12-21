@@ -217,10 +217,6 @@ export interface UserDataType extends DefaultUserType {
     head: RequirementType[];
     body: RequirementType[];
   };
-  styleRequirements: {
-    head: RequirementType[];
-    body: RequirementType[];
-  };
   toAnalyze: {
     head: ToAnalyzeType[];
     body: ToAnalyzeType[];

@@ -146,7 +146,6 @@ export default function ClubAbout(props: Props) {
 
   const toggleQuestions = useCallback(() => {
     setShowQuestions((prev) => {
-      console.log("prev", prev);
       saveToLocalStorage("showAboutQuestions", !prev);
       return !prev;
     });

@@ -19,7 +19,7 @@ type Props = {
   taskExpired: boolean;
   instruction: string;
   silhouette: string;
-  uploadProof: (props: any) => void;
+  uploadProof: (props: any) => Promise<void>;
 };
 
 const RECORDING_TIME = 15000;
@@ -290,11 +290,20 @@ export default function VideoRecorder({
     [captureType]
   );
 
-  const handleSubmit = useCallback(() => {
-    if (!captureType) return;
-    if (!recordedBlob) return;
-
-    uploadProof({
+  const handleSubmit = useCallback(async () => {
+    console.log(
+      `handleSubmit {
+      recordedBlob,
+      captureType,
+      blurType,
+    }`,
+      {
+        recordedBlob,
+        captureType,
+        blurType,
+      }
+    );
+    await uploadProof({
       recordedBlob,
       captureType,
       blurType,
@@ -375,12 +384,7 @@ export default function VideoRecorder({
         typeRecord = savedRecords[captureType];
 
         if (typeRecord) {
-          const blob = base64ToBlob(
-            typeRecord,
-            captureType === "image" ? "image/jpeg" : "video/webm"
-          );
-
-          setRecordedBlob(blob);
+          blob = base64ToBlob(typeRecord, captureType === "image" ? "image/jpeg" : "video/webm");
         }
       }
 

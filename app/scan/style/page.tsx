@@ -4,16 +4,38 @@ import React, { useCallback, useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
 import UploadCarousel from "@/components/UploadCarousel";
+import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import { ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
+import { PositionEnum, ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import classes from "./style.module.css";
 
 export const runtime = "edge";
+
+const defaultStyleRequirements = {
+  head: [
+    {
+      title: "Style scan: Head",
+      instruction: "Upload a photo of your head how you usually style it.",
+      type: TypeEnum.HEAD,
+      part: PartEnum.STYLE,
+      position: PositionEnum.FRONT,
+    },
+  ],
+  body: [
+    {
+      title: "Style scan: Outfit",
+      instruction: "Take a full body photo of your outfit.",
+      type: TypeEnum.BODY,
+      part: PartEnum.STYLE,
+      position: PositionEnum.FRONT,
+    },
+  ],
+};
 
 type HandleUploadStyleProps = {
   url: string;
@@ -25,16 +47,12 @@ export default function UploadStyle() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [progress, setProgress] = useState(0);
-  const [localUrl, setLocalUrl] = useState("");
-  const [originalUrl, setOriginalUrl] = useState("");
-  const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
-  const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, latestStyleAnalysis, styleRequirements } = userDetails || {};
+  const { _id: userId, latestStyleAnalysis } = userDetails || {};
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
-  const typeStyleRequirements = styleRequirements?.[finalType as "head" | "body"];
+  const typeStyleRequirements = defaultStyleRequirements?.[finalType as "head" | "body"];
   const typeStyleAnalysis = latestStyleAnalysis?.[finalType as "head" | "body"];
   const { mainUrl } = typeStyleAnalysis || {};
 
@@ -109,32 +127,17 @@ export default function UploadStyle() {
     [userId, setUserDetails, type]
   );
 
-  const handleResetOnChangeType = useCallback(() => {
-    setLocalUrl("");
-    setOriginalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
-  }, []);
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       {typeStyleRequirements ? (
         <>
-          <ScanHeader type={type as TypeEnum} onSelect={handleResetOnChangeType} />
+          <ScanHeader type={type as TypeEnum} />
           <UploadCarousel
             latestStyleImage={mainUrl?.url}
             requirements={typeStyleRequirements}
             type={type as TypeEnum}
             progress={progress}
-            localUrl={localUrl}
-            originalUrl={originalUrl}
-            eyesBlurredUrl={eyesBlurredUrl}
-            faceBlurredUrl={faceBlurredUrl}
             isLoading={isLoading}
-            setLocalUrl={setLocalUrl}
-            setOriginalUrl={setOriginalUrl}
-            setEyesBlurredUrl={setEyesBlurredUrl}
-            setFaceBlurredUrl={setFaceBlurredUrl}
             handleUpload={handleUpload}
             scanType={ScanTypeEnum.STYLE}
           />

@@ -97,7 +97,7 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
   return (
     <Stack className={classes.container}>
       {error && (
-        <Text size="sm" className={classes.error}>
+        <Text size="xs" className={classes.error}>
           {error}
         </Text>
       )}

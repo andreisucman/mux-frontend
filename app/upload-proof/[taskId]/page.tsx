@@ -14,7 +14,6 @@ import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
-import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -81,7 +80,8 @@ export default function UploadProof(props: Props) {
 
   const uploadProof = useCallback(
     async ({ recordedBlob, captureType, blurType }: HandleUploadProps) => {
-      if (status !== "authenticated") return;
+      if (!captureType) return;
+      if (!recordedBlob) return;
 
       try {
         setDisplayComponent("waitComponent");
@@ -105,15 +105,13 @@ export default function UploadProof(props: Props) {
 
           saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
         }
-
-        deleteFromIndexedDb(captureType === "image" ? "proofImage" : "proofVideo");
       } catch (err) {
         console.log("Error in uploadProof: ", err);
         setDisplayComponent("videoRecorder");
         saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
       }
     },
-    [status, taskId]
+    [taskId]
   );
 
   const handleFetchTaskInfo = useCallback(async (taskId: string) => {

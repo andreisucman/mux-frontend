@@ -66,7 +66,7 @@ export default function StyleExplanationContainer({
         />
       </Group>
 
-      <Stack className={classes.content}>
+      <Stack className={`scrollbar ${classes.content}`}>
         <Stack className={classes.textWrapper}>
           {textArray?.map((textRow, index) => (
             <Text key={index} size={size} className={classes.description}>
