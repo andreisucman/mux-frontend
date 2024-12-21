@@ -14,6 +14,7 @@ import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
+import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -105,6 +106,8 @@ export default function UploadProof(props: Props) {
 
           saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
         }
+        deleteFromIndexedDb("proofVideo");
+        deleteFromIndexedDb("proofImage");
       } catch (err) {
         console.log("Error in uploadProof: ", err);
         setDisplayComponent("videoRecorder");
@@ -190,6 +193,7 @@ export default function UploadProof(props: Props) {
                   setDisplayComponent("videoRecorder");
                   deleteFromLocalStorage("runningAnalyses", taskId || "");
                 }}
+                customContainerStyles={{ margin: "unset", paddingTop: "40%" }}
               />
             )}
             {componentToDisplay === "videoRecorder" && status === "authenticated" && (

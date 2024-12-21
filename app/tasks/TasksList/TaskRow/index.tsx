@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
 import { IconCheck, IconSun, IconSunrise, IconSunset } from "@tabler/icons-react";
-import { ActionIcon, Group, rem, RingProgress, Stack, Text } from "@mantine/core";
+import { ActionIcon, Group, rem, RingProgress, Skeleton, Stack, Text } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import Timer from "@/components/Timer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { formatDate } from "@/helpers/formatDate";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { daysFrom } from "@/helpers/utils";
 import { RequiredSubmissionType } from "@/types/global";
 import IconWithColor from "../CreateTaskOverlay/IconWithColor";
@@ -35,6 +36,7 @@ export default function TaskRow({
   requiredSubmissions,
   onClick,
 }: Props) {
+  const showSkeleton = useShowSkeleton();
   const { height, ref } = useElementSize();
 
   const submitted = requiredSubmissions?.filter((r) => r.isSubmitted);
@@ -168,43 +170,45 @@ export default function TaskRow({
   );
 
   return (
-    <Group
-      ref={ref}
-      className={classes.container}
-      onClick={onClick ? onClick : undefined}
-      style={customStyles ? customStyles : {}}
-    >
-      <IconWithColor
-        icon={icon || ""}
-        color={color}
-        customStyles={{
-          fontSize: rem(22),
-          minWidth: rem(50),
-          minHeight: rem(115),
-        }}
-      />
-      <Stack className={classes.wrapper}>
-        <Text className={classes.title} lineClamp={1}>
-          {name}
-        </Text>
-        <Text className={classes.description} c="dimmed" size="sm" lineClamp={2}>
-          {description}
-        </Text>
-        {timer}
-      </Stack>
-      {dayTimeSpecified && (
-        <Stack h={height} className={classes.dayTimeContainer}>
-          {dayTimeIcons}
+    <Skeleton visible={showSkeleton}>
+      <Group
+        ref={ref}
+        className={classes.container}
+        onClick={onClick ? onClick : undefined}
+        style={customStyles ? customStyles : {}}
+      >
+        <IconWithColor
+          icon={icon || ""}
+          color={color}
+          customStyles={{
+            fontSize: rem(22),
+            minWidth: rem(50),
+            minHeight: rem(115),
+          }}
+        />
+        <Stack className={classes.wrapper}>
+          <Text className={classes.title} lineClamp={1}>
+            {name}
+          </Text>
+          <Text className={classes.description} c="dimmed" size="sm" lineClamp={2}>
+            {description}
+          </Text>
+          {timer}
         </Stack>
-      )}
-      <RingProgress
-        size={85}
-        thickness={8}
-        label={ringLabel}
-        className={classes.ringProgress}
-        styles={{ label: { display: "flex", justifyContent: "center" } }}
-        sections={sections}
-      />
-    </Group>
+        {dayTimeSpecified && (
+          <Stack h={height} className={classes.dayTimeContainer}>
+            {dayTimeIcons}
+          </Stack>
+        )}
+        <RingProgress
+          size={85}
+          thickness={8}
+          label={ringLabel}
+          className={classes.ringProgress}
+          styles={{ label: { display: "flex", justifyContent: "center" } }}
+          sections={sections}
+        />
+      </Group>
+    </Skeleton>
   );
 }

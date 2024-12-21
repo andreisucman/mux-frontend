@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconNote } from "@tabler/icons-react";
 import useSWR from "swr";
-import { Button, Group, rem, Skeleton, Stack } from "@mantine/core";
+import { Button, Group, Loader, rem, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import WaitComponent from "@/components/WaitComponent";
@@ -19,7 +19,7 @@ import {
   getFromLocalStorage,
   saveToLocalStorage,
 } from "@/helpers/localStorage";
-import { TaskType, TypeEnum, UserDataType } from "@/types/global";
+import { TaskType, TypeEnum } from "@/types/global";
 import ButtonsGroup from "./ButtonsGroup";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import { HandleSaveTaskProps } from "./CreateTaskOverlay/AddATaskContainer/types";
@@ -39,11 +39,13 @@ interface TaskTypeWithClick extends TaskType {
 }
 
 export default function TasksList({ type, customStyles, disableAll }: Props) {
+  const { userDetails, setUserDetails } = useContext(UserContext);
+
   const router = useRouter();
   const pathaname = usePathname();
   const searchParams = useSearchParams();
   const [pageLoaded, setPageLoaded] = useState(false);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const [relevantTasks, setRelevantTasks] = useState<TaskTypeWithClick[]>();
 
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "tasks"
@@ -81,19 +83,6 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
 
     return Math.round((completedRelevantTasks.length / relevantTasks.length) * 100);
   }, [tasks, type]);
-
-  const relevantTasks: TaskTypeWithClick[] | undefined = useMemo(
-    () =>
-      tasks
-        ?.filter((task) => task.type === type)
-        .map((fTask) => ({
-          ...fTask,
-          onClick: () => {
-            router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
-          },
-        })),
-    [type, tasks, pathaname, userDetails]
-  );
 
   const canAddDiaryRecord = useMemo(() => {
     const activeTasks =
@@ -159,6 +148,18 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
   useSWR(userId, () => fetchUserData(setUserDetails));
 
   useEffect(() => {
+    const relevant = tasks
+      ?.filter((task) => task.type === type)
+      .map((fTask) => ({
+        ...fTask,
+        onClick: () => {
+          router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
+        },
+      }));
+    setRelevantTasks(relevant);
+  }, [type, tasks, pathaname, userDetails]);
+
+  useEffect(() => {
     if (!pageLoaded) return;
 
     if (isAnalysisGoing) {
@@ -189,7 +190,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
           handleSaveTask={handleSaveTask}
         />
       </Group>
-      <Skeleton visible={displayComponent === "loading"} className={"skeleton"}>
+      {displayComponent !== "loading" && (
         <CreateRoutineProvider>
           <Stack className={classes.content}>
             {displayComponent === "scanOverlay" && <UploadOverlay type={type as TypeEnum} />}
@@ -205,13 +206,14 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                 operationKey={type}
                 description="Creating your task(s)"
                 onComplete={() => {
-                  setDisplayComponent("loading");
+                  setRelevantTasks(undefined);
                   fetchUserData(setUserDetails);
                 }}
                 onError={() => {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", type || "");
                 }}
+                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
               />
             )}
             {displayComponent === "tasks" && (
@@ -243,7 +245,8 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
             )}
           </Stack>
         </CreateRoutineProvider>
-      </Skeleton>
+      )}
+      {displayComponent === "loading" && <Loader m="0 auto" pt="15%" />}
     </Stack>
   );
 }

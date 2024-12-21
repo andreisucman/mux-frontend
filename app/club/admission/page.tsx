@@ -13,6 +13,7 @@ import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
+import openErrorModal from "@/helpers/openErrorModal";
 import RedirectToWalletButton from "../BalancePane/RedirectToWalletButton";
 import DataSharingSwitches from "./DataSharingSwitches";
 import classes from "./admission.module.css";
@@ -47,6 +48,8 @@ export default function ClubAdmission() {
 
       if (response.status === 200) {
         router.push(response.message);
+      } else {
+        openErrorModal({ description: response.error });
       }
     } catch (err) {
       console.log("Error in handleCreateConnectAccount: ", err);

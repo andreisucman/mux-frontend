@@ -18,9 +18,9 @@
 }
 
 .icon {
-  width: rem(12);
-  height: rem(12);
+  width: rem(16);
+  height: rem(16);
   display: flex;
-  margin-left: rem(3);
+  margin-left: rem(2);
   color: var(--mantine-color-gray-3);
 }

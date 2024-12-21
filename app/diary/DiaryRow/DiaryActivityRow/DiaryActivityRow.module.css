@@ -1,7 +1,6 @@
 .container {
   padding: 0;
   overflow: auto;
-  /* min-height: rem(300); */
 }
 
 .wrapper {

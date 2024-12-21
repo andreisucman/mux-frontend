@@ -208,7 +208,7 @@ export default function UploadCard({
             <Text size="sm" c="dimmed">
               Uploading...
             </Text>
-            <Progress value={progress} w="100%" size={16} style={{ minHeight: rem(8), marginBottom: rem(16) }} />
+            <Progress value={progress} w="100%" size={12} style={{ minHeight: rem(8), marginBottom: rem(16) }} />
           </Stack>
         )}
       </Stack>

@@ -8,7 +8,6 @@ import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { delayExecution } from "@/helpers/utils";
-import { UserDataType } from "@/types/global";
 import Disclaimer from "./Disclaimer";
 import classes from "./WaitComponent.module.css";
 
@@ -107,7 +106,7 @@ function WaitComponent({
     <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
       <Stack className={classes.wrapper} style={customWrapperStyles ? customWrapperStyles : {}}>
         <Loader type="bars" mb={rem(8)} />
-        <Progress className={classes.progress} size={16} w="100%" value={progress || 0} animated />
+        <Progress className={classes.progress} size={12} w="100%" value={progress || 0} animated />
         <Text c="dimmed" size="sm">
           {finalDescription} {progress && <span>({progress}%)</span>}
         </Text>

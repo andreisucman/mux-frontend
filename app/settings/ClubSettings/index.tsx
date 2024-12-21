@@ -116,7 +116,7 @@ export default function ClubSettings() {
         } else {
           setUserDetails((prev: UserDataType) => ({
             ...prev,
-            club: { ...prev.club, [type]: data },
+            [type]: data,
           }));
         }
 

@@ -52,7 +52,7 @@ export default function DataSharingSwitches({ title }: Props) {
         console.log("Error in updatePrivacy: ", err);
       }
     },
-    [club]
+    [userDetails]
   );
 
   return (
