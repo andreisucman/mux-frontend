@@ -55,7 +55,7 @@ export default function ClubAbout(props: Props) {
     <IconChevronDown className="icon" />
   );
 
-  const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions:";
+  const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions";
 
   const submitResponse = useCallback(
     async ({ question, reply, audioBlobs, setIsLoading, setText }: SubmitAboutResponseType) => {

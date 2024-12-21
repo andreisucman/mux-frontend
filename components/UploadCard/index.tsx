@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
-import { ActionIcon, Button, Group, Progress, rem, Stack, Title } from "@mantine/core";
+import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
@@ -157,13 +157,14 @@ export default function UploadCard({
           />
         </Stack>
 
-        <Stack className={classes.checkboxAndButtons}>
-          <BlurButtons
-            disabled={isBlurLoading || !!isLoading}
-            originalUrl={originalUrl}
-            onBlurClick={onBlurClick}
-          />
-          {!isLoading && (
+        {!isLoading && (
+          <Stack className={classes.checkboxAndButtons}>
+            <BlurButtons
+              disabled={isBlurLoading || !!isLoading}
+              originalUrl={originalUrl}
+              onBlurClick={onBlurClick}
+            />
+
             <Group
               className={classes.buttonGroup}
               style={customButtonStyles ? customButtonStyles : {}}
@@ -200,11 +201,14 @@ export default function UploadCard({
                 </ActionIcon>
               )}
             </Group>
-          )}
-        </Stack>
+          </Stack>
+        )}
         {isLoading && (
           <Stack className={classes.uploadingStack}>
-            <Progress value={progress} w="100%" style={{ minHeight: rem(8) }} />
+            <Text size="sm" c="dimmed">
+              Uploading...
+            </Text>
+            <Progress value={progress} w="100%" size={16} style={{ minHeight: rem(8), marginBottom: rem(16) }} />
           </Stack>
         )}
       </Stack>

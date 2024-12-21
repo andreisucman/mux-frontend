@@ -61,7 +61,7 @@ export default function AllStyle() {
     []
   );
 
-  const handleContainerClick = useCallback((data: SimpleStyleType, showTrackButton: boolean) => {
+  const handleContainerClick = useCallback((data: SimpleStyleType) => {
     const titleText =
       data.styleName === data.compareStyleName
         ? `${upperFirst(data.styleName)}`

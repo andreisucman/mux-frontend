@@ -10,6 +10,7 @@ import classes from "./SearchButton.module.css";
 
 type Props = {
   isDisabled?: boolean;
+  forceEnabled?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
   showActivityIndicator?: boolean;
   collection: string;
@@ -23,6 +24,7 @@ type Props = {
 export default function SearchButton({
   size = "md",
   isDisabled,
+  forceEnabled,
   collection,
   showActivityIndicator,
   searchPlaceholder,
@@ -38,6 +40,8 @@ export default function SearchButton({
   const [spotlightActions, setSpotlightActions] = useState<SpotlightActionData[]>([]);
 
   const query = searchParams.get("query");
+
+  const disableSpotlight = isDisabled || (spotlightActions.length === 0 && !forceEnabled);
 
   const handleSearch = useCallback(
     (searchQuery: string) => {
@@ -123,12 +127,13 @@ export default function SearchButton({
           size={size}
           variant="default"
           onClick={() => spotlight.open()}
-          disabled={isDisabled}
+          disabled={disableSpotlight}
         >
           <IconSearch className="icon" />
         </ActionIcon>
       </Group>
       <Spotlight
+        disabled={disableSpotlight}
         store={spotlightStore}
         actions={spotlightActions}
         onQueryChange={(query: string) => {

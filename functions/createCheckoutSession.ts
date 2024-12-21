@@ -2,6 +2,7 @@ import React from "react";
 import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
+import fetchUserData from "./fetchUserData";
 
 type Props = {
   redirectUrl?: string;
@@ -40,18 +41,7 @@ export default async function createCheckoutSession({
       }
 
       if (subscriptionId) {
-        const userDataResponse = await callTheServer({
-          endpoint: "getUserData",
-          method: "GET",
-        });
-
-        if (userDataResponse.status === 200) {
-          if (setUserDetails)
-            setUserDetails((prev) => ({
-              ...(prev || {}),
-              ...userDataResponse.message,
-            }));
-        }
+        fetchUserData(setUserDetails);
         modals.closeAll();
       }
 

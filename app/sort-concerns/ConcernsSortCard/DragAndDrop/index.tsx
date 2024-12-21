@@ -1,6 +1,6 @@
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { IconCircleMinus, IconCirclePlus, IconGripVertical } from "@tabler/icons-react";
-import cx from "clsx";
+import cn from "classnames";
 import { ActionIcon, Group, rem, Text } from "@mantine/core";
 import { useListState, useShallowEffect } from "@mantine/hooks";
 import { normalizeString } from "@/helpers/utils";
@@ -25,7 +25,7 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
     <Draggable key={item.name} index={index} draggableId={item.name} isDragDisabled={disabled}>
       {(provided, snapshot) => (
         <div
-          className={cx(classes.item, {
+          className={cn(classes.item, {
             [classes.itemDragging]: snapshot.isDragging,
             [classes.disabled]: item.isDisabled,
           })}
@@ -35,7 +35,7 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
         >
           <Group wrap="nowrap" gap={0}>
             <div
-              className={cx(classes.handle, {
+              className={cn(classes.handle, {
                 [classes.disabled]: item.isDisabled,
               })}
             >
@@ -43,7 +43,7 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
               <Text className={classes.symbol}>{index + 1}</Text>
             </div>
             <div
-              className={cx({
+              className={cn({
                 [classes.disabled]: item.isDisabled,
               })}
             >

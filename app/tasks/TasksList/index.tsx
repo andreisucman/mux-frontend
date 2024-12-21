@@ -11,6 +11,7 @@ import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import fetchUserData from "@/functions/fetchUserData";
 import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import {
@@ -104,24 +105,6 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     return datePassed && tasks && tasks.length > 0 && activeTasks.length === 0;
   }, [nextDiaryRecordAfter, tasks, type]);
 
-  const fetchLatestRoutinesAndTasks = useCallback(async () => {
-    try {
-      const response = await callTheServer({
-        endpoint: `getUserData`,
-        method: "GET",
-      });
-
-      if (response.status === 200) {
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          ...response.message,
-        }));
-      }
-    } catch (err) {
-      console.log("Error in fetchLatestRoutinesAndTasks: ", err);
-    }
-  }, []);
-
   const handleSaveTask = useCallback(
     async ({
       date,
@@ -173,7 +156,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     [userId, type]
   );
 
-  useSWR(userId, fetchLatestRoutinesAndTasks);
+  useSWR(userId, () => fetchUserData(setUserDetails));
 
   useEffect(() => {
     if (!pageLoaded) return;
@@ -223,7 +206,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                 description="Creating your task(s)"
                 onComplete={() => {
                   setDisplayComponent("loading");
-                  fetchLatestRoutinesAndTasks();
+                  fetchUserData(setUserDetails);
                 }}
                 onError={() => {
                   setDisplayComponent("loading");

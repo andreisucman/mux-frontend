@@ -35,7 +35,6 @@ const [spotlightStore, userSpotlight] = createSpotlight();
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
@@ -96,6 +95,7 @@ function Header() {
                   size="lg"
                   collection="user"
                   searchPlaceholder="Search users"
+                  forceEnabled
                   spotlight={userSpotlight}
                   spotlightStore={spotlightStore}
                   customConstructAction={constructUserActions}

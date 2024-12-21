@@ -24,10 +24,11 @@
 
 .uploadingStack {
   max-width: rem(150);
+  min-height: rem(106);
   width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  gap: rem(8);
   height: rem(36);
 }
 

@@ -17,6 +17,8 @@ const defaultSetUser = () => {};
 
 const defaultSetStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>> = () => {};
 
+const blockFetchUserDataPaths = ["/", "/proof", "/style"];
+
 export const UserContext = createContext<UserContextType>({
   status: AuthStateEnum.UNAUTHENTICATED,
   setStatus: defaultSetStatus,
@@ -106,6 +108,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;
     if (error) return;
+    if (blockFetchUserDataPaths.includes(pathname)) return;
     fetchUserData(setUserDetails);
   });
 
