@@ -76,7 +76,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
   const isAnalysisGoing = runningAnalyses?.[type];
 
   const taskCompletionPercent = useMemo(() => {
-    const relevantTasks = tasks?.filter((task) => task.type === type) || [];
+    if (!relevantTasks) return 0;
 
     const completedRelevantTasks =
       tasks?.filter((task) => task.type === type && task.status === "completed") || [];
@@ -161,6 +161,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
 
   useEffect(() => {
     if (!pageLoaded) return;
+    if (!tasks) return;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
@@ -213,7 +214,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", type || "");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: "25%" }}
               />
             )}
             {displayComponent === "tasks" && (

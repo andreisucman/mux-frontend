@@ -1,5 +1,5 @@
-import React from "react";
-import { IconFlameFilled } from "@tabler/icons-react";
+import React, { memo } from "react";
+import { IconFlame, IconFlameFilled } from "@tabler/icons-react";
 import { RingProgress } from "@mantine/core";
 import classes from "./StreakStatus.module.css";
 
@@ -8,7 +8,7 @@ type Props = {
   customRingStyles?: { [key: string]: any };
 };
 
-export default function StreakStatus({ completionPercent, customRingStyles }: Props) {
+function StreakStatus({ completionPercent, customRingStyles }: Props) {
   const sections = [];
 
   sections.push(
@@ -19,19 +19,23 @@ export default function StreakStatus({ completionPercent, customRingStyles }: Pr
     }
   );
 
+  const label =
+    completionPercent === 100 ? (
+      <IconFlameFilled className={classes.icon} color={"var(--mantine-color-orange-7)"} />
+    ) : (
+      <IconFlame className={classes.icon} color="white" />
+    );
+
   return (
     <RingProgress
       size={36}
       thickness={4}
-      label={
-        <IconFlameFilled
-          className={classes.icon}
-          color={completionPercent === 100 ? "var(--mantine-color-orange-7)" : undefined}
-        />
-      }
+      label={label}
       sections={sections}
       styles={customRingStyles}
       classNames={{ label: classes.label }}
     />
   );
 }
+
+export default memo(StreakStatus);

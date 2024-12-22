@@ -106,8 +106,6 @@ export default function UploadProof(props: Props) {
 
           saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
         }
-        deleteFromIndexedDb("proofVideo");
-        deleteFromIndexedDb("proofImage");
       } catch (err) {
         console.log("Error in uploadProof: ", err);
         setDisplayComponent("videoRecorder");
@@ -127,6 +125,8 @@ export default function UploadProof(props: Props) {
     await fetchProofInfo(taskId);
     handleFetchTaskInfo(taskId);
     setDisplayComponent("completed");
+    deleteFromIndexedDb("proofVideo");
+    deleteFromIndexedDb("proofImage");
   }, []);
 
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function UploadProof(props: Props) {
                   setDisplayComponent("videoRecorder");
                   deleteFromLocalStorage("runningAnalyses", taskId || "");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "40%" }}
+                customWrapperStyles={{ transform: "translateY(-50%)" }}
               />
             )}
             {componentToDisplay === "videoRecorder" && status === "authenticated" && (
