@@ -4,7 +4,7 @@ import { Loader, SimpleGrid, Stack, Title, UnstyledButton } from "@mantine/core"
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
-import fetchClubTrackYou from "@/functions/fetchClubTrackYou";
+import fetchFollowYou from "@/functions/fetchFollowYou";
 import { ClubUserType } from "@/types/global";
 import FollowYouRow from "../FollowYouRow";
 import AllFollowersModalContent from "./AllFollowersModalContent";
@@ -26,7 +26,7 @@ export default function FollowersList() {
 
   const handleFetchClubTrackYou = useCallback(async () => {
     try {
-      const items = await fetchClubTrackYou();
+      const items = await fetchFollowYou();
       setTrackYouData(items);
     } catch (err) {
       console.log("Error in handleFetchClubTrackYou: ", err);

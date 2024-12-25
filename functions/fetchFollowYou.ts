@@ -1,16 +1,16 @@
 import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 
-type GetClubTrackYouProps = {
+type FetchFollowYouProps = {
   skip: boolean;
   existingCount?: number;
 };
 
-const fetchClubTrackYou = async (props?: GetClubTrackYouProps) => {
+const fetchFollowYou = async (props?: FetchFollowYouProps) => {
   const { skip, existingCount } = props || {};
 
   try {
-    let endpoint = "getClubTrackYou";
+    let endpoint = "getFollowYou";
 
     if (skip && existingCount) {
       endpoint += `?skip=${existingCount}`;
@@ -28,8 +28,8 @@ const fetchClubTrackYou = async (props?: GetClubTrackYouProps) => {
     return response.message;
   } catch (err) {
     openErrorModal();
-    console.log("Error in fetchClubTrackYou: ", err);
+    console.log("Error in fetchFollowYou: ", err);
   }
 };
 
-export default fetchClubTrackYou;
+export default fetchFollowYou;

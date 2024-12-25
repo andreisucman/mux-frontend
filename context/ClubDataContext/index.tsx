@@ -30,10 +30,10 @@ export default function ClubDataContextProvider({ children }: Props) {
 
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
 
-  const getClubYouTrack = useCallback(async (userName?: string) => {
+  const fetchYouFollow = useCallback(async (userName?: string) => {
     try {
       const response = await callTheServer({
-        endpoint: `getClubYouTrack${userName ? `/${userName}` : ""}`,
+        endpoint: `getYouFollow${userName ? `/${userName}` : ""}`,
         method: "GET",
       });
 
@@ -42,7 +42,7 @@ export default function ClubDataContextProvider({ children }: Props) {
       }
       setYouTrackDataFetched(true);
     } catch (err) {
-      console.log("Error in getClubYouTrack: ", err);
+      console.log("Error in fetchYouFollow: ", err);
     }
   }, []);
 
@@ -76,7 +76,7 @@ export default function ClubDataContextProvider({ children }: Props) {
   }, [userDetails]);
 
   useEffect(() => {
-    getClubYouTrack(userName as string);
+    fetchYouFollow(userName as string);
   }, [userName]);
 
   return (

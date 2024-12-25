@@ -13,7 +13,7 @@ export const runtime = "edge";
 export default function WaitPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setUserDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
 
   const type = searchParams.get("type") || "head";
   const operationKey = searchParams.get("operationKey");
@@ -44,14 +44,14 @@ export default function WaitPage() {
         console.error("Invalid redirect URL", e);
       }
     },
-    [type, redirectUrl, typeof router]
+    [type, redirectUrl, userDetails, typeof router]
   );
 
   const onError = useCallback(() => {
     setUserDetails(null);
     deleteFromLocalStorage("userDetails");
     deleteFromLocalStorage("runningAnalyses", type || "head");
-  }, []);
+  }, [type]);
 
   return (
     <Stack flex={1} className="smallPage">

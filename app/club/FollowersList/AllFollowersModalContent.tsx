@@ -4,7 +4,7 @@ import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
-import fetchClubTrackYou from "@/functions/fetchClubTrackYou";
+import fetchFollowYou from "@/functions/fetchFollowYou";
 import { ClubUserType } from "@/types/global";
 import FollowYouRow from "../FollowYouRow";
 
@@ -13,7 +13,7 @@ export default function AllFollowersModalContent() {
   const [trackYouData, setTrackYouData] = useState<ClubUserType[]>();
 
   const handleFetchClubTrackYou = useCallback(async (skip: boolean, existingCount?: number) => {
-    const items = await fetchClubTrackYou({ skip, existingCount });
+    const items = await fetchFollowYou({ skip, existingCount });
 
     if (skip) {
       setTrackYouData([...(trackYouData || []), ...items.slice(0, 10)]);
