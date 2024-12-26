@@ -19,7 +19,7 @@ export default function Club() {
 
   const { club } = userDetails || {};
   const { followingUserName, payouts, totalFollowers } = club || {};
-  const { rewardEarned, payoutsEnabled } = payouts || {};
+  const { balance, payoutsEnabled } = payouts || {};
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -31,7 +31,7 @@ export default function Club() {
             <ClubProfilePreview data={youTrackData} type="member" showButtons />
           )}
         </Group>
-        <BalancePane balance={rewardEarned} payoutsEnabled={payoutsEnabled} />
+        <BalancePane balance={balance} payoutsEnabled={payoutsEnabled} />
         <Stack className={classes.followYou}>
           <Text c="dimmed" size="sm">
             Follow you ({totalFollowers || 0})

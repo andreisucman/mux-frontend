@@ -9,7 +9,7 @@ import classes from "./SelectCountry.module.css";
 export const runtime = "edge";
 
 type Props = {
-  onClick: () => Promise<void> | void;
+  onClick: (newCountry: string) => Promise<void> | void;
 };
 
 export default function SelectCountry({ onClick }: Props) {
@@ -37,7 +37,7 @@ export default function SelectCountry({ onClick }: Props) {
           return;
         }
 
-        onClick();
+        onClick(country);
       }
     } catch (err) {
       setIsLoading(false);

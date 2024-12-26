@@ -1,8 +1,16 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { IconDeviceFloppy, IconTargetOff } from "@tabler/icons-react";
+import React, { useCallback, useContext, useState } from "react";
+import {
+  IconDeviceFloppy,
+  IconEdit,
+  IconGlobe,
+  IconPencil,
+  IconTargetOff,
+  IconWorld,
+} from "@tabler/icons-react";
 import { AvatarConfig } from "react-nice-avatar";
 import {
   ActionIcon,
+  Button,
   Group,
   Skeleton,
   Stack,
@@ -15,6 +23,7 @@ import { modals } from "@mantine/modals";
 import DataSharingSwitches from "@/app/club/admission/DataSharingSwitches";
 import AvatarComponent from "@/components/AvatarComponent";
 import AvatarEditor from "@/components/AvatarEditor";
+import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
@@ -38,7 +47,7 @@ export default function ClubSettings() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { club, avatar, name } = userDetails || {};
+  const { club, avatar, name, country } = userDetails || {};
   const { bio, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
   const { intro } = bio || {};
 
@@ -90,6 +99,59 @@ export default function ClubSettings() {
       title: (
         <Title order={5} component={"p"}>
           When you leave the Club
+        </Title>
+      ),
+    });
+  }, [userDetails, handleLeaveClub]);
+
+  const handleChangeCountry = useCallback(
+    async (newCountry: string) => {
+      try {
+        const response = await callTheServer({
+          endpoint: "changeCountry",
+          method: "POST",
+          body: { newCountry },
+        });
+
+        if (response.status === 200) {
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            country: newCountry,
+            club: { ...prev.club, payouts: response.message },
+          }));
+
+          router.push("/club/admission");
+
+          modals.closeAll();
+        } else {
+          openErrorModal();
+        }
+      } catch (err) {
+        console.log("Error in handleChangeCountry: ", err);
+      }
+    },
+    [userDetails, router]
+  );
+
+  const openChangeCountryConfirmation = useCallback(() => {
+    modals.openContextModal({
+      modal: "general",
+      centered: true,
+      innerProps: (
+        <SelectCountry
+          onClick={(newCountry: string) =>
+            askConfirmation({
+              title: "Please confirm",
+              body: "Changing country requires creating a new wallet. You will have to fill in your details and add a bank account again. Continue?",
+              onConfirm: () => handleChangeCountry(newCountry),
+              onCancel: () => modals.closeAll(),
+            })
+          }
+        />
+      ),
+      title: (
+        <Title component={"p"} order={5}>
+          Enter your country
         </Title>
       ),
     });
@@ -237,6 +299,28 @@ export default function ClubSettings() {
         </Stack>
         <DataSharingSwitches title="Data privacy" />
         <AddClubSocials title="Socials" />
+        {country && (
+          <Stack gap={8}>
+            <Text size="sm" c="dimmed">
+              Country
+            </Text>
+            <TextInput
+              leftSection={<IconWorld className="icon" />}
+              value={country || ""}
+              maw={425}
+              readOnly
+              rightSection={
+                <ActionIcon
+                  variant="default"
+                  size="sm"
+                  onClick={openChangeCountryConfirmation}
+                >
+                  <IconPencil className="icon icon__small" />
+                </ActionIcon>
+              }
+            />
+          </Stack>
+        )}
         <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
           <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club
         </UnstyledButton>

@@ -14,6 +14,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
+import { UserDataType } from "@/types/global";
 import RedirectToWalletButton from "../BalancePane/RedirectToWalletButton";
 import DataSharingSwitches from "./DataSharingSwitches";
 import classes from "./admission.module.css";
@@ -29,7 +30,7 @@ export const runtime = "edge";
 export default function ClubAdmission() {
   const pathname = usePathname();
   const router = useRouter();
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [disableFirst, setDisableFirst] = useState(true);
   const [disableSecond, setDisableSecond] = useState(true);
 
@@ -56,12 +57,44 @@ export default function ClubAdmission() {
     }
   }, []);
 
+  const handleSetCountryAndCreateAccount = useCallback(
+    async (newCountry: string) => {
+      try {
+        const response = await callTheServer({
+          endpoint: "changeCountry",
+          method: "POST",
+          body: { newCountry },
+        });
+
+        if (response.status === 200) {
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            country: newCountry,
+            club: { ...prev.club, payouts: response.message },
+          }));
+
+          handleCreateConnectAccount();
+          modals.closeAll();
+        } else {
+          openErrorModal();
+        }
+      } catch (err) {
+        console.log("Error in handleSetCountry: ", err);
+      }
+    },
+    [userDetails, router]
+  );
+
   const openCountrySelectModal = useCallback(() => {
     if (!country) {
       modals.openContextModal({
         modal: "general",
         centered: true,
-        innerProps: <SelectCountry onClick={handleCreateConnectAccount} />,
+        innerProps: (
+          <SelectCountry
+            onClick={(newCountry: string) => handleSetCountryAndCreateAccount(newCountry)}
+          />
+        ),
         title: (
           <Title component={"p"} order={5}>
             Enter your country
