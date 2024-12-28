@@ -192,9 +192,7 @@ export default function VideoRecorderResult({
           setIsBlurLoading,
         });
       }
-    } catch (err) {
-      console.log("Error in handleBlurOnLoad: ", err);
-    }
+    } catch (err) {}
   }, [captureType, blurType, originalUrl, faceBlurredUrl, eyesBlurredUrl]);
 
   useEffect(() => {

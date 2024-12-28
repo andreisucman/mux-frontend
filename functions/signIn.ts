@@ -32,6 +32,5 @@ export default async function signIn({ stateObject, router }: Props) {
       router.push(response.message);
     }
   } catch (err) {
-    console.log("Error in signIn: ", err);
   }
 }

@@ -33,7 +33,6 @@ export default async function followUser({
       }
     }
   } catch (err) {
-    console.log("Error in followUser: ", err);
   } finally {
     router.push(redirectUrl);
   }

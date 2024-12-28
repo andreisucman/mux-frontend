@@ -5,7 +5,7 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 
 type Props = {
-  variant: string;
+  variant?: string;
 };
 
 export default function RedirectToWalletButton({ variant }: Props) {

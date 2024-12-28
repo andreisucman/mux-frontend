@@ -49,7 +49,6 @@ export default function DataSharingSwitches({ title }: Props) {
           }));
         }
       } catch (err) {
-        console.log("Error in updatePrivacy: ", err);
       }
     },
     [userDetails]

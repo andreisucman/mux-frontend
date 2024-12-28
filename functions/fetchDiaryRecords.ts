@@ -35,7 +35,6 @@ const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
     return response;
   } catch (err) {
     openErrorModal();
-    console.log("Error in fetchDiaryRecords: ", err);
   }
 };
 

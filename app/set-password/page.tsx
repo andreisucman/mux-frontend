@@ -4,10 +4,10 @@ import { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { Button, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { clearCookies } from "@/helpers/cookies";
-import { modals } from "@mantine/modals";
 import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
@@ -73,7 +73,6 @@ export default function SetPassword() {
           });
         }
       } catch (err) {
-        console.log("Error in handleSubmitSetPasswordForm: ", err);
         openErrorModal();
       }
     },

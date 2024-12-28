@@ -53,7 +53,6 @@ export default function ChatDisplay({
         setConversation(conversation.reverse());
       }
     } catch (err) {
-      console.log("Error in getMessages: ", err);
     }
   }, [conversationId]);
 

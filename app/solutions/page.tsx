@@ -65,7 +65,6 @@ export default function Solutions() {
         openErrorModal();
       }
     } catch (err) {
-      console.log("Error in fetchSolutions: ", err);
     }
   }, []);
 

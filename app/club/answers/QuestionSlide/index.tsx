@@ -15,11 +15,11 @@ type Props = {
 export default function QuestionSlide({ data, submitResponse, skipQuestion }: Props) {
   const { _id, question, answer, skipped } = data;
 
-  const [text, setText] = useState(answer);
+  const [text, setText] = useState(answer || "");
   const [isSkipped, setIsSkipped] = useState(skipped);
   const [isLoading, setIsLoading] = useState(false);
 
-  const textExists = text.trim().length > 0;
+  const textExists = text?.trim()?.length > 0;
   const textIsDirty = text !== answer;
 
   const handleSkipQuestion = useCallback(async () => {
@@ -36,7 +36,7 @@ export default function QuestionSlide({ data, submitResponse, skipQuestion }: Pr
             <RecordingButton transcribeOnEnd setText={setText} setIsLoading={setIsLoading} />
           </div>
           {!isSkipped && (
-            <ActionIcon variant="default" size="sm" onClick={handleSkipQuestion}>
+            <ActionIcon variant="default" size="sm" onClick={handleSkipQuestion} component="div">
               <IconX className="icon" />
             </ActionIcon>
           )}

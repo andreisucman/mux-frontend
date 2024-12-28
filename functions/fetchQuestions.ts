@@ -38,9 +38,7 @@ const fetchQuestions = async ({
     } else {
       openErrorModal();
     }
-  } catch (err) {
-    console.log("Error in fetchQuestions: ", err);
-  }
+  } catch (err) {}
 };
 
 export default fetchQuestions;

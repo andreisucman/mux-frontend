@@ -84,7 +84,6 @@ export default function VerifyEmail() {
           }, 1000);
         }
       } catch (err) {
-        console.log("Error in handleResetEmail: ", err);
         openErrorModal();
       }
     },

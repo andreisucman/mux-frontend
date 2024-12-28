@@ -54,7 +54,6 @@ export default function RewardCard({ data }: Props) {
         openSuccessModal({ description: response.message });
       }
     } catch (err) {
-      console.log("Error in handleClaimReward: ", err);
     }
   }, []);
 

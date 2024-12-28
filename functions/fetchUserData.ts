@@ -23,7 +23,6 @@ const fetchUserData = async (
       });
     }
   } catch (err) {
-    console.log("Error in fetchUserData: ", err);
   } finally {
     return data;
   }

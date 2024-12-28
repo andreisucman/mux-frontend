@@ -213,7 +213,6 @@ export default function Calendar() {
           return updated;
         }
       } catch (err) {
-        console.log("Error in loadTasks:", err);
       }
     },
     [selectedStatus, type]

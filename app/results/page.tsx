@@ -51,9 +51,7 @@ export default function ResultsProgress() {
           setProgress(items.slice(0, 20));
         }
         setHasMore(items.length === 21);
-      } catch (err) {
-        console.log("Error in handleFetchProgress: ", err);
-      }
+      } catch (err) {}
     },
     []
   );

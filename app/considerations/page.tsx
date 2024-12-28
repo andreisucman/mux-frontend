@@ -69,9 +69,7 @@ export default function Considerations() {
           specialConsiderations: text,
         }));
       }
-    } catch (err) {
-      console.log("Error in updateSpecialConsiderations: ", err);
-    }
+    } catch (err) {}
   }, []);
 
   const createRoutine = useCallback(

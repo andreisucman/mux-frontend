@@ -14,7 +14,5 @@ export default async function fetchTaskInfo(taskId: string | null) {
     }
 
     return response.message;
-  } catch (err: any) {
-    console.log("Error in fetchTaskInfo: ", err);
-  }
+  } catch (err: any) {}
 }

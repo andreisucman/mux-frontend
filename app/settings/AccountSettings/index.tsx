@@ -60,7 +60,6 @@ export default function AccountSettings() {
         router.push(response.message);
       }
     } catch (err) {
-      console.log("Error in redirectToBillingPortal: ", err);
     }
   }, []);
 
@@ -79,7 +78,6 @@ export default function AccountSettings() {
         }));
       }
     } catch (err) {
-      console.log("Error in deleteAccount: ", err);
     }
   };
 
@@ -88,7 +86,6 @@ export default function AccountSettings() {
       emailChangeModalsStack.open("changeEmail");
       await callTheServer({ endpoint: "sendConfirmationCode", method: "POST" });
     } catch (err) {
-      console.log("Error in sendConfirmationCode: ", err);
       openErrorModal();
     }
   };
@@ -114,7 +111,6 @@ export default function AccountSettings() {
         emailChangeModalsStack.open("confirmNewEmail");
       }
     } catch (err) {
-      console.log("Error in handleChangeEmailStepOne: ", err);
       openErrorModal();
     } finally {
       setConfirmationCode("");

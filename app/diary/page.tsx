@@ -82,7 +82,6 @@ export default function DiaryPage() {
     } catch (err) {
       setIsLoading(false);
       openErrorModal();
-      console.log("Error in createDiaryRecord: ", err);
     }
   }, [isLoading, timeZone, type]);
 

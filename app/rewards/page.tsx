@@ -43,9 +43,7 @@ export default function Rewards() {
         } else {
           openErrorModal();
         }
-      } catch (err) {
-        console.log("Error in fetchRewards: ", err);
-      }
+      } catch (err) {}
     },
     [rewards && rewards.length]
   );

@@ -26,7 +26,6 @@ export default function ProductsCriteriaContainer({ taskKey, findProducts }: Pro
       modals.closeAll();
     } catch (err) {
       openErrorModal();
-      console.log("Error in handleFindProducts: ", err);
     }
   }, []);
 

@@ -62,7 +62,5 @@ export default async function fetchStyle({
     return response.message;
   } catch (err) {
     openErrorModal();
-    console.log("Error in fetchStyle: ", err);
-    throw err;
   }
 }

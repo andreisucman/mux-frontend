@@ -75,7 +75,6 @@ export default function UploadProof(props: Props) {
         setExistingProofRecord(response.message);
       }
     } catch (err) {
-      console.log("Error in fetchProofInfo: ", err);
     }
   }, []);
 
@@ -107,7 +106,6 @@ export default function UploadProof(props: Props) {
           saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
         }
       } catch (err) {
-        console.log("Error in uploadProof: ", err);
         setDisplayComponent("videoRecorder");
         saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
       }

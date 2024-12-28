@@ -28,7 +28,6 @@ const fetchFollowYou = async (props?: FetchFollowYouProps) => {
     return response.message;
   } catch (err) {
     openErrorModal();
-    console.log("Error in fetchFollowYou: ", err);
   }
 };
 

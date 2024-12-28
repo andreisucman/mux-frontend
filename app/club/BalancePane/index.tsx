@@ -30,9 +30,7 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
         }
         openSuccessModal({ description: response.message });
       }
-    } catch (err) {
-      console.log("Error in onWithdraw: ", err);
-    }
+    } catch (err) {}
   }, []);
 
   const displayBalance = useMemo(() => (balance ? balance?.toFixed(2) : 0), [balance]);

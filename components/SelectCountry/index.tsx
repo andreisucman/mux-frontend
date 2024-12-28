@@ -37,11 +37,10 @@ export default function SelectCountry({ onClick }: Props) {
           return;
         }
 
-        onClick(country);
+        onClick(response.message);
       }
     } catch (err) {
       setIsLoading(false);
-      console.log("Error in handleClick: ", err);
     }
   }, [country, isLoading]);
 

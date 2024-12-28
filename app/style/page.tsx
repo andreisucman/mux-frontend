@@ -55,7 +55,6 @@ export default function AllStyle() {
         }
         setHasMore(styles.length === 21);
       } catch (err) {
-        console.log("Error in handleFetchStyles: ", err);
       }
     },
     []

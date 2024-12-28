@@ -45,29 +45,25 @@ export default function PeekOverlay({ description }: Props) {
   );
 
   const handleClickButton = useCallback(async () => {
-    try {
-      if (status !== "authenticated") {
-        const referrer = getReferrer(pathname);
+    if (status !== "authenticated") {
+      const referrer = getReferrer(pathname);
 
-        openAuthModal({
-          stateObject: {
-            referrer,
-            redirectPath: pathname,
-            redirectQuery: `?${searchParams.toString()}`,
-            localUserId: userId,
-          },
-          title: "Start your change",
-        });
-      } else {
-        createCheckoutSession({
-          priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-          redirectUrl,
-          cancelUrl: redirectUrl,
-          setUserDetails,
-        });
-      }
-    } catch (err) {
-      console.log("Error in handleClickButton: ", err);
+      openAuthModal({
+        stateObject: {
+          referrer,
+          redirectPath: pathname,
+          redirectQuery: `?${searchParams.toString()}`,
+          localUserId: userId,
+        },
+        title: "Start your change",
+      });
+    } else {
+      createCheckoutSession({
+        priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
+        redirectUrl,
+        cancelUrl: redirectUrl,
+        setUserDetails,
+      });
     }
   }, [userId, status]);
 

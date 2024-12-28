@@ -58,7 +58,6 @@ export default function StartPartialScanOverlay({
         router.push(`/wait?operationKey=${`type-${type}`}&redirectUrl=${redirectUrl}`);
       }
     } catch (err) {
-      console.log("Error in handleStartAnalysis: ", err);
       setIsButtonLoading(false);
     }
   }, [userId, type, blurType]);

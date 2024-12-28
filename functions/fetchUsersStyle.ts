@@ -35,8 +35,5 @@ export default async function fetchUsersStyle({
     }
 
     return response.message;
-  } catch (err) {
-    console.log("Error in fetchUsersStyle: ", err);
-    throw err;
-  }
+  } catch (err) {}
 }

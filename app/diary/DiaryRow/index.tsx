@@ -72,7 +72,6 @@ export default function DiaryRow({ data, type, timeZone }: Props) {
       } catch (err) {
         setIsUploading(false);
         openErrorModal();
-        console.log("Error in handleSubmit: ", err);
       }
     },
     [isUploading, timeZone, type]

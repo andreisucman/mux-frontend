@@ -27,4 +27,5 @@ export const clubPageTypeItems: { label: string; value: string }[] = [
   { label: "Routines", value: "routines" },
   { label: "Results", value: "progress" },
   { label: "Diary", value: "diary" },
+  { label: "Answers", value: "answers" },
 ];

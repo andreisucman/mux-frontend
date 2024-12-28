@@ -45,8 +45,6 @@ export default function EditClubAbout({
   const { bio } = youData || {};
   const { nextRegenerateBio } = bio || {};
 
-  if (nextRegenerateBio && !nextRegenerateBio[showSegment as "philosophy"]) return;
-
   const nextDate = nextRegenerateBio && nextRegenerateBio[showSegment as "philosophy"];
   const canRegenerate = !nextDate || new Date(nextDate) <= new Date();
 
@@ -72,7 +70,6 @@ export default function EditClubAbout({
           }));
         }
       } catch (err) {
-        console.log("Error in generateBioFromQuestions: ", err);
       }
     },
     [bioData, canRegenerate]

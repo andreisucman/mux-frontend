@@ -85,7 +85,6 @@ export default function GeneralResultsHeader({
         setRelevantParts(relevantParts.filter((item) => item.type === type));
       }
     } catch (err) {
-      console.log("Error in getExistingFilters: ", err);
       openErrorModal({
         description: "Please try refreshing the page and inform us if the error persists.",
       });

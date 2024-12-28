@@ -5,6 +5,7 @@ import {
   IconMan,
   IconMoodNeutral,
   IconMoodSmile,
+  IconBubbleText,
   IconNotebook,
   IconTargetArrow,
   IconUserCircle,
@@ -32,6 +33,7 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   style: <IconTargetArrow className="icon" />,
   proof: <IconTargetArrow className="icon" />,
   diary: <IconNotebook className="icon" />,
+  answers: <IconBubbleText className="icon" />,
 };
 
 export const styleIcons: { [key: string]: string } = {

@@ -53,7 +53,6 @@ export default function ClubAdmission() {
         openErrorModal({ description: response.error });
       }
     } catch (err) {
-      console.log("Error in handleCreateConnectAccount: ", err);
     }
   }, []);
 
@@ -79,7 +78,6 @@ export default function ClubAdmission() {
           openErrorModal();
         }
       } catch (err) {
-        console.log("Error in handleSetCountry: ", err);
       }
     },
     [userDetails, router]
@@ -136,12 +134,12 @@ export default function ClubAdmission() {
             </Group>
           </Stack>
           {submittedNotEnabled && (
-            <Alert variant="default" icon={<IconInfoCircle className="icon" />}>
+            <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
               <Stack gap={8}>
                 <Title order={5}>Verifying</Title>
                 Your information is still being verified. Meanwhile you can explore the club. If you
                 need to edit your information you can do it in the wallet.
-                <RedirectToWalletButton variant="default" />
+                <RedirectToWalletButton  />
               </Stack>
             </Alert>
           )}

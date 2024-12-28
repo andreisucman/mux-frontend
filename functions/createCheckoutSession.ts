@@ -47,7 +47,5 @@ export default async function createCheckoutSession({
 
       if (cb) cb(subscriptions);
     }
-  } catch (err) {
-    console.log("Error in createCheckoutSession: ", err);
-  }
+  } catch (err) {}
 }

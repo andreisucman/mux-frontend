@@ -291,18 +291,6 @@ export default function VideoRecorder({
   );
 
   const handleSubmit = useCallback(async () => {
-    console.log(
-      `handleSubmit {
-      recordedBlob,
-      captureType,
-      blurType,
-    }`,
-      {
-        recordedBlob,
-        captureType,
-        blurType,
-      }
-    );
     await uploadProof({
       recordedBlob,
       captureType,

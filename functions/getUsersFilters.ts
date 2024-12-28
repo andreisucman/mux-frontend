@@ -59,7 +59,6 @@ const getUsersFilters = async ({ userName, type, collection, fields }: GetUsersF
       }
     }
   } catch (err) {
-    console.log("Error in getUsersFilters: ", err);
   } finally {
     return result;
   }

@@ -73,7 +73,5 @@ export default async function fetchProof({
     return response.message;
   } catch (err) {
     openErrorModal();
-    console.log("Error in fetchProof: ", err);
-    throw err;
   }
 }

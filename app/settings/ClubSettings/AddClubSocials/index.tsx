@@ -83,7 +83,6 @@ export default function AddClubSocials({ title }: Props) {
       });
     } catch (err) {
       openErrorModal();
-      console.log("Error in updateSocials: ", err);
     }
   }, []);
 

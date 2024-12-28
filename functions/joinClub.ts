@@ -66,6 +66,5 @@ export default async function joinClub({
       if (closeModal) modals.closeAll();
     }
   } catch (err: any) {
-    console.log("Error in joinClub: ", err);
   }
 }

@@ -52,7 +52,6 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
         saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
       }
     } catch (err) {
-      console.log("Error in startSuggestAnalysis: ", err);
     }
   };
 

@@ -50,9 +50,7 @@ export default function FollowHistoryModalContent() {
           router.push(`/club/${userName}`);
           modals.closeAll();
         }
-      } catch (err) {
-        console.log("Error in handleFollowUser follow: ", err);
-      }
+      } catch (err) {}
     },
     [userDetails]
   );
@@ -73,9 +71,7 @@ export default function FollowHistoryModalContent() {
           }
           setHasMore(response.message.length === 7);
         }
-      } catch (err) {
-        console.log("Error in handleFetchFollowHistory: ", err);
-      }
+      } catch (err) {}
     },
     []
   );

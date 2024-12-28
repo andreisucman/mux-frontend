@@ -67,9 +67,7 @@ export default function ClubRoutines(props: Props) {
             />
           ),
         });
-      } catch (err) {
-        console.log("Error in openTaskDetails: ", err);
-      }
+      } catch (err) {}
     },
     [type, currentUserRoutines?.length]
   );
@@ -113,9 +111,7 @@ export default function ClubRoutines(props: Props) {
             if (!openValue) setOpenValue(response.message[0]?._id);
           }
         }
-      } catch (err) {
-        console.log("Error in getTrackedRoutines: ", err);
-      }
+      } catch (err) {}
     },
     [routines]
   );
@@ -137,9 +133,7 @@ export default function ClubRoutines(props: Props) {
             tasks,
           }));
         }
-      } catch (err) {
-        console.log("Error in replaceRoutine: ", err);
-      }
+      } catch (err) {}
     },
     [userDetails]
   );
@@ -166,7 +160,6 @@ export default function ClubRoutines(props: Props) {
         }
         return false;
       } catch (err) {
-        console.log("Error in handleAddToMyRoutine: ", err);
         return false;
       }
     },

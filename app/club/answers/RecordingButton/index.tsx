@@ -97,13 +97,10 @@ export default function RecordingButton({
 
       if (response.status === 200) {
         if (setText) setText((prev: string) => prev + ` ${response.message}`);
-      } else {
-        console.log("Transcription failed:", response.message);
       }
       if (setIsLoading) setIsLoading(false);
     } catch (err) {
       if (setIsLoading) setIsLoading(false);
-      console.log("Error in handleTranscribe:", err);
     }
   }, []);
 
@@ -124,6 +121,7 @@ export default function RecordingButton({
         classNames={{ label: classes.buttonLabel }}
         style={customButtonStyles ? customButtonStyles : {}}
         onClick={handleClickRecord}
+        component="div"
       >
         <div
           className={cn(classes.indicator, {

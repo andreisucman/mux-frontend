@@ -95,7 +95,6 @@ export default function BeforeAftersPage() {
           openErrorModal();
         }
       } catch (err) {
-        console.log("Error in fetchBeforeAfters: ", err);
       }
     },
     [searchParams.toString()]

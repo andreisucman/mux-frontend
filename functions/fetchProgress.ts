@@ -52,8 +52,5 @@ export default async function fetchProgress({
     }
 
     return response.message;
-  } catch (err) {
-    console.log("Error in fetchProgress: ", err);
-    throw err;
-  }
+  } catch (err) {}
 }

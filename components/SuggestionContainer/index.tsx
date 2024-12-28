@@ -126,7 +126,6 @@ export default function SuggestionContainer({
           });
         }
       } catch (err) {
-        console.log("Error in findProducts: ", err);
         openErrorModal();
       }
     },

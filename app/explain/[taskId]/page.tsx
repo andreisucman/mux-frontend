@@ -110,9 +110,7 @@ export default function Explain(props: Props) {
 
           setTaskInfo(updatedTask);
         }
-      } catch (err) {
-        console.log(`Error: ${err}`);
-      }
+      } catch (err) {}
     },
     [taskInfo]
   );

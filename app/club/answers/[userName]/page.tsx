@@ -53,12 +53,16 @@ export default function AnswersPage(props: Props) {
   const showType = searchParams.get("showType");
   const isSelf = name === userName;
 
-  const handleChangeSegment = useCallback((newSegment: string) => {
-    const query = modifyQuery({
-      params: [{ name: "showType", value: newSegment, action: "replace" }],
-    });
-    router.replace(`/club/answers?${query}`);
-  }, []);
+  const handleChangeSegment = useCallback(
+    (newSegment: string) => {
+      const query = modifyQuery({
+        params: [{ name: "showType", value: newSegment, action: "replace" }],
+      });
+      const pathname = userName ? `/club/answers/${userName}` : `/club/answers`;
+      router.replace(`${pathname}?${query}`);
+    },
+    [userName]
+  );
 
   const submitResponse = useCallback(
     async ({ question, answer, setIsLoading }: SubmitAboutResponseType) => {
@@ -78,7 +82,6 @@ export default function AnswersPage(props: Props) {
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
-        console.log("Error in submitResponse: ", err);
       }
     },
     []
@@ -102,7 +105,6 @@ export default function AnswersPage(props: Props) {
       }
     } catch (err) {
       openErrorModal();
-      console.log("Error in submitResponse: ", err);
     } finally {
       return success;
     }
@@ -183,11 +185,12 @@ export default function AnswersPage(props: Props) {
                 data={showTypes}
                 value={showType || "new"}
                 onChange={handleChangeSegment}
-                flex="1 0"
+                w="100%"
               />
             )}
             <TextInput
               placeholder="Search questions"
+              w="100%"
               onChange={(e) => handleSearch(e.currentTarget.value)}
               rightSection={
                 <IconSearch className="icon" onClick={() => handleSearch(searchQuery)} />
@@ -197,14 +200,16 @@ export default function AnswersPage(props: Props) {
           </Group>
         )}
         {questions ? (
-          <>
+          <Stack className={classes.accordionWrapper}>
             <Accordion
               value={openValue}
               onChange={setOpenValue}
               className={classes.accordion}
+              chevron={false}
               classNames={{
                 root: classes.root,
                 item: classes.item,
+                chevron: classes.chevron,
                 control: classes.control,
                 content: classes.accordionContent,
               }}
@@ -233,7 +238,7 @@ export default function AnswersPage(props: Props) {
                 <IconArrowDown />
               </ActionIcon>
             )}
-          </>
+          </Stack>
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}

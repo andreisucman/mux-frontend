@@ -240,7 +240,6 @@ export default function ChatInput({
         setIsTyping(false);
       } catch (err: any) {
         setIsTyping(false);
-        console.log("Error in sendMessage", err.message);
       }
     },
     [currentMessage, conversation && conversation.length]

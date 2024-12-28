@@ -127,7 +127,6 @@ export default function ClubSettings() {
           openErrorModal();
         }
       } catch (err) {
-        console.log("Error in handleChangeCountry: ", err);
       }
     },
     [userDetails, router]
@@ -195,7 +194,6 @@ export default function ClubSettings() {
           }
         }
       } catch (err) {
-        console.log("Error in updateClubInfo: ", err);
       } finally {
         setIsLoading(false);
       }

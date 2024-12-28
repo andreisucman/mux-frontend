@@ -68,7 +68,6 @@ export default function RoutinesHistoryPage() {
         }
       } catch (err) {
         openErrorModal();
-        console.log("Error in fetchCompletedTasks: ", err);
       }
     },
     [type, hasMore, completedTasks?.length]

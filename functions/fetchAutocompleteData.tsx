@@ -74,7 +74,6 @@ const fetchAutocompleteData = async ({
       }
     }
   } catch (err) {
-    console.log("Error in getAutocompleteData: ", err);
   } finally {
     return reply;
   }

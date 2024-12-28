@@ -26,7 +26,6 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
       setImage(imageUrls[0]);
       setIsLoadingOverlay(false);
     } catch (err) {
-      console.log("Error in handleFileChange: ", err);
       setIsLoadingOverlay(false);
     }
   };

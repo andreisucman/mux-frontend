@@ -43,7 +43,6 @@ export default function ConversationsDrawerContent({ conversations, setConversat
           }
         }
       } catch (err) {
-        console.log("Error in handleDeleteConversation: ", err);
       }
     },
     [searchParams.toString()]

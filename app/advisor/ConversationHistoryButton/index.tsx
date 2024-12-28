@@ -26,7 +26,6 @@ export default function ChatMessagesButton() {
         setConversations(response.message);
       }
     } catch (err) {
-      console.log("Error in handleOpenDrawer: ", handleOpenDrawer);
     }
   }, []);
 

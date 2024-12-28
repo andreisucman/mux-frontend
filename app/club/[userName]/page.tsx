@@ -1,11 +1,17 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
-import { IconChevronDown, IconX } from "@tabler/icons-react";
-import { Button, Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
+import {
+  IconAlignJustified,
+  IconChevronDown,
+  IconExclamationCircle,
+  IconX,
+} from "@tabler/icons-react";
+import { Button, Collapse, Group, rem, Skeleton, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import ClubModerationLayout from "../ModerationLayout";
@@ -77,7 +83,6 @@ export default function ClubAbout(props: Props) {
           }));
         }
       } catch (err) {
-        console.log("Error in updateClubBio: ", err);
       }
     },
     [userDetails, youData]
@@ -109,20 +114,24 @@ export default function ClubAbout(props: Props) {
   }, [isSelf, youData, youFollowData]);
 
   useEffect(() => {
-    let showSkeleton = true;
+    if (hasNewAboutQuestions === undefined) return;
 
-    if (isSelf) showSkeleton = false;
-    if (!isSelf && youFollowData) showSkeleton = false;
-
-    setShowSkeleton(showSkeleton);
-  }, [isSelf, userDetails]);
+    if (isSelf) setShowSkeleton(false);
+    if (!isSelf && youFollowData) setShowSkeleton(false);
+  }, [isSelf, userDetails, hasNewAboutQuestions]);
 
   useEffect(() => {
     const savedShowQuestions = getFromLocalStorage("showAboutQuestions");
     setShowQuestions(!!savedShowQuestions);
   }, []);
 
-  const buttonText = hasNewAboutQuestions ? "Answer new questions" : "See your answers";
+  const buttonIcon = hasNewAboutQuestions ? (
+    <IconExclamationCircle className="icon icon__small" style={{ marginRight: rem(6) }} />
+  ) : (
+    <IconAlignJustified className="icon icon__small" style={{ marginRight: rem(6) }} />
+  );
+  const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";
+  const buttonPath = userName ? `/club/answers/${userName}` : `/club/answers`;
 
   return (
     <ClubModerationLayout userName={userName} pageType="about">
@@ -140,7 +149,10 @@ export default function ClubAbout(props: Props) {
 
                 <Collapse in={showQuestions}>
                   <Stack className={classes.buttonWrapper}>
-                    <Button m="auto">{buttonText}</Button>
+                    <Button m="auto" c="white" component={Link} href={buttonPath}>
+                      {buttonIcon}
+                      {buttonText}
+                    </Button>
                   </Stack>
                 </Collapse>
               </Stack>

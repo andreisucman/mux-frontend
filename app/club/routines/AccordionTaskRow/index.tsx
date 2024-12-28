@@ -48,9 +48,7 @@ export default function AccordionTaskRow({ routineId, data, onClick }: Props) {
         }));
         setProofVideos(updated);
       }
-    } catch (err) {
-      console.log("Error in getProofVideos: ", err);
-    }
+    } catch (err) {}
   }, [routineId, data.key]);
 
   useEffect(() => {

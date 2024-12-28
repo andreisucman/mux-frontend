@@ -95,9 +95,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
           setShowWaitComponent(true);
           modals.closeAll();
         }
-      } catch (err) {
-        console.log("Error in generateRecipe: ", err);
-      }
+      } catch (err) {}
     },
     [taskId, userId]
   );

@@ -108,7 +108,6 @@ export default function StyleScanResult() {
       setIsLoading(false);
     } catch (err) {
       openErrorModal();
-      console.log("Error in handlePublishToClub: ", err);
       setIsLoading(false);
     }
   }, [styleId, isLoading, status, club, latestStyleAnalysis, userId, type]);

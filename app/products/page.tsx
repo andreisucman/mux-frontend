@@ -44,9 +44,7 @@ export default function Products() {
 
         setUniqueTasks(tasksWithSuggestions);
       }
-    } catch (err) {
-      console.log(`Error in fetchProducts: ${err}`);
-    }
+    } catch (err) {}
   }, []);
 
   useEffect(() => {

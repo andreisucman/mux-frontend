@@ -45,9 +45,7 @@ export default function ProductsRow({
           prev?.map((task) => (task._id === updatedTask._id ? updatedTask : task))
         );
       }
-    } catch (err) {
-      console.log(`Error in refetchTask: `, err);
-    }
+    } catch (err) {}
   }, [task?._id]);
 
   const showSkeleton = useShowSkeleton();

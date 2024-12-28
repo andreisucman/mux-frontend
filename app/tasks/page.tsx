@@ -38,7 +38,6 @@ export default function Tasks() {
           );
         }
       } catch (err) {
-        console.log("Error in updateSpecialConsiderations: ", err);
       } finally {
         setIsLoading(false);
       }

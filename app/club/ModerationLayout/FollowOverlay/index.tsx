@@ -35,9 +35,7 @@ export default function FollowOverlay({ userName, description }: Props) {
           }));
         }
       }
-    } catch (err) {
-      console.log("Error in handleFollowUser: ", err);
-    }
+    } catch (err) {}
   }, [userName, userDetails]);
 
   return (

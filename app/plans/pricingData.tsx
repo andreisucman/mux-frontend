@@ -2,6 +2,7 @@ import {
   IconAdjustmentsHorizontal,
   IconBooks,
   IconBrandYoutube,
+  IconBubbleText,
   IconCameraSelfie,
   IconCash,
   IconCashBanknote,
@@ -9,7 +10,7 @@ import {
   IconEye,
   IconHandGrab,
   IconHandLoveYou,
-  IconMessage2,
+  IconMessages,
   IconNotebook,
   IconScaleOutline,
   IconShoppingBag,
@@ -28,7 +29,6 @@ export const freePlanContent = [
     icon: <IconBooks className="icon icon__large" style={style} />,
     description: "Access the database of tasks with the recommended products.",
   },
-
   {
     icon: <IconCameraSelfie className="icon icon__large" style={style} />,
     description:
@@ -70,8 +70,12 @@ export const peekLicenseContent = [
     description: "Check the personality, style and tips of the club members.",
   },
   {
-    icon: <IconMessage2 className="icon icon__large" style={style} />,
-    description: "Ask questions about the club members.",
+    icon: <IconBubbleText className="icon icon__large" style={style} />,
+    description: "See the answers to FAQs of the club members.",
+  },
+  {
+    icon: <IconMessages className="icon icon__large" style={style} />,
+    description: "Discuss the style, tips, and progress with your advisor.",
   },
 ];
 
@@ -97,7 +101,7 @@ export const analystCoachContent = [
 
 export const advisorCoachContent = [
   {
-    icon: <IconMessage2 className="icon icon__large" style={style} />,
+    icon: <IconMessages className="icon icon__large" style={style} />,
     description: "Answers your questions about progress, tasks, and more.",
   },
   {

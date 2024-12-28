@@ -94,7 +94,6 @@ const authenticate = async ({
       }
     }
   } catch (err) {
-    console.log(`Error in handleAuthenticate: `, err);
   }
 };
 

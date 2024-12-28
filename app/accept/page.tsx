@@ -75,7 +75,6 @@ export default function AcceptIndexPage() {
       }
     } catch (err) {
       openErrorModal();
-      console.log("Error in startTheFlow: ", err);
       setIsLoading(false);
     }
   }, [tosAccepted, userId]);

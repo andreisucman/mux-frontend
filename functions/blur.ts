@@ -52,7 +52,6 @@ async function blur({ url, blurType, type }: BlurProps) {
       }
     }
   } catch (err) {
-    console.log("Error in blur: ", err);
     throw err;
   }
 }
@@ -97,7 +96,6 @@ export async function onBlurImageClick({
       setLocalUrl(originalUrl);
     }
   } catch (err) {
-    console.log("Error in onBlurImageClick: ", err);
     openErrorModal();
   }
 }
@@ -163,7 +161,6 @@ export async function onBlurVideoClick({
       setIsBlurLoading(false);
     }
   } catch (err) {
-    console.log("Error in onBlurVideoClick: ", err);
     openErrorModal();
   }
 }

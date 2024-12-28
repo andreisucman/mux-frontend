@@ -28,9 +28,7 @@ export default function FollowersList() {
     try {
       const items = await fetchFollowYou();
       setTrackYouData(items);
-    } catch (err) {
-      console.log("Error in handleFetchClubTrackYou: ", err);
-    }
+    } catch (err) {}
   }, []);
 
   const openAllFollowersModal = useCallback(() => {

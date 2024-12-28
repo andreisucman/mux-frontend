@@ -48,9 +48,7 @@ export default function ClubDataContextProvider({ children }: Props) {
         setYouFollowData(response.message);
       }
       setYouTrackDataFetched(true);
-    } catch (err) {
-      console.log("Error in fetchYouFollow: ", err);
-    }
+    } catch (err) {}
   }, []);
 
   useShallowEffect(() => {
@@ -88,7 +86,9 @@ export default function ClubDataContextProvider({ children }: Props) {
 
   useEffect(() => {
     fetchQuestions({ userName, onlyCheck: true }).then((response) => {
-      const {} = response;
+      const { hasAnswers, hasNewQuestions } = response || {};
+      setHasAboutAnswers(hasAnswers);
+      setHasNewAboutQuestions(hasNewQuestions);
     });
   }, [userName]);
 

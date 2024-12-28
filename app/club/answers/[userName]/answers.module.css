@@ -7,18 +7,20 @@
 .content {
   flex: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+}
+
+.accordionWrapper {
+  position: relative;
+  flex: 1;
 }
 
 .accordion {
   position: absolute;
   inset: 0;
   background-color: none !important;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: rem(16);
 }
 
 .item {
@@ -33,14 +35,19 @@
 .control {
   border-radius: var(--mantine-radius-lg);
   background: none !important;
+  gap: 0;
 }
 
 .controlWrapper {
   justify-content: space-between;
 
-  @media (max-width: var(--mantine-breakpoint-xs)) {
-    flex: 1 0;
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex: 0 1;
     flex-direction: column;
     justify-content: unset;
   }
+}
+
+.chevron {
+  display: none;
 }

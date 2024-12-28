@@ -49,8 +49,5 @@ export default async function fetchUsersProof({
     }
 
     return response.message;
-  } catch (err) {
-    console.log("Error in fetchUsersProof: ", err);
-    throw err;
-  }
+  } catch (err) {}
 }

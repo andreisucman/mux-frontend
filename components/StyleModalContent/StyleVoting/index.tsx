@@ -70,7 +70,6 @@ export default function StyleVoting({
         handleUpdateVotes(votedFor, voteType);
       }
     } catch (err) {
-      console.log("Error in handleVote: ", err);
     }
   }, []);
 

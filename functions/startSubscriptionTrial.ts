@@ -19,6 +19,5 @@ export default async function startSubscriptionTrial({ subscriptionName, onCompl
       if (onComplete) onComplete({ isSubscriptionActive: true, isTrialUsed: true });
     }
   } catch (err) {
-    console.log("Error in startSubscriptionTrial: ", err);
   }
 }
