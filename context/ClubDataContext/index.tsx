@@ -9,6 +9,8 @@ import { ClubUserType } from "@/types/global";
 import { UserContext } from "../UserContext";
 
 const defaultClubContext = {
+  hasAboutAnswers: false,
+  setHasAboutAnswers: (args: any) => {},
   hasNewAboutQuestions: false,
   setHasNewAboutQuestions: (args: any) => {},
   youFollowDataFetched: false,
@@ -31,6 +33,7 @@ export default function ClubDataContextProvider({ children }: Props) {
   const [youFollowData, setYouFollowData] = useState<ClubUserType | null | undefined>();
   const [youData, setYouData] = useState<ClubUserType | null>(null);
   const [hasNewAboutQuestions, setHasNewAboutQuestions] = useState(false);
+  const [hasAboutAnswers, setHasAboutAnswers] = useState(false);
 
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
 
@@ -84,7 +87,9 @@ export default function ClubDataContextProvider({ children }: Props) {
   }, [userName]);
 
   useEffect(() => {
-    fetchQuestions({ userName, onlyCheck: true, setHasQuestions: setHasNewAboutQuestions });
+    fetchQuestions({ userName, onlyCheck: true }).then((response) => {
+      const {} = response;
+    });
   }, [userName]);
 
   return (
@@ -95,6 +100,8 @@ export default function ClubDataContextProvider({ children }: Props) {
         youFollowData,
         setYouFollowData,
         youFollowDataFetched,
+        hasAboutAnswers,
+        setHasAboutAnswers,
         hasNewAboutQuestions,
         setHasNewAboutQuestions,
       }}

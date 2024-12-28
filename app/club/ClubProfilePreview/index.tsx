@@ -15,20 +15,25 @@ type Props = {
   type: "you" | "member";
   isMini?: boolean;
   data?: ClubUserType | null;
+  hasNewAboutQuestions: boolean;
   showButtons?: boolean;
   customStyles?: { [key: string]: any };
 };
 
-function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: Props) {
+function ClubProfilePreview({
+  type,
+  data,
+  isMini,
+  showButtons,
+  hasNewAboutQuestions,
+  customStyles,
+}: Props) {
   const router = useRouter();
   const { scores, bio, name, avatar } = data || {};
   const { headTotalProgress, bodyTotalProgress } = scores || {};
-  const { questions } = bio || {};
 
   const progessExists = headTotalProgress !== undefined || bodyTotalProgress !== undefined;
   const rowStyle: { [key: string]: any } = {};
-
-  const hasQuestions = questions && questions.length > 0;
 
   const redirectToProgress = useCallback(() => {
     if (!data) return;
@@ -104,7 +109,7 @@ function ClubProfilePreview({ type, data, isMini, showButtons, customStyles }: P
       {showButtons && (
         <MenuButtons
           type={type}
-          hasQuestions={!!hasQuestions}
+          hasQuestions={!!hasNewAboutQuestions}
           redirectToProgress={redirectToProgress}
           redirectToTrackingAbout={redirectToTrackingAbout}
         />

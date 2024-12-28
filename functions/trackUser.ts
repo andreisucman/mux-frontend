@@ -10,7 +10,7 @@ type TrackUserProps = {
   clubData?: ClubDataType;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
 };
-export default async function trackUser({
+export default async function followUser({
   router,
   userName,
   redirectUrl,
@@ -19,7 +19,7 @@ export default async function trackUser({
 }: TrackUserProps) {
   try {
     const response = await callTheServer({
-      endpoint: "trackUser",
+      endpoint: "followUser",
       method: "POST",
       body: { followingUserName: userName },
     });
@@ -33,7 +33,7 @@ export default async function trackUser({
       }
     }
   } catch (err) {
-    console.log("Error in trackUser: ", err);
+    console.log("Error in followUser: ", err);
   } finally {
     router.push(redirectUrl);
   }

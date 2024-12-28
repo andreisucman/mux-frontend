@@ -7,9 +7,9 @@ import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import { ScanTypeEnum, UserDataType } from "@/types/global";
+import { ReferrerEnum } from "../auth/AuthForm/types";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
-import { ReferrerEnum } from "../auth/AuthForm/types";
 
 export const runtime = "edge";
 
@@ -42,8 +42,12 @@ export default function ScanIndexPage() {
           // the user has finished the onboarding
           openAuthModal({
             title: "Login to continue",
-            stateObject: { redirectPath, redirectQuery, localUserId: userId },
-            referrer: ReferrerEnum.SCAN_INDEX
+            stateObject: {
+              redirectPath,
+              redirectQuery,
+              localUserId: userId,
+              referrer: ReferrerEnum.SCAN_INDEX,
+            },
           });
         } else {
           if (userId) {

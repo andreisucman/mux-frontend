@@ -1,4 +1,4 @@
-export const segments = [
+export const aboutSegments = [
   {
     value: "philosophy",
     label: "Philosophy",

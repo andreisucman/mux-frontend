@@ -31,7 +31,7 @@ export default function FollowHistoryModalContent() {
     async (userName: string) => {
       try {
         const response = await callTheServer({
-          endpoint: "trackUser",
+          endpoint: "followUser",
           method: "POST",
           body: { followingUserName: userName },
         });

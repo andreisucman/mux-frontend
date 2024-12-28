@@ -27,7 +27,8 @@ type Props = {
 
 export default function ClubAbout(props: Props) {
   const params = use(props.params);
-  const { youFollowData, hasNewAboutQuestions, youData, setYouData } = useContext(ClubContext);
+  const { youFollowData, hasNewAboutQuestions, hasAboutAnswers, youData, setYouData } =
+    useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [showQuestions, setShowQuestions] = useState(true);
@@ -148,7 +149,7 @@ export default function ClubAbout(props: Props) {
               bioData={bioData}
               isSelf={isSelf}
               youData={youData}
-              hasNewAboutQuestions={hasNewAboutQuestions}
+              hasAboutAnswers={hasAboutAnswers}
               setBioData={setBioData}
               updateClubBio={updateClubBio}
             />

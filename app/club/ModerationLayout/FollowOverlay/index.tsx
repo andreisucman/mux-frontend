@@ -14,12 +14,12 @@ type Props = {
 export default function FollowOverlay({ userName, description }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const handleTrackUser = useCallback(async () => {
+  const handleFollowUser = useCallback(async () => {
     try {
       if (!userName) throw new Error("User name is missing");
 
       const response = await callTheServer({
-        endpoint: "trackUser",
+        endpoint: "followUser",
         method: "POST",
         body: { followingUserName: userName },
       });
@@ -36,7 +36,7 @@ export default function FollowOverlay({ userName, description }: Props) {
         }
       }
     } catch (err) {
-      console.log("Error in handleTrackUser: ", err);
+      console.log("Error in handleFollowUser: ", err);
     }
   }, [userName, userDetails]);
 
@@ -48,7 +48,7 @@ export default function FollowOverlay({ userName, description }: Props) {
         <Text size="sm" c="dimmed">
           {description}
         </Text>
-        <Button className={classes.button} onClick={handleTrackUser} mt={8}>
+        <Button className={classes.button} onClick={handleFollowUser} mt={8}>
           <IconEye className="icon" style={{ marginRight: rem(6) }} /> Follow
         </Button>
       </Stack>

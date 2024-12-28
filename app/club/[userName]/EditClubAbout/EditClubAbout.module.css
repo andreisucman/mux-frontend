@@ -2,3 +2,15 @@
   gap: rem(12);
   flex: 1;
 }
+
+.buttons {
+  flex-wrap: nowrap;
+}
+
+.generateButton {
+  flex: 0.5 0;
+}
+
+.saveButton {
+  flex: 1 0;
+}

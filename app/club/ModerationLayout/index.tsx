@@ -29,7 +29,8 @@ type Props = {
 
 export default function ClubModerationLayout({ children, pageType, userName, showChat }: Props) {
   const { userDetails } = useContext(UserContext);
-  const { youData, youFollowData, youFollowDataFetched } = useContext(ClubContext);
+  const { youData, youFollowData, hasNewAboutQuestions, youFollowDataFetched } =
+    useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");
 
   const { name, subscriptions, club } = userDetails || {};
@@ -140,6 +141,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
             <ClubProfilePreview
               type={isSelf ? "you" : "member"}
               data={isSelf ? youData : youFollowData}
+              hasNewAboutQuestions={hasNewAboutQuestions}
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}

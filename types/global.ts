@@ -20,6 +20,11 @@ type ClubBioType = {
   style: string;
   tips: string;
   socials: { value: string; label: string }[];
+  nextRegenerateBio: {
+    philosophy: string | null;
+    style: string | null;
+    tips: string | null;
+  };
 };
 
 export type ClubDataType = {

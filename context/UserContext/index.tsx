@@ -3,6 +3,7 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
@@ -73,7 +74,17 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!code) return;
 
     const state = searchParams.get("state");
-    authenticate({ code, state, router, setStatus, setUserDetails });
+    const decodedState = decodeURIComponent(state || "") || "{}";
+    const parsedState = JSON.parse(decodedState);
+
+    authenticate({
+      code,
+      state,
+      referrer: parsedState.referrer,
+      router,
+      setStatus,
+      setUserDetails,
+    });
   }, [code]);
 
   useEffect(() => {

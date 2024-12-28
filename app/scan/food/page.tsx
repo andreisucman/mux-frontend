@@ -102,8 +102,8 @@ export default function ScanFoodPage() {
           stateObject: {
             redirectPath: "/scan/food",
             redirectQuery: searchParams.toString(),
+            referrer: ReferrerEnum.SCAN_FOOD,
           },
-          referrer: ReferrerEnum.SCAN_FOOD,
         });
         return;
       }

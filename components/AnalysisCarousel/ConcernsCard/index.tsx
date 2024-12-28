@@ -4,6 +4,7 @@ import React, { useCallback, useMemo } from "react";
 import { IconRotateDot } from "@tabler/icons-react";
 import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
 import GlowingButton from "@/components/GlowingButton";
 import { AuthStateEnum } from "@/context/UserContext/types";
@@ -11,7 +12,6 @@ import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import { TypeEnum, UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
-import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 
 type Props = {
   userId: string | null;
@@ -42,8 +42,8 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
           redirectPath: "/tasks",
           redirectQuery: `type=${type}`,
           localUserId: userId,
+          referrer: ReferrerEnum.ANALYSIS_PROGRESS,
         },
-        referrer: ReferrerEnum.ANALYSIS_PROGRESS,
         title: "Start your change",
       });
     }

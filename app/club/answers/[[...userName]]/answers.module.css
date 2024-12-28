@@ -34,3 +34,13 @@
   border-radius: var(--mantine-radius-lg);
   background: none !important;
 }
+
+.controlWrapper {
+  justify-content: space-between;
+
+  @media (max-width: var(--mantine-breakpoint-xs)) {
+    flex: 1 0;
+    flex-direction: column;
+    justify-content: unset;
+  }
+}

@@ -70,8 +70,8 @@ export default function StyleScanResult() {
           redirectPath: "/analysis/style",
           redirectQuery: `type=${type}`,
           localUserId: userId,
+          referrer: ReferrerEnum.ANALYSIS_STYLE,
         },
-        referrer: ReferrerEnum.ANALYSIS_STYLE,
       });
       return;
     }

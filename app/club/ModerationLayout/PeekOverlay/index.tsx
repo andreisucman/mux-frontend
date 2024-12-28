@@ -51,11 +51,11 @@ export default function PeekOverlay({ description }: Props) {
 
         openAuthModal({
           stateObject: {
+            referrer,
             redirectPath: pathname,
             redirectQuery: `?${searchParams.toString()}`,
             localUserId: userId,
           },
-          referrer,
           title: "Start your change",
         });
       } else {

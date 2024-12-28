@@ -1,3 +1,4 @@
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import callTheServer from "./callTheServer";
 
@@ -5,6 +6,7 @@ export type SignInStateType = {
   redirectPath?: string;
   redirectQuery?: string;
   localUserId?: string | null;
+  referrer: ReferrerEnum;
 };
 
 type Props = {

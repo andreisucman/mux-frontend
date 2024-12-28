@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { IconDeviceFloppy } from "@tabler/icons-react";
-import { Button, rem, SegmentedControl, Stack } from "@mantine/core";
+import React, { useCallback, useState } from "react";
+import { IconBolt, IconDeviceFloppy } from "@tabler/icons-react";
+import { Button, Group, rem, SegmentedControl, Stack, Tooltip } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
+import callTheServer from "@/functions/callTheServer";
+import askConfirmation from "@/helpers/askConfirmation";
+import openErrorModal from "@/helpers/openErrorModal";
 import { ClubUserType } from "@/types/global";
-import { segments } from "../segments";
+import { aboutSegments } from "../data";
 import classes from "./EditClubAbout.module.css";
 
 type BioDataType = {
@@ -13,7 +16,7 @@ type BioDataType = {
 };
 
 type Props = {
-  hasNewAboutQuestions: boolean;
+  hasAboutAnswers: boolean;
   youData: ClubUserType | null;
   bioData: BioDataType;
   isSelf: boolean;
@@ -22,7 +25,7 @@ type Props = {
 };
 
 export default function EditClubAbout({
-  hasNewAboutQuestions,
+  hasAboutAnswers,
   youData,
   bioData,
   isSelf,
@@ -39,34 +42,97 @@ export default function EditClubAbout({
     )
     .filter(Boolean);
 
-  const currentSegment = segments.find((segment) => segment.value === showSegment) || segments[0];
-  const editingDisabled = !isSelf || hasNewAboutQuestions;
+  const { bio } = youData || {};
+  const { nextRegenerateBio } = bio || {};
+
+  if (nextRegenerateBio && !nextRegenerateBio[showSegment as "philosophy"]) return;
+
+  const nextDate = nextRegenerateBio && nextRegenerateBio[showSegment as "philosophy"];
+  const canRegenerate = !nextDate || new Date(nextDate) <= new Date();
+
+  const tooltipLabel = hasAboutAnswers
+    ? "Answer questions first"
+    : canRegenerate
+      ? ""
+      : `Next after ${new Date(nextDate).toDateString()}.`;
+
+  const generateBioFromQuestions = useCallback(
+    async (segment: string) => {
+      try {
+        const response = await callTheServer({
+          endpoint: "generateBioFromQuestions",
+          method: "POST",
+          body: { segment },
+        });
+
+        if (response.status === 200) {
+          setBioData((prev: any) => ({
+            ...(prev || {}),
+            [showSegment]: response.message,
+          }));
+        }
+      } catch (err) {
+        console.log("Error in generateBioFromQuestions: ", err);
+      }
+    },
+    [bioData, canRegenerate]
+  );
+
+  const handleGenerateBioFromQuestions = useCallback(
+    (segment: string) => {
+      if (canRegenerate) {
+        askConfirmation({
+          title: "Please confirm",
+          body: "You can only generate bio from questions once a week. Continue?",
+          onConfirm: () => generateBioFromQuestions(segment),
+        });
+      } else {
+        openErrorModal({
+          description: `You can regenerate ${segment} after ${new Date(nextDate).toDateString()}`,
+        });
+      }
+    },
+    [youData]
+  );
 
   return (
     <Stack className={classes.wrapper}>
-      <SegmentedControl data={segments} value={showSegment} onChange={setShowSegment} />
+      <SegmentedControl data={aboutSegments} value={showSegment} onChange={setShowSegment} />
       <TextareaComponent
-        text={bioData[currentSegment.value as keyof BioDataType]}
+        text={bioData[showSegment as keyof BioDataType]}
         setText={(text) =>
           setBioData((prev: any) => ({
             ...(prev || {}),
-            [currentSegment.value]: text,
+            [showSegment]: text,
           }))
         }
-        placeholder={`Your ${currentSegment.value}`}
-        readOnly={editingDisabled}
+        placeholder={`Your ${showSegment}`}
+        readOnly={!isSelf}
         isUnbounded
       />
 
       {isSelf && (
-        <Button
-          w="100%"
-          onClick={() => updateClubBio(dirtyParts as string[], bioData)}
-          disabled={dirtyParts.length === 0 || editingDisabled}
-        >
-          <IconDeviceFloppy style={{ marginRight: rem(4), width: rem(20), height: rem(20) }} />
-          Save
-        </Button>
+        <Group className={classes.buttons}>
+          {hasAboutAnswers && (
+            <Tooltip label={tooltipLabel} disabled={!!canRegenerate}>
+              <Button
+                className={classes.generateButton}
+                onClick={() => handleGenerateBioFromQuestions(showSegment)}
+              >
+                <IconBolt className="icon" style={{ marginRight: rem(4) }} /> Generate
+              </Button>
+            </Tooltip>
+          )}
+
+          <Button
+            className={classes.saveButton}
+            onClick={() => updateClubBio(dirtyParts as string[], bioData)}
+            disabled={dirtyParts.length === 0 || !isSelf}
+          >
+            <IconDeviceFloppy className="icon" style={{ marginRight: rem(4) }} />
+            Save
+          </Button>
+        </Group>
       )}
     </Stack>
   );

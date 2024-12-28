@@ -15,7 +15,8 @@ export const runtime = "edge";
 
 export default function Club() {
   const { userDetails } = useContext(UserContext);
-  const { youFollowData, youData, youFollowDataFetched } = useContext(ClubContext);
+  const { youFollowData, hasNewAboutQuestions, youData, youFollowDataFetched } =
+    useContext(ClubContext);
 
   const { club } = userDetails || {};
   const { followingUserName, payouts, totalFollowers } = club || {};
@@ -26,9 +27,19 @@ export default function Club() {
       <SkeletonWrapper show={!youFollowDataFetched}>
         <ClubProfileHeader />
         <Group className={classes.top}>
-          <ClubProfilePreview data={youData} type="you" showButtons />
+          <ClubProfilePreview
+            data={youData}
+            type="you"
+            hasNewAboutQuestions={hasNewAboutQuestions}
+            showButtons
+          />
           {followingUserName && (
-            <ClubProfilePreview data={youFollowData} type="member" showButtons />
+            <ClubProfilePreview
+              data={youFollowData}
+              type="member"
+              hasNewAboutQuestions={hasNewAboutQuestions}
+              showButtons
+            />
           )}
         </Group>
         <BalancePane balance={balance} payoutsEnabled={payoutsEnabled} />

@@ -17,8 +17,11 @@ export default function AuthPage() {
     <Stack className={`${classes.container} smallPage`}>
       <Stack className={classes.wrapper}>
         <AuthForm
-          stateObject={{ localUserId: userId, redirectPath: "/tasks" }}
-          referrer={ReferrerEnum.AUTH_PAGE}
+          stateObject={{
+            localUserId: userId,
+            redirectPath: "/tasks",
+            referrer: ReferrerEnum.AUTH_PAGE,
+          }}
         />
       </Stack>
     </Stack>
