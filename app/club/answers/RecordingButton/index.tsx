@@ -17,7 +17,7 @@ type Props = {
   customButtonStyles?: { [key: string]: any };
   setText?: React.Dispatch<React.SetStateAction<string>>;
   setLocalUrl?: React.Dispatch<React.SetStateAction<string | null>>;
-  setAudioBlobs: React.Dispatch<React.SetStateAction<Blob[] | null>>;
+  setAudioBlobs?: React.Dispatch<React.SetStateAction<Blob[] | null>>;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -55,7 +55,7 @@ export default function RecordingButton({
       mediaRecorder.onstop = () => {
         console.log("Recording stopped, processing data...");
         const audioBlob = new Blob(audioChunks);
-        setAudioBlobs((prev) => [...(prev || []), audioBlob]);
+        if (setAudioBlobs) setAudioBlobs((prev) => [...(prev || []), audioBlob]);
         if (setLocalUrl) {
           setLocalUrl(URL.createObjectURL(audioBlob));
         }

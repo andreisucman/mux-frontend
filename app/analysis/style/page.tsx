@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { IconFocus, IconMan, IconMoodSmile, IconTarget } from "@tabler/icons-react";
 import { Button, Group, Image, rem, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import GlowingButton from "@/components/GlowingButton";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -70,6 +71,7 @@ export default function StyleScanResult() {
           redirectQuery: `type=${type}`,
           localUserId: userId,
         },
+        referrer: ReferrerEnum.ANALYSIS_STYLE,
       });
       return;
     }

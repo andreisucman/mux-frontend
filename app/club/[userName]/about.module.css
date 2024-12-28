@@ -15,9 +15,7 @@
 }
 
 .carouselContainer {
-  gap: rem(8);
-
-  padding: rem(16);
+gap:0;
   border: rem(1) solid var(--mantine-color-dark-5);
   border-radius: var(--mantine-radius-lg);
 }
@@ -25,4 +23,11 @@
 .carouselHeader {
   cursor: pointer;
   justify-content: space-between;
+  padding: rem(8);
+}
+
+.buttonWrapper {
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: 0 0 var(--mantine-radius-lg) var(--mantine-radius-lg) ;
 }

@@ -24,12 +24,12 @@ type Props = {
   showChat?: boolean;
   showHeader?: boolean;
   userName?: string;
-  pageType: "about" | "routines" | "diary" | "progress" | "proof" | "style";
+  pageType: "about" | "routines" | "diary" | "progress" | "proof" | "style" | "answers";
 };
 
 export default function ClubModerationLayout({ children, pageType, userName, showChat }: Props) {
   const { userDetails } = useContext(UserContext);
-  const { youData, youTrackData, youTrackDataFetched } = useContext(ClubContext);
+  const { youData, youFollowData, youFollowDataFetched } = useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");
 
   const { name, subscriptions, club } = userDetails || {};
@@ -74,12 +74,13 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
           showReturn
         />
       ),
-      about: <ClubHeader title={"Club"} hideTypeDropdown={true} pageType="about" showReturn />,
+      about: <ClubHeader title={"Club"} pageType={pageType} showReturn hideTypeDropdown />,
+      answers: <ClubHeader title={"Club"} pageType={pageType} showReturn hideTypeDropdown />,
       diary: (
         <ClubHeader
           title={"Club"}
           hideTypeDropdown={showComponent !== "children"}
-          pageType="diary"
+          pageType={pageType}
           showReturn
         />
       ),
@@ -87,7 +88,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
         <ClubHeader
           title={"Club"}
           hideTypeDropdown={showComponent !== "children"}
-          pageType="routines"
+          pageType={pageType}
           showReturn
         />
       ),
@@ -98,9 +99,9 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
   const followText = `Follow to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
-    if (!youTrackDataFetched) return;
+    if (!youFollowDataFetched) return;
 
-    if (youTrackData === null || !userName) {
+    if (youFollowData === null || !userName) {
       setShowComponent("userNotFound");
       return;
     }
@@ -124,8 +125,8 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
     followingUserName,
     userName,
     isSelf,
-    youTrackData,
-    youTrackDataFetched,
+    youFollowData,
+    youFollowDataFetched,
   ]);
 
   return (
@@ -138,7 +139,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
           <>
             <ClubProfilePreview
               type={isSelf ? "you" : "member"}
-              data={isSelf ? youData : youTrackData}
+              data={isSelf ? youData : youFollowData}
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}

@@ -11,3 +11,9 @@
 .submitButton {
   min-height: rem(24);
 }
+
+.header {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

@@ -19,14 +19,16 @@ import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import openLegalBody from "@/helpers/openLegalBody";
 import { validateEmail } from "@/helpers/utils";
+import { ReferrerEnum } from "./types";
 import classes from "./AuthForm.module.css";
 
 type Props = {
+  referrer: ReferrerEnum;
   stateObject?: SignInStateType;
   customStyles?: { [key: string]: any };
 };
 
-export default function AuthForm({ stateObject, customStyles }: Props) {
+export default function AuthForm({ stateObject, referrer, customStyles }: Props) {
   const router = useRouter();
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
@@ -91,6 +93,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       authenticate({
         email,
         password,
+        referrer,
         state,
         router,
         setStatus,

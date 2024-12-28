@@ -11,6 +11,7 @@ import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import { TypeEnum, UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 
 type Props = {
   userId: string | null;
@@ -42,6 +43,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
           redirectQuery: `type=${type}`,
           localUserId: userId,
         },
+        referrer: ReferrerEnum.ANALYSIS_PROGRESS,
         title: "Start your change",
       });
     }

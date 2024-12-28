@@ -1,19 +1,16 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import { Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
+import { IconChevronDown, IconX } from "@tabler/icons-react";
+import { Button, Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import uploadToSpaces from "@/functions/uploadToSpaces";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
-import QuestionsCarousel from "./QuestionsCarousel";
-import { SubmitAboutResponseType } from "./types";
 import classes from "./about.module.css";
 
 export const runtime = "edge";
@@ -30,16 +27,13 @@ type Props = {
 
 export default function ClubAbout(props: Props) {
   const params = use(props.params);
-  const { youTrackData, youData, setYouData } = useContext(ClubContext);
+  const { youFollowData, hasNewAboutQuestions, youData, setYouData } = useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [showQuestions, setShowQuestions] = useState(true);
 
   const { userName } = params;
-
-  const { name, club } = userDetails || {};
-  const { bio } = club || {};
-  const { questions } = bio || {};
+  const { name } = userDetails || {};
 
   const isSelf = name === userName;
 
@@ -49,65 +43,9 @@ export default function ClubAbout(props: Props) {
     tips: "",
   });
 
-  const chevron = showQuestions ? (
-    <IconChevronUp className="icon" />
-  ) : (
-    <IconChevronDown className="icon" />
-  );
+  const chevron = showQuestions ? <IconX className="icon" /> : <IconChevronDown className="icon" />;
 
   const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions";
-
-  const submitResponse = useCallback(
-    async ({ question, reply, audioBlobs, setIsLoading, setText }: SubmitAboutResponseType) => {
-      if (!questions || !question || !reply) return;
-
-      try {
-        setIsLoading(true);
-
-        const payload: {
-          question: string;
-          reply: string;
-          audioReplies?: string[];
-        } = { question, reply };
-
-        if (audioBlobs) {
-          const audioUrls =
-            (await uploadToSpaces({
-              itemsArray: audioBlobs,
-              mime: "audio/wav",
-            })) || [];
-
-          payload.audioReplies = audioUrls;
-        }
-
-        const response = await callTheServer({
-          endpoint: "saveAboutResponse",
-          method: "POST",
-          body: payload,
-        });
-
-        if (response.status === 200) {
-          setText("");
-
-          const { bio } = response.message;
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            club: { ...club, ...response.message },
-          }));
-          setBioData({
-            philosophy: bio.philosophy,
-            style: bio.style,
-            tips: bio.tips,
-          });
-        }
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-        console.log("Error in submitResponse: ", err);
-      }
-    },
-    [userDetails]
-  );
 
   const updateClubBio = useCallback(
     async (dirtyParts: string[], bioData: BioDataType) => {
@@ -152,14 +90,14 @@ export default function ClubAbout(props: Props) {
   }, []);
 
   useEffect(() => {
-    if (!youData && !youTrackData) return;
+    if (!youData && !youFollowData) return;
 
     let bio: { [key: string]: any } = {};
 
     if (isSelf) {
       bio = youData?.bio || {};
     } else {
-      bio = youTrackData?.bio || {};
+      bio = youFollowData?.bio || {};
     }
 
     setBioData({
@@ -167,13 +105,13 @@ export default function ClubAbout(props: Props) {
       style: bio?.style || "",
       tips: bio?.tips || "",
     });
-  }, [isSelf, youData, youTrackData]);
+  }, [isSelf, youData, youFollowData]);
 
   useEffect(() => {
     let showSkeleton = true;
 
     if (isSelf) showSkeleton = false;
-    if (!isSelf && youTrackData) showSkeleton = false;
+    if (!isSelf && youFollowData) showSkeleton = false;
 
     setShowSkeleton(showSkeleton);
   }, [isSelf, userDetails]);
@@ -183,14 +121,14 @@ export default function ClubAbout(props: Props) {
     setShowQuestions(!!savedShowQuestions);
   }, []);
 
-  console.log("showQuestions", showQuestions);
+  const buttonText = hasNewAboutQuestions ? "Answer new questions" : "See your answers";
 
   return (
     <ClubModerationLayout userName={userName} pageType="about">
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
         {isSelf ? (
           <>
-            {questions && questions.length > 0 && (
+            {hasNewAboutQuestions && (
               <Stack className={classes.carouselContainer}>
                 <Group className={classes.carouselHeader} onClick={toggleQuestions}>
                   <Text size="xs" c="dimmed">
@@ -200,7 +138,9 @@ export default function ClubAbout(props: Props) {
                 </Group>
 
                 <Collapse in={showQuestions}>
-                  <QuestionsCarousel questions={questions} submitResponse={submitResponse} />
+                  <Stack className={classes.buttonWrapper}>
+                    <Button m="auto">{buttonText}</Button>
+                  </Stack>
                 </Collapse>
               </Stack>
             )}
@@ -208,7 +148,7 @@ export default function ClubAbout(props: Props) {
               bioData={bioData}
               isSelf={isSelf}
               youData={youData}
-              questions={questions}
+              hasNewAboutQuestions={hasNewAboutQuestions}
               setBioData={setBioData}
               updateClubBio={updateClubBio}
             />

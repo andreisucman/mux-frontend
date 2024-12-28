@@ -19,7 +19,6 @@ type ClubBioType = {
   philosophy: string;
   style: string;
   tips: string;
-  questions: { asking: string; question: string }[];
   socials: { value: string; label: string }[];
 };
 
@@ -43,7 +42,6 @@ export type ClubDataType = {
 export type ClubUserType = {
   // if the user joined the club all of these fields must be populated with default empty values else the whole field is null
   _id: string;
-  avatar: { [key: string]: any };
   name: string;
   bio: ClubBioType;
   scores: {
@@ -52,6 +50,7 @@ export type ClubUserType = {
     bodyCurrentScore: number;
     bodyTotalProgress: number;
   };
+  avatar: { [key: string]: any };
 };
 
 export type DemographicsType = {

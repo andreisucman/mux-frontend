@@ -5,6 +5,7 @@ import { useRouter as useDefaultRouter, useSearchParams } from "next/navigation"
 import { IconMenu2 } from "@tabler/icons-react";
 import { Button, rem, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import CalorieResultOverlay, { FoodAnalysisType } from "@/components/CalorieResultOverlay";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import PhotoCapturer from "@/components/PhotoCapturer";
@@ -102,6 +103,7 @@ export default function ScanFoodPage() {
             redirectPath: "/scan/food",
             redirectQuery: searchParams.toString(),
           },
+          referrer: ReferrerEnum.SCAN_FOOD,
         });
         return;
       }

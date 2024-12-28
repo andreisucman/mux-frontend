@@ -9,6 +9,7 @@ import openAuthModal from "@/helpers/openAuthModal";
 import { ScanTypeEnum, UserDataType } from "@/types/global";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
+import { ReferrerEnum } from "../auth/AuthForm/types";
 
 export const runtime = "edge";
 
@@ -42,6 +43,7 @@ export default function ScanIndexPage() {
           openAuthModal({
             title: "Login to continue",
             stateObject: { redirectPath, redirectQuery, localUserId: userId },
+            referrer: ReferrerEnum.SCAN_INDEX
           });
         } else {
           if (userId) {
@@ -67,7 +69,11 @@ export default function ScanIndexPage() {
       <Stack className={classes.wrapper}>
         <Group align="center">
           <Title order={1}>Scan yourself</Title>
-          <SegmentedControl value={sex || "female"} data={sexes} onChange={(value)=>handleChangeSex(value)} />
+          <SegmentedControl
+            value={sex || "female"}
+            data={sexes}
+            onChange={(value) => handleChangeSex(value)}
+          />
         </Group>
         <Group className={classes.content}>
           <StartButton

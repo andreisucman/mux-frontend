@@ -4,13 +4,16 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useParams } from "next/navigation";
 import { useShallowEffect } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
+import fetchQuestions from "@/functions/fetchQuestions";
 import { ClubUserType } from "@/types/global";
 import { UserContext } from "../UserContext";
 
 const defaultClubContext = {
-  youTrackDataFetched: false,
-  youTrackData: null as ClubUserType | null | undefined,
-  setYouTrackData: (args: any) => {},
+  hasNewAboutQuestions: false,
+  setHasNewAboutQuestions: (args: any) => {},
+  youFollowDataFetched: false,
+  youFollowData: null as ClubUserType | null | undefined,
+  setYouFollowData: (args: any) => {},
   youData: null as ClubUserType | null,
   setYouData: (args: any) => {},
 };
@@ -24,9 +27,10 @@ type Props = {
 export default function ClubDataContextProvider({ children }: Props) {
   const { userName } = useParams();
   const { userDetails } = useContext(UserContext);
-  const [youTrackDataFetched, setYouTrackDataFetched] = useState(false);
-  const [youTrackData, setYouTrackData] = useState<ClubUserType | null | undefined>();
+  const [youFollowDataFetched, setYouTrackDataFetched] = useState(false);
+  const [youFollowData, setYouFollowData] = useState<ClubUserType | null | undefined>();
   const [youData, setYouData] = useState<ClubUserType | null>(null);
+  const [hasNewAboutQuestions, setHasNewAboutQuestions] = useState(false);
 
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
 
@@ -38,7 +42,7 @@ export default function ClubDataContextProvider({ children }: Props) {
       });
 
       if (response.status === 200) {
-        setYouTrackData(response.message);
+        setYouFollowData(response.message);
       }
       setYouTrackDataFetched(true);
     } catch (err) {
@@ -79,14 +83,20 @@ export default function ClubDataContextProvider({ children }: Props) {
     fetchYouFollow(userName as string);
   }, [userName]);
 
+  useEffect(() => {
+    fetchQuestions({ userName, onlyCheck: true, setHasQuestions: setHasNewAboutQuestions });
+  }, [userName]);
+
   return (
     <ClubContext.Provider
       value={{
-        youTrackDataFetched,
-        youTrackData,
-        setYouTrackData,
         youData,
         setYouData,
+        youFollowData,
+        setYouFollowData,
+        youFollowDataFetched,
+        hasNewAboutQuestions,
+        setHasNewAboutQuestions,
       }}
     >
       {children}

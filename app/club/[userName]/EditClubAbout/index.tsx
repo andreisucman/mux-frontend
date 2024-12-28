@@ -6,11 +6,6 @@ import { ClubUserType } from "@/types/global";
 import { segments } from "../segments";
 import classes from "./EditClubAbout.module.css";
 
-export type AboutQuestionType = {
-  question: string;
-  asking: string;
-};
-
 type BioDataType = {
   philosophy: string;
   style: string;
@@ -18,7 +13,7 @@ type BioDataType = {
 };
 
 type Props = {
-  questions?: AboutQuestionType[];
+  hasNewAboutQuestions: boolean;
   youData: ClubUserType | null;
   bioData: BioDataType;
   isSelf: boolean;
@@ -27,7 +22,7 @@ type Props = {
 };
 
 export default function EditClubAbout({
-  questions,
+  hasNewAboutQuestions,
   youData,
   bioData,
   isSelf,
@@ -45,7 +40,7 @@ export default function EditClubAbout({
     .filter(Boolean);
 
   const currentSegment = segments.find((segment) => segment.value === showSegment) || segments[0];
-  const editingDisabled = !isSelf || (questions && questions?.length > 0);
+  const editingDisabled = !isSelf || hasNewAboutQuestions;
 
   return (
     <Stack className={classes.wrapper}>
