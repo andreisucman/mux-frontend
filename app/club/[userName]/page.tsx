@@ -4,6 +4,7 @@ import React, { use, useCallback, useContext, useEffect, useState } from "react"
 import {
   IconAlignJustified,
   IconChevronDown,
+  IconChevronUp,
   IconExclamationCircle,
   IconX,
 } from "@tabler/icons-react";
@@ -35,7 +36,7 @@ export default function ClubAbout(props: Props) {
 
   const { youFollowData, hasNewAboutQuestions, hasAboutAnswers, youData, setYouData } =
     useContext(ClubContext);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [showQuestions, setShowQuestions] = useState(true);
 
@@ -49,7 +50,11 @@ export default function ClubAbout(props: Props) {
     tips: "",
   });
 
-  const chevron = showQuestions ? <IconX className="icon" /> : <IconChevronDown className="icon" />;
+  const chevron = showQuestions ? (
+    <IconChevronUp className="icon" />
+  ) : (
+    <IconChevronDown className="icon" />
+  );
 
   const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions";
 
@@ -136,28 +141,35 @@ export default function ClubAbout(props: Props) {
 
   return (
     <ClubModerationLayout userName={userName} pageType="about">
-      <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
+      <Skeleton
+        visible={showSkeleton || hasNewAboutQuestions === undefined}
+        className={`${classes.skeleton} skeleton`}
+      >
         {isSelf ? (
           <>
-            {hasNewAboutQuestions && (
-              <Stack className={classes.carouselContainer}>
-                <Group className={classes.carouselHeader} onClick={toggleQuestions}>
-                  <Text size="xs" c="dimmed">
-                    {questionsTitle}
-                  </Text>
-                  {chevron}
-                </Group>
+            <Stack className={classes.carouselContainer}>
+              <Group className={classes.carouselHeader} onClick={toggleQuestions}>
+                <Text size="xs" c="dimmed">
+                  {questionsTitle}
+                </Text>
+                {chevron}
+              </Group>
 
-                <Collapse in={showQuestions}>
-                  <Stack className={classes.buttonWrapper}>
-                    <Button m="auto" c="white" component={Link} href={buttonPath}>
-                      {buttonIcon}
-                      {buttonText}
-                    </Button>
-                  </Stack>
-                </Collapse>
-              </Stack>
-            )}
+              <Collapse in={showQuestions}>
+                <Stack className={classes.buttonWrapper}>
+                  <Button
+                    m="auto"
+                    c="white"
+                    variant={hasNewAboutQuestions ? "filled" : "default"}
+                    component={Link}
+                    href={buttonPath}
+                  >
+                    {buttonIcon}
+                    {buttonText}
+                  </Button>
+                </Stack>
+              </Collapse>
+            </Stack>
             <EditClubAbout
               bioData={bioData}
               isSelf={isSelf}

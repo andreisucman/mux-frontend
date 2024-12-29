@@ -16,8 +16,8 @@ type BioDataType = {
 };
 
 type Props = {
-  hasAboutAnswers: boolean;
-  hasNewAboutQuestions: boolean;
+  hasAboutAnswers?: boolean;
+  hasNewAboutQuestions?: boolean;
   youData: ClubUserType | null;
   bioData: BioDataType;
   isSelf: boolean;
@@ -77,27 +77,27 @@ export default function EditClubAbout({
         if (response.status === 200) {
           const { content, nextRegenerateBio } = response.message;
 
-          console.log("response.message", response.message);
-
           setBioData((prev: any) => ({
             ...(prev || {}),
             [showSegment]: content,
           }));
 
-          setYouData((prev: ClubUserType) => ({
-            ...prev,
-            bio: {
-              ...prev.bio,
-              nextRegenerateBio: { ...prev.bio.nextRegenerateBio, ...nextRegenerateBio },
-            },
-          }));
+          setYouData((prev: ClubUserType) => {
+            return {
+              ...prev,
+              bio: {
+                ...prev.bio,
+                nextRegenerateBio: { ...prev.bio.nextRegenerateBio, ...nextRegenerateBio },
+              },
+            };
+          });
         }
       } catch (err) {
       } finally {
         setIsLoading(false);
       }
     },
-    [bioData, youData, showSegment, canRegenerate]
+    [bioData, youData, showSegment]
   );
 
   const handleGenerateBioFromQuestions = useCallback(

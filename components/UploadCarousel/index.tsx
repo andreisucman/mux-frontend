@@ -151,7 +151,7 @@ export default function UploadCarousel({
           distinctUploadedParts={distinctUploadedParts}
         />
       )}
-      {displayComponent === "loading" && <Loader m="auto" />}
+      {displayComponent === "loading" && <Loader m="0 auto" pt="15%"/>}
     </Stack>
   );
 }

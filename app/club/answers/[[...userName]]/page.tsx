@@ -3,7 +3,6 @@
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter as useDefaultRouter, useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCheckbox, IconCircleOff, IconSearch } from "@tabler/icons-react";
-import { useRouter } from "@/helpers/custom-router";
 import {
   Accordion,
   ActionIcon,
@@ -19,6 +18,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchQuestions from "@/functions/fetchQuestions";
+import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../../ModerationLayout";
@@ -83,9 +83,7 @@ export default function AnswersPage(props: Props) {
         });
 
         if (response.status === 200) {
-          const newQuestions = questions
-            .map((q) => (q._id === questionId ? { ...q, skipped: false } : q))
-            .filter((q) => !q.skipped);
+          const newQuestions = questions.filter((q) => q._id !== questionId);
           setQuestions(newQuestions);
         }
 
@@ -136,24 +134,27 @@ export default function AnswersPage(props: Props) {
     [isSelf, submitResponse]
   );
 
-  const handleFetchQuestions = useCallback(async () => {
-    const data = await fetchQuestions({
-      userName,
-      showType,
-      searchQuery,
-      skip: hasMore ? questions && questions.length : undefined,
-    });
+  const handleFetchQuestions = useCallback(
+    async (query?: string) => {
+      const data = await fetchQuestions({
+        userName,
+        showType,
+        searchQuery: query,
+        skip: hasMore ? questions && questions.length : undefined,
+      });
 
-    const { questions: questionsList } = data;
-    setQuestions(questionsList);
-    setHasMore(questionsList.length === 21);
-  }, [userName, hasMore, searchQuery, showType]);
+      const { questions: questionsList } = data;
+      setQuestions(questionsList);
+      setHasMore(questionsList.length === 21);
+    },
+    [userName, hasMore, showType]
+  );
 
   const handleSearch = (searchQuery: string) => {
     setSearchQuery(searchQuery);
 
-    if (searchQuery.length % 2 === 0) {
-      handleFetchQuestions();
+    if (searchQuery.length % 4 === 0 || searchQuery.length === 0) {
+      handleFetchQuestions(searchQuery);
     }
   };
 
@@ -171,7 +172,7 @@ export default function AnswersPage(props: Props) {
 
   const overlayText = isSelf
     ? showType === "new"
-      ? "All questions answered"
+      ? "No new questions"
       : "Nothing found"
     : "Nothing found";
 
@@ -187,8 +188,8 @@ export default function AnswersPage(props: Props) {
 
   const overlayButton = isSelf ? (
     showType !== "new" ? undefined : (
-      <Button mt={4} variant="default" onClick={() => router.push(`/club/${userName}`)}>
-        Return to generate bio
+      <Button mt={8} variant="default" onClick={() => router.push(`/club/${userName}`)}>
+        Return
       </Button>
     )
   ) : undefined;
@@ -248,7 +249,7 @@ export default function AnswersPage(props: Props) {
               <ActionIcon
                 variant="default"
                 className={classes.getMoreButton}
-                onClick={handleFetchQuestions}
+                onClick={() => handleFetchQuestions(searchQuery)}
               >
                 <IconArrowDown />
               </ActionIcon>

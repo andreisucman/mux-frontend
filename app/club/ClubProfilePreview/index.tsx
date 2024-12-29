@@ -15,7 +15,7 @@ type Props = {
   type: "you" | "member";
   isMini?: boolean;
   data?: ClubUserType | null;
-  hasNewAboutQuestions: boolean;
+  hasNewAboutQuestions?: boolean;
   showButtons?: boolean;
   customStyles?: { [key: string]: any };
 };

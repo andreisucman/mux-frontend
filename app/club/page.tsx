@@ -24,7 +24,7 @@ export default function Club() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper show={!youFollowDataFetched}>
+      <SkeletonWrapper show={!youFollowDataFetched || hasNewAboutQuestions === undefined}>
         <ClubProfileHeader />
         <Group className={classes.top}>
           <ClubProfilePreview
