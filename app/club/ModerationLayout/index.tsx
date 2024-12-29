@@ -102,6 +102,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
   useEffect(() => {
     if (!youFollowDataFetched) return;
 
+    console.log("youFollowData", youFollowData, "userName", userName);
     if (youFollowData === null || !userName) {
       setShowComponent("userNotFound");
       return;

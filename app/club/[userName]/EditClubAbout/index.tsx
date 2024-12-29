@@ -17,6 +17,7 @@ type BioDataType = {
 
 type Props = {
   hasAboutAnswers: boolean;
+  hasNewAboutQuestions: boolean;
   youData: ClubUserType | null;
   bioData: BioDataType;
   isSelf: boolean;
@@ -26,6 +27,7 @@ type Props = {
 
 export default function EditClubAbout({
   hasAboutAnswers,
+  hasNewAboutQuestions,
   youData,
   bioData,
   isSelf,
@@ -48,7 +50,7 @@ export default function EditClubAbout({
   const nextDate = nextRegenerateBio && nextRegenerateBio[showSegment as "philosophy"];
   const canRegenerate = !nextDate || new Date(nextDate) <= new Date();
 
-  const tooltipLabel = hasAboutAnswers
+  const tooltipLabel = !hasAboutAnswers
     ? "Answer questions first"
     : canRegenerate
       ? ""
@@ -69,8 +71,7 @@ export default function EditClubAbout({
             [showSegment]: response.message,
           }));
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [bioData, canRegenerate]
   );
@@ -110,13 +111,14 @@ export default function EditClubAbout({
 
       {isSelf && (
         <Group className={classes.buttons}>
-          {hasAboutAnswers && (
-            <Tooltip label={tooltipLabel} disabled={!!canRegenerate}>
+          {(hasAboutAnswers || hasNewAboutQuestions) && (
+            <Tooltip label={tooltipLabel} disabled={false}>
               <Button
                 className={classes.generateButton}
+                disabled={!hasAboutAnswers}
                 onClick={() => handleGenerateBioFromQuestions(showSegment)}
               >
-                <IconBolt className="icon" style={{ marginRight: rem(4) }} /> Generate
+                <IconBolt className="icon" style={{ marginRight: rem(6) }} /> Generate from answers
               </Button>
             </Tooltip>
           )}
@@ -126,7 +128,7 @@ export default function EditClubAbout({
             onClick={() => updateClubBio(dirtyParts as string[], bioData)}
             disabled={dirtyParts.length === 0 || !isSelf}
           >
-            <IconDeviceFloppy className="icon" style={{ marginRight: rem(4) }} />
+            <IconDeviceFloppy className="icon" style={{ marginRight: rem(6) }} />
             Save
           </Button>
         </Group>

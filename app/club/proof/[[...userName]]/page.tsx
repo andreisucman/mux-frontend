@@ -22,7 +22,9 @@ type Props = {
 };
 
 export default function ClubProof(props: Props) {
-  const { userName } = use(props.params);
+  const params = use(props.params);
+  const userName = params?.userName?.[0];
+  
   const { status, userDetails } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);

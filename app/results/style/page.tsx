@@ -47,7 +47,6 @@ export default function ResultStyle() {
         }
         setHasMore(items.length === 21);
       } catch (err) {
-        console.log("Error in handleFetchStyles: ", err);
       }
     },
     []

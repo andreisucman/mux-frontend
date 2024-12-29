@@ -7,6 +7,7 @@ import { clubPageTypeItems, typeItems } from "@/components/PageHeader/data";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons, typeIcons } from "@/helpers/icons";
+import { TypeEnum } from "@/types/global";
 import classes from "./ClubHeader.module.css";
 
 type Props = {
@@ -27,20 +28,20 @@ export default function ClubHeader({
   onSelect,
 }: Props) {
   const router = useRouter();
-  const { userName } = useParams();
+  const params = useParams();
+  const userName = Array.isArray(params?.userName) ? params?.userName?.[0] : params.userName;
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type");
+  const type = searchParams.get("type") || TypeEnum.HEAD;
 
   const handleRedirect = useCallback(
-    (value?: string | null) => {
-      if (!value) return;
+    (pageName?: string | null) => {
+      if (!pageName) return;
+      const path = getPageTypeRedirect(pageName, userName);
 
-      const path = getPageTypeRedirect(value, userName);
-
-      router.push(`${path}?${searchParams.toString()}`);
+      router.push(path);
     },
-    [userName, searchParams.toString()]
+    [userName]
   );
 
   return (
@@ -69,7 +70,7 @@ export default function ClubHeader({
           icons={typeIcons}
           data={typeItems}
           filterType="type"
-          selectedValue={typeItems.find((item) => item.value === type)?.value}
+          selectedValue={type}
           onSelect={onSelect}
           placeholder="Select type"
           isDisabled={isDisabled}

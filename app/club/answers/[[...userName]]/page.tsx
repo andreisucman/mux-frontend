@@ -14,6 +14,7 @@ import {
   Stack,
   TextInput,
 } from "@mantine/core";
+import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -37,7 +38,7 @@ const showTypes = [
 
 export default function AnswersPage(props: Props) {
   const params = use(props.params);
-  const { userName } = params;
+  const userName = params?.userName?.[0];
 
   const { userDetails } = useContext(UserContext);
 
@@ -50,8 +51,8 @@ export default function AnswersPage(props: Props) {
 
   const { name } = userDetails || {};
 
-  const showType = searchParams.get("showType");
   const isSelf = name === userName;
+  const showType = searchParams.get("showType") || (isSelf ? "new" : "answered");
 
   const handleChangeSegment = useCallback(
     (newSegment: string) => {
@@ -60,6 +61,7 @@ export default function AnswersPage(props: Props) {
       });
       const pathname = userName ? `/club/answers/${userName}` : `/club/answers`;
       router.replace(`${pathname}?${query}`);
+      setQuestions(null);
     },
     [userName]
   );
@@ -87,41 +89,43 @@ export default function AnswersPage(props: Props) {
     []
   );
 
-  const skipQuestion = useCallback(async (questionId: string) => {
-    let success = false;
-    if (!questionId) return success;
+  const skipQuestion = useCallback(
+    async (questionId: string) => {
+      if (!questionId) return;
+      if (!questions) return;
 
-    try {
-      const response = await callTheServer({
-        endpoint: "skipAboutQuestion",
-        method: "POST",
-        body: { questionId },
-      });
-      if (response.status === 200) {
-        success = true;
-      } else {
+      try {
+        const response = await callTheServer({
+          endpoint: "skipAboutQuestion",
+          method: "POST",
+          body: { questionId },
+        });
+        if (response.status === 200) {
+          const newQuestions = questions.filter((q) => q._id !== questionId);
+          setQuestions(newQuestions);
+        } else {
+          openErrorModal();
+        }
+      } catch (err) {
         openErrorModal();
-        success = false;
       }
-    } catch (err) {
-      openErrorModal();
-    } finally {
-      return success;
-    }
-  }, []);
+    },
+    [questions]
+  );
 
   const memoizedQuestionsRow = useCallback(
     (props: any) => {
       return (
         <QuestionSlide
           key={props.index}
+          isSelf={isSelf}
           submitResponse={submitResponse}
           skipQuestion={skipQuestion}
           data={props.data}
         />
       );
     },
-    [questions]
+    [questions, isSelf]
   );
 
   const handleFetchQuestions = useCallback(async () => {
@@ -152,8 +156,9 @@ export default function AnswersPage(props: Props) {
   };
 
   useEffect(() => {
+    if (!userName) return;
     handleFetchQuestions();
-  }, [hasMore, userName]);
+  }, [hasMore, showType, userName]);
 
   const overlayText = isSelf
     ? showType === "new"
@@ -169,25 +174,27 @@ export default function AnswersPage(props: Props) {
     <IconCircleOff className="icon" />
   );
 
-  const overlayButton = (
-    <Button variant="default" onClick={() => router.push(`/club/${userName}`)}>
-      Return to generate bio
-    </Button>
-  );
+  const overlayButton = isSelf ? (
+    showType !== "new" ? undefined : (
+      <Button variant="default" onClick={() => router.push(`/club/${userName}`)}>
+        Return to generate bio
+      </Button>
+    )
+  ) : undefined;
 
   return (
     <ClubModerationLayout userName={userName} pageType="answers">
       <Stack className={classes.content}>
-        {(!isSelf || showType !== "new") && (
-          <Group className={classes.controlWrapper}>
-            {isSelf && (
-              <SegmentedControl
-                data={showTypes}
-                value={showType || "new"}
-                onChange={handleChangeSegment}
-                w="100%"
-              />
-            )}
+        <Group className={classes.controlWrapper}>
+          {isSelf && (
+            <SegmentedControl
+              data={showTypes}
+              value={showType}
+              onChange={handleChangeSegment}
+              w="100%"
+            />
+          )}
+          {(!isSelf || showType !== "new") && (
             <TextInput
               placeholder="Search questions"
               w="100%"
@@ -197,8 +204,9 @@ export default function AnswersPage(props: Props) {
               }
               onKeyDown={onKeyDown}
             />
-          </Group>
-        )}
+          )}
+        </Group>
+
         {questions ? (
           <Stack className={classes.accordionWrapper}>
             <Accordion
@@ -215,18 +223,14 @@ export default function AnswersPage(props: Props) {
               }}
             >
               {questions.length > 0 ? (
-                <List
+                <ListComponent
                   items={questions}
                   rowGutter={16}
                   render={memoizedQuestionsRow}
                   className={classes.list}
                 />
               ) : (
-                <OverlayWithText
-                  text={overlayText}
-                  icon={overlayIcon}
-                  button={isSelf ? overlayButton : undefined}
-                />
+                <OverlayWithText text={overlayText} icon={overlayIcon} button={overlayButton} />
               )}
             </Accordion>
             {hasMore && (

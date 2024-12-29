@@ -15,7 +15,7 @@ type Props = {
 
 export default function DiaryPage(props: Props) {
   const params = use(props.params);
-  const { userName } = params;
+  const userName = params?.userName?.[0];
 
   const searchParams = useSearchParams();
   const [openValue, setOpenValue] = useState<string | null>(null);
@@ -46,8 +46,10 @@ export default function DiaryPage(props: Props) {
   }, [diaryRecords, hasMore, type]);
 
   useEffect(() => {
+    if (!userName) return;
+
     handleFetchDiaryRecords();
-  }, [type]);
+  }, [type, userName]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="diary">

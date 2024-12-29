@@ -1,5 +1,5 @@
 export default function getPageTypeRedirect(value: string, userName?: string | string[]) {
-  if (typeof userName !== "string") return;
+  if (typeof userName !== "string") return "";
 
   let path = "";
 
@@ -21,6 +21,9 @@ export default function getPageTypeRedirect(value: string, userName?: string | s
       break;
     case "proof":
       path = `/club/proof/${userName}`;
+      break;
+    case "answers":
+      path = `/club/answers/${userName}`;
       break;
   }
 

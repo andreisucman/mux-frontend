@@ -24,7 +24,7 @@ type Props = {
 
 export default function ClubProgress(props: Props) {
   const params = use(props.params);
-  const { userName } = params;
+  const userName = params?.userName?.[0];
 
   const searchParams = useSearchParams();
   const { status } = useContext(UserContext);

@@ -18,3 +18,8 @@
   width: 100%;
   flex-wrap: nowrap;
 }
+
+.buttons {
+  flex: 0 1;
+  margin-left: auto;
+}

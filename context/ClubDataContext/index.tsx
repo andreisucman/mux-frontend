@@ -27,7 +27,9 @@ type Props = {
 };
 
 export default function ClubDataContextProvider({ children }: Props) {
-  const { userName } = useParams();
+  const params = useParams();
+  const userName = Array.isArray(params?.userName) ? params.userName?.[0] : params.userName;
+
   const { userDetails } = useContext(UserContext);
   const [youFollowDataFetched, setYouTrackDataFetched] = useState(false);
   const [youFollowData, setYouFollowData] = useState<ClubUserType | null | undefined>();

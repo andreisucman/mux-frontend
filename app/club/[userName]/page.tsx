@@ -32,14 +32,14 @@ type Props = {
 };
 
 export default function ClubAbout(props: Props) {
-  const params = use(props.params);
+  const { userName } = use(props.params);
+
   const { youFollowData, hasNewAboutQuestions, hasAboutAnswers, youData, setYouData } =
     useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [showQuestions, setShowQuestions] = useState(true);
 
-  const { userName } = params;
   const { name } = userDetails || {};
 
   const isSelf = name === userName;
@@ -82,8 +82,7 @@ export default function ClubAbout(props: Props) {
             bio: { ...prev.bio, ...updatedBio },
           }));
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [userDetails, youData]
   );
@@ -133,6 +132,7 @@ export default function ClubAbout(props: Props) {
   const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";
   const buttonPath = userName ? `/club/answers/${userName}` : `/club/answers`;
 
+  console.log("userName",userName)
   return (
     <ClubModerationLayout userName={userName} pageType="about">
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
@@ -162,6 +162,7 @@ export default function ClubAbout(props: Props) {
               isSelf={isSelf}
               youData={youData}
               hasAboutAnswers={hasAboutAnswers}
+              hasNewAboutQuestions={hasNewAboutQuestions}
               setBioData={setBioData}
               updateClubBio={updateClubBio}
             />

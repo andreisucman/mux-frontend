@@ -15,19 +15,21 @@
 }
 
 .carouselContainer {
-gap:0;
-  border: rem(1) solid var(--mantine-color-dark-5);
+  gap: 0;
   border-radius: var(--mantine-radius-lg);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
 }
 
 .carouselHeader {
   cursor: pointer;
   justify-content: space-between;
   padding: rem(8);
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
 .buttonWrapper {
   padding: rem(16);
-  background-color: var(--mantine-color-dark-6);
-  border-radius: 0 0 var(--mantine-radius-lg) var(--mantine-radius-lg) ;
 }

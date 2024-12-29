@@ -5,30 +5,18 @@ import { MasonryScroller, useContainerPosition, usePositioner, useResizeObserver
 import { useViewportSize } from "@mantine/hooks";
 
 type Props = {
-  columnCount?: number;
-  maxColumnCount?: number;
-  columnGutter?: number;
-  columnWidth?: number;
+  rowGutter?: number;
   items: any[];
   render: any;
+  className?: string;
 };
 
-export default function MasonryComponent({
-  columnCount,
-  maxColumnCount,
-  columnGutter,
-  columnWidth,
-  items,
-  render,
-}: Props) {
+export default function ListComponent({ rowGutter, items, className, render }: Props) {
   const containerRef = useRef(null);
   const { width: windowWidth, height: windowHeight } = useViewportSize();
   const { offset, width } = useContainerPosition(containerRef, [windowWidth, windowHeight]);
 
-  const positioner = usePositioner(
-    { width, columnWidth, columnCount, maxColumnCount, columnGutter },
-    [items.length]
-  );
+  const positioner = usePositioner({ width, rowGutter, columnCount: 1 }, [items.length]);
 
   const resizeObserver = useResizeObserver(positioner);
 
@@ -41,6 +29,7 @@ export default function MasonryComponent({
       offset={offset}
       items={items}
       render={render}
+      className={className}
     />
   );
 }

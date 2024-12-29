@@ -23,7 +23,9 @@ type Props = {
 };
 
 export default function ClubStyle(props: Props) {
-  const { userName } = use(props.params);
+  const params = use(props.params);
+  const userName = params?.userName?.[0];
+  
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [styles, setStyles] = useState<SimpleStyleType[]>();

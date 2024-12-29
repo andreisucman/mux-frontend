@@ -23,7 +23,6 @@ export default function RedirectToWalletButton({ variant }: Props) {
         router.push(response.message);
       }
     } catch (err) {
-      console.log("Error in redirectToWallet: ", err);
     }
   }, []);
 

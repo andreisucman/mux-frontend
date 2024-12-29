@@ -30,7 +30,7 @@ type Props = {
 
 export default function ClubRoutines(props: Props) {
   const params = use(props.params);
-  const { userName } = params;
+  const userName = params?.userName?.[0];
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
