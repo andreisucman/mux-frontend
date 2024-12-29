@@ -21,8 +21,13 @@ type Props = {
   youData: ClubUserType | null;
   bioData: BioDataType;
   isSelf: boolean;
-  updateClubBio: (dirtyParts: string[], bioData: BioDataType) => Promise<void>;
+  updateClubBio: (
+    dirtyParts: string[],
+    bioData: BioDataType,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) => Promise<void>;
   setBioData: React.Dispatch<React.SetStateAction<BioDataType>>;
+  setYouData: React.Dispatch<React.SetStateAction<ClubUserType>>;
 };
 
 export default function EditClubAbout({
@@ -33,8 +38,10 @@ export default function EditClubAbout({
   isSelf,
   updateClubBio,
   setBioData,
+  setYouData,
 }: Props) {
   const [showSegment, setShowSegment] = useState("philosophy");
+  const [isLoading, setIsLoading] = useState(false);
 
   const dirtyParts = Object.keys(bioData)
     .map((key) =>
@@ -57,8 +64,10 @@ export default function EditClubAbout({
       : `Next after ${new Date(nextDate).toDateString()}.`;
 
   const generateBioFromQuestions = useCallback(
-    async (segment: string) => {
+    async (segment: string, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
       try {
+        setIsLoading(true);
+
         const response = await callTheServer({
           endpoint: "generateBioFromQuestions",
           method: "POST",
@@ -66,23 +75,40 @@ export default function EditClubAbout({
         });
 
         if (response.status === 200) {
+          const { content, nextRegenerateBio } = response.message;
+
+          console.log("response.message", response.message);
+
           setBioData((prev: any) => ({
             ...(prev || {}),
-            [showSegment]: response.message,
+            [showSegment]: content,
+          }));
+
+          setYouData((prev: ClubUserType) => ({
+            ...prev,
+            bio: {
+              ...prev.bio,
+              nextRegenerateBio: { ...prev.bio.nextRegenerateBio, ...nextRegenerateBio },
+            },
           }));
         }
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
     },
-    [bioData, canRegenerate]
+    [bioData, youData, showSegment, canRegenerate]
   );
 
   const handleGenerateBioFromQuestions = useCallback(
     (segment: string) => {
+      if (isLoading) return;
+
       if (canRegenerate) {
         askConfirmation({
           title: "Please confirm",
           body: "You can only generate bio from questions once a week. Continue?",
-          onConfirm: () => generateBioFromQuestions(segment),
+          onConfirm: () => generateBioFromQuestions(segment, setIsLoading),
         });
       } else {
         openErrorModal({
@@ -90,7 +116,7 @@ export default function EditClubAbout({
         });
       }
     },
-    [youData]
+    [youData, nextDate, isLoading, canRegenerate]
   );
 
   return (
@@ -106,16 +132,17 @@ export default function EditClubAbout({
         }
         placeholder={`Your ${showSegment}`}
         readOnly={!isSelf}
+        isLoading={isLoading}
         isUnbounded
       />
 
       {isSelf && (
         <Group className={classes.buttons}>
           {(hasAboutAnswers || hasNewAboutQuestions) && (
-            <Tooltip label={tooltipLabel} disabled={false}>
+            <Tooltip label={tooltipLabel} disabled={!!canRegenerate}>
               <Button
                 className={classes.generateButton}
-                disabled={!hasAboutAnswers}
+                disabled={!hasAboutAnswers || !canRegenerate || isLoading}
                 onClick={() => handleGenerateBioFromQuestions(showSegment)}
               >
                 <IconBolt className="icon" style={{ marginRight: rem(6) }} /> Generate from answers
@@ -125,8 +152,8 @@ export default function EditClubAbout({
 
           <Button
             className={classes.saveButton}
-            onClick={() => updateClubBio(dirtyParts as string[], bioData)}
-            disabled={dirtyParts.length === 0 || !isSelf}
+            onClick={() => updateClubBio(dirtyParts as string[], bioData, setIsLoading)}
+            disabled={dirtyParts.length === 0 || !isSelf || isLoading}
           >
             <IconDeviceFloppy className="icon" style={{ marginRight: rem(6) }} />
             Save

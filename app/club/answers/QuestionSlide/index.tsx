@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { IconUpload, IconX } from "@tabler/icons-react";
+import React, { useMemo, useState } from "react";
+import { IconArrowBackUp, IconUpload, IconX } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Button, Group, rem, Skeleton, Stack } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -11,7 +11,7 @@ type Props = {
   data: AboutQuestionType;
   isSelf: boolean;
   submitResponse: (args: SubmitAboutResponseType) => Promise<void>;
-  skipQuestion: (questionId: string) => Promise<void>;
+  skipQuestion: (questionId: string, isSkipped: boolean) => Promise<void>;
 };
 
 export default function QuestionSlide({ isSelf, data, submitResponse, skipQuestion }: Props) {
@@ -25,25 +25,34 @@ export default function QuestionSlide({ isSelf, data, submitResponse, skipQuesti
 
   const showSkeleton = useShowSkeleton();
 
+  const actionButton = useMemo(
+    () => (
+      <ActionIcon
+        variant="default"
+        size="sm"
+        onClick={(e) => {
+          e.stopPropagation();
+          skipQuestion(_id, !skipped);
+        }}
+        component="div"
+      >
+        {skipped ? (
+          <IconArrowBackUp className="icon icon__small" />
+        ) : (
+          <IconX className="icon icon__small" />
+        )}
+      </ActionIcon>
+    ),
+    [_id, skipped]
+  );
+
   return (
     <Skeleton visible={showSkeleton}>
       <Accordion.Item value={_id}>
         <Accordion.Control>
           <Group className={classes.header}>
             <span className={classes.questionText}>{question}</span>
-            {!skipped && (
-              <ActionIcon
-                variant="default"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  skipQuestion(_id);
-                }}
-                component="div"
-              >
-                <IconX className="icon icon__small" />
-              </ActionIcon>
-            )}
+            {actionButton}
           </Group>
         </Accordion.Control>
         <Accordion.Panel>
@@ -69,10 +78,9 @@ export default function QuestionSlide({ isSelf, data, submitResponse, skipQuesti
                   disabled={!textExists || !textIsDirty || isLoading}
                   onClick={() =>
                     submitResponse({
-                      question: question,
+                      questionId: _id,
                       answer: text,
                       setIsLoading,
-                      setText,
                     })
                   }
                 >

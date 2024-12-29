@@ -1,9 +1,9 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCircleOff, IconSearch } from "@tabler/icons-react";
-import { List } from "masonic";
+import { useRouter as useDefaultRouter, useSearchParams } from "next/navigation";
+import { IconArrowDown, IconCheckbox, IconCircleOff, IconSearch } from "@tabler/icons-react";
+import { useRouter } from "@/helpers/custom-router";
 import {
   Accordion,
   ActionIcon,
@@ -43,6 +43,7 @@ export default function AnswersPage(props: Props) {
   const { userDetails } = useContext(UserContext);
 
   const router = useRouter();
+  const defaultRouter = useDefaultRouter();
   const searchParams = useSearchParams();
   const [openValue, setOpenValue] = useState<string | null>(null);
   const [questions, setQuestions] = useState<AboutQuestionType[] | null>(null);
@@ -60,37 +61,44 @@ export default function AnswersPage(props: Props) {
         params: [{ name: "showType", value: newSegment, action: "replace" }],
       });
       const pathname = userName ? `/club/answers/${userName}` : `/club/answers`;
-      router.replace(`${pathname}?${query}`);
+      defaultRouter.replace(`${pathname}?${query}`);
       setQuestions(null);
     },
     [userName]
   );
 
   const submitResponse = useCallback(
-    async ({ question, answer, setIsLoading }: SubmitAboutResponseType) => {
-      if (!question || !answer) return;
+    async ({ questionId, answer, setIsLoading }: SubmitAboutResponseType) => {
+      if (!questions || !answer) return;
 
       try {
         setIsLoading(true);
 
-        const payload: Partial<AboutQuestionType> = { question, answer };
+        const payload = { questionId, answer };
 
-        await callTheServer({
+        const response = await callTheServer({
           endpoint: "saveAboutResponse",
           method: "POST",
           body: payload,
         });
+
+        if (response.status === 200) {
+          const newQuestions = questions
+            .map((q) => (q._id === questionId ? { ...q, skipped: false } : q))
+            .filter((q) => !q.skipped);
+          setQuestions(newQuestions);
+        }
 
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
       }
     },
-    []
+    [questions]
   );
 
   const skipQuestion = useCallback(
-    async (questionId: string) => {
+    async (questionId: string, isSkipped: boolean) => {
       if (!questionId) return;
       if (!questions) return;
 
@@ -98,17 +106,17 @@ export default function AnswersPage(props: Props) {
         const response = await callTheServer({
           endpoint: "skipAboutQuestion",
           method: "POST",
-          body: { questionId },
+          body: { questionId, isSkipped },
         });
         if (response.status === 200) {
-          const newQuestions = questions.filter((q) => q._id !== questionId);
+          const newQuestions = questions
+            .map((q) => (q._id === questionId ? { ...q, skipped: isSkipped } : q))
+            .filter((q) => q.skipped === !isSkipped);
           setQuestions(newQuestions);
         } else {
           openErrorModal();
         }
-      } catch (err) {
-        openErrorModal();
-      }
+      } catch (err) {}
     },
     [questions]
   );
@@ -125,7 +133,7 @@ export default function AnswersPage(props: Props) {
         />
       );
     },
-    [questions, isSelf]
+    [isSelf, submitResponse]
   );
 
   const handleFetchQuestions = useCallback(async () => {
@@ -157,8 +165,9 @@ export default function AnswersPage(props: Props) {
 
   useEffect(() => {
     if (!userName) return;
+    if (!showType) return;
     handleFetchQuestions();
-  }, [hasMore, showType, userName]);
+  }, [showType, userName]);
 
   const overlayText = isSelf
     ? showType === "new"
@@ -167,7 +176,9 @@ export default function AnswersPage(props: Props) {
     : "Nothing found";
 
   const overlayIcon = isSelf ? (
-    showType === "new" ? undefined : (
+    showType === "new" ? (
+      <IconCheckbox className="icon" />
+    ) : (
       <IconCircleOff className="icon" />
     )
   ) : (
@@ -176,7 +187,7 @@ export default function AnswersPage(props: Props) {
 
   const overlayButton = isSelf ? (
     showType !== "new" ? undefined : (
-      <Button variant="default" onClick={() => router.push(`/club/${userName}`)}>
+      <Button mt={4} variant="default" onClick={() => router.push(`/club/${userName}`)}>
         Return to generate bio
       </Button>
     )

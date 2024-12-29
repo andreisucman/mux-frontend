@@ -13,7 +13,6 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import { UserDataType } from "@/types/global";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
@@ -55,8 +54,13 @@ export default function ClubAbout(props: Props) {
   const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions";
 
   const updateClubBio = useCallback(
-    async (dirtyParts: string[], bioData: BioDataType) => {
+    async (
+      dirtyParts: string[],
+      bioData: BioDataType,
+      setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+    ) => {
       try {
+        setIsLoading(true);
         const updatedBio = dirtyParts.reduce(
           (a, c) => {
             if (c) a[c as string] = bioData[c as keyof BioDataType];
@@ -72,17 +76,15 @@ export default function ClubAbout(props: Props) {
         });
 
         if (response.status === 200) {
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            club: { ...prev?.club, ...updatedBio },
-          }));
-
           setYouData((prev: { [key: string]: any }) => ({
             ...prev,
             bio: { ...prev.bio, ...updatedBio },
           }));
         }
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
     },
     [userDetails, youData]
   );
@@ -110,7 +112,7 @@ export default function ClubAbout(props: Props) {
       style: bio?.style || "",
       tips: bio?.tips || "",
     });
-  }, [isSelf, youData, youFollowData]);
+  }, [isSelf, typeof youData, typeof youFollowData]);
 
   useEffect(() => {
     if (hasNewAboutQuestions === undefined) return;
@@ -132,7 +134,6 @@ export default function ClubAbout(props: Props) {
   const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";
   const buttonPath = userName ? `/club/answers/${userName}` : `/club/answers`;
 
-  console.log("userName",userName)
   return (
     <ClubModerationLayout userName={userName} pageType="about">
       <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
@@ -165,6 +166,7 @@ export default function ClubAbout(props: Props) {
               hasNewAboutQuestions={hasNewAboutQuestions}
               setBioData={setBioData}
               updateClubBio={updateClubBio}
+              setYouData={setYouData}
             />
           </>
         ) : (

@@ -9,8 +9,7 @@ export type AboutQuestionType = {
 };
 
 export type SubmitAboutResponseType = {
-  question: string;
+  questionId: string;
   answer: string;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setText: React.Dispatch<React.SetStateAction<string>>;
 };
