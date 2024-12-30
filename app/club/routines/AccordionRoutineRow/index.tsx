@@ -14,7 +14,7 @@ type Props = {
   type: TypeEnum;
   isSelf: boolean;
   openTaskDetails: (task: AllTaskType, routineId: string) => void;
-  handleReplaceRoutine: (routineId: string) => void;
+  handleStealRoutine: (routineId: string) => void;
 };
 
 export default function AccordionRoutineRow({
@@ -22,7 +22,7 @@ export default function AccordionRoutineRow({
   routine,
   isSelf,
   openTaskDetails,
-  handleReplaceRoutine,
+  handleStealRoutine,
 }: Props) {
   const date = useMemo(() => formatDate({ date: routine.createdAt }), [routine.createdAt]);
 
@@ -43,7 +43,7 @@ export default function AccordionRoutineRow({
 
   const handleStealClick = useCallback((e: any, routineId: string) => {
     e.stopPropagation();
-    handleReplaceRoutine(routineId);
+    handleStealRoutine(routineId);
   }, []);
 
   const showSkeleton = useShowSkeleton();

@@ -150,6 +150,7 @@ export type HigherThanType = {
 
 export type UserConcernType = {
   name: string;
+  key: string;
   type: TypeEnum;
   part: PartEnum;
   explanation: string;

@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from "react";
 import { Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
+import callTheServer from "@/functions/callTheServer";
 import { UserConcernType, UserDataType } from "@/types/global";
 import DragAndDrop from "./DragAndDrop";
 import classes from "./ConcernsSortCard.module.css";
@@ -34,18 +35,30 @@ export default function ConcernsSortCard({
   }, []);
 
   const handleUpdateConcern = useCallback(
-    (updatedItem: UserConcernType) => {
+    async (updatedItem: UserConcernType) => {
       if (!userDetails) return;
       if (!userDetails.concerns) return;
 
-      const updatedConcerns = userDetails.concerns
-        .filter((obj) => obj.type === type)
-        .map((c) => (c.name === updatedItem.name ? updatedItem : c));
+      try {
+        await callTheServer({
+          endpoint: "updateConcernStatus",
+          method: "POST",
+          body: {
+            key: updatedItem.key,
+            part: updatedItem.part,
+            isDisabled: updatedItem.isDisabled,
+          },
+        });
 
-      setUserDetails((prev: UserDataType) => ({
-        ...prev,
-        concerns: updatedConcerns,
-      }));
+        const updatedConcerns = userDetails.concerns
+          .filter((obj) => obj.type === type)
+          .map((c) => (c.name === updatedItem.name ? updatedItem : c));
+
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          concerns: updatedConcerns,
+        }));
+      } catch (err) {}
     },
     [userDetails]
   );

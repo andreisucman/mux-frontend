@@ -72,11 +72,11 @@ export default function ClubRoutines(props: Props) {
     [type, currentUserRoutines?.length]
   );
 
-  const getTrackedRoutines = useCallback(
+  const getFollowingRoutines = useCallback(
     async ({ skip, followingUserName, routines, type }: GetRoutinesProps) => {
       if (!type) return;
       try {
-        let endpoint = "getTrackedRoutines";
+        let endpoint = "getFollowingRoutines";
 
         if (followingUserName) endpoint += `/${followingUserName}`;
 
@@ -116,11 +116,11 @@ export default function ClubRoutines(props: Props) {
     [routines]
   );
 
-  const replaceRoutine = useCallback(
+  const stealRoutine = useCallback(
     async (routineId: string) => {
       try {
         const response = await callTheServer({
-          endpoint: "replaceRoutine",
+          endpoint: "stealRoutine",
           method: "POST",
           body: { type, routineId },
         });
@@ -144,7 +144,7 @@ export default function ClubRoutines(props: Props) {
 
       try {
         const response = await callTheServer({
-          endpoint: "addTaskToRoutine",
+          endpoint: "stealTask",
           method: "POST",
           body: { taskKey, routineId, total, followingUserName: userName, type },
         });
@@ -177,11 +177,11 @@ export default function ClubRoutines(props: Props) {
               type={type as TypeEnum}
               routine={routine}
               isSelf={isSelf}
-              handleReplaceRoutine={() =>
+              handleStealRoutine={() =>
                 askConfirmation({
                   title: "Steal routine",
                   body: "This will replace your current routine with the selected one. Are you sure?",
-                  onConfirm: () => replaceRoutine(routine._id),
+                  onConfirm: () => stealRoutine(routine._id),
                 })
               }
               openTaskDetails={openTaskDetails}
@@ -197,7 +197,7 @@ export default function ClubRoutines(props: Props) {
       routines,
       type,
     };
-    getTrackedRoutines(payload);
+    getFollowingRoutines(payload);
   }, [type, userName]);
 
   return (
@@ -226,7 +226,7 @@ export default function ClubRoutines(props: Props) {
                     variant="default"
                     className={classes.getMoreButton}
                     onClick={() =>
-                      getTrackedRoutines({
+                      getFollowingRoutines({
                         skip: true,
                         followingUserName: userName,
                         routines,
