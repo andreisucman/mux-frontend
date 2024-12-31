@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { Group, rem, Stack } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
@@ -8,7 +8,7 @@ type Props = {
   disclaimer?: React.ReactNode | string;
   metaPanel?: React.ReactNode;
   formattedDate?: string;
-  handleTrack?: () => void;
+  handleTrack?: () => Promise<void>;
 };
 
 export default function ProofCardFooter({
@@ -17,14 +17,27 @@ export default function ProofCardFooter({
   formattedDate,
   handleTrack,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    if (handleTrack) {
+      await handleTrack();
+    }
+    setIsLoading(false);
+  };
+
   return (
     <Stack className={classes.container}>
       {handleTrack && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
             text={"Peek proof"}
+            loading={isLoading}
+            disabled={isLoading}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
-            onClick={handleTrack}
+            onClick={handleClick}
           />
         </div>
       )}

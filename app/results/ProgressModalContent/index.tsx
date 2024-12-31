@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -17,6 +17,8 @@ type Props = {
 
 export default function ProgressModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { userName, images, initialImages, updatedAt, createdAt, initialDate } = record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
@@ -25,6 +27,8 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress/${userName}`;
 
   const handleRedirect = () => {
+    if (isLoading) return;
+    setIsLoading(true);
     router.push(redirectUrl);
     modals.closeAll();
   };
@@ -41,6 +45,8 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
+            loading={isLoading}
+            disabled={isLoading}
             text={"Peek routine"}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleRedirect}

@@ -1,7 +1,7 @@
 "use client";
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
 import { ActionIcon, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -35,6 +35,7 @@ const [spotlightStore, userSpotlight] = createSpotlight();
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(false);
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
@@ -51,17 +52,11 @@ function Header() {
     return status ? { visibility: "visible" } : { visibility: "hidden" };
   }, [status]);
 
-  useEffect(() => {
-    if (status === "unknown") {
-      setDisplayComponent("none");
-    } else if (status === "authenticated") {
-      setDisplayComponent("userButton");
-    } else if (status === "unauthenticated" && !hideStartButton) {
-      setDisplayComponent("startButton");
-    } else {
-      setDisplayComponent("default");
-    }
-  }, [status, hideStartButton]);
+  const handleRedirect = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    router.push("/scan");
+  };
 
   const handleSignOut = useCallback(async () => {
     router.replace("/");
@@ -82,6 +77,18 @@ function Header() {
 
     return actions;
   };
+
+  useEffect(() => {
+    if (status === "unknown") {
+      setDisplayComponent("none");
+    } else if (status === "authenticated") {
+      setDisplayComponent("userButton");
+    } else if (status === "unauthenticated" && !hideStartButton) {
+      setDisplayComponent("startButton");
+    } else {
+      setDisplayComponent("default");
+    }
+  }, [status, hideStartButton]);
 
   return (
     <>
@@ -113,7 +120,8 @@ function Header() {
                   <GlowingButton
                     text="Start"
                     aria-label="start analysis button"
-                    disabled={hideStartButton}
+                    loading={isLoading}
+                    disabled={hideStartButton || isLoading}
                     icon={
                       <IconRocket
                         stroke={1.5}
@@ -121,7 +129,7 @@ function Header() {
                         style={{ marginRight: rem(6) }}
                       />
                     }
-                    onClick={() => router.push("/scan")}
+                    onClick={handleRedirect}
                   />
                 )}
                 {displayComponent === "userButton" && (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -19,6 +19,7 @@ type Props = {
 
 export default function StyleModalContent({ record, isPublicPage, setRecords }: Props) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     _id: styleId,
@@ -42,6 +43,8 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style/${userName}`;
 
   const handleRedirect = () => {
+    if (isLoading) return;
+    setIsLoading(true);
     router.push(redirectUrl);
     modals.closeAll();
   };
@@ -72,6 +75,8 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
+            loading={isLoading}
+            disabled={isLoading}
             text={"Peek style"}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleRedirect}

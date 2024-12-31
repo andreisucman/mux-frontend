@@ -3,6 +3,7 @@ import { IconMedal2 } from "@tabler/icons-react";
 import { Group, Progress, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import { calculateRewardTaskCompletion } from "@/helpers/calculateRewardTaskCompletion";
 import { useRouter } from "@/helpers/custom-router";
@@ -21,6 +22,7 @@ type Props = {
 export default function RewardCard({ data }: Props) {
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [streaks, setStreaks] = useState<StreaksType>();
   const { status, userDetails } = useContext(UserContext);
   const { left, icon, count, value, title, condition, requisite } = data;
@@ -36,26 +38,38 @@ export default function RewardCard({ data }: Props) {
     [typeof streaks, typeof requisite]
   );
 
-  const handleClaimReward = useCallback(async (rewardId: string) => {
-    try {
-      const response = await callTheServer({
-        endpoint: "claimReward",
-        method: "POST",
-        body: { rewardId },
-      });
+  const handleClaimReward = useCallback(
+    async (rewardId: string) => {
+      if (isLoading) return;
+      setIsLoading(true);
 
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({
-            description: response.error,
-          });
-          return;
-        }
-        openSuccessModal({ description: response.message });
+      if (status !== AuthStateEnum.AUTHENTICATED) {
+        router.push("/auth");
       }
-    } catch (err) {
-    }
-  }, []);
+
+      try {
+        const response = await callTheServer({
+          endpoint: "claimReward",
+          method: "POST",
+          body: { rewardId },
+        });
+
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal({
+              description: response.error,
+            });
+            return;
+          }
+          openSuccessModal({ description: response.message });
+        }
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading, status]
+  );
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -97,9 +111,10 @@ export default function RewardCard({ data }: Props) {
           </Group>
           <GlowingButton
             text="Claim the reward"
-            disabled={buttonDisabled}
+            disabled={buttonDisabled || isLoading}
+            loading={isLoading}
             icon={<IconMedal2 style={{ marginRight: rem(6) }} />}
-            onClick={status === "authenticated" ? handleClaimReward : () => router.push("/auth")}
+            onClick={handleClaimReward}
           />
         </Stack>
       </Stack>

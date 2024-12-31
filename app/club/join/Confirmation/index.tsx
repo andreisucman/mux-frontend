@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   IconCamera,
   IconCash,
@@ -34,19 +34,30 @@ const tableData = {
 };
 
 type Props = {
-  handleJoinClub: () => void;
+  handleJoinClub: () => Promise<void>;
 };
 
 export default function Confirmation({ handleJoinClub }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await handleJoinClub();
+    setIsLoading(false);
+  };
+
   return (
     <Stack flex={1}>
       <Table data={tableData} classNames={{ td: classes.td, th: classes.th }} />
       <Stack className={classes.checkboxWrapper}>
         <GlowingButton
           text="Join the Club"
+          disabled={isLoading}
+          loading={isLoading}
           icon={<IconTargetArrow className="icon" style={{ marginRight: rem(6) }} />}
           containerStyles={{ margin: "auto" }}
-          onClick={handleJoinClub}
+          onClick={handleClick}
         />
       </Stack>
     </Stack>

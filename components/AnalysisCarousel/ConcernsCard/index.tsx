@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { IconRotateDot } from "@tabler/icons-react";
 import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
@@ -23,6 +23,7 @@ type Props = {
 
 function ConcernsCard({ status, userId, concerns, type, title }: Props) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const { height: containerHeight, ref } = useElementSize();
 
   const maxHeight = useMemo(() => {
@@ -32,7 +33,9 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
   }, [concerns.length, containerHeight > 0]);
 
   const handleClick = useCallback(() => {
-    if (status === AuthStateEnum.LOADING) return;
+    if (isLoading) return;
+
+    setIsLoading(true);
 
     if (status === AuthStateEnum.AUTHENTICATED) {
       router.push("/tasks");
@@ -46,8 +49,10 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
         },
         title: "Start your change",
       });
+
+      setIsLoading(false);
     }
-  }, [status]);
+  }, [status, isLoading]);
 
   const buttonText =
     status === AuthStateEnum.AUTHENTICATED ? "Return to the routine" : "Create routine free";
@@ -64,10 +69,12 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
         <Stack className={classes.wrapper}>
           <ConcernsSortCard concerns={concerns} type={type} maxHeight={maxHeight} disabled />
           <GlowingButton
+            loading={isLoading}
+            disabled={isLoading}
             text={buttonText}
             icon={<IconRotateDot className="icon" style={{ marginRight: rem(6) }} />}
-            onClick={handleClick}
             containerStyles={{ flex: 0, margin: "0 auto" }}
+            onClick={handleClick}
           />
         </Stack>
       </Stack>

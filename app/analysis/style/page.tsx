@@ -33,7 +33,7 @@ export default function StyleScanResult() {
     "loading"
   );
 
-  const { _id: userId, club, latestStyleAnalysis } = userDetails || {};
+  const { _id: userId, latestStyleAnalysis } = userDetails || {};
   const type = searchParams.get("type") || "head";
   const relevantAnalysis = latestStyleAnalysis?.[type as "head"];
   const { styleName, isPublic, _id: styleId, mainUrl } = relevantAnalysis || {};
@@ -63,7 +63,7 @@ export default function StyleScanResult() {
   const handlePublishToClub = useCallback(async () => {
     if (isLoading) return;
 
-    if (status !== "authenticated" || !club) {
+    if (status !== "authenticated") {
       openAuthModal({
         title: "Login to continue",
         stateObject: {
@@ -93,7 +93,6 @@ export default function StyleScanResult() {
 
       if (response.status === 200) {
         if (response.error) {
-          setIsLoading(true);
           openErrorModal({
             description: response.error,
           });
@@ -105,12 +104,12 @@ export default function StyleScanResult() {
         }));
         openSuccessModal({ description: "Your photo has been published to Club" });
       }
-      setIsLoading(false);
     } catch (err) {
       openErrorModal();
+    } finally {
       setIsLoading(false);
     }
-  }, [styleId, isLoading, status, club, latestStyleAnalysis, userId, type]);
+  }, [styleId, isLoading, status, latestStyleAnalysis, userId, type]);
 
   const handleChangeType = useCallback((newType?: string | null) => {
     if (!newType) return;
@@ -175,6 +174,7 @@ export default function StyleScanResult() {
                 text="Publish"
                 icon={<IconTarget className={"icon"} style={{ marginRight: rem(6) }} />}
                 disabled={isLoading}
+                loading={isLoading}
                 onClick={handlePublishToClub}
                 buttonStyles={{ fontSize: rem(14) }}
                 addGradient

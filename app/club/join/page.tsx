@@ -35,7 +35,7 @@ export default function ClubJoin() {
 
   const cantJoinClubNow = new Date(canRejoinClubAfter || 0) > new Date();
 
-  const handleJoinClub = useCallback(() => {
+  const handleJoinClub = useCallback(async () => {
     if (cantJoinClubNow) {
       const rejoinDate = formatDate({ date: new Date(canRejoinClubAfter || 0) });
       openErrorModal({ description: `You can rejoin the Club after ${rejoinDate}.` });

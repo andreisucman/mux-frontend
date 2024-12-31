@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import cn from "classnames";
 import { Group, rem, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
@@ -66,7 +66,7 @@ export default function PricingCard({
             <GlowingButton
               icon={icon}
               text={buttonText}
-              disabled={!price}
+              disabled={!price || isLoading}
               loading={isLoading}
               addGradient={addGradient}
               onClick={onClick}

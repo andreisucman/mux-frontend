@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { IconDownload } from "@tabler/icons-react";
 import { Group, rem, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
@@ -14,7 +14,12 @@ type Props = {
 };
 
 function BalancePane({ balance, payoutsEnabled }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const onWithdraw = useCallback(async () => {
+    if (isLoading || balance === 0 || !payoutsEnabled) return;
+
+    setIsLoading(true);
     try {
       const response = await callTheServer({
         endpoint: "withdrawReward",
@@ -30,8 +35,11 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
         }
         openSuccessModal({ description: response.message });
       }
-    } catch (err) {}
-  }, []);
+    } catch (err) {
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoading, balance, payoutsEnabled]);
 
   const displayBalance = useMemo(() => (balance ? balance?.toFixed(2) : 0), [balance]);
 
@@ -51,7 +59,8 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
       <GlowingButton
         text={"Withdraw"}
         icon={<IconDownload className="icon" style={{ marginRight: rem(6) }} />}
-        disabled={!balance || !payoutsEnabled}
+        disabled={!balance || !payoutsEnabled || isLoading}
+        loading={isLoading}
         onClick={onWithdraw}
       />
     </Stack>

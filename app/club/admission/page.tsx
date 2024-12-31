@@ -33,6 +33,7 @@ export default function ClubAdmission() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [disableFirst, setDisableFirst] = useState(true);
   const [disableSecond, setDisableSecond] = useState(true);
+  const [loadingButton, setLoadingButton] = useState<"bank" | "done" | null>(null);
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
@@ -41,6 +42,7 @@ export default function ClubAdmission() {
   const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
 
   const handleCreateConnectAccount = useCallback(async () => {
+    setLoadingButton("bank");
     try {
       const response = await callTheServer({
         endpoint: "createConnectAccount",
@@ -57,11 +59,15 @@ export default function ClubAdmission() {
       } else {
         openErrorModal({ description: response.error });
       }
-    } catch (err) {}
+    } catch (err) {
+    } finally {
+      setLoadingButton(null);
+    }
   }, [userDetails]);
 
   const handleSetCountryAndCreateAccount = useCallback(
     async (newCountry: string) => {
+      setLoadingButton("bank");
       try {
         const response = await callTheServer({
           endpoint: "changeCountry",
@@ -81,7 +87,10 @@ export default function ClubAdmission() {
         } else {
           openErrorModal();
         }
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        setLoadingButton(null);
+      }
     },
     [userDetails, router]
   );
@@ -108,6 +117,12 @@ export default function ClubAdmission() {
     handleCreateConnectAccount();
   }, [country]);
 
+  const handleRedirect = useCallback(() => {
+    if (loadingButton) return;
+    setLoadingButton("done");
+    router.push("/club");
+  }, [loadingButton]);
+
   useShallowEffect(() => {
     if (!userDetails) return;
 
@@ -130,7 +145,8 @@ export default function ClubAdmission() {
               <GlowingButton
                 icon={detailsSubmitted ? icons.checkbox : icons.bank}
                 text={detailsSubmitted ? "Bank added" : "Add bank"}
-                disabled={disableFirst}
+                disabled={disableFirst || loadingButton === "bank"}
+                loading={loadingButton === "bank"}
                 onClick={openCountrySelectModal}
                 containerStyles={{ flex: "unset" }}
               />
@@ -171,8 +187,9 @@ export default function ClubAdmission() {
             <GlowingButton
               text="Done"
               icon={icons.rocket}
-              disabled={disableSecond}
-              onClick={() => router.push("/club")}
+              disabled={disableSecond || loadingButton === "done"}
+              loading={loadingButton === "done"}
+              onClick={handleRedirect}
               containerStyles={{ alignSelf: "flex-start", marginTop: rem(4) }}
             />
           </Stack>
