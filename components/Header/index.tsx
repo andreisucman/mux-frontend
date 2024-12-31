@@ -59,7 +59,6 @@ function Header() {
   };
 
   const handleSignOut = useCallback(async () => {
-    router.replace("/");
     clearCookies();
     deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");

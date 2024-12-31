@@ -1,20 +1,21 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import { IconDownload } from "@tabler/icons-react";
-import { Group, rem, Stack, Text, Title } from "@mantine/core";
-import GlowingButton from "@/components/GlowingButton";
+import { Button, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
+import { UserDataType } from "@/types/global";
 import RedirectToWalletButton from "./RedirectToWalletButton";
 import classes from "./BalancePane.module.css";
 
-type Props = {
-  balance?: number;
-  payoutsEnabled?: boolean;
-};
-
-function BalancePane({ balance, payoutsEnabled }: Props) {
+function BalancePane() {
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { club } = userDetails || {};
+  const { payouts } = club || {};
+  const { balance, payoutsEnabled } = payouts || {};
 
   const onWithdraw = useCallback(async () => {
     if (isLoading || balance === 0 || !payoutsEnabled) return;
@@ -34,6 +35,11 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
           return;
         }
         openSuccessModal({ description: response.message });
+
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          club: { ...prev.club, payouts: { ...prev.club?.payouts, balance: 0 } },
+        }));
       }
     } catch (err) {
     } finally {
@@ -55,14 +61,16 @@ function BalancePane({ balance, payoutsEnabled }: Props) {
         <Title order={2} className={classes.amount}>
           ${displayBalance}
         </Title>
+        <Button
+          disabled={!balance || !payoutsEnabled || isLoading}
+          loading={isLoading}
+          onClick={onWithdraw}
+          size="compact-sm"
+        >
+          <IconDownload className="icon" style={{ marginRight: rem(6) }} />
+          Withdraw
+        </Button>
       </Stack>
-      <GlowingButton
-        text={"Withdraw"}
-        icon={<IconDownload className="icon" style={{ marginRight: rem(6) }} />}
-        disabled={!balance || !payoutsEnabled || isLoading}
-        loading={isLoading}
-        onClick={onWithdraw}
-      />
     </Stack>
   );
 }

@@ -32,7 +32,6 @@ export default function SetPassword() {
     setStatus("unauthenticated");
     setUserDetails(null);
     modals.closeAll();
-    router.replace("/auth");
   }, []);
 
   const handleEnterPassword = (e: React.FormEvent<HTMLInputElement>) => {

@@ -96,3 +96,11 @@ export function validateUrl(url: string) {
     return false;
   }
 }
+
+export function sortObjectByNumberValue(obj: { [key: string]: number }, isAscending: boolean) {
+  return Object.fromEntries(
+    isAscending
+      ? Object.entries(obj).sort(([, a], [, b]) => a - b)
+      : Object.entries(obj).sort(([, a], [, b]) => b - a)
+  );
+}

@@ -42,7 +42,7 @@ export default function Club() {
             />
           )}
         </Group>
-        <BalancePane balance={balance} payoutsEnabled={payoutsEnabled} />
+        <BalancePane />
         <Stack className={classes.followYou}>
           <Text c="dimmed" size="sm">
             Follow you ({totalFollowers || 0})

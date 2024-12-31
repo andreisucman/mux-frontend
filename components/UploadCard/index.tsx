@@ -148,7 +148,7 @@ export default function UploadCard({
         className={classes.centralContent}
         style={customContentStyles ? customContentStyles : {}}
       >
-        {isLoading ? <Loader /> : <Stack className={classes.imageCell}>
+        {isLoading ? <Loader m="auto" /> : <Stack className={classes.imageCell}>
           <ImageDisplayContainer
             handleDelete={handleDeleteImage}
             image={localUrl || latestStyleImage}

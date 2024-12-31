@@ -1,7 +1,7 @@
 .container {
   gap: 0;
   border-radius: var(--mantine-radius-lg);
-  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }
 
 .heading {
@@ -11,7 +11,7 @@
   gap: rem(8);
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
   padding: 0 rem(16);
-  background-color: alpha(var(--mantine-color-dark-6), 0.75);
+  background-color: alpha(var(--mantine-color-dark-5), 1);
 }
 
 .content {

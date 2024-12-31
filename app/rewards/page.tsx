@@ -1,22 +1,36 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Skeleton, Stack, Title } from "@mantine/core";
+import { Loader, rem, Stack, Title } from "@mantine/core";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
+import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
+import openSuccessModal from "@/helpers/openSuccessModal";
+import { ReferrerEnum } from "../auth/AuthForm/types";
 import RewardCard from "./RewardCard";
 import { RewardCardType } from "./types";
 import classes from "./rewards.module.css";
 
 export const runtime = "edge";
 
+export type ClaimRewardProps = {
+  rewardId: string;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 export default function Rewards() {
+  const { status, userDetails } = useContext(UserContext);
   const [rewards, setRewards] = useState<RewardCardType[]>();
   const [hasMore, setHasMore] = useState(false);
+
+  const { _id: userId } = userDetails || {};
 
   const fetchRewards = useCallback(
     async (skip?: boolean) => {
@@ -48,9 +62,55 @@ export default function Rewards() {
     [rewards && rewards.length]
   );
 
+  const claimReward = useCallback(
+    async ({ rewardId, isLoading, setIsLoading }: ClaimRewardProps) => {
+      if (isLoading) return;
+      setIsLoading(true);
+
+      if (status !== AuthStateEnum.AUTHENTICATED) {
+        openAuthModal({
+          title: "Sign in",
+          stateObject: {
+            referrer: ReferrerEnum.REWARDS,
+            localUserId: userId,
+            redirectPath: "/rewards",
+          },
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await callTheServer({
+          endpoint: "claimReward",
+          method: "POST",
+          body: { rewardId },
+        });
+
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal({
+              description: response.error,
+            });
+            return;
+          }
+          const newRewards = rewards?.map((rec) =>
+            rec._id === rewardId ? { ...rec, left: rec.left - 1 } : rec
+          );
+          setRewards(newRewards);
+          openSuccessModal({ description: response.message });
+        }
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [status, userId, rewards]
+  );
+
   const memoizedRewardCard = useCallback(
-    (props: any) => <RewardCard data={props.data} key={props.index} />,
-    []
+    (props: any) => <RewardCard data={props.data} key={props.index} claimReward={claimReward} />,
+    [claimReward]
   );
 
   useEffect(() => {
