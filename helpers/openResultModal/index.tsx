@@ -1,7 +1,5 @@
 import React from "react";
-import { AvatarConfig } from "react-nice-avatar";
 import { rem, Title, UnstyledButton } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ProgressModalContent from "@/app/results/ProgressModalContent";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
@@ -18,7 +16,7 @@ type OpenViewModalProps = {
   record: SimpleBeforeAfterType | SimpleProofType | SimpleStyleType | SimpleProgressType;
   title: React.ReactNode;
   type: "style" | "progress" | "proof";
-  isPublic?: boolean;
+  isPublicPage?: boolean;
   isFullScreen?: boolean;
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
@@ -27,7 +25,7 @@ export default function openResultModal({
   record,
   title,
   type,
-  isPublic,
+  isPublicPage,
   isFullScreen,
   setRecords,
 }: OpenViewModalProps) {
@@ -35,13 +33,13 @@ export default function openResultModal({
     type === "style" ? (
       <StyleModalContent
         record={record as SimpleStyleType}
-        showTrackButton={isPublic}
+        isPublicPage={isPublicPage}
         setRecords={setRecords!}
       />
     ) : type === "progress" ? (
-      <ProgressModalContent record={record as SimpleBeforeAfterType} showTrackButton={isPublic} />
+      <ProgressModalContent record={record as SimpleBeforeAfterType} isPublicPage={isPublicPage} />
     ) : (
-      <ProofModalContent record={record as SimpleProofType} isPublic={isPublic} />
+      <ProofModalContent record={record as SimpleProofType} isPublicPage={isPublicPage} />
     );
 
   modals.openContextModal({
@@ -56,16 +54,17 @@ export default function openResultModal({
       content: { display: "flex", flexDirection: "column" },
       body: { display: "flex", flexDirection: "column", flex: 1 },
     },
+    classNames: { content: "scrollbar" },
   });
 }
 
-type Props = {
+type GetRedirectModalTitleProps = {
   redirectUrl: string;
   avatar: { [key: string]: any } | null;
   title: string;
 };
 
-export function getRedirectModalTitle({ redirectUrl, avatar, title }: Props) {
+export function getRedirectModalTitle({ redirectUrl, avatar, title }: GetRedirectModalTitleProps) {
   return (
     <UnstyledButton
       className={classes.container}

@@ -12,9 +12,10 @@ type Props = {
   name?: string | React.ReactNode;
   icon?: React.ReactNode;
   buttonText?: string;
+  isLoading?: boolean;
   underButtonText?: string;
-  onClick?: (args?: any) => Promise<void> | void;
   content: { icon: React.ReactNode; description: string }[];
+  onClick?: (props?: any) => void;
 };
 
 export default function PricingCard({
@@ -25,24 +26,11 @@ export default function PricingCard({
   icon,
   name,
   price,
+  isLoading,
   underButtonText,
   buttonText,
   onClick,
 }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function handleClick() {
-    if (!onClick) return;
-
-    setIsLoading(true);
-    await onClick();
-
-    const tId = setTimeout(() => {
-      setIsLoading(false);
-      clearTimeout(tId);
-    }, 4000);
-  }
-
   return (
     <Stack className={classes.container}>
       <Stack
@@ -79,8 +67,9 @@ export default function PricingCard({
               icon={icon}
               text={buttonText}
               disabled={!price}
+              loading={isLoading}
               addGradient={addGradient}
-              onClick={handleClick}
+              onClick={onClick}
               containerStyles={{ marginTop: rem(4) }}
             />
             {underButtonText && (

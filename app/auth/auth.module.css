@@ -3,8 +3,6 @@
 }
 
 .wrapper {
-  background-color: alpha(var(--mantine-color-dark-6), 0.5);
-
   padding: rem(10%) rem(16);
   border-radius: var(--mantine-radius-lg);
   margin: auto;

@@ -10,4 +10,5 @@ export enum ReferrerEnum {
   CLUB_PROOF = "clubProof",
   AUTH_PAGE = "authPage",
   SCAN_INDEX = "scanIndex",
+  PLANS = "plans",
 }

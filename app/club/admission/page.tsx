@@ -48,13 +48,17 @@ export default function ClubAdmission() {
       });
 
       if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          setUserDetails((prev: UserDataType) => ({ ...prev, country: null }));
+          return;
+        }
         router.push(response.message);
       } else {
         openErrorModal({ description: response.error });
       }
-    } catch (err) {
-    }
-  }, []);
+    } catch (err) {}
+  }, [userDetails]);
 
   const handleSetCountryAndCreateAccount = useCallback(
     async (newCountry: string) => {
@@ -77,8 +81,7 @@ export default function ClubAdmission() {
         } else {
           openErrorModal();
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [userDetails, router]
   );
@@ -139,7 +142,7 @@ export default function ClubAdmission() {
                 <Title order={5}>Verifying</Title>
                 Your information is still being verified. Meanwhile you can explore the club. If you
                 need to edit your information you can do it in the wallet.
-                <RedirectToWalletButton  />
+                <RedirectToWalletButton />
               </Stack>
             </Alert>
           )}

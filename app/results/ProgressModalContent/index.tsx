@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { SimpleBeforeAfterType } from "@/app/types";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
-import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import LineProgressIndicators from "../LineProgressIndicators";
@@ -13,17 +12,12 @@ import classes from "./ProgressModalContent.module.css";
 
 type Props = {
   record: SimpleBeforeAfterType;
-  showTrackButton?: boolean;
+  isPublicPage?: boolean;
 };
 
-export default function ProgressModalContent({ record, showTrackButton }: Props) {
+export default function ProgressModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
-  const { userDetails } = useContext(UserContext);
-  const { club } = userDetails || {};
-  const { followingUserName } = club || {};
-
   const { userName, images, initialImages, updatedAt, createdAt, initialDate } = record;
-  const isTracked = followingUserName === userName;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
@@ -44,12 +38,10 @@ export default function ProgressModalContent({ record, showTrackButton }: Props)
         currentDate={formattedCompareDate}
       />
       <LineProgressIndicators title="Progress" record={record} />
-      {showTrackButton && club && (
+      {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
-            text={"Peek the routine"}
-            addGradient={!isTracked}
-            disabled={isTracked}
+            text={"Peek routine"}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleRedirect}
           />

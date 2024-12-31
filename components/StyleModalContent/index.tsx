@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import GlowingButton from "../GlowingButton";
@@ -14,15 +13,12 @@ import classes from "./StyleModalContent.module.css";
 
 type Props = {
   record: SimpleStyleType;
-  showTrackButton?: boolean;
+  isPublicPage?: boolean;
   setRecords: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
-export default function StyleModalContent({ record, showTrackButton, setRecords }: Props) {
+export default function StyleModalContent({ record, isPublicPage, setRecords }: Props) {
   const router = useRouter();
-  const { userDetails } = useContext(UserContext);
-  const { club } = userDetails || {};
-  const { followingUserName } = club || {};
 
   const {
     _id: styleId,
@@ -39,13 +35,11 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
     compareVotes,
   } = record;
 
-  const isTracked = userName === followingUserName;
-
   const formattedCurrentDate = formatDate({ date: createdAt });
   const formattedCompareDate = formatDate({ date: compareDate });
   const hideVoting = styleName === compareStyleName;
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style/${record.userId}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/style/${userName}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);
@@ -75,12 +69,10 @@ export default function StyleModalContent({ record, showTrackButton, setRecords 
         )}
       </Stack>
       <StyleIndicators title="Analysis" record={record as SimpleStyleType} />
-      {showTrackButton && club && (
+      {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
-            text={"Peek lifestyle"}
-            addGradient={!isTracked}
-            disabled={isTracked}
+            text={"Peek style"}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleRedirect}
           />

@@ -8,8 +8,9 @@ type Props = {
   text: string;
   icon?: any;
   disabled?: boolean;
+  loading?: boolean;
   children?: React.ReactNode;
-  onClick: (props?: any) => any;
+  onClick?: (props?: any) => void;
   buttonStyles?: { [key: string]: any };
   containerStyles?: { [key: string]: any };
   overlayStyles?: { [key: string]: any };
@@ -19,6 +20,7 @@ function GlowingButton({
   text,
   icon,
   addGradient = true,
+  loading,
   disabled,
   containerStyles,
   overlayStyles,
@@ -26,16 +28,13 @@ function GlowingButton({
   children,
   onClick,
 }: Props) {
-  const handleClick = () => {
-    onClick();
-  };
-
   return (
     <Stack className={classes.container} style={containerStyles ? containerStyles : {}}>
       <div
         className={cn(classes.button, classes.gradient, {
           gradientSpin: addGradient,
           [classes.disabled]: disabled,
+          [classes.loading]: loading,
         })}
         style={overlayStyles ? overlayStyles : {}}
       />
@@ -43,15 +42,20 @@ function GlowingButton({
         disabled={disabled}
         className={cn(classes.button, {
           [classes.disabled]: disabled,
+          [classes.loading]: loading,
         })}
-        onClick={handleClick}
+        onClick={onClick}
         style={buttonStyles ? buttonStyles : {}}
       >
-        <>
-          {icon}
-          {text}
-          {children && children}
-        </>
+        {loading ? (
+          <Loader m="0 auto" size="sm" color="white" />
+        ) : (
+          <>
+            {icon}
+            {text}
+            {children && children}
+          </>
+        )}
       </UnstyledButton>
     </Stack>
   );

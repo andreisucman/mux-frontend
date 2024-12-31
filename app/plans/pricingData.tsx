@@ -75,7 +75,7 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconMessages className="icon icon__large" style={style} />,
-    description: "Discuss the style, tips, and progress with your advisor.",
+    description: "Discuss the style, tips, and progress of the club members with your advisor.",
   },
 ];
 

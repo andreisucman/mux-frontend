@@ -44,7 +44,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
     openResultModal({
       record: data,
       type: "progress",
-      isPublic: true,
+      isPublicPage: true,
       title: modalTitle,
     });
   }, [userName, part, formattedDate]);

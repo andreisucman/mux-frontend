@@ -16,7 +16,7 @@ const tableData = {
   body: [
     [
       <IconCamera className="icon icon__title" />,
-      "All of your data, i.e. the images of your face and body, and task completion videos are private by default. You can enable sharing them in the settings.",
+      "All of your uploaded data is private by default. You can make it public in the settings.",
     ],
     [
       <IconCash className="icon icon__title" />,
@@ -24,7 +24,7 @@ const tableData = {
     ],
     [
       <IconTargetOff className="icon icon__title" />,
-      "If you leave the Club the data you've made public will become private immediately.",
+      "If you leave the Club the data you've made public (if you made it public) will become private immediately.",
     ],
     [
       <IconRating18Plus className="icon icon__title" />,

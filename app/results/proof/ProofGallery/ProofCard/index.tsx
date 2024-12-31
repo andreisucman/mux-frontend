@@ -61,7 +61,7 @@ function ProofCard({
     const title = isPublicPage ? (
       getRedirectModalTitle({
         avatar,
-        redirectUrl: `/club/about?id=${userId}`,
+        redirectUrl: `/club/proof/${userName}`,
         title: userName,
       })
     ) : (
@@ -75,8 +75,9 @@ function ProofCard({
       type: "proof",
       title,
       isFullScreen: isMobile,
+      isPublicPage,
     });
-  }, []);
+  }, [isPublicPage, data, isMobile, userName]);
 
   const showSkeleton = useShowSkeleton();
 

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconFocus, IconMan, IconMoodSmile, IconTarget } from "@tabler/icons-react";
+import { IconCircleOff, IconFocus, IconMan, IconMoodSmile, IconTarget } from "@tabler/icons-react";
 import { Button, Group, Image, rem, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -183,7 +183,11 @@ export default function StyleScanResult() {
           </>
         )}
         {displayComponent === "empty" && (
-          <OverlayWithText text={`No ${type} style analysis`} button={overlayButton} />
+          <OverlayWithText
+            icon={<IconCircleOff className="icon" />}
+            text={`No ${type} style analysis`}
+            button={overlayButton}
+          />
         )}
       </Skeleton>
     </Stack>

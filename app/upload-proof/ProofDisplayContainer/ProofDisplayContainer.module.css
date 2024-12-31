@@ -21,5 +21,4 @@
   position: absolute;
   left: rem(16);
   top: rem(16);
-  font-size: var(--mantine-font-size-sm);
 }

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
-import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
+import { ActionIcon, Button, Loader,Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
@@ -148,14 +148,14 @@ export default function UploadCard({
         className={classes.centralContent}
         style={customContentStyles ? customContentStyles : {}}
       >
-        <Stack className={classes.imageCell}>
+        {isLoading ? <Loader /> : <Stack className={classes.imageCell}>
           <ImageDisplayContainer
             handleDelete={handleDeleteImage}
             image={localUrl || latestStyleImage}
             isLoadingOverlay={isBlurLoading}
             placeholder={relevantPlaceholder && relevantPlaceholder.url}
           />
-        </Stack>
+        </Stack>}
 
         {!isLoading && (
           <Stack className={classes.checkboxAndButtons}>

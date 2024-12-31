@@ -8,14 +8,12 @@ type Props = {
   disclaimer?: React.ReactNode | string;
   metaPanel?: React.ReactNode;
   formattedDate?: string;
-  isTracked?: boolean;
   handleTrack?: () => void;
 };
 
 export default function ProofCardFooter({
   disclaimer,
   metaPanel,
-  isTracked,
   formattedDate,
   handleTrack,
 }: Props) {
@@ -24,9 +22,7 @@ export default function ProofCardFooter({
       {handleTrack && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
-            text={"Peek the routine"}
-            addGradient={!isTracked}
-            disabled={isTracked}
+            text={"Peek proof"}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleTrack}
           />

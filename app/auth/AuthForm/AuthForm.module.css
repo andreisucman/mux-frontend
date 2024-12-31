@@ -1,9 +1,9 @@
 .container {
   max-width: rem(450);
-  padding: rem(24) rem(16) rem(24);
+  padding: rem(24) rem(16) rem(20);
   width: 100%;
 
-  background-color: alpha(var(--mantine-color-dark-6), 1);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
   border-radius: var(--mantine-radius-lg);
 
   align-items: center;

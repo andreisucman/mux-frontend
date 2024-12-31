@@ -76,7 +76,7 @@ export default function AllStyle() {
       record: data,
       type: "style",
       title: modalTitle,
-      isPublic: true,
+      isPublicPage: true,
       setRecords: setStyles,
     });
   }, []);

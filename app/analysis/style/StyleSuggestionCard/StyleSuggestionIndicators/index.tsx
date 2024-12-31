@@ -48,7 +48,7 @@ export default function StyleSuggestionIndicators({ record, customStyles }: Prop
           </Group>
         }
         labelPosition="center"
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer", margin: "0.25rem 0" }}
       />
       <Collapse in={collapseOpen} onChange={() => setCollapseOpen((prev) => !prev)}>
         <Stack gap={4}>

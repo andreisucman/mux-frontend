@@ -28,7 +28,7 @@ function StyleIndicators({ record, title, customStyles }: Props) {
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       {title && (
-        <Text c="dimmed" size="xs" mb={8}>
+        <Text c="dimmed" size="xs" mb={4}>
           {title}
         </Text>
       )}

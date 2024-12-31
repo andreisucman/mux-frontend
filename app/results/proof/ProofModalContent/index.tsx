@@ -14,18 +14,16 @@ import classes from "./ProofModalContent.module.css";
 
 type Props = {
   record: SimpleProofType;
-  isPublic?: boolean;
+  isPublicPage?: boolean;
 };
 
-export default function ProofModalContent({ record, isPublic }: Props) {
+export default function ProofModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
-  const { club, name } = userDetails || {};
-  const { followingUserName } = club || {};
+  const { name } = userDetails || {};
 
   const { icon, createdAt, mainUrl, mainThumbnail, concern, taskName, userName } = record || {};
 
-  const isTracked = followingUserName === userName;
   const isSelf = name === userName;
 
   const formattedDate = formatDate({ date: createdAt });
@@ -44,7 +42,7 @@ export default function ProofModalContent({ record, isPublic }: Props) {
         concernName={concernName}
         icon={icon}
         taskName={taskName}
-        hideTitle={!isPublic}
+        hideTitle={!isPublicPage}
         customStyles={{ paddingBottom: rem(16) }}
       />
       {record.contentType === "image" ? (
@@ -64,7 +62,7 @@ export default function ProofModalContent({ record, isPublic }: Props) {
           isStatic
         />
       )}
-      {isPublic && <ProofCardFooter isTracked={isTracked} handleTrack={handleRedirect} />}
+      {isPublicPage && <ProofCardFooter handleTrack={handleRedirect} />}
     </Stack>
   );
 }
