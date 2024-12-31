@@ -1,5 +1,5 @@
 .container {
-  padding: rem(16);
+  padding: rem(12) rem(16);
   gap: rem(8);
   width: 100%;
   flex: 1;

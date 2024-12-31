@@ -90,6 +90,10 @@ function Header() {
     }
   }, [status, hideStartButton]);
 
+  useEffect(() => {
+    setIsLoading(false);
+  }, [pathname]);
+
   return (
     <>
       <header className={classes.container}>

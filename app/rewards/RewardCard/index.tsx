@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IconMedal2 } from "@tabler/icons-react";
-import { Group, Progress, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
-import GlowingButton from "@/components/GlowingButton";
+import { Button, Group, Progress, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import { calculateRewardTaskCompletion } from "@/helpers/calculateRewardTaskCompletion";
-import { useRouter } from "@/helpers/custom-router";
+import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -20,12 +20,12 @@ type Props = {
 };
 
 export default function RewardCard({ data }: Props) {
-  const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [streaks, setStreaks] = useState<StreaksType>();
   const { status, userDetails } = useContext(UserContext);
   const { left, icon, count, value, title, condition, requisite } = data;
+  const { _id: userId } = userDetails || {};
 
   const redeemed = count - left;
 
@@ -44,7 +44,16 @@ export default function RewardCard({ data }: Props) {
       setIsLoading(true);
 
       if (status !== AuthStateEnum.AUTHENTICATED) {
-        router.push("/auth");
+        openAuthModal({
+          title: "Sign in",
+          stateObject: {
+            referrer: ReferrerEnum.REWARDS,
+            localUserId: userId,
+            redirectPath: "/rewards",
+          },
+        });
+        setIsLoading(false);
+        return;
       }
 
       try {
@@ -68,7 +77,7 @@ export default function RewardCard({ data }: Props) {
         setIsLoading(false);
       }
     },
-    [isLoading, status]
+    [isLoading, status, userId]
   );
 
   useEffect(() => {
@@ -93,7 +102,6 @@ export default function RewardCard({ data }: Props) {
       <Stack className={classes.container}>
         <Group className={classes.heading}>
           {value && <Text>${value}</Text>}
-
           <Title order={5}>{title}</Title>
           <Text>
             ({redeemed}/{count})
@@ -109,13 +117,14 @@ export default function RewardCard({ data }: Props) {
               </Progress.Section>
             </Progress.Root>
           </Group>
-          <GlowingButton
-            text="Claim the reward"
+          <Button
             disabled={buttonDisabled || isLoading}
             loading={isLoading}
-            icon={<IconMedal2 style={{ marginRight: rem(6) }} />}
-            onClick={handleClaimReward}
-          />
+            onClick={() => handleClaimReward(data._id)}
+          >
+            <IconMedal2 style={{ marginRight: rem(6) }} />
+            Claim the reward
+          </Button>
         </Stack>
       </Stack>
     </Skeleton>

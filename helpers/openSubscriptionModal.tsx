@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import PricingCard from "@/app/plans/PricingCard";
@@ -22,7 +22,7 @@ type Props = {
   buttonIcon: React.ReactNode;
   underButtonText?: string;
   isCentered?: boolean;
-  onClick: (args?: any) => void;
+  onClick: (args?: any) => Promise<void>;
   onClose: (args?: any) => void;
 };
 
@@ -40,6 +40,8 @@ export default function openSubscriptionModal({
   onClick,
   onClose,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const content =
     modalType === "improvement"
       ? improvementCoachContent
@@ -48,6 +50,13 @@ export default function openSubscriptionModal({
         : modalType === "peek"
           ? peekLicenseContent
           : analystCoachContent;
+
+  const handleClick = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    await onClick();
+    setIsLoading(false);
+  };
 
   modals.openContextModal({
     modal: "general",
@@ -65,6 +74,7 @@ export default function openSubscriptionModal({
         <PricingCard
           name={name}
           price={price}
+          isLoading={isLoading}
           addGradient={true}
           content={content}
           icon={buttonIcon}
@@ -73,7 +83,7 @@ export default function openSubscriptionModal({
           customHeadingStyles={{
             borderRadius: 0,
           }}
-          onClick={onClick}
+          onClick={handleClick}
         />
       </Stack>
     ),

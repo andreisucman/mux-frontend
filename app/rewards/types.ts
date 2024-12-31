@@ -1,5 +1,5 @@
 export type RewardCardType = {
-  _id: number;
+  _id: string;
   key: string;
   title: string;
   icon: string;

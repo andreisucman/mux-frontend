@@ -7,6 +7,7 @@ import callTheServer from "@/functions/callTheServer";
 import fetchQuestions from "@/functions/fetchQuestions";
 import { ClubUserType } from "@/types/global";
 import { UserContext } from "../UserContext";
+import { AuthStateEnum } from "../UserContext/types";
 
 const defaultClubContext = {
   hasAboutAnswers: undefined,
@@ -30,7 +31,7 @@ export default function ClubDataContextProvider({ children }: Props) {
   const params = useParams();
   const userName = Array.isArray(params?.userName) ? params.userName?.[0] : params.userName;
 
-  const { userDetails } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [youFollowDataFetched, setYouTrackDataFetched] = useState(false);
   const [youFollowData, setYouFollowData] = useState<ClubUserType | null | undefined>();
   const [youData, setYouData] = useState<ClubUserType | null>(null);
@@ -87,12 +88,14 @@ export default function ClubDataContextProvider({ children }: Props) {
   }, [userName]);
 
   useEffect(() => {
+    if (status !== AuthStateEnum.AUTHENTICATED) return;
+
     fetchQuestions({ userName, onlyCheck: true }).then((response) => {
       const { hasAnswers, hasNewQuestions } = response || {};
       setHasAboutAnswers(hasAnswers);
       setHasNewAboutQuestions(hasNewQuestions);
     });
-  }, [userName, club]);
+  }, [userName, club, status]);
 
   return (
     <ClubContext.Provider

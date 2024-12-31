@@ -34,7 +34,6 @@ function GlowingButton({
         className={cn(classes.button, classes.gradient, {
           gradientSpin: addGradient,
           [classes.disabled]: disabled,
-          [classes.loading]: loading,
         })}
         style={overlayStyles ? overlayStyles : {}}
       />

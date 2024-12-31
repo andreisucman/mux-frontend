@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconPlus } from "@tabler/icons-react";
 import { rem, Stack, Text } from "@mantine/core";
@@ -17,6 +17,7 @@ type Props = {
 export default function PeekOverlay({ description }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const { _id: userId } = userDetails || {};
 
@@ -45,6 +46,9 @@ export default function PeekOverlay({ description }: Props) {
   );
 
   const handleClickButton = useCallback(async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     if (status !== "authenticated") {
       const referrer = getReferrer(pathname);
 
@@ -65,18 +69,19 @@ export default function PeekOverlay({ description }: Props) {
         setUserDetails,
       });
     }
-  }, [userId, status]);
+  }, [userId, isLoading, status]);
 
   return (
     <Stack className={classes.container}>
       {description && <Text className={classes.text}>{description}</Text>}
       <PricingCard
+        price="19"
+        name={"Peek License"}
         buttonText="Add"
         content={peekLicenseContent}
         onClick={handleClickButton}
         icon={<IconPlus className="icon" style={{ marginRight: rem(6) }} />}
-        price="19"
-        name={"Peek License"}
+        isLoading={isLoading}
         addGradient
       />
     </Stack>

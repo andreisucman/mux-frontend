@@ -15,8 +15,10 @@ import classes from "./plans.module.css";
 export const runtime = "edge";
 
 export default function PlansPage() {
-  const { status, setUserDetails } = useContext(UserContext);
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { _id: userId } = userDetails || {};
 
   const handleClickBuy = useCallback(() => {
     if (isLoading) return;
@@ -24,7 +26,7 @@ export default function PlansPage() {
     if (status !== AuthStateEnum.AUTHENTICATED) {
       openAuthModal({
         title: "Sign in",
-        stateObject: { referrer: ReferrerEnum.PLANS, redirectPath: "/plans" },
+        stateObject: { referrer: ReferrerEnum.PLANS, localUserId: userId, redirectPath: "/plans" },
       });
     } else {
       const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/plans`;
@@ -38,7 +40,7 @@ export default function PlansPage() {
     }
 
     setIsLoading(false);
-  }, [isLoading, status]);
+  }, [isLoading, status, userId]);
 
   return (
     <Stack className={classes.container}>

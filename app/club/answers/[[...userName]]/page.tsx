@@ -16,6 +16,7 @@ import {
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import fetchQuestions from "@/functions/fetchQuestions";
 import { useRouter } from "@/helpers/custom-router";
@@ -40,7 +41,7 @@ export default function AnswersPage(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
 
-  const { userDetails } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
 
   const router = useRouter();
   const defaultRouter = useDefaultRouter();
@@ -136,6 +137,8 @@ export default function AnswersPage(props: Props) {
 
   const handleFetchQuestions = useCallback(
     async (query?: string) => {
+      if (status !== AuthStateEnum.AUTHENTICATED) return;
+
       const data = await fetchQuestions({
         userName,
         showType,
@@ -147,7 +150,7 @@ export default function AnswersPage(props: Props) {
       setQuestions(questionsList);
       setHasMore(questionsList.length === 21);
     },
-    [userName, hasMore, showType]
+    [userName, hasMore, showType, status]
   );
 
   const handleSearch = (searchQuery: string) => {

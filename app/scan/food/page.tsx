@@ -33,6 +33,7 @@ export default function ScanFoodPage() {
   const [calorieGoal, setCalorieGoal] = useState(0);
   const [localUrl, setLocalUrl] = useState<string>("");
   const [goalType, setGoalType] = useState<string>("portion");
+  const { _id: userId } = userDetails || {};
 
   const analysisId = searchParams.get("analysisId");
 
@@ -50,8 +51,7 @@ export default function ScanFoodPage() {
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          // url: fileUrls[0],
-          url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/food.jpg",
+          url: fileUrls[0],
         },
       });
 
@@ -101,6 +101,7 @@ export default function ScanFoodPage() {
           title: "Login to continue",
           stateObject: {
             redirectPath: "/scan/food",
+            localUserId: userId,
             redirectQuery: searchParams.toString(),
             referrer: ReferrerEnum.SCAN_FOOD,
           },
