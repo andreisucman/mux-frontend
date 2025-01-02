@@ -23,7 +23,7 @@ export default function DiaryPage(props: Props) {
   const [hasMore, setHasMore] = useState(false);
 
   const type = searchParams.get("type") || TypeEnum.HEAD;
-  const sort = searchParams.get("sort") || "createdAt";
+  const sort = searchParams.get("sort") || "-createdAt";
 
   const handleFetchDiaryRecords = useCallback(async () => {
     try {

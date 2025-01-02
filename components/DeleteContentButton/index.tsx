@@ -60,7 +60,10 @@ export default function DeleteContentButton({
       disabled={isDisabled}
       loading={isLoading}
       variant="default"
-      onClick={handleDelete}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleDelete();
+      }}
       className={cn(classes.container, {
         [classes.relative]: isRelative,
         [classes[position]]: true,

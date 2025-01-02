@@ -45,6 +45,7 @@ export default function ProofGallery({
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
+  const sort = searchParams.get("sort") || "-createdAt";
 
   const modelObject = proof && proof[0];
   const appliedBlurType = modelObject?.mainUrl.name;
@@ -81,6 +82,7 @@ export default function ProofGallery({
               type,
               part,
               query,
+              sort,
               skip: hasMore,
             })
           }

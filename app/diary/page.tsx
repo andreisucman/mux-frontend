@@ -30,7 +30,7 @@ export default function DiaryPage() {
   const [disableAddNew, setDisableAddNew] = useState(true);
 
   const type = searchParams.get("type") || TypeEnum.HEAD;
-  const sort = searchParams.get("sort") || "createdAt";
+  const sort = searchParams.get("sort") || "-createdAt";
 
   const { timeZone } = userDetails || {};
 

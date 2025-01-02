@@ -123,7 +123,6 @@ function ProofCard({
             ) : (
               <CardMetaPanel
                 avatar={avatar}
-                userId={userId}
                 name={userName}
                 formattedDate={formattedDate}
                 bodyProgress={latestBodyScoreDifference || 0}

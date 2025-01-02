@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, Skeleton, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Group, Loader, Skeleton, Stack, Title } from "@mantine/core";
 import DeleteContentButton from "@/components/DeleteContentButton";
 import OverlayWithText from "@/components/OverlayWithText";
 import { formatDate } from "@/helpers/formatDate";
@@ -44,19 +44,21 @@ export default function DiaryContent({
       const formattedDate = useMemo(() => formatDate({ date: props.data.createdAt }), []);
       return (
         <Accordion.Item value={props.data._id || null}>
-          <Accordion.Control>
-            <DeleteContentButton
-              collectionKey="diary"
-              contentId={props.data._id}
-              isLoading={isLoading}
-              isDisabled={isLoading}
-              setContent={setDiaryRecords}
-              setIsLoading={setIsLoading}
-              isRelative
-            />
-            <Title order={5} className={classes.title}>
-              <IconNote className={`${classes.icon} icon`} /> {formattedDate}
-            </Title>
+          <Accordion.Control component={"div"}>
+            <Group>
+              <DeleteContentButton
+                collectionKey="diary"
+                contentId={props.data._id}
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                setContent={setDiaryRecords}
+                setIsLoading={setIsLoading}
+                isRelative
+              />
+              <Title order={5} className={classes.title}>
+                <IconNote className={`${classes.icon} icon`} /> {formattedDate}
+              </Title>
+            </Group>
           </Accordion.Control>
           <Accordion.Panel>
             <DiaryRow

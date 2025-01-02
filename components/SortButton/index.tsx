@@ -15,7 +15,7 @@ export default function SortButton({ sortItems, customStyles, isDisabled }: Prop
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const sort = searchParams.get("sort") || "createdAt";
+  const sort = searchParams.get("sort") || "-createdAt";
 
   const handleSelect = async (value: string) => {
     if (value === sort) return;

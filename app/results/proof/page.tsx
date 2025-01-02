@@ -7,7 +7,6 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
-import openErrorModal from "@/helpers/openErrorModal";
 import { individualResultTitles } from "../individualResultTitles";
 import ProofGallery from "./ProofGallery";
 import ProofHeader from "./ProofHeader";
@@ -30,7 +29,7 @@ export default function ResultsProof() {
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
-  const sort = searchParams.get("sort");
+  const sort = searchParams.get("sort") || "-createdAt";
 
   const handleFetchProof = useCallback(
     async ({ type, part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
@@ -71,6 +70,7 @@ export default function ResultsProof() {
             handleFetchProof={fetchProof}
             setProof={setProof}
             columns={2}
+            isSelf
           />
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
