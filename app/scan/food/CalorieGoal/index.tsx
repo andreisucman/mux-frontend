@@ -50,7 +50,8 @@ export default function CalorieGoalController({
         openErrorModal({ description: "You need to login to see your estimated calorie norm." });
         return;
       }
-      const { latestProgress, remainingCaloriesPerDay } = userDetails || {};
+      const { latestProgress, nutrition } = userDetails || {};
+
       const { body } = latestProgress || {};
 
       if (body?.overall === 0) {
@@ -61,7 +62,7 @@ export default function CalorieGoalController({
       }
 
       setGoalType("remaining");
-      setCalorieGoal(remainingCaloriesPerDay || 0);
+      setCalorieGoal(nutrition?.remainingDailyCalories || 0);
     },
     [status, userDetails]
   );

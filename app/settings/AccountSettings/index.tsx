@@ -13,6 +13,7 @@ import {
   Alert,
   Button,
   Modal,
+  NumberInput,
   PinInput,
   rem,
   Skeleton,
@@ -41,7 +42,7 @@ export default function AccountSettings() {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { _id: userId, deleteOn, email: currentEmail, auth } = userDetails || {};
+  const { deleteOn, email: currentEmail, auth } = userDetails || {};
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState<string>(currentEmail || "");
@@ -59,8 +60,7 @@ export default function AccountSettings() {
       if (response.status === 200) {
         router.push(response.message);
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }, []);
 
   const deleteAccount = async (isDelete: boolean) => {
@@ -77,8 +77,7 @@ export default function AccountSettings() {
           deleteOn: response.message ? new Date(response.message) : response.message,
         }));
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   const sendConfirmationCode = async () => {
@@ -192,7 +191,7 @@ export default function AccountSettings() {
                   })
                 }
               >
-                <IconDeviceFloppy className="icon" />{" "}
+                <IconDeviceFloppy className="icon icon__small" />{" "}
               </ActionIcon>
             }
           />

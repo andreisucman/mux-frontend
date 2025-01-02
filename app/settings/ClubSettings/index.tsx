@@ -1,16 +1,8 @@
 import React, { useCallback, useContext, useState } from "react";
-import {
-  IconDeviceFloppy,
-  IconEdit,
-  IconGlobe,
-  IconPencil,
-  IconTargetOff,
-  IconWorld,
-} from "@tabler/icons-react";
+import { IconDeviceFloppy, IconPencil, IconTargetOff, IconWorld } from "@tabler/icons-react";
 import { AvatarConfig } from "react-nice-avatar";
 import {
   ActionIcon,
-  Button,
   Group,
   Skeleton,
   Stack,
@@ -126,8 +118,7 @@ export default function ClubSettings() {
         } else {
           openErrorModal();
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [userDetails, router]
   );
@@ -273,7 +264,7 @@ export default function ClubSettings() {
                     handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })
                   }
                 >
-                  <IconDeviceFloppy className="icon" />
+                  <IconDeviceFloppy className="icon icon__small" />
                 </ActionIcon>
               }
             />
@@ -290,7 +281,7 @@ export default function ClubSettings() {
                 disabled={!isIntroDirty || userIntro.length === 0}
                 onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
               >
-                <IconDeviceFloppy className="icon" />
+                <IconDeviceFloppy className="icon icon__small" />
               </ActionIcon>
             }
           />
@@ -308,11 +299,7 @@ export default function ClubSettings() {
               maw={425}
               readOnly
               rightSection={
-                <ActionIcon
-                  variant="default"
-                  size="sm"
-                  onClick={openChangeCountryConfirmation}
-                >
+                <ActionIcon variant="default" size="sm" onClick={openChangeCountryConfirmation}>
                   <IconPencil className="icon icon__small" />
                 </ActionIcon>
               }

@@ -51,7 +51,7 @@ export default function DataSharingSwitches({ title }: Props) {
       } catch (err) {
       }
     },
-    [userDetails]
+    [userDetails, privacy]
   );
 
   return (
