@@ -8,7 +8,6 @@ import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
-import openErrorModal from "@/helpers/openErrorModal";
 import openResultModal from "@/helpers/openResultModal";
 import ClubModerationLayout from "../../ModerationLayout";
 
@@ -33,31 +32,37 @@ export default function ClubProgress(props: Props) {
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
+  const sort = searchParams.get("sort");
   const position = searchParams.get("position");
 
   const isSelf = userName === userDetails?.name;
 
   const handleFetchProgress = useCallback(
-    async ({ type, part, currentArray, position, userName, skip }: HandleFetchProgressProps) => {
+    async ({
+      type,
+      part,
+      currentArray,
+      sort,
+      position,
+      userName,
+      skip,
+    }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
         part,
         type,
         position,
+        sort,
         currentArrayLength: (currentArray && currentArray.length) || 0,
         userName,
         skip,
       });
 
-      if (data) {
-        if (skip) {
-          setProgress([...(currentArray || []), ...data.slice(0, 6)]);
-        } else {
-          setProgress(data.slice(0, 6));
-        }
-        setHasMore(data.length === 7);
+      if (skip) {
+        setProgress([...(currentArray || []), ...data.slice(0, 20)]);
       } else {
-        openErrorModal();
+        setProgress(data.slice(0, 20));
       }
+      setHasMore(data.length === 21);
     },
     []
   );
@@ -79,8 +84,8 @@ export default function ClubProgress(props: Props) {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProgress({ type, part, position, userName });
-  }, [status, userName, type, part]);
+    handleFetchProgress({ type, part, sort, position, userName });
+  }, [status, userName, sort, type, part]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="progress">

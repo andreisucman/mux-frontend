@@ -62,6 +62,7 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
           compareImages={[compareMainUrl.url || ""]}
           compareDate={formattedCompareDate}
           currentDate={formattedCurrentDate}
+          isPublicPage={!!isPublicPage}
           isPublic={isPublic}
           isSelf={isSelf}
         />

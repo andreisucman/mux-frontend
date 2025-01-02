@@ -1,24 +1,19 @@
 import React, { useCallback, useMemo } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
+import SortButton from "@/components/SortButton";
+import { styleSortItems } from "@/data/sortItems";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import ClubStyleFilterCardContent from "./ClubStyleFilterCardContent";
 import classes from "./ClubStyleHeader.module.css";
-
-const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "about" },
-  { label: "Routines", value: "routines" },
-  { label: "Results", value: "style" },
-  { label: "Diary", value: "diary" },
-  { label: "Answers", value: "answers" },
-];
 
 type Props = {
   titles: { label: string; value: string }[];
@@ -69,6 +64,7 @@ export default function ClubStyleHeader({ showReturn, userName, isDisabled, titl
         </ActionIcon>
       )}
       <TitleDropdown titles={titles} />
+      <SortButton sortItems={styleSortItems} isDisabled={isDisabled} />
       <FilterButton
         onFilterClick={openFiltersCard}
         activeFiltersCount={paramsCount}

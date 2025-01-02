@@ -5,10 +5,12 @@ import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import { partItems, positionItems } from "@/components/PageHeader/data";
+import SortButton from "@/components/SortButton";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons, typeIcons } from "@/helpers/icons";
 import { PositionsFilterItemType } from "../proof/ProofHeader/types";
 import TitleDropdown from "../TitleDropdown";
+import { progressSortItems } from "@/data/sortItems";
 import classes from "./ProgressHeader.module.css";
 
 type Props = {
@@ -82,6 +84,7 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
         </ActionIcon>
       )}
       <TitleDropdown titles={titles} />
+      <SortButton sortItems={progressSortItems} isDisabled={typesDisabled} />
       {!hideDropdowns && (
         <>
           <FilterDropdown

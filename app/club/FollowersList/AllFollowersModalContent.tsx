@@ -16,11 +16,11 @@ export default function AllFollowersModalContent() {
     const items = await fetchFollowYou({ skip, existingCount });
 
     if (skip) {
-      setTrackYouData([...(trackYouData || []), ...items.slice(0, 10)]);
+      setTrackYouData([...(trackYouData || []), ...items.slice(0, 20)]);
     } else {
-      setTrackYouData(items.slice(0, 10));
+      setTrackYouData(items.slice(0, 20));
     }
-    setHasMore(items.length === 11);
+    setHasMore(items.length === 21);
   }, []);
 
   useEffect(() => {

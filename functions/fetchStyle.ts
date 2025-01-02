@@ -4,6 +4,7 @@ import callTheServer from "./callTheServer";
 export type FetchStyleProps = {
   followingUserName?: string | string[];
   styleName?: string | null;
+  sort?: string | null;
   currentArrayLength?: number;
   skip?: boolean;
   type: string | null;
@@ -16,6 +17,7 @@ export default async function fetchStyle({
   type,
   styleName,
   skip,
+  sort,
   sex,
   ageInterval,
   ethnicity,
@@ -28,6 +30,10 @@ export default async function fetchStyle({
 
     if (type) {
       queryParams.push(`type=${type}`);
+    }
+
+    if (sort) {
+      queryParams.push(`sort=${sort}`);
     }
 
     if (sex) {

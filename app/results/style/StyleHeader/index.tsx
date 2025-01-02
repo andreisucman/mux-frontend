@@ -4,10 +4,12 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import SortButton from "@/components/SortButton";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { useRouter } from "@/helpers/custom-router";
 import { styleIcons, typeIcons } from "@/helpers/icons";
 import TitleDropdown from "../../TitleDropdown";
+import { styleSortItems } from "@/data/sortItems";
 import classes from "./StyleHeader.module.css";
 
 type Props = {
@@ -59,6 +61,7 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
       )}
       <TitleDropdown titles={titles} />
 
+      <SortButton isDisabled={typesDisabled} sortItems={styleSortItems} />
       <FilterDropdown
         filterType="type"
         data={availableTypes}

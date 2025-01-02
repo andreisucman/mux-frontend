@@ -3,6 +3,7 @@ import { IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
+import askConfirmation from "@/helpers/askConfirmation";
 import classes from "./DeleteContentButton.module.css";
 
 type Props = {
@@ -46,12 +47,20 @@ export default function DeleteContentButton({
     }
   }, [collectionKey, contentId]);
 
+  const handleDelete = useCallback(() => {
+    askConfirmation({
+      title: "Confirm deletion",
+      body: "This action is irreversible. Continue?",
+      onConfirm: deleteContent,
+    });
+  }, [deleteContent]);
+
   return (
     <ActionIcon
       disabled={isDisabled}
       loading={isLoading}
       variant="default"
-      onClick={deleteContent}
+      onClick={handleDelete}
       className={cn(classes.container, {
         [classes.relative]: isRelative,
         [classes[position]]: true,

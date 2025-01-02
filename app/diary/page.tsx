@@ -8,6 +8,7 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
+import { diarySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import { formatDate } from "@/helpers/formatDate";
@@ -29,6 +30,8 @@ export default function DiaryPage() {
   const [disableAddNew, setDisableAddNew] = useState(true);
 
   const type = searchParams.get("type") || TypeEnum.HEAD;
+  const sort = searchParams.get("sort");
+
   const { timeZone } = userDetails || {};
 
   const formattedToday = useMemo(() => formatDate({ date: new Date() }), []);
@@ -44,8 +47,9 @@ export default function DiaryPage() {
         body: { type, timeZone },
       });
 
+      setIsLoading(false);
+
       if (response.status === 200) {
-        setIsLoading(false);
         if (response.error) {
           openErrorModal({ description: response.error });
           return;
@@ -75,39 +79,38 @@ export default function DiaryPage() {
         });
 
         setUserDetails((prev: UserDataType) => ({ ...prev, nextDiaryRecordAfter }));
-      } else {
-        setIsLoading(false);
-        openErrorModal();
       }
     } catch (err) {
       setIsLoading(false);
-      openErrorModal();
     }
-  }, [isLoading, timeZone, type]);
+  }, [isLoading, timeZone, type, sort]);
 
   const handleFetchDiaryRecords = useCallback(async () => {
-    try {
-      const response = await fetchDiaryRecords({
-        type,
-        currentArrayLength: diaryRecords?.length,
-        skip: hasMore,
-      });
+    const response = await fetchDiaryRecords({
+      type,
+      sort,
+      currentArrayLength: diaryRecords?.length,
+      skip: hasMore,
+    });
 
-      if (response.status === 200) {
-        setDiaryRecords(response.message);
-        if (response.message.length > 0) {
-          setOpenValue(response.message[0]._id);
-        }
-        setHasMore(response.message.length === 9);
+    if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({ description: response.error });
+        return;
       }
-    } catch (err) {
-      openErrorModal();
+      setDiaryRecords((prev) => [...(prev || []), response.message.slice(0, 20)]);
+
+      if (response.message.length > 0) {
+        setOpenValue(response.message[0]._id);
+      }
+
+      setHasMore(response.message.length === 21);
     }
-  }, [diaryRecords, hasMore, type]);
+  }, [diaryRecords, hasMore, type, sort]);
 
   useEffect(() => {
     handleFetchDiaryRecords();
-  }, [type]);
+  }, [type, sort]);
 
   useEffect(() => {
     if (!diaryRecords) return;
@@ -124,6 +127,7 @@ export default function DiaryPage() {
           filterData={typeItems}
           icons={typeIcons}
           selectedValue={type}
+          sortItems={diarySortItems}
           nowrap
           showReturn
         />

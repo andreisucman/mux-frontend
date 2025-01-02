@@ -12,6 +12,7 @@
   position: relative;
 
   display: flex;
+  flex-direction: column;
   overflow: hidden;
   justify-content: center;
   margin: auto;

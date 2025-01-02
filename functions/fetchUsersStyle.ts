@@ -1,3 +1,4 @@
+import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 import { FetchStyleProps } from "./fetchStyle";
 
@@ -5,6 +6,7 @@ export default async function fetchUsersStyle({
   followingUserName,
   styleName,
   type,
+  sort,
   skip,
   currentArrayLength,
 }: FetchStyleProps) {
@@ -15,6 +17,10 @@ export default async function fetchUsersStyle({
 
     if (type) {
       queryParams.push(`type=${type}`);
+    }
+
+    if (sort) {
+      queryParams.push(`sort=${sort}`);
     }
 
     if (styleName) {
@@ -35,5 +41,7 @@ export default async function fetchUsersStyle({
     }
 
     return response.message;
-  } catch (err) {}
+  } catch (err) {
+    openErrorModal();
+  }
 }

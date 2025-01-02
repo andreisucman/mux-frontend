@@ -1,44 +1,9 @@
-.container {
-  position: absolute;
-  flex: 1;
-  z-index: 1;
-  gap: rem(8);
-  inset: 0;
-  pointer-events: none;
-}
-
 .target {
   position: absolute;
   flex: 1;
   z-index: 2;
   gap: rem(8);
-  color: var(--mantine-color-gray-2);
   pointer-events: all;
-}
-
-.checkboxWrapper {
-  padding: rem(8);
-  border-radius: var(--mantine-radius-lg);
-}
-
-.top-right {
-  top: rem(16);
-  right: rem(16);
-}
-
-.top-left {
-  top: rem(16);
-  left: rem(16);
-}
-
-.bottom-right {
-  bottom: rem(16);
-  right: rem(16);
-}
-
-.bottom-left {
-  bottom: rem(16);
-  left: rem(16);
 }
 
 .relative {
@@ -47,20 +12,6 @@
   bottom: unset;
   right: unset;
   left: unset;
-}
-
-.content {
-  gap: rem(8);
-  padding: rem(8) 0;
-  border-radius: var(--mantine-radius-lg);
-  background-color: var(--mantine-color-dark-6);
-}
-
-.loaderStack {
-  width: rem(150);
-  align-items: center;
-  margin: auto;
-  gap: rem(8);
 }
 
 .dropdown {

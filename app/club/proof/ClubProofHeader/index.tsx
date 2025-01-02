@@ -7,7 +7,10 @@ import { createSpotlight } from "@mantine/spotlight";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
+import SortButton from "@/components/SortButton";
+import { proofSortItems } from "@/data/sortItems";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
 import ClubProofFilterCardContent from "./ClubProofFilterCardContent";
@@ -19,14 +22,6 @@ type Props = {
   userName?: string;
   isDisabled?: boolean;
 };
-
-const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "about" },
-  { label: "Routines", value: "routines" },
-  { label: "Results", value: "proof" },
-  { label: "Diary", value: "diary" },
-  { label: "Answers", value: "answers" },
-];
 
 const [spotlightStore, proofSpotlight] = createSpotlight();
 
@@ -73,6 +68,7 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
           </ActionIcon>
         )}
         <TitleDropdown titles={titles} />
+        <SortButton sortItems={proofSortItems} isDisabled={isDisabled} />
         <FilterButton
           activeFiltersCount={paramsCount}
           onFilterClick={openFiltersCard}

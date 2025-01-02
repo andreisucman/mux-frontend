@@ -1,3 +1,4 @@
+import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 
 export type FetchProgressProps = {
@@ -6,6 +7,7 @@ export type FetchProgressProps = {
   part: string | null;
   position: string | null;
   skip?: boolean;
+  sort: string | null;
   currentArrayLength?: number;
 };
 
@@ -15,6 +17,7 @@ export default async function fetchProgress({
   part,
   position,
   skip,
+  sort,
   currentArrayLength,
 }: FetchProgressProps) {
   try {
@@ -24,6 +27,10 @@ export default async function fetchProgress({
 
     if (type) {
       queryParams.push(`type=${type}`);
+    }
+
+    if (sort) {
+      queryParams.push(`sort=${sort}`);
     }
 
     if (part) {
@@ -52,5 +59,7 @@ export default async function fetchProgress({
     }
 
     return response.message;
-  } catch (err) {}
+  } catch (err) {
+     openErrorModal();
+  }
 }

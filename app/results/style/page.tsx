@@ -29,15 +29,17 @@ export default function ResultStyle() {
 
   const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
+  const sort = searchParams.get("sort");
 
   const handleFetchStyles = useCallback(
-    async ({ type, styleName, skip, currentArray }: HandleFetchStyleProps) => {
+    async ({ type, styleName, sort, skip, currentArray }: HandleFetchStyleProps) => {
       try {
         const items = await fetchUsersStyle({
           type,
           styleName,
           currentArrayLength: currentArray?.length || 0,
           skip,
+          sort,
         });
 
         if (skip) {
@@ -46,8 +48,7 @@ export default function ResultStyle() {
           setStyles(items.slice(0, 20));
         }
         setHasMore(items.length === 21);
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     []
   );
@@ -70,8 +71,8 @@ export default function ResultStyle() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchStyles({ type, styleName });
-  }, [status, type, styleName]);
+    handleFetchStyles({ type, sort, styleName });
+  }, [status, sort, type, styleName]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>

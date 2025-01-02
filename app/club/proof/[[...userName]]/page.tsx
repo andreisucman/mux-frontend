@@ -8,7 +8,6 @@ import { SimpleProofType } from "@/app/results/proof/types";
 import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
-import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
@@ -24,7 +23,7 @@ type Props = {
 export default function ClubProof(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
-  
+
   const { status, userDetails } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -33,33 +32,40 @@ export default function ClubProof(props: Props) {
   const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
+  const sort = searchParams.get("sort");
   const concern = searchParams.get("concern");
 
   const { name } = userDetails || {};
   const isSelf = name === userName;
 
   const handleFetchProof = useCallback(
-    async ({ type, part, userName, concern, currentArray, query, skip }: HandleFetchProofProps) => {
+    async ({
+      type,
+      part,
+      userName,
+      sort,
+      concern,
+      currentArray,
+      query,
+      skip,
+    }: HandleFetchProofProps) => {
       const data = await fetchUsersProof({
         concern,
         part,
         query,
+        sort,
         type,
         currentArrayLength: (currentArray && currentArray.length) || 0,
         userName,
         skip,
       });
 
-      if (data) {
-        if (skip) {
-          setProof([...(proof || []), ...data.slice(0, 20)]);
-        } else {
-          setProof(data.slice(0, 20));
-        }
-        setHasMore(data.length === 21);
+      if (skip) {
+        setProof([...(proof || []), ...data.slice(0, 20)]);
       } else {
-        openErrorModal();
+        setProof(data.slice(0, 20));
       }
+      setHasMore(data.length === 21);
     },
     []
   );
@@ -67,8 +73,8 @@ export default function ClubProof(props: Props) {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProof({ userName, type, part, concern, query });
-  }, [status, userName, type, part, concern, query]);
+    handleFetchProof({ userName, type, sort, part, concern, query });
+  }, [status, userName, type, part, sort, concern, query]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="proof">

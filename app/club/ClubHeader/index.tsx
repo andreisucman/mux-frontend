@@ -5,6 +5,7 @@ import { ActionIcon, Group, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import FilterDropdown from "@/components/FilterDropdown";
 import { clubPageTypeItems, typeItems } from "@/components/PageHeader/data";
+import SortButton from "@/components/SortButton";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons, typeIcons } from "@/helpers/icons";
@@ -15,6 +16,7 @@ type Props = {
   title: string;
   isDisabled?: boolean;
   showReturn?: boolean;
+  sortItems?: { value: string; label: string }[];
   pageType: string;
   hideTypeDropdown?: boolean;
   onSelect?: (value?: string | null) => void;
@@ -26,6 +28,7 @@ export default function ClubHeader({
   hideTypeDropdown,
   isDisabled,
   pageType,
+  sortItems,
   onSelect,
 }: Props) {
   const isMobile = useMediaQuery("(max-width: 36em)");
@@ -58,6 +61,7 @@ export default function ClubHeader({
           {title}
         </Title>
       </Group>
+      {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
       {isMobile && (
         <FilterDropdown
           icons={pageTypeIcons}

@@ -1,0 +1,9 @@
+.target {
+  z-index: 2;
+  gap: rem(8);
+  pointer-events: all;
+}
+
+.dropdown {
+  pointer-events: all;
+}

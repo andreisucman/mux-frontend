@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cn from "classnames";
 import { Group } from "@mantine/core";
 import { BlurredUrlType } from "@/types/global";
 import ContentBlurTypeButton from "../ContentBlurTypeButton";
@@ -8,6 +9,7 @@ import classes from "./ContentModerationButtons.module.css";
 type Props = {
   showBlur?: boolean;
   showDelete?: boolean;
+  isRelative?: boolean;
   contentId: string;
   currentMain?: BlurredUrlType;
   collectionKey: "progress" | "style" | "proof" | "diary" | "about";
@@ -18,6 +20,7 @@ export default function ContentModerationButtons({
   contentId,
   showDelete,
   showBlur,
+  isRelative,
   currentMain,
   collectionKey,
   setContent,
@@ -28,7 +31,7 @@ export default function ContentModerationButtons({
   const disabled = isDeleteLoading || isBlurLoading;
 
   return (
-    <Group className={classes.actionButtons}>
+    <Group className={cn(classes.container, { [classes.relative]: isRelative })}>
       {showDelete && (
         <DeleteContentButton
           contentId={contentId}

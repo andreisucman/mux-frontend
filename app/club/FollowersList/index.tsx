@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Loader, SimpleGrid, Stack, Title, UnstyledButton } from "@mantine/core";
+import { Loader, Stack, Title, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -20,7 +20,7 @@ export default function FollowersList() {
   const initialRows = useMemo(
     () =>
       trackYouData &&
-      trackYouData.slice(0, 10).map((item, index) => <FollowYouRow data={item} key={index} />),
+      trackYouData.slice(0, 20).map((item, index) => <FollowYouRow data={item} key={index} />),
     [trackYouData]
   );
 
@@ -55,7 +55,7 @@ export default function FollowersList() {
           {trackYouData.length > 0 ? (
             <>
               <div className={classes.grid}>{initialRows}</div>
-              {trackYouData.length > 10 && (
+              {trackYouData.length > 20 && (
                 <UnstyledButton
                   c="dimmed"
                   className={classes.showAllButton}

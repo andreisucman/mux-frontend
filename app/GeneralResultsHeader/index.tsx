@@ -127,6 +127,22 @@ export default function GeneralResultsHeader({
     <Group className={classes.container}>
       <Group className={classes.wrapper}>
         <TitleDropdown titles={titles} />
+        {showSearch && (
+          <SearchButton
+            collection="proof"
+            searchPlaceholder="Search proof"
+            spotlight={proofSpotlight}
+            spotlightStore={spotlightStore}
+            showActivityIndicator
+          />
+        )}
+        {showFilter && (
+          <FilterButton
+            activeFiltersCount={paramsCount}
+            onFilterClick={openFiltersCard}
+            isDisabled={!additionalFiltersActive}
+          />
+        )}
         {!hideTypeDropdown && (
           <FilterDropdown
             data={availableTypes}
@@ -149,22 +165,6 @@ export default function GeneralResultsHeader({
             allowDeselect
             addToQuery
             isDisabled={partsDisabled}
-          />
-        )}
-        {showSearch && (
-          <SearchButton
-            collection="proof"
-            searchPlaceholder="Search proof"
-            spotlight={proofSpotlight}
-            spotlightStore={spotlightStore}
-            showActivityIndicator
-          />
-        )}
-        {showFilter && (
-          <FilterButton
-            activeFiltersCount={paramsCount}
-            onFilterClick={openFiltersCard}
-            isDisabled={!additionalFiltersActive}
           />
         )}
       </Group>

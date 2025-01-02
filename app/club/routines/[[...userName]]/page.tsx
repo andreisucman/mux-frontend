@@ -9,6 +9,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
+import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
 import AccordionRoutineRow from "../AccordionRoutineRow";
@@ -21,6 +22,7 @@ type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
   type?: string;
+  sort: string | null;
   routines?: RoutineType[];
 };
 
@@ -40,6 +42,7 @@ export default function ClubRoutines(props: Props) {
   const { name, routines: currentUserRoutines } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
+  const sort = searchParams.get("sort") || "createdAt";
   const isSelf = name === userName;
 
   const openTaskDetails = useCallback(
@@ -73,8 +76,7 @@ export default function ClubRoutines(props: Props) {
   );
 
   const getFollowingRoutines = useCallback(
-    async ({ skip, followingUserName, routines, type }: GetRoutinesProps) => {
-      if (!type) return;
+    async ({ skip, sort, followingUserName, routines, type }: GetRoutinesProps) => {
       try {
         let endpoint = "getFollowingRoutines";
 
@@ -84,6 +86,10 @@ export default function ClubRoutines(props: Props) {
 
         if (type) {
           parts.push(`type=${type}`);
+        }
+
+        if (sort) {
+          parts.push(`sort=${sort}`);
         }
 
         if (skip && routines) {
@@ -101,12 +107,13 @@ export default function ClubRoutines(props: Props) {
 
         if (response.status === 200) {
           if (response.error) {
+            openErrorModal({ description: response.error });
             return;
           }
 
           if (response.message) {
-            setRoutines((prev) => [...(prev || []), ...response.message]);
-            setHasMore(response.message.length === 9);
+            setRoutines((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
+            setHasMore(response.message.length === 21);
 
             if (!openValue) setOpenValue(response.message[0]?._id);
           }
@@ -126,6 +133,11 @@ export default function ClubRoutines(props: Props) {
         });
 
         if (response.status === 200) {
+          if (response.error) {
+            openErrorModal({ description: response.error });
+            return;
+          }
+
           const { routines, tasks } = response.message;
           setUserDetails((prev: UserDataType) => ({
             ...prev,
@@ -142,6 +154,7 @@ export default function ClubRoutines(props: Props) {
     async (taskKey: string, routineId: string, total: number, startsAt: Date | null) => {
       if (!taskKey || !routineId || !startsAt || !type) return false;
 
+      let isSuccess = false;
       try {
         const response = await callTheServer({
           endpoint: "stealTask",
@@ -156,11 +169,13 @@ export default function ClubRoutines(props: Props) {
             routines: [...(prev.routines || []), routine],
             tasks: [...(prev.tasks || []), ...tasks],
           }));
-          return true;
+          isSuccess = true;
+        } else {
+          openErrorModal();
         }
-        return false;
       } catch (err) {
-        return false;
+      } finally {
+        return isSuccess;
       }
     },
     [type, userDetails]
@@ -192,13 +207,15 @@ export default function ClubRoutines(props: Props) {
   );
 
   useEffect(() => {
+    if (!type) return;
     const payload: GetRoutinesProps = {
       followingUserName: userName,
       routines,
       type,
+      sort,
     };
     getFollowingRoutines(payload);
-  }, [type, userName]);
+  }, [type, sort, userName]);
 
   return (
     <ClubModerationLayout pageType="routines" userName={userName} showChat showHeader>
@@ -230,6 +247,7 @@ export default function ClubRoutines(props: Props) {
                         skip: true,
                         followingUserName: userName,
                         routines,
+                        sort,
                         type,
                       })
                     }

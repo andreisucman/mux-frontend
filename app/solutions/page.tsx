@@ -56,11 +56,11 @@ export default function Solutions() {
 
       if (response.status === 200) {
         if (skip) {
-          setSolutions([...(solutions || []), ...response.message.slice(0, 6)]);
+          setSolutions([...(solutions || []), ...response.message.slice(0, 20)]);
         } else {
-          setSolutions(response.message.slice(0, 6));
+          setSolutions(response.message.slice(0, 20));
         }
-        setHasMore(response.message.length === 7);
+        setHasMore(response.message.length === 21);
       } else {
         openErrorModal();
       }

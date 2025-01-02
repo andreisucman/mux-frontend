@@ -49,11 +49,11 @@ export default function Rewards() {
 
         if (response.status === 200) {
           if (skip) {
-            setRewards([...(rewards || []), ...response.message.slice(0, 6)]);
+            setRewards([...(rewards || []), ...response.message.slice(0, 20)]);
           } else {
-            setRewards(response.message.slice(0, 6));
+            setRewards(response.message.slice(0, 20));
           }
-          setHasMore(response.message.length === 7);
+          setHasMore(response.message.length === 21);
         } else {
           openErrorModal();
         }

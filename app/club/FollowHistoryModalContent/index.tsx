@@ -65,11 +65,11 @@ export default function FollowHistoryModalContent() {
         const response = await callTheServer({ endpoint, method: "GET" });
         if (response.status === 200) {
           if (skip) {
-            setHistory([...(history || []), ...response.message.slice(0, 6)]);
+            setHistory([...(history || []), ...response.message.slice(0, 20)]);
           } else {
-            setHistory(response.message.slice(0, 6));
+            setHistory(response.message.slice(0, 20));
           }
-          setHasMore(response.message.length === 7);
+          setHasMore(response.message.length === 21);
         }
       } catch (err) {}
     },

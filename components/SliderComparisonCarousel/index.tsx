@@ -11,6 +11,7 @@ type Props = {
   compareImages: string[];
   currentDate: string;
   compareDate: string;
+  isPublicPage: boolean;
   isPublic: boolean;
   isSelf: boolean;
 };
@@ -20,6 +21,7 @@ export default function SliderComparisonCarousel({
   compareImages,
   currentDate,
   compareDate,
+  isPublicPage,
   isPublic,
   isSelf,
 }: Props) {
@@ -56,7 +58,7 @@ export default function SliderComparisonCarousel({
       >
         {slides}
       </Carousel>
-      {isSelf && <ContentPublicityIndicator isPublic={isPublic} position="bottom-left" showText />}
+      {!isPublicPage && isSelf && <ContentPublicityIndicator isPublic={isPublic} position="bottom-left" showText />}
     </Stack>
   );
 }

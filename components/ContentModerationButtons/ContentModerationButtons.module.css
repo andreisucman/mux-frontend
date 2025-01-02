@@ -4,3 +4,9 @@
   left: rem(16);
   gap: rem(12);
 }
+
+.relative {
+  position: relative;
+  top: unset;
+  left: unset;
+}

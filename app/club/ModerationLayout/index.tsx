@@ -6,6 +6,7 @@ import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
+import { diarySortItems, routineSortItems } from "@/data/sortItems";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
@@ -82,6 +83,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
           title={"Club"}
           hideTypeDropdown={showComponent !== "children"}
           pageType={pageType}
+          sortItems={diarySortItems}
           showReturn
         />
       ),
@@ -90,6 +92,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
           title={"Club"}
           hideTypeDropdown={showComponent !== "children"}
           pageType={pageType}
+          sortItems={routineSortItems}
           showReturn
         />
       ),

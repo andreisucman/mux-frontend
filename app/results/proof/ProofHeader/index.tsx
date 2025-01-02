@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import { createSpotlight } from "@mantine/spotlight";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import SearchButton from "@/components/SearchButton";
+import SortButton from "@/components/SortButton";
+import { proofSortItems } from "@/data/sortItems";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons, typeIcons } from "@/helpers/icons";
 import TitleDropdown from "../../TitleDropdown";
@@ -71,6 +73,7 @@ export default function ProofHeader({ showReturn, isDisabled, titles }: Props) {
         )}
         <TitleDropdown titles={titles} />
         <>
+          <SortButton sortItems={proofSortItems} isDisabled={typesDisabled} />
           <FilterDropdown
             data={availableTypes}
             icons={typesDisabled ? undefined : typeIcons}

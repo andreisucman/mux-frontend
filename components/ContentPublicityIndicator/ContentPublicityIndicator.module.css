@@ -3,8 +3,6 @@
   gap: rem(4);
   justify-content: space-between;
 
-  padding: 0 rem(4);
-
   position: absolute;
   top: rem(16);
   right: rem(16);

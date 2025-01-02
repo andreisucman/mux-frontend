@@ -1,3 +1,4 @@
+import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 import { FetchProofProps } from "./fetchProof";
 
@@ -7,6 +8,7 @@ export default async function fetchUsersProof({
   part,
   query,
   concern,
+  sort,
   skip,
   currentArrayLength,
 }: FetchProofProps) {
@@ -21,6 +23,10 @@ export default async function fetchUsersProof({
 
     if (type) {
       queryParams.push(`type=${encodeURIComponent(type)}`);
+    }
+
+    if (sort) {
+      queryParams.push(`sort=${encodeURIComponent(sort)}`);
     }
 
     if (part) {
@@ -49,5 +55,7 @@ export default async function fetchUsersProof({
     }
 
     return response.message;
-  } catch (err) {}
+  } catch (err) {
+    openErrorModal();
+  }
 }

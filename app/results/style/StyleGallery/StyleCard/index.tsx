@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { Image, Skeleton, Title } from "@mantine/core";
+import { Group, Image, Skeleton, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentModerationButtons from "@/components/ContentModerationButtons";
@@ -38,7 +38,6 @@ function StyleCard({
     createdAt,
     votes,
     _id: styleId,
-    userId,
     isPublic,
     userName,
     avatar,
@@ -87,7 +86,6 @@ function StyleCard({
         <CardMetaPanel
           name={userName}
           avatar={avatar}
-          userId={userId}
           formattedDate={formattedDate}
           bodyProgress={latestBodyScoreDifference}
           headProgress={latestHeadScoreDifference}

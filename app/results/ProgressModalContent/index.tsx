@@ -44,6 +44,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         compareImages={initialImages.map((imo) => imo.mainUrl.url || "") || []}
         compareDate={formattedInitialDate}
         currentDate={formattedCompareDate}
+        isPublicPage={!!isPublicPage}
         isPublic={isPublic}
         isSelf={isSelf}
       />

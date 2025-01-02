@@ -4,12 +4,13 @@ import callTheServer from "./callTheServer";
 type FetchDiaryRecordsProps = {
   userName?: string;
   type: string | null;
+  sort: string | null;
   currentArrayLength?: number;
   skip?: boolean;
 };
 
 const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
-  const { skip, userName, type, currentArrayLength } = props || {};
+  const { skip, userName, sort, type, currentArrayLength } = props || {};
   try {
     let endpoint = "getDiaryRecords";
 
@@ -20,6 +21,11 @@ const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
     if (skip && currentArrayLength) {
       parts.push(`skip=${currentArrayLength}`);
     }
+
+    if (sort) {
+      parts.push(`sort=${sort}`);
+    }
+
     if (type) {
       parts.push(`type=${type}`);
     }

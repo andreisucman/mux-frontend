@@ -30,28 +30,26 @@ export default function ResultsProof() {
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
+  const sort = searchParams.get("sort");
 
   const handleFetchProof = useCallback(
-    async ({ type, part, concern, currentArray, query, skip }: HandleFetchProofProps) => {
+    async ({ type, part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
       const data = await fetchUsersProof({
         concern,
         part,
         query,
+        sort,
         type,
         currentArrayLength: currentArray?.length || 0,
         skip,
       });
 
-      if (data) {
-        if (skip) {
-          setProof([...(currentArray || []), ...data.slice(0, 20)]);
-        } else {
-          setProof(data.slice(0, 20));
-        }
-        setHasMore(data.length === 21);
+      if (skip) {
+        setProof([...(currentArray || []), ...data.slice(0, 20)]);
       } else {
-        openErrorModal();
+        setProof(data.slice(0, 20));
       }
+      setHasMore(data.length === 21);
     },
     []
   );
@@ -59,8 +57,8 @@ export default function ResultsProof() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProof({ type, part, concern, query });
-  }, [status, type, part, concern, query]);
+    handleFetchProof({ type, part, sort, concern, query });
+  }, [status, type, part, sort, concern, query]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>

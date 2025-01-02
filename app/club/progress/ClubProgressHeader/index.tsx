@@ -6,9 +6,12 @@ import { modals } from "@mantine/modals";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
+import SortButton from "@/components/SortButton";
+import { progressSortItems } from "@/data/sortItems";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import ClubProgressFilterCardContent from "./ClubProgressFilterCardContent";
 import classes from "./ProgressHeader.module.css";
 
@@ -18,14 +21,6 @@ type Props = {
   showReturn?: boolean;
   userName?: string;
 };
-
-const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "about" },
-  { label: "Routines", value: "routines" },
-  { label: "Results", value: "progress" },
-  { label: "Diary", value: "diary" },
-  { label: "Answers", value: "answers" },
-];
 
 export default function ClubProgressHeader({ titles, userName, showReturn, isDisabled }: Props) {
   const router = useRouter();
@@ -71,6 +66,7 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
         </ActionIcon>
       )}
       <TitleDropdown titles={titles} />
+      <SortButton sortItems={progressSortItems} isDisabled={isDisabled} />
       <FilterButton
         onFilterClick={openFiltersCard}
         activeFiltersCount={paramsCount}

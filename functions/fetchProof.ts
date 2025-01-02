@@ -7,6 +7,7 @@ export type FetchProofProps = {
   part: string | null;
   query: string | null;
   concern: string | null;
+  sort: string | null;
   sex?: string | null;
   ageInterval?: string | null;
   ethnicity?: string | null;
