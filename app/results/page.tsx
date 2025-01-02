@@ -89,7 +89,7 @@ export default function ResultsProgress() {
                 handleContainerClick={handleContainerClick}
                 handleFetchProgress={handleFetchProgress}
                 setProgress={setProgress}
-                isSelfPage
+                isPublicPage={true}
               />
             ) : (
               <OverlayWithText text="No progress data" icon={<IconCircleOff className="icon" />} />

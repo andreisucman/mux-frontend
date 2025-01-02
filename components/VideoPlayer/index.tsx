@@ -8,7 +8,7 @@ import classes from "./VideoPlayer.module.css";
 
 type Props = {
   showDate?: boolean;
-  isStatic?: boolean;
+  isRelative?: boolean;
   url?: string;
   disabled?: boolean;
   thumbnail?: string;
@@ -20,7 +20,7 @@ type Props = {
 export default function VideoPlayer({
   url,
   showDate,
-  isStatic,
+  isRelative,
   thumbnail,
   createdAt,
   customStyles,
@@ -60,7 +60,7 @@ export default function VideoPlayer({
 
   return (
     <Skeleton
-      className={cn("skeleton", classes.skeleton, { [classes.static]: isStatic })}
+      className={cn("skeleton", classes.skeleton, { [classes.relative]: isRelative })}
       visible={!url}
       style={customStyles ? customStyles : {}}
     >

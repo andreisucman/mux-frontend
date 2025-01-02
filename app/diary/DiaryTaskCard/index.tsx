@@ -34,7 +34,7 @@ export default function DiaryTaskCard({ name, type, url, thumbnail, icon }: Diar
           url={url}
           thumbnail={thumbnail}
           createdAt={new Date().toISOString()}
-          isStatic
+          isRelative
         />
       );
     }

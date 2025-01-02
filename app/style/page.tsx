@@ -95,7 +95,7 @@ export default function AllStyle() {
           handleContainerClick={handleContainerClick}
           handleFetchStyles={handleFetchStyles}
           setStyles={setStyles}
-          isPublic
+          isPublicPage
           showMeta
         />
       ) : (

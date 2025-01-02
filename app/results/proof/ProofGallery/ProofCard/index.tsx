@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
-import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
+import ContentModerationButtons from "@/components/ContentModerationButtons";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -19,8 +19,7 @@ type Props = {
   isLite?: boolean;
   showFooter?: boolean;
   isPublicPage?: boolean;
-  showContentBlurType?: boolean;
-  showContentPublicity?: boolean;
+  showContentModerationButtons?: boolean;
   data: SimpleProofType;
   setProof?: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
   contentChildren?: React.ReactNode;
@@ -32,8 +31,7 @@ function ProofCard({
   isMobile,
   showFooter,
   isPublicPage,
-  showContentBlurType,
-  showContentPublicity,
+  showContentModerationButtons,
   contentChildren,
   setProof,
 }: Props) {
@@ -103,16 +101,19 @@ function ProofCard({
             showDate={false}
           />
         )}
-        {showContentBlurType && (
-          <ContentBlurTypeButton
-            contentId={proofId}
-            currentMain={mainUrl}
-            contentCategory={"proof"}
-            position="top-left"
-            setRecords={setProof}
-          />
+        {showContentModerationButtons && (
+          <>
+            <ContentModerationButtons
+              collectionKey="proof"
+              contentId={proofId}
+              currentMain={mainUrl}
+              setContent={setProof}
+              showBlur
+              showDelete
+            />
+            <ContentPublicityIndicator isPublic={isPublic} />
+          </>
         )}
-        {showContentPublicity && <ContentPublicityIndicator isPublic={isPublic} />}
       </Stack>
       {showFooter && (
         <ProofCardFooter

@@ -23,7 +23,6 @@ export default function AnalysisCarousel({ type }: Props) {
     concerns,
     potential,
     latestProgress,
-    latestStyleAnalysis,
     currentlyHigherThan,
     potentiallyHigherThan,
   } = userDetails || {};
@@ -32,7 +31,6 @@ export default function AnalysisCarousel({ type }: Props) {
 
   const progressRecord = latestProgress?.[type as "head"];
   const potentialRecord = potential?.[type as "head"];
-  const styleAnalysis = latestStyleAnalysis?.[type as "head"];
 
   const getSlides = useCallback(() => {
     const analysisCard = (
@@ -125,7 +123,7 @@ export default function AnalysisCarousel({ type }: Props) {
     type,
   ]);
 
-  const slides = useMemo(() => getSlides(), [progressRecord, styleAnalysis]);
+  const slides = useMemo(() => getSlides(), [progressRecord]);
 
   return (
     <Stack className={classes.container}>

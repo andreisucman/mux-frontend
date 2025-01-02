@@ -7,7 +7,7 @@ import classes from "./ImageCard.module.css";
 type Props = {
   image?: string;
   date?: string;
-  isStatic?: boolean;
+  isRelative?: boolean;
   showDate?: boolean;
   child?: React.ReactNode;
   datePosition?: "top-left" | "bottom-right";
@@ -19,7 +19,7 @@ export default function ImageCard({
   image,
   date,
   child,
-  isStatic,
+  isRelative,
   showDate,
   datePosition = "bottom-right",
   customStyles,
@@ -27,13 +27,13 @@ export default function ImageCard({
 }: Props) {
   return (
     <div
-      className={cn(classes.container, { [classes.static]: isStatic })}
+      className={cn(classes.container, { [classes.relative]: isRelative })}
       style={customStyles ? customStyles : {}}
       onClick={onClick}
     >
       <div className={classes.imageWrapper}>
         <Image
-          className={cn(classes.image, { [classes.static]: isStatic })}
+          className={cn(classes.image, { [classes.relative]: isRelative })}
           src={image || ""}
           width={300}
           height={400}

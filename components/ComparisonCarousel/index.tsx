@@ -63,7 +63,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
 
     const newSlides = objects.map((object, index) => (
       <Carousel.Slide key={index} onClick={handleClickCarousel}>
-        <ImageCard image={object.image} datePosition="top-left" showDate isStatic />
+        <ImageCard image={object.image} datePosition="top-left" showDate isRelative />
       </Carousel.Slide>
     ));
 
@@ -90,7 +90,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
           classNames={{
             viewport: classes.carouselViewport,
             root: classes.carouselRoot,
-            control: "carouselControl"
+            control: "carouselControl",
           }}
         >
           {slides}

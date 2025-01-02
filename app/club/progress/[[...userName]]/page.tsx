@@ -27,13 +27,15 @@ export default function ClubProgress(props: Props) {
   const userName = params?.userName?.[0];
 
   const searchParams = useSearchParams();
-  const { status } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
 
   const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
+
+  const isSelf = userName === userDetails?.name;
 
   const handleFetchProgress = useCallback(
     async ({ type, part, currentArray, position, userName, skip }: HandleFetchProgressProps) => {
@@ -86,6 +88,8 @@ export default function ClubProgress(props: Props) {
         <ProgressGallery
           progress={progress}
           hasMore={hasMore}
+          isPublicPage={false}
+          isSelf={isSelf}
           handleContainerClick={handleContainerClick}
           handleFetchProgress={handleFetchProgress}
           setProgress={setProgress}

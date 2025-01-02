@@ -11,23 +11,23 @@
   z-index: 2;
 }
 
-.topRight {
+.top-right {
   right: rem(16);
 }
 
-.topLeft {
+.top-left {
   right: unset;
   left: rem(16);
 }
 
-.bottomLeft {
+.bottom-left {
   right: unset;
   top: unset;
   bottom: rem(16);
   left: rem(16);
 }
 
-.bottomRight {
+.bottom-right {
   top: unset;
   bottom: rem(16);
 }

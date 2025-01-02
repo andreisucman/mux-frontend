@@ -21,24 +21,32 @@
   border-radius: var(--mantine-radius-lg);
 }
 
-.topRight {
+.top-right {
   top: rem(16);
   right: rem(16);
 }
 
-.topLeft {
+.top-left {
   top: rem(16);
   left: rem(16);
 }
 
-.bottomRight {
+.bottom-right {
   bottom: rem(16);
   right: rem(16);
 }
 
-.bottomLeft {
+.bottom-left {
   bottom: rem(16);
   left: rem(16);
+}
+
+.relative {
+  position: relative;
+  top: unset;
+  bottom: unset;
+  right: unset;
+  left: unset;
 }
 
 .content {

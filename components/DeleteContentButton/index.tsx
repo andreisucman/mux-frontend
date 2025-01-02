@@ -1,0 +1,63 @@
+import React, { useCallback } from "react";
+import { IconTrash } from "@tabler/icons-react";
+import cn from "classnames";
+import { ActionIcon } from "@mantine/core";
+import callTheServer from "@/functions/callTheServer";
+import classes from "./DeleteContentButton.module.css";
+
+type Props = {
+  contentId: string;
+  collectionKey: "progress" | "style" | "proof" | "diary" | "about";
+  position?: "top-right" | "top-left";
+  isRelative?: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setContent?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+};
+
+export default function DeleteContentButton({
+  collectionKey,
+  position = "top-right",
+  isRelative,
+  isLoading,
+  isDisabled,
+  contentId,
+  setContent,
+  setIsLoading,
+}: Props) {
+  const deleteContent = useCallback(async () => {
+    try {
+      if (isLoading) return;
+      setIsLoading(true);
+
+      const response = await callTheServer({
+        endpoint: "deleteContent",
+        method: "POST",
+        body: { contentId, collectionKey },
+      });
+
+      if (response.status === 200) {
+        if (setContent) setContent((prev) => (prev || []).filter((i) => i._id !== contentId));
+      }
+    } catch (err) {
+    } finally {
+      setIsLoading(false);
+    }
+  }, [collectionKey, contentId]);
+
+  return (
+    <ActionIcon
+      disabled={isDisabled}
+      loading={isLoading}
+      variant="default"
+      onClick={deleteContent}
+      className={cn(classes.container, {
+        [classes.relative]: isRelative,
+        [classes[position]]: true,
+      })}
+    >
+      <IconTrash className="icon" />
+    </ActionIcon>
+  );
+}

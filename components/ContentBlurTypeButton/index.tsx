@@ -1,16 +1,15 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { IconBlur } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Checkbox, Menu, Stack } from "@mantine/core";
+import { ActionIcon, Checkbox, Menu } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import callTheServer from "@/functions/callTheServer";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { BlurredUrlType } from "@/types/global";
-import ProgressLoadingOverlay from "../ProgressLoadingOverlay";
 import classes from "./ContentBlurTypeButton.module.css";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 type HandleUpdateRecordType = {
   contentId: string;
@@ -18,9 +17,13 @@ type HandleUpdateRecordType = {
 };
 
 type Props = {
-  hash?: string;
   contentId: string;
+  hash?: string;
   position?: "top-right" | "bottom-right" | "top-left" | "bottom-left";
+  isRelative?: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   currentMain: BlurredUrlType;
   contentCategory: "progress" | "proof" | "style";
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
@@ -35,18 +38,20 @@ const displayTypes = [
 ];
 
 export default function ContentBlurTypeButton({
-  contentId,
-  position = "top-right",
   hash,
+  contentId,
+  isLoading,
+  isDisabled,
+  position = "top-right",
+  isRelative,
   currentMain,
   contentCategory,
   setRecords,
+  setIsLoading,
   onComplete,
   customStyles,
 }: Props) {
   const { blurType, setBlurType } = useContext(BlurChoicesContext);
-  const [isBlurLoading, setIsBlurLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [selectedDisplayType, setSelectedDisplayType] = useState<{
     label: string;
     value: string;
@@ -55,7 +60,7 @@ export default function ContentBlurTypeButton({
 
   const pollBlurProgressStatus = useCallback(async (hash: string, blurType: BlurTypeEnum) => {
     try {
-      setIsBlurLoading(true);
+      setIsLoading(true);
       const response = await callTheServer({
         endpoint: "checkVideoBlurStatus",
         method: "POST",
@@ -71,7 +76,7 @@ export default function ContentBlurTypeButton({
         const { progress, isRunning } = response.message;
 
         if (isRunning) {
-          setProgress(progress);
+          // setProgress(progress);
         } else {
           handleBlurComplete(response.message);
         }
@@ -83,8 +88,8 @@ export default function ContentBlurTypeButton({
 
   const handleBlurError = useCallback(
     (hash: string, error: string) => {
-      setProgress(0);
-      setIsBlurLoading(false);
+      // setProgress(0);
+      setIsLoading(false);
       clearInterval(intervalRef.current || undefined);
       saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
       openErrorModal({ description: error });
@@ -106,8 +111,8 @@ export default function ContentBlurTypeButton({
 
   const handleBlurComplete = useCallback(
     (message: { [key: string]: any }) => {
-      setIsBlurLoading(false);
-      setProgress(0);
+      setIsLoading(false);
+      // setProgress(0);
       clearInterval(intervalRef.current || undefined);
       saveToLocalStorage("blurAnalyses", { [message.hash]: false }, "add");
       handleUpdateRecord({ contentId, updateObject: message });
@@ -120,7 +125,7 @@ export default function ContentBlurTypeButton({
       const relevantDisplayType = displayTypes.find((obj) => obj.value === blurType);
       if (!relevantDisplayType) return;
 
-      setIsBlurLoading(true);
+      setIsLoading(true);
       setSelectedDisplayType(relevantDisplayType);
       setBlurType(blurType);
 
@@ -139,14 +144,14 @@ export default function ContentBlurTypeButton({
               contentId,
               ...response.message,
             });
-            setIsBlurLoading(false);
+            setIsLoading(false);
           } else if (hash) {
             saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
             intervalRef.current = setInterval(() => pollBlurProgressStatus(hash, blurType), 3000);
           }
         }
       } catch (err) {
-        setIsBlurLoading(false);
+        setIsLoading(false);
         console.error("Error in handleSelect: ", err);
       } finally {
         modals.closeAll();
@@ -187,7 +192,7 @@ export default function ContentBlurTypeButton({
       if (isLoading) {
         intervalRef.current = setInterval(() => pollBlurProgressStatus(hash, blurType), 3000);
 
-        setIsBlurLoading(isLoading);
+        setIsLoading(isLoading);
       }
     }
 
@@ -197,35 +202,31 @@ export default function ContentBlurTypeButton({
   }, [hash, blurType]);
 
   return (
-    <Stack className={classes.container}>
-      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress}/>
-      <Menu
-        trigger="click"
-        withinPortal={false}
-        trapFocus={false}
-        classNames={{ dropdown: classes.dropdown }}
-      >
-        <Menu.Target>
-          <ActionIcon
-            variant="default"
-            disabled={isBlurLoading}
-            className={cn(classes.target, {
-              [classes.topRight]: position === "top-right",
-              [classes.topLeft]: position === "top-left",
-              [classes.bottomRight]: position === "bottom-right",
-              [classes.bottomLeft]: position === "bottom-left",
-            })}
-            style={customStyles || {}}
-          >
-            <IconBlur className="icon" />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          {items.map((item, i) => (
-            <Menu.Item key={i}>{item}</Menu.Item>
-          ))}
-        </Menu.Dropdown>
-      </Menu>
-    </Stack>
+    <Menu
+      trigger="click"
+      withinPortal={false}
+      trapFocus={false}
+      classNames={{ dropdown: classes.dropdown }}
+    >
+      <Menu.Target>
+        <ActionIcon
+          variant="default"
+          loading={isLoading}
+          disabled={isDisabled}
+          className={cn(classes.target, {
+            [classes[position]]: true,
+            [classes.relative]: isRelative,
+          })}
+          style={customStyles || {}}
+        >
+          <IconBlur className="icon" />
+        </ActionIcon>
+      </Menu.Target>
+      <Menu.Dropdown>
+        {items.map((item, i) => (
+          <Menu.Item key={i}>{item}</Menu.Item>
+        ))}
+      </Menu.Dropdown>
+    </Menu>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import NextImage from "next/image";
 import { Image, rem, Stack, Text } from "@mantine/core";
 import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
@@ -17,6 +17,8 @@ export default function ProofDisplayContainer({
   existingProofRecord,
   setExistingProofRecord,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { contentType, createdAt, hash, _id, mainUrl, isPublic, mainThumbnail } =
     existingProofRecord;
 
@@ -35,6 +37,9 @@ export default function ProofDisplayContainer({
       {createdAt && <Text className={classes.date}>{formattedDate}</Text>}{" "}
       <ContentBlurTypeButton
         contentId={_id}
+        isDisabled={isLoading}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
         hash={hash}
         contentCategory={"proof"}
         currentMain={mainUrl}
@@ -56,7 +61,7 @@ export default function ProofDisplayContainer({
           url={mainUrl.url}
           thumbnail={mainThumbnail.url}
           createdAt={createdAt}
-          isStatic
+          isRelative
         />
       )}
       <ContentPublicityIndicator isPublic={isPublic} position="bottom-right" />

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import GlowingButton from "../GlowingButton";
@@ -21,6 +22,9 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { userDetails } = useContext(UserContext);
+  const isSelf = record.userId === userDetails?._id;
+
   const {
     _id: styleId,
     compareMainUrl,
@@ -33,6 +37,7 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
     compareIcon,
     compareStyleName,
     votes,
+    isPublic,
     compareVotes,
   } = record;
 
@@ -57,6 +62,8 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
           compareImages={[compareMainUrl.url || ""]}
           compareDate={formattedCompareDate}
           currentDate={formattedCurrentDate}
+          isPublic={isPublic}
+          isSelf={isSelf}
         />
         {!hideVoting && (
           <StyleVoting

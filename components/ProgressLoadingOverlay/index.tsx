@@ -42,7 +42,6 @@ export default function ProgressLoadingOverlay({
     <LoadingOverlay
       visible={isLoading}
       style={customStyles ? customStyles : {}}
-      classNames={{ overlay: classes.overlay }}
       loaderProps={{
         children: (
           <Stack

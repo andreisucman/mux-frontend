@@ -44,7 +44,7 @@ export default function ConcernsSortCard({
           endpoint: "updateConcernStatus",
           method: "POST",
           body: {
-            key: updatedItem.key,
+            name: updatedItem.name,
             part: updatedItem.part,
             isDisabled: updatedItem.isDisabled,
           },

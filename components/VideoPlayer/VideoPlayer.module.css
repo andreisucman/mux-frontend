@@ -9,8 +9,9 @@
   }
 }
 
-.static {
-  position: static;
+.relative {
+  position: relative;
+  inset: unset;
 }
 
 .playButton {

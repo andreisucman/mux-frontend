@@ -1,0 +1,6 @@
+.container {
+  position: absolute;
+  top: rem(16);
+  left: rem(16);
+  gap: rem(12);
+}

@@ -37,7 +37,7 @@ export default function AcceptIndexPage() {
       setIsLoading(true);
 
       if (!userId) {
-        const fingerprint = await getBrowserFingerprint();
+        const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
 
         const response = await callTheServer({
           endpoint: "startTheFlow",
@@ -55,7 +55,7 @@ export default function AcceptIndexPage() {
             setIsLoading(false);
             return;
           }
-          
+
           const { sex, ...otherData } = response.message;
 
           setUserDetails((prev: UserDataType) => ({

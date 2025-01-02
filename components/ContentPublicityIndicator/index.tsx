@@ -6,28 +6,26 @@ import classes from "./ContentPublicityIndicator.module.css";
 
 type Props = {
   isPublic: boolean;
+  showText?: boolean;
   position?: "top-right" | "bottom-right" | "top-left" | "bottom-left";
 };
 
-function ContentPublicityIndicator({ isPublic, position = "top-right" }: Props) {
+function ContentPublicityIndicator({ showText, isPublic, position = "top-right" }: Props) {
   const publicityText = isPublic ? "Public" : "Private";
   const publicityIcon = isPublic ? (
-    <IconLockOpen className="icon icon__small" />
+    <IconLockOpen className="icon" />
   ) : (
-    <IconLock className="icon icon__small" />
+    <IconLock className="icon" />
   );
 
   return (
     <Group
       className={cn(classes.container, {
-        [classes.topRight]: position === "top-right",
-        [classes.topLeft]: position === "top-left",
-        [classes.bottomRight]: position === "bottom-right",
-        [classes.bottomLeft]: position === "bottom-left",
+        [classes[position]]: true,
       })}
     >
       {publicityIcon}
-      {publicityText}
+      {showText && publicityText}
     </Group>
   );
 }

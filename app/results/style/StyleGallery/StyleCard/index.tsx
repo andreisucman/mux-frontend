@@ -1,9 +1,8 @@
 import React, { memo, useMemo } from "react";
 import { Image, Skeleton, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
 import CardMetaPanel from "@/components/CardMetaPanel";
-import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
+import ContentModerationButtons from "@/components/ContentModerationButtons";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import VotesCountIndicator from "@/components/VotesCountIndicator";
@@ -16,8 +15,7 @@ type Props = {
   data: SimpleStyleType;
   showMeta?: boolean;
   showDate?: boolean;
-  showBlur?: boolean;
-  showPublicity?: boolean;
+  isSelf?: boolean;
   showVotes?: boolean;
   handleContainerClick: (data: any, showTrackButton: boolean) => void;
   setStyles: React.Dispatch<React.SetStateAction<SimpleStyleType[] | undefined>>;
@@ -26,10 +24,9 @@ type Props = {
 function StyleCard({
   data,
   showMeta,
-  showBlur,
+  isSelf,
   showDate,
   showVotes,
-  showPublicity,
   showTrackButton,
   handleContainerClick,
   setStyles,
@@ -62,17 +59,20 @@ function StyleCard({
         {title}
       </Title>
       <div className={classes.imageWrapper}>
-        {showBlur && (
-          <ContentBlurTypeButton
-            contentId={styleId}
-            currentMain={mainUrl}
-            contentCategory={"style"}
-            position="top-left"
-            setRecords={setStyles}
-          />
+        {isSelf && (
+          <>
+            <ContentModerationButtons
+              collectionKey="style"
+              contentId={styleId}
+              setContent={setStyles}
+              currentMain={mainUrl}
+              showBlur
+              showDelete
+            />
+            <ContentPublicityIndicator isPublic={isPublic} />
+          </>
         )}
         {showDate && <span className={classes.date}>{formattedDate}</span>}
-        {showPublicity && <ContentPublicityIndicator isPublic={isPublic} />}
         <Image
           className={classes.image}
           src={mainUrl.url || "/"}

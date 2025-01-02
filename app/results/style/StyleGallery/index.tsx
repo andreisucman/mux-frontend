@@ -21,7 +21,7 @@ type Props = {
   hasMore: boolean;
   columns?: number;
   isSelf?: boolean;
-  isPublic?: boolean;
+  isPublicPage?: boolean;
   showMeta?: boolean;
   styles?: SimpleStyleType[];
   handleContainerClick: (data: any, showTrackButton: boolean) => void;
@@ -35,7 +35,7 @@ export default function StyleGallery({
   columns,
   showMeta,
   isSelf,
-  isPublic,
+  isPublicPage,
   userName,
   setStyles,
   handleContainerClick,
@@ -57,11 +57,10 @@ export default function StyleGallery({
         showMeta={showMeta}
         setStyles={setStyles}
         handleContainerClick={handleContainerClick}
-        showTrackButton={!!isPublic}
-        showBlur={!isPublic && !!isSelf}
-        showDate={!isPublic}
-        showPublicity={!isPublic && !!isSelf}
-        showVotes={!isPublic}
+        showTrackButton={!!isPublicPage}
+        showDate={!isPublicPage}
+        showVotes={!isPublicPage}
+        isSelf={isSelf}
       />
     ),
     [styleName, appliedBlurType]

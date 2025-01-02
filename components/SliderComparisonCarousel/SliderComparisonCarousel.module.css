@@ -1,18 +1,13 @@
 .container {
   position: relative;
   flex: 1;
+  gap: 0;
 }
 
-.date {
-  position: absolute;
-  top: rem(16);
-  right: rem(16);
+.dates {
+  padding: rem(16);
+  justify-content: space-between;
   z-index: 1;
-  font-size: var(--mantine-font-size-sm);
-}
-
-.lastDate {
-  left: rem(16);
 }
 
 .control {
@@ -22,10 +17,11 @@
 }
 
 .controls {
-  right: rem(8);
+  right: rem(16);
   gap: rem(8);
   left: unset;
   justify-content: flex-end;
+  padding: rem(16) 0;
 }
 
 .slide {

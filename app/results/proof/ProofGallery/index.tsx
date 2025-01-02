@@ -57,8 +57,7 @@ export default function ProofGallery({
         isMobile={!!isMobile}
         setProof={setProof}
         isPublicPage={isPublicPage}
-        showContentBlurType={!isPublicPage && isSelf}
-        showContentPublicity={!isPublicPage && isSelf}
+        showContentModerationButtons={!isPublicPage && isSelf}
         showFooter={isPublicPage && !isSelf}
       />
     ),

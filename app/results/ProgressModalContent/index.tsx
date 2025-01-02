@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { SimpleBeforeAfterType } from "@/app/types";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
+import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import LineProgressIndicators from "../LineProgressIndicators";
@@ -16,10 +17,13 @@ type Props = {
 };
 
 export default function ProgressModalContent({ record, isPublicPage }: Props) {
+  const { userDetails } = useContext(UserContext);
+  const isSelf = record.userId === userDetails?._id;
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { userName, images, initialImages, updatedAt, createdAt, initialDate } = record;
+  const { userName, images, initialImages, updatedAt, createdAt, isPublic, initialDate } = record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
@@ -40,6 +44,8 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         compareImages={initialImages.map((imo) => imo.mainUrl.url || "") || []}
         compareDate={formattedInitialDate}
         currentDate={formattedCompareDate}
+        isPublic={isPublic}
+        isSelf={isSelf}
       />
       <LineProgressIndicators title="Progress" record={record} />
       {isPublicPage && (

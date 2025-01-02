@@ -19,7 +19,8 @@ interface HandleFetchProgressProps extends FetchProgressProps {
 
 type Props = {
   hasMore: boolean;
-  isSelfPage?: boolean;
+  isSelf?: boolean;
+  isPublicPage?: boolean;
   userName?: string;
   progress?: SimpleProgressType[];
   handleContainerClick: (data: any, showTrackButton: boolean) => void;
@@ -31,7 +32,8 @@ export default function ProgressGallery({
   progress,
   hasMore,
   userName,
-  isSelfPage,
+  isSelf,
+  isPublicPage,
   setProgress,
   handleContainerClick,
   handleFetchProgress,
@@ -50,12 +52,13 @@ export default function ProgressGallery({
       <ProgressCard
         data={props.data}
         key={props.index}
-        showTrackButton={!isSelfPage}
+        isSelf={isSelf}
+        isPublicPage={isPublicPage}
         setProgress={setProgress}
         handleContainerClick={handleContainerClick}
       />
     ),
-    [position, isSelfPage, appliedBlurType, typeof progress]
+    [position, isSelf, isPublicPage, appliedBlurType, typeof progress]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);

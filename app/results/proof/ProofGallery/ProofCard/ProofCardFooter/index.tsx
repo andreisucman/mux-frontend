@@ -8,7 +8,7 @@ type Props = {
   disclaimer?: React.ReactNode | string;
   metaPanel?: React.ReactNode;
   formattedDate?: string;
-  handleTrack?: () => Promise<void>;
+  handleTrack?: () => void;
 };
 
 export default function ProofCardFooter({

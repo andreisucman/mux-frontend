@@ -19,12 +19,8 @@ type Props = {
 
 export default function ProofModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
-  const { userDetails } = useContext(UserContext);
-  const { name } = userDetails || {};
 
   const { icon, createdAt, mainUrl, mainThumbnail, concern, taskName, userName } = record || {};
-
-  const isSelf = name === userName;
 
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
@@ -50,8 +46,8 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
           date={formattedDate}
           image={mainUrl.url}
           datePosition="bottom-right"
-          showDate={!isSelf}
-          isStatic
+          showDate
+          isRelative
         />
       ) : (
         <VideoPlayer
@@ -59,7 +55,7 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
           createdAt={createdAt}
           thumbnail={mainThumbnail.url}
           showDate
-          isStatic
+          isRelative
         />
       )}
       {isPublicPage && <ProofCardFooter handleTrack={handleRedirect} />}
