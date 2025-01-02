@@ -11,6 +11,7 @@ import {
   IconHandGrab,
   IconHandLoveYou,
   IconMessages,
+  IconMoodSpark,
   IconNotebook,
   IconScaleOutline,
   IconShoppingBag,
@@ -63,19 +64,28 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "See the progress diary of the club members.",
+    description: "Read and listen the progress diary of the club members.",
   },
   {
     icon: <IconEye className="icon icon__large" style={style} />,
-    description: "Check the personality, style and tips of the club members.",
+    description: "Check the personality, style, tips and social links of the club members.",
   },
   {
     icon: <IconBubbleText className="icon icon__large" style={style} />,
     description: "See the answers to FAQs of the club members.",
   },
   {
-    icon: <IconMessages className="icon icon__large" style={style} />,
-    description: "Discuss the style, tips, and progress of the club members with your advisor.",
+    icon: <IconMoodSpark className="icon icon__large" style={style} />,
+    description: "Access to the advisor coach to discuss style, tips, progress, and more.",
+  },
+  {
+    icon: <IconMoodSpark className="icon icon__large" style={style} />,
+    description: "Access to the improvement coach for personalized weekly routines and recipes.",
+  },
+  {
+    icon: <IconMoodSpark className="icon icon__large" style={style} />,
+    description:
+      "Access to the analyst coach for helping choose best products by your criteria and special consideration.",
   },
 ];
 
@@ -107,6 +117,6 @@ export const advisorCoachContent = [
   {
     icon: <IconHandLoveYou className="icon icon__large" style={style} />,
     description:
-      "Gives you an honest opinion about your style and product fit based on product images and your appearance",
+      "Tells if a product is a good fit for you based on the product images and your appearance",
   },
 ];

@@ -37,7 +37,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
   const handleClickCarousel = useCallback(() => {
     const modalTitle = getRedirectModalTitle({
       avatar,
-      redirectUrl: `/club/routines?id=${data.userId}`,
+      redirectUrl: `/club/routines/${data.userId}`,
       title: `${userName} - ${upperFirst(part)}`,
     });
 
@@ -99,7 +99,6 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
         <CardMetaPanel
           name={userName || ""}
           avatar={avatar}
-          userId={data.userId}
           formattedDate={formattedDate}
           headProgress={latestHeadScoreDifference}
           bodyProgress={latestBodyScoreDifference}

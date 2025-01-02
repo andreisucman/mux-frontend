@@ -8,7 +8,6 @@ import classes from "./CardMetaPanel.module.css";
 
 type Props = {
   avatar?: { [key: string]: any } | null;
-  userId: string;
   name: string | null;
   headProgress: number;
   bodyProgress: number;
@@ -18,7 +17,6 @@ type Props = {
 
 export default function CardMetaPanel({
   avatar,
-  userId,
   name,
   formattedDate,
   headProgress,
@@ -30,7 +28,7 @@ export default function CardMetaPanel({
       className={classes.container}
       style={customStyles ? customStyles : {}}
       component={Link}
-      href={`/club/about?id=${userId}`}
+      href={`/club/${name}`}
     >
       <Group className={classes.nameWrapper}>
         <AvatarComponent avatar={avatar} size="xs" />

@@ -68,7 +68,7 @@ export default function AllStyle() {
 
     const modalTitle = getRedirectModalTitle({
       avatar: data.avatar,
-      redirectUrl: `/club/about?id=${data.userId}`,
+      redirectUrl: `/club/${data.userName}`,
       title: `${data.userName} - ${titleText}`,
     });
 

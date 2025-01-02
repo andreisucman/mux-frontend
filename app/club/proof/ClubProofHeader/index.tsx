@@ -25,6 +25,7 @@ const clubPageTypeItems: { label: string; value: string }[] = [
   { label: "Routines", value: "routines" },
   { label: "Results", value: "proof" },
   { label: "Diary", value: "diary" },
+  { label: "Answers", value: "answers" },
 ];
 
 const [spotlightStore, proofSpotlight] = createSpotlight();

@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import FilterDropdown from "@/components/FilterDropdown";
 import { clubPageTypeItems, typeItems } from "@/components/PageHeader/data";
 import { useRouter } from "@/helpers/custom-router";
@@ -27,6 +28,7 @@ export default function ClubHeader({
   pageType,
   onSelect,
 }: Props) {
+  const isMobile = useMediaQuery("(max-width: 36em)");
   const router = useRouter();
   const params = useParams();
   const userName = Array.isArray(params?.userName) ? params?.userName?.[0] : params.userName;
@@ -56,15 +58,17 @@ export default function ClubHeader({
           {title}
         </Title>
       </Group>
-      <FilterDropdown
-        icons={pageTypeIcons}
-        data={clubPageTypeItems}
-        selectedValue={pageType}
-        onSelect={handleRedirect}
-        placeholder="Select page"
-        filterType="page"
-        isDisabled={isDisabled}
-      />
+      {isMobile && (
+        <FilterDropdown
+          icons={pageTypeIcons}
+          data={clubPageTypeItems}
+          selectedValue={pageType}
+          onSelect={handleRedirect}
+          placeholder="Select page"
+          filterType="page"
+          isDisabled={isDisabled}
+        />
+      )}
       {!hideTypeDropdown && (
         <FilterDropdown
           icons={typeIcons}
@@ -75,6 +79,17 @@ export default function ClubHeader({
           placeholder="Select type"
           isDisabled={isDisabled}
           addToQuery
+        />
+      )}
+      {!isMobile && (
+        <FilterDropdown
+          icons={pageTypeIcons}
+          data={clubPageTypeItems}
+          selectedValue={pageType}
+          onSelect={handleRedirect}
+          placeholder="Select page"
+          filterType="page"
+          isDisabled={isDisabled}
         />
       )}
     </Group>

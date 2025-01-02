@@ -116,7 +116,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
   const [linkClicked, setLinkClicked] = useState("");
   const year = new Date().getFullYear();
 
-  const { _id: userId } = userDetails || {};
+  const { _id: userId, name } = userDetails || {};
 
   const handleClickLink = useCallback(
     (path: string) => {
@@ -149,8 +149,8 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           icon: <IconSocial stroke={1.25} className="icon" />,
           children: [
             { title: "Profile", path: "/club" },
-            { title: "About", path: `/club/about?id=${userId}` },
-            { title: "Routines", path: `/club/routines?id=${userId}` },
+            { title: "About", path: `/club/${name}` },
+            { title: "Routines", path: `/club/routines/${userId}` },
           ],
         });
       }
@@ -168,7 +168,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       icon: <IconSettings stroke={1.25} className="icon" />,
     });
     return finalNavigation;
-  }, [typeof userDetails?.club]);
+  }, [typeof userDetails?.club, name]);
 
   return (
     <Stack className={classes.container}>

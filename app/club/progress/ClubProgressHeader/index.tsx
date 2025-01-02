@@ -24,6 +24,7 @@ const clubPageTypeItems: { label: string; value: string }[] = [
   { label: "Routines", value: "routines" },
   { label: "Results", value: "progress" },
   { label: "Diary", value: "diary" },
+  { label: "Answers", value: "answers" },
 ];
 
 export default function ClubProgressHeader({ titles, userName, showReturn, isDisabled }: Props) {

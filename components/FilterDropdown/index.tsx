@@ -100,7 +100,11 @@ export default function FilterDropdown({
       leftSectionWidth={40}
       withScrollArea={false}
       style={customStyles ? customStyles : {}}
-      classNames={{ dropdown: classes.dropdown, option: classes.option }}
+      classNames={{
+        dropdown: classes.dropdown,
+        option: classes.option,
+        section: classes.section,
+      }}
       allowDeselect={allowDeselect}
     />
   );

@@ -17,6 +17,7 @@ const clubPageTypeItems: { label: string; value: string }[] = [
   { label: "Routines", value: "routines" },
   { label: "Results", value: "style" },
   { label: "Diary", value: "diary" },
+  { label: "Answers", value: "answers" },
 ];
 
 type Props = {
