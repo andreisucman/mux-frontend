@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Group, Popover, Progress, Stack, Text, Tooltip } from "@mantine/core";
+import { Group, Popover, Progress, Text, Tooltip } from "@mantine/core";
 import { getLineIndicatorColor } from "@/helpers/utils";
 import classes from "./StyleIndicators.module.css";
 
@@ -15,8 +15,7 @@ function IndicatorRow({ name, values, icon }: Props) {
       <Tooltip label={name}>
         <Progress.Root size={18} className={classes.indicatorRowProgressRoot}>
           {values.map((value, index) => {
-            const color =
-              value > 0 ? getLineIndicatorColor(value) : "var(--mantine-color-gray-3)";
+            const color = value > 0 ? getLineIndicatorColor(value) : "var(--mantine-color-gray-3)";
             return (
               <Progress.Section value={(value || 0) * 10} key={index} color={color}>
                 <Progress.Label>{value || 0}</Progress.Label>

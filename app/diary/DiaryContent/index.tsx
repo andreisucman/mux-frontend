@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Skeleton, Stack, Title } from "@mantine/core";
+import DeleteContentButton from "@/components/DeleteContentButton";
 import OverlayWithText from "@/components/OverlayWithText";
 import { formatDate } from "@/helpers/formatDate";
 import { TypeEnum } from "@/types/global";
@@ -18,9 +19,9 @@ const List = dynamic(() => import("masonic").then((mod) => mod.List), {
 type Props = {
   hasMore: boolean;
   diaryRecords?: DiaryRecordType[];
-  isLoading?: boolean;
   timeZone?: string;
   openValue: string | null;
+  setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryRecordType[] | undefined>>;
   setOpenValue: React.Dispatch<React.SetStateAction<string | null>>;
   handleFetchDiaryRecords: () => void;
 };
@@ -28,12 +29,13 @@ type Props = {
 export default function DiaryContent({
   hasMore,
   diaryRecords,
-  isLoading,
   openValue,
   timeZone,
   setOpenValue,
   handleFetchDiaryRecords,
+  setDiaryRecords,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "head";
 
@@ -41,8 +43,17 @@ export default function DiaryContent({
     (props: any) => {
       const formattedDate = useMemo(() => formatDate({ date: props.data.createdAt }), []);
       return (
-        <Accordion.Item value={props.data._id}>
+        <Accordion.Item value={props.data._id || null}>
           <Accordion.Control>
+            <DeleteContentButton
+              collectionKey="diary"
+              contentId={props.data._id}
+              isLoading={isLoading}
+              isDisabled={isLoading}
+              setContent={setDiaryRecords}
+              setIsLoading={setIsLoading}
+              isRelative
+            />
             <Title order={5} className={classes.title}>
               <IconNote className={`${classes.icon} icon`} /> {formattedDate}
             </Title>
@@ -58,7 +69,7 @@ export default function DiaryContent({
         </Accordion.Item>
       );
     },
-    [type, isLoading, diaryRecords]
+    [type, diaryRecords]
   );
 
   return (

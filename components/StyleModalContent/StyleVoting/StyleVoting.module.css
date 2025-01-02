@@ -4,8 +4,8 @@
   left: 0;
   bottom: 0;
 
-  justify-content: space-between;
-  gap: rem(8);
-  padding: rem(16);
+  justify-content: center;
+  gap: rem(24);
+  margin-bottom: rem(16);
   width: 100%;
 }

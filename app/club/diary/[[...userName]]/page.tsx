@@ -23,12 +23,14 @@ export default function DiaryPage(props: Props) {
   const [hasMore, setHasMore] = useState(false);
 
   const type = searchParams.get("type") || TypeEnum.HEAD;
+  const sort = searchParams.get("sort") || "createdAt";
 
   const handleFetchDiaryRecords = useCallback(async () => {
     try {
       const response = await fetchDiaryRecords({
         userName,
         type,
+        sort,
         currentArrayLength: diaryRecords?.length,
         skip: hasMore,
       });
@@ -43,13 +45,13 @@ export default function DiaryPage(props: Props) {
     } catch (err) {
       openErrorModal();
     }
-  }, [diaryRecords, hasMore, type]);
+  }, [diaryRecords, sort, hasMore, type]);
 
   useEffect(() => {
     if (!userName) return;
 
     handleFetchDiaryRecords();
-  }, [type, userName]);
+  }, [type, sort, userName]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="diary">

@@ -32,15 +32,15 @@ export default function DeleteContentButton({
       if (isLoading) return;
       setIsLoading(true);
 
-      const response = await callTheServer({
-        endpoint: "deleteContent",
-        method: "POST",
-        body: { contentId, collectionKey },
-      });
-
-      if (response.status === 200) {
-        if (setContent) setContent((prev) => (prev || []).filter((i) => i._id !== contentId));
+      if (contentId !== "temp") {
+        await callTheServer({
+          endpoint: "deleteContent",
+          method: "POST",
+          body: { contentId, collectionKey },
+        });
       }
+
+      if (setContent) setContent((prev) => (prev || []).filter((i) => i._id !== contentId));
     } catch (err) {
     } finally {
       setIsLoading(false);

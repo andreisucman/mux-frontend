@@ -54,8 +54,7 @@ export default function AllStyle() {
           setStyles(styles.slice(0, 20));
         }
         setHasMore(styles.length === 21);
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     []
   );

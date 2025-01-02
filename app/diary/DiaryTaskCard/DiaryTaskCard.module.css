@@ -15,6 +15,7 @@
   gap: rem(4);
   padding: rem(8) rem(16);
   width: 100%;
+  flex-wrap: nowrap;
 }
 
 .title {
@@ -28,5 +29,6 @@
 
 .imageWrapper {
   flex:1;
+  width: 100%;
   background-color: alpha(var(--mantine-color-dark-5),0.5);
 }

@@ -22,6 +22,8 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log("recor", record);
+
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
 
@@ -66,18 +68,16 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
           isPublic={isPublic}
           isSelf={isSelf}
         />
-        {!hideVoting && (
-          <StyleVoting
-            compareIcon={compareIcon}
-            compareVotes={compareVotes}
-            compareName={compareStyleName}
-            votes={votes}
-            styleName={styleName}
-            styleIcon={styleIcon}
-            styleId={styleId}
-            setRecords={setRecords}
-          />
-        )}
+        <StyleVoting
+          compareIcon={compareIcon}
+          compareVotes={compareVotes}
+          compareName={compareStyleName}
+          votes={votes}
+          styleName={styleName}
+          styleIcon={styleIcon}
+          styleId={styleId}
+          setRecords={setRecords}
+        />
       </Stack>
       <StyleIndicators title="Analysis" record={record as SimpleStyleType} />
       {isPublicPage && (

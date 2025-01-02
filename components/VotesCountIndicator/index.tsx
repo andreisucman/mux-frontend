@@ -1,5 +1,5 @@
 import React from "react";
-import { IconCaretUp } from "@tabler/icons-react";
+import { IconThumbUp } from "@tabler/icons-react";
 import cn from "classnames";
 import { Group } from "@mantine/core";
 import classes from "./VotesCountIndicator.module.css";
@@ -23,7 +23,7 @@ export default function VotesCountIndicator({
       })}
       style={customStyles ? customStyles : {}}
     >
-      <IconCaretUp className={`icon ${classes.icon}`} />
+      <IconThumbUp className={`icon ${classes.icon}`} />
       <span className={classes.votes}>{votes}</span>
     </Group>
   );

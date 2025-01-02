@@ -1,10 +1,13 @@
 .container {
+  cursor: default;
+  pointer-events: none;
+  
   position: absolute;
 
   border-radius: var(--mantine-radius-lg);
   padding: 0 rem(12) 0 rem(8);
   min-height: rem(32);
-  background-color: alpha(var(--mantine-color-dark-6),0.5);
+  background-color: alpha(var(--mantine-color-dark-6), 0.5);
   width: fit-content;
   gap: rem(4);
 }
@@ -20,19 +23,13 @@
 }
 
 .icon {
-  color: var(--mantine-color-green-7);
-  fill: var(--mantine-color-green-7);
-  width: rem(32);
-  height: rem(32);
-
-  &:hover {
-    color: var(--mantine-color-green-6);
-    fill: var(--mantine-color-green-6);
-  }
+  color: var(--mantine-color-gray-3);
+  width: rem(24);
+  height: rem(24);
 }
 
 .votes {
   cursor: default;
   font-weight: 600;
-  font-size: rem(32);
+  font-size: rem(24);
 }

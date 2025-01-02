@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import { Group, Image, Skeleton, Title } from "@mantine/core";
+import { Image, Skeleton, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentModerationButtons from "@/components/ContentModerationButtons";

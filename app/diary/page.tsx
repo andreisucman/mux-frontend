@@ -30,7 +30,7 @@ export default function DiaryPage() {
   const [disableAddNew, setDisableAddNew] = useState(true);
 
   const type = searchParams.get("type") || TypeEnum.HEAD;
-  const sort = searchParams.get("sort");
+  const sort = searchParams.get("sort") || "createdAt";
 
   const { timeZone } = userDetails || {};
 
@@ -98,7 +98,7 @@ export default function DiaryPage() {
         openErrorModal({ description: response.error });
         return;
       }
-      setDiaryRecords((prev) => [...(prev || []), response.message.slice(0, 20)]);
+      setDiaryRecords((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
 
       if (response.message.length > 0) {
         setOpenValue(response.message[0]._id);
@@ -141,9 +141,9 @@ export default function DiaryPage() {
         <DiaryContent
           hasMore={hasMore}
           diaryRecords={diaryRecords}
-          isLoading={isLoading}
           openValue={openValue}
           timeZone={timeZone}
+          setDiaryRecords={setDiaryRecords}
           setOpenValue={setOpenValue}
           handleFetchDiaryRecords={handleFetchDiaryRecords}
         />
