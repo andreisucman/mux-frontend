@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { rem, Stack, Text, Title } from "@mantine/core";
 
 type Props = {
@@ -10,70 +11,72 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Privacy Policy</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: September 12, 2024
+        Last updated: January 3, 2025
       </Text>
       <Stack>
         <Text mt={0}>
-          {`Purrma LLC, operating as muxout.com ("we," "us," or "our"), is
-          committed to protecting your personal information. This privacy policy
-          explains how we collect, use, and share your data when you use our
-          website ("Site") and services ("Services"). By using our Site or
-          Services, you agree to our privacy practices outlined here. If you
-          disagree with our policies, please refrain from using our Site or
-          Services. You may contact us at info@muxout.com with any questions.`}
+          This privacy policy explains Bettermax LLC, operating as muxout.com ("we," "us," or "our")
+          uses and shares your data when you use our website ("Site") and services ("Services").
+        </Text>
+        <Text>
+          By using our Site or Services, you agree to our privacy practices outlined here. If you
+          disagree with our policies, please refrain from using our Site or Services. You may
+          contact us at info@muxout.com with any questions.
         </Text>
 
-        <Title order={2}>Summary of Key Points</Title>
+        <Title order={2}>SUMMARY</Title>
         <Text>
           This summary highlights key aspects of our privacy policy. For a detailed understanding,
-          please refer to the full policy or navigate through specific sections.
+          please navigate through specific sections.
         </Text>
 
         <Title order={4}>What personal information do we collect?</Title>
         <Text>
           We may collect information such as your name, email, gender, age, location (city and
-          country), images and videos of your hea and body, and any other information you
-          voluntarily provide when using our Services.
+          country), images and videos of your body, audio recordings of your voice, and any other
+          information you voluntarily provide when using our Services.
         </Text>
 
         <Title order={4}>Do we process any sensitive personal information?</Title>
         <Text>
-          Yes, we collect and process sensitive information, such as images and videos of your head
-          and body, which are used for AI-driven analysis of your appearance. This data is processed
-          only with your explicit consent or in compliance with applicable law.
+          Yes, we collect and process sensitive information, such as your images, videos and voice,
+          which are used for AI-driven analysis of your appearance and if explicitely enabled by
+          you, for the purpose of sharing this data with other users of the site. Your data is
+          processed only with your explicit consent or in compliance with applicable law.
         </Text>
 
-        <Title order={4}>Do we receive any information from third parties?</Title>
+        <Title order={4}>Do we share any information from third parties?</Title>
         <Text>
-          We do not receive personal information from third-party sources, except as necessary for
-          payment processing (e.g., from Stripe).
+          We may share certain personal information with third-party service providers as necessary
+          to deliver the Services to you. This may include, but is not limited to, payment
+          processing, data management, and data storage.
         </Text>
 
         <Title order={4}>How do we process your information?</Title>
         <ul>
-          <li>Provide personalized recommendations and tasks based on your images and videos.</li>
+          <li>Provide appearance analysis based on your images.</li>
+          <li>Provide personalized recommendations based on your images and videos.</li>
           <li>
-            {`Facilitate interaction through our "Club" feature, allowing members
-            to follow and view images an videos of other users`}
-            .
+            If you choose to participate in our revenue sharing program (the Club) we display your
+            graphical, audio and textual information to other suitable users as outline in the{" "}
+            <Link href="/legal/club">{"Club's"} terms of service</Link>.
           </li>
-          <li>Process subscription payments and transfers for club members.</li>
+          <li>Process subscription, rewards, and revenue share payments (for the Club members).</li>
           <li>Suggest relevant third-party products based on your data.</li>
           <li>Communicate with you and improve our Services.</li>
         </ul>
 
         <Title order={4}>When and with whom do we share your information?</Title>
         <ul>
-          <li>Stripe for payment processing.</li>
+          <li>With our payment processors when you subscribe to our plans</li>
           <li>
-            {`Users who peek (follow) you on the platform, if you opt into the "Club"
-            feature, enabling them to view your images and videos`}
-            .
+            With other eligible members of the Club if you opt into our revenue sharing program as
+            outline by the <Link href="/legal/club">{"Club's"} terms of service</Link>
           </li>
-          <li>Third-party service providers for data analysis, hosting, and marketing.</li>
+          <li>With our third-party service providers for data analysis, hosting, and marketing.</li>
           <li>
-            Affiliates, business partners, and legal authorities, if required by law or as part of a
-            business transaction (e.g., a merger).
+            With affiliates, business partners, and legal authorities, if required by law or as part
+            of a business transaction (e.g., a merger).
           </li>
         </ul>
 
@@ -111,8 +114,21 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>The personal information we collect may include:</Text>
         <ul>
           <li>
-            Photographs and Videos: Images and videos of your head and body, particularly in
-            underwear, which are uploaded to our platform for appearance analysis using AI.
+            Images: Images of your body, which are uploaded to our platform for appearance analysis
+            using AI and as your content Contributions for the purpose of completing the tasks.
+          </li>
+          <li>
+            Videoa: Videos of your body, uploaded as your content Contributions for the purpose of
+            completing the tasks.
+          </li>
+          <li>
+            Audio: Recordings of your voice, uploaded as your content Contributions for the purpose
+            of creating progress diary records.
+          </li>
+          <li>
+            Text: Textual content, uploaded as your content Contributions for the purpose of
+            personalizing tasks and creating your public Club profile when you opt into our revenue
+            sharing program (the Club).
           </li>
         </ul>
         <Title>Sensitive Information</Title>
@@ -122,23 +138,21 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            Biometric Data: Data from the images or videos you upload that may be classified as
-            biometric under certain laws. This data is used to analyze your appearance and provide
-            personalized tasks for improvement.
+            Biometric Data: Data from the images, videos and audio files you upload that may be
+            classified as biometric under certain laws. This data is used to analyze your appearance
+            and enable you to access the Services of the site.
           </li>
         </ul>
         <Title>Payment Data</Title>
         <Text>
-          {`If you make a purchase or subscribe to services, we collect
-          payment-related information, such as your payment card details (e.g.,
-          card number, expiration date, and security code) as necessary to
-          process the transaction. Payment processing is handled by Stripe, and
-          you can view Stripe's privacy policy here: Stripe Privacy Notice.`}
+          If you subscribe to services, we collect payment-related information, such as your payment
+          card details (e.g., card number, expiration date, and security code) as necessary to
+          process the transaction.
         </Text>
         <Title>Information Automatically Collected</Title>
         <Text>
           We automatically collect certain information when you interact with our services. This
-          information doesn’t identify you directly but helps us maintain the functionality,
+          information {"doesn't"} identify you directly but helps us maintain the functionality,
           security, and performance of our website.
         </Text>
         <Text>
@@ -146,32 +160,31 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           interactions with our services. This may include:
         </Text>
         <ul>
-          <li>IP Address: Your unique internet protocol address.</li>
+          <li>Ip address: Your unique internet protocol address.</li>
           <li>
-            Browser and Device Characteristics: Type of browser, device name, and device details.
+            Browser and device characteristics: Type of browser, device name, and device details.
           </li>
-          <li>Operating System: The operating system of your device.</li>
-          <li>Language Preferences: Your preferred language settings.</li>
+          <li>Operating system: The operating system of your device.</li>
+          <li>Language preferences: Your preferred language settings.</li>
           <li>Referring URLs: Web pages that referred you to our website.</li>
-          <li>Device Name and Location: The name of your device and its general location.</li>
+          <li>Device name and location: The name of your device and its general location.</li>
           <li>
-            Usage Information and Technical Details: Data on how you use our services, including
+            Usage information and technical details: Data on how you use our services, including
             performance details and system diagnostics.
           </li>
         </ul>
         <Title>Types of Automatically Collected Information</Title>
         <ul>
           <li>
-            {`Log and Usage Data: Our servers automatically collect
-            service-related data to monitor, diagnose, and enhance service
-            performance. This log data includes your IP address, device
-            information, browser type, and details of your activities on our
-            website, such as the pages you view, searches you conduct, and
-            timestamps of your interactions.`}
+            Log and usage data: Our servers automatically collect service-related data to monitor,
+            diagnose, and enhance service performance. This log data includes your IP address,
+            device information, cookies, browser type, and details of your activities on our
+            website, such as the pages you view, searches you conduct, and timestamps of your
+            interactions.
           </li>
           <li>
-            {`System and Error Reports: Information about your system's activity
-            and any errors encountered while using our services.`}
+            System and error reports: Information about your {"system's"} activity and any errors
+            encountered while using our services.
           </li>
         </ul>
         <Text>
@@ -179,7 +192,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           services, as well as for internal analytics to improve your experience.
         </Text>
       </Stack>
-      <Stack>
+      <Stack id="how-do-we-process-your-information">
         <Title order={2}>2. HOW DO WE PROCESS YOUR INFORMATION?</Title>
         <Text>
           We process your personal information for several purposes, depending on your interactions
@@ -187,32 +200,30 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            <strong>To Provide and Manage Services:</strong>
-            {`We use your
-            personal information, such as the images or videos you upload, to
-            analyze and offer personalized tasks aimed at helping you improve
-            your appearance. This processing also includes managing your
-            participation in the "club" feature and facilitating payments and
-            subscriptions.`}
+            <strong>To provide and manage services:</strong>
+            We use your personal information, such as the images you upload, to analyze your
+            appearance and offer personalized tasks aimed at helping you improve your appearance.
+            This and other information is also used for enabling your participation in our revenue
+            sharing program and payment processing.
           </li>
           <li>
-            <strong>For Communication:</strong> We may use your contact information to send you
+            <strong>For communication:</strong> We may use your contact information to send you
             important notifications regarding your account, updates about our Services, or to
             respond to any inquiries you have made.
           </li>
           <li>
-            <strong>For Security and Fraud Prevention:</strong> We process your information to
+            <strong>For security and fraud prevention:</strong> We process your information to
             safeguard our website, detect and prevent fraud, unauthorized access, or other illegal
             activities that may compromise the integrity of our Services.
           </li>
           <li>
-            <strong>To Comply with Legal Obligations:</strong> We process personal information as
+            <strong>To comply with legal obligations:</strong> We process personal information as
             required by applicable laws, including compliance with tax, financial, and data
             protection regulations. This may include sharing data with regulatory or law enforcement
             bodies.
           </li>
           <li>
-            <strong>For Vital Interests:</strong> In some cases, we may process your information to
+            <strong>For vital interests:</strong> In some cases, we may process your information to
             protect the vital interests of you or another person. This may apply to emergency
             situations where harm needs to be prevented or addressed.
           </li>
@@ -228,21 +239,18 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            Consent: We rely on your explicit consent to process your personal information, such as
-            the images or videos you upload for appearance analysis. You can withdraw your consent
-            at any time. [Learn more about how to withdraw your consent.]
+            Consent: We rely on your explicit consent to process your personal information. You can
+            withdraw your consent at any time.
           </li>
           <li>
-            {`Legal Obligations: We may process your information to fulfill legal
-            requirements, such as tax obligations, compliance with data
-            protection laws, or cooperating with authorities in case of legal
-            disputes.`}
+            Legal obligations: We may process your information to fulfill legal requirements, such
+            as tax obligations, compliance with data protection laws, or cooperating with
+            authorities in case of legal disputes.
           </li>
           <li>
-            {`Vital Interests: In situations where someone's safety or health is
-            at risk, we may process your information to protect those vital
-            interests. For example, this might apply in emergency situations
-            where prompt action is required.`}
+            Vital interests: In situations where {"someone's"} safety or health is at risk, we may
+            process your information to protect those vital interests. For example, this might apply
+            in emergency situations where prompt action is required.
           </li>
         </ul>
         <Text>
@@ -251,14 +259,14 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            Express Consent: We may process your information if you have given explicit permission
-            for specific uses, such as sharing images for appearance analysis. You can withdraw your
+            Express consent: We process your information if you have given explicit permission for
+            specific uses, such as sharing images for appearance analysis. You can withdraw your
             consent at any time.
           </li>
           <li>
-            Implied Consent: In certain situations, your consent may be implied based on your
-            actions, such as when you voluntarily upload images or videos to our platform for
-            analysis.
+            Implied consent: In certain situations, your consent may be implied based on your
+            actions, such as when you voluntarily upload images, audio, videos or text to our
+            platform.
           </li>
         </ul>
         <Text>
@@ -266,28 +274,28 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            In an Individual’s Best Interest: When it is clearly in your or someone else’s interest
-            to process information, but obtaining consent is impractical or not feasible (e.g., in
-            emergencies).
+            In an {"individual's"} best interest: When it is clearly in your or someone {"else's"}{" "}
+            interest to process information, but obtaining consent is impractical or not feasible
+            (e.g., in emergencies).
           </li>
           <li>
-            For Investigations or Fraud Prevention: To detect and prevent fraud or other illegal
+            For investigations or fraud prevention: To detect and prevent fraud or other illegal
             activities.
           </li>
           <li>
-            For Business Transactions: Under specific conditions, we may process your information
+            For business transactions: Under specific conditions, we may process your information
             during business transactions such as mergers, acquisitions, or transfers of assets.
           </li>
           <li>
-            For Legal Demands: When necessary to comply with subpoenas, court orders, or legal
+            For legal demands: When necessary to comply with subpoenas, court orders, or legal
             investigations.
           </li>
           <li>
-            Professional or Employment Context: If the information was collected in the course of
+            Professional or employment context: If the information was collected in the course of
             employment, business, or a profession, and processing aligns with its original purpose.
           </li>
           <li>
-            Publicly Available Information: If your information is publicly available and its
+            Publicly available information: If your information is publicly available and its
             collection and use are permitted under relevant regulations.
           </li>
         </ul>
@@ -296,21 +304,19 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           exceptions apply.
         </Text>
       </Stack>
-      <Stack>
+      <Stack id="when-and-with-whom-do-we-share-your-personal-information">
         <Title order={2}>4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</Title>
         <Text>
-          {`We share your personal information with trusted third parties in
-          specific circumstances to provide and improve our services. Below are
-          the types of entities with whom we may share your data and the
-          contexts in which this sharing occurs:`}
+          We share your personal information with trusted third parties in specific circumstances to
+          provide and improve our services. Below are the types of entities with whom we may share
+          your data and the contexts in which this sharing occurs:
         </Text>
-        <Title>Third-Party Service Providers</Title>
+        <Title order={3}>Third-Party Service Providers</Title>
         <Text>
-          {`We may share your information with third-party vendors, consultants,
-          or service providers ("third parties") who perform services on our
-          behalf. These third parties help us operate and improve our services
-          by performing essential functions like data analysis, data storage,
-          and payment processing.`}
+          We may share your information with third-party vendors, consultants, or service providers
+          ("third parties") who perform services on our behalf. These third parties help us operate
+          and improve our services by performing essential functions like data analysis, data
+          storage, and payment processing.
         </Text>
         <Text>Key Points:</Text>
         <ul>
@@ -335,12 +341,13 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title>Examples of Third-Party Providers:</Title>
         <ul>
           <li>
-            Data Analytics Services: We may share non-identifying information with analytics
+            Data analytics services: We may share non-identifying information with analytics
             providers to understand how our services are used and to improve performance.
           </li>
           <li>
-            Data Storage Providers: We may store your personal information with third-party cloud
-            storage providers who ensure secure, reliable access to data.
+            Data storage providers: We may store your personal information with third-party cloud
+            storage providers who ensure secure, reliable access to data. Your personal information
+            is transferred and stored encrypted.
           </li>
         </ul>
         <Title>Business Transfers</Title>
@@ -366,24 +373,24 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            No Endorsement: We do not endorse or have any control over the content, products, or
+            No endorsement: We do not endorse or have any control over the content, products, or
             services provided by third-party websites or apps. The presence of links or
             advertisements within our Services does not imply that we endorse those third parties.
           </li>
           <li>
-            No Liability: We are not liable for any losses, damages, or issues you may encounter as
+            No liability: We are not liable for any losses, damages, or issues you may encounter as
             a result of interacting with third-party websites, services, or applications. Any use of
             such third-party platforms is at your own risk.
           </li>
           <li>
-            Privacy and Security Risks: We cannot guarantee the safety or privacy of any personal
+            Privacy and security risks: We cannot guarantee the safety or privacy of any personal
             information you choose to share with third-party websites or services. Third-party data
             collection and privacy practices are not governed by this privacy policy. We encourage
             you to review the privacy policies of any third-party websites or apps you visit to
             understand how they handle your personal information.
           </li>
           <li>
-            Your Responsibility: You are responsible for reviewing the privacy policies of
+            Your responsibility: You are responsible for reviewing the privacy policies of
             third-party websites, services, or applications linked from our platform. If you have
             any concerns or questions regarding their data practices, you should contact those third
             parties directly.
@@ -399,14 +406,13 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
       <Stack>
         <Title order={2}>6. IS YOUR INFORMATION TRANSFERRED INTERNATIONALLY?</Title>
         <Text>
-          {`Our servers are based in the United States. If you access our services
-          from outside the U.S., your personal information, including images and
-          videos you upload and other data you provide, may be transferred to,
-          stored, and processed by us in the U.S. and other countries where we
-          or our third-party service providers operate. This also applies to
-          third parties with whom we share your information as outlined in the
-          section titled "WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL
-          INFORMATION?"`}
+          Our servers are based in the United States. If you access our services from outside the
+          U.S., your personal information, including images, audio, videos an text you upload, may
+          be transferred to, stored, and processed by us in the U.S. and other countries where we or
+          our third-party service providers operate. This also applies to third parties with whom we
+          share your information as outlined in the section titled{" "}
+          <Link href="/legal/privacy#when-and-with-whom-do-we-share-your-personal-information"></Link>
+          WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
         </Text>
         <Title>For Residents of the EEA, UK, or Switzerland:</Title>
         <Text>
@@ -418,10 +424,11 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <Text>
           To protect your personal data during transfers, we rely on mechanisms such as the European
-          Commission’s Standard Contractual Clauses (SCCs). These clauses ensure that any transfer
-          of personal information from the EEA, UK, or Switzerland to non-EEA countries complies
-          with European data protection standards. We have also implemented similar safeguards with
-          third-party service providers and partners to whom your data may be transferred.
+          {"Commission's"} Standard Contractual Clauses (SCCs). These clauses ensure that any
+          transfer of personal information from the EEA, UK, or Switzerland to non-EEA countries
+          complies with European data protection standards. We have also implemented similar
+          safeguards with third-party service providers and partners to whom your data may be
+          transferred.
         </Text>
         <Title>Additional Safeguards:</Title>
         <Text>
@@ -434,15 +441,15 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
       <Stack>
         <Title order={2}>7. HOW LONG DO WE KEEP YOUR INFORMATION?</Title>
         <Text>
-          We retain your personal information, including your facial and body images and videos, for
-          as long as necessary to fulfill the purposes for which it was collected, including
-          providing you access to your previous scan results, maintaining your account, and ensuring
-          compliance with our legal obligations.
+          We retain your personal information, including your body images and videos, audio and
+          text, for as long as necessary to fulfill the purposes for which it was collected,
+          including providing you access to your previous scan results, maintaining your account,
+          and ensuring compliance with our legal obligations.
         </Text>
         <Text>Specifically:</Text>
         <ul>
           <li>
-            Facial and body scan data: Your scan data (images) is retained for a maximum of two (2)
+            Facial and body scan data: Your scan data (images) is retained for a maximum of ten (10)
             years unless a longer retention period is required by law or to resolve disputes.
           </li>
           <li>
@@ -454,20 +461,18 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           </li>
         </ul>
         <Text>
-          {`Once we no longer have an ongoing legitimate business need to retain
-          your information (for example, if you request the deletion of your
-          account or after two years of inactivity), we will either delete or
-          anonymize your personal information. If deletion is not feasible (for
-          instance, if your information is stored in backup archives), we will
-          securely store your personal information and isolate it from any
-          further processing until deletion is possible.`}
+          Once we no longer have an ongoing legitimate business need to retain your information (for
+          example, if you request the deletion of your account or after two years of inactivity), we
+          will either delete or anonymize your personal information. If deletion is not feasible
+          (for instance, if your information is stored in backup archives), we will securely store
+          your personal information and isolate it from any further processing until deletion is
+          possible.
         </Text>
         <Text>
-          {`Retention in Club Membership: For users who have joined "the club" and
-          have followers, we may retain certain information (such as payment
-          records and follower activity) for the duration of your club
-          membership and for a reasonable time after to comply with legal
-          obligations, including financial regulations.`}
+          Retention of Club members: If you participate in our revenue sharing program (the Club) we
+          may retain certain information (such as reward withdrawal records and follower activity)
+          for the duration of your club membership and for a reasonable time after to comply with
+          legal obligations, including financial regulations.
         </Text>
         <Text>
           If you have any questions regarding the retention of your information, please contact us
@@ -478,27 +483,26 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
       <Stack>
         <Title order={2}>8. HOW DO WE KEEP YOUR INFORMATION SAFE?</Title>
         <Text>
-          We take the security of your personal information seriously and have implemented a range
-          of technical, organizational, and administrative security measures designed to protect the
-          data we process from unauthorized access, misuse, disclosure, loss, or alteration. This
-          includes the use of:
+          We have implemented a range of technical, organizational, and administrative security
+          measures designed to protect the data we process from unauthorized access, misuse,
+          disclosure, loss, or alteration. This includes the use of:
         </Text>
         <ul>
           <li>
             Encryption: We use encryption protocols (such as HTTPS) to protect data transmitted to
-            and from our services.
+            and from our services. We also encrypt your data at rest in our databases.
           </li>
           <li>
-            Access Controls: We limit access to your personal information to only those employees,
+            Access controls: We limit access to your personal information to only those employees,
             contractors, and third parties who need access to perform essential functions, and who
             are subject to strict confidentiality obligations.
           </li>
           <li>
-            Secure Data Storage: Your personal data, including images and videos and scan results,
-            is stored on secure servers with up-to-date security technologies.
+            Secure data storage: Your personal data, including images, videos, audio and text is
+            stored on secure servers with up-to-date security technologies.
           </li>
           <li>
-            Regular Security Audits: We regularly review our security practices and systems to
+            Regular security audits: We regularly review our security practices and systems to
             identify potential vulnerabilities and implement necessary improvements.
           </li>
         </ul>
@@ -512,9 +516,9 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>
           While we strive to protect your personal information, you are responsible for ensuring
           that the devices and networks you use to access our services are secure. Data transmitted
-          to and from our services, including image uploads, is done at your own risk. We recommend
-          accessing our services only from a trusted and secure network and using up-to-date
-          security software to protect your own devices.
+          to and from our services, including image, video and audio uploads, is done at your own
+          risk. We recommend accessing our services only from a trusted and secure network and using
+          up-to-date security software to protect your own devices.
         </Text>
         <Title>Incident Response</Title>
         <Text>
@@ -547,12 +551,12 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title>Steps We Take:</Title>
         <ul>
           <li>
-            Account Deactivation and Data Deletion: Upon discovering that personal data from a minor
+            Account deactivation and data deletion: Upon discovering that personal data from a minor
             has been collected, we will deactivate the associated account and take appropriate steps
             to delete the information from our records as quickly as possible.
           </li>
           <li>
-            Age Verification: While we do not actively verify the age of all users during
+            Age verification: While we do not actively verify the age of all users during
             registration, we reserve the right to request age verification at any point if we
             suspect or are informed that a user may be under the age of 18.
           </li>
@@ -589,12 +593,12 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             its processing.
           </li>
           <li>
-            Data Portability: In certain cases, you have the right to receive your personal data in
+            Data portability: In certain cases, you have the right to receive your personal data in
             a structured, commonly used, and machine-readable format and request that we transfer it
             to another entity where technically feasible.
           </li>
           <li>
-            Automated Decision-Making: You have the right not to be subject to decisions based
+            Automated decision-making: You have the right not to be subject to decisions based
             solely on automated processing, including profiling, that produces legal effects
             concerning you or significantly affects you.
           </li>
@@ -605,34 +609,37 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           </li>
         </ul>
         <Text>
-          To Exercise Your Rights: To exercise any of these rights, please contact us using the
-          details provided in the “HOW CAN YOU CONTACT US ABOUT THIS NOTICE?” section below. We will
-          review and address your requests in accordance with applicable data protection laws, and
-          may ask for verification of your identity to process your request.
+          To exercise your rRights: To exercise any of these rights, please contact us using the
+          details provided in the{" "}
+          <Link href="/legal/club#how-can-you-contact-us-about-this-notice">
+            HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
+          </Link>
+          section below. We will review and address your requests in accordance with applicable data
+          protection laws, and may ask for verification of your identity to process your request.
         </Text>
         <Title>Complaints:</Title>
         <ul>
           <li>
-            EEA or UK Residents: If you believe we are processing your personal information
+            EEA or UK residents: If you believe we are processing your personal information
             unlawfully or in violation of your rights, you have the right to lodge a complaint with
             your local data protection authority.
           </li>
           <li>
-            Switzerland Residents: You may file a complaint with the Federal Data Protection and
+            Switzerland residents: You may file a complaint with the Federal Data Protection and
             Information Commissioner (FDPIC).
           </li>
           <li>
-            Canada Residents: You may contact the Office of the Privacy Commissioner of Canada (OPC)
+            Canada residents: You may contact the Office of the Privacy Commissioner of Canada (OPC)
             with any privacy concerns.
           </li>
         </ul>
         <Title>Withdrawing Consent:</Title>
         <Text>
-          If our processing of your personal information is based on your consent, you have the
-          right to withdraw that consent at any time. To do so, please contact us using the
-          information provided below. Please note that withdrawing your consent will not affect the
-          lawfulness of any processing carried out before the withdrawal, nor will it impact
-          processing based on other legal grounds (e.g., contractual necessity).
+          You have the right to withdraw your consent for your data processing at any time. To do
+          so, please contact us using the information provided below. Please note that withdrawing
+          your consent will not affect the lawfulness of any processing carried out before the
+          withdrawal, nor will it impact processing based on other legal grounds (e.g., contractual
+          necessity).
         </Text>
         <Title>Opting Out of Marketing Communications:</Title>
         <Text>
@@ -687,7 +694,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title order={2}>12. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</Title>
         <Text>
           Residents of California, Colorado, Connecticut, Utah, and Virginia have specific rights
-          regarding their personal information. Here’s what we’ve collected in the past year:
+          regarding their personal information. {"Here's what we've collected"} in the past:
         </Text>
         <Title>Categories of Personal Information We Collect:</Title>
         <table>
@@ -744,8 +751,8 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             </tr>
             <tr>
               <td>H. Audio, Electronic, Visual Information</td>
-              <td>Images, videos and recordings related to our business activities</td>
-              <td>NO</td>
+              <td>Images, videos, and audio related to our business activities</td>
+              <td>YES</td>
             </tr>
             <tr>
               <td>I. Professional or Employment-Related Information</td>
@@ -809,13 +816,16 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
 
         <Title>How We Use and Share Your Personal Information:</Title>
         <Text>
-          <strong>Use:</strong> We use your personal information as described in the section “HOW DO
-          WE PROCESS YOUR INFORMATION?” for purposes such as providing and improving our Services.
+          <strong>Use:</strong> We use your personal information as described in the section
+          <Link href="how-do-we-process-your-information">HOW DO WE PROCESS YOUR INFORMATION?</Link>
+          for purposes such as providing and improving our Services.
         </Text>
         <Text>
           <strong>Sharing:</strong> We may share your personal information with our service
-          providers under written contracts. For details, see the section “WHEN AND WITH WHOM DO WE
-          SHARE YOUR PERSONAL INFORMATION?”
+          providers under written contracts. For details, see the section
+          <Link href="when-and-with-whom-do-we-share-your-personal-information">
+            WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
+          </Link>
         </Text>
 
         <Title>Disclosure for Business or Commercial Purposes:</Title>
@@ -826,7 +836,8 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           </li>
           <li>
             We have disclosed the following categories of personal information for business or
-            commercial purposes in the past twelve (12) months: [List categories from above]
+            commercial purposes in the past twelve (12) months: Identifiers, Personal Information,
+            Sensistive Personal Information, Audio, Electronic, Visual Information.
           </li>
         </ul>
 
@@ -844,10 +855,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           California Minors (Under 18): If you are under 18 years old, reside in California, and
           have a registered account with our Services, you have the right to request the removal of
           any unwanted data you have posted. To request removal, contact us using the information
-          provided below and include the email address associated with your account along with a
-          statement affirming your California residency. We will make efforts to ensure that the
-          data is not publicly visible on the Services. However, please be aware that complete
-          removal from all our systems, such as backups, may not be feasible.
+          provided below.
         </Text>
       </Stack>
       <Stack>
@@ -855,7 +863,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>
           Yes, depending on the country you reside in, there may be additional privacy rights and
           regulations that apply to the collection and processing of your personal information.
-          Here’s an overview for residents in Australia, New Zealand, and South Africa:
+          {"Here's"} an overview for residents in Australia, New Zealand, and South Africa:
         </Text>
 
         <Title>Australia</Title>
@@ -865,10 +873,12 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            <strong>Access and Correction:</strong> You have the right to request access to your
+            <strong>Access and correction:</strong> You have the right to request access to your
             personal information and to request its correction if it is inaccurate. To make such a
-            request, please contact us using the contact details provided in the section “HOW CAN
-            YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?”
+            request, please contact us using the contact details provided in the section
+            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
+            </Link>
           </li>
           <li>
             <strong>Complaints:</strong> If you believe we are not complying with the Australian
@@ -881,13 +891,15 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>In New Zealand, we are bound by the Privacy Act 2020.</Text>
         <ul>
           <li>
-            <strong>Access and Correction:</strong> You have the right to request access to and
+            <strong>Access and correction:</strong> You have the right to request access to and
             correction of your personal information. To make such a request, please contact us using
-            the contact details provided in the section “HOW CAN YOU REVIEW, UPDATE, OR DELETE THE
-            DATA WE COLLECT FROM YOU?”
+            the contact details provided in the section
+            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
+            </Link>
           </li>
           <li>
-            <strong>Complaints:</strong> If you believe we are not complying with New Zealand’s
+            <strong>Complaints:</strong> If you believe we are not complying with New {"Zealand's"}
             Privacy Principles, you can file a complaint with the Office of the Privacy Commissioner
             (OPC).
           </li>
@@ -896,14 +908,16 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title>Key Points for Australia and New Zealand:</Title>
         <ul>
           <li>
-            <strong>Providing Information:</strong> If you choose not to provide the necessary
+            <strong>Providing information:</strong> If you choose not to provide the necessary
             personal information, it may impact our ability to offer the products or services you
             request or to respond to your inquiries.
           </li>
           <li>
-            <strong>Rights and Contacts:</strong> For any questions or to exercise your rights,
-            please reach out to us via the contact details in the section “HOW CAN YOU REVIEW,
-            UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?”
+            <strong>Rights and contacts:</strong> For any questions or to exercise your rights,
+            please reach out to us via the contact details in the section
+            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
+            </Link>
           </li>
         </ul>
 
@@ -914,10 +928,12 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            <strong>Access and Correction:</strong> You have the right to request access to your
+            <strong>Access and correction:</strong> You have the right to request access to your
             personal information and to request its correction if it is inaccurate. To exercise
-            these rights, please contact us using the contact details provided in the section “HOW
-            CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?”
+            these rights, please contact us using the contact details provided in the section
+            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
+            </Link>
           </li>
           <li>
             <strong>Complaints:</strong> If you are not satisfied with how we handle your complaint
@@ -925,7 +941,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             Regulator for South Africa.
             <ul>
               <li>
-                <strong>General Enquiries:</strong> enquiries@inforegulator.org.za
+                <strong>General enquiries:</strong> enquiries@inforegulator.org.za
               </li>
               <li>
                 <strong>Complaints:</strong>
@@ -951,14 +967,16 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title>Key Points for South Africa:</Title>
         <ul>
           <li>
-            <strong>Providing Information:</strong> Failure to provide the required personal
+            <strong>Providing information:</strong> Failure to provide the required personal
             information might affect our ability to deliver the services you request or address your
             inquiries effectively.
           </li>
           <li>
-            <strong>Rights and Contacts:</strong> For further details or to exercise your rights,
-            please reach out to us via the contact information in the section “HOW CAN YOU REVIEW,
-            UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?”
+            <strong>Rights and contacts:</strong> For further details or to exercise your rights,
+            please reach out to us via the contact information in the section
+            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
+            </Link>
           </li>
         </ul>
       </Stack>
@@ -967,8 +985,8 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>
           We may update this privacy notice periodically to reflect changes in our practices,
           technologies, legal requirements, or other factors. When we make updates, we will indicate
-          the updated “Revised” date at the top of the notice. The new version will become effective
-          as soon as it is accessible.
+          the updated "Updated at" date at the top of the notice. The new version will become
+          effective as soon as it is accessible.
         </Text>
         <Text>
           If we make significant changes to this privacy notice, we may inform you either by
@@ -977,12 +995,11 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           we are protecting your information and any changes to our practices.
         </Text>
         <Text>
-          If you have any questions or concerns about the updates, please don’t hesitate to reach
-          out to us.
+          If you have any questions or concerns about the updates, please reach out to us.
         </Text>
       </Stack>
 
-      <Stack>
+      <Stack id="how-can-you-contact-us-about-this-notice">
         <Title order={2}>15. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Title>
         <Text>
           If you have any questions, comments, or concerns about this privacy notice, you can reach
@@ -992,9 +1009,9 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>Email: info@muxout.com</li>
           <li>Postal Mail:</li>
           <Text>
-            Purrma LLC
+            Bettermax LLC
             <br />
-            30N Gould St Ste,
+            30 N Gould St Ste,
             <br />
             Sheridan, WY 82801
             <br />
@@ -1007,7 +1024,10 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
       </Stack>
 
-      <Stack style={{ marginBottom: rem(32) }}>
+      <Stack
+        style={{ marginBottom: rem(32) }}
+        id="how-can-you-review-update-or-delete-the-data-we-collect-from-you"
+      >
         <Title order={2}>
           16. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
         </Title>
@@ -1016,7 +1036,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           update, or delete your personal information that we collect. To exercise these rights, you
           can reach out to us directly via email at info@muxout.com or by post at:
         </Text>
-        <Text>Purrma LLC, 30N Gould St Ste, Sheridan, WY 82801, United States</Text>
+        <Text>Bettermax LLC, 30 N Gould St Ste, Sheridan, WY 82801, United States</Text>
         <Text>
           We will process your request in accordance with applicable data protection laws and make
           any necessary updates or deletions as required.
