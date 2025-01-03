@@ -11,25 +11,24 @@ export default function ClubLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Club Terms</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: September 12, 2024
+        Last updated: January 3, 2025
       </Text>
       <Stack>
         <Text mt={0}>
-          {`Welcome to the "Club", an optional service available on our platform
-          that allows users to interact with others, share content, and earn
-          rewards based on the number of followers.`}
+          This terms of service agreement ("Club Terms") outlines the participation terms in our
+          revenue sharing program ("Club"). It complement and expand on {"our platform's"}
+          <Link href={`/legal/terms`}>General Terms of Service</Link>
+          ("General TOS"). Where conflicts arise Club Terms take precedence over the General TOS for
+          matters relating specifically to the Club.
         </Text>
         <Text>
-          {`By joining the Club, you agree to these supplementary Terms of Service
-          ("Club Terms"), which complement and expand on our platform's{" "}
-          ${(<Link href={`/legal/terms`}>General Terms of Service</Link>)}
-          ("General TOS"). Where conflicts arise, these Club Terms take
-          precedence over the General TOS for matters relating specifically to
-          the Club.`}
+          Please read Club Terms carefully before joining. By accessing or using the Club, you agree
+          to be bound by these terms and all related policies.
         </Text>
         <Text>
-          Please read these Club Terms carefully before joining. By accessing or using the Club
-          features, you agree to be bound by these terms and all related policies.
+          The Club lets you share your progress and other content with other site users to inspire
+          them for improvement and get rewarded for doing that. The Club is free to join and you can
+          leave at any time.
         </Text>
       </Stack>
       <Stack>
@@ -42,18 +41,9 @@ export default function ClubLegalBody({ addTitle }: Props) {
           </li>
           <li>Be at least 18 years old.</li>
           <li>
-            Successfully complete the Stripe Connect onboarding process to enable payouts, which
-            includes:
-            <ul>
-              <li>Providing accurate and verifiable identity and banking information.</li>
-              <li>Connecting a valid bank account for receiving payments.</li>
-            </ul>
-          </li>
-          <li>
             Agree to comply with all laws and regulations applicable in your country of residence,
             including those related to online income reporting.
           </li>
-          <li>Purchase the Club or Full plans.</li>
         </ol>
       </Stack>
       <Stack>
@@ -62,43 +52,51 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>1. Profile Visibility & Sharing:</Title>
         <ul>
           <li>
-            As a Club member, you will provide two distinct types of content to the Club members:
+            As a Club member you can share the following content:
             <ul>
               <li>
-                <strong>Daily Task Completion Proof:</strong> This includes images or videos of you
-                performing daily activities, such as using products, eating, or working out at the
-                gym, etc., as described in the tasks of your routine. Once uploaded, this content
-                becomes publicly viewable by all visitors of muxout.com, regardless of whether they
-                are members of the Club or not.
+                <strong>Task completion proof:</strong> The images or videos of you performing
+                certain activities, such as using products, eating, or working out and others, as
+                described in the relevant tasks of your routine.
               </li>
               <li>
-                <strong>Progress Images:</strong> These are your weekly progress images, which
-                include the images of your head and body. This content is private by default, but
-                you can make it accessible to your followers.
+                <strong>Progress images:</strong> The weekly progress images of your head and body.
+              </li>
+              <li>
+                <strong>About description:</strong>Text describing your personality including
+                philosophy, style and style tips.
+              </li>
+              <li>
+                <strong>Progress diary:</strong>Audio and text capturing your thoughts on the tasks
+                you've completed.
               </li>
             </ul>
           </li>
+          <li>
+            By default when you join the club all of your existing content is private and not
+            accessible by others. You can enable data sharing on the admission page during or on the
+            settings page after the registration.
+          </li>
         </ul>
-        <Title order={3}>2. Follower Interaction:</Title>
+        <Title order={3}>2. Interaction with other Club members:</Title>
         <ul>
-          <li>
-            Users can follow (a.k.a. peek) and unfollow you freely without your explicit approval.
-          </li>
-          <li>
-            You cannot block or reject followers, but you retain the right to remove yourself from
-            the Club at any time.
-          </li>
-          <li>You can hide from or display your private content to your followers at any time.</li>
+          <li>Other Club members can follow ("peek") and unfollow you without your consent.</li>
+          <li>You cannot block or reject followers.</li>
+          <li>You can enable or disable the sharing of any category of content at any time.</li>
         </ul>
         <Title order={3}>3. Income from Followers:</Title>
         <ul>
           <li>
-            You will earn 50% of the Peek license subscription fee for each user that follows you in
-            the club.
+            You earn 50% from the Peek license subscription fee for each user that follows you in
+            the Club, each month.
           </li>
           <li>
-            Reward payments will be processed via Stripe Connect, and are subject to applicable fees
-            and withholding taxes in accordance with your local tax laws.
+            Your rewards are deposited to your balance every day at midnight UTC according to the
+            number of users that follow you at that moment.
+          </li>
+          <li>
+            Your withdrawals are subject to applicable processing fees and withholding taxes in
+            accordance with your local tax laws.
           </li>
         </ul>
       </Stack>
@@ -106,12 +104,11 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>3. Content and Privacy</Title>
         <Title order={3}>1. Ownership of Content:</Title>
         <Text>
-          You retain ownership of the content you upload to the platform, including Daily Task
-          Completion Proof data and Progress Images. However, by uploading content, you grant us a
-          non-exclusive, worldwide, royalty-free license to use, distribute, display, and modify
-          your content for the purpose of operating the platform and promoting Club services. This
-          license is revocable upon your departure from the Club, except for any content already
-          shared with the public or followers.
+          You retain ownership of the content you upload to the platform. However, by uploading
+          content, you grant us a non-exclusive, worldwide, royalty-free license to use, distribute,
+          display, and modify your content for the purpose of operating and promoting the platform.
+          This license is revocable upon your departure from the Club, except for any content
+          already shared with the public or followers.
         </Text>
         <Title order={3}>2. Data Security:</Title>
         <Text>
@@ -213,16 +210,15 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>5. Termination of Membership</Title>
         <Title order={3}>1. Content Backup and Retention:</Title>
         <Text>
-          Upon termination of your Club membership, all of your content will become private. All
-          access to your private data (if provided) will be revoked. Your daily task completion
-          proof will no longer be visible to general users.
+          Upon the termination of your Club membership, any of your content that was previously
+          public will be made private. This includes progress and proof images and videos, diary
+          audio and text, as well as your "About" description.
         </Text>
       </Stack>
       <Stack>
         <Title order={2}>6. Club Participation Guidelines</Title>
         <Title order={3}>1. Prohibited Activities:</Title>
         <ul>
-          <li>Sharing or distributing other members&apos; content.</li>
           <li>Uploading misleading, false, or offensive content.</li>
           <li>Engaging in harassment or any form of abusive behavior.</li>
           <li>Engaging in fraudulent activities to increase payouts.</li>
@@ -238,16 +234,16 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>3. Reporting Mechanism:</Title>
         <Text>
           If you encounter any inappropriate content or behavior, you may report it by emailing
-          support@muxout.com. We will review and take appropriate action, which may include
-          suspending or terminating the violator&apos;s account.
+          info@muxout.com. We will review and take appropriate action, which may include suspending
+          or terminating the {"violator's"} account.
         </Text>
       </Stack>
       <Stack>
         <Title order={2}>7. Changes to Club Terms</Title>
         <Text>
-          We may revise these Club Terms from time to time. Any changes will be effective when
-          posted on our website or sent to you via email. Continued participation in the Club after
-          changes are posted constitutes acceptance of those changes.
+          We reserve the right to update these Club Terms periodically. Any changes will become
+          effective upon posting on our website. Your continued participation in the Club after such
+          updates indicates your acceptance of the revised terms.
         </Text>
       </Stack>
       <Stack>
@@ -256,7 +252,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
           In addition to the limitations outlined in our{" "}
           <Link href={`/legal/terms`}>General TOS</Link>, we are not responsible for any
           unauthorized use or access to your content by third parties, including followers who may
-          violate these terms by sharing or misusing your images or videos.
+          violate these terms by sharing or misusing your images, videos audio or textual content.
         </Text>
       </Stack>
       <Stack>
@@ -264,8 +260,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>1. International Compliance:</Title>
         <Text>
           Users are responsible for ensuring that their participation in the Club, including the
-          sharing of content and receipt of income, complies with the laws and regulations of their
-          country of residence. This includes reporting and paying taxes on earnings where
+          content they upload and the receipt of payment complies with the laws and regulations of
+          their country of residence. This includes reporting and paying taxes on earnings where
           applicable.
         </Text>
         <Text>
