@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { rem, Stack, Text, Title } from "@mantine/core";
 
 type Props = {
@@ -14,25 +15,25 @@ export default function TermsLegalBody({ addTitle }: Props) {
       </Text>
       <Stack>
         <Text mt={0}>
-          Welcome to muxout.com! This website is owned and operated by Purrma LLC ("Company," "we,"
-          "us," "our"), a company incorporated in Wyoming, United States, with its principal place
-          of business at 30N Gould St., Sheridan, WY 82801.
+          This website is owned and operated by Bettermax LLC ("Company," "we," "us," "our"), a
+          company incorporated in Wyoming, United States, with its registered address at 30 N Gould
+          St, Sheridan, WY 82801.
         </Text>
         <Text>
           We operate the website muxout.com (the "Site"), along with any related products and
           services that reference or link to these terms (the "Terms") (collectively, the
           "Services"), which include the collection, analysis, and storage of user-provided
-          information for AI-based assessments and personalized guidance regarding physical
-          appearance improvement.
+          information for AI-based assessments and personalized guidance about physical appearance
+          and products.
         </Text>
         <Text>
-          You can contact us by email at info@muxout.com, or by mail at Purrma LLC, 30N Gould St.,
-          Sheridan, WY 82801, United States.
+          You can contact us by email at info@muxout.com, or by mail at Bettermax LLC, 30 N Gould
+          St, Sheridan, WY 82801, United States.
         </Text>
         <Text>
           These Terms constitute a legally binding agreement between you, whether as an individual
-          or on behalf of an organization ("you"), and Purrma LLC, regarding your access to and use
-          of the Services.
+          or on behalf of an organization ("you"), and Bettermax LLC, regarding your access to and
+          use of the Services.
         </Text>
         <Text>
           By accessing the Site, you acknowledge that you have read, understood, and agree to be
@@ -50,8 +51,11 @@ export default function TermsLegalBody({ addTitle }: Props) {
         <Text>
           It is your responsibility to review these Terms periodically for any updates. Continued
           use of the Site after any revised Terms are posted signifies your acceptance of the
-          updated Terms. The Services are intended for users who are at least 18 years old. Users
-          under the age of 18 are not permitted to use or register for the Services.
+          updated Terms.
+        </Text>
+        <Text>
+          The Services are intended for users who are at least 18 years old. Users under the age of
+          18 are not permitted to use or register for the Services.
         </Text>
         <Text>
           By using the Services, you affirm that you are at least 18 years of age. In the event of a
@@ -66,11 +70,12 @@ export default function TermsLegalBody({ addTitle }: Props) {
         <Text>
           The Services we provide are intended solely for personal, non-commercial use, and the
           information and assessments offered through our Services are for general informational
-          purposes only. Our Services, including AI-based image analysis and personalized tasks, are
-          not a substitute for professional, medical, or health-related advice or services. The
-          results provided are based on our proprietary algorithms and are not intended to diagnose,
-          treat, cure, or prevent any condition. Users should seek professional advice before making
-          any decisions based on the information received from our Services.
+          purposes only. Our Services, including AI-based image analysis and the personalized tasks
+          created based on them, are not a substitute for professional, medical, or health-related
+          advice or services. The results provided are based on our proprietary algorithms that have
+          not been reviewed by medical professionals and are not intended to diagnose, treat, cure,
+          or prevent any condition. Users should seek professional advice before making any
+          decisions based on the information received from our Services.
         </Text>
         <Text>
           The information provided through our Services is not intended for use or distribution in
@@ -169,7 +174,9 @@ export default function TermsLegalBody({ addTitle }: Props) {
           You agree that we have no obligation to use or respond to any Submissions, and any use of
           Submissions is entirely at our discretion.
         </Text>
-        <Title id="responsibility-for-your-submissions" order={3}>Responsibility for Your Submissions</Title>
+        <Title id="responsibility-for-your-submissions" order={3}>
+          Responsibility for Your Submissions
+        </Title>
         <Text>
           By submitting content, including images and videos of your body and head, through our
           Services, you:
@@ -204,40 +211,30 @@ export default function TermsLegalBody({ addTitle }: Props) {
         <Title order={3}>Sensitive Data Handling</Title>
         <Text>
           We collect and process personal data as outlined in our [Privacy Policy]. This may include
-          sensitive data, such as images of your head and body, which are uploaded to the platform
-          for AI-driven analysis to suggest personalized improvement tasks.
+          sensitive data, such as images and videos of your body and audio recordings of your voice.
         </Text>
         <Text>
           By using our services, you consent to the collection, storage, and processing of this
           sensitive data as required to fulfill the services offered on our platform.
         </Text>
-        <Text>
-          {`If you join the "Club," you explicitly consent to sharing your images
-          and videos with your followers, who will be able to view this content.
-          All users are prohibited from sharing or distributing these images and
-          videos without the express consent of the content owner. Unauthorized
-          sharing may result in penalties or removal from the platform.`}
-        </Text>
         <Title order={3}>Consent for Data Processing and Sharing</Title>
         <Text>
           By using our services and uploading any personal content, including sensitive data such as
-          body and head images, you consent to the following:
+          the images and videos of your body and audio recordings of your voice, you consent to the
+          following:
         </Text>
         <ul>
           <li>The analysis of your appearance using AI technologies.</li>
+          <li>Making this information accessible by other users of the site</li>
           <li>
-            {`Sharing of your images and videos with your followers if you join
-            the "Club" feature.`}
-          </li>
-          <li>
-            The use of your data to suggest third-party products that may be of interest to you. No
-            personal data will be shared with third-party product providers without your explicit
-            consent.
+            The processing of your data for suggesting third-party products and services that we
+            believe may be of interest to you. No personal data will be shared with third-party
+            product providers without your explicit consent.
           </li>
         </ul>
         <Text>
-          If you do not consent to the collection or sharing of your sensitive data as described,
-          please refrain from using these services.
+          IF YOU DO NOT CONSENT TO THE COLLECTION, PROCESSING AND SHARING OF YOUR SENSITIVE DATA AS
+          DESCRIBED ABOVE, YOU MUST CEASE TO USE THE SERVICES IMMEDIATELY.
         </Text>
         <Stack>
           <Title order={2}>3. USER REPRESENTATIONS</Title>
@@ -267,8 +264,8 @@ export default function TermsLegalBody({ addTitle }: Props) {
               accurate and current at all times; and
             </li>
             <li>
-              You have the necessary rights and permissions to upload any images, videos or other
-              content through the Services, and such content does not infringe the intellectual
+              You have the necessary rights and permissions to upload any images, videos, audio or
+              text through the Services, and such content does not infringe the intellectual
               property, privacy, or other rights of any third party.
             </li>
           </ol>
@@ -288,9 +285,9 @@ export default function TermsLegalBody({ addTitle }: Props) {
           <Title order={2}>4. PURCHASES AND PAYMENT</Title>
           <Title order={3}>Payment Methods</Title>
           <Text>
-            We accept credit card payments and other payment methods supported by Stripe for
-            purchases made through our Services. This includes, but is not limited to, credit cards,
-            debit cards, and other methods permitted by Stripe’s payment processing services.
+            We accept various payment methods for purchases made through our Services. This
+            includes, but is not limited to, credit cards, debit cards, and other methods permitted
+            by out payment processing services.
           </Text>
           <Title order={3}>Accurate Information and Updates</Title>
           <Text>
@@ -300,22 +297,13 @@ export default function TermsLegalBody({ addTitle }: Props) {
             expiration date, to ensure the successful processing of your transactions. Failure to do
             so may result in transaction failures or service interruptions.
           </Text>
-          <Title order={3}>Subscription Services and Club Membership</Title>
+          <Title order={3}>Subscription Services</Title>
           <Text>
-            {`When you subscribe to our paid services or join "the club," you
-            agree to pay the applicable subscription fee, which may be subject
-            to changes at our discretion. Subscription fees are billed on a
-            recurring basis unless canceled. By subscribing, you authorize us to
-            charge your selected payment method automatically for each
-            subscription period without further approval.`}
-          </Text>
-          <Text>
-            {`If you choose to participate in "the club" and receive payments
-            based on follower counts, you must complete the Stripe Connect
-            onboarding process and provide accurate bank account information.
-            You are responsible for any fees associated with receiving payments
-            through Stripe Connect, and we are not liable for any issues related
-            to inaccurate payment details or the Stripe onboarding process.`}
+            When you subscribe to our paid services you agree to pay the applicable subscription
+            fee, which may be subject to changes at our discretion. Subscription fees are billed on
+            a recurring basis unless canceled. By subscribing, you authorize us to charge your
+            selected payment method automatically for each subscription period without further
+            approval.
           </Text>
           <Title order={3}>Currency and Sales Tax</Title>
           <Text>
@@ -328,49 +316,41 @@ export default function TermsLegalBody({ addTitle }: Props) {
             We reserve the right to modify pricing for any products or services at any time. In the
             event of a pricing error, we reserve the right to correct the error and adjust the
             transaction accordingly, even after payment has been processed. If you are not satisfied
-            with the corrected price, you may choose to cancel your order by contacting us at
+            with the corrected price, you may choose to cancel your subscription by contacting us at
             info@muxout.com.
           </Text>
           <Title order={3}>Order Refusal</Title>
           <Text>
-            We retain the right to refuse any order or subscription placed through our Services at
-            our sole discretion. This may include, but is not limited to, cases where we suspect
-            fraudulent activity, incorrect account information, or violations of our terms.
+            We retain the right to refuse any subscription placed through our Services at our sole
+            discretion. This may include, but is not limited to, cases where we suspect fraudulent
+            activity, incorrect account information, or violations of our terms.
+          </Text>
+          <Title order={3}>Revenue Sharing ("Club")</Title>
+          <Text>
+            We offer our users the right to join the "Club" and receive a share of revenue from
+            making their image, video and audio data accessible to other users.
+          </Text>
+          <Text>
+            If you choose to participate in the "Club", you will be required to complete an
+            onboarding process and provide accurate bank account information. You are solely
+            responsible for any fees associated with receiving payments, and we disclaim any
+            liability for issues arising from inaccurate payment details or the onboarding process.
+            The full terms and conditions of the "Club" are detailed in a separate document, which
+            can be accessed <Link href="/legal/club">here</Link>.
           </Text>
         </Stack>
         <Stack>
           <Title order={2}>5. FREE TRIAL</Title>
           <Title order={3}>Eligibility</Title>
           <Text>
-            We offer a 1-day free trial to new users who register with our Services. The free trial
-            is available only once per user and is intended to allow first-time users to explore the
-            platform before committing to a paid subscription.
+            We offer a 1-day free trial for some of our services to new users. The free trial is
+            available only once per user and is intended to help explore the platform.
           </Text>
           <Title order={3}>Trial Period and Subscription</Title>
           <Text>
-            Your free trial begins when you register for our Services and lasts for 24 hours (1
-            days). At the end of the free trial period, your access to certain features of the
-            Services will be restricted until you subscribe and pay the applicable subscription fee.
-          </Text>
-          <Title order={3}>Automatic Subscription</Title>
-          <Text>
-            Unless you cancel before the end of the 1-day free trial period, you will automatically
-            be enrolled in a paid subscription. By signing up for the free trial, you authorize us
-            to charge your selected payment method the applicable subscription fee at the end of the
-            trial period, without further notice or approval.
-          </Text>
-          <Title order={3}>Cancellation</Title>
-          <Text>
-            You may cancel your free trial at any time before the trial period ends to avoid being
-            charged. Upon cancellation, your access to the Services will be limited, and you will
-            not incur any charges. You can cancel through your account settings or by contacting our
-            support team.
-          </Text>
-          <Title order={3}>Re-Enrollment and Restrictions</Title>
-          <Text>
-            If you cancel during the free trial and later decide to subscribe, you will be charged
-            the full subscription amount. The free trial offer is limited to new users only and may
-            not be combined with other promotions, offers, or discounts.
+            You can start the free trial by clicking the corresponding button on a specific service
+            you intend to try. The trial period lasts for 24 hours at the end of which, your access
+            to related service will be restricted until you pay the applicable subscription fee.
           </Text>
         </Stack>
         <Stack>
@@ -403,8 +383,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
           <Title order={3}>Customer Support</Title>
           <Text>
             If you have any concerns, technical issues, or are dissatisfied with our Services, we
-            encourage you to contact us at info@muxout.com or call (323) 540-57-18. We are committed
-            to addressing your concerns and ensuring a positive user experience.
+            encourage you to contact us at info@muxout.com.
           </Text>
         </Stack>
         <Stack>
@@ -539,15 +518,9 @@ export default function TermsLegalBody({ addTitle }: Props) {
         <Stack>
           <Title order={2}>9. USER GENERATED CONTRIBUTIONS</Title>
           <Text>
-            The Services may allow registered users to join a membership program (the "Club"), where
-            you can upload content, including but not limited to text, photographs, videos, or other
-            materials (collectively, "Contributions"). By joining the Club, your Contributions may
-            be accessible to users who peek (follow) you ("Followers") in exchange for financial
-            compensation, as outlined in the applicable terms for the Club.
-          </Text>
-          <Text>
-            By making any Contributions as a member of the Club, you agree that your Contributions
-            will be governed by our Privacy Policy, and you further represent and warrant that:
+            By making any Contributions to our site including image, video and audio content of
+            yourself, you agree that your Contributions will be governed by our Privacy Policy, and
+            you further represent and warrant that:
           </Text>
           <ul>
             <li>
@@ -603,23 +576,23 @@ export default function TermsLegalBody({ addTitle }: Props) {
           </ul>
           <Title order={3}>Financial Compensation and Rights</Title>
           <Text>
-            As a member of the Club, you may be eligible to receive compensation based on the number
-            of Followers who view your Contributions. By uploading your Contributions, you grant us
-            a limited, non-exclusive, transferable, royalty-free license to display your
-            Contributions to your Followers for the purposes of operating the Club and enabling
-            payment mechanisms.
+            If you choose to participate in our revenue sharing program ("Club"), you may be
+            eligible to receive compensation based on the number of Followers who view your
+            Contributions. By uploading your Contributions, you grant us a limited, non-exclusive,
+            transferable, royalty-free license to display your Contributions to other users of the
+            site.
           </Text>
           <Text>
             You understand and agree that this license continues for as long as your Contributions
-            are made available through the Services and the Club, and that we may retain copies of
+            are made available through the Services and the "Club", and that we may retain copies of
             your Contributions as required for legal, compliance, or operational purposes.
           </Text>
           <Title order={3}>Management and Removal of Contributions</Title>
           <Text>
-            We reserve the right to monitor, edit, or remove any Contributions at our sole
-            discretion if they violate these Legal Terms or are otherwise deemed inappropriate. We
-            also reserve the right to suspend or terminate your participation in the Club if your
-            Contributions violate these Legal Terms, applicable laws, or regulations.
+            We reserve the right to monitor, edit and remove any Contributions at our sole
+            discretion if they violate these Legal Terms or are otherwise deemed inappropriate by
+            us. We also reserve the right to block or terminate your participation in the Club if
+            your Contributions violate these Legal Terms, applicable laws, or regulations.
           </Text>
           <Title order={3}>Consequences of Violations</Title>
           <Text>
@@ -635,25 +608,25 @@ export default function TermsLegalBody({ addTitle }: Props) {
             By uploading or submitting any Contributions as part of the Services, including but not
             limited to your participation in the Club, you acknowledge and agree that we may access,
             store, process, and use any information and personal data you provide in accordance with
-            our Privacy Policy and your account settings. This includes the right to use your
-            Contributions to provide the Services, display your content to Followers, and facilitate
-            any related payment or compensation.
+            our Privacy Policy and your account&apos;s data sharing settings. This includes the
+            right to use your Contributions to provide the Services, display your content to
+            Followers, and facilitate any related payment or compensation.
           </Text>
           <Text>
-            While we do not claim ownership of your Contributions, by submitting your Contributions,
+            While we do not claim ownership of your Contributions. By submitting your Contributions,
             you grant us a worldwide, non-exclusive, royalty-free, transferable, sublicensable
             license to use, reproduce, distribute, display, and perform your Contributions in
-            connection with the Services, including within the Club. This license is necessary to
-            operate, promote, and improve the Services and to enable the functionality of the Club,
-            including distributing your content to Followers for financial compensation as agreed in
-            the terms of the Club.
+            connection with the Services. This license is necessary to operate, promote, and improve
+            the Services and to enable the functionality of the Club, including displaying your
+            content to your followers.
           </Text>
           <Text>
             You retain full ownership of your Contributions and any intellectual property or
             proprietary rights associated with them. This license does not transfer ownership of
             your Contributions to us. However, you understand that by submitting Contributions, you
             are granting us permission to use them as described above without additional
-            compensation, aside from any financial compensation agreed upon through the Club.
+            compensation, aside from any financial compensation agreed upon through in the{" "}
+            <Link href="/legal/club">{"Club's terms of service"}</Link>.
           </Text>
           <Text>
             If you provide suggestions, ideas, or feedback regarding the Services, you agree that we
@@ -778,17 +751,16 @@ export default function TermsLegalBody({ addTitle }: Props) {
               <Text>
                 At our sole discretion, refuse, limit access to, or restrict the availability of any
                 Contributions, or any part thereof, to the extent technologically possible. This
-                includes, but is not limited to, restricting or disabling images, videos, content,
-                or files you upload or share with other users within the Service or Club, especially
-                if such content violates these Legal Terms or is deemed inappropriate.
+                includes, but is not limited to, restricting or disabling images, videos, audio and
+                text content you upload or share with other users within the Services, especially if
+                such content violates these Legal Terms or is deemed inappropriate.
               </Text>
             </li>
             <li>
               <Text>
                 Without prior notice or liability, remove or disable any files or content that we
                 determine to be excessively large, burdensome to our systems, or otherwise harmful
-                to the operation or security of the Services. This includes images and videos
-                uploaded in connection with the Services or the Club feature.
+                to the operation or security of the Services.
               </Text>
             </li>
             <li>
@@ -851,22 +823,23 @@ export default function TermsLegalBody({ addTitle }: Props) {
           </ul>
           <Text>
             You understand that any termination of your access to the Services may involve the
-            deletion of your user account, associated data, and Contributions (including images,
-            videos and content you have uploaded) without the possibility of recovery. We are not
-            liable for any loss of data or other information resulting from such termination.
+            deletion of your user account, associated data, and Contributions (including image,
+            video, audio and text content you have uploaded) without the possibility of recovery. We
+            are not liable for any loss of data or other information resulting from such
+            termination.
           </Text>
 
           <Title order={3}>Account Deletion and Data Retention</Title>
           <Text>
             You have the right to request the deletion of your account and all associated personal
-            data, including sensitive images and videos at any time. You can do this directly within
-            your account settings by clicking on the cog icon in the top right corner of the screen
-            when logged into the platform at www.muxout.com. Alternatively, you can request account
-            deletion by contacting us at info@muxout.com.
+            data at any time. You can do this by navigating to the settings page and clicking the
+            appropriate button under the Account section.
           </Text>
           <Text>
-            Upon initiating the deletion request, we will remove your data from our systems in
-            accordance with our [Privacy Policy].
+            Upon initiating the account deletion request, all of your data will become private
+            immediately (if it was public) and will be deleted permanently from our systems after 7
+            days from the request in accordance with our{" "}
+            <Link href="/legal/privacy">Privacy Policy</Link>.
           </Text>
 
           <Title order={2}>15. MODIFICATIONS AND INTERRUPTIONS</Title>
@@ -918,16 +891,15 @@ export default function TermsLegalBody({ addTitle }: Props) {
         </Stack>
         <Stack>
           <Title order={2}>17. DISPUTE RESOLUTION</Title>
-
           <Title order={3}>Binding Arbitration</Title>
           <Text>
             If informal negotiations fail to resolve any disputes between you and us (except for
             disputes expressly excluded below), such disputes will be resolved exclusively through
             binding arbitration. By agreeing to arbitration, you waive your right to file a lawsuit
             in court or have a jury trial. Arbitration will follow the Commercial Arbitration Rules
-            of the American Arbitration Association (AAA) and, where applicable, the AAA’s
+            of the American Arbitration Association (AAA) and, where applicable, the {"AAA's"}
             Supplementary Procedures for Consumer Related Disputes (AAA Consumer Rules). These rules
-            can be found on the AAA’s website.
+            can be found on the {"AAA's"} website.
           </Text>
           <Text>
             Arbitration fees and arbitrator compensation will be governed by, and where applicable,
@@ -995,7 +967,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             If any part of this arbitration provision is found to be illegal or unenforceable, the
             remaining portions will still apply, and disputes not subject to arbitration will be
             resolved in the courts specified above, with both parties agreeing to submit to that
-            court’s jurisdiction.
+            {"court's"} jurisdiction.
           </Text>
         </Stack>
         <Stack>
@@ -1060,7 +1032,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             You agree to defend, indemnify, and hold us harmless, including our subsidiaries,
             affiliates, and all of our respective officers, agents, partners, and employees, from
             and against any loss, damage, liability, claim, or demand, including reasonable
-            attorneys’ fees and expenses, made by any third party due to or arising out of:
+            {"attorneys'"} fees and expenses, made by any third party due to or arising out of:
           </Text>
           <ul>
             <li>Your use of the Services.</li>
@@ -1092,11 +1064,10 @@ export default function TermsLegalBody({ addTitle }: Props) {
             for the purpose of operating, maintaining, and improving the
             Services, as well as data related to your use of the Services. This
             includes, but is not limited to, personal information (such as your
-            age, sex, city, and country of residence), images and videos you
-            upload, and interactions within "the club" (e.g., following or being
+            age, sex, city, and country of residence), image, video, audio and text you
+            upload, and interactions within the "Club" (e.g., following or being
             followed by other users). We also collect data for analytical
-            purposes, including tracking user engagement and personalized
-            product suggestions.`}
+            purposes.`}
           </Text>
           <Text>
             While we implement regular routine backups of data, you are solely responsible for
@@ -1127,8 +1098,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             ELECTRONIC RECORDS FOR ALL AGREEMENTS, CONTRACTS, ORDERS, AND
             TRANSACTIONS ENTERED INTO THROUGH THE SERVICES. This includes, but
             is not limited to, any documents related to your use of the
-            platform, membership in "the club," financial transactions processed
-            via Stripe or other payment methods, and the delivery of related
+            platform, membership in the "Club," financial transactions, and the delivery of related
             notices and policies.`}
           </Text>
           <Text>
@@ -1184,7 +1154,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             To resolve a complaint regarding the Services or to receive further information about
             their use, please contact us at:
           </Text>
-          <Text>Purrma LLC, 30N Gould St. Sheridan, Wyoming 82801, United States</Text>
+          <Text>Bettermax LLC, 30 N Gould St. Sheridan, Wyoming 82801, United States</Text>
           <Text>info@muxout.com</Text>
         </Stack>
       </Stack>

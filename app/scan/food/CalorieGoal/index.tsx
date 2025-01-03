@@ -50,16 +50,7 @@ export default function CalorieGoalController({
         openErrorModal({ description: "You need to login to see your estimated calorie norm." });
         return;
       }
-      const { latestProgress, nutrition } = userDetails || {};
-
-      const { body } = latestProgress || {};
-
-      if (body?.overall === 0) {
-        openErrorModal({
-          description: "You need to scan your body to get your estimated calorie norm.",
-        });
-        return;
-      }
+      const { nutrition } = userDetails || {};
 
       setGoalType("remaining");
       setCalorieGoal(nutrition?.remainingDailyCalories || 0);
