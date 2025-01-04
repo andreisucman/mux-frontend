@@ -64,7 +64,7 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "Read and listen the progress diary of the club members.",
+    description: "Read and listen to the progress diary of the club members.",
   },
   {
     icon: <IconEye className="icon icon__large" style={style} />,
@@ -76,16 +76,7 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconMoodSpark className="icon icon__large" style={style} />,
-    description: "Access to the advisor coach to discuss style, tips, progress, and more.",
-  },
-  {
-    icon: <IconMoodSpark className="icon icon__large" style={style} />,
-    description: "Access to the improvement coach for personalized weekly routines and recipes.",
-  },
-  {
-    icon: <IconMoodSpark className="icon icon__large" style={style} />,
-    description:
-      "Access to the analyst coach for helping choose best products by your criteria and special consideration.",
+    description: "Access to the advisor, improvement, and analyst coaches.",
   },
 ];
 

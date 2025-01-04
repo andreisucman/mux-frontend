@@ -7,15 +7,21 @@ import classes from "./SortButton.module.css";
 
 type Props = {
   sortItems: { label: string; value: string }[];
-  isDisabled?: boolean;
   customStyles?: { [key: string]: any };
+  isDisabled?: boolean;
+  defaultSortValue?: string;
 };
 
-export default function SortButton({ sortItems, customStyles, isDisabled }: Props) {
+export default function SortButton({
+  sortItems,
+  defaultSortValue = "-createdAt",
+  customStyles,
+  isDisabled,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const sort = searchParams.get("sort") || "-createdAt";
+  const sort = searchParams.get("sort") || defaultSortValue;
 
   const handleSelect = async (value: string) => {
     if (value === sort) return;
@@ -28,9 +34,9 @@ export default function SortButton({ sortItems, customStyles, isDisabled }: Prop
       sortItems.map((item, i) => (
         <Checkbox
           key={i}
-          checked={sort === item.value}
           size="md"
           label={item.label}
+          checked={sort === item.value}
           onChange={() => handleSelect(item.value)}
           readOnly
         />

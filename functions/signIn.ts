@@ -1,5 +1,5 @@
-import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import callTheServer from "./callTheServer";
 
 export type SignInStateType = {
@@ -31,6 +31,5 @@ export default async function signIn({ stateObject, router }: Props) {
     if (response.status === 200) {
       router.push(response.message);
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 }

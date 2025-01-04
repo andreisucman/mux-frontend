@@ -44,7 +44,6 @@ export default function ClubJoin() {
 
     joinClub({
       router,
-      userDetails,
       setUserDetails,
       redirectPath: "/club/admission",
       closeModal: true,

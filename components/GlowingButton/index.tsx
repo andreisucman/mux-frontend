@@ -10,6 +10,7 @@ type Props = {
   disabled?: boolean;
   loading?: boolean;
   children?: React.ReactNode;
+  iconPosition?: "left" | "right";
   onClick?: (props?: any) => void;
   buttonStyles?: { [key: string]: any };
   containerStyles?: { [key: string]: any };
@@ -22,6 +23,7 @@ function GlowingButton({
   addGradient = true,
   loading,
   disabled,
+  iconPosition = "left",
   containerStyles,
   overlayStyles,
   buttonStyles,
@@ -50,9 +52,10 @@ function GlowingButton({
           <Loader m="0 auto" size="sm" color="white" />
         ) : (
           <>
-            {icon}
+            {iconPosition === "left" && icon}
             {text}
             {children && children}
+            {iconPosition === "right" && icon}
           </>
         )}
       </UnstyledButton>

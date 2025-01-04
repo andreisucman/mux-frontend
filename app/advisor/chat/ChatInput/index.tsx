@@ -100,7 +100,7 @@ export default function ChatInput({
     const buttonIcon = !!isTrialUsed ? (
       <IconPlus className="icon" style={{ marginRight: rem(6) }} />
     ) : (
-      <IconSquareRoundedCheck className="icon" />
+      <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
     );
 
     const onClick = userName
@@ -125,7 +125,7 @@ export default function ChatInput({
     };
 
     openSubscriptionModal(payload);
-  }, [userId]);
+  }, [userDetails, openSubscriptionModal]);
 
   const appendMessage = useCallback((array: MessageType[]) => {
     setConversation((prevConversation) => {
@@ -195,11 +195,13 @@ export default function ChatInput({
 
         if (response.status === 200) {
           if (response.error) {
+            setConversation((prev) => prev.slice(0, prev.length - 1));
             if (response.error === "not following") {
               openErrorModal({
                 description: "Follow this user before asking questions about them.",
               });
             } else if (response.error === "subscription expired") {
+              console.log("line 207");
               handleAddSubscription();
             } else if (response.error === "coach is tired") {
               openCoachIsTiredModal();
@@ -235,12 +237,12 @@ export default function ChatInput({
             ...prev,
             coachEnergy: response.message?.coachEnergy,
           }));
+        } else {
+          setConversation((prev) => prev.slice(0, prev.length - 1));
         }
 
         setIsTyping(false);
-      } catch (err: any) {
-        setIsTyping(false);
-      }
+      } catch (err: any) {}
     },
     [currentMessage, conversation && conversation.length]
   );

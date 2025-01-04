@@ -8,6 +8,7 @@ export enum ReferrerEnum {
   CLUB_PROGRESS = "clubProgress",
   CLUB_STYLE = "clubStyle",
   CLUB_PROOF = "clubProof",
+  CLUB_ANSWERS = "clubAnswers",
   AUTH_PAGE = "authPage",
   SCAN_INDEX = "scanIndex",
   PLANS = "plans",

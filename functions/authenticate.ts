@@ -1,4 +1,5 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import getBrowserFingerprint from "get-browser-fingerprint";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -30,6 +31,8 @@ const authenticate = async ({
     const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
     const { redirectPath, redirectQuery, localUserId } = parsedState;
 
+    const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
+
     const response = await callTheServer({
       endpoint: "authenticate",
       method: "POST",
@@ -39,6 +42,7 @@ const authenticate = async ({
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         localUserId,
         email,
+        fingerprint,
         referrer,
         password,
       },
@@ -77,7 +81,17 @@ const authenticate = async ({
       let redirectUrl = "/tasks";
 
       if (redirectPath) redirectUrl = redirectPath;
-      if (redirectQuery) redirectUrl += `?${redirectQuery}`;
+      if (redirectQuery) {
+        const query = new URLSearchParams(redirectQuery);
+
+        const userName = query.get("userName");
+
+        if (userName) {
+          redirectUrl += `/${userName}`;
+        } else {
+          redirectUrl += `?${redirectQuery}`;
+        }
+      }
 
       const { emailVerified } = response.message;
 
@@ -93,8 +107,7 @@ const authenticate = async ({
         setStatus(AuthStateEnum.UNAUTHENTICATED);
       }
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 };
 
 export default authenticate;

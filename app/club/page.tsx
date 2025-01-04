@@ -19,8 +19,7 @@ export default function Club() {
     useContext(ClubContext);
 
   const { club } = userDetails || {};
-  const { followingUserName, payouts, totalFollowers } = club || {};
-  const { balance, payoutsEnabled } = payouts || {};
+  const { followingUserName, totalFollowers } = club || {};
 
   return (
     <Stack className={`${classes.container} smallPage`}>

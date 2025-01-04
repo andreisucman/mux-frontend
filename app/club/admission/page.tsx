@@ -179,9 +179,8 @@ export default function ClubAdmission() {
               Club profile page.
             </Text>
             <Text>
-              Sharing your data gives people a reason to follow you which translates into your
-              earnings. You can always change your data sharing preferences in the settings of the
-              Club profile page.
+              Sharing your data gives people a reason to follow you. You can always change your data
+              sharing preferences in the settings.
             </Text>
             <DataSharingSwitches title="Data privacy" />
             <GlowingButton

@@ -12,6 +12,8 @@
   inset: 0;
   gap: 0;
   overflow: auto;
+  padding: rem(16);
+  gap: rem(16);
 
   &::-webkit-scrollbar {
     display: none;

@@ -100,7 +100,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
     [showComponent]
   );
 
-  const followText = `Follow to see ${pageType === "routines" ? "their routines" : "their details"}.`;
+  const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
     if (!youFollowDataFetched) return;
@@ -148,7 +148,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}
-            {showComponent === "subscriptionOverlay" && <PeekOverlay />}
+            {showComponent === "subscriptionOverlay" && <PeekOverlay userName={userName} />}
             {showComponent === "followOverlay" && (
               <FollowOverlay userName={userName as string} description={followText} />
             )}

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { IconCircleHalfVertical, IconEye } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -41,7 +41,6 @@ export default function FollowOverlay({ userName, description }: Props) {
   return (
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
-        <IconCircleHalfVertical className="icon icon__title" />
         <Text>Follow to see</Text>
         <Text size="sm" c="dimmed">
           {description}
