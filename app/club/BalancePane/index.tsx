@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
-import { IconDownload, IconInfoCircle } from "@tabler/icons-react";
-import { Alert, Button, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { Alert, Button, Group, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import { UserDataType } from "@/types/global";
@@ -51,33 +52,30 @@ function BalancePane() {
   const displayBalance = useMemo(() => (balance ? balance?.toFixed(2) : 0), [balance]);
 
   const alert = useMemo(() => {
-    // if (!detailsSubmitted)
-    return (
-      <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
-        <Group gap={8}>
-          Connect your bank account to enable withdrawals.
-          <Button ml="auto" size="compact-sm">
-            Connect
-          </Button>
-        </Group>
-      </Alert>
-    );
-    // if (submittedNotEnabled)
-    return (
-      <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
-        <Stack gap={8}>You information is under review.</Stack>
-      </Alert>
-    );
+    if (!detailsSubmitted)
+      return (
+        <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+          <Group gap={8}>
+            To enable withdrawals connect your bank account.
+            <Button component={Link} href="/club/admission" ml="auto" size="compact-sm">
+              Connect
+            </Button>
+          </Group>
+        </Alert>
+      );
+    if (submittedNotEnabled)
+      return (
+        <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+          <Stack gap={8}>We're checking your information.</Stack>
+        </Alert>
+      );
 
-    // if (!payoutsEnabled && disabledReason)
-    return (
-      <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
-        <Stack gap={8}>
-          Your payouts have been disabled. Login to your wallet to fix that.
-          <RedirectToWalletButton variant="filled" />
-        </Stack>
-      </Alert>
-    );
+    if (!payoutsEnabled && disabledReason)
+      return (
+        <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+          <Stack gap={8}>Your payouts have been disabled. Login to your wallet to fix that.</Stack>
+        </Alert>
+      );
   }, [detailsSubmitted, payoutsEnabled, disabledReason]);
 
   return (

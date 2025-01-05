@@ -34,7 +34,7 @@ function MenuButtons({
         className={cn(classes.button, { [classes.selected]: isProgress })}
         onClick={redirectToProgress}
       >
-        <Text className={classes.buttonText}>Progress</Text>
+        Progress
       </Button>
       <Button
         variant={showQuestions ? "filled" : "default"}
@@ -42,13 +42,7 @@ function MenuButtons({
         className={cn(classes.button, { [classes.selected]: isAbout })}
         onClick={redirectToTrackingAbout}
       >
-        <Text
-          className={cn(classes.buttonText, {
-            [classes.activeButtonText]: showQuestions,
-          })}
-        >
-          About
-        </Text>
+        About
       </Button>
     </Group>
   );

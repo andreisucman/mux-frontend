@@ -60,15 +60,15 @@ export const freePlanContent = [
 export const peekLicenseContent = [
   {
     icon: <IconHandGrab className="icon icon__large" style={style} />,
-    description: "See and steal the most effective routines of the club members.",
+    description: "Steal the most effective routines of the club members.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "Read and listen to the progress diary of the club members.",
+    description: "Read the progress diary of the club members.",
   },
   {
     icon: <IconEye className="icon icon__large" style={style} />,
-    description: "Check the personality, style, tips and social links of the club members.",
+    description: "See the personality, style, tips and socials of the club members.",
   },
   {
     icon: <IconBubbleText className="icon icon__large" style={style} />,
@@ -76,7 +76,7 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconMoodSpark className="icon icon__large" style={style} />,
-    description: "Access to the advisor, improvement, and analyst coaches.",
+    description: "Access the advisor, improvement, and analyst coaches.",
   },
 ];
 

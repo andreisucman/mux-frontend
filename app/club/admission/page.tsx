@@ -19,12 +19,6 @@ import RedirectToWalletButton from "../BalancePane/RedirectToWalletButton";
 import DataSharingSwitches from "./DataSharingSwitches";
 import classes from "./admission.module.css";
 
-const icons = {
-  checkbox: <IconSquareCheck className="icon" style={{ marginRight: rem(6) }} />,
-  bank: <IconBuildingBank className="icon" style={{ marginRight: rem(6) }} />,
-  rocket: <IconRocket className="icon" style={{ marginRight: rem(6) }} />,
-};
-
 export const runtime = "edge";
 
 export default function ClubAdmission() {
@@ -143,7 +137,6 @@ export default function ClubAdmission() {
             </Text>
             <Group gap={16} justify="space-between">
               <GlowingButton
-                icon={detailsSubmitted ? icons.checkbox : icons.bank}
                 text={detailsSubmitted ? "Bank added" : "Add bank"}
                 disabled={disableFirst || loadingButton === "bank"}
                 loading={loadingButton === "bank"}
@@ -185,7 +178,6 @@ export default function ClubAdmission() {
             <DataSharingSwitches title="Data privacy" />
             <GlowingButton
               text="Done"
-              icon={icons.rocket}
               disabled={disableSecond || loadingButton === "done"}
               loading={loadingButton === "done"}
               onClick={handleRedirect}

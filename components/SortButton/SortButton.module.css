@@ -2,6 +2,11 @@
   z-index: 2;
   gap: rem(8);
   pointer-events: all;
+  color: var(--mantine-color-gray-3);
+
+  &[data-disabled] {
+    color: var(--mantine-color-dark-3);
+  }
 }
 
 .dropdown {

@@ -16,7 +16,7 @@
 .signInButton {
   display: flex;
   align-items: center;
-  gap: rem(8);
+  gap: rem(12);
 
   &:hover {
     color: white;

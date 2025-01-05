@@ -143,10 +143,9 @@ export default function PeekOverlay({ description, userName }: Props) {
       <PricingCard
         price="19"
         name={"Peek License"}
-        buttonText="Add"
+        buttonText="Add peek license"
         content={peekLicenseContent}
         onClick={handleAddSubscription}
-        icon={<IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />}
         isLoading={isLoading}
         addGradient
       />

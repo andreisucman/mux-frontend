@@ -11,11 +11,11 @@
 .link {
   display: flex;
   align-items: center;
-  gap: rem(8);
+  gap: rem(12);
 }
 
 .child {
-  padding-left: rem(30);
+  padding-left: rem(32);
   margin-top: rem(12);
   font-size: var(--mantine-font-size-sm);
 }
