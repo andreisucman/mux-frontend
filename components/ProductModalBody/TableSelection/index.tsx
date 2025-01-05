@@ -60,7 +60,7 @@ export function TableSelection({ suggestions, handleAlternativeClick }: Props) {
   );
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} scrollbar`}>
       <Table verticalSpacing="sm">
         <Table.Thead>{headings}</Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>

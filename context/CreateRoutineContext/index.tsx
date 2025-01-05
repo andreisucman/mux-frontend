@@ -71,6 +71,14 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     isSubscriptionActive,
     isTrialUsed,
   }: OnCreateRoutineClickProps) => {
+    console.log(
+      "isSubscriptionActive",
+      isSubscriptionActive,
+      "isTrialUsed",
+      isTrialUsed,
+      "isLoading",
+      isLoading
+    );
     if (isLoading) return;
 
     if (isSubscriptionActive) {
@@ -86,7 +94,8 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }
     } else {
-      const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
+      console.log("line 97")
+      const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
 
       const onClick = !!isTrialUsed
         ? handleCreateCheckoutSession

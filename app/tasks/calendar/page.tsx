@@ -43,7 +43,7 @@ export default function Calendar() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const type = searchParams.get("type");
+  const type = searchParams.get("type") || "head";
   const givenTaskKey = searchParams.get("key");
   const givenMode = searchParams.get("mode");
 

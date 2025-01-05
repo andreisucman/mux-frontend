@@ -1,25 +1,21 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconBulb,
-  IconSquareRoundedCheck,
-} from "@tabler/icons-react";
-import { Button, Loader, rem, Stack, Text } from "@mantine/core";
+import { Button, Loader, Stack, Text } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
+import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
 import { TypeEnum } from "@/types/global";
 import EditATaskContent from "../EditATaskContent";
-import CreateWeeklyRoutineButton from "./CreateWeeklyRoutineButton";
 import { HandleSaveTaskProps, RawTaskType } from "./types";
 import classes from "./AddATaskContainer.module.css";
 
 type Props = {
   type: TypeEnum;
   timeZone?: string;
+  onCreateRoutineClick: (args?: any) => void;
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
 };
 
@@ -29,7 +25,12 @@ type HandleCreateTaskProps = {
   description: string;
 };
 
-export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Props) {
+export default function AddATaskContainer({
+  type,
+  timeZone,
+  handleSaveTask,
+  onCreateRoutineClick,
+}: Props) {
   const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -88,11 +89,15 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
 
   const tasksLeft = datesPreview.length - 3;
 
-  const { nextScan } = userDetails || {};
+  const { nextRoutine, subscriptions } = userDetails || {};
 
-  const typeNextScan = nextScan?.find((obj) => obj.type === type);
+  const { isSubscriptionActive, isTrialUsed } = checkSubscriptionActivity(
+    ["peek", "improvement"],
+    subscriptions
+  );
+  const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
   const isCreateRoutineInCooldown =
-    typeNextScan && typeNextScan.date && new Date(typeNextScan.date) > new Date();
+    typeNextRoutine && typeNextRoutine.date && new Date(typeNextRoutine.date) > new Date();
 
   return (
     <Stack className={classes.container}>
@@ -140,7 +145,17 @@ export default function AddATaskContainer({ type, timeZone, handleSaveTask }: Pr
                 >
                   Create task
                 </Button>
-                {!isCreateRoutineInCooldown && <CreateWeeklyRoutineButton type={type} />}
+                {!isCreateRoutineInCooldown && (
+                  <Button
+                    disabled={!!isCreateRoutineInCooldown}
+                    onClick={() => {
+                      console.log("onCreateRoutineClick", onCreateRoutineClick);
+                      onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });
+                    }}
+                  >
+                    Create weekly routine
+                  </Button>
+                )}
               </>
             )}
 

@@ -410,12 +410,6 @@ export default function VideoRecorder({
   }, []);
 
   const startText = captureType === "image" ? "Take the photo" : "Start recording";
-  const startIcon =
-    captureType === "image" ? (
-      <IconCamera className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconVideo className="icon" style={{ marginRight: rem(6) }} />
-    );
 
   return (
     <Stack className={classes.container}>
@@ -471,7 +465,6 @@ export default function VideoRecorder({
                   className={classes.button}
                   disabled={taskExpired}
                 >
-                  {startIcon}
                   {startText}
                 </Button>
               )}

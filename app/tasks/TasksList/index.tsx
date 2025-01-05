@@ -20,11 +20,11 @@ import {
   saveToLocalStorage,
 } from "@/helpers/localStorage";
 import { TaskType, TypeEnum } from "@/types/global";
-import ButtonsGroup from "./ButtonsGroup";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import { HandleSaveTaskProps } from "./CreateTaskOverlay/AddATaskContainer/types";
 import StreakStatus from "./StreakStatus";
 import RoutineRow from "./TaskRow";
+import TasksButtons from "./TasksButtons";
 import classes from "./TasksList.module.css";
 
 type Props = {
@@ -182,7 +182,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Group className={classes.titleGroup}>
         <StreakStatus completionPercent={taskCompletionPercent} />
-        <ButtonsGroup
+        <TasksButtons
           type={type as TypeEnum}
           disableCalendar={disableAll}
           disableCreate={disableAll || displayComponent === "scanOverlay"}

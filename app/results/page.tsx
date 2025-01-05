@@ -55,6 +55,8 @@ export default function ResultsProgress() {
           currentArrayLength: (currentArray && currentArray.length) || 0,
         });
 
+        console.log("items", items);
+
         if (skip) {
           setProgress([...(currentArray || []), ...items.slice(0, 20)]);
         } else {

@@ -142,9 +142,9 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         children: [
           { title: "Profile", path: "/club" },
           { title: "About", path: `/club/${name}` },
-          { title: "Routines", path: `/club/routines/${userId}` },
-          { title: "Diary", path: `/club/diary/${userId}` },
-          { title: "Answers", path: `/club/diary/${userId}` },
+          { title: "Routines", path: `/club/routines/${name}` },
+          { title: "Diary", path: `/club/diary/${name}` },
+          { title: "Answers", path: `/club/diary/${name}` },
         ],
       });
     } else {

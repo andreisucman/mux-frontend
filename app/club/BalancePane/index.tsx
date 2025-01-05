@@ -80,15 +80,14 @@ function BalancePane() {
 
   return (
     <Stack className={classes.container}>
+      <Group className={classes.row}>
+        <Text c="dimmed" size="sm">
+          Your earnings
+        </Text>
+        {detailsSubmitted && <RedirectToWalletButton variant="default" />}
+      </Group>
+      {alert && <Stack>{alert}</Stack>}
       <Stack className={classes.stack}>
-        <Group className={classes.row}>
-          <Text c="dimmed" size="sm">
-            Your earnings
-          </Text>
-          {detailsSubmitted && <RedirectToWalletButton variant="default" />}
-        </Group>
-        {alert && <Stack>{alert}</Stack>}
-
         <Title order={2} className={classes.amount}>
           ${displayBalance}
         </Title>

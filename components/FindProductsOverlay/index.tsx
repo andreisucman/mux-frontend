@@ -1,6 +1,5 @@
 import React from "react";
-import { IconListSearch } from "@tabler/icons-react";
-import { Button, CloseButton, rem, Stack } from "@mantine/core";
+import { Button, CloseButton, Stack } from "@mantine/core";
 import classes from "./FindProductsOverlay.module.css";
 
 type Props = {

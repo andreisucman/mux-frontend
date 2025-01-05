@@ -32,11 +32,6 @@ export default function ProductsCriteriaContainer({ taskKey, findProducts }: Pro
     <Stack flex={1}>
       <TextareaComponent
         text={text}
-        heading={
-          <Text size="xs" c="dimmed">
-            Your criteria:
-          </Text>
-        }
         placeholder={"Example: It must be cheaper and without fragrance"}
         setText={setText}
         editable

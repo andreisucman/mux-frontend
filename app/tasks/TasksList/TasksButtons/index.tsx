@@ -3,13 +3,14 @@
 import React, { useContext } from "react";
 import { IconCalendar, IconCirclePlus, IconHistory, IconShoppingBag } from "@tabler/icons-react";
 import { Button, Group, rem } from "@mantine/core";
+import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TypeEnum } from "@/types/global";
 import { HandleSaveTaskProps } from "../CreateTaskOverlay/AddATaskContainer/types";
 import openCreateNewTask from "../CreateTaskOverlay/openCreateNewTask";
-import classes from "./ButtonsGroup.module.css";
+import classes from "./TasksButtons.module.css";
 
 type Props = {
   disableSuggestions?: boolean;
@@ -20,7 +21,7 @@ type Props = {
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
 };
 
-export default function ButtonsGroup({
+export default function TasksButtons({
   type,
   disableCreate,
   disableCalendar,
@@ -33,6 +34,8 @@ export default function ButtonsGroup({
   const { tasks, timeZone } = userDetails || {};
   const relevantTasks = tasks?.filter((t) => t.type === type);
   const tooManyTasksForToday = relevantTasks && relevantTasks?.length >= 10;
+
+  const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
   return (
     <Group className={classes.container}>
@@ -83,7 +86,7 @@ export default function ButtonsGroup({
         variant="default"
         disabled={disableCreate || tooManyTasksForToday}
         size="xs"
-        onClick={() => openCreateNewTask({ type, handleSaveTask, timeZone })}
+        onClick={() => openCreateNewTask({ type, handleSaveTask, onCreateRoutineClick, timeZone })}
       >
         <IconCirclePlus style={{ width: rem(20) }} />
       </Button>

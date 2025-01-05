@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowRight, IconCirclePlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -52,25 +51,28 @@ export default function Considerations() {
     createRoutine({ concerns, subscriptions, specialConsiderations: text, type });
   };
 
-  const updateSpecialConsiderations = useCallback(async (text: string) => {
-    try {
-      if (status === "authenticated") {
-        const response = await callTheServer({
-          endpoint: "updateSpecialConsiderations",
-          method: "POST",
-          body: { text },
-        });
-        if (response.status === 200) {
-          setUserDetails((prev: UserDataType) => ({ ...prev, specialConsiderations: text }));
+  const updateSpecialConsiderations = useCallback(
+    async (text: string) => {
+      try {
+        if (status === "authenticated") {
+          const response = await callTheServer({
+            endpoint: "updateSpecialConsiderations",
+            method: "POST",
+            body: { text },
+          });
+          if (response.status === 200) {
+            setUserDetails((prev: UserDataType) => ({ ...prev, specialConsiderations: text }));
+          }
+        } else {
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            specialConsiderations: text,
+          }));
         }
-      } else {
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          specialConsiderations: text,
-        }));
-      }
-    } catch (err) {}
-  }, []);
+      } catch (err) {}
+    },
+    [userDetails]
+  );
 
   const createRoutine = useCallback(
     async ({ type, concerns, subscriptions, specialConsiderations }: CreateRoutineProps) => {
@@ -131,7 +133,7 @@ export default function Considerations() {
         setIsLoading(false);
       }
     },
-    [type, part, isLoading]
+    [type, part, isLoading, userDetails]
   );
 
   useEffect(() => {

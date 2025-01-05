@@ -20,12 +20,6 @@ export default function ProductModalBody({ item, allItems }: Props) {
 
   const compareItems = allItems.filter((i) => i.suggestion === item.suggestion);
 
-  const icon = showAlternatives ? (
-    <IconArrowLeft className={"icon"} style={{ marginRight: rem(6) }} />
-  ) : (
-    <IconVersions className={"icon"} style={{ marginRight: rem(6) }} />
-  );
-
   return (
     <Stack className={classes.container}>
       {showAlternatives ? (

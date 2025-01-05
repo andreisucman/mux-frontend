@@ -67,10 +67,6 @@ export default function Explain(props: Props) {
     [typeof suggestions, typeof defaultSuggestions]
   );
 
-  const proofSwitchLabel = proofEnabled
-    ? "Click to disable proof upload"
-    : "Click to enable proof upload";
-
   const {
     recipe,
     status: taskStatus,
@@ -262,7 +258,7 @@ export default function Explain(props: Props) {
             ) : (
               <>
                 <Switch
-                  label={proofSwitchLabel}
+                  label={"Proof upload"}
                   disabled={taskStatus === "completed"}
                   checked={proofEnabled || false}
                   onChange={() => switchProofUpload(!proofEnabled, taskId)}

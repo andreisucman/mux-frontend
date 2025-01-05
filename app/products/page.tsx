@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff, IconShoppingBag } from "@tabler/icons-react";
+import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -19,7 +19,7 @@ export const runtime = "edge";
 
 export default function Products() {
   const { status } = useContext(UserContext);
-  const { width, ref } = useElementSize();
+  const { ref } = useElementSize();
   const searchParams = useSearchParams();
 
   const [uniqueTasks, setUniqueTasks] = useState<TaskType[]>();
@@ -55,12 +55,10 @@ export default function Products() {
     <Stack className={`${classes.container} smallPage`} ref={ref}>
       <SkeletonWrapper>
         <PageHeader title="Products for tasks" showReturn hidePartDropdown />
-
         {uniqueTasks ? (
           <>
             {uniqueTasks.length > 0 ? (
               <Stack className={classes.content}>
-                {/* <Stack className={classes.list} style={{ maxWidth: width }}> */}
                 <Stack className={classes.list}>
                   {uniqueTasks.map((record) => {
                     return (

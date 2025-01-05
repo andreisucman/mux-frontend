@@ -52,8 +52,7 @@ export default function ChatDisplay({
         });
         setConversation(conversation.reverse());
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }, [conversationId]);
 
   const conversationList = useMemo(
@@ -94,7 +93,6 @@ export default function ChatDisplay({
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
       >
         {conversationList}
-        <span className={classes.bgText}>Ask advisor</span>
         {isTyping && <Loader ml="auto" mr={rem(16)} type="dots" />}
       </Stack>
     </Stack>

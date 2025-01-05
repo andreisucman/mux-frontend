@@ -134,7 +134,7 @@ export default function SuggestionContainer({
       centered: true,
       title: (
         <Title order={5} component={"p"}>
-          Enter your criteria
+          Tell your criteria
         </Title>
       ),
       innerProps: <ProductsCriteriaContainer taskKey={taskKey} findProducts={findProducts} />,

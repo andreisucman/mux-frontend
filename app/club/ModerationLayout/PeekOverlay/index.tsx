@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconCirclePlus } from "@tabler/icons-react";
-import { rem, Stack, Text, Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import PricingCard from "@/app/plans/PricingCard";

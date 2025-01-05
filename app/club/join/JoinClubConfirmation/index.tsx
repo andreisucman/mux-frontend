@@ -2,13 +2,11 @@
 
 import React, { useMemo, useState } from "react";
 import {
-  IconArrowRight,
   IconCamera,
   IconCash,
   IconEye,
   IconLock,
   IconRating18Plus,
-  IconTarget,
   IconTargetOff,
 } from "@tabler/icons-react";
 import { rem, Stack, Table, Text } from "@mantine/core";

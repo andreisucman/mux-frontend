@@ -5,7 +5,6 @@ import { SexEnum } from "@/types/global";
 import classes from "./InstructionContainer.module.css";
 
 type Props = {
-  sex?: SexEnum;
   title?: string;
   description?: string;
   instruction: string;
@@ -13,14 +12,11 @@ type Props = {
 };
 
 export default function InstructionContainer({
-  sex,
   title,
   instruction,
   description,
   customStyles,
 }: Props) {
-  const coach = sex === "female" ? "🦸‍♀️" : "🦸‍♂";
-
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Skeleton className="skeleton" visible={!instruction}>
@@ -30,13 +26,11 @@ export default function InstructionContainer({
               {title}
             </Text>
           )}
-          <Text className={classes.description}>
-            {coach} Coach: {instruction}
-          </Text>
+          <Text className={classes.description}>{instruction}</Text>
         </Stack>
         {description && (
           <Group className={classes.note} style={instruction ? {} : { visibility: "hidden" }}>
-            <IconExclamationCircle color="var(--mantine-color-orange-6)" />
+            <IconExclamationCircle color="var(--mantine-color-orange-6)" className="icon" />
             <Text size="sm" c="orange.6">
               {description}
             </Text>
