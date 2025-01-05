@@ -48,13 +48,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
               const { isTrialUsed } = improvement || {};
               const { sex } = demographics || {};
 
-              const coachIcon = sex === "male" ? "🦸‍♂️" : "🦸‍♀️";
-              const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
-              const buttonIcon = !!isTrialUsed ? (
-                <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
-              ) : (
-                <IconSquareRoundedCheck className="icon" />
-              );
+              const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
 
               const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
               const onClick = !!isTrialUsed
@@ -71,14 +65,13 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
                     });
 
               openSubscriptionModal({
-                title: `${coachIcon} Add the Improvement Coach`,
-                price: "3",
+                title: "Add the improvement coach",
+                price: "4",
                 isCentered: true,
                 modalType: "improvement",
                 underButtonText: "No credit card required",
                 onClick,
                 buttonText,
-                buttonIcon,
                 onClose: () => fetchUserData({ setUserDetails }),
               });
               return;

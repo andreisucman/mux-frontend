@@ -91,11 +91,6 @@ export default function SuggestionContainer({
             const { isTrialUsed } = analyst || {};
 
             const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
-            const buttonIcon = !!isTrialUsed ? (
-              <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
-            ) : (
-              <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
-            );
 
             const onClick = !!isTrialUsed
               ? handleCreateCheckoutSession
@@ -106,12 +101,11 @@ export default function SuggestionContainer({
                   });
 
             openSubscriptionModal({
-              title: `Add the Analyst Coach`,
+              title: "Add the analyst coach",
               modalType: "analyst",
               isCentered: true,
               price: "4",
               buttonText,
-              buttonIcon,
               underButtonText: "No credit card required",
               onClose: handleRefetchData,
               onClick,

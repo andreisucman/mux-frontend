@@ -96,12 +96,7 @@ export default function ChatInput({
     const { advisor } = subscriptions || {};
     const { isTrialUsed } = advisor || {};
 
-    const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
-    const buttonIcon = !!isTrialUsed ? (
-      <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
-    );
+    const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
 
     const onClick = userName
       ? handleCreateCheckoutSession
@@ -113,12 +108,11 @@ export default function ChatInput({
             });
 
     const payload = {
-      title: userName ? `Add the Peek License` : `Add the Advisor Coach`,
+      title: userName ? `Add the peek license` : `Add the advisor coach`,
       modalType: userName ? "peek" : ("advisor" as "peek"),
       isCentered: true,
       price: userName ? "19" : "5",
       buttonText,
-      buttonIcon,
       onClick,
       onClose: () => fetchUserData({ setUserDetails }),
       underButtonText: userName ? "" : "No credit card required",

@@ -19,7 +19,7 @@ type Props = {
   withCloseButton?: boolean;
   description?: string;
   buttonText: string;
-  buttonIcon: React.ReactNode;
+  buttonIcon?: React.ReactNode;
   underButtonText?: string;
   isCentered?: boolean;
   onClick: (args?: any) => Promise<void>;

@@ -87,11 +87,6 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
       }
     } else {
       const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
-      const buttonIcon = !!isTrialUsed ? (
-        <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
-      ) : (
-        <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
-      );
 
       const onClick = !!isTrialUsed
         ? handleCreateCheckoutSession
@@ -102,11 +97,10 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
             });
 
       openSubscriptionModal({
-        title: `Add the Improvement Coach`,
-        price: "3",
+        title: "Add the improvement coach",
+        price: "4",
         isCentered: true,
         modalType: "improvement",
-        buttonIcon,
         buttonText,
         underButtonText: "No credit card required",
         onClick,

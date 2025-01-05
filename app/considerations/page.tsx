@@ -96,12 +96,7 @@ export default function Considerations() {
             const { improvement } = subscriptions || {};
             const { isTrialUsed } = improvement || {};
 
-            const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
-            const buttonIcon = !!isTrialUsed ? (
-              <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
-            ) : (
-              <IconSquareRoundedCheck className="icon" />
-            );
+            const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
 
             const onClick = !!isTrialUsed
               ? async () =>
@@ -117,13 +112,12 @@ export default function Considerations() {
                   });
 
             openSubscriptionModal({
-              title: `Add the Improvement Coach`,
+              title: `Add the improvement coach`,
               price: "4",
               isCentered: true,
               modalType: "improvement",
               underButtonText: "No credit card required",
               buttonText,
-              buttonIcon,
               onClick,
               onClose: () => fetchUserData({ setUserDetails }),
             });
