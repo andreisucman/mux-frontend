@@ -46,7 +46,7 @@ export default function FollowOverlay({ userName, description }: Props) {
           {description}
         </Text>
         <Button className={classes.button} onClick={handleFollowUser} mt={8}>
-          <IconEye className="icon" style={{ marginRight: rem(6) }} /> Follow
+           Follow
         </Button>
       </Stack>
     </Stack>

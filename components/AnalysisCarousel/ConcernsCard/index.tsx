@@ -72,8 +72,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
             loading={isLoading}
             disabled={isLoading}
             text={buttonText}
-            icon={<IconRotateDot className="icon" style={{ marginRight: rem(6) }} />}
-            containerStyles={{ flex: 0, margin: "0 auto" }}
+            containerStyles={{ flex: 0, margin: "0 auto", width: "100%", maxWidth: rem(300) }}
             onClick={handleClick}
           />
         </Stack>

@@ -76,14 +76,14 @@ const defaultAuthenticatedNavigation = [
     path: "/diary",
   },
   {
-    title: "My products",
-    path: "/products",
-    icon: <IconShoppingBag stroke={1.25} className="icon" />,
-  },
-  {
     title: "My advisor",
     icon: <IconInnerShadowBottom stroke={1.25} className="icon" />,
     path: "/advisor?type=head",
+  },
+  {
+    title: "My products",
+    path: "/products",
+    icon: <IconShoppingBag stroke={1.25} className="icon" />,
   },
 ];
 
@@ -131,29 +131,22 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
   };
 
   const finalAuthenticatedNavigation = useMemo(() => {
-    const { payouts } = userDetails?.club || {};
-    const { detailsSubmitted, disabledReason } = payouts || {};
+    const { club } = userDetails || {};
     const finalNavigation: NavigationLinkType[] = [...defaultAuthenticatedNavigation];
 
-    if (userDetails?.club) {
-      if (disabledReason || !detailsSubmitted) {
-        finalNavigation.push({
-          title: "Club admission",
-          path: "/club/admission",
-          icon: <IconSocial stroke={1.25} className="icon" />,
-        });
-      } else if (detailsSubmitted) {
-        finalNavigation.push({
-          title: "Club profile",
-          path: "/club",
-          icon: <IconSocial stroke={1.25} className="icon" />,
-          children: [
-            { title: "Profile", path: "/club" },
-            { title: "About", path: `/club/${name}` },
-            { title: "Routines", path: `/club/routines/${userId}` },
-          ],
-        });
-      }
+    if (club) {
+      finalNavigation.push({
+        title: "Club profile",
+        path: "/club",
+        icon: <IconSocial stroke={1.25} className="icon" />,
+        children: [
+          { title: "Profile", path: "/club" },
+          { title: "About", path: `/club/${name}` },
+          { title: "Routines", path: `/club/routines/${userId}` },
+          { title: "Diary", path: `/club/diary/${userId}` },
+          { title: "Answers", path: `/club/diary/${userId}` },
+        ],
+      });
     } else {
       finalNavigation.push({
         title: "Join club",

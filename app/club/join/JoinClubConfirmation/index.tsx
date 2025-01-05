@@ -25,7 +25,7 @@ const confirmData = {
     ],
     [
       <IconLock className="icon icon__title" />,
-      "All of your data is private when you join the Club. You can enable data sharing in the settings.",
+      "Nobody can see your data when you join the Club. But you can enable data sharing in the settings.",
     ],
   ],
 };
@@ -95,12 +95,6 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
   );
 
   const buttonText = type === "start" ? "Join the Club" : "Join and proceed to checkout";
-  const buttonIcon =
-    type === "start" ? (
-      <IconTarget className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconArrowRight className="icon" style={{ marginLeft: rem(6) }} />
-    );
 
   return (
     <Stack flex={1}>
@@ -124,7 +118,6 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
           disabled={isLoading}
           loading={isLoading}
           iconPosition={type === "start" ? "left" : "right"}
-          icon={buttonIcon}
           containerStyles={{ margin: "auto", width: "100%", maxWidth: rem(300) }}
           onClick={handleClick}
         />

@@ -87,7 +87,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
         </Stack>
       </Stack>
       <Button loading={isLoading} disabled={isLoading} onClick={handleGenerate}>
-        <IconToolsKitchen2 className="icon" style={{ marginRight: rem(6) }} /> Generate recipe
+         Generate recipe
       </Button>
     </Stack>
   );

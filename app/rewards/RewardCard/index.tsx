@@ -57,7 +57,6 @@ export default function RewardCard({ data, claimReward }: Props) {
             loading={isLoading}
             onClick={() => claimReward({ rewardId: data._id, isLoading, setIsLoading })}
           >
-            <IconMedal2 style={{ marginRight: rem(6) }} />
             Claim the reward
           </Button>
         </Stack>

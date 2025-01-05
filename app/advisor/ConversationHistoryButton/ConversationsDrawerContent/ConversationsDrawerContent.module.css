@@ -35,3 +35,8 @@
 .date {
   font-size: var(--mantine-font-size-xs);
 }
+
+.icon {
+  min-width: rem(16);
+  min-height: rem(16);
+}

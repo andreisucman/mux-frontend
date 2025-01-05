@@ -31,6 +31,7 @@ export default function openLegalBody(type: "club" | "terms" | "privacy") {
         {title}
       </Title>
     ),
+    classNames: { content: "scrollbar" },
     innerProps: <Stack>{body}</Stack>,
   });
 }

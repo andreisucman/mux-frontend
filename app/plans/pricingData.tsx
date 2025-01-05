@@ -9,7 +9,7 @@ import {
   IconChecklist,
   IconEye,
   IconHandGrab,
-  IconHandLoveYou,
+  IconMoodCheck,
   IconMessages,
   IconMoodSpark,
   IconNotebook,
@@ -106,8 +106,8 @@ export const advisorCoachContent = [
     description: "Answers your questions about progress, tasks, and more.",
   },
   {
-    icon: <IconHandLoveYou className="icon icon__large" style={style} />,
+    icon: <IconMoodCheck className="icon icon__large" style={style} />,
     description:
-      "Tells if a product is a good fit for you based on the product images and your appearance",
+      "Tells if a product is a good fit for you based on the product images and your appearance.",
   },
 ];

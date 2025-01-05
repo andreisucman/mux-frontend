@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "@/helpers/custom-router";
 import { IconMessage, IconTrash } from "@tabler/icons-react";
 import { ActionIcon, Stack, Text } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import modifyQuery from "@/helpers/modifyQuery";
 import { ConversationType } from "../types";
@@ -42,8 +42,7 @@ export default function ConversationsDrawerContent({ conversations, setConversat
             router.replace(`/advisor?${query}`);
           }
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [searchParams.toString()]
   );
@@ -57,28 +56,32 @@ export default function ConversationsDrawerContent({ conversations, setConversat
 
   return (
     <Stack className={classes.content}>
-      {conversations.map((conversation) => (
-        <Stack
-          className={classes.stack}
-          key={conversation._id}
-          onClick={() => handleRedirectToChat(conversation._id)}
-        >
-          <ActionIcon
-            className={classes.deleteIcon}
-            size="sm"
-            variant="default"
-            onClick={(e) => handleDeleteConversation(e, conversation._id)}
+      {conversations.map((conversation) => {
+        const date = formatDate({ date: conversation.updatedAt });
+
+        return (
+          <Stack
+            className={classes.stack}
+            key={conversation._id}
+            onClick={() => handleRedirectToChat(conversation._id)}
           >
-            <IconTrash className="icon" />
-          </ActionIcon>
-          <Text c="dimmed" className={classes.date}>
-            {formatDate({ date: conversation.initialDate })}
-          </Text>
-          <Text variant="default" className={classes.text} lineClamp={2}>
-            <IconMessage className="icon" /> {conversation.title}
-          </Text>
-        </Stack>
-      ))}
+            <ActionIcon
+              className={classes.deleteIcon}
+              size="sm"
+              variant="default"
+              onClick={(e) => handleDeleteConversation(e, conversation._id)}
+            >
+              <IconTrash className="icon icon__small" />
+            </ActionIcon>
+            <Text c="dimmed" className={classes.date}>
+              {date}
+            </Text>
+            <Text variant="default" className={classes.text} lineClamp={2}>
+              <IconMessage className={`icon ${classes.icon}`} /> {conversation.title}
+            </Text>
+          </Stack>
+        );
+      })}
     </Stack>
   );
 }

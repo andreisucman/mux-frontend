@@ -132,7 +132,7 @@ export default function ClubAdmission() {
           <Stack>
             <Title order={4}>1. Add your bank for payouts</Title>
             <Text>
-              Register a wallet and connect your bank for receiving payments. You&apos;ll have to
+              Register a wallet and add your bank for receiving payments. You&apos;ll have to
               provide some personal information to verify your identity and age.
             </Text>
             <Group gap={16} justify="space-between">
