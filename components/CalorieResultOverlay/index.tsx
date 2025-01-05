@@ -100,10 +100,10 @@ export default function CalorieResultOverlay({
             </Stack>
             <Group className={classes.buttons}>
               <Button className={classes.button} variant="default" onClick={handleResetResult}>
-                <IconRotate className="icon" style={{ marginRight: rem(6) }} /> New scan
+                New scan
               </Button>
               <Button className={classes.button} onClick={handleUploadAsProof}>
-                <IconTarget className="icon" style={{ marginRight: rem(6) }} /> Upload as proof
+                Upload as proof
               </Button>
             </Group>
           </Stack>

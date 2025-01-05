@@ -145,7 +145,7 @@ export default function EditClubAbout({
                 disabled={!hasAboutAnswers || !canRegenerate || isLoading}
                 onClick={() => handleGenerateBioFromQuestions(showSegment)}
               >
-                <IconBolt className="icon" style={{ marginRight: rem(6) }} /> Generate from answers
+                Generate from answers
               </Button>
             </Tooltip>
           )}
@@ -155,7 +155,6 @@ export default function EditClubAbout({
             onClick={() => updateClubBio(dirtyParts as string[], bioData, setIsLoading)}
             disabled={dirtyParts.length === 0 || !isSelf || isLoading}
           >
-            <IconDeviceFloppy className="icon" style={{ marginRight: rem(6) }} />
             Save
           </Button>
         </Group>

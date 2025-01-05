@@ -176,7 +176,6 @@ export default function UploadCard({
                   disabled={isLoading}
                   variant={"default"}
                 >
-                  <IconCamera className="icon" style={{ marginRight: rem(6) }} />
                   Take a photo
                 </Button>
               )}
@@ -186,7 +185,6 @@ export default function UploadCard({
                   disabled={disableUpload || isLoading}
                   onClick={handleClickUpload}
                 >
-                  <IconUpload className="icon" style={{ marginRight: rem(6) }} />
                   Upload
                 </Button>
               )}

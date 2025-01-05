@@ -14,7 +14,7 @@ export default function FindProductsOverlay({ customStyles, setShowOverlay, onCl
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <CloseButton className={classes.close} onClick={() => setShowOverlay(false)} />
       <Button className={classes.button} onClick={onClick}>
-        <IconListSearch className="icon" style={{ marginRight: rem(6) }} /> Choose best for me
+        Choose best
       </Button>
     </Stack>
   );

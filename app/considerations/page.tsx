@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowRight, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
+import { IconArrowRight, IconCirclePlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Button, rem, Stack } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -98,7 +98,7 @@ export default function Considerations() {
 
             const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
             const buttonIcon = !!isTrialUsed ? (
-              <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+              <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
             ) : (
               <IconSquareRoundedCheck className="icon" />
             );
@@ -125,7 +125,7 @@ export default function Considerations() {
               buttonText,
               buttonIcon,
               onClick,
-              onClose: () => fetchUserData(setUserDetails),
+              onClose: () => fetchUserData({ setUserDetails }),
             });
 
             return;
@@ -160,7 +160,6 @@ export default function Considerations() {
           <TextareaComponent text={text} placeholder={placeholder} setText={setText} />
           <Button loading={isLoading} onClick={handleCreateRoutine} disabled={isLoading}>
             Next
-            <IconArrowRight className="icon" style={{ marginLeft: rem(8) }} />
           </Button>
         </Stack>
       </SkeletonWrapper>

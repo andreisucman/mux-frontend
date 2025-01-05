@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { IconChevronDown, IconChevronUp, IconPlus } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp, IconCirclePlus } from "@tabler/icons-react";
 import { ActionIcon, Collapse, Divider, Group, rem, Stack, Text, TextInput } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -133,7 +133,7 @@ export default function AddClubSocials({ title }: Props) {
             disabled={value.trim().length === 0}
             onClick={() => addSocial({ label: name, value: value.toLowerCase() })}
           >
-            <IconPlus className="icon" />
+            <IconCirclePlus className="icon" />
           </ActionIcon>
         </Group>
       </Group>

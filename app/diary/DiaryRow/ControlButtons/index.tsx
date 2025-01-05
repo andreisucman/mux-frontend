@@ -31,10 +31,10 @@ export default function ControlButtons({ isLoading, onSubmit }: Props) {
           <audio src={localUrl || ""} controls className={classes.audio} />
           <Group className={classes.buttons}>
             <Button variant="default" className={classes.button} onClick={handleResetRecoring}>
-              <IconRotate className={`${classes.icon} icon`} /> Retry
+              Retry
             </Button>
             <Button className={classes.button} onClick={() => onSubmit(audioBlobs)}>
-              <IconDeviceFloppy className={`${classes.icon} icon`} /> Save
+              Save
             </Button>
           </Group>
         </Stack>

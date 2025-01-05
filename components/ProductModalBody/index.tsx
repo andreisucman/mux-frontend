@@ -112,7 +112,6 @@ export default function ProductModalBody({ item, allItems }: Props) {
         }}
         className={classes.button}
       >
-        {icon}
         {showAlternatives ? "Return" : "Comparison"}
       </Button>
     </Stack>

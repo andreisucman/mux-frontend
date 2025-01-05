@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useContext } from "react";
-import { IconCalendar, IconHistory, IconPlus, IconShoppingBag } from "@tabler/icons-react";
+import { IconCalendar, IconCirclePlus, IconHistory, IconShoppingBag } from "@tabler/icons-react";
 import { Button, Group, rem } from "@mantine/core";
-import { useRouter } from "@/helpers/custom-router";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TypeEnum } from "@/types/global";
 import { HandleSaveTaskProps } from "../CreateTaskOverlay/AddATaskContainer/types";
@@ -85,7 +85,7 @@ export default function ButtonsGroup({
         size="xs"
         onClick={() => openCreateNewTask({ type, handleSaveTask, timeZone })}
       >
-        <IconPlus style={{ width: rem(20) }} />
+        <IconCirclePlus style={{ width: rem(20) }} />
       </Button>
     </Group>
   );

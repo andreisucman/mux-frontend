@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -29,10 +30,13 @@ type Props = {
 };
 
 export default function ClubModerationLayout({ children, pageType, userName, showChat }: Props) {
+  const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youFollowData, hasNewAboutQuestions, youFollowDataFetched } =
     useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");
+
+  const code = searchParams.get("code");
 
   const { name, subscriptions, club } = userDetails || {};
   const { followingUserName } = club || {};
@@ -103,7 +107,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
   const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
-    if (!youFollowDataFetched) return;
+    if (!youFollowDataFetched || code) return;
 
     if (youFollowData === null || !userName) {
       setShowComponent("userNotFound");
@@ -125,11 +129,12 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
       }
     }
   }, [
-    isSubscriptionActive,
-    followingUserName,
-    userName,
+    code,
     isSelf,
+    userName,
     youFollowData,
+    followingUserName,
+    isSubscriptionActive,
     youFollowDataFetched,
   ]);
 

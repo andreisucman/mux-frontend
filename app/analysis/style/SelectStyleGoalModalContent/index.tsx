@@ -51,8 +51,7 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
         );
         saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   const styles = outlookStyles.filter((obj) => obj.name !== styleName);
@@ -78,7 +77,7 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
         </Stack>
       </Stack>
       <Button disabled={!selectedGoal} onClick={startSuggestAnalysis}>
-        <IconFocus className={`icon ${classes.icon}`} /> Match
+        Match style
       </Button>
     </Stack>
   );

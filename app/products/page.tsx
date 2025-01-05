@@ -92,8 +92,7 @@ export default function Products() {
             disabled={selectedAsins.length === 0}
             onClick={() => addToAmazonCart(selectedAsins)}
           >
-            <IconShoppingBag style={{ marginRight: rem(6) }} /> Add to cart{" "}
-            {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
+            Add to cart {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
           </Button>
         )}
       </SkeletonWrapper>

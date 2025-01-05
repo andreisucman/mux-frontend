@@ -40,8 +40,7 @@ function Header() {
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
 
-  const { club, avatar } = userDetails || {};
-  const { payouts } = club || {};
+  const { avatar, name } = userDetails || {};
 
   const hideStartButton = useMemo(
     () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),
@@ -136,7 +135,7 @@ function Header() {
                   />
                 )}
                 {displayComponent === "userButton" && (
-                  <UserButton avatar={avatar || null} clubPayouts={payouts} />
+                  <UserButton avatar={avatar || null} name={name} />
                 )}
               </>
             )}

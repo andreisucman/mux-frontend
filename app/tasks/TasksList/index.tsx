@@ -145,7 +145,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     [userId, type]
   );
 
-  useSWR(userId, () => fetchUserData(setUserDetails));
+  useSWR(userId, () => fetchUserData({ setUserDetails }));
 
   useEffect(() => {
     const relevant = tasks
@@ -208,7 +208,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                 description="Creating your task(s)"
                 onComplete={() => {
                   setRelevantTasks(undefined);
-                  fetchUserData(setUserDetails);
+                  fetchUserData({ setUserDetails });
                 }}
                 onError={() => {
                   setDisplayComponent("loading");
@@ -223,8 +223,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                   <Stack className={classes.listWrapper}>
                     {canAddDiaryRecord && (
                       <Button component={Link} href={`/diary?type=${type}`} c="white">
-                        <IconNote className="icon" style={{ marginRight: rem(8) }} /> Add a diary
-                        note for today
+                        Add a diary note for today
                       </Button>
                     )}
                     {relevantTasks.map((record, index: number) => (

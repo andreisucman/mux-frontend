@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconPlus } from "@tabler/icons-react";
+import { IconCirclePlus } from "@tabler/icons-react";
 import { Button, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { typeItems } from "@/components/PageHeader/data";
@@ -136,7 +136,7 @@ export default function DiaryPage() {
           disabled={disableAddNew || isLoading}
           loading={isLoading}
         >
-          <IconPlus className={`${classes.icon} icon`} /> Add a note for today
+          Add a note for today
         </Button>
         <DiaryContent
           hasMore={hasMore}

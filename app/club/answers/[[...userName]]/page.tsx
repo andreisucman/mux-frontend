@@ -137,8 +137,6 @@ export default function AnswersPage(props: Props) {
 
   const handleFetchQuestions = useCallback(
     async (query?: string) => {
-      if (status !== AuthStateEnum.AUTHENTICATED) return;
-
       const data = await fetchQuestions({
         userName,
         showType,
@@ -170,8 +168,10 @@ export default function AnswersPage(props: Props) {
   useEffect(() => {
     if (!userName) return;
     if (!showType) return;
+    if (status !== AuthStateEnum.AUTHENTICATED) return;
+
     handleFetchQuestions();
-  }, [showType, userName]);
+  }, [status, showType, userName]);
 
   const overlayText = isSelf
     ? showType === "new"

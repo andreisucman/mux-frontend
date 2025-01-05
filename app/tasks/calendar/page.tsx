@@ -212,8 +212,7 @@ export default function Calendar() {
 
           return updated;
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [selectedStatus, type]
   );
@@ -458,11 +457,6 @@ export default function Calendar() {
                   disabled={disableButton || isLoading}
                   onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
                 >
-                  {selectedStatus === "active" ? (
-                    <IconX className="icon" style={{ marginRight: rem(6) }} />
-                  ) : (
-                    <IconCheck className="icon" style={{ marginRight: rem(6) }} />
-                  )}
                   {selectedStatus === "active" ? "Disable" : "Enable"} selected
                 </Button>
               )}

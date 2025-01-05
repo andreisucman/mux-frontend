@@ -26,7 +26,7 @@ export default function LeaveClubConfirmation({ handleLeaveClub }: Props) {
     <Stack className={classes.container}>
       <Table data={tableData} classNames={{ td: classes.td, th: classes.th }} />
       <Button variant="default" onClick={handleLeaveClub}>
-        <IconTargetOff className={`${classes.icon} icon`} /> Leave the Сlub
+        Leave the Сlub
       </Button>
     </Stack>
   );

@@ -126,16 +126,9 @@ export default function StyleScanResult() {
   );
 
   const title = `Your ${type === "head" ? "head" : "outfit"} looks ${relevantOutlook?.icon} ${styleName}`;
-  const icon =
-    type === "head" ? (
-      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconMan className="icon" style={{ marginRight: rem(6) }} />
-    );
 
   const overlayButton = (
     <Button mt={8} variant="default" onClick={() => router.push(`/scan/style?type=${type}`)}>
-      {icon}
       {type ? `Scan your ${type === "head" ? "head" : "outfit"}` : "Scan"}
     </Button>
   );
@@ -168,7 +161,7 @@ export default function StyleScanResult() {
                 disabled={!relevantAnalysis}
                 className={classes.button}
               >
-                <IconFocus className={`icon ${classes.icon}`} /> Match a style
+                Match a style
               </Button>
               <GlowingButton
                 text="Publish"

@@ -316,7 +316,6 @@ export default function Explain(props: Props) {
                     className={classes.disableButton}
                     onClick={handleRedirectToCalendar}
                   >
-                    <IconX className="icon" style={{ marginRight: rem(6) }} />
                     Disable task
                   </Button>
                   <Button
@@ -325,7 +324,6 @@ export default function Explain(props: Props) {
                     className={classes.disableButton}
                     onClick={openEditTaskModal}
                   >
-                    <IconPencil className="icon" style={{ marginRight: rem(6) }} />
                     Edit task
                   </Button>
                 </Group>

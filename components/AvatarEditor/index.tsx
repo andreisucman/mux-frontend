@@ -71,7 +71,7 @@ export default function AvatarEditor({
             handleUpdateClubInfo({ type: "avatar", data: updatedAvatar, setIsLoading })
           }
         >
-          <IconDeviceFloppy className={`${classes.icon} icon`} /> Save
+          Save
         </Button>
         <Stack className={classes.content}>
           <Fieldset legend="Skin color" className={classes.filedset}>

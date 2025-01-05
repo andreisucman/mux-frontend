@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { IconChevronLeft, IconHistory } from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useRouter } from "@/helpers/custom-router";
@@ -34,7 +34,7 @@ export default function ClubProfileHeader() {
       </Group>
 
       <Button onClick={openFollowHistory} size="compact-sm" variant="default">
-        <IconHistory className="icon icon__small" style={{ marginRight: rem(6) }} /> Followed
+        Follow history
       </Button>
     </Group>
   );

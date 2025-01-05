@@ -82,7 +82,7 @@ export default function StartPartialScanOverlay({
         )}
         <Text mb={rem(12)}>{analysisString}</Text>
         <Button onClick={handleStartAnalysis} loading={isButtonLoading} disabled={isButtonLoading}>
-          <IconFlag className="icon" style={{ marginRight: rem(6) }} /> Start scan
+          Start scan
         </Button>
       </Stack>
     </Stack>

@@ -16,10 +16,13 @@ export default function ClubLegalBody({ addTitle }: Props) {
       <Stack>
         <Text mt={0}>
           This terms of service agreement ("Club Terms") outlines the participation terms in our
-          revenue sharing program ("Club"). It complement and expand on {"our platform's"}
-          <Link href={`/legal/terms`}>General Terms of Service</Link>
-          ("General TOS"). Where conflicts arise Club Terms take precedence over the General TOS for
-          matters relating specifically to the Club.
+          revenue sharing program ("Club").
+        </Text>
+        <Text>
+          It complement and expand on {"our platform's"}{" "}
+          <Link href={`/legal/terms`}>General Terms of Service</Link> ("General TOS"). Where
+          conflicts arise Club Terms take precedence over the General TOS for matters relating
+          specifically to the Club.
         </Text>
         <Text>
           Please read Club Terms carefully before joining. By accessing or using the Club, you agree
@@ -63,12 +66,12 @@ export default function ClubLegalBody({ addTitle }: Props) {
                 <strong>Progress images:</strong> The weekly progress images of your head and body.
               </li>
               <li>
-                <strong>About description:</strong>Text describing your personality including
+                <strong>About description:</strong> The text describing your personality including
                 philosophy, style and style tips.
               </li>
               <li>
-                <strong>Progress diary:</strong>Audio and text capturing your thoughts on the tasks
-                you've completed.
+                <strong>Progress diary:</strong> The audio and text capturing your thoughts on the
+                tasks you've completed.
               </li>
             </ul>
           </li>
@@ -168,12 +171,12 @@ export default function ClubLegalBody({ addTitle }: Props) {
       </Stack>
       <Stack>
         <Title order={2}>4. Payment Terms</Title>
-        <Title order={3}>1. Stripe Fees:</Title>
+        <Title order={3}>1. Processing Fees:</Title>
         <Text>
-          All payments to Club members will be processed through Stripe Connect. Stripe may deduct
-          its processing fees from your earnings, in accordance with their terms and fee structure.
-          We do not control Stripe&apos;s processing times, and payments may take several business
-          days to reflect in your bank account after they are initiated.
+          All payments to Club members will be processed through our payment processor - Stripe.
+          Stripe may deduct its processing fees from your earnings, in accordance with their terms
+          and fee structure. We do not control Stripe&apos;s processing times, and payments may take
+          several business days to reflect in your bank account after they are initiated.
         </Text>
         <Title order={3}>2. Earnings from Followers:</Title>
         <ul>
@@ -183,13 +186,13 @@ export default function ClubLegalBody({ addTitle }: Props) {
             subscription.
           </li>
           <li>
-            Payments will be distributed via Stripe Connect to your connected bank account, subject
-            to Stripe&apos;s processing times and terms.
+            Payments deposited to your bank account are subject to Stripe&apos;s processing times,
+            fess, and terms.
           </li>
         </ul>
         <Title order={3}>3. Payment Schedule:</Title>
         <ul>
-          <li>Payouts will be processed on a monthly basis.</li>
+          <li>Payouts are processed on demand. This means you can initiate a payout of your balance to your bank account at any time.</li>
           <li>
             You are responsible for ensuring your banking information remains current and accurate.
           </li>

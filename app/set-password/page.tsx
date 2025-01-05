@@ -92,7 +92,7 @@ export default function SetPassword() {
             />
 
             <Button type="submit" className={classes.button} disabled={score < 100}>
-              <IconDeviceFloppy className={`icon ${classes.icon}`} /> Save
+              Save
             </Button>
           </form>
         </Stack>

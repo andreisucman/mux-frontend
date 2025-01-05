@@ -82,7 +82,7 @@ export default function SortConcerns() {
             isLoading || !selectedConcerns || (activeConcerns && activeConcerns.length === 0)
           }
         >
-          Next <IconArrowRight className="icon" style={{ marginLeft: rem(6) }} />
+          Next
         </Button>
         <ConcernsSortCard
           concerns={selectedConcerns || []}

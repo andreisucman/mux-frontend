@@ -117,7 +117,6 @@ export default function VerifyEmail() {
             onClick={() => handleVerifyEmail(code)}
           >
             Continue
-            <IconArrowRight className={`icon ${classes.icon}`} />
           </Button>
           <Button
             variant="default"
@@ -125,7 +124,7 @@ export default function VerifyEmail() {
             onClick={() => handleResendEmail(canResendOn)}
             disabled={canResendOn > new Date()}
           >
-            <IconRotate className="icon icon__small" style={{ marginRight: rem(4) }} /> Resend
+            Resend
           </Button>
         </Stack>
       </Stack>

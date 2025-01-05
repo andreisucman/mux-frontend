@@ -41,7 +41,7 @@ export default async function createCheckoutSession({
       }
 
       if (subscriptionId) {
-        fetchUserData(setUserDetails);
+        fetchUserData({ setUserDetails });
         modals.closeAll();
       }
 

@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
-import { IconDownload } from "@tabler/icons-react";
-import { Button, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { IconDownload, IconInfoCircle } from "@tabler/icons-react";
+import { Alert, Button, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -15,7 +15,8 @@ function BalancePane() {
 
   const { club } = userDetails || {};
   const { payouts } = club || {};
-  const { balance, payoutsEnabled } = payouts || {};
+  const { balance, payoutsEnabled, disabledReason, detailsSubmitted } = payouts || {};
+  const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
 
   const onWithdraw = useCallback(async () => {
     if (isLoading || balance === 0 || !payoutsEnabled) return;
@@ -49,6 +50,36 @@ function BalancePane() {
 
   const displayBalance = useMemo(() => (balance ? balance?.toFixed(2) : 0), [balance]);
 
+  const alert = useMemo(() => {
+    // if (!detailsSubmitted)
+    return (
+      <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+        <Group gap={8}>
+          Connect your bank account to enable withdrawals.
+          <Button ml="auto" size="compact-sm">
+            Connect
+          </Button>
+        </Group>
+      </Alert>
+    );
+    // if (submittedNotEnabled)
+    return (
+      <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+        <Stack gap={8}>You information is under review.</Stack>
+      </Alert>
+    );
+
+    // if (!payoutsEnabled && disabledReason)
+    return (
+      <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+        <Stack gap={8}>
+          Your payouts have been disabled. Login to your wallet to fix that.
+          <RedirectToWalletButton variant="filled" />
+        </Stack>
+      </Alert>
+    );
+  }, [detailsSubmitted, payoutsEnabled, disabledReason]);
+
   return (
     <Stack className={classes.container}>
       <Stack className={classes.stack}>
@@ -56,8 +87,10 @@ function BalancePane() {
           <Text c="dimmed" size="sm">
             Your earnings
           </Text>
-          <RedirectToWalletButton variant="default" />
+          {detailsSubmitted && <RedirectToWalletButton variant="default" />}
         </Group>
+        {alert && <Stack>{alert}</Stack>}
+
         <Title order={2} className={classes.amount}>
           ${displayBalance}
         </Title>
@@ -67,7 +100,6 @@ function BalancePane() {
           onClick={onWithdraw}
           size="compact-sm"
         >
-          <IconDownload className="icon" style={{ marginRight: rem(6) }} />
           Withdraw
         </Button>
       </Stack>

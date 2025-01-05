@@ -138,13 +138,6 @@ export default function ScanProgress() {
     }
   }, [availableRequirements?.length, userId, needsScan]);
 
-  const icon =
-    type === "head" ? (
-      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconMan className="icon" style={{ marginRight: rem(6) }} />
-    );
-
   const url = `/analysis${type ? (type === "head" ? "?type=head" : "?type=body") : ""}`;
 
   return (
@@ -167,7 +160,7 @@ export default function ScanProgress() {
               text={`The next ${type ? type : ""} scan is after ${checkBackDate}.`}
               button={
                 <Button mt={8} variant="default" onClick={() => router.replace(url)}>
-                  {icon} See the latest {type} analysis
+                  See the latest {type} analysis
                 </Button>
               }
             />

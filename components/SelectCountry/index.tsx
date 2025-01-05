@@ -65,7 +65,6 @@ export default function SelectCountry({ onClick }: Props) {
         onClick={handleClick}
       >
         Next
-        <IconArrowRight className="icon" style={{ marginLeft: rem(6) }} />
       </Button>
     </Stack>
   );

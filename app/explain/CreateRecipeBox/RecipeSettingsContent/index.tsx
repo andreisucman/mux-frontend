@@ -75,7 +75,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
             variant={"default"}
             className={classes.imageButton}
           >
-            <IconCamera className="icon" style={{ marginRight: rem(6) }} /> Upload photo
+            Upload photo
             <input
               hidden
               id="upload_products_photo"

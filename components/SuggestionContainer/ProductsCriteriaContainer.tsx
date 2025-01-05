@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { IconListSearch } from "@tabler/icons-react";
-import { Button, rem, Stack, Text } from "@mantine/core";
+import { Button, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
@@ -43,7 +42,7 @@ export default function ProductsCriteriaContainer({ taskKey, findProducts }: Pro
         editable
       />
       <Button variant="default" onClick={() => handleFindProducts(taskKey, text)}>
-        <IconListSearch className="icon" style={{ marginRight: rem(6) }} /> Compare and sort
+        Compare and choose best
       </Button>
     </Stack>
   );

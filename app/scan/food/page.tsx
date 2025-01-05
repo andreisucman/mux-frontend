@@ -193,7 +193,6 @@ export default function ScanFoodPage() {
         />
       )}
       <Button disabled={!localUrl} onClick={handleAnalyzeFood}>
-        <IconMenu2 className="icon" style={{ marginRight: rem(8), transform: "rotate(90deg)" }} />{" "}
         Analyze
       </Button>
     </Stack>

@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Title, rem } from "@mantine/core";
+import { IconCirclePlus, IconSquareRoundedCheck } from "@tabler/icons-react";
+import { rem, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -88,7 +88,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     } else {
       const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
       const buttonIcon = !!isTrialUsed ? (
-        <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+        <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
       ) : (
         <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
       );
@@ -110,7 +110,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         buttonText,
         underButtonText: "No credit card required",
         onClick,
-        onClose: () => fetchUserData(setUserDetails),
+        onClose: () => fetchUserData({ setUserDetails }),
       });
     }
     setIsLoading(false);

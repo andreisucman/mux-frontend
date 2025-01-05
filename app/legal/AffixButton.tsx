@@ -17,7 +17,7 @@ export default function AffixButton() {
             style={transitionStyles}
             onClick={() => scrollTo({ y: 0 })}
           >
-            Up
+            Go up
           </Button>
         )}
       </Transition>

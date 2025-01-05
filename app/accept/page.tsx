@@ -113,7 +113,7 @@ export default function AcceptIndexPage() {
         loading={isLoading}
         onClick={startTheFlow}
       >
-        Next <IconArrowRight className="icon" />
+        Next
       </Button>
     </Stack>
   );

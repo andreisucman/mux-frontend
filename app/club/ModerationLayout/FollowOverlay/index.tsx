@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { IconEye } from "@tabler/icons-react";
-import { Button, rem, Stack, Text } from "@mantine/core";
+import { Button, rem, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { ClubDataType, UserDataType } from "@/types/global";
@@ -41,7 +41,7 @@ export default function FollowOverlay({ userName, description }: Props) {
   return (
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
-        <Text>Follow to see</Text>
+        <Title order={4}>Follow to see</Title>
         <Text size="sm" c="dimmed">
           {description}
         </Text>

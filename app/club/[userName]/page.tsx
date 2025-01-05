@@ -1,14 +1,8 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
-import {
-  IconAlignJustified,
-  IconChevronDown,
-  IconChevronUp,
-  IconExclamationCircle,
-  IconX,
-} from "@tabler/icons-react";
-import { Button, Collapse, Group, rem, Skeleton, Stack, Text } from "@mantine/core";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { Button, Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -131,11 +125,6 @@ export default function ClubAbout(props: Props) {
     setShowQuestions(!!savedShowQuestions);
   }, []);
 
-  const buttonIcon = hasNewAboutQuestions ? (
-    <IconExclamationCircle className="icon icon__small" style={{ marginRight: rem(6) }} />
-  ) : (
-    <IconAlignJustified className="icon icon__small" style={{ marginRight: rem(6) }} />
-  );
   const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";
   const buttonPath = userName ? `/club/answers/${userName}` : `/club/answers`;
 
@@ -164,7 +153,6 @@ export default function ClubAbout(props: Props) {
                     component={Link}
                     href={buttonPath}
                   >
-                    {buttonIcon}
                     {buttonText}
                   </Button>
                 </Stack>

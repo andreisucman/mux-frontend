@@ -38,5 +38,7 @@ export default async function joinClub({
       if (redirectPath) router.push(redirectPath);
       if (closeModal) modals.closeAll();
     }
+
+    return response.status === 200;
   } catch (err: any) {}
 }

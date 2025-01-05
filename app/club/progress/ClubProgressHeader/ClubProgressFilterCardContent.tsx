@@ -121,7 +121,7 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
         addToQuery
       />
       <Button onClick={handleResetFilters} variant="default">
-        <IconFilterOff className="icon icon__small" style={{ marginRight: rem(8) }} /> Reset
+        Reset
       </Button>
     </Stack>
   );

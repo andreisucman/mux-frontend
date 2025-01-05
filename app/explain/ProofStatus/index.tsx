@@ -180,7 +180,6 @@ function ProofStatus({
         disabled={notStarted || taskExpired}
         onClick={updateRequiredSubmission}
       >
-        {buttonData.icon}
         {buttonData.label}
       </Button>
     </Group>

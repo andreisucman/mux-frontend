@@ -11,7 +11,7 @@ export default function openLegalBody(type: "club" | "terms" | "privacy") {
   switch (type) {
     case "club":
       body = <ClubLegalBody />;
-      title = `Club terms of service`;
+      title = `Club's terms of service`;
       break;
     case "privacy":
       body = <PrivacyLegalBody />;

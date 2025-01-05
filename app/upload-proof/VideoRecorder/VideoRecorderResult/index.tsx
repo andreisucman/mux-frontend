@@ -206,7 +206,7 @@ export default function VideoRecorderResult({
     <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
       <Group className={classes.buttonGroup}>
         <Button onClick={handleSubmit} className={classes.button} disabled={isBlurLoading}>
-          <IconCloudUpload className="icon" style={{ marginRight: rem(6) }} /> Upload
+          Upload
         </Button>
         <ActionIcon
           variant="default"

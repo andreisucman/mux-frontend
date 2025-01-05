@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
-import { IconHeart, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TypeEnum } from "@/types/global";
@@ -14,15 +13,6 @@ type Props = {
 export default function UploadOverlay({ type, customStyles }: Props) {
   const router = useRouter();
   const finalType = type === "head" ? type : "body";
-
-  const icon =
-    type === "head" ? (
-      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
-    ) : type === "body" ? (
-      <IconMan className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconHeart className="icon" style={{ marginRight: rem(6) }} />
-    );
 
   const scanText = type === "head" ? "Scan head" : "Scan body";
 
@@ -42,7 +32,7 @@ export default function UploadOverlay({ type, customStyles }: Props) {
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Button className={classes.button} onClick={onClick}>
-        {icon} {scanText}
+        {scanText}
       </Button>
     </Stack>
   );

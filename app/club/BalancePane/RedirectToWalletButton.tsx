@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
@@ -22,8 +21,7 @@ export default function RedirectToWalletButton({ variant }: Props) {
       if (response.status === 200) {
         router.push(response.message);
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }, []);
 
   return (
@@ -36,8 +34,7 @@ export default function RedirectToWalletButton({ variant }: Props) {
       style={{ position: "relative", zIndex: 1 }}
       onClick={redirectToWallet}
     >
-      Wallet
-      <IconArrowUpRight className="icon icon__small" />
+      Your wallet
     </Button>
   );
 }

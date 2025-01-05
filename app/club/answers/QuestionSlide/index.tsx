@@ -52,7 +52,7 @@ export default function QuestionSlide({ isSelf, data, submitResponse, skipQuesti
         <Accordion.Control>
           <Group className={classes.header}>
             <span className={classes.questionText}>{question}</span>
-            {actionButton}
+            {isSelf && actionButton}
           </Group>
         </Accordion.Control>
         <Accordion.Panel>
@@ -84,7 +84,7 @@ export default function QuestionSlide({ isSelf, data, submitResponse, skipQuesti
                     })
                   }
                 >
-                  <IconUpload className="icon" style={{ marginRight: rem(6) }} /> Submit answer
+                  Submit answer
                 </Button>
               </Group>
             )}

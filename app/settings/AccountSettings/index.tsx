@@ -169,7 +169,7 @@ export default function AccountSettings() {
               <Title order={5}>Warning!</Title>
               Your account is scheduled for deletion on {formattedDeleteOnDate}
               <Button ml="auto" onClick={() => deleteAccount(false)}>
-                <IconSquareCheck className={`${classes.icon} icon`} /> Cancel deletion
+                Cancel deletion
               </Button>
             </Stack>
           </Alert>
@@ -252,7 +252,7 @@ export default function AccountSettings() {
             disabled={confirmationCode.length < 5 || isLoading}
             onClick={() => handleChangeEmailStepOne(confirmationCode, email)}
           >
-            Next <IconArrowRight className={"icon"} style={{ marginLeft: rem(8) }} />
+            Next
           </Button>
         </Stack>
       </Modal>
@@ -274,7 +274,6 @@ export default function AccountSettings() {
             onClick={() => handleChangeEmailStepTwo(confirmationCode, email)}
           >
             Finish
-            <IconArrowRight className={"icon icon__small"} style={{ marginLeft: rem(8) }} />
           </Button>
         </Stack>
       </Modal>

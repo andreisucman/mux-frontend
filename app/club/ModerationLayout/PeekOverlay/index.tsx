@@ -1,16 +1,19 @@
 import React, { useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconPlus } from "@tabler/icons-react";
-import { rem, Stack, Text } from "@mantine/core";
+import { IconCirclePlus } from "@tabler/icons-react";
+import { rem, Stack, Text, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import PricingCard from "@/app/plans/PricingCard";
 import { peekLicenseContent } from "@/app/plans/pricingData";
 import { UserContext } from "@/context/UserContext";
 import createCheckoutSession from "@/functions/createCheckoutSession";
+import joinClub from "@/functions/joinClub";
+import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
+import JoinClubConfirmation from "../../join/JoinClubConfirmation";
 import classes from "./PeekOverlay.module.css";
-import { modals } from "@mantine/modals";
 
 type Props = {
   description?: string;
@@ -18,6 +21,7 @@ type Props = {
 };
 
 export default function PeekOverlay({ description, userName }: Props) {
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +55,7 @@ export default function PeekOverlay({ description, userName }: Props) {
     [pathname]
   );
 
-  const handleClickButton = useCallback(async () => {
+  const handleAddSubscription = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
 
@@ -87,7 +91,24 @@ export default function PeekOverlay({ description, userName }: Props) {
     }
 
     if (!club) {
-      // modals.openContextModal({})
+      modals.openContextModal({
+        centered: true,
+        modal: "general",
+        innerProps: (
+          <JoinClubConfirmation
+            handleJoinClub={handleJoinClub}
+            description="To get the Peek license you have to join the Club first. Here's what you need to know."
+            type="confirm"
+          />
+        ),
+        title: (
+          <Title order={5} component={"p"}>
+            Join the Club to continue
+          </Title>
+        ),
+      });
+      setIsLoading(false);
+      return;
     }
 
     createCheckoutSession({
@@ -96,7 +117,25 @@ export default function PeekOverlay({ description, userName }: Props) {
       cancelUrl: redirectUrl,
       setUserDetails,
     });
-  }, [userId, isLoading, status]);
+  }, [userId, isLoading, redirectUrl, status]);
+
+  const handleJoinClub = useCallback(async () => {
+    const isSuccess = await joinClub({
+      router,
+      setUserDetails,
+      redirectPath: null,
+      closeModal: true,
+    });
+
+    if (isSuccess) {
+      createCheckoutSession({
+        priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
+        redirectUrl,
+        cancelUrl: redirectUrl,
+        setUserDetails,
+      });
+    }
+  }, [userDetails, redirectUrl]);
 
   return (
     <Stack className={classes.container}>
@@ -106,8 +145,8 @@ export default function PeekOverlay({ description, userName }: Props) {
         name={"Peek License"}
         buttonText="Add"
         content={peekLicenseContent}
-        onClick={handleClickButton}
-        icon={<IconPlus className="icon" style={{ marginRight: rem(6) }} />}
+        onClick={handleAddSubscription}
+        icon={<IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />}
         isLoading={isLoading}
         addGradient
       />

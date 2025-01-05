@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { IconCircleCheck, IconPlus } from "@tabler/icons-react";
+import { IconCircleCheck, IconCirclePlus } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
 import EditATaskContent from "@/app/tasks/TasksList/CreateTaskOverlay/EditATaskContent";
 import { formatDate } from "@/helpers/formatDate";
@@ -48,7 +48,7 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
   const finalIcon = isEdit ? (
     <IconCircleCheck className="icon" />
   ) : (
-    <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+    <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
   );
 
   return (
@@ -73,7 +73,6 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
             });
           }}
         >
-          {finalIcon}
           <Text className={classes.buttonText}>{isEdit ? "Edit task" : "Add to routine"}</Text>
         </Button>
         {disableAdd && !isEdit && (

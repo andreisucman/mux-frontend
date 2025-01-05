@@ -29,7 +29,7 @@ export default function FollowHistoryModalCard({ data, onClick }: Props) {
         </Group>
 
         <Button onClick={() => onClick(followingUserName)} variant="default">
-          <IconEye className={`icon ${classes.icon}`} /> Follow again
+          Follow again
         </Button>
       </Group>
     </Skeleton>

@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   IconChevronDown,
   IconChevronUp,
-  IconPlus,
+  IconCirclePlus,
   IconSend,
   IconSquareRoundedCheck,
 } from "@tabler/icons-react";
@@ -98,7 +98,7 @@ export default function ChatInput({
 
     const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
     const buttonIcon = !!isTrialUsed ? (
-      <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+      <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
     ) : (
       <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />
     );
@@ -120,7 +120,7 @@ export default function ChatInput({
       buttonText,
       buttonIcon,
       onClick,
-      onClose: () => fetchUserData(setUserDetails),
+      onClose: () => fetchUserData({ setUserDetails }),
       underButtonText: userName ? "" : "No credit card required",
     };
 

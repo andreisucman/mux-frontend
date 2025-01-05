@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconBolt, IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
+import { IconBolt, IconCirclePlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Button, Group, rem, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
@@ -51,7 +51,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
               const coachIcon = sex === "male" ? "🦸‍♂️" : "🦸‍♀️";
               const buttonText = !!isTrialUsed ? "Add" : "Try free for 1 day";
               const buttonIcon = !!isTrialUsed ? (
-                <IconPlus className="icon" style={{ marginRight: rem(6) }} />
+                <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
               ) : (
                 <IconSquareRoundedCheck className="icon" />
               );
@@ -79,7 +79,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
                 onClick,
                 buttonText,
                 buttonIcon,
-                onClose: () => fetchUserData(setUserDetails),
+                onClose: () => fetchUserData({ setUserDetails }),
               });
               return;
             } else {
@@ -122,7 +122,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
         </Text>
       ) : (
         <Button className={classes.button} disabled={!canPersonalize} onClick={openEditTaskModal}>
-          <IconPlus className="icon" style={{ marginRight: rem(6) }} /> Create recipe
+          Create recipe
         </Button>
       )}
     </Group>

@@ -2,8 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Button, rem, Skeleton, Stack } from "@mantine/core";
+import { Button, Skeleton, Stack } from "@mantine/core";
 import AnalysisCarousel from "@/components/AnalysisCarousel";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -36,16 +35,8 @@ export default function Analysis() {
     [rest]
   );
 
-  const icon =
-    type === "head" ? (
-      <IconMoodSmile className="icon" style={{ marginRight: rem(6) }} />
-    ) : (
-      <IconMan className="icon" style={{ marginRight: rem(6) }} />
-    );
-
   const overlayButton = (
     <Button mt={8} variant="default" onClick={() => router.push(`/scan/progress?type=${type}`)}>
-      {icon}
       {type ? `Scan your ${type}` : "Scan"}
     </Button>
   );

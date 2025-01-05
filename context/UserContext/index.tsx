@@ -120,7 +120,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (code) return;
     if (error) return;
     if (blockFetchUserDataPaths.includes(pathname)) return;
-    fetchUserData(setUserDetails);
+    fetchUserData({ setUserDetails });
   });
 
   return (

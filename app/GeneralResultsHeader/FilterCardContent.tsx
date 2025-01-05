@@ -125,7 +125,7 @@ export default function FilterCardContent({ filters }: Props) {
             />
           )}
           <Button onClick={handleResetFilters} variant="default">
-            <IconFilterOff className="icon icon__small" style={{ marginRight: rem(8) }} /> Reset
+            Reset
           </Button>
         </>
       ) : (
