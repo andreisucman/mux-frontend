@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -40,7 +39,6 @@ export default function SuggestionContainer({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
@@ -139,7 +137,6 @@ export default function SuggestionContainer({
             relatedContentId={taskId}
             dividerLabel={"Choose best for me"}
             defaultVisibility="closed"
-            collapseStyles={{ minHeight: "unset", paddingBottom: isMobile ? "100%" : "30%" }}
           />
         )}
       </Stack>

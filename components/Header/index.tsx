@@ -19,15 +19,14 @@ import Burger from "./Burger";
 import UserButton from "./UserButton";
 import classes from "./Header.module.css";
 
-const hideStartButtonRoutes = [
-  "/scan",
-  "/accept",
-  "/wait",
-  "/analysis",
-  "/auth",
-  "/verify-email",
-  "/set-password",
-  "/settings",
+const showStartButtonRoutes = [
+  "/",
+  "/solutions",
+  "/rewards",
+  "/reviews",
+  "/legal/terms",
+  "/legal/privacy",
+  "/legal/club",
 ];
 
 const [spotlightStore, userSpotlight] = createSpotlight();
@@ -42,8 +41,8 @@ function Header() {
 
   const { avatar, name } = userDetails || {};
 
-  const hideStartButton = useMemo(
-    () => hideStartButtonRoutes.some((route) => pathname.startsWith(route)),
+  const showStartButton = useMemo(
+    () => showStartButtonRoutes.some((route) => pathname === route),
     [pathname]
   );
 
@@ -81,12 +80,12 @@ function Header() {
       setDisplayComponent("none");
     } else if (status === "authenticated") {
       setDisplayComponent("userButton");
-    } else if (status === "unauthenticated" && !hideStartButton) {
+    } else if (status === "unauthenticated" && showStartButton) {
       setDisplayComponent("startButton");
     } else {
       setDisplayComponent("default");
     }
-  }, [status, hideStartButton]);
+  }, [status, showStartButton]);
 
   useEffect(() => {
     setIsLoading(false);
@@ -123,7 +122,7 @@ function Header() {
                     text="Start"
                     aria-label="start analysis button"
                     loading={isLoading}
-                    disabled={hideStartButton || isLoading}
+                    disabled={isLoading}
                     icon={
                       <IconRocket
                         stroke={1.5}

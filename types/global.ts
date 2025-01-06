@@ -259,7 +259,6 @@ export type UserSubscriptionsType = {
   improvement: SubscriptionType;
   peek: SubscriptionType;
   advisor: SubscriptionType;
-  analyst: SubscriptionType;
 };
 
 export type ProgressImageType = {

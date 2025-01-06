@@ -76,7 +76,7 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconMoodSpark className="icon icon__large" style={style} />,
-    description: "Access the advisor, improvement, and analyst coaches.",
+    description: "Access the advisor and improvement coaches.",
   },
 ];
 

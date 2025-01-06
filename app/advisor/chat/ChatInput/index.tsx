@@ -271,7 +271,7 @@ export default function ChatInput({
   const finalDividerLabel = useMemo(
     () => (
       <Group style={{ cursor: "pointer" }}>
-        {showChat ? <IconChevronUp className="icon" /> : <IconChevronDown className="icon" />}
+        {showChat ? <IconChevronDown className="icon" /> : <IconChevronUp className="icon" />}
         {dividerLabel ? dividerLabel : showChat ? "Hide chat" : "Open chat"}
       </Group>
     ),

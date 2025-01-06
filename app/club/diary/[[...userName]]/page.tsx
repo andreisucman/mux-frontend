@@ -8,6 +8,7 @@ import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
+import ChatWithOverlay from "../../ModerationLayout/ChatWithOverlay";
 
 type Props = {
   params: Promise<{ userName: string }>;
@@ -62,6 +63,7 @@ export default function DiaryPage(props: Props) {
         hasMore={hasMore}
         handleFetchDiaryRecords={handleFetchDiaryRecords}
       />
+      <ChatWithOverlay relatedCategory="diary" />
     </ClubModerationLayout>
   );
 }

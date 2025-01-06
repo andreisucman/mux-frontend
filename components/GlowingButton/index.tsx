@@ -42,8 +42,8 @@ function GlowingButton({
       <UnstyledButton
         disabled={disabled}
         className={cn(classes.button, {
-          [classes.disabled]: disabled,
           [classes.loading]: loading,
+          [classes.disabled]: disabled,
         })}
         onClick={onClick}
         style={buttonStyles ? buttonStyles : {}}

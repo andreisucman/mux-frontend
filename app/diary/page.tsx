@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCirclePlus } from "@tabler/icons-react";
 import { Button, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { typeItems } from "@/components/PageHeader/data";

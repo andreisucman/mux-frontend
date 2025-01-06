@@ -83,9 +83,9 @@ export default function AccordionRoutineRow({
           </Button>
         </Accordion.Control>
         <Accordion.Panel>
-          {routine.allTasks.map((task) => (
+          {routine.allTasks.map((task, i) => (
             <AccordionTaskRow
-              key={task.key}
+              key={i}
               routineId={routine._id}
               type={type as TypeEnum}
               data={task}

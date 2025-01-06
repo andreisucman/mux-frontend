@@ -27,6 +27,15 @@
   }
 }
 
+.loading {
+  background-color: var(--mantine-color-brand-6);
+  border: unset;
+
+  &:hover {
+    background-color: unset;
+  }
+}
+
 .disabled {
   pointer-events: none;
   background-color: var(--mantine-color-dark-6);
@@ -38,15 +47,6 @@
 .disabled::after {
   animation: none;
   opacity: 0;
-}
-
-.loading {
-  background-color: var(--mantine-color-brand-6);
-  border: unset;
-
-  &:hover {
-    background-color: unset;
-  }
 }
 
 .gradient {

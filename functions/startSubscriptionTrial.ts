@@ -2,7 +2,7 @@ import { modals } from "@mantine/modals";
 import callTheServer from "./callTheServer";
 
 type Props = {
-  subscriptionName: "improvement" | "advisor" | "analyst" | "peek";
+  subscriptionName: "improvement" | "advisor" | "peek";
   onComplete?: (args: any) => void;
 };
 
@@ -18,6 +18,5 @@ export default async function startSubscriptionTrial({ subscriptionName, onCompl
       modals.closeAll();
       if (onComplete) onComplete({ isSubscriptionActive: true, isTrialUsed: true });
     }
-  } catch (err) {
-  }
+  } catch (err) {}
 }

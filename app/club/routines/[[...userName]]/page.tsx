@@ -56,7 +56,7 @@ export default function ClubRoutines(props: Props) {
           modal: "general",
           title: (
             <Title order={5} component="p">
-              {task.name} preview
+              {task.name}
             </Title>
           ),
           centered: true,
@@ -100,10 +100,14 @@ export default function ClubRoutines(props: Props) {
 
         if (query) endpoint += `?${query}`;
 
+        console.log("endpoint", endpoint);
+
         const response = await callTheServer({
           endpoint,
           method: "GET",
         });
+
+        console.log("response", response);
 
         if (response.status === 200) {
           if (response.error) {

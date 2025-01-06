@@ -23,6 +23,7 @@ import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../../ModerationLayout";
+import ChatWithOverlay from "../../ModerationLayout/ChatWithOverlay";
 import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
 import classes from "./answers.module.css";
@@ -221,43 +222,45 @@ export default function AnswersPage(props: Props) {
             />
           )}
         </Group>
-
         {questions ? (
-          <Stack className={classes.accordionWrapper}>
-            <Accordion
-              value={openValue}
-              onChange={setOpenValue}
-              className={classes.accordion}
-              chevron={false}
-              classNames={{
-                root: classes.root,
-                item: classes.item,
-                chevron: classes.chevron,
-                control: classes.control,
-                content: classes.accordionContent,
-              }}
-            >
-              {questions.length > 0 ? (
-                <ListComponent
-                  items={questions}
-                  rowGutter={16}
-                  render={memoizedQuestionsRow}
-                  className={classes.list}
-                />
-              ) : (
-                <OverlayWithText text={overlayText} icon={overlayIcon} button={overlayButton} />
-              )}
-            </Accordion>
-            {hasMore && (
-              <ActionIcon
-                variant="default"
-                className={classes.getMoreButton}
-                onClick={() => handleFetchQuestions(searchQuery)}
+          <>
+            <Stack className={classes.accordionWrapper}>
+              <Accordion
+                value={openValue}
+                onChange={setOpenValue}
+                className={classes.accordion}
+                chevron={false}
+                classNames={{
+                  root: classes.root,
+                  item: classes.item,
+                  chevron: classes.chevron,
+                  control: classes.control,
+                  content: classes.accordionContent,
+                }}
               >
-                <IconArrowDown />
-              </ActionIcon>
-            )}
-          </Stack>
+                {questions.length > 0 ? (
+                  <ListComponent
+                    items={questions}
+                    rowGutter={16}
+                    render={memoizedQuestionsRow}
+                    className={classes.list}
+                  />
+                ) : (
+                  <OverlayWithText text={overlayText} icon={overlayIcon} button={overlayButton} />
+                )}
+              </Accordion>
+              {hasMore && (
+                <ActionIcon
+                  variant="default"
+                  className={classes.getMoreButton}
+                  onClick={() => handleFetchQuestions(searchQuery)}
+                >
+                  <IconArrowDown />
+                </ActionIcon>
+              )}
+            </Stack>
+            <ChatWithOverlay relatedCategory="about" />
+          </>
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}

@@ -12,7 +12,7 @@ import {
 } from "@/app/plans/pricingData";
 
 type Props = {
-  modalType: "improvement" | "advisor" | "analyst" | "peek";
+  modalType: "improvement" | "advisor" | "peek";
   title: string;
   name?: string;
   price?: string;

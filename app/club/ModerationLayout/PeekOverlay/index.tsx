@@ -59,13 +59,10 @@ export default function PeekOverlay({ description, userName }: Props) {
     setIsLoading(true);
 
     if (status !== "authenticated") {
-      const redirectPath =
-        "/" +
-        pathname
-          .split("/")
-          .filter((p) => p)
-          .slice(0, 2)
-          .join("/");
+      let parts = pathname.split("/").filter((p) => p);
+      parts.pop();
+
+      const redirectPath = "/" + parts.join("/");
 
       const referrer = getReferrer(redirectPath);
 
@@ -77,6 +74,12 @@ export default function PeekOverlay({ description, userName }: Props) {
 
       const query = modifyQuery({ params }) || searchParams.toString();
 
+      console.log("payload", {
+        referrer,
+        redirectPath,
+        redirectQuery: query,
+        localUserId: userId,
+      });
       openAuthModal({
         stateObject: {
           referrer,
@@ -87,6 +90,7 @@ export default function PeekOverlay({ description, userName }: Props) {
         title: "Start your change",
       });
       setIsLoading(false);
+      return;
     }
 
     if (!club) {

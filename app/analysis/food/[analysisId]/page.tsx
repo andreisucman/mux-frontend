@@ -4,11 +4,10 @@ import React, { use, useCallback, useContext, useEffect, useMemo, useState } fro
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Overlay, Skeleton, Stack, Table, Text, Title } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import FoodTaskSelectionModalContent from "@/components/FoodTaskSelectionModalContent";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
+import FoodTaskSelectionModalContent from "@/components/FoodTaskSelectionModalContent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import PieChartComponent from "@/components/PieChart";
@@ -37,7 +36,6 @@ export default function FoodScanResult(props: Props) {
   const [displayComponent, setDisplayComponent] = useState<"loading" | "analysis" | "empty">(
     "loading"
   );
-  const isMobile = useMediaQuery("(max-width: 36em)");
   const [pageLoaded, setPageLoaded] = useState(false);
 
   const { url, analysis } = data || {};
@@ -56,40 +54,30 @@ export default function FoodScanResult(props: Props) {
     ],
   };
 
-  let displayData = useMemo(() => {
+  const displayData = useMemo(() => {
     if (!energy || !shouldEat) return;
 
-    let response = {
-      titleText: "",
-      eatFraction: "",
-      chartShares: [] as { name: string; value: number }[],
-    };
+    let response = [] as { name: string; value: number }[];
 
     if (shouldEat) {
       const eatShare = calorieGoal > energy ? 100 : Math.round((calorieGoal / energy) * 100);
 
-      response.chartShares = [{ name: "eat", value: 100 }];
+      response = [{ name: "eat", value: 100 }];
 
       if (energy > calorieGoal) {
-        response.chartShares = [
+        response = [
           { name: "eat", value: eatShare },
           { name: "skip", value: 100 - eatShare },
         ];
       }
-      response.eatFraction = `${eatShare}%`;
-      response.titleText =
-        eatShare === 100 ? "Eat everything" : eatShare ? `Eat ${eatShare}% of it` : "Skip it";
     } else {
-      response.titleText = "Skip it";
-      response.chartShares = [
+      response = [
         { name: "eat", value: 0 },
         { name: "skip", value: 100 },
       ];
     }
     return response;
   }, [shouldEat, energy]);
-
-  const { eatFraction = "", titleText = "", chartShares = [] } = displayData || {};
 
   const handleUploadAsProof = useCallback(() => {
     if (!url) return;
@@ -167,7 +155,7 @@ export default function FoodScanResult(props: Props) {
             {explanation && <Text>{explanation}</Text>}
             <Stack className={classes.chartWrapper} style={{ backgroundImage: `url(${url})` }}>
               <Overlay className={classes.overlay}>
-                <PieChartComponent data={chartShares} />
+                <PieChartComponent data={displayData || []} />
               </Overlay>
             </Stack>
 
@@ -175,7 +163,6 @@ export default function FoodScanResult(props: Props) {
               relatedCategory="style"
               relatedContentId={analysisId}
               dividerLabel={"Discuss details"}
-              collapseStyles={{ minHeight: "unset", paddingBottom: isMobile ? "80%" : "30%" }}
             />
 
             <Stack className={classes.tableStack}>

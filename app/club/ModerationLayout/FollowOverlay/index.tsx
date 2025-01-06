@@ -1,10 +1,10 @@
 import React, { useCallback, useContext } from "react";
-import { IconEye } from "@tabler/icons-react";
-import { Button, rem, Stack, Text, Title } from "@mantine/core";
+import { Button, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { ClubDataType, UserDataType } from "@/types/global";
 import classes from "./FollowOverlay.module.css";
+import openErrorModal from "@/helpers/openErrorModal";
 
 type Props = {
   userName?: string;
@@ -25,6 +25,10 @@ export default function FollowOverlay({ userName, description }: Props) {
       });
 
       if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({description: response.error});
+          return;
+        }
         const { club } = userDetails || {};
         const newClub = { ...club, userName };
 
@@ -46,7 +50,7 @@ export default function FollowOverlay({ userName, description }: Props) {
           {description}
         </Text>
         <Button className={classes.button} onClick={handleFollowUser} mt={8}>
-           Follow
+          Follow
         </Button>
       </Stack>
     </Stack>

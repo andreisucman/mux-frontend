@@ -145,7 +145,10 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
   return (
     <Stack className={`${classes.container} smallPage`}>
       {headers[pageType]}
-      <Skeleton className={`skeleton ${classes.skeleton}`} visible={showComponent === "loading"}>
+      <Skeleton
+        className={`skeleton ${classes.skeleton}`}
+        visible={showComponent === "loading" || !!code}
+      >
         {showComponent === "userNotFound" ? (
           <OverlayWithText text="User not found" icon={<IconUserOff className="icon" />} />
         ) : (

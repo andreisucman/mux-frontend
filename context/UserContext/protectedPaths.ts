@@ -6,6 +6,7 @@ export const protectedPaths = [
   "/tasks/calendar",
   "/products",
   "/explain",
+  "/settings",
   "/results",
   "/results/proof",
   "/results/style",
@@ -14,5 +15,6 @@ export const protectedPaths = [
   "/considerations",
   "/club",
   "/club/join",
-  "/club/registraion",
+  "/club/admission",
+  "/waitroom",
 ];

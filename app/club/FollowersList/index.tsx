@@ -4,6 +4,7 @@ import { Loader, Stack, Title, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import fetchFollowYou from "@/functions/fetchFollowYou";
 import { ClubUserType } from "@/types/global";
 import FollowYouRow from "../FollowYouRow";
@@ -11,7 +12,7 @@ import AllFollowersModalContent from "./AllFollowersModalContent";
 import classes from "./FollowersList.module.css";
 
 export default function FollowersList() {
-  const { userDetails } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [trackYouData, setTrackYouData] = useState<ClubUserType[]>();
 
   const { club } = userDetails || {};
@@ -45,8 +46,9 @@ export default function FollowersList() {
   }, []);
 
   useEffect(() => {
+    if (status !== AuthStateEnum.AUTHENTICATED) return;
     handleFetchClubTrackYou();
-  }, []);
+  }, [status]);
 
   return (
     <Stack className={classes.container}>

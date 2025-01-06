@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { IconDeviceFloppy } from "@tabler/icons-react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
+import { protectedPaths } from "@/context/UserContext/protectedPaths";
 import callTheServer from "@/functions/callTheServer";
 import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router";
@@ -19,6 +19,7 @@ import classes from "./set-password.module.css";
 export default function SetPassword() {
   const { setUserDetails, setStatus } = useContext(UserContext);
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -31,6 +32,10 @@ export default function SetPassword() {
     deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
     setUserDetails(null);
+
+    if (protectedPaths.includes(pathname)) {
+      router.replace("/auth");
+    }
     modals.closeAll();
   }, []);
 

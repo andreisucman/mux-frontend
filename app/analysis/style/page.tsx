@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
@@ -33,7 +32,6 @@ export default function StyleScanResult() {
   const [displayComponent, setDisplayComponent] = useState<"loading" | "analysis" | "empty">(
     "loading"
   );
-  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const { _id: userId, latestStyleAnalysis } = userDetails || {};
   const type = searchParams.get("type") || "head";
@@ -163,7 +161,6 @@ export default function StyleScanResult() {
                   relatedCategory="style"
                   relatedContentId={styleId}
                   dividerLabel={"Discuss details"}
-                  collapseStyles={{ minHeight: "unset", paddingBottom: isMobile ? "80%" : "30%" }}
                 />
               }
             />

@@ -197,6 +197,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         closeDrawer={closeDrawer}
         linkClicked={linkClicked}
         links={finalNavigation}
+        showLowerDivider
       />
     );
   }, [typeof userDetails?.club, name, linkClicked]);
@@ -208,7 +209,6 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         closeDrawer={closeDrawer}
         linkClicked={linkClicked}
         links={legalLinks}
-        showLowerDivider
       />
     );
   }, [status, linkClicked]);
