@@ -1,24 +1,36 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Collapse, rem, Stack, Text } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import ChatDisplay from "@/app/advisor/chat/ChatDisplay";
 import ChatInput from "@/app/advisor/chat/ChatInput";
 import { MessageType } from "@/app/advisor/types";
-import { UserContext } from "@/context/UserContext";
-import classes from "./ClubChatContainer.module.css";
+import classes from "./ChatWithOverlay.module.css";
 
-type Props = { disabled?: boolean; userName?: string | string[] };
+type Props = {
+  disabled?: boolean;
+  userName?: string | string[];
+  disclaimer?: string;
+  dividerLabel?: string;
+  relatedCategory?: string;
+  relatedContentId?: string;
+  collapseStyles?: { [key: string]: any };
+  defaultVisibility?: "open" | "closed";
+};
 
-export default function ClubChatContainer({ userName, disabled }: Props) {
-  const { userDetails } = useContext(UserContext);
+export default function ChatWithOverlay({
+  disabled,
+  userName,
+  disclaimer,
+  dividerLabel,
+  collapseStyles,
+  relatedCategory,
+  relatedContentId,
+  defaultVisibility,
+}: Props) {
   const { ref: focusRef, focused } = useFocusWithin();
   const [isTyping, setIsTyping] = useState(false);
   const [conversation, setConversation] = useState<MessageType[]>([]);
 
-  const { name } = userDetails || {};
-  const isSelf = name === userName;
-
-  const text = userName ? `the ${userName}'s` : "your";
   const openChat = disabled ? false : focused && conversation.length > 0;
 
   return (
@@ -26,13 +38,16 @@ export default function ClubChatContainer({ userName, disabled }: Props) {
       <Collapse
         in={openChat}
         className={classes.collapse}
+        style={collapseStyles || {}}
         transitionDuration={250}
         transitionTimingFunction="linear"
       >
         <Stack className={classes.chatDisplayWrapper}>
-          <Text className={classes.disclaimer} c="dimmed">
-            Answers are based on {text} info
-          </Text>
+          {disclaimer && (
+            <Text className={classes.disclaimer} c="dimmed">
+              {disclaimer}
+            </Text>
+          )}
           <ChatDisplay
             isTyping={isTyping}
             conversation={conversation}
@@ -43,13 +58,16 @@ export default function ClubChatContainer({ userName, disabled }: Props) {
         </Stack>
       </Collapse>
       <ChatInput
-        isClub={true}
-        defaultOpen={!isSelf}
+        defaultVisibility={defaultVisibility}
         disabled={disabled}
         conversation={conversation}
         userName={userName}
+        dividerLabel={dividerLabel}
+        relatedCategory={relatedCategory}
+        relatedContentId={relatedContentId}
         setConversation={setConversation}
         setIsTyping={setIsTyping}
+        isClub
       />
     </Stack>
   );

@@ -415,7 +415,6 @@ export type TaskType = {
   isRecipe: boolean;
   recipe: RecipeType;
   suggestions: SuggestionType[];
-  productsPersonalized: boolean;
   requiredSubmissions?: RequiredSubmissionType[];
   example: { type: string; url: string };
   defaultSuggestions: SuggestionType[];

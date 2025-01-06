@@ -1,6 +1,7 @@
 .container {
   flex: 1;
-  min-height: rem(480);
+  height: 75vh;
+  max-height: rem(600);
 }
 
 .wrapper {

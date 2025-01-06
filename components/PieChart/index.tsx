@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Cell, Pie, PieChart } from "recharts";
 import { Stack } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { upperFirst, useElementSize } from "@mantine/hooks";
 import plate from "@/public/assets/empty-plate.svg";
 import classes from "./PieChart.module.css";
 
@@ -54,10 +54,11 @@ const renderCustomizedLabel = ({
 
 export default function PieChartComponent({ data }: Props) {
   const COLORS = ["#2bdd66", "#f21616"];
+  const { ref, height } = useElementSize();
 
   return (
-    <Stack className={classes.container}>
-      <PieChart width={265} height={265}>
+    <Stack className={classes.container} ref={ref}>
+      <PieChart width={height * 0.9} height={height * 0.9}>
         <Pie
           data={data}
           cx="50%"
@@ -73,7 +74,13 @@ export default function PieChartComponent({ data }: Props) {
           ))}
         </Pie>
       </PieChart>
-      <Image src={plate.src} className={classes.image} width={300} height={300} alt="" />
+      <Image
+        src={plate.src}
+        className={classes.image}
+        width={height * 0.9}
+        height={height * 0.9}
+        alt=""
+      />
     </Stack>
   );
 }

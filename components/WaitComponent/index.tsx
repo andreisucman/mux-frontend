@@ -5,7 +5,7 @@ import { Loader, Progress, rem, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import { saveToLocalStorage } from "@/helpers/localStorage";
+import { deleteFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { delayExecution } from "@/helpers/utils";
 import Disclaimer from "./Disclaimer";
@@ -69,7 +69,7 @@ function WaitComponent({
           } else if (jobProgress >= 100) {
             setProgress(100);
 
-            saveToLocalStorage("runningAnalyses", { [operationKey]: false }, "add");
+            deleteFromLocalStorage("runningAnalyses", operationKey);
             clearInterval(intervalId);
 
             await delayExecution(1000);

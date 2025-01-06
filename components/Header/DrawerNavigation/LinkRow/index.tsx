@@ -15,11 +15,11 @@ type Props = {
   isSmall?: boolean;
   linkClicked: string;
   link: NavigationLinkType;
-  handleClickLink: (path: string) => void;
+  clickLink: (path: string) => void;
   closeDrawer: () => void;
 };
 
-function LinkRow({ linkClicked, handleClickLink, closeDrawer, link }: Props) {
+function LinkRow({ linkClicked, clickLink, closeDrawer, link }: Props) {
   const active = linkClicked === link.path;
 
   const chevron = useMemo(
@@ -34,7 +34,7 @@ function LinkRow({ linkClicked, handleClickLink, closeDrawer, link }: Props) {
 
   return (
     <Stack className={classes.container}>
-      <Group className={classes.header} onClick={() => handleClickLink(link.path)}>
+      <Group className={classes.header} onClick={() => clickLink(link.path)}>
         <Link className={classes.link} href={link.path} onClick={closeDrawer}>
           {link.icon}
           {link.title}
@@ -44,7 +44,12 @@ function LinkRow({ linkClicked, handleClickLink, closeDrawer, link }: Props) {
       {link.children && (
         <Collapse in={linkClicked === link.path}>
           {link.children.map((child, index) => (
-            <Link key={index} href={child.path} className={`${classes.link} ${classes.child}`} onClick={closeDrawer}>
+            <Link
+              key={index}
+              href={child.path}
+              className={`${classes.link} ${classes.child}`}
+              onClick={closeDrawer}
+            >
               {child.title}
             </Link>
           ))}

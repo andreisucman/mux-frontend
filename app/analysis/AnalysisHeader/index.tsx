@@ -1,16 +1,16 @@
 import React from "react";
 import { usePathname } from "next/navigation";
-import { IconChevronLeft, IconHanger, IconProgress } from "@tabler/icons-react";
+import { IconChevronLeft, IconHanger, IconProgress, IconSoup } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
-import { TypeEnum } from "@/types/global";
 import classes from "./AnalysisHeader.module.css";
 
 const categoryIcons = {
   "/analysis": <IconProgress className="icon" />,
   "/analysis/style": <IconHanger className="icon" />,
+  "/analysis/food": <IconSoup className="icon" />,
 };
 
 const types = [
@@ -21,13 +21,14 @@ const types = [
 const categories = [
   { label: "Progress", value: "/analysis" },
   { label: "Style", value: "/analysis/style" },
+  { label: "Food", value: "/analysis/food" },
 ];
 
 type Props = {
   showReturn?: boolean;
   title: string;
-  type: string | null;
-  onTypeChange: (newType?: null | string) => void;
+  type?: string | null;
+  onTypeChange?: (newType?: null | string) => void;
 };
 
 export default function AnalysisHeader({ title, type, showReturn, onTypeChange }: Props) {

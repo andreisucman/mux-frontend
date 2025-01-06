@@ -1,25 +1,22 @@
 .container {
   position: relative;
 
-  gap: rem(8);
   padding: rem(8) rem(16) rem(16);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 }
 
-.titleGroup {
-  justify-content: space-between;
-  margin-bottom: rem(8);
-}
-
 .title {
   display: flex;
   align-items: center;
-  font-size: var(--mantine-font-size-sm);
-  color: var(--mantine-color-green-7)
+  font-size: var(--mantine-font-size-xs);
 }
 
 .wrapper {
+  gap: rem(8);
+}
+
+.content {
   overflow: auto;
   flex-wrap: nowrap;
 

@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
 import SuggestionContainer from "@/components/SuggestionContainer";
-import callTheServer from "@/functions/callTheServer";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { TaskType } from "@/types/global";
@@ -20,33 +19,13 @@ export default function ProductsRow({
   task,
   customStyles,
   selectedAsins,
-  setUniqueTasks,
   setSelectedAsins,
 }: Props) {
-  const { color, icon, name, productsPersonalized, suggestions, defaultSuggestions, startsAt } =
-    task;
+  const { color, icon, name, suggestions, defaultSuggestions, startsAt } = task;
 
   const finalSuggestions = suggestions?.length > 0 ? suggestions : defaultSuggestions;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
-
-  const refetchTask = useCallback(async () => {
-    try {
-      if (!task) return;
-      const response = await callTheServer({
-        endpoint: "getTaskProducts",
-        method: "POST",
-        body: { taskId: task._id },
-      });
-
-      if (response.status === 200) {
-        const updatedTask: TaskType = response.message;
-        setUniqueTasks((prev) =>
-          prev?.map((task) => (task._id === updatedTask._id ? updatedTask : task))
-        );
-      }
-    } catch (err) {}
-  }, [task?._id]);
 
   const showSkeleton = useShowSkeleton();
 
@@ -63,13 +42,11 @@ export default function ProductsRow({
         <Stack flex={1}>
           <SuggestionContainer
             title="Products"
+            taskId={task._id}
             items={finalSuggestions}
             customStyles={{ borderRadius: "0 0 16px 16px" }}
-            taskKey={task.key}
             selectedAsins={selectedAsins}
-            productsPersonalized={productsPersonalized}
             setSelectedAsins={setSelectedAsins}
-            refetchTask={refetchTask}
             showOnCellAtc={true}
           />
         </Stack>

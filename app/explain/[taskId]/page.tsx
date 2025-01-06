@@ -2,10 +2,10 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconPencil, IconX } from "@tabler/icons-react";
-import { Button, Group, rem, Skeleton, Stack, Switch, Title } from "@mantine/core";
+import { Button, Group, Skeleton, Stack, Switch, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
+import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
@@ -43,8 +43,6 @@ export default function Explain(props: Props) {
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
   const [showWaitComponent, setShowWaitComponent] = useState(false);
 
-  const type = searchParams.get("type");
-
   const { timeZone } = userDetails || {};
   const {
     requiredSubmissions,
@@ -55,7 +53,7 @@ export default function Explain(props: Props) {
     defaultSuggestions,
     suggestions,
     key: taskKey,
-    productsPersonalized,
+    type,
   } = taskInfo || {};
 
   const required: RequiredSubmissionType[] = requiredSubmissions || [];
@@ -257,12 +255,32 @@ export default function Explain(props: Props) {
               />
             ) : (
               <>
-                <Switch
-                  label={"Proof upload"}
-                  disabled={taskStatus === "completed"}
-                  checked={proofEnabled || false}
-                  onChange={() => switchProofUpload(!proofEnabled, taskId)}
-                />
+                <Group className={classes.buttonsGroup}>
+                  <Switch
+                    label={"Proof upload"}
+                    disabled={taskStatus === "completed"}
+                    checked={proofEnabled || false}
+                    onChange={() => switchProofUpload(!proofEnabled, taskId)}
+                  />
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={taskStatus === "completed"}
+                    className={classes.disableButton}
+                    onClick={handleRedirectToCalendar}
+                  >
+                    Disable
+                  </Button>
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={taskStatus === "completed"}
+                    className={classes.disableButton}
+                    onClick={openEditTaskModal}
+                  >
+                    Edit
+                  </Button>
+                </Group>
 
                 {required.map((r: RequiredSubmissionType, index) => {
                   return (
@@ -300,29 +318,11 @@ export default function Explain(props: Props) {
                   <SuggestionContainer
                     title="Products:"
                     items={finalSuggestions}
-                    taskKey={taskKey || ""}
-                    productsPersonalized={productsPersonalized}
-                    refetchTask={() => handleFetchTaskInfo(taskId || "")}
+                    taskId={taskId}
+                    disableLocalChat
                   />
                 )}
-                <Group className={classes.buttonsGroup}>
-                  <Button
-                    variant="default"
-                    disabled={taskStatus === "completed"}
-                    className={classes.disableButton}
-                    onClick={handleRedirectToCalendar}
-                  >
-                    Disable task
-                  </Button>
-                  <Button
-                    variant="default"
-                    disabled={taskStatus === "completed"}
-                    className={classes.disableButton}
-                    onClick={openEditTaskModal}
-                  >
-                    Edit task
-                  </Button>
-                </Group>
+                <ChatWithOverlay relatedCategory={"task"} relatedContentId={taskId} />
               </>
             )}
           </Stack>

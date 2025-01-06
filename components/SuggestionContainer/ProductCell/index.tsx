@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import Image from "next/image";
-import { IconShoppingBag } from "@tabler/icons-react";
 import { Button, Checkbox, Rating, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ProductModalBody from "@/components/ProductModalBody";
@@ -55,7 +54,6 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
           className={classes.checkButton}
           onClick={handleAddToCard}
         >
-          <IconShoppingBag className={classes.shoppingBag} />
           <Checkbox checked={added} id={item.asin} ml={rem(4)} readOnly />
         </Button>
       )}

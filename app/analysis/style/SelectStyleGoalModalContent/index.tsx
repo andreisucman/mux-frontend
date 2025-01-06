@@ -58,7 +58,8 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
 
   return (
     <Stack className={classes.container}>
-      <Stack className={classes.wrapper}>
+      What should I change to look
+      <Stack className={`${classes.wrapper} scrollbar`}>
         <Stack className={classes.content}>
           {styles.map((styleObj, index) => {
             const checked = selectedGoal?.name === styleObj.name;

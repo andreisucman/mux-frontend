@@ -74,8 +74,7 @@ export default function UploadProof(props: Props) {
       if (response.status === 200) {
         setExistingProofRecord(response.message);
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }, []);
 
   const uploadProof = useCallback(
@@ -103,11 +102,11 @@ export default function UploadProof(props: Props) {
             description: response.error,
           });
 
-          saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
+          deleteFromLocalStorage("runningAnalyses", taskId || "");
         }
       } catch (err) {
         setDisplayComponent("videoRecorder");
-        saveToLocalStorage("runningAnalyses", { [taskId || ""]: false }, "add");
+        deleteFromLocalStorage("runningAnalyses", taskId || "");
       }
     },
     [taskId]

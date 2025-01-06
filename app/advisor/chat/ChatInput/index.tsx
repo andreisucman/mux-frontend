@@ -1,14 +1,8 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  IconChevronDown,
-  IconChevronUp,
-  IconCirclePlus,
-  IconSend,
-  IconSquareRoundedCheck,
-} from "@tabler/icons-react";
-import { ActionIcon, Collapse, Divider, Group, rem, Skeleton, Stack } from "@mantine/core";
+import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
+import { ActionIcon, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -17,6 +11,7 @@ import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
@@ -34,11 +29,14 @@ const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textare
 
 type Props = {
   isClub?: boolean;
+  dividerLabel?: string;
   disabled?: boolean;
-  defaultOpen?: boolean;
+  defaultVisibility?: "open" | "closed";
   heading?: React.ReactNode;
   userName?: string | string[];
   conversation: MessageType[];
+  relatedCategory?: string;
+  relatedContentId?: string;
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
 };
@@ -47,9 +45,12 @@ export default function ChatInput({
   isClub,
   heading,
   disabled,
-  defaultOpen,
+  defaultVisibility,
   userName,
+  dividerLabel,
   conversation,
+  relatedCategory,
+  relatedContentId,
   setIsTyping,
   setConversation,
 }: Props) {
@@ -60,13 +61,12 @@ export default function ChatInput({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [images, setImages] = useState<File[]>([]);
-  const [showChat, setShowChat] = useState(!!defaultOpen);
+  const [showChat, setShowChat] = useState(defaultVisibility === "open");
 
-  const { _id: userId, coachEnergy, demographics } = userDetails || {};
+  const { coachEnergy, demographics } = userDetails || {};
   const { sex } = demographics || {};
 
   const conversationId = searchParams.get("conversationId");
-  const taskName = searchParams.get("taskName");
   const query = searchParams.get("query");
 
   const handleCreateCheckoutSession = useCallback(async () => {
@@ -175,7 +175,8 @@ export default function ChatInput({
         const payload: { [key: string]: any } = {
           conversationId,
           messages: newMessages,
-          taskName,
+          relatedCategory,
+          relatedContentId,
         };
 
         if (userName) payload.userName = userName;
@@ -231,12 +232,12 @@ export default function ChatInput({
             ...prev,
             coachEnergy: response.message?.coachEnergy,
           }));
-        } else {
-          setConversation((prev) => prev.slice(0, prev.length - 1));
         }
-
+      } catch (err: any) {
+        setConversation((prev) => prev.slice(0, prev.length - 1));
+      } finally {
         setIsTyping(false);
-      } catch (err: any) {}
+      }
     },
     [currentMessage, conversation && conversation.length]
   );
@@ -267,24 +268,43 @@ export default function ChatInput({
     [images.length]
   );
 
-  const dividerLabel = useMemo(
+  const finalDividerLabel = useMemo(
     () => (
       <Group style={{ cursor: "pointer" }}>
-        {showChat ? <IconChevronDown className="icon" /> : <IconChevronUp className="icon" />}
-        {showChat ? "Hide chat" : "Open chat"}
+        {showChat ? <IconChevronUp className="icon" /> : <IconChevronDown className="icon" />}
+        {dividerLabel ? dividerLabel : showChat ? "Hide chat" : "Open chat"}
       </Group>
     ),
-    [showChat]
+    [showChat, dividerLabel]
   );
+
+  const handleToggleChat = () => {
+    setShowChat((prev) => {
+      if (defaultVisibility !== "closed")
+        saveToLocalStorage("openInputChat", { [relatedCategory || "general"]: !prev }, "add");
+
+      return !prev;
+    });
+  };
 
   useEffect(() => {
     if (!query) return;
     setCurrentMessage(query as string);
   }, [query]);
 
+  useEffect(() => {
+    const savedInputChatOpens: { [key: string]: boolean } | null =
+      getFromLocalStorage("openInputChat");
+
+    if (savedInputChatOpens) {
+      const relatedVerdict = savedInputChatOpens[relatedCategory || "general"];
+      setShowChat(relatedVerdict);
+    }
+  }, []);
+
   return (
-    <Stack>
-      <Divider label={dividerLabel} onClick={() => setShowChat((prev) => !prev)} />
+    <Stack className={classes.container}>
+      <Divider label={finalDividerLabel} onClick={handleToggleChat} />
       <Collapse in={showChat}>
         <Stack className={classes.container}>
           {heading}

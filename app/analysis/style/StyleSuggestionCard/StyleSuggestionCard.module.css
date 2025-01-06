@@ -4,7 +4,7 @@
   border-radius: var(--mantine-radius-lg);
   height: 100%;
   flex: 1;
-  gap: rem(8);
+  gap: rem(16);
 }
 
 .title {

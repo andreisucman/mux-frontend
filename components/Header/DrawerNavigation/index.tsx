@@ -16,8 +16,10 @@ import {
 } from "@tabler/icons-react";
 import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import LinkRow, { NavigationLinkType } from "./LinkRow";
+import { NavigationLinkType } from "./LinkRow";
+import NavigationStack from "./NavigationStack";
 import classes from "./DrawerNavigation.module.css";
 
 const defaultNavigation = [
@@ -116,9 +118,9 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
   const [linkClicked, setLinkClicked] = useState("");
   const year = new Date().getFullYear();
 
-  const { _id: userId, name } = userDetails || {};
+  const { name } = userDetails || {};
 
-  const handleClickLink = useCallback(
+  const clickLink = useCallback(
     (path: string) => {
       setLinkClicked(path === linkClicked ? "" : path);
     },
@@ -129,6 +131,34 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
     router.push("/auth");
     closeDrawer();
   };
+
+  const finalDefaultNavigation = useMemo(() => {
+    const finalItems =
+      status === AuthStateEnum.AUTHENTICATED
+        ? defaultNavigation.map((rec: NavigationLinkType) =>
+            rec.path === "/scan"
+              ? {
+                  ...rec,
+                  children: [
+                    { title: "Progress", path: `/scan/progress` },
+                    { title: "Style", path: `/scan/style` },
+                    { title: "Food", path: `/scan/food` },
+                  ],
+                }
+              : rec
+          )
+        : defaultNavigation;
+
+    return (
+      <NavigationStack
+        clickLink={clickLink}
+        closeDrawer={closeDrawer}
+        linkClicked={linkClicked}
+        links={finalItems}
+        showLowerDivider
+      />
+    );
+  }, [status, linkClicked]);
 
   const finalAuthenticatedNavigation = useMemo(() => {
     const { club } = userDetails || {};
@@ -160,22 +190,34 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       path: "/settings",
       icon: <IconSettings stroke={1.25} className="icon" />,
     });
-    return finalNavigation;
-  }, [typeof userDetails?.club, name]);
+
+    return (
+      <NavigationStack
+        clickLink={clickLink}
+        closeDrawer={closeDrawer}
+        linkClicked={linkClicked}
+        links={finalNavigation}
+      />
+    );
+  }, [typeof userDetails?.club, name, linkClicked]);
+
+  const legalNavigation = useMemo(() => {
+    return (
+      <NavigationStack
+        clickLink={clickLink}
+        closeDrawer={closeDrawer}
+        linkClicked={linkClicked}
+        links={legalLinks}
+        showLowerDivider
+      />
+    );
+  }, [status, linkClicked]);
 
   return (
     <Stack className={classes.container}>
       <Divider />
       <>
-        {defaultNavigation.map((link, index) => (
-          <LinkRow
-            key={index}
-            link={link}
-            linkClicked={linkClicked}
-            handleClickLink={handleClickLink}
-            closeDrawer={closeDrawer}
-          />
-        ))}
+        {finalDefaultNavigation}
         {status !== "authenticated" && (
           <UnstyledButton className={classes.signInButton} onClick={handleClickSignIn}>
             <IconDoorEnter className="icon" stroke={1.25} />
@@ -186,35 +228,15 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
 
       {status === "authenticated" && (
         <>
-          <Divider />
-          {finalAuthenticatedNavigation.map((link, index) => (
-            <LinkRow
-              key={index}
-              link={link}
-              linkClicked={linkClicked}
-              handleClickLink={handleClickLink}
-              closeDrawer={closeDrawer}
-            />
-          ))}
-          {status === "authenticated" && (
-            <UnstyledButton className={classes.signInButton} onClick={handleSignOut}>
-              <IconDoorExit className="icon" stroke={1.25} />
-              Sign out
-            </UnstyledButton>
-          )}
+          {finalAuthenticatedNavigation}
+          <UnstyledButton className={classes.signInButton} onClick={handleSignOut}>
+            <IconDoorExit className="icon" stroke={1.25} />
+            Sign out
+          </UnstyledButton>
         </>
       )}
       <Stack className={classes.footer}>
-        {legalLinks.map((link, index) => (
-          <LinkRow
-            key={index}
-            link={link}
-            linkClicked={linkClicked}
-            handleClickLink={handleClickLink}
-            closeDrawer={closeDrawer}
-            isSmall
-          />
-        ))}
+        {legalNavigation}
         <Text className={classes.copyright}>&copy; {year} Muxout. All rights reserved</Text>
       </Stack>
     </Stack>

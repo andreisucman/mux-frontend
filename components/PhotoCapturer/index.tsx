@@ -7,13 +7,14 @@ import classes from "./PhotoCapturer.module.css";
 
 type Props = {
   silhouette: string;
+  hideTimerButton?: boolean;
   handleCapture: (base64string: string) => void;
 };
 
 const TIMER_SECONDS = 5;
 const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
-export default function PhotoCapturer({ handleCapture, silhouette }: Props) {
+export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButton }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -167,16 +168,18 @@ export default function PhotoCapturer({ handleCapture, silhouette }: Props) {
       )}
       <Group className={classes.buttonGroup}>
         <audio ref={audioRef} src={audioUrl} preload="auto" />
-        <Button
-          variant="default"
-          disabled={timerStarted}
-          onClick={startDelayedCapture}
-          className={classes.button}
-          style={{ flexGrow: 0, padding: 0 }}
-          miw={rem(50)}
-        >
-          <IconStopwatch className="icon" />
-        </Button>
+        {!hideTimerButton && (
+          <Button
+            variant="default"
+            disabled={timerStarted}
+            onClick={startDelayedCapture}
+            className={classes.button}
+            style={{ flexGrow: 0, padding: 0 }}
+            miw={rem(50)}
+          >
+            <IconStopwatch className="icon" />
+          </Button>
+        )}
         {hasMultipleCameras && (
           <Button
             variant="default"

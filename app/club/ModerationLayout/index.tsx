@@ -14,7 +14,7 @@ import ClubProfilePreview from "../ClubProfilePreview";
 import ClubProgressHeader from "../progress/ClubProgressHeader";
 import ClubProofHeader from "../proof/ClubProofHeader";
 import ClubStyleHeader from "../style/ClubStyleHeader";
-import ClubChatContainer from "./ClubChatContainer";
+import ChatWithOverlay from "./ChatWithOverlay";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
 import classes from "./ClubModerationLayout.module.css";
@@ -106,6 +106,10 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
 
   const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
+  const chatDisclaimer = userName
+    ? `Answers are based on the ${userName}'s info`
+    : "Answers are based on your info";
+
   useEffect(() => {
     if (!youFollowDataFetched || code) return;
 
@@ -158,7 +162,11 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
               <FollowOverlay userName={userName as string} description={followText} />
             )}
             {showComponent === "children" && showChat && (
-              <ClubChatContainer disabled={showComponent !== "children"} userName={userName} />
+              <ChatWithOverlay
+                userName={userName}
+                disabled={showComponent !== "children"}
+                disclaimer={chatDisclaimer}
+              />
             )}
           </>
         )}

@@ -1,12 +1,18 @@
 .container {
   width: 100%;
-  gap: rem(4)
+  gap: rem(4);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    gap: rem(16);
+    flex-direction: row;
+  }
 }
 
 .indicatorRowContainer {
   flex: 1;
   flex-wrap: nowrap;
   min-height: rem(28);
+  gap: rem(12);
 }
 
 .indicatorRowTargetIcon {
@@ -17,4 +23,8 @@
 .indicatorRowProgressRoot {
   flex: 1;
   width: 100%;
+}
+
+.title {
+  margin-bottom: rem(4);
 }

@@ -12,8 +12,8 @@
 .imageWrapper {
   width: 100%;
   aspect-ratio: 16/9;
-  min-height: rem(150);
-  max-height: rem(165);
+  min-height: rem(75);
+  max-height: rem(100);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 }
@@ -24,7 +24,7 @@
 }
 
 .buttonGroup {
-  flex: 0 1;
+  width: 100%;
 }
 
 .icon {

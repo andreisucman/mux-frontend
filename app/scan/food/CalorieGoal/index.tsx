@@ -1,26 +1,20 @@
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { Group, SegmentedControl, Slider, Stack, Text } from "@mantine/core";
+import { CalorieGoalContext } from "@/context/CalorieGoalContext";
+import { CalorieGoalEnum } from "@/context/CalorieGoalContext/types";
 import { UserContext } from "@/context/UserContext";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./CalorieGoal.module.css";
 
 type Props = {
   disabled: boolean;
-  calorieGoal: number;
-  setCalorieGoal: React.Dispatch<React.SetStateAction<number>>;
-  goalType: string;
-  setGoalType: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function CalorieGoalController({
-  calorieGoal,
-  setCalorieGoal,
-  goalType,
-  setGoalType,
-  disabled,
-}: Props) {
+export default function CalorieGoalController({ disabled }: Props) {
   const { status, userDetails } = useContext(UserContext);
+  const { calorieGoal, calorieGoalType, setCalorieGoal, setCalorieGoalType } =
+    useContext(CalorieGoalContext);
 
   const segments = useMemo(() => {
     let data = [
@@ -32,17 +26,17 @@ export default function CalorieGoalController({
 
   const handleChangeSlider = useCallback(
     (calorieGoal: number) => {
-      if (goalType === "remaining") return;
+      if (calorieGoalType === "remaining") return;
       setCalorieGoal(calorieGoal);
       saveToLocalStorage("calorieGoal", calorieGoal);
     },
-    [goalType]
+    [calorieGoalType]
   );
 
   const handleChangeGoal = useCallback(
     (value: string) => {
-      if (value === "portion") {
-        setGoalType("portion");
+      if (value === CalorieGoalEnum.PORTION) {
+        setCalorieGoalType(CalorieGoalEnum.PORTION);
         return;
       }
 
@@ -52,19 +46,11 @@ export default function CalorieGoalController({
       }
       const { nutrition } = userDetails || {};
 
-      setGoalType("remaining");
+      setCalorieGoalType(CalorieGoalEnum.REMAINING);
       setCalorieGoal(nutrition?.remainingDailyCalories || 0);
     },
     [status, userDetails]
   );
-
-  useEffect(() => {
-    const savedCalorieGoal = getFromLocalStorage("calorieGoal");
-
-    if (savedCalorieGoal) {
-      setCalorieGoal(Number(savedCalorieGoal));
-    }
-  }, []);
 
   return (
     <Stack className={classes.container}>
@@ -76,7 +62,7 @@ export default function CalorieGoalController({
           disabled={disabled}
           size="xs"
           data={segments}
-          value={goalType}
+          value={calorieGoalType}
           onChange={handleChangeGoal}
           styles={{ root: { zIndex: 1 } }}
         />

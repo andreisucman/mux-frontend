@@ -10,11 +10,12 @@ import classes from "./StyleSuggestionCard.module.css";
 type Props = {
   styleData?: StyleAnalysisType | null;
   title?: string;
+  children?: React.ReactNode;
   titleStyles?: { [key: string]: any };
   customStyles?: { [key: string]: any };
 };
 
-export default function StyleSuggestionCard({ title, styleData }: Props) {
+export default function StyleSuggestionCard({ title, children, styleData }: Props) {
   const {
     createdAt = "",
     analysis,
@@ -44,7 +45,8 @@ export default function StyleSuggestionCard({ title, styleData }: Props) {
           {title}
         </Title>
       )}
-      <StyleSuggestionIndicators record={record} />
+      <StyleSuggestionIndicators record={record} lines={3} hideCollapse />
+      {children}
       <StyleExplanationContainer title="Feedback" styleData={styleData} />
     </Skeleton>
   );

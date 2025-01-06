@@ -2,11 +2,12 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff, IconFocus, IconMan, IconMoodSmile, IconTarget } from "@tabler/icons-react";
-import { Button, Group, Image, rem, Skeleton, Stack, Title } from "@mantine/core";
+import { IconCircleOff } from "@tabler/icons-react";
+import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import GlowingButton from "@/components/GlowingButton";
+import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -32,6 +33,7 @@ export default function StyleScanResult() {
   const [displayComponent, setDisplayComponent] = useState<"loading" | "analysis" | "empty">(
     "loading"
   );
+  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const { _id: userId, latestStyleAnalysis } = userDetails || {};
   const type = searchParams.get("type") || "head";
@@ -143,7 +145,7 @@ export default function StyleScanResult() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} showReturn />
+      <AnalysisHeader title="SAnalysis" onTypeChange={handleChangeType} type={type} showReturn />
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={displayComponent === "loading"}>
         {displayComponent === "analysis" && (
           <>
@@ -151,27 +153,39 @@ export default function StyleScanResult() {
               className={classes.imageWrapper}
               style={relevantAnalysis ? {} : { visibility: "hidden" }}
             >
-              <Image alt="" src={mainUrl?.url || null} className={classes.image} />
+              <Image height={75} alt="" src={mainUrl?.url || null} className={classes.image} />
             </Stack>
-            <StyleSuggestionCard title={title} styleData={relevantAnalysis} />
+            <StyleSuggestionCard
+              title={title}
+              styleData={relevantAnalysis}
+              children={
+                <ChatWithOverlay
+                  relatedCategory="style"
+                  relatedContentId={styleId}
+                  dividerLabel={"Discuss details"}
+                  collapseStyles={{ minHeight: "unset", paddingBottom: isMobile ? "80%" : "30%" }}
+                />
+              }
+            />
+
             <Group className={classes.buttonGroup}>
               <Button
                 variant={"default"}
+                size="compact-sm"
                 onClick={openMatchStyle}
                 disabled={!relevantAnalysis}
                 className={classes.button}
               >
-                Match a style
+                Match style
               </Button>
-              <GlowingButton
-                text="Publish"
-                icon={<IconTarget className={"icon"} style={{ marginRight: rem(6) }} />}
-                disabled={isLoading}
-                loading={isLoading}
+              <Button
+                size="compact-sm"
                 onClick={handlePublishToClub}
-                buttonStyles={{ fontSize: rem(14) }}
-                addGradient
-              />
+                disabled={isLoading}
+                className={classes.button}
+              >
+                Publish
+              </Button>
             </Group>
           </>
         )}
