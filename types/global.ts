@@ -385,7 +385,7 @@ export type SuggestionType = {
   rank: number;
   reasoning: string;
   analysisResult: { [key: string]: boolean };
-  key: string;
+  priceAndUnit: string;
 };
 
 export type RequiredSubmissionType = {

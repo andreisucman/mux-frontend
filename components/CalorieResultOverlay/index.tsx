@@ -1,28 +1,8 @@
 import React, { useMemo } from "react";
-import { IconRotate, IconTarget } from "@tabler/icons-react";
-import {
-  Button,
-  CloseButton,
-  Group,
-  Highlight,
-  Overlay,
-  rem,
-  Stack,
-  Table,
-  Text,
-} from "@mantine/core";
+import { Button, CloseButton, Group, Highlight, Overlay, Stack, Table, Text } from "@mantine/core";
+import { FoodAnalysisType } from "@/app/analysis/food/[analysisId]/types";
 import PieChartComponent from "@/components/PieChart";
 import classes from "./CalorieResultOverlay.module.css";
-
-export type FoodAnalysisType = {
-  shouldEat: boolean;
-  amount: number;
-  energy: number;
-  proteins: number;
-  carbohydrates: number;
-  fats: number;
-  explanation: string;
-};
 
 type Props = {
   data: FoodAnalysisType;
@@ -37,7 +17,7 @@ export default function CalorieResultOverlay({
   handleResetResult,
   handleUploadAsProof,
 }: Props) {
-  const { shouldEat, amount, energy, proteins, carbohydrates, fats, explanation } = data;
+  const { shouldEat, share, amount, energy, proteins, carbohydrates, fats, explanation } = data;
 
   const tableData = {
     body: [
@@ -57,19 +37,17 @@ export default function CalorieResultOverlay({
     };
 
     if (shouldEat) {
-      const eatShare = calorieGoal > energy ? 100 : Math.round((calorieGoal / energy) * 100);
-
       response.chartShares = [{ name: "eat", value: 100 }];
 
       if (energy > calorieGoal) {
         response.chartShares = [
-          { name: "eat", value: eatShare },
-          { name: "skip", value: 100 - eatShare },
+          { name: "eat", value: share },
+          { name: "skip", value: 100 - share },
         ];
       }
-      response.eatFraction = `${eatShare}%`;
+      response.eatFraction = `${share}%`;
       response.titleText =
-        eatShare === 100 ? "Eat everything" : eatShare ? `Eat ${eatShare}% of it` : "Skip it";
+        share === 100 ? "Eat everything" : share ? `Eat ${share}% of it` : "Skip it";
     } else {
       response.titleText = "Skip it";
       response.chartShares = [

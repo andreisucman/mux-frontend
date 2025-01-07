@@ -1,4 +1,5 @@
 export type FoodAnalysisType = {
+  share: number;
   foodName: string;
   shouldEat: boolean;
   amount: number;

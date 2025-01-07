@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter } from "next/navigation";
 import { Button, rem, Stack } from "@mantine/core";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import PhotoCapturer from "@/components/PhotoCapturer";
 import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
-import CalorieGoalProvider from "@/context/CalorieGoalContext";
+import CalorieGoalProvider, { CalorieGoalContext } from "@/context/CalorieGoalContext";
 import { silhouettes } from "@/data/silhouettes";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
@@ -21,6 +21,8 @@ export default function ScanFoodPage() {
   const defaultRouter = useDefaultRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [localUrl, setLocalUrl] = useState<string>("");
+
+  const { calorieGoal } = useContext(CalorieGoalContext);
 
   const handleAnalyzeFood = useCallback(async () => {
     if (!localUrl) return;
@@ -37,6 +39,7 @@ export default function ScanFoodPage() {
         method: "POST",
         body: {
           url: fileUrls[0],
+          calorieGoal,
         },
       });
 
@@ -56,7 +59,7 @@ export default function ScanFoodPage() {
       openErrorModal();
       setIsLoading(false);
     }
-  }, [localUrl]);
+  }, [localUrl, calorieGoal]);
 
   const silhouette = useMemo(
     () => silhouettes.find((rec) => rec.scanType === ScanTypeEnum.FOOD),

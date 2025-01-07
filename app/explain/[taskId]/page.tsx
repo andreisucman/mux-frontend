@@ -267,18 +267,18 @@ export default function Explain(props: Props) {
                     variant="default"
                     disabled={taskStatus === "completed"}
                     className={classes.disableButton}
-                    onClick={handleRedirectToCalendar}
+                    onClick={openEditTaskModal}
                   >
-                    Disable
+                    Edit
                   </Button>
                   <Button
                     size="compact-sm"
                     variant="default"
                     disabled={taskStatus === "completed"}
                     className={classes.disableButton}
-                    onClick={openEditTaskModal}
+                    onClick={handleRedirectToCalendar}
                   >
-                    Edit
+                    Disable
                   </Button>
                 </Group>
 
@@ -322,7 +322,7 @@ export default function Explain(props: Props) {
                     disableLocalChat
                   />
                 )}
-                <ChatWithOverlay relatedCategory={"task"} relatedContentId={taskId} />
+                <ChatWithOverlay relatedCategory={"task"} relatedContentId={taskId} defaultVisibility="open" />
               </>
             )}
           </Stack>

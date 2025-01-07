@@ -93,8 +93,8 @@ export default function SolutionCard({ data }: Props) {
               </Group>
               <Collapse in={opened}>
                 <SuggestionContainer
+                  taskId={data._id}
                   items={defaultSuggestions}
-                  footer={"We may get a small comission from qualified purchases"}
                   customStyles={{ backgroundColor: "transparent", padding: 0 }}
                   rowStyles={{ marginLeft: 0 }}
                   selectedAsins={selectedAsins}

@@ -39,6 +39,7 @@ export default function ClubDataContextProvider({ children }: Props) {
   const [hasAboutAnswers, setHasAboutAnswers] = useState();
 
   const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
+  const { followingUserName } = club || {};
 
   const fetchYouFollow = useCallback(async (userName?: string) => {
     try {
@@ -84,8 +85,8 @@ export default function ClubDataContextProvider({ children }: Props) {
   }, [userDetails]);
 
   useEffect(() => {
-    fetchYouFollow(userName as string);
-  }, [userName]);
+    fetchYouFollow((userName || followingUserName) as string);
+  }, [userName, followingUserName]);
 
   useEffect(() => {
     if (status !== AuthStateEnum.AUTHENTICATED) return;
