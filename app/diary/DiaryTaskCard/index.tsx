@@ -9,11 +9,11 @@ import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { DiaryActivityType } from "../type";
 import classes from "./DiaryTaskCard.module.css";
 
-export default function DiaryTaskCard({ name, type, url, thumbnail, icon }: DiaryActivityType) {
+export default function DiaryTaskCard({ name, contentType, url, thumbnail, icon }: DiaryActivityType) {
   const showSkeleton = useShowSkeleton();
 
   const body = useMemo(() => {
-    if (type === "image") {
+    if (contentType === "image") {
       return (
         <Stack className={classes.imageWrapper}>
           <Image
@@ -28,7 +28,7 @@ export default function DiaryTaskCard({ name, type, url, thumbnail, icon }: Diar
         </Stack>
       );
     }
-    if (type === "video") {
+    if (contentType === "video") {
       return (
         <VideoPlayer
           url={url}

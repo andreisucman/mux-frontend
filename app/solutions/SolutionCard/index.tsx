@@ -26,7 +26,7 @@ export default function SolutionCard({ data }: Props) {
   const [opened, { toggle: toggleCollapse }] = useDisclosure(true);
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
-  const { icon, color, name, instruction, description, example, defaultSuggestions } = data;
+  const { icon, color, name, instruction, description, example, suggestions } = data;
 
   const sections = [
     {
@@ -75,7 +75,7 @@ export default function SolutionCard({ data }: Props) {
               Scan now
             </Button>
           </Stack>
-          {defaultSuggestions && defaultSuggestions.length > 0 && (
+          {suggestions && suggestions.length > 0 && (
             <Stack gap={16}>
               <Group className={classes.showProductsHeading} onClick={toggleCollapse}>
                 <IconChevronDown
@@ -94,7 +94,7 @@ export default function SolutionCard({ data }: Props) {
               <Collapse in={opened}>
                 <SuggestionContainer
                   taskId={data._id}
-                  items={defaultSuggestions}
+                  items={suggestions}
                   customStyles={{ backgroundColor: "transparent", padding: 0 }}
                   rowStyles={{ marginLeft: 0 }}
                   selectedAsins={selectedAsins}

@@ -3,12 +3,14 @@
 import React, { useCallback, useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import UploadCarousel from "@/components/UploadCarousel";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { saveToLocalStorage } from "@/helpers/localStorage";
+import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import { PositionEnum, ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
@@ -58,6 +60,8 @@ export default function UploadStyle() {
 
   const handleUpload = useCallback(
     async ({ url, type }: HandleUploadStyleProps) => {
+      if (!url) return;
+
       let intervalId: NodeJS.Timeout;
 
       try {
@@ -76,52 +80,59 @@ export default function UploadStyle() {
           });
         }, updateInterval);
 
-        if (url) {
-          setIsLoading(true);
+        setIsLoading(true);
 
-          const fileUrls = await uploadToSpaces({
-            itemsArray: [url],
+        const fileUrls = await uploadToSpaces({
+          itemsArray: [url],
+        });
+
+        if (fileUrls[0]) {
+          const response = await callTheServer({
+            endpoint: "startStyleAnalysis",
+            method: "POST",
+            body: {
+              type,
+              image: fileUrls[0],
+              localUserId: userId,
+            },
           });
 
-          if (fileUrls) {
-            const response = await callTheServer({
-              endpoint: "startStyleAnalysis",
-              method: "POST",
-              body: {
-                type,
-                image: fileUrls[0],
-                localUserId: userId,
-              },
-            });
+          if (response.status === 200) {
+            if (response.error) {
+              if (response.error === "must login") {
+                openAuthModal({
+                  title: "Login to continue",
+                  stateObject: {
+                    referrer: ReferrerEnum.SCAN_STYLE,
+                    redirectPath: "/scan/style",
+                  },
+                });
+                return;
+              }
 
-            if (response.status === 200) {
-              saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
-              setUserDetails((prev: UserDataType) => ({
-                ...prev,
-                _id: response.message,
-              }));
-
-              const redirectUrl = encodeURIComponent(
-                `/analysis/style?${type ? `type=${type}` : ""}`
-              );
-              const onErrorRedirectUrl = encodeURIComponent(
-                `/scan/style?${searchParams.toString()}`
-              );
-              router.push(
-                `/wait?type=${finalType}&operationKey=${`style-${finalType}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
-              );
-            } else {
-              setProgress(0);
-              setIsLoading(false);
               openErrorModal({
                 description: response.error,
               });
             }
+
+            saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
+            setUserDetails((prev: UserDataType) => ({
+              ...prev,
+              _id: response.message,
+            }));
+
+            const redirectUrl = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
+            const onErrorRedirectUrl = encodeURIComponent(`/scan/style?${searchParams.toString()}`);
+            router.push(
+              `/wait?type=${finalType}&operationKey=${`style-${finalType}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
+            );
           }
         }
       } catch (err) {
         openErrorModal();
         setIsLoading(false);
+      } finally {
+        setProgress(0);
       }
     },
     [userId, setUserDetails, type]

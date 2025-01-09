@@ -315,7 +315,7 @@ export type StyleAnalysisType = {
   compareVotes: number;
   demographics: DemographicsType;
   type: TypeEnum;
-  goal: StyleGoalsType | null;
+  goalStyle: StyleGoalsType | null;
   hash: string;
   styleName: string;
   compareStyleName: string;
@@ -416,7 +416,6 @@ export type TaskType = {
   suggestions: SuggestionType[];
   requiredSubmissions?: RequiredSubmissionType[];
   example: { type: string; url: string };
-  defaultSuggestions: SuggestionType[];
 };
 
 export type LatestScoresType = {

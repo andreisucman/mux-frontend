@@ -1,6 +1,5 @@
 import React, { memo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconFocus } from "@tabler/icons-react";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
@@ -39,7 +38,7 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
           type,
           userId,
           analysisId: styleId,
-          goal: selectedGoal,
+          goalStyle: selectedGoal,
         },
       });
 

@@ -21,9 +21,7 @@ export default function ProductsRow({
   selectedAsins,
   setSelectedAsins,
 }: Props) {
-  const { color, icon, name, suggestions, defaultSuggestions, startsAt } = task;
-
-  const finalSuggestions = suggestions?.length > 0 ? suggestions : defaultSuggestions;
+  const { color, icon, name, suggestions, startsAt } = task;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
 
@@ -43,7 +41,7 @@ export default function ProductsRow({
           <SuggestionContainer
             title="Products"
             taskId={task._id}
-            items={finalSuggestions}
+            items={suggestions}
             customStyles={{ borderRadius: "0 0 16px 16px" }}
             selectedAsins={selectedAsins}
             setSelectedAsins={setSelectedAsins}

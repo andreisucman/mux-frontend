@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { IconHourglassHigh, IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Button, rem, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import UploadCarousel from "@/components/UploadCarousel";
 import { UserContext } from "@/context/UserContext";
@@ -12,6 +13,7 @@ import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { formatDate } from "@/helpers/formatDate";
+import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
@@ -44,86 +46,82 @@ export default function ScanProgress() {
 
   const handleUpload = useCallback(
     async ({ url, type, part, position, blurType, blurredImage }: UploadProgressProps) => {
-      if (!userDetails) return;
+      if (!userDetails || !url) return;
+
       let intervalId: NodeJS.Timeout;
 
-      if (url) {
-        setIsLoading(true);
+      setIsLoading(true);
 
-        const totalDuration = Math.random() * 25000 + 3000;
-        const updateInterval = 1000;
-        const incrementValue = 100 / (totalDuration / 1000);
+      const totalDuration = Math.random() * 25000 + 3000;
+      const updateInterval = 1000;
+      const incrementValue = 100 / (totalDuration / 1000);
 
-        intervalId = setInterval(() => {
-          setProgress((prevProgress) => {
-            const newProgress = prevProgress + incrementValue;
-            if (newProgress >= 100) {
-              clearInterval(intervalId);
-              return 100;
-            }
-            return newProgress;
-          });
-        }, updateInterval);
-
-        let finalUrl;
-
-        if (url.startsWith("http") || url.startsWith("https")) {
-          finalUrl = url;
-        } else {
-          const fileUrls = await uploadToSpaces({
-            itemsArray: [url],
-            mime: "image/jpeg",
-          });
-          finalUrl = fileUrls[0];
-        }
-        if (finalUrl) {
-          try {
-            const response = await callTheServer({
-              endpoint: "uploadProgress",
-              method: "POST",
-              body: {
-                type,
-                part,
-                position,
-                blurType,
-                blurredImage,
-                image: finalUrl,
-                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/front-man.webp",
-                // image:"https://mux-data.nyc3.cdn.digitaloceanspaces.com/man-right.webp",
-                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/man-left.webp",
-                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/mouth-man.webp",
-                // image: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/top-man.webp",
-                userId,
-              },
-            });
-
-            if (response.status === 200) {
-              if (response.message) {
-                setProgress(100);
-                setUserDetails((prev: UserDataType) => ({
-                  ...prev,
-                  ...response.message,
-                }));
-              }
-              if (response.error) {
-                openErrorModal({
-                  description: response.error,
-                });
-                const tId = setTimeout(() => {
-                  clearTimeout(tId);
-                }, 8000);
-
-                setProgress(0);
-              }
-            }
-          } catch (err: any) {
-            openErrorModal();
-            console.error(err);
-          } finally {
-            setIsLoading(false);
-            setProgress(0);
+      intervalId = setInterval(() => {
+        setProgress((prevProgress) => {
+          const newProgress = prevProgress + incrementValue;
+          if (newProgress >= 100) {
             clearInterval(intervalId);
+            return 100;
           }
+          return newProgress;
+        });
+      }, updateInterval);
+
+      const fileUrls = await uploadToSpaces({
+        itemsArray: [url],
+        mime: "image/jpeg",
+      });
+
+      if (fileUrls[0]) {
+        try {
+          const response = await callTheServer({
+            endpoint: "uploadProgress",
+            method: "POST",
+            body: {
+              type,
+              part,
+              position,
+              blurType,
+              blurredImage,
+              image: fileUrls[0],
+              userId,
+            },
+          });
+
+          if (response.status === 200) {
+            if (response.error) {
+              if (response.error === "must login") {
+                openAuthModal({
+                  title: "Login to continue",
+                  stateObject: {
+                    referrer: ReferrerEnum.SCAN_PROGRESS,
+                    redirectPath: "/scan/progress",
+                  },
+                });
+                return;
+              }
+
+              openErrorModal({
+                description: response.error,
+              });
+              return;
+            }
+
+            if (response.message) {
+              setProgress(100);
+              setUserDetails((prev: UserDataType) => ({
+                ...prev,
+                ...response.message,
+              }));
+            }
+          }
+        } catch (err: any) {
+          openErrorModal();
+          console.error(err);
+        } finally {
+          setIsLoading(false);
+          setProgress(0);
+          clearInterval(intervalId);
         }
       }
     },

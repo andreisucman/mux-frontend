@@ -8,7 +8,7 @@ export type SolutionCardType = {
   description: string;
   instruction: string;
   example: { type: string; url: string };
-  defaultSuggestions: SuggestionType[];
+  suggestions: SuggestionType[];
 };
 
 export type SpotlightActionType = {

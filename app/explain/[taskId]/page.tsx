@@ -16,7 +16,6 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
-import getSuggestions from "@/helpers/getSuggestions";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
@@ -50,7 +49,6 @@ export default function Explain(props: Props) {
     startsAt,
     example,
     proofEnabled,
-    defaultSuggestions,
     suggestions,
     key: taskKey,
     type,
@@ -59,11 +57,6 @@ export default function Explain(props: Props) {
   const required: RequiredSubmissionType[] = requiredSubmissions || [];
 
   const notStarted = useMemo(() => new Date() < new Date(startsAt || 0), [startsAt]);
-
-  const finalSuggestions = useMemo(
-    () => getSuggestions(suggestions, defaultSuggestions),
-    [typeof suggestions, typeof defaultSuggestions]
-  );
 
   const {
     recipe,
@@ -314,15 +307,19 @@ export default function Explain(props: Props) {
                   />
                 </Stack>
 
-                {finalSuggestions && finalSuggestions.length > 0 && (
+                {suggestions && suggestions.length > 0 && (
                   <SuggestionContainer
                     title="Products:"
-                    items={finalSuggestions}
+                    items={suggestions}
                     taskId={taskId}
                     disableLocalChat
                   />
                 )}
-                <ChatWithOverlay relatedCategory={"task"} relatedContentId={taskId} defaultVisibility="open" />
+                <ChatWithOverlay
+                  relatedCategory={"task"}
+                  relatedContentId={taskId}
+                  defaultVisibility="open"
+                />
               </>
             )}
           </Stack>

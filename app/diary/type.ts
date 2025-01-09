@@ -8,9 +8,11 @@ export type DiaryRecordType = {
 };
 
 export type DiaryActivityType = {
+  contentId: string;
   name?: string;
   url: string;
   thumbnail?: string;
   icon?: string;
-  type: "image" | "video";
+  contentType: "image" | "video";
+  categoryName: "style" | "proof" | "food";
 };

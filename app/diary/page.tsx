@@ -43,7 +43,7 @@ export default function DiaryPage() {
       const response = await callTheServer({
         endpoint: "createDiaryRecord",
         method: "POST",
-        body: { type, timeZone },
+        body: { type },
       });
 
       setIsLoading(false);
@@ -113,6 +113,7 @@ export default function DiaryPage() {
 
   useEffect(() => {
     if (!diaryRecords) return;
+    if (!timeZone) return;
     const firstDate = diaryRecords[0] && diaryRecords[0].createdAt;
     const formattedFirstDate = formatDate({ date: firstDate || new Date(0) });
     setDisableAddNew(formattedFirstDate === formattedToday);

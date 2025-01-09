@@ -1,5 +1,7 @@
 export enum ReferrerEnum {
   SCAN_FOOD = "scanFood",
+  SCAN_PROGRESS="scanProgress",
+  SCAN_STYLE="scanStyle",
   ANALYSIS_STYLE = "analysisStyleResult",
   ANALYSIS_PROGRESS = "analysisProgress",
   CLUB_ROUTINES = "clubRoutines",

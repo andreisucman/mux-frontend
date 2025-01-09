@@ -39,7 +39,7 @@ export default function Products() {
 
       if (response.status === 200) {
         const tasksWithSuggestions = response.message.filter((t: TaskType) => {
-          return (t.suggestions || []).length > 0 || (t.defaultSuggestions || []).length > 0;
+          return (t.suggestions || []).length > 0;
         });
 
         setUniqueTasks(tasksWithSuggestions);
