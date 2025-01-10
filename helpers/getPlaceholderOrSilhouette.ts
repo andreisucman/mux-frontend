@@ -19,7 +19,10 @@ export default function getPlaceholderOrSilhouette({
 }: Props) {
   let relevant;
 
+  console.log("input pla", scanType, sex, type, part, position, data);
+
   if (scanType === "progress") {
+    console.log("line 23");
     relevant = data.find(
       (item) =>
         item.sex.includes(sex) &&
@@ -29,6 +32,7 @@ export default function getPlaceholderOrSilhouette({
         item.position === position
     );
   } else {
+    console.log("line 33");
     relevant = data.find(
       (item) =>
         item.sex.includes(sex) &&
@@ -37,5 +41,8 @@ export default function getPlaceholderOrSilhouette({
         item.position === position
     );
   }
+
+  console.log("relevant", relevant);
+
   return relevant;
 }

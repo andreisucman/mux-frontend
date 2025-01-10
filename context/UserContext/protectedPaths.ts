@@ -18,3 +18,21 @@ export const protectedPaths = [
   "/club/admission",
   "/waitroom",
 ];
+
+export const pathsThatRequireId = [
+  "/analysis/style",
+  "/analysis/food",
+  "/analysis",
+  "/scan/progress",
+  "/scan/style",
+  "/scan/food",
+];
+
+export const blockFetchUserDataPaths = [
+  "/",
+  "/proof",
+  "/style",
+  "/scan/progress",
+  "/scan/style",
+  "/scan/food",
+];

@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import UploadCarousel from "@/components/UploadCarousel";
+import UploadContainer from "@/components/UploadContainer";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -143,7 +143,7 @@ export default function UploadStyle() {
       {typeStyleRequirements ? (
         <>
           <ScanHeader type={type as TypeEnum} />
-          <UploadCarousel
+          <UploadContainer
             latestStyleImage={mainUrl?.url}
             requirements={typeStyleRequirements}
             type={type as TypeEnum}

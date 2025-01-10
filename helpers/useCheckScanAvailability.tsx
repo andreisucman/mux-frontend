@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { RequirementType } from "@/components/UploadCarousel/types";
+import { RequirementType } from "@/components/UploadContainer/types";
 import { NextActionType } from "@/types/global";
 import { getAvailableRequirements } from "./getAvailableRequirements";
 import { parseScanDate } from "./utils";

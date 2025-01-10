@@ -3,7 +3,6 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
@@ -11,14 +10,12 @@ import { getCookieValue } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
-import { protectedPaths } from "./protectedPaths";
+import { blockFetchUserDataPaths, pathsThatRequireId, protectedPaths } from "./protectedPaths";
 import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
 
 const defaultSetUser = () => {};
 
 const defaultSetStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>> = () => {};
-
-const blockFetchUserDataPaths = ["/", "/proof", "/style"];
 
 export const UserContext = createContext<UserContextType>({
   status: AuthStateEnum.UNAUTHENTICATED,
@@ -39,6 +36,8 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
   const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
+  const [pageLoaded, setPageLoaded] = useState(false);
+  const { _id: userId, emailVerified } = userDetailsState || {};
 
   const setUserDetails = useCallback(
     (value: React.SetStateAction<Partial<UserDataType | null>>) => {
@@ -55,12 +54,13 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     setStatus(isLoggedInCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED);
   }, []);
 
+  const savedState: UserDataType | null = getFromLocalStorage("userDetails");
+
   useEffect(() => {
     if (userDetailsState) return;
 
-    const savedState: UserDataType | null = getFromLocalStorage("userDetails");
     setUserDetailsState(savedState);
-  }, [status]);
+  }, [savedState, userDetailsState]);
 
   useEffect(() => {
     if (!error) return;
@@ -103,6 +103,14 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, [status]);
 
   useEffect(() => {
+    if (userId || !pageLoaded) return;
+
+    if (pathsThatRequireId.includes(pathname)) {
+      router.replace("/scan");
+    }
+  }, [userId, pageLoaded]);
+
+  useEffect(() => {
     if (!userDetailsState) return;
     if (code) return;
 
@@ -114,7 +122,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
         }
       }
     }
-  }, [userDetailsState?.emailVerified, pathname, code]);
+  }, [emailVerified, pathname, code]);
 
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;
@@ -122,6 +130,10 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (blockFetchUserDataPaths.includes(pathname)) return;
     fetchUserData({ setUserDetails });
   });
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
 
   return (
     <UserContext.Provider

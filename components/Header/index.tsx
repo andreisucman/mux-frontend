@@ -58,7 +58,9 @@ function Header() {
 
   const handleSignOut = useCallback(async () => {
     clearCookies();
+    deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
+    setUserDetails(null);
     close();
   }, []);
 

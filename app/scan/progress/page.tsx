@@ -7,8 +7,9 @@ import { Button, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import OverlayWithText from "@/components/OverlayWithText";
-import UploadCarousel from "@/components/UploadCarousel";
+import UploadContainer from "@/components/UploadContainer";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
@@ -26,7 +27,7 @@ export const runtime = "edge";
 export default function ScanProgress() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
 
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -145,7 +146,7 @@ export default function ScanProgress() {
         <Stack className={`${classes.container} smallPage`}>
           <ScanHeader type={finalType as TypeEnum} />
           {needsScan ? (
-            <UploadCarousel
+            <UploadContainer
               requirements={availableRequirements || []}
               type={type as TypeEnum}
               progress={progress}

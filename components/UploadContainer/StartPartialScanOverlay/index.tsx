@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, rem, Stack, Text } from "@mantine/core";
-import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
+import ImageCardStack from "@/components/UploadContainer/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";

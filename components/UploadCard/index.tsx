@@ -82,7 +82,7 @@ export default function UploadCard({
 
   const relevantPlaceholder = useMemo(
     () => getPlaceholderOrOverlay({ sex, part, type, position, scanType, data: placeholders }),
-    [sex, part, type, position, scanType]
+    [sex, part, type, position, scanType, placeholders]
   );
 
   const relevantSilhouette = useMemo(

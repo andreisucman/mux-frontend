@@ -1,4 +1,4 @@
-import { RequirementType } from "@/components/UploadCarousel/types";
+import { RequirementType } from "@/components/UploadContainer/types";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 
 export type DefaultUserType = {
@@ -70,8 +70,6 @@ export enum PositionEnum {
   BACK = "back",
   RIGHT = "right",
   LEFT = "left",
-  MOUTH = "mouth",
-  SCALP = "scalp",
 }
 
 export enum EthnicityEnum {

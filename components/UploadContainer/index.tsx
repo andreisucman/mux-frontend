@@ -2,12 +2,11 @@
 
 import React, { useContext, useMemo, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Carousel } from "@mantine/carousel";
 import { Loader, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { UploadProgressProps } from "@/app/scan/types";
 import UploadCard from "@/components/UploadCard";
-import SelectPartsCheckboxes from "@/components/UploadCarousel/SelectPartsCheckboxes";
+import SelectPartsCheckboxes from "@/components/UploadContainer/SelectPartsCheckboxes";
 import { UploadPartsChoicesContext } from "@/context/UploadPartsChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import { onBlurImageClick } from "@/functions/blur";
@@ -15,7 +14,6 @@ import { ScanTypeEnum, SexEnum, TypeEnum } from "@/types/global";
 import OverlayWithText from "../OverlayWithText";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
 import { RequirementType } from "./types";
-import classes from "./UploadCarousel.module.css";
 
 type Props = {
   type: TypeEnum;
@@ -27,7 +25,7 @@ type Props = {
   handleUpload: (args: UploadProgressProps) => Promise<void>;
 };
 
-export default function UploadCarousel({
+export default function UploadContainer({
   type,
   scanType,
   requirements,
@@ -36,7 +34,7 @@ export default function UploadCarousel({
   handleUpload,
 }: Props) {
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "partialScanOverlay" | "carousel" | "empty"
+    "loading" | "partialScanOverlay" | "upload" | "empty"
   >("loading");
   const { userDetails } = useContext(UserContext);
   const { showFace, showMouth, showScalp, setShowPart } = useContext(UploadPartsChoicesContext);
@@ -73,20 +71,18 @@ export default function UploadCarousel({
       const { sex } = demographics || {};
 
       return (
-        <Carousel.Slide key={index}>
-          <UploadCard
-            sex={sex || SexEnum.MALE}
-            scanType={scanType}
-            isLoading={isLoading}
-            progress={progress}
-            type={item.type}
-            part={item.part}
-            instruction={item.instruction}
-            position={item.position}
-            handleUpload={handleUpload}
-            onBlurClick={onBlurImageClick}
-          />
-        </Carousel.Slide>
+        <UploadCard
+          sex={sex || SexEnum.MALE}
+          scanType={scanType}
+          isLoading={isLoading}
+          progress={progress}
+          type={item.type}
+          part={item.part}
+          instruction={item.instruction}
+          position={item.position}
+          handleUpload={handleUpload}
+          onBlurClick={onBlurImageClick}
+        />
       );
     })
     .filter(Boolean);
@@ -106,7 +102,7 @@ export default function UploadCarousel({
     } else if (allPartsDisalbed) {
       setDisplayComponent("empty");
     } else if (requirements.length > 0) {
-      setDisplayComponent("carousel");
+      setDisplayComponent("upload");
     } else {
       setDisplayComponent("loading");
     }
@@ -123,24 +119,7 @@ export default function UploadCarousel({
           setShowPart={setShowPart}
         />
       )}
-      {displayComponent === "carousel" && (
-        <>
-          <Carousel
-            align="start"
-            slideGap={16}
-            slidesToScroll={1}
-            withControls={false}
-            classNames={{
-              root: classes.root,
-              viewport: classes.viewport,
-              container: classes.container,
-              control: "carouselControl"
-            }}
-          >
-            {slides}
-          </Carousel>
-        </>
-      )}
+      {displayComponent === "upload" && slides[0]}
       {displayComponent === "empty" && (
         <OverlayWithText text="All parts deselected" icon={<IconCircleOff className="icon" />} />
       )}
@@ -151,7 +130,7 @@ export default function UploadCarousel({
           distinctUploadedParts={distinctUploadedParts}
         />
       )}
-      {displayComponent === "loading" && <Loader m="0 auto" pt="15%"/>}
+      {displayComponent === "loading" && <Loader m="0 auto" pt="15%" />}
     </Stack>
   );
 }

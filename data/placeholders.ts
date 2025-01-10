@@ -163,7 +163,7 @@ export const placeholders: {
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
     part: PartEnum.SCALP,
-    position: PositionEnum.SCALP,
+    position: PositionEnum.FRONT,
     url: femaleScalp,
   },
   {
@@ -171,7 +171,7 @@ export const placeholders: {
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
     part: PartEnum.MOUTH,
-    position: PositionEnum.MOUTH,
+    position: PositionEnum.FRONT,
     url: femaleMouth,
   },
   {

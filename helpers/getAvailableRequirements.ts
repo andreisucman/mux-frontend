@@ -1,4 +1,4 @@
-import { RequirementType } from "@/components/UploadCarousel/types";
+import { RequirementType } from "@/components/UploadContainer/types";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { NextActionType, TypeEnum } from "@/types/global";
 import { parseScanDate } from "./utils";
