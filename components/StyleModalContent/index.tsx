@@ -22,8 +22,6 @@ export default function StyleModalContent({ record, isPublicPage, setRecords }: 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log("recor", record);
-
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
 

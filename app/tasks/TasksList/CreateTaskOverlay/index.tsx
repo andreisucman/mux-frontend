@@ -19,7 +19,7 @@ export default function CreateTaskOverlay({ type, timeZone, customStyles, handle
     useContext(CreateRoutineContext);
 
   const onCreateManuallyClick = () => {
-    openCreateNewTask({ type, timeZone, handleSaveTask });
+    openCreateNewTask({ type, timeZone, handleSaveTask, onCreateRoutineClick });
   };
 
   return (

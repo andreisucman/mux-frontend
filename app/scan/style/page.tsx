@@ -101,7 +101,7 @@ export default function UploadStyle() {
             if (response.error) {
               if (response.error === "must login") {
                 openAuthModal({
-                  title: "Login to continue",
+                  title: "Sign in to continue",
                   stateObject: {
                     referrer: ReferrerEnum.SCAN_STYLE,
                     redirectPath: "/scan/style",

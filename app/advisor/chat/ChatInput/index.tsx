@@ -196,7 +196,6 @@ export default function ChatInput({
                 description: "Follow this user before asking questions about them.",
               });
             } else if (response.error === "subscription expired") {
-              console.log("line 207");
               handleAddSubscription();
             } else if (response.error === "coach is tired") {
               openCoachIsTiredModal();

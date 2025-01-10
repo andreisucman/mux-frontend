@@ -29,9 +29,7 @@ export default function SetPassword() {
 
   const handleSignOut = useCallback(async () => {
     clearCookies();
-    deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
-    setUserDetails(null);
 
     if (protectedPaths.includes(pathname)) {
       router.replace("/auth");

@@ -73,7 +73,9 @@ function BalancePane() {
     if (!payoutsEnabled && disabledReason)
       return (
         <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
-          <Stack gap={8}>Your payouts have been disabled. Login to your wallet to fix that.</Stack>
+          <Stack gap={8}>
+            Your payouts have been disabled. Sign in to your wallet to fix that.
+          </Stack>
         </Alert>
       );
   }, [detailsSubmitted, payoutsEnabled, disabledReason]);

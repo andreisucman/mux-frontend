@@ -149,7 +149,6 @@ export default function AddATaskContainer({
                   <Button
                     disabled={!!isCreateRoutineInCooldown}
                     onClick={() => {
-                      console.log("onCreateRoutineClick", onCreateRoutineClick);
                       onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });
                     }}
                   >

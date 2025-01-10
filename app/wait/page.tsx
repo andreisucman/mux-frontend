@@ -31,7 +31,6 @@ export default function WaitPage() {
 
   const onComplete = useCallback(
     (userData: UserDataType) => {
-      console.log("onComplete userData", userData);
       try {
         setUserDetails((prev: UserDataType) => ({
           ...prev,

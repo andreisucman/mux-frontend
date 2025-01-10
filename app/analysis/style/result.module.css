@@ -12,10 +12,15 @@
 .imageWrapper {
   width: 100%;
   aspect-ratio: 16/9;
-  min-height: rem(75);
-  max-height: rem(100);
+  min-height: rem(150);
+  max-height: rem(200);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    min-height: rem(75);
+    max-height: rem(109);
+  }
 }
 
 .button {

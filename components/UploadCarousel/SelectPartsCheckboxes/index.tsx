@@ -54,7 +54,10 @@ function SelectPartsCheckboxes({
             <IconMoodNeutral className="icon" /> Face
           </Group>
         }
-        onChange={() => setShowPart("face", !showFace)}
+        onChange={() => {
+          if (faceUploaded) return;
+          setShowPart("face", !showFace);
+        }}
         styles={checkboxStyles}
       />
       <Checkbox
@@ -65,7 +68,10 @@ function SelectPartsCheckboxes({
             <IconDental className="icon" /> Mouth
           </Group>
         }
-        onChange={() => setShowPart("mouth", !showMouth)}
+        onChange={() => {
+          if (mouthUploaded) return;
+          setShowPart("mouth", !showMouth);
+        }}
         styles={checkboxStyles}
       />
       <Checkbox
@@ -76,7 +82,10 @@ function SelectPartsCheckboxes({
             <IconWhirl className="icon" /> Scalp
           </Group>
         }
-        onChange={() => setShowPart("scalp", !showScalp)}
+        onChange={() => {
+          if (scalpUploaded) return;
+          setShowPart("scalp", !showScalp);
+        }}
         styles={checkboxStyles}
       />
     </Group>

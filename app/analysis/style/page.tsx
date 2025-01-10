@@ -65,7 +65,7 @@ export default function StyleScanResult() {
 
     if (status !== "authenticated") {
       openAuthModal({
-        title: "Login to continue",
+        title: "Sign in to continue",
         stateObject: {
           redirectPath: "/analysis/style",
           redirectQuery: `type=${type}`,
@@ -143,7 +143,7 @@ export default function StyleScanResult() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <AnalysisHeader title="SAnalysis" onTypeChange={handleChangeType} type={type} showReturn />
+      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} showReturn />
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={displayComponent === "loading"}>
         {displayComponent === "analysis" && (
           <>
@@ -157,33 +157,33 @@ export default function StyleScanResult() {
               title={title}
               styleData={relevantAnalysis}
               children={
-                <ChatWithOverlay
-                  relatedCategory="style"
-                  relatedContentId={styleId}
-                  dividerLabel={"Discuss details"}
-                />
+                <Group className={classes.buttonGroup}>
+                  <Button
+                    variant={"default"}
+                    size="compact-sm"
+                    onClick={openMatchStyle}
+                    disabled={!relevantAnalysis}
+                    className={classes.button}
+                  >
+                    Match style
+                  </Button>
+                  <Button
+                    size="compact-sm"
+                    onClick={handlePublishToClub}
+                    disabled={isLoading}
+                    className={classes.button}
+                  >
+                    Publish
+                  </Button>
+                </Group>
               }
             />
-
-            <Group className={classes.buttonGroup}>
-              <Button
-                variant={"default"}
-                size="compact-sm"
-                onClick={openMatchStyle}
-                disabled={!relevantAnalysis}
-                className={classes.button}
-              >
-                Match style
-              </Button>
-              <Button
-                size="compact-sm"
-                onClick={handlePublishToClub}
-                disabled={isLoading}
-                className={classes.button}
-              >
-                Publish
-              </Button>
-            </Group>
+            <ChatWithOverlay
+              relatedCategory="style"
+              relatedContentId={styleId}
+              dividerLabel={"Discuss details"}
+              defaultVisibility="open"
+            />
           </>
         )}
         {displayComponent === "empty" && (

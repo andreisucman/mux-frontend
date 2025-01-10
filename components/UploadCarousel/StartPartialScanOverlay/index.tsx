@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconFlag } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
 import ImageCardStack from "@/components/UploadCarousel/ImageCardStack";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -82,7 +81,7 @@ export default function StartPartialScanOverlay({
         )}
         <Text mb={rem(12)}>{analysisString}</Text>
         <Button onClick={handleStartAnalysis} loading={isButtonLoading} disabled={isButtonLoading}>
-          Start scan
+          Start analysis
         </Button>
       </Stack>
     </Stack>

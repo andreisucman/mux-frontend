@@ -78,8 +78,6 @@ const authenticate = async ({
       setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
       setStatus(AuthStateEnum.AUTHENTICATED);
 
-      console.log("response.message", response.message);
-
       let redirectUrl = "/tasks";
 
       if (redirectPath) redirectUrl = redirectPath;
@@ -101,8 +99,6 @@ const authenticate = async ({
         router.push(`/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`);
         return;
       }
-
-      console.log("redirectUrl", redirectUrl);
 
       router.push(redirectUrl);
     } else {

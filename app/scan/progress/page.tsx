@@ -2,8 +2,8 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconHourglassHigh, IconMan, IconMoodSmile } from "@tabler/icons-react";
-import { Button, rem, Skeleton, Stack } from "@mantine/core";
+import { IconHourglassHigh } from "@tabler/icons-react";
+import { Button, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -92,7 +92,7 @@ export default function ScanProgress() {
             if (response.error) {
               if (response.error === "must login") {
                 openAuthModal({
-                  title: "Login to continue",
+                  title: "Sign in to continue",
                   stateObject: {
                     referrer: ReferrerEnum.SCAN_PROGRESS,
                     redirectPath: "/scan/progress",
@@ -114,10 +114,11 @@ export default function ScanProgress() {
                 ...response.message,
               }));
             }
+          } else {
+            openErrorModal();
           }
         } catch (err: any) {
           openErrorModal();
-          console.error(err);
         } finally {
           setIsLoading(false);
           setProgress(0);

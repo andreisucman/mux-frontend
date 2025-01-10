@@ -1,8 +1,18 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { IconArrowRight, IconCamera, IconUpload } from "@tabler/icons-react";
-import { ActionIcon, Button, Loader,Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Loader,
+  Progress,
+  rem,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
@@ -139,7 +149,6 @@ export default function UploadCard({
   return (
     <Stack className={classes.container}>
       <InstructionContainer
-        sex={sex}
         instruction={instruction}
         description="All of your uploads are private unless you publish them in the Club."
         customStyles={{ flex: 0 }}
@@ -148,14 +157,26 @@ export default function UploadCard({
         className={classes.centralContent}
         style={customContentStyles ? customContentStyles : {}}
       >
-        {isLoading ? <Loader m="auto" /> : <Stack className={classes.imageCell}>
-          <ImageDisplayContainer
-            handleDelete={handleDeleteImage}
-            image={localUrl || latestStyleImage}
-            isLoadingOverlay={isBlurLoading}
-            placeholder={relevantPlaceholder && relevantPlaceholder.url}
-          />
-        </Stack>}
+        {isLoading ? (
+          <Stack m="auto" w="100%" maw={200}>
+            <Loader m="auto" />
+            <Stack>
+              <Progress value={progress} w="100%" size={12} mt={4} />
+              <Text size="sm" ta="center" c="dimmed">
+                Uploading...
+              </Text>
+            </Stack>
+          </Stack>
+        ) : (
+          <Stack className={classes.imageCell}>
+            <ImageDisplayContainer
+              handleDelete={handleDeleteImage}
+              image={localUrl || latestStyleImage}
+              isLoadingOverlay={isBlurLoading}
+              placeholder={relevantPlaceholder && relevantPlaceholder.url}
+            />
+          </Stack>
+        )}
 
         {!isLoading && (
           <Stack className={classes.checkboxAndButtons}>
@@ -199,14 +220,6 @@ export default function UploadCard({
                 </ActionIcon>
               )}
             </Group>
-          </Stack>
-        )}
-        {isLoading && (
-          <Stack className={classes.uploadingStack}>
-            <Text size="sm" c="dimmed">
-              Uploading...
-            </Text>
-            <Progress value={progress} w="100%" size={12} style={{ minHeight: rem(8), marginBottom: rem(16) }} />
           </Stack>
         )}
       </Stack>

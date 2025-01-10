@@ -84,7 +84,7 @@ export default function FoodScanResult(props: Props) {
     try {
       if (status !== "authenticated") {
         openAuthModal({
-          title: "Login to continue",
+          title: "Sign in to continue",
           stateObject: {
             redirectPath: "/scan/food",
             localUserId: userId,
@@ -158,20 +158,18 @@ export default function FoodScanResult(props: Props) {
                 <PieChartComponent data={displayData || []} />
               </Overlay>
             </Stack>
+            <Button size="compact-sm" onClick={handleUploadAsProof}>
+              Upload as proof
+            </Button>
+            <Stack className={classes.tableStack}>
+              <Table data={tableData} />
+            </Stack>
 
             <ChatWithOverlay
               relatedCategory="style"
               relatedContentId={analysisId}
               dividerLabel={"Discuss details"}
             />
-
-            <Stack className={classes.tableStack}>
-              <Table data={tableData} />
-            </Stack>
-
-            <Button size="compact-sm" onClick={handleUploadAsProof}>
-              Upload as proof
-            </Button>
           </Stack>
         )}
         {displayComponent === "empty" && (

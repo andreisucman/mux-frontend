@@ -30,8 +30,6 @@ export default function StyleVoting({
   const handleUpdateVotes = useCallback((lastVoteType: string | null, newVoteType: string) => {
     if (lastVoteType === newVoteType) return;
 
-    console.log("line 33", "lastVoteType", lastVoteType, "newVoteType", newVoteType);
-
     if (newVoteType === "current") {
       setLocalVotes((prev) => prev + 1);
       if (lastVoteType === "compare") {

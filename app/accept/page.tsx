@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowRight } from "@tabler/icons-react";
 import getBrowserFingerprint from "get-browser-fingerprint";
 import { Button, Stack, Text, Title } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
@@ -36,35 +35,33 @@ export default function AcceptIndexPage() {
       if (!tosAccepted) return;
       setIsLoading(true);
 
-      if (!userId) {
-        const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
+      const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
 
-        const response = await callTheServer({
-          endpoint: "startTheFlow",
-          method: "POST",
-          body: {
-            timeZone,
-            tosAccepted,
-            fingerprint,
-          },
-        });
+      const response = await callTheServer({
+        endpoint: "startTheFlow",
+        method: "POST",
+        body: {
+          timeZone,
+          tosAccepted,
+          fingerprint,
+        },
+      });
 
-        if (response.status === 200) {
-          if (response.error) {
-            openErrorModal();
-            setIsLoading(false);
-            return;
-          }
-
-          const { sex, ...otherData } = response.message;
-
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            ...otherData,
-          }));
-
-          nprogress.start();
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal();
+          setIsLoading(false);
+          return;
         }
+
+        const { sex, ...otherData } = response.message;
+
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          ...otherData,
+        }));
+
+        nprogress.start();
       }
 
       const encodedRedirectUrl = searchParams.get("redirectUrl") || "/scan/progress?type=head";

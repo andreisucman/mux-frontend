@@ -43,7 +43,8 @@ export default function ScanFoodPage() {
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          url: fileUrls[0],
+          // url: fileUrls[0],
+          url:"https://mux-data.nyc3.cdn.digitaloceanspaces.com/rice2.png",
           calorieGoal,
           fingerprint,
         },
@@ -53,12 +54,13 @@ export default function ScanFoodPage() {
         if (response.error) {
           if (response.error === "must login") {
             openAuthModal({
-              title: "Login to continue",
+              title: "Sign in to continue",
               stateObject: {
                 referrer: ReferrerEnum.SCAN_FOOD,
                 redirectPath: "/scan/food",
               },
             });
+            setIsLoading(false);
             return;
           }
 
@@ -96,8 +98,7 @@ export default function ScanFoodPage() {
           customStyles={{ borderRadius: rem(16), gap: rem(16) }}
           customContainerStyles={{ width: "100%" }}
           loaderType="bars"
-          description="Analyzing"
-          showDisclaimer
+          description="Analyzing food"
         />
         {localUrl ? (
           <ImageDisplayContainer

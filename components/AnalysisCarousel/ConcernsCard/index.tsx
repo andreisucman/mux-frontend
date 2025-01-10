@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { IconRotateDot } from "@tabler/icons-react";
 import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -54,9 +53,6 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
     }
   }, [status, isLoading]);
 
-  const buttonText =
-    status === AuthStateEnum.AUTHENTICATED ? "Return to the routine" : "Create routine free";
-
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
       <Stack className={classes.container} ref={ref}>
@@ -71,7 +67,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
           <GlowingButton
             loading={isLoading}
             disabled={isLoading}
-            text={buttonText}
+            text={"Create routine"}
             containerStyles={{ flex: 0, margin: "0 auto", width: "100%", maxWidth: rem(300) }}
             onClick={handleClick}
           />

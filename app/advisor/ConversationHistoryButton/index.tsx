@@ -23,7 +23,6 @@ export default function ChatMessagesButton() {
       });
 
       if (response.status === 200) {
-        console.log("response.message",response.message)
         setConversations(response.message);
       }
     } catch (err) {

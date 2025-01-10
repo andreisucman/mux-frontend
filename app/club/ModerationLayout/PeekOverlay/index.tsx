@@ -74,12 +74,6 @@ export default function PeekOverlay({ description, userName }: Props) {
 
       const query = modifyQuery({ params }) || searchParams.toString();
 
-      console.log("payload", {
-        referrer,
-        redirectPath,
-        redirectQuery: query,
-        localUserId: userId,
-      });
       openAuthModal({
         stateObject: {
           referrer,

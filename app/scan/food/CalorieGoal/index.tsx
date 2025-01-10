@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo } from "react";
 import { Group, SegmentedControl, Slider, Stack, Text } from "@mantine/core";
 import { CalorieGoalContext } from "@/context/CalorieGoalContext";
-import { CalorieGoalEnum } from "@/context/CalorieGoalContext/types";
+import { CalorieGoalTypeEnum } from "@/context/CalorieGoalContext/types";
 import { UserContext } from "@/context/UserContext";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -24,32 +24,37 @@ export default function CalorieGoalController({ disabled }: Props) {
     return data;
   }, [status]);
 
+  const { nutrition } = userDetails || {};
+  const { remainingDailyCalories = 0 } = nutrition || {};
+
   const handleChangeSlider = useCallback(
     (calorieGoal: number) => {
-      if (calorieGoalType === "remaining") return;
+      if (calorieGoalType === CalorieGoalTypeEnum.REMAINING) {
+        setCalorieGoal(remainingDailyCalories);
+        return;
+      }
       setCalorieGoal(calorieGoal);
-      saveToLocalStorage("calorieGoal", calorieGoal);
+      saveToLocalStorage("nutrition", { calorieGoal }, "add");
     },
-    [calorieGoalType]
+    [calorieGoalType, remainingDailyCalories]
   );
 
   const handleChangeGoal = useCallback(
     (value: string) => {
-      if (value === CalorieGoalEnum.PORTION) {
-        setCalorieGoalType(CalorieGoalEnum.PORTION);
+      if (value === CalorieGoalTypeEnum.PORTION) {
+        setCalorieGoalType(CalorieGoalTypeEnum.PORTION);
         return;
       }
 
       if (status !== "authenticated") {
-        openErrorModal({ description: "You need to login to see your estimated calorie norm." });
+        openErrorModal({ description: "You need to Sign in to see your estimated calorie norm." });
         return;
       }
-      const { nutrition } = userDetails || {};
 
-      setCalorieGoalType(CalorieGoalEnum.REMAINING);
-      setCalorieGoal(nutrition?.remainingDailyCalories || 0);
+      setCalorieGoalType(CalorieGoalTypeEnum.REMAINING);
+      setCalorieGoal(remainingDailyCalories || 0);
     },
-    [status, userDetails]
+    [status, remainingDailyCalories]
   );
 
   return (
@@ -72,7 +77,7 @@ export default function CalorieGoalController({ disabled }: Props) {
         max={5000}
         step={100}
         value={calorieGoal}
-        onChange={handleChangeSlider}
+        onChangeEnd={handleChangeSlider}
         classNames={{ label: classes.label, thumb: classes.thumb }}
         disabled={disabled}
         labelAlwaysOn

@@ -41,7 +41,7 @@ export default function ScanIndexPage() {
         if (email) {
           // the user has finished the onboarding
           openAuthModal({
-            title: "Login to continue",
+            title: "Sign in to continue",
             stateObject: {
               redirectPath,
               redirectQuery,
@@ -50,16 +50,12 @@ export default function ScanIndexPage() {
             },
           });
         } else {
-          if (userId) {
-            router.push(redirectUrl); // the user accepted the tos but did not finish the onboarding
-          } else {
-            const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`; // the user is coming for the first time
-            router.push(encodedPath);
-          }
+          const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`; // the user is coming for the first time
+          router.push(encodedPath);
         }
       }
     },
-    [status, email, userId]
+    [status, userDetails]
   );
 
   const handleChangeSex = (value: string) =>

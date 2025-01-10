@@ -1,4 +1,4 @@
-export enum CalorieGoalEnum {
+export enum CalorieGoalTypeEnum {
   PORTION = "portion",
   REMAINING = "remaining",
 }
