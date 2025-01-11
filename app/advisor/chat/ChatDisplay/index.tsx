@@ -28,32 +28,40 @@ export default function ChatDisplay({
 
   const conversationId = searchParams.get("conversationId");
 
-  const getMessages = useCallback(async () => {
-    try {
-      const response = await callTheServer({
-        endpoint: `getMessages/${conversationId}`,
-        method: "GET",
-        server: "chat",
-      });
-
-      if (response.status === 200) {
-        const conversation: MessageType[] = [];
-        response.message.map((m: RecentMessageType) => {
-          conversation.push(
-            {
-              role: "assistant",
-              content: m.assistant,
-            },
-            {
-              role: "user",
-              content: m.user,
-            }
-          );
+  const getMessages = useCallback(
+    async (conversationId: string | null) => {
+      try {
+        if (!conversationId) {
+          setConversation([]);
+          return;
+        }
+        const response = await callTheServer({
+          endpoint: `getMessages/${conversationId}`,
+          method: "GET",
+          server: "chat",
         });
-        setConversation(conversation.reverse());
-      }
-    } catch (err) {}
-  }, [conversationId]);
+
+        if (response.status === 200) {
+          const conversation: MessageType[] = [];
+          response.message.map((m: RecentMessageType) => {
+            conversation.push(
+              {
+                role: "assistant",
+                content: m.assistant,
+              },
+              {
+                role: "user",
+                content: m.user,
+              }
+            );
+          });
+
+          setConversation(conversation.reverse());
+        }
+      } catch (err) {}
+    },
+    [conversationId]
+  );
 
   const conversationList = useMemo(
     () =>
@@ -76,8 +84,7 @@ export default function ChatDisplay({
   );
 
   useEffect(() => {
-    if (!conversationId) return;
-    getMessages();
+    getMessages(conversationId);
   }, [conversationId]);
 
   useEffect(() => {

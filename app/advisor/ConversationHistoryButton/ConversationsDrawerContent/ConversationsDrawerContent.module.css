@@ -9,6 +9,7 @@
 }
 
 .stack {
+  position: relative;
   cursor: pointer;
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);

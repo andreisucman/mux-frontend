@@ -55,6 +55,7 @@ export default function ChatMessagesButton() {
               <ConversationsDrawerContent
                 conversations={conversations}
                 setConversations={setConversations}
+                closeDrawer={closeDrawer}
               />
             ) : (
               <OverlayWithText icon={<IconCircleOff className="icon" />} text="No latest chats" />

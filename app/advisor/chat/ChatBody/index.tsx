@@ -28,7 +28,6 @@ const ChatBody = ({ userName }: Props) => {
           setConversation={setConversation}
           setIsTyping={setIsTyping}
           userName={userName}
-          defaultOpen
         />
       </div>
     </section>

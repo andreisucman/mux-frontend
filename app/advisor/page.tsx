@@ -2,16 +2,15 @@
 
 import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { rem, Stack, Title } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import PageHeader from "@/components/PageHeader";
 import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
-import modifyQuery from "@/helpers/modifyQuery";
+import { startNewChat } from "@/helpers/startNewChat";
 import SkeletonWrapper from "../SkeletonWrapper";
-import ChatMessagesButton from "./ConversationHistoryButton";
+import AdvisorPanelButtons from "./AdvisorPanelButtons";
 import { questions } from "./questions";
 import QuestionsList from "./QuestionsList";
 import QuestionRow from "./QuestionsList/QuestionRow";
@@ -34,12 +33,7 @@ export default function Advisor() {
           color,
           icon,
           type: type as string,
-          onClick: () => {
-            const query = modifyQuery({
-              params: [{ name: "query", value: record.question, action: "replace" }],
-            });
-            router.push(`/advisor/chat?${query}`);
-          },
+          onClick: () => startNewChat(router, record.question),
         };
       }),
     [type]
@@ -49,12 +43,7 @@ export default function Advisor() {
     icon: "question",
     question: "Tap to ask anything",
     color: "var(--mantine-color-dark-8)",
-    onClick: () => {
-      const query = modifyQuery({
-        params: [{ name: "query", value: null, action: "delete" }],
-      });
-      router.push(`/advisor/chat?${query}`);
-    },
+    onClick: () => startNewChat(router),
   };
 
   return (
@@ -65,7 +54,7 @@ export default function Advisor() {
           filterData={typeItems}
           icons={typeIcons}
           selectedValue={type}
-          children={<ChatMessagesButton />}
+          children={<AdvisorPanelButtons />}
           showReturn
         />
         <Title order={3}>Free style</Title>

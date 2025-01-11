@@ -1,9 +1,8 @@
 import React, { useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconMessage, IconTrash } from "@tabler/icons-react";
 import { ActionIcon, Stack, Text } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import modifyQuery from "@/helpers/modifyQuery";
 import { ConversationType } from "../types";
@@ -12,9 +11,14 @@ import classes from "./ConversationsDrawerContent.module.css";
 type Props = {
   conversations: ConversationType[];
   setConversations: React.Dispatch<React.SetStateAction<ConversationType[] | undefined>>;
+  closeDrawer: () => void;
 };
 
-export default function ConversationsDrawerContent({ conversations, setConversations }: Props) {
+export default function ConversationsDrawerContent({
+  conversations,
+  setConversations,
+  closeDrawer,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -31,16 +35,14 @@ export default function ConversationsDrawerContent({ conversations, setConversat
         });
 
         if (response.status === 200) {
-          const localId = searchParams.get("conversationId");
-          setConversations((prev) => prev?.filter((c) => c._id !== conversationId));
-
-          if (localId === conversationId) {
-            const query = modifyQuery({
-              params: [{ name: "conversationId", value: null, action: "delete" }],
-            });
-
-            router.replace(`/advisor?${query}`);
-          }
+          setConversations((prev: ConversationType[] | undefined) => {
+            const newConverations = (prev || []).filter((c) => c._id !== conversationId);
+            if (newConverations.length === 0) {
+              router.replace("/advisor");
+              closeDrawer();
+            }
+            return newConverations;
+          });
         }
       } catch (err) {}
     },
@@ -52,6 +54,7 @@ export default function ConversationsDrawerContent({ conversations, setConversat
       params: [{ name: "conversationId", value: conversationId, action: "replace" }],
     });
     router.push(`/advisor/chat?${query}`);
+    closeDrawer();
   }, []);
 
   return (

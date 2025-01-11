@@ -115,7 +115,7 @@ export default function Considerations() {
 
             openSubscriptionModal({
               title: `Add the improvement coach`,
-              price: "4",
+              price: "5",
               isCentered: true,
               modalType: "improvement",
               underButtonText: "No credit card required",

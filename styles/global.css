@@ -58,6 +58,7 @@ body::-webkit-scrollbar-thumb {
 .icon {
   width: rem(20);
   height: rem(20);
+  color: var(--mantine-color-gray-2);
 
   &__small {
     width: rem(16);
@@ -72,6 +73,10 @@ body::-webkit-scrollbar-thumb {
   &__title {
     width: rem(32);
     height: rem(32);
+  }
+
+  &[data-disabled] {
+    color: var(--mantine-color-dark-3);
   }
 }
 

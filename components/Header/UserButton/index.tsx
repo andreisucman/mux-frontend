@@ -45,7 +45,7 @@ function UserButton({ avatar = null, name }: Props) {
         <Menu.Item component={Link} href="/tasks">
           <IconRotateDot className="icon icon__small" style={{ marginRight: rem(6) }} /> My tasks
         </Menu.Item>
-        <Menu.Item component={Link} href="/tasks">
+        <Menu.Item component={Link} href="/advisor">
           <IconInnerShadowBottom className="icon icon__small" style={{ marginRight: rem(6) }} />{" "}
           Advisor
         </Menu.Item>
