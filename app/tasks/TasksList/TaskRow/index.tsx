@@ -145,7 +145,7 @@ export default function TaskRow({
         <>
           <Timer
             date={timerDate}
-            text={timerText}
+            children={<Text size="xs">{timerText}</Text>}
             showDays={false}
             customStyles={
               isCompleted

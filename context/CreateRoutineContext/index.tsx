@@ -33,8 +33,6 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { demographics } = userDetails || {};
-  const { sex } = demographics || {};
   const type = searchParams.get("type") || "head";
 
   const { nextRoutine, nextScan, subscriptions } = userDetails || {};

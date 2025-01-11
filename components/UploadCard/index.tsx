@@ -159,13 +159,10 @@ export default function UploadCard({
       >
         {isLoading ? (
           <Stack m="auto" w="100%" maw={200}>
-            <Loader m="auto" />
-            <Stack>
-              <Progress value={progress} w="100%" size={12} mt={4} />
-              <Text size="sm" ta="center" c="dimmed">
-                Uploading...
-              </Text>
-            </Stack>
+            <Progress value={progress} w="100%" size={12} mt={4} />
+            <Text size="sm" ta="center" c="dimmed">
+              Uploading...
+            </Text>
           </Stack>
         ) : (
           <Stack className={classes.imageCell}>

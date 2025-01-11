@@ -12,6 +12,7 @@ type Props = {
   variant?: "default" | "filled";
   size?: "compact-xs" | "compact-sm" | "sm";
   transcribeOnEnd?: boolean;
+  isLoading?: boolean;
   defaultRecordingMs?: number;
   customContainerStyles?: { [key: string]: any };
   customButtonStyles?: { [key: string]: any };
@@ -28,6 +29,7 @@ export default function RecordingButton({
   defaultRecordingMs = DEFAULT_RECORDING_MILLISECONDS,
   customButtonStyles,
   customContainerStyles,
+  isLoading,
   setText,
   setLocalUrl,
   setAudioBlobs,
@@ -115,6 +117,7 @@ export default function RecordingButton({
   return (
     <Group className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
       <Button
+        disabled={!!isLoading}
         size={size}
         variant={variant}
         className={classes.button}

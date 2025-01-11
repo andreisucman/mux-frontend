@@ -2,16 +2,9 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  IconActivity,
-  IconArrowBack,
-  IconCheck,
-  IconClock,
-  IconX,
-  IconZzz,
-} from "@tabler/icons-react";
+import { IconActivity, IconClock, IconX, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Group, Loader, rem, Stack } from "@mantine/core";
+import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -54,6 +47,7 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [mode, setMode] = useState(givenMode || "all");
   const [tasks, setTasks] = useState<TaskType[]>();
+  const [originalTasks, setOriginalTasks] = useState<TaskType[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTaskKey, setSelectedTaskKey] = useState<string | undefined>(
     givenTaskKey as string
@@ -111,21 +105,12 @@ export default function Calendar() {
         const newTasks = tasks?.filter((t) => t.key === taskKey) || [];
         setSelectedTasks(newTasks);
       } else if (mode === "all") {
-        if (!relevantRoutine) return;
-
-        loadTasks({
-          status: selectedStatus,
-          key: selectedTaskKey,
-          type: type as string,
-          routineId: relevantRoutine._id,
-          mode: mode as string,
-          timeZone,
-        }).then((tasks) => {
-          setSelectedTasks(tasks);
-        });
+        if (!relevantRoutine || !originalTasks) return;
+        setTasks(originalTasks);
+        setSelectedTasks(originalTasks);
       }
     },
-    [timeZone, tasks, mode, relevantRoutine, selectedStatus, selectedDate, selectedTaskKey, type]
+    [timeZone, tasks, originalTasks, relevantRoutine]
   );
 
   const handleChangeStatus = useCallback(
@@ -144,6 +129,7 @@ export default function Calendar() {
         timeZone,
       }).then((tasks) => {
         setTasks(tasks);
+        setOriginalTasks(tasks);
 
         if (mode === "all") {
           let newTasks: TaskType[] = [];
@@ -316,7 +302,8 @@ export default function Calendar() {
     handleChangeMode("all");
     setSelectedTaskKey(undefined);
     setTasksToUpdate([]);
-  }, [timeZone]);
+    setSelectedDate(null);
+  }, [timeZone, originalTasks]);
 
   const handleShowByStatus = useCallback(
     (status: "active" | "expired" | "disabled") => {
@@ -348,7 +335,7 @@ export default function Calendar() {
       timeZone,
     }).then((tasks) => {
       setTasks(tasks);
-
+      setOriginalTasks(tasks);
       setSelectedTasks(tasks);
     });
   }, [relevantRoutine, timeZone, type]);
@@ -391,15 +378,6 @@ export default function Calendar() {
         />
 
         <Group>
-          {!givenMode && mode !== "all" && (
-            <ActionIcon
-              variant="default"
-              onClick={handleResetMode}
-              className={classes.taskStatusButton}
-            >
-              <IconArrowBack className={"icon"} />
-            </ActionIcon>
-          )}
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
@@ -446,6 +424,7 @@ export default function Calendar() {
                       tasksToUpdate={tasksToUpdate}
                       selectTask={selectTask}
                       handleChangeMode={handleChangeMode}
+                      handleResetMode={handleResetMode}
                     />
                   );
                 })}

@@ -1,4 +1,5 @@
 import {
+  IconDoorExit,
   IconInnerShadowBottom,
   IconRotateDot,
   IconScan,
@@ -13,9 +14,10 @@ import classes from "./UserButton.module.css";
 type Props = {
   avatar: { [key: string]: any } | null;
   name?: string;
+  handleSignOut: () => void;
 };
 
-function UserButton({ avatar = null, name }: Props) {
+function UserButton({ avatar = null, name, handleSignOut }: Props) {
   return (
     <Menu withArrow classNames={{ itemLabel: classes.itemLabel }}>
       <Menu.Target>
@@ -59,6 +61,9 @@ function UserButton({ avatar = null, name }: Props) {
         </Menu.Item>
         <Menu.Item component={Link} href="/settings">
           <IconSettings className="icon icon__small" style={{ marginRight: rem(6) }} /> Settings
+        </Menu.Item>
+        <Menu.Item onClick={handleSignOut}>
+          <IconDoorExit className="icon icon__small" style={{ marginRight: rem(6) }} /> Sign out
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

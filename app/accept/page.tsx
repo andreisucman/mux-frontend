@@ -3,9 +3,10 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import getBrowserFingerprint from "get-browser-fingerprint";
-import { Button, Stack, Text, Title } from "@mantine/core";
+import { Button, Stack, Text } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -35,33 +36,36 @@ export default function AcceptIndexPage() {
       if (!tosAccepted) return;
       setIsLoading(true);
 
-      const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
+      if (!userId) {
+        const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
 
-      const response = await callTheServer({
-        endpoint: "startTheFlow",
-        method: "POST",
-        body: {
-          timeZone,
-          tosAccepted,
-          fingerprint,
-        },
-      });
+        const response = await callTheServer({
+          endpoint: "startTheFlow",
+          method: "POST",
+          body: {
+            timeZone,
+            tosAccepted,
+            fingerprint,
+          },
+        });
 
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal();
-          setIsLoading(false);
-          return;
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal();
+            setIsLoading(false);
+            return;
+          }
+
+          const { demographics, ...otherData } = response.message;
+
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            ...otherData,
+            demographics: { ...demographics, ...(userDetails || {}).demographics },
+          }));
+
+          nprogress.start();
         }
-
-        const { sex, ...otherData } = response.message;
-
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          ...otherData,
-        }));
-
-        nprogress.start();
       }
 
       const encodedRedirectUrl = searchParams.get("redirectUrl") || "/scan/progress?type=head";
@@ -74,7 +78,7 @@ export default function AcceptIndexPage() {
       openErrorModal();
       setIsLoading(false);
     }
-  }, [tosAccepted, userId]);
+  }, [tosAccepted, userDetails]);
 
   const checkboxLabel = useMemo(
     () => (
@@ -93,7 +97,7 @@ export default function AcceptIndexPage() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <Title order={1}>Review the Terms</Title>
+      <PageHeaderWithReturn title="Review terms" showReturn />
       <Stack className={`${classes.content} scrollbar`}>
         <TermsLegalBody />
       </Stack>

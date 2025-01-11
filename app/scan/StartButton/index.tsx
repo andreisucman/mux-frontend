@@ -1,7 +1,7 @@
-import React, { useContext, useMemo } from "react";
-import Image from "next/image";
+import React, { useContext, useEffect, useState } from "react";
+import Image, { StaticImageData } from "next/image";
 import { IconBodyScan } from "@tabler/icons-react";
-import { Text, UnstyledButton } from "@mantine/core";
+import { Skeleton, Text, UnstyledButton } from "@mantine/core";
 import { IconScanFood, IconScanStyle } from "@/components/customIcons";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
@@ -21,30 +21,35 @@ const icons: { [key: string]: React.ReactNode } = {
 };
 
 export default function StartButton({ onClick, scanType, type }: Props) {
+  const [relevantPlaceholder, setRelevantPlaceholder] = useState<StaticImageData>();
   const { userDetails } = useContext(UserContext);
   const { demographics } = userDetails || {};
   const { sex } = demographics || {};
 
-  const relevantPlaceholder = useMemo(
-    () =>
-      placeholders.find(
-        (item) =>
-          item.sex.includes(sex || "female") && item.scanType === scanType && item.type === type
-      ),
-    [sex, scanType, type]
-  );
+  useEffect(() => {
+    if (!sex) return;
+
+    const relevantPlaceholder = placeholders.find(
+      (item) => item.sex.includes(sex) && item.scanType === scanType && item.type === type
+    );
+    setRelevantPlaceholder(relevantPlaceholder?.url);
+  }, [sex, scanType, type]);
 
   return (
     <UnstyledButton className={classes.container} onClick={onClick}>
-      <div className={classes.imageWrapper}>
-        <Image
-          src={(relevantPlaceholder && relevantPlaceholder.url) || ""}
-          className={classes.image}
-          alt=""
-          width={180}
-          height={240}
-        />
-      </div>
+      <Skeleton visible={!relevantPlaceholder}>
+        <div className={classes.imageWrapper}>
+          {relevantPlaceholder && (
+            <Image
+              src={relevantPlaceholder}
+              className={classes.image}
+              alt=""
+              width={180}
+              height={240}
+            />
+          )}
+        </div>
+      </Skeleton>
       <Text className={classes.label}>
         {icons[scanType]}Scan {scanType}
       </Text>

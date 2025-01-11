@@ -23,5 +23,4 @@
   height: 100%;
 
   object-fit: contain;
-  background-color: alpha(var(--mantine-color-dark-5), 0.25);
 }

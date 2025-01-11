@@ -134,7 +134,7 @@ function Header() {
                   />
                 )}
                 {displayComponent === "userButton" && (
-                  <UserButton avatar={avatar || null} name={name} />
+                  <UserButton avatar={avatar || null} name={name} handleSignOut={handleSignOut} />
                 )}
               </>
             )}

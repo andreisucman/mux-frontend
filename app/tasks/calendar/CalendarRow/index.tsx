@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { IconSearch } from "@tabler/icons-react";
+import { IconArrowBack, IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -14,6 +14,7 @@ type Props = {
   customStyles?: { [key: string]: any };
   selectTask: (task: TaskType) => void;
   handleChangeMode: (mode: string, taskKey?: string) => void;
+  handleResetMode: () => void;
 };
 
 export default function CalendarRow({
@@ -23,6 +24,7 @@ export default function CalendarRow({
   tasksToUpdate,
   selectTask,
   handleChangeMode,
+  handleResetMode,
 }: Props) {
   const { key: taskKey, color, icon, name, startsAt, _id: taskId } = task;
 
@@ -63,6 +65,15 @@ export default function CalendarRow({
             onClick={(e) => handleSeeIndividualTasks(e, taskKey)}
           >
             <IconSearch />
+          </ActionIcon>
+        )}
+        {mode === "individual" && (
+          <ActionIcon
+            variant="default"
+            onClick={handleResetMode}
+            className={classes.button}
+          >
+            <IconArrowBack className={"icon"} />
           </ActionIcon>
         )}
       </Group>

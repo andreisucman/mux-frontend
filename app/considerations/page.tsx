@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Group, rem, Stack } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import TextareaComponent from "@/components/TextAreaComponent";
@@ -15,6 +15,7 @@ import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { UserConcernType, UserDataType, UserSubscriptionsType } from "@/types/global";
+import RecordingButton from "../club/answers/RecordingButton";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./considerations.module.css";
 
@@ -32,6 +33,7 @@ export default function Considerations() {
   const searchParams = useSearchParams();
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isTranscriptionLoading, setIsTranscriptionLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
 
   const { demographics, specialConsiderations } = userDetails || {};
@@ -148,15 +150,31 @@ export default function Considerations() {
         <PageHeaderWithReturn title="Special considerations" showReturn />
         <InstructionContainer
           title="Instructions"
-          instruction={"Write any special considerations or preferences you have."}
+          instruction={"Add any special considerations or preferences you have."}
           description="Your routine will be adapted to them."
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>
-          <TextareaComponent text={text} placeholder={placeholder} setText={setText} />
-          <Button loading={isLoading} onClick={handleCreateRoutine} disabled={isLoading}>
-            Next
-          </Button>
+          <TextareaComponent
+            isLoading={isTranscriptionLoading}
+            text={text}
+            placeholder={placeholder}
+            setText={setText}
+          />
+          <Group w="100%">
+            <RecordingButton
+              size="sm"
+              setText={setText}
+              isLoading={isTranscriptionLoading}
+              setIsLoading={setIsTranscriptionLoading}
+              defaultRecordingMs={15000}
+              customButtonStyles={{ minWidth: rem(130) }}
+              transcribeOnEnd
+            />
+            <Button flex={1} loading={isLoading} onClick={handleCreateRoutine} disabled={isLoading}>
+              Next
+            </Button>
+          </Group>
         </Stack>
       </SkeletonWrapper>
     </Stack>

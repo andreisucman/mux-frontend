@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Button, CloseButton, Group, Highlight, Overlay, Stack, Table, Text } from "@mantine/core";
-import { FoodAnalysisType } from "@/app/analysis/food/[analysisId]/types";
+import { FoodAnalysisType } from "@/app/analysis/food/types";
 import PieChartComponent from "@/components/PieChart";
 import classes from "./CalorieResultOverlay.module.css";
 

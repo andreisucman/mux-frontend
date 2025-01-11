@@ -53,7 +53,7 @@ export default function ConversationsDrawerContent({
     const query = modifyQuery({
       params: [{ name: "conversationId", value: conversationId, action: "replace" }],
     });
-    router.push(`/advisor/chat?${query}`);
+    router.push(`/advisor/chat${query ? `?${query}` : ""}`);
     closeDrawer();
   }, []);
 

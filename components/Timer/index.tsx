@@ -9,14 +9,14 @@ type Props = {
   onlyCountdown?: boolean;
   showDays?: boolean;
   onlyMinutes?: boolean;
-  text?: string;
+  children?: React.ReactNode;
   onComplete?: () => void;
   customStyles?: { [key: string]: any };
 };
 
 const Timer = ({
   date,
-  text,
+  children,
   showDays,
   onlyMinutes,
   customStyles,
@@ -65,7 +65,7 @@ const Timer = ({
 
   return (
     <span className={classes.container} style={customStyles ? customStyles : {}} ref={containerRef}>
-      {!onlyCountdown && ` ${text ? text + ": " : ""}`}
+      {!onlyCountdown && children}
       <span>{convertSecondsToTime({ seconds: countdown, showDays, onlyMinutes })}</span>
     </span>
   );

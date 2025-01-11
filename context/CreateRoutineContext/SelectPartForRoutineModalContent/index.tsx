@@ -4,6 +4,7 @@ import { Button, Group, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import Timer from "@/components/Timer";
+import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { partIcons } from "@/helpers/icons";
 import { TypeEnum } from "@/types/global";
@@ -14,7 +15,13 @@ type Props = {
 };
 
 export default function SelectPartForRoutineModalContent({ parts, type }: Props) {
+  const router = useRouter();
   const activeParts = parts.filter((part) => !part.date || new Date(part.date) < new Date());
+
+  const handleClick = (url: string) => {
+    router.push(url);
+    modals.closeAll();
+  };
 
   return (
     <Stack flex={1}>
@@ -34,7 +41,7 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
         const icon = partIcons[key];
         const text = upperFirst(key);
         const render = !!isCooldown ? (
-          <Timer date={date} text={`${partIcons[key]} Next routine after`} showDays />
+          <Timer date={date} children={<Group gap={8}>{icon} Next after</Group>} showDays />
         ) : (
           <Group gap={8}>
             {icon} {text}
@@ -45,9 +52,7 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
             variant="default"
             key={index}
             disabled={!!isCooldown}
-            component={Link}
-            href={`/sort-concerns?type=${type}&part=${key}`}
-            onClick={() => modals.closeAll()}
+            onClick={() => handleClick(`/sort-concerns?type=${type}&part=${key}`)}
           >
             {render}
           </Button>
