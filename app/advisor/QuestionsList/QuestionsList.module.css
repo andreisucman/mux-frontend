@@ -4,12 +4,6 @@
 }
 
 .content {
-  position: relative;
   flex: 1;
   overflow-y: auto;
-}
-
-.list {
-  position: absolute;
-  inset: 0;
 }

@@ -1,6 +1,7 @@
 .container {
   position: relative;
-  width: 100%;
+  justify-content: space-between;
+  /* width: 100%; */
   overflow: hidden;
   border-radius: var(--mantine-radius-lg);
   flex-wrap: nowrap;

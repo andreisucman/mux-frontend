@@ -11,8 +11,8 @@ type Props = {
   userName?: string | string[];
   disclaimer?: string;
   dividerLabel?: string;
-  relatedCategory?: string;
-  relatedContentId?: string;
+  chatCategory?: string;
+  chatContentId?: string;
   collapseStyles?: { [key: string]: any };
   defaultVisibility?: "open" | "closed";
 };
@@ -23,8 +23,8 @@ export default function ChatWithOverlay({
   disclaimer,
   dividerLabel,
   collapseStyles,
-  relatedCategory,
-  relatedContentId,
+  chatCategory,
+  chatContentId,
   defaultVisibility,
 }: Props) {
   const { ref: focusRef, focused } = useFocusWithin();
@@ -63,8 +63,8 @@ export default function ChatWithOverlay({
         conversation={conversation}
         userName={userName}
         dividerLabel={dividerLabel}
-        relatedCategory={relatedCategory}
-        relatedContentId={relatedContentId}
+        chatCategory={chatCategory}
+        chatContentId={chatContentId}
         setConversation={setConversation}
         setIsTyping={setIsTyping}
         isClub

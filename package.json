@@ -31,7 +31,6 @@
     "@tabler/icons-react": "^3.6.0",
     "classnames": "2.5.1",
     "embla-carousel-react": "^7.1.0",
-    "get-browser-fingerprint": "4.0.1",
     "idb-keyval": "^6.2.1",
     "masonic": "4.0.1",
     "nanoid": "5.0.8",

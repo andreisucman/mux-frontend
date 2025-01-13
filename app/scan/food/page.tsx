@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter } from "next/navigation";
-import getBrowserFingerprint from "get-browser-fingerprint";
 import { Button, rem, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
@@ -32,8 +31,6 @@ export default function ScanFoodPage() {
     setIsLoading(true);
 
     try {
-      const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
-
       const fileUrls = await uploadToSpaces({
         itemsArray: [localUrl],
         mime: "image/webp",
@@ -45,7 +42,6 @@ export default function ScanFoodPage() {
         body: {
           url: fileUrls[0],
           calorieGoal,
-          fingerprint,
         },
       });
 

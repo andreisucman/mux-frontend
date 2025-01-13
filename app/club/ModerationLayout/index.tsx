@@ -169,6 +169,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
                 userName={userName}
                 disabled={showComponent !== "children"}
                 disclaimer={chatDisclaimer}
+                chatCategory={pageType}
               />
             )}
           </>

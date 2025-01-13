@@ -24,6 +24,8 @@
   display: flex;
   gap: rem(8);
   margin: rem(8) 0;
+  /* user-select: all; */
+
 
   & span {
     &:first-child {
@@ -31,7 +33,7 @@
     }
 
     &:nth-child(2) {
-      max-width: 15rem;
+      max-width: 25rem;
     }
   }
 }

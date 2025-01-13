@@ -22,7 +22,7 @@ const textMessage = (message: MessageContent) => (
 const imageMessage = (message: MessageContent) => (
   <Stack className={classes.imageWrapper}>
     <Image
-      src={message.image_url!}
+      src={message.image_url?.url || "/"}
       alt=""
       width={200}
       height={200}

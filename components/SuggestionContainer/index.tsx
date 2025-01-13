@@ -133,10 +133,10 @@ export default function SuggestionContainer({
 
         {!disableLocalChat && (
           <ChatWithOverlay
-            relatedCategory="task"
-            relatedContentId={taskId}
+            chatCategory="product"
+            chatContentId={taskId}
             dividerLabel={"Choose best for me"}
-            defaultVisibility="closed"
+            defaultVisibility="open"
           />
         )}
       </Stack>

@@ -1,5 +1,4 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import getBrowserFingerprint from "get-browser-fingerprint";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -31,8 +30,6 @@ const authenticate = async ({
     const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
     const { redirectPath, redirectQuery, localUserId } = parsedState;
 
-    const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
-
     const response = await callTheServer({
       endpoint: "authenticate",
       method: "POST",
@@ -42,7 +39,6 @@ const authenticate = async ({
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         localUserId,
         email,
-        fingerprint,
         referrer,
         password,
       },

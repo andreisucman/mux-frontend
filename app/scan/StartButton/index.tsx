@@ -21,19 +21,25 @@ const icons: { [key: string]: React.ReactNode } = {
 };
 
 export default function StartButton({ onClick, scanType, type }: Props) {
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [relevantPlaceholder, setRelevantPlaceholder] = useState<StaticImageData>();
   const { userDetails } = useContext(UserContext);
   const { demographics } = userDetails || {};
   const { sex } = demographics || {};
 
   useEffect(() => {
-    if (!sex) return;
+    if (!pageLoaded) return;
 
     const relevantPlaceholder = placeholders.find(
-      (item) => item.sex.includes(sex) && item.scanType === scanType && item.type === type
+      (item) =>
+        item.sex.includes(sex || "female") && item.scanType === scanType && item.type === type
     );
     setRelevantPlaceholder(relevantPlaceholder?.url);
-  }, [sex, scanType, type]);
+  }, [sex,pageLoaded, scanType, type]);
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
 
   return (
     <UnstyledButton className={classes.container} onClick={onClick}>

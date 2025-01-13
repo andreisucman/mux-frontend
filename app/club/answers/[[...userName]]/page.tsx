@@ -79,7 +79,7 @@ export default function AnswersPage(props: Props) {
         const payload = { questionId, answer };
 
         const response = await callTheServer({
-          endpoint: "saveAboutResponse",
+          endpoint: "saveFaqAnswer",
           method: "POST",
           body: payload,
         });
@@ -259,7 +259,7 @@ export default function AnswersPage(props: Props) {
                 </ActionIcon>
               )}
             </Stack>
-            <ChatWithOverlay relatedCategory="about" />
+            <ChatWithOverlay chatCategory="about" />
           </>
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

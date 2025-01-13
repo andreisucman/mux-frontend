@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import { MessageType } from "../../types";
 import ChatDisplay from "../ChatDisplay";
 import ChatInput from "../ChatInput";
+import { ChatCategoryEnum } from "./type";
 import classes from "./ChatBody.module.css";
 
 type Props = {
@@ -28,6 +29,7 @@ const ChatBody = ({ userName }: Props) => {
           setConversation={setConversation}
           setIsTyping={setIsTyping}
           userName={userName}
+          chatCategory={ChatCategoryEnum.GENERAL}
         />
       </div>
     </section>

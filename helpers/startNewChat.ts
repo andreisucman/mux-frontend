@@ -13,5 +13,5 @@ export async function startNewChat(router: AppRouterInstance, value?: string) {
     params,
   });
   
-  router.push(`/advisor/chat?${query}`);
+  router.replace(`/advisor/chat?${query}`);
 }

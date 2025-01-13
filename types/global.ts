@@ -3,7 +3,6 @@ import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 
 export type DefaultUserType = {
   timeZone: string;
-  fingerprint: number;
   tosAccepted: boolean;
   specialConsiderations: string;
 };

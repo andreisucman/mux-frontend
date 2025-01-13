@@ -316,8 +316,8 @@ export default function Explain(props: Props) {
                   />
                 )}
                 <ChatWithOverlay
-                  relatedCategory={"task"}
-                  relatedContentId={taskId}
+                  chatCategory={"task"}
+                  chatContentId={taskId}
                   defaultVisibility="open"
                 />
               </>

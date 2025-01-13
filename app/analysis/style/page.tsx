@@ -179,9 +179,9 @@ export default function StyleScanResult() {
               }
             />
             <ChatWithOverlay
-              relatedCategory="style"
-              relatedContentId={styleId}
-              dividerLabel={"Discuss details"}
+              chatCategory="style"
+              chatContentId={styleId}
+              dividerLabel={"Discuss style and outlook"}
               defaultVisibility="open"
             />
           </>

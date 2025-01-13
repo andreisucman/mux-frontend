@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import getBrowserFingerprint from "get-browser-fingerprint";
 import { Button, Stack, Text } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
@@ -37,15 +36,12 @@ export default function AcceptIndexPage() {
       setIsLoading(true);
 
       if (!userId) {
-        const fingerprint = await getBrowserFingerprint({ hardwareOnly: true });
-
         const response = await callTheServer({
           endpoint: "startTheFlow",
           method: "POST",
           body: {
             timeZone,
             tosAccepted,
-            fingerprint,
           },
         });
 

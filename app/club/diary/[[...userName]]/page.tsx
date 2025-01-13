@@ -63,7 +63,7 @@ export default function DiaryPage(props: Props) {
         hasMore={hasMore}
         handleFetchDiaryRecords={handleFetchDiaryRecords}
       />
-      <ChatWithOverlay relatedCategory="diary" />
+      <ChatWithOverlay chatCategory="diary" />
     </ClubModerationLayout>
   );
 }

@@ -35,8 +35,8 @@ type Props = {
   heading?: React.ReactNode;
   userName?: string | string[];
   conversation: MessageType[];
-  relatedCategory?: string;
-  relatedContentId?: string;
+  chatCategory?: string;
+  chatContentId?: string;
   setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
   setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
 };
@@ -49,8 +49,8 @@ export default function ChatInput({
   userName,
   dividerLabel,
   conversation,
-  relatedCategory,
-  relatedContentId,
+  chatCategory,
+  chatContentId,
   setIsTyping,
   setConversation,
 }: Props) {
@@ -153,7 +153,7 @@ export default function ChatInput({
             content: [
               {
                 type: "image_url",
-                image_url: imageUrl,
+                image_url: { url: imageUrl },
               },
             ],
           }));
@@ -175,8 +175,8 @@ export default function ChatInput({
         const payload: { [key: string]: any } = {
           conversationId,
           messages: newMessages,
-          relatedCategory,
-          relatedContentId,
+          chatCategory,
+          chatContentId,
         };
 
         if (userName) payload.userName = userName;
@@ -238,7 +238,7 @@ export default function ChatInput({
         setIsTyping(false);
       }
     },
-    [currentMessage, conversation && conversation.length]
+    [currentMessage, images, conversation && conversation.length]
   );
 
   const handleSubmit = useCallback(
@@ -247,7 +247,7 @@ export default function ChatInput({
       if (disabled) return;
       sendMessage([{ type: "text", text: currentMessage }]);
     },
-    [disabled, currentMessage]
+    [disabled, currentMessage, images]
   );
 
   const handleKeyDown = useCallback(
@@ -280,7 +280,7 @@ export default function ChatInput({
   const handleToggleChat = () => {
     setShowChat((prev) => {
       if (defaultVisibility !== "closed")
-        saveToLocalStorage("openInputChat", { [relatedCategory || "general"]: !prev }, "add");
+        saveToLocalStorage("openInputChat", { [chatCategory || "general"]: !prev }, "add");
 
       return !prev;
     });
@@ -296,7 +296,7 @@ export default function ChatInput({
       getFromLocalStorage("openInputChat");
 
     if (savedInputChatOpens) {
-      const relatedVerdict = savedInputChatOpens[relatedCategory || "general"];
+      const relatedVerdict = savedInputChatOpens[chatCategory || "general"];
       setShowChat(relatedVerdict);
     }
   }, []);
