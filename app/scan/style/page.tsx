@@ -15,6 +15,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import { PositionEnum, ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import classes from "./style.module.css";
+import SexSelector from "@/components/SexSelector";
 
 export const runtime = "edge";
 
@@ -51,7 +52,7 @@ export default function UploadStyle() {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, latestStyleAnalysis } = userDetails || {};
+  const { _id: userId, latestStyleAnalysis, demographics } = userDetails || {};
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
   const typeStyleRequirements = defaultStyleRequirements?.[finalType as "head" | "body"];
@@ -142,7 +143,7 @@ export default function UploadStyle() {
     <Stack className={`${classes.container} smallPage`}>
       {typeStyleRequirements ? (
         <>
-          <ScanHeader type={type as TypeEnum} />
+          <ScanHeader type={type as TypeEnum} children={demographics ? <SexSelector /> : <></>} />
           <UploadContainer
             latestStyleImage={mainUrl?.url}
             requirements={typeStyleRequirements}

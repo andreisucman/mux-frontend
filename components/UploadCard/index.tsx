@@ -100,6 +100,7 @@ export default function UploadCard({
       modals.closeAll();
 
       if (blurType === "original") return;
+      
       setIsBlurLoading(true);
 
       await onBlurClick({

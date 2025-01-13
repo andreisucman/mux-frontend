@@ -30,6 +30,7 @@ export const pathsThatRequireId = [
 
 export const blockFetchUserDataPaths = [
   "/",
+  "/accept",
   "/proof",
   "/style",
   "/scan/progress",

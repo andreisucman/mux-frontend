@@ -7,6 +7,7 @@ import { Button, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import OverlayWithText from "@/components/OverlayWithText";
+import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
@@ -32,7 +33,7 @@ export default function ScanProgress() {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, requiredProgress, nextScan } = userDetails || {};
+  const { _id: userId, requiredProgress, demographics, nextScan } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
@@ -53,7 +54,7 @@ export default function ScanProgress() {
 
       setIsLoading(true);
 
-      const totalDuration = Math.random() * 25000 + 3000;
+      const totalDuration = Math.random() * 25000 + 15000;
       const updateInterval = 1000;
       const incrementValue = 100 / (totalDuration / 1000);
 
@@ -68,24 +69,24 @@ export default function ScanProgress() {
         });
       }, updateInterval);
 
-      const fileUrls = await uploadToSpaces({
-        itemsArray: [url],
+      const [originalImageUrl, blurredImageUrl] = await uploadToSpaces({
+        itemsArray: [url, blurredImage],
         mime: "image/jpeg",
       });
 
-      if (fileUrls[0]) {
+      if (originalImageUrl) {
         try {
           const response = await callTheServer({
             endpoint: "uploadProgress",
             method: "POST",
             body: {
+              userId,
               type,
               part,
               position,
               blurType,
-              blurredImage,
-              image: fileUrls[0],
-              userId,
+              image: originalImageUrl,
+              blurredImage: blurredImageUrl,
             },
           });
 
@@ -144,7 +145,10 @@ export default function ScanProgress() {
     <>
       {availableRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
-          <ScanHeader type={finalType as TypeEnum} />
+          <ScanHeader
+            type={finalType as TypeEnum}
+            children={demographics ? <SexSelector /> : <></>}
+          />
           {needsScan ? (
             <UploadContainer
               requirements={availableRequirements || []}

@@ -3,6 +3,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, rem } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterDropdown from "@/components/FilterDropdown";
+import SexSelector from "@/components/SexSelector";
 import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
 import { TypeEnum } from "@/types/global";
@@ -21,10 +22,11 @@ const titles = [
 
 type Props = {
   type?: TypeEnum;
+  children?: React.ReactNode;
   onSelect?: () => void;
 };
 
-function ScanHeader({ type, onSelect }: Props) {
+function ScanHeader({ type, children, onSelect }: Props) {
   const router = useRouter();
 
   return (
@@ -34,6 +36,7 @@ function ScanHeader({ type, onSelect }: Props) {
           <IconChevronLeft className="icon" />
         </ActionIcon>
         <TitleDropdown titles={titles} customDropdownStyles={{ minWidth: rem(210) }} />
+        {children}
       </Group>
 
       {type && (

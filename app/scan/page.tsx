@@ -1,34 +1,22 @@
 "use client";
 
 import React, { useCallback, useContext } from "react";
-import { IconGenderFemale, IconGenderMale } from "@tabler/icons-react";
-import { Group, SegmentedControl, Stack, Title } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
-import { ScanTypeEnum, UserDataType } from "@/types/global";
+import { ScanTypeEnum } from "@/types/global";
 import { ReferrerEnum } from "../auth/AuthForm/types";
+import SexSelector from "../../components/SexSelector";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
 
 export const runtime = "edge";
 
-const sexes = [
-  {
-    value: "female",
-    label: <IconGenderFemale className="icon" style={{ display: "flex" }} />,
-  },
-  {
-    value: "male",
-    label: <IconGenderMale className="icon" style={{ display: "flex" }} />,
-  },
-];
-
 export default function ScanIndexPage() {
   const router = useRouter();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
-  const { _id: userId, email, demographics } = userDetails || {};
-  const { sex } = demographics || {};
+  const { status, userDetails } = useContext(UserContext);
+  const { _id: userId, email } = userDetails || {};
 
   const handleRedirect = useCallback(
     (redirectPath: string, redirectQuery?: string) => {
@@ -58,22 +46,12 @@ export default function ScanIndexPage() {
     [status, userDetails]
   );
 
-  const handleChangeSex = (value: string) =>
-    setUserDetails((prev: UserDataType) => ({
-      ...(prev || {}),
-      demographics: { ...(prev || {}).demographics, sex: value },
-    }));
-
   return (
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
         <Group align="center">
           <Title order={1}>Scan yourself</Title>
-          <SegmentedControl
-            value={sex || "female"}
-            data={sexes}
-            onChange={(value) => handleChangeSex(value)}
-          />
+          <SexSelector />
         </Group>
         <Group className={classes.content}>
           <StartButton
