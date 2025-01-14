@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Collapse, rem, Stack, Text } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
-import ChatDisplay from "@/app/advisor/chat/ChatDisplay";
-import ChatInput from "@/app/advisor/chat/ChatInput";
-import { MessageType } from "@/app/advisor/types";
+import ChatInput from "@/components/ChatInput";
+import { MessageType } from "@/components/ChatInput/types";
+import ChatDisplay from "@/components/ChatDisplay";
 import classes from "./ChatWithOverlay.module.css";
 
 type Props = {
@@ -50,6 +50,7 @@ export default function ChatWithOverlay({
           )}
           <ChatDisplay
             isTyping={isTyping}
+            isOpen={openChat}
             conversation={conversation}
             setConversation={setConversation}
             customContainerStyles={{ flex: 1 }}

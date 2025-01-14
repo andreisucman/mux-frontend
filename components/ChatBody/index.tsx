@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { MessageType } from "../../types";
 import ChatDisplay from "../ChatDisplay";
 import ChatInput from "../ChatInput";
+import { MessageType } from "../ChatInput/types";
 import { ChatCategoryEnum } from "./type";
 import classes from "./ChatBody.module.css";
 

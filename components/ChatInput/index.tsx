@@ -16,10 +16,10 @@ import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { SexEnum, UserDataType } from "@/types/global";
-import { MessageContent, MessageType } from "../../types";
 import EnergyIndicator from "../EnergyIndicator";
 import ImageUploadButton from "./ImageUploadButton";
 import InputImagePreview from "./InputImagePreview";
+import { MessageContent, MessageType } from "./types";
 import classes from "./ChatInput.module.css";
 
 const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
@@ -58,7 +58,6 @@ export default function ChatInput({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [showChat, setShowChat] = useState(defaultVisibility === "open");
@@ -311,7 +310,6 @@ export default function ChatInput({
             <Group className={classes.inputGroup}>
               <Group className={classes.uploadRow}>{previewImages}</Group>
               <Textarea
-                ref={inputRef}
                 value={currentMessage}
                 className={classes.input}
                 onChange={(e) => setCurrentMessage(e.target.value)}
@@ -320,7 +318,6 @@ export default function ChatInput({
                 maxRows={4}
                 size="md"
                 placeholder="Type your message"
-                autoFocus
                 autosize
                 rightSection={
                   <ImageUploadButton

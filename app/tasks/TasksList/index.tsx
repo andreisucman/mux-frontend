@@ -185,7 +185,9 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
         <TasksButtons
           type={type as TypeEnum}
           disableCalendar={disableAll}
-          disableCreate={disableAll || displayComponent === "scanOverlay"}
+          disableCreate={
+            disableAll || displayComponent === "scanOverlay" || displayComponent === "wait"
+          }
           disableSuggestions={disableAll}
           disableHistory={disableAll}
           handleSaveTask={handleSaveTask}

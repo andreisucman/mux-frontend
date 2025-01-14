@@ -3,7 +3,6 @@ import {
   IconBooks,
   IconDoorEnter,
   IconDoorExit,
-  IconInnerShadowBottom,
   IconLicense,
   IconNotebook,
   IconRotateDot,
@@ -76,11 +75,6 @@ const defaultAuthenticatedNavigation = [
     title: "My diary",
     icon: <IconNotebook stroke={1.25} className="icon" />,
     path: "/diary",
-  },
-  {
-    title: "My advisor",
-    icon: <IconInnerShadowBottom stroke={1.25} className="icon" />,
-    path: "/advisor?type=head",
   },
   {
     title: "My products",

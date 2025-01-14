@@ -3,14 +3,17 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, rem, Stack } from "@mantine/core";
+import { useElementSize, useScrollIntoView } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
-import { MessageType, RecentMessageType } from "../../types";
+import { MessageType, RecentMessageType } from "../ChatInput/types";
 import Message from "../Message";
 import classes from "./ChatDisplay.module.css";
 
 type Props = {
   conversation: MessageType[];
   isTyping: boolean;
+  isOpen: boolean;
+  isInList?: boolean;
   customContainerStyles?: { [key: string]: any };
   customScrollAreaStyles?: { [key: string]: any };
   setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
@@ -18,6 +21,8 @@ type Props = {
 
 export default function ChatDisplay({
   isTyping,
+  isOpen,
+  isInList,
   customContainerStyles,
   customScrollAreaStyles,
   conversation,
@@ -25,6 +30,11 @@ export default function ChatDisplay({
 }: Props) {
   const searchParams = useSearchParams();
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
+    HTMLDivElement,
+    HTMLDivElement
+  >({ duration: 500, isList:isInList });
+  const { ref, height } = useElementSize();
 
   const conversationId = searchParams.get("conversationId");
 
@@ -73,7 +83,7 @@ export default function ChatDisplay({
             role={item.role}
             divRef={
               index === conversation.length - 1 && objIndex === item.content.length - 1
-                ? lastMessageRef
+                ? targetRef
                 : undefined
             }
           />
@@ -88,14 +98,21 @@ export default function ChatDisplay({
   }, [conversationId]);
 
   useEffect(() => {
-    if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [conversation.length]);
+    if (!isOpen) return;
+    // if (disableScrollIntoView) return;
+    // if (!lastMessageRef.current) return;
+    console.log("ran24");
+    scrollIntoView();
+  }, [conversation.length, isOpen, height, scrollableRef.current, targetRef.current]);
 
   return (
-    <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
+    <Stack
+      className={classes.container}
+      style={customContainerStyles ? customContainerStyles : {}}
+      ref={ref}
+    >
       <Stack
+        ref={scrollableRef}
         className={classes.scrollArea}
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
       >

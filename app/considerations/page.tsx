@@ -33,7 +33,6 @@ export default function Considerations() {
   const searchParams = useSearchParams();
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isTranscriptionLoading, setIsTranscriptionLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
 
   const { demographics, specialConsiderations } = userDetails || {};
@@ -155,26 +154,11 @@ export default function Considerations() {
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>
-          <TextareaComponent
-            isLoading={isTranscriptionLoading}
-            text={text}
-            placeholder={placeholder}
-            setText={setText}
-          />
-          <Group w="100%">
-            <RecordingButton
-              size="sm"
-              setText={setText}
-              isLoading={isTranscriptionLoading}
-              setIsLoading={setIsTranscriptionLoading}
-              defaultRecordingMs={15000}
-              customButtonStyles={{ minWidth: rem(130) }}
-              transcribeOnEnd
-            />
-            <Button flex={1} loading={isLoading} onClick={handleCreateRoutine} disabled={isLoading}>
-              Next
-            </Button>
-          </Group>
+          <TextareaComponent text={text} placeholder={placeholder} setText={setText} />
+
+          <Button loading={isLoading} onClick={handleCreateRoutine} disabled={isLoading}>
+            Next
+          </Button>
         </Stack>
       </SkeletonWrapper>
     </Stack>

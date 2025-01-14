@@ -3,7 +3,6 @@
 # Paths
 
 /chat, // p
-/advisor, // p
 /results, // p
 /results/styles, // p
 /results/proof, // p
