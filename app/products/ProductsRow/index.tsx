@@ -40,7 +40,7 @@ export default function ProductsRow({
         <Stack flex={1}>
           <SuggestionContainer
             title="Products"
-            taskId={task._id}
+            chatContentId={task.key}
             items={suggestions}
             customStyles={{ borderRadius: "0 0 16px 16px" }}
             selectedAsins={selectedAsins}

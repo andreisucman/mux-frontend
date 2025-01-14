@@ -11,11 +11,13 @@ import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
+import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { SexEnum, UserDataType } from "@/types/global";
+import useGetConversationId from "../../functions/useGetConversationId";
 import EnergyIndicator from "../EnergyIndicator";
 import ImageUploadButton from "./ImageUploadButton";
 import InputImagePreview from "./InputImagePreview";
@@ -65,8 +67,9 @@ export default function ChatInput({
   const { coachEnergy, demographics } = userDetails || {};
   const { sex } = demographics || {};
 
-  const conversationId = searchParams.get("conversationId");
   const query = searchParams.get("query");
+
+  const conversationId = useGetConversationId({ chatCategory, chatContentId });
 
   const handleCreateCheckoutSession = useCallback(async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
@@ -208,16 +211,9 @@ export default function ChatInput({
           const { conversationId, reply } = response.message || {};
 
           if (conversationId) {
-            const newQuery = modifyQuery({
-              params: [
-                {
-                  name: "conversationId",
-                  value: conversationId,
-                  action: "replace",
-                },
-              ],
+            saveToIndexedDb("conversationId", {
+              [`${chatCategory}-${chatContentId}`]: conversationId,
             });
-            router.replace(`${pathname}?${newQuery}`);
           }
 
           appendMessage([
@@ -278,9 +274,7 @@ export default function ChatInput({
 
   const handleToggleChat = () => {
     setShowChat((prev) => {
-      if (defaultVisibility !== "closed")
-        saveToLocalStorage("openInputChat", { [chatCategory || "general"]: !prev }, "add");
-
+      saveToIndexedDb("openInputChat", { [`${chatCategory}-${chatContentId}`]: !prev });
       return !prev;
     });
   };
@@ -291,13 +285,12 @@ export default function ChatInput({
   }, [query]);
 
   useEffect(() => {
-    const savedInputChatOpens: { [key: string]: boolean } | null =
-      getFromLocalStorage("openInputChat");
-
-    if (savedInputChatOpens) {
-      const relatedVerdict = savedInputChatOpens[chatCategory || "general"];
-      setShowChat(relatedVerdict);
-    }
+    getFromIndexedDb("openInputChat").then((record) => {
+      if (record) {
+        const relevantVerdict = record[`${chatCategory}-${chatContentId}`];
+        setShowChat(relevantVerdict);
+      }
+    });
   }, []);
 
   return (

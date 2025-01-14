@@ -5,10 +5,9 @@
 .content {
   position: relative;
   flex: 1;
+
+  overflow: auto;
 }
 
 .list {
-  position: absolute;
-  inset: 0;
-  height: 100%;
 }

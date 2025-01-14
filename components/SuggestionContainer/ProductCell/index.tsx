@@ -38,6 +38,7 @@ const ProductCell = ({ item, allItems, selectedAsins, showOnCellAtc, setSelected
           {modalTitle}
         </Title>
       ),
+      size: "lg",
       classNames: { content: "scrollbars" },
       innerProps: <ProductModalBody item={item} allItems={allItems} />,
       withinPortal: false,

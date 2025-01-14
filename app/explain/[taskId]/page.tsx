@@ -311,7 +311,7 @@ export default function Explain(props: Props) {
                   <SuggestionContainer
                     title="Products:"
                     items={suggestions}
-                    taskId={taskId}
+                    chatContentId={taskId}
                     disableLocalChat
                   />
                 )}

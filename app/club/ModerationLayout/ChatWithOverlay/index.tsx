@@ -51,6 +51,8 @@ export default function ChatWithOverlay({
           <ChatDisplay
             isTyping={isTyping}
             isOpen={openChat}
+            chatCategory="product"
+            chatContentId={chatContentId}
             conversation={conversation}
             setConversation={setConversation}
             customContainerStyles={{ flex: 1 }}

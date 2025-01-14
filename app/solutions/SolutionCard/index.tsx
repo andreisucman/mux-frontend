@@ -26,7 +26,7 @@ export default function SolutionCard({ data }: Props) {
   const [opened, { toggle: toggleCollapse }] = useDisclosure(true);
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
-  const { icon, color, name, instruction, description, example, suggestions } = data;
+  const { icon, color, name, instruction, description, example, suggestions, key } = data;
 
   const sections = [
     {
@@ -93,7 +93,7 @@ export default function SolutionCard({ data }: Props) {
               </Group>
               <Collapse in={opened}>
                 <SuggestionContainer
-                  taskId={data._id}
+                  chatContentId={data.key}
                   items={suggestions}
                   customStyles={{ backgroundColor: "transparent", padding: 0 }}
                   rowStyles={{ marginLeft: 0 }}

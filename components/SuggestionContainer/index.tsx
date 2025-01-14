@@ -14,7 +14,7 @@ import ProductCell from "./ProductCell";
 import classes from "./SuggestionContainer.module.css";
 
 type Props = {
-  taskId: string;
+  chatContentId: string;
   title?: string;
   showOnCellAtc?: boolean;
   selectedAsins?: string[];
@@ -28,7 +28,7 @@ type Props = {
 export default function SuggestionContainer({
   title,
   items,
-  taskId,
+  chatContentId,
   rowStyles,
   disableLocalChat,
   showOnCellAtc,
@@ -134,7 +134,7 @@ export default function SuggestionContainer({
         {!disableLocalChat && (
           <ChatWithOverlay
             chatCategory="product"
-            chatContentId={taskId}
+            chatContentId={chatContentId}
             dividerLabel={"Choose best for me"}
             defaultVisibility="open"
           />

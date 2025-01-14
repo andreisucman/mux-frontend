@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { useSearchParams } from "next/navigation";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useElementSize, useScrollIntoView } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
+import useGetConversationId from "../../functions/useGetConversationId";
 import { MessageType, RecentMessageType } from "../ChatInput/types";
 import Message from "../Message";
 import classes from "./ChatDisplay.module.css";
@@ -13,6 +13,8 @@ type Props = {
   conversation: MessageType[];
   isTyping: boolean;
   isOpen: boolean;
+  chatCategory?: string;
+  chatContentId?: string;
   isInList?: boolean;
   customContainerStyles?: { [key: string]: any };
   customScrollAreaStyles?: { [key: string]: any };
@@ -26,17 +28,18 @@ export default function ChatDisplay({
   customContainerStyles,
   customScrollAreaStyles,
   conversation,
+  chatCategory,
+  chatContentId,
   setConversation,
 }: Props) {
-  const searchParams = useSearchParams();
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
     HTMLDivElement,
     HTMLDivElement
-  >({ duration: 500, isList:isInList });
+  >({ duration: 500, isList: isInList });
   const { ref, height } = useElementSize();
 
-  const conversationId = searchParams.get("conversationId");
+  const conversationId = useGetConversationId({ chatCategory, chatContentId });
 
   const getMessages = useCallback(
     async (conversationId: string | null) => {
@@ -90,7 +93,7 @@ export default function ChatDisplay({
         ));
         return messages;
       }),
-    [conversation.length, lastMessageRef.current]
+    [conversation.length, conversationId, lastMessageRef.current]
   );
 
   useEffect(() => {
@@ -99,11 +102,8 @@ export default function ChatDisplay({
 
   useEffect(() => {
     if (!isOpen) return;
-    // if (disableScrollIntoView) return;
-    // if (!lastMessageRef.current) return;
-    console.log("ran24");
     scrollIntoView();
-  }, [conversation.length, isOpen, height, scrollableRef.current, targetRef.current]);
+  }, [height]);
 
   return (
     <Stack

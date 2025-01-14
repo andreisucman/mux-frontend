@@ -1,9 +1,23 @@
 import { del, get, keys, set } from "idb-keyval";
 
+function getCurrentTimestamp() {
+  return new Date().getTime();
+}
+
+function isOlderThan7Days(timestamp: number) {
+  const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+  return getCurrentTimestamp() - timestamp > sevenDaysInMs;
+}
+
 export async function getFromIndexedDb(key: string) {
   try {
     if (!key) return;
-    return await get(`MUX-${key}`);
+    const record = await get(`MUX-${key}`);
+    if (record) {
+      return record.data;
+    } else {
+      return null;
+    }
   } catch (err) {
     console.log("Error while getting from indexedDb");
   }
@@ -18,14 +32,20 @@ export async function getAllFromIndexedDb() {
       if (`${key}`.includes("MUX")) {
         const record = await get(key);
         if (record) {
-          allRecords.push(record);
+          const { data, timestamp } = record;
+
+          if (isOlderThan7Days(timestamp)) {
+            await del(key);
+          } else {
+            allRecords.push(record);
+          }
         }
       }
     }
 
     return allRecords;
   } catch (err) {
-    console.log("Error while gettinf from indexedDb");
+    console.log("Error while getting from indexedDb");
   }
 }
 
@@ -56,10 +76,35 @@ export async function saveToIndexedDb(key: string, data: any) {
   if (!key) return;
 
   try {
-    await set(`MUX-${key}`, data);
+    const timestamp = getCurrentTimestamp();
+    const record = {
+      data,
+      timestamp,
+    };
+
+    await set(`MUX-${key}`, record);
+
+    await flushOldContent();
+
     return data;
   } catch (error) {
-    /* Handle any errors from the callback */
     console.error("Error saving data to indexedDb: ", error);
+  }
+}
+
+async function flushOldContent() {
+  try {
+    const allKeys = await keys();
+
+    for (const key of allKeys) {
+      if (`${key}`.includes("MUX")) {
+        const record = await get(key);
+        if (record && isOlderThan7Days(record.timestamp)) {
+          await del(key);
+        }
+      }
+    }
+  } catch (err) {
+    console.log("Error while flushing old content from indexedDb");
   }
 }

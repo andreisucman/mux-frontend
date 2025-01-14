@@ -18,7 +18,7 @@ export default function Disclaimer({ customStyles }: Props) {
         intended as professional medical advice. It should not be used for diagnosing or treating
         any medical condition. Always seek the guidance of a qualified healthcare provider with any
         questions or concerns you may have regarding your health or medical care. Never disregard
-        professional advice or delay seeking it because of something you read on this site.
+        professional advice or delay seeking it because of something you see on this site.
       </Text>
     </Stack>
   );

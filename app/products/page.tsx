@@ -58,20 +58,18 @@ export default function Products() {
         {uniqueTasks ? (
           <>
             {uniqueTasks.length > 0 ? (
-              <Stack className={classes.content}>
-                <Stack className={classes.list}>
-                  {uniqueTasks.map((record) => {
-                    return (
-                      <ProductsRow
-                        key={record._id}
-                        task={record}
-                        selectedAsins={selectedAsins}
-                        setSelectedAsins={setSelectedAsins}
-                        setUniqueTasks={setUniqueTasks}
-                      />
-                    );
-                  })}
-                </Stack>
+              <Stack className={`${classes.content} scrollbar`}>
+                {uniqueTasks.map((record) => {
+                  return (
+                    <ProductsRow
+                      key={record._id}
+                      task={record}
+                      selectedAsins={selectedAsins}
+                      setSelectedAsins={setSelectedAsins}
+                      setUniqueTasks={setUniqueTasks}
+                    />
+                  );
+                })}
               </Stack>
             ) : (
               <OverlayWithText
