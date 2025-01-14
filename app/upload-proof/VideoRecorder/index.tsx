@@ -414,7 +414,6 @@ export default function VideoRecorder({
   return (
     <Stack className={classes.container}>
       <InstructionContainer
-        sex={sex || SexEnum.FEMALE}
         title="Instructions"
         instruction={instruction}
         customStyles={{ flex: 0 }}

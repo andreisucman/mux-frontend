@@ -15,8 +15,8 @@
   overflow: auto;
   z-index: 0;
 
-  @media (max-width: $mantine-breakpoint-sm) {
-    padding-bottom: 80%;
+  @media (max-width: $mantine-breakpoint-xs) {
+    padding-bottom: 60%;
   }
 }
 

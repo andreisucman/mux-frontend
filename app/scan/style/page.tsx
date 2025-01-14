@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Skeleton, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
+import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
 import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
@@ -15,7 +16,6 @@ import openErrorModal from "@/helpers/openErrorModal";
 import { PositionEnum, ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import classes from "./style.module.css";
-import SexSelector from "@/components/SexSelector";
 
 export const runtime = "edge";
 
@@ -122,6 +122,8 @@ export default function UploadStyle() {
               _id: response.message,
             }));
 
+            if (intervalId) clearInterval(intervalId);
+
             const redirectUrl = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
             const onErrorRedirectUrl = encodeURIComponent(`/scan/style?${searchParams.toString()}`);
             router.push(
@@ -133,10 +135,10 @@ export default function UploadStyle() {
         openErrorModal();
         setIsLoading(false);
       } finally {
-        setProgress(0);
+        setProgress(100);
       }
     },
-    [userId, setUserDetails, type]
+    [userDetails, progress]
   );
 
   return (

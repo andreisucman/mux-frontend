@@ -13,7 +13,7 @@
   width: 100%;
   aspect-ratio: 16/9;
   min-height: rem(150);
-  max-height: rem(200);
+  max-height: rem(150);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 

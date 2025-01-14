@@ -189,7 +189,7 @@ export default function StyleScanResult() {
         {displayComponent === "empty" && (
           <OverlayWithText
             icon={<IconCircleOff className="icon" />}
-            text={`No ${type} style analysis`}
+            text={"Nothing found"}
             button={overlayButton}
           />
         )}

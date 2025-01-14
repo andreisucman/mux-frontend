@@ -2,8 +2,8 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff } from "@tabler/icons-react";
-import { Button, Loader, rem, Stack } from "@mantine/core";
+import { IconCircleOff, IconTrash } from "@tabler/icons-react";
+import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -81,17 +81,26 @@ export default function Products() {
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}
-        {selectedAsins.length > 0 && (
+      </SkeletonWrapper>
+      {selectedAsins.length > 0 && (
+        <Group className={classes.addToCartGroup}>
+          <ActionIcon
+            variant="default"
+            style={uniqueTasks ? {} : { visibility: "hidden" }}
+            onClick={() => setSelectedAsins([])}
+          >
+            <IconTrash className="icon" />
+          </ActionIcon>
           <Button
-            mt={rem(12)}
             style={uniqueTasks ? {} : { visibility: "hidden" }}
             disabled={selectedAsins.length === 0}
             onClick={() => addToAmazonCart(selectedAsins)}
+            flex={1}
           >
             Add to cart {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
           </Button>
-        )}
-      </SkeletonWrapper>
+        </Group>
+      )}
     </Stack>
   );
 }

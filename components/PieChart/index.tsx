@@ -35,7 +35,7 @@ const renderCustomizedLabel = ({
 }: RenderCustomizedLabelProps) => {
   if (value === 0) return;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + (radius / 2) * Math.cos(-midAngle * RADIAN) - 5;
+  const x = cx + (radius / 2) * Math.cos(-midAngle * RADIAN * 1.5);
   const y = cy + (radius / 2) * Math.sin(-midAngle * RADIAN);
 
   return (
@@ -44,10 +44,10 @@ const renderCustomizedLabel = ({
       x={x}
       y={y}
       fill="white"
-      textAnchor={value === 100 ? "center" : x > cx ? "start" : "end"}
+      textAnchor={"middle"}
       dominantBaseline="central"
     >
-      {upperFirst(name)}
+      {upperFirst(name)} {value}%
     </text>
   );
 };

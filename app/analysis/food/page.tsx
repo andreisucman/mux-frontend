@@ -168,6 +168,7 @@ export default function FoodScanResult() {
             {analysisId && (
               <ChatWithOverlay
                 chatCategory="food"
+                defaultVisibility="open"
                 chatContentId={analysisId}
                 dividerLabel={"Discuss food and nutrition"}
               />

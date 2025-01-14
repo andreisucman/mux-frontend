@@ -12,12 +12,12 @@ export default function useGetConversationId({ chatCategory, chatContentId }: Pr
   useEffect(() => {
     if (!chatCategory || !chatContentId) return;
 
-    getFromIndexedDb("conversationId").then((record) => {
-      if (record) {
-        setConversationId(record[`${chatCategory}-${chatContentId}`]);
+    getFromIndexedDb(`conversationId-${chatContentId || chatCategory}`).then((verdict) => {
+      if (chatContentId || chatCategory) {
+        setConversationId(verdict);
       }
     });
   }, [chatCategory, chatContentId]);
 
-  return conversationId;
+  return { conversationId, setConversationId };
 }

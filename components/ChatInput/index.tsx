@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
@@ -12,7 +12,6 @@ import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
@@ -69,7 +68,10 @@ export default function ChatInput({
 
   const query = searchParams.get("query");
 
-  const conversationId = useGetConversationId({ chatCategory, chatContentId });
+  const { conversationId } = useGetConversationId({
+    chatCategory,
+    chatContentId,
+  });
 
   const handleCreateCheckoutSession = useCallback(async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
@@ -210,10 +212,8 @@ export default function ChatInput({
 
           const { conversationId, reply } = response.message || {};
 
-          if (conversationId) {
-            saveToIndexedDb("conversationId", {
-              [`${chatCategory}-${chatContentId}`]: conversationId,
-            });
+          if (conversationId && (chatContentId || chatCategory)) {
+            saveToIndexedDb(`conversationId-${chatContentId || chatCategory}`, conversationId);
           }
 
           appendMessage([
@@ -233,7 +233,7 @@ export default function ChatInput({
         setIsTyping(false);
       }
     },
-    [currentMessage, images, conversation && conversation.length]
+    [currentMessage, images, chatContentId, conversationId, conversation && conversation.length]
   );
 
   const handleSubmit = useCallback(
@@ -242,7 +242,7 @@ export default function ChatInput({
       if (disabled) return;
       sendMessage([{ type: "text", text: currentMessage }]);
     },
-    [disabled, currentMessage, images]
+    [disabled, sendMessage]
   );
 
   const handleKeyDown = useCallback(
@@ -274,7 +274,8 @@ export default function ChatInput({
 
   const handleToggleChat = () => {
     setShowChat((prev) => {
-      saveToIndexedDb("openInputChat", { [`${chatCategory}-${chatContentId}`]: !prev });
+      if (chatContentId || chatCategory)
+        saveToIndexedDb(`openInputChat-${chatContentId || chatCategory}`, !prev);
       return !prev;
     });
   };
@@ -285,13 +286,12 @@ export default function ChatInput({
   }, [query]);
 
   useEffect(() => {
-    getFromIndexedDb("openInputChat").then((record) => {
-      if (record) {
-        const relevantVerdict = record[`${chatCategory}-${chatContentId}`];
-        setShowChat(relevantVerdict);
+    getFromIndexedDb(`openInputChat-${chatContentId || chatCategory}`).then((verdict) => {
+      if (chatContentId || chatCategory) {
+        setShowChat(verdict);
       }
     });
-  }, []);
+  }, [chatContentId]);
 
   return (
     <Stack className={classes.container}>

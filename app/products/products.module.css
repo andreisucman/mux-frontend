@@ -1,5 +1,6 @@
 .container {
   flex: 1;
+  position: relative;
 }
 
 .content {
@@ -9,5 +10,11 @@
   overflow: auto;
 }
 
-.list {
+.addToCartGroup {
+  padding: rem(16);
+  position: sticky;
+  bottom: rem(16);
+  left: rem(16);
+  right: rem(16);
+  background-color: alpha(var(--mantine-color-dark-6), 0.75);
 }

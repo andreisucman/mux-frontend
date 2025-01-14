@@ -19,3 +19,10 @@
     display: none;
   }
 }
+
+.refresh {
+  position: absolute;
+  top: rem(12);
+  right: rem(12);
+  z-index: 1;
+}

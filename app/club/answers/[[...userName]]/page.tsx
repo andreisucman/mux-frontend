@@ -259,7 +259,11 @@ export default function AnswersPage(props: Props) {
                 </ActionIcon>
               )}
             </Stack>
-            <ChatWithOverlay chatCategory="about" />
+            <ChatWithOverlay
+              chatCategory="about"
+              dividerLabel="Discuss answers"
+              defaultVisibility="open"
+            />
           </>
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

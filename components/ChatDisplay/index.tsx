@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Loader, rem, Stack } from "@mantine/core";
+import { IconRotate2 } from "@tabler/icons-react";
+import { ActionIcon, Loader, rem, Stack } from "@mantine/core";
 import { useElementSize, useScrollIntoView } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
+import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import useGetConversationId from "../../functions/useGetConversationId";
 import { MessageType, RecentMessageType } from "../ChatInput/types";
 import Message from "../Message";
@@ -39,7 +41,10 @@ export default function ChatDisplay({
   >({ duration: 500, isList: isInList });
   const { ref, height } = useElementSize();
 
-  const conversationId = useGetConversationId({ chatCategory, chatContentId });
+  const { conversationId, setConversationId } = useGetConversationId({
+    chatCategory,
+    chatContentId,
+  });
 
   const getMessages = useCallback(
     async (conversationId: string | null) => {
@@ -76,6 +81,11 @@ export default function ChatDisplay({
     [conversationId]
   );
 
+  const startNewChat = useCallback(() => {
+    deleteFromIndexedDb(`conversationId-${chatContentId}`);
+    setConversationId(null);
+  }, [chatContentId]);
+
   const conversationList = useMemo(
     () =>
       conversation.map((item, index) => {
@@ -111,6 +121,9 @@ export default function ChatDisplay({
       style={customContainerStyles ? customContainerStyles : {}}
       ref={ref}
     >
+      <ActionIcon variant="default" className={classes.refresh} onClick={startNewChat}>
+        <IconRotate2 className="icon icon__small" />
+      </ActionIcon>
       <Stack
         ref={scrollableRef}
         className={classes.scrollArea}
