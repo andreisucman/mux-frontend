@@ -224,7 +224,7 @@ export default function AnswersPage(props: Props) {
         </Group>
         {questions ? (
           <>
-            <Stack className={classes.accordionWrapper}>
+            <Stack className={`${classes.accordionWrapper} scrollbar`}>
               <Accordion
                 value={openValue}
                 onChange={setOpenValue}

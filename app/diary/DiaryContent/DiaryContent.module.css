@@ -4,11 +4,6 @@
   gap: rem(8);
 }
 
-.content {
-  flex: 1;
-  position: relative;
-}
-
 .accordion {
   position: absolute;
   inset: 0;
@@ -16,6 +11,8 @@
 }
 
 .content {
+  flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: rem(16);

@@ -90,8 +90,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>3. Income from Followers:</Title>
         <ul>
           <li>
-            You earn 25% from the Peek license subscription fee for each user that follows you in
-            the Club, each month.
+            You earn 50% from the net Peek license subscription revenue amount for each user that follows you
+            in the Club, each month.
           </li>
           <li>
             Your rewards are deposited to your balance every day at midnight UTC according to the
@@ -181,9 +181,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>2. Earnings from Followers:</Title>
         <ul>
           <li>
-            You will receive 25% of the app&apos;s subscription fee for each user who follows you.
-            This percentage is calculated based on the amount collected from the user&apos;s
-            subscription.
+            You will receive 50% of the net app&apos;s subscription revenue for each user who follows you.
+            The actual amount is calculated based on the Peek license plan cost minus payment processing fee (~3-3.5%).
           </li>
           <li>
             Payments deposited to your bank account are subject to Stripe&apos;s processing times,
@@ -192,7 +191,10 @@ export default function ClubLegalBody({ addTitle }: Props) {
         </ul>
         <Title order={3}>3. Payment Schedule:</Title>
         <ul>
-          <li>Payouts are processed on demand. This means you can initiate a payout of your balance to your bank account at any time.</li>
+          <li>
+            Payouts are processed on demand. This means you can initiate a payout of your balance to
+            your bank account at any time.
+          </li>
           <li>
             You are responsible for ensuring your banking information remains current and accurate.
           </li>

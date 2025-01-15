@@ -51,10 +51,12 @@ function UserButton({ avatar = null, name, handleSignOut }: Props) {
           <IconScan className={`icon icon__small`} style={{ marginRight: rem(6) }} />
           Scan
         </Menu.Item>
-        <Menu.Item component={Link} href="/club">
-          <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-          Club
-        </Menu.Item>
+        {avatar && (
+          <Menu.Item component={Link} href="/club">
+            <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+            Club
+          </Menu.Item>
+        )}
         <Menu.Item component={Link} href="/settings">
           <IconSettings className="icon icon__small" style={{ marginRight: rem(6) }} /> Settings
         </Menu.Item>

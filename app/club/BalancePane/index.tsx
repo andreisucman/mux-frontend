@@ -58,7 +58,7 @@ function BalancePane() {
           <Group gap={8}>
             To enable withdrawals add your bank account or card.
             <Button component={Link} href="/club/admission" ml="auto" size="compact-sm">
-              Connect
+              Add
             </Button>
           </Group>
         </Alert>

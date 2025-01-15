@@ -85,7 +85,7 @@ export default function SuggestionContainer({
               title: "Add the advisor coach",
               modalType: "advisor",
               isCentered: true,
-              price: "9",
+              price: "8",
               buttonText,
               underButtonText: "No credit card required",
               onClose: handleRefetchData,

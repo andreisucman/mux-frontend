@@ -1,12 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Group, Loader, Skeleton, Stack, Title } from "@mantine/core";
 import DeleteContentButton from "@/components/DeleteContentButton";
 import OverlayWithText from "@/components/OverlayWithText";
 import { formatDate } from "@/helpers/formatDate";
-import { TypeEnum } from "@/types/global";
 import DiaryRow from "../DiaryRow";
 import { DiaryRecordType } from "../type";
 import classes from "./DiaryContent.module.css";
@@ -36,8 +34,6 @@ export default function DiaryContent({
   setDiaryRecords,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const searchParams = useSearchParams();
-  const type = searchParams.get("type") || "head";
 
   const memoizedDiaryRow = useCallback(
     (props: any) => {
@@ -64,14 +60,13 @@ export default function DiaryContent({
             <DiaryRow
               data={props.data}
               index={props.index}
-              type={type as TypeEnum}
               timeZone={timeZone}
             />
           </Accordion.Panel>
         </Accordion.Item>
       );
     },
-    [type, diaryRecords]
+    [ diaryRecords]
   );
 
   return (
@@ -97,10 +92,7 @@ export default function DiaryContent({
                 className={classes.list}
               />
             ) : (
-              <OverlayWithText
-                text={`No diary records${type ? ` for ${type}` : ""}`}
-                icon={<IconCircleOff className="icon" />}
-              />
+              <OverlayWithText text={`Nothing found`} icon={<IconCircleOff className="icon" />} />
             )}
           </Accordion>
           {hasMore && (

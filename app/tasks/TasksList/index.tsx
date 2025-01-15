@@ -2,9 +2,8 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconNote } from "@tabler/icons-react";
 import useSWR from "swr";
-import { Button, Group, Loader, rem, Skeleton, Stack } from "@mantine/core";
+import { Button, Group, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import WaitComponent from "@/components/WaitComponent";
@@ -224,7 +223,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                 {relevantTasks && (
                   <Stack className={classes.listWrapper}>
                     {canAddDiaryRecord && (
-                      <Button component={Link} href={`/diary?type=${type}`} c="white">
+                      <Button component={Link} href={"/diary"} c="white">
                         Add a diary note for today
                       </Button>
                     )}

@@ -138,7 +138,7 @@ export default function PeekOverlay({ description, userName }: Props) {
     <Stack className={classes.container}>
       {description && <Text className={classes.text}>{description}</Text>}
       <PricingCard
-        price="19"
+        price="12"
         name={"Peek License"}
         buttonText="Add peek license"
         content={peekLicenseContent}

@@ -5,7 +5,6 @@ import { useDisclosure } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
-import { TypeEnum } from "@/types/global";
 import { DiaryRecordType } from "../type";
 import ControlButtons from "./ControlButtons";
 import DiaryActivityRow from "./DiaryActivityRow";
@@ -14,11 +13,10 @@ import classes from "./DiaryRow.module.css";
 type Props = {
   data: DiaryRecordType;
   index: number;
-  type: TypeEnum;
   timeZone?: string;
 };
 
-export default function DiaryRow({ data, type, timeZone }: Props) {
+export default function DiaryRow({ data, timeZone }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
   const [isUploading, setIsUploading] = useState(false);
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
@@ -44,7 +42,6 @@ export default function DiaryRow({ data, type, timeZone }: Props) {
   const handleSubmit = useCallback(
     async (blobs: Blob[] | null) => {
       if (!blobs) return;
-      if (!type) return;
       if (isUploading) return;
 
       try {
@@ -55,7 +52,7 @@ export default function DiaryRow({ data, type, timeZone }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls[0], type, timeZone, activity: data.activity },
+          body: { audio: audioUrls[0], timeZone, activity: data.activity },
         });
 
         if (response.status === 200) {
@@ -74,7 +71,7 @@ export default function DiaryRow({ data, type, timeZone }: Props) {
         openErrorModal();
       }
     },
-    [isUploading, timeZone, type]
+    [isUploading, timeZone]
   );
 
   return (

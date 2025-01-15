@@ -49,7 +49,7 @@ export default function PlansPage() {
         <PricingCard content={freePlanContent} name={"Free"} addGradient />
         <PricingCard
           content={peekLicenseContent}
-          price={"19"}
+          price={"12"}
           name={"Peek license"}
           isLoading={isLoading}
           onClick={handleClickBuy}

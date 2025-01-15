@@ -4,34 +4,34 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
-import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
+import askConfirmation from "@/helpers/askConfirmation";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
-import { typeIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
-import { TypeEnum, UserDataType } from "@/types/global";
+import { UserDataType } from "@/types/global";
 import DiaryContent from "./DiaryContent";
 import { DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
 export default function DiaryPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [openValue, setOpenValue] = useState<string | null>(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const searchParams = useSearchParams();
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [disableAddNew, setDisableAddNew] = useState(true);
 
-  const type = searchParams.get("type") || TypeEnum.HEAD;
   const sort = searchParams.get("sort") || "-createdAt";
 
-  const { timeZone } = userDetails || {};
+  const { tasks, timeZone } = userDetails || {};
 
   const formattedToday = useMemo(() => formatDate({ date: new Date() }), []);
 
@@ -43,7 +43,6 @@ export default function DiaryPage() {
       const response = await callTheServer({
         endpoint: "createDiaryRecord",
         method: "POST",
-        body: { type },
       });
 
       setIsLoading(false);
@@ -56,7 +55,6 @@ export default function DiaryPage() {
 
         const emptyDiaryRecord = {
           _id: "temp",
-          type,
           audio: null,
           transcription: null,
           createdAt: new Date(),
@@ -82,11 +80,28 @@ export default function DiaryPage() {
     } catch (err) {
       setIsLoading(false);
     }
-  }, [isLoading, timeZone, type, sort]);
+  }, [isLoading, timeZone, sort]);
+
+  const handleClickCreateRecord = useCallback(() => {
+    if (!tasks) return;
+
+    const activeTasks = tasks.filter((task) => task.status === "active") || [];
+
+    if (activeTasks.length > 0) {
+      const activeTypes = [...new Set(activeTasks.map((t) => t.type))];
+      const activeTypesString = activeTypes.join(", and");
+
+      askConfirmation({
+        title: "Confirm action",
+        body: `You still have active ${activeTypesString} tasks. Would you like to complete them first?`,
+        onConfirm: () => router.push(`/tasks?type=${activeTypes[0]}`),
+        onCancel: createDiaryRecord,
+      });
+    }
+  }, [createDiaryRecord, tasks && tasks.length]);
 
   const handleFetchDiaryRecords = useCallback(async () => {
     const response = await fetchDiaryRecords({
-      type,
       sort,
       currentArrayLength: diaryRecords?.length,
       skip: hasMore,
@@ -105,11 +120,11 @@ export default function DiaryPage() {
 
       setHasMore(response.message.length === 21);
     }
-  }, [diaryRecords, hasMore, type, sort]);
+  }, [diaryRecords, hasMore, sort]);
 
   useEffect(() => {
     handleFetchDiaryRecords();
-  }, [type, sort]);
+  }, [sort]);
 
   useEffect(() => {
     if (!diaryRecords) return;
@@ -122,17 +137,9 @@ export default function DiaryPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn
-          title="Diary"
-          filterData={typeItems}
-          icons={typeIcons}
-          selectedValue={type}
-          sortItems={diarySortItems}
-          nowrap
-          showReturn
-        />
+        <PageHeaderWithReturn title="Diary" sortItems={diarySortItems} nowrap showReturn />
         <Button
-          onClick={createDiaryRecord}
+          onClick={handleClickCreateRecord}
           disabled={disableAddNew || isLoading}
           loading={isLoading}
         >

@@ -115,7 +115,7 @@ export default function ChatInput({
       title: userName ? `Add the peek license` : `Add the advisor coach`,
       modalType: userName ? "peek" : ("advisor" as "peek"),
       isCentered: true,
-      price: userName ? "19" : "9",
+      price: userName ? "12" : "8",
       buttonText,
       onClick,
       onClose: () => fetchUserData({ setUserDetails }),

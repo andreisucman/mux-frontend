@@ -30,7 +30,6 @@ export default function DiaryPage(props: Props) {
     try {
       const response = await fetchDiaryRecords({
         userName,
-        type,
         sort,
         currentArrayLength: diaryRecords?.length,
         skip: hasMore,

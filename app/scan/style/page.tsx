@@ -63,7 +63,7 @@ export default function UploadStyle() {
     async ({ url, type }: HandleUploadStyleProps) => {
       if (!url) return;
 
-      let intervalId: NodeJS.Timeout;
+      let intervalId: any = null;
 
       try {
         const totalDuration = Math.random() * 25000 + 3000;
@@ -114,6 +114,7 @@ export default function UploadStyle() {
               openErrorModal({
                 description: response.error,
               });
+              return;
             }
 
             saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
@@ -133,9 +134,10 @@ export default function UploadStyle() {
         }
       } catch (err) {
         openErrorModal();
-        setIsLoading(false);
       } finally {
         setProgress(100);
+        setIsLoading(false);
+        if (intervalId) clearInterval(intervalId);
       }
     },
     [userDetails, progress]

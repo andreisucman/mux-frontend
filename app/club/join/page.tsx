@@ -20,7 +20,7 @@ export const runtime = "edge";
 const tableData = {
   caption: "From their monthly subscription payment",
   head: ["Event", "Reward"],
-  body: [["Follower", "25%"]],
+  body: [["Follower", "50%"]],
 };
 
 export default function ClubJoin() {
@@ -85,7 +85,6 @@ export default function ClubJoin() {
           <GlowingButton
             text="Join the Club"
             disabled={!!club}
-            icon={<IconTargetArrow className="icon" style={{ marginRight: rem(6) }} />}
             containerStyles={{ margin: "auto" }}
             onClick={onStart}
           />

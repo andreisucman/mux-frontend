@@ -85,7 +85,7 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
       diary: (
         <ClubHeader
           title={"Club"}
-          hideTypeDropdown={showComponent !== "children"}
+          hideTypeDropdown={true}
           pageType={pageType}
           sortItems={diarySortItems}
           showReturn
