@@ -160,7 +160,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
 
     if (club) {
       finalNavigation.push({
-        title: "Club profile",
+        title: "My club profile",
         path: "/club",
         icon: <IconSocial stroke={1.25} className="icon" />,
         children: [
@@ -178,12 +178,6 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         icon: <IconSocial stroke={1.25} className="icon" />,
       });
     }
-
-    finalNavigation.push({
-      title: "Settings",
-      path: "/settings",
-      icon: <IconSettings stroke={1.25} className="icon" />,
-    });
 
     return (
       <NavigationStack
@@ -223,6 +217,10 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       {status === "authenticated" && (
         <>
           {finalAuthenticatedNavigation}
+          <UnstyledButton className={classes.signInButton} onClick={() => router.push("/settings")}>
+            <IconSettings className="icon" stroke={1.25} />
+            Settings
+          </UnstyledButton>
           <UnstyledButton className={classes.signInButton} onClick={handleSignOut}>
             <IconDoorExit className="icon" stroke={1.25} />
             Sign out

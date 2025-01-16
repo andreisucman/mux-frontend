@@ -1,0 +1,10 @@
+.container {
+  position: static;
+  width: 100%;
+}
+
+.disclaimer {
+  padding: rem(8) 0;
+  text-align: center;
+  font-size: var(--mantine-font-size-xs);
+}

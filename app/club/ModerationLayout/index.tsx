@@ -14,7 +14,6 @@ import ClubProfilePreview from "../ClubProfilePreview";
 import ClubProgressHeader from "../progress/ClubProgressHeader";
 import ClubProofHeader from "../proof/ClubProofHeader";
 import ClubStyleHeader from "../style/ClubStyleHeader";
-import ChatWithOverlay from "./ChatWithOverlay";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
 import classes from "./ClubModerationLayout.module.css";
@@ -29,7 +28,7 @@ type Props = {
   pageType: "about" | "routines" | "diary" | "progress" | "proof" | "style" | "answers";
 };
 
-export default function ClubModerationLayout({ children, pageType, userName, showChat }: Props) {
+export default function ClubModerationLayout({ children, pageType, userName }: Props) {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youFollowData, hasNewAboutQuestions, youFollowDataFetched } =
@@ -163,14 +162,6 @@ export default function ClubModerationLayout({ children, pageType, userName, sho
             {showComponent === "subscriptionOverlay" && <PeekOverlay userName={userName} />}
             {showComponent === "followOverlay" && (
               <FollowOverlay userName={userName as string} description={followText} />
-            )}
-            {showComponent === "children" && showChat && (
-              <ChatWithOverlay
-                userName={userName}
-                disabled={showComponent !== "children"}
-                disclaimer={chatDisclaimer}
-                chatCategory={pageType}
-              />
             )}
           </>
         )}

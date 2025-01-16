@@ -17,6 +17,10 @@
   }
 }
 
+.disableInput {
+  pointer-events: none;
+}
+
 .inputGroup {
   position: relative;
   flex: 1;

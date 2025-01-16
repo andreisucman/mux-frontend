@@ -94,6 +94,7 @@ export default function SolutionCard({ data }: Props) {
               <Collapse in={opened}>
                 <SuggestionContainer
                   chatContentId={data.key}
+                  taskKey={data.key}
                   items={suggestions}
                   customStyles={{ backgroundColor: "transparent", padding: 0 }}
                   rowStyles={{ marginLeft: 0 }}

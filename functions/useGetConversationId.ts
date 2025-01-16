@@ -7,14 +7,14 @@ type Props = {
 };
 
 export default function useGetConversationId({ chatCategory, chatContentId }: Props) {
-  const [conversationId, setConversationId] = useState(null);
+  const [conversationId, setConversationId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!chatCategory || !chatContentId) return;
 
-    getFromIndexedDb(`conversationId-${chatContentId || chatCategory}`).then((verdict) => {
+    getFromIndexedDb(`conversationId-${chatContentId || chatCategory}`).then((id) => {
       if (chatContentId || chatCategory) {
-        setConversationId(verdict);
+        setConversationId(id);
       }
     });
   }, [chatCategory, chatContentId]);

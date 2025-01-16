@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Collapse, rem, Stack, Text } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
+import ChatDisplay from "@/components/ChatDisplay";
 import ChatInput from "@/components/ChatInput";
 import { MessageType } from "@/components/ChatInput/types";
-import ChatDisplay from "@/components/ChatDisplay";
+import useGetConversationId from "@/functions/useGetConversationId";
 import classes from "./ChatWithOverlay.module.css";
 
 type Props = {
   disabled?: boolean;
   userName?: string | string[];
   disclaimer?: string;
+  openChatKey?: string;
   dividerLabel?: string;
   chatCategory?: string;
   chatContentId?: string;
@@ -20,6 +22,7 @@ type Props = {
 export default function ChatWithOverlay({
   disabled,
   userName,
+  openChatKey,
   disclaimer,
   dividerLabel,
   collapseStyles,
@@ -32,6 +35,11 @@ export default function ChatWithOverlay({
   const [conversation, setConversation] = useState<MessageType[]>([]);
 
   const openChat = disabled ? false : focused && conversation.length > 0;
+
+  const { conversationId, setConversationId } = useGetConversationId({
+    chatCategory,
+    chatContentId,
+  });
 
   return (
     <Stack className={classes.container} ref={focusRef}>
@@ -51,9 +59,10 @@ export default function ChatWithOverlay({
           <ChatDisplay
             isTyping={isTyping}
             isOpen={openChat}
-            chatCategory="product"
+            conversationId={conversationId}
             chatContentId={chatContentId}
             conversation={conversation}
+            setConversationId={setConversationId}
             setConversation={setConversation}
             customContainerStyles={{ flex: 1 }}
             customScrollAreaStyles={{ padding: rem(8) }}
@@ -63,12 +72,15 @@ export default function ChatWithOverlay({
       <ChatInput
         defaultVisibility={defaultVisibility}
         disabled={disabled}
+        conversationId={conversationId}
         conversation={conversation}
+        openChatKey={openChatKey}
         userName={userName}
         dividerLabel={dividerLabel}
         chatCategory={chatCategory}
         chatContentId={chatContentId}
         setConversation={setConversation}
+        setConversationId={setConversationId}
         setIsTyping={setIsTyping}
         isClub
       />

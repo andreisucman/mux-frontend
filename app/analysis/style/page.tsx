@@ -180,6 +180,7 @@ export default function StyleScanResult() {
             />
             <ChatWithOverlay
               chatCategory="style"
+              openChatKey="style"
               chatContentId={styleId}
               dividerLabel={"Discuss style and outlook"}
               defaultVisibility="open"

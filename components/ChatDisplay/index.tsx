@@ -6,8 +6,7 @@ import { ActionIcon, Loader, rem, Stack } from "@mantine/core";
 import { useElementSize, useScrollIntoView } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
-import useGetConversationId from "../../functions/useGetConversationId";
-import { MessageType, RecentMessageType } from "../ChatInput/types";
+import { MessageType } from "../ChatInput/types";
 import Message from "../Message";
 import classes from "./ChatDisplay.module.css";
 
@@ -15,12 +14,13 @@ type Props = {
   conversation: MessageType[];
   isTyping: boolean;
   isOpen: boolean;
-  chatCategory?: string;
   chatContentId?: string;
+  conversationId: string | null;
   isInList?: boolean;
   customContainerStyles?: { [key: string]: any };
   customScrollAreaStyles?: { [key: string]: any };
   setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
+  setConversationId: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export default function ChatDisplay({
@@ -30,9 +30,10 @@ export default function ChatDisplay({
   customContainerStyles,
   customScrollAreaStyles,
   conversation,
-  chatCategory,
+  conversationId,
   chatContentId,
   setConversation,
+  setConversationId,
 }: Props) {
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
@@ -40,11 +41,6 @@ export default function ChatDisplay({
     HTMLDivElement
   >({ duration: 500, isList: isInList });
   const { ref, height } = useElementSize();
-
-  const { conversationId, setConversationId } = useGetConversationId({
-    chatCategory,
-    chatContentId,
-  });
 
   const getMessages = useCallback(
     async (conversationId: string | null) => {
@@ -60,21 +56,7 @@ export default function ChatDisplay({
         });
 
         if (response.status === 200) {
-          const conversation: MessageType[] = [];
-          response.message.map((m: RecentMessageType) => {
-            conversation.push(
-              {
-                role: "assistant",
-                content: m.assistant,
-              },
-              {
-                role: "user",
-                content: m.user,
-              }
-            );
-          });
-
-          setConversation(conversation.reverse());
+          setConversation(response.message);
         }
       } catch (err) {}
     },
@@ -84,6 +66,7 @@ export default function ChatDisplay({
   const startNewChat = useCallback(() => {
     deleteFromIndexedDb(`conversationId-${chatContentId}`);
     setConversationId(null);
+    setConversation([]);
   }, [chatContentId]);
 
   const conversationList = useMemo(
@@ -121,15 +104,18 @@ export default function ChatDisplay({
       style={customContainerStyles ? customContainerStyles : {}}
       ref={ref}
     >
-      <ActionIcon variant="default" className={classes.refresh} onClick={startNewChat}>
-        <IconRotate2 className="icon icon__small" />
-      </ActionIcon>
+      {conversationList.length > 0 && (
+        <ActionIcon variant="default" className={classes.refresh} onClick={startNewChat}>
+          <IconRotate2 className="icon icon__small" />
+        </ActionIcon>
+      )}
       <Stack
         ref={scrollableRef}
         className={classes.scrollArea}
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
       >
         {conversationList}
+        <span className={classes.bgText}>Ask advisor</span>
         {isTyping && <Loader ml="auto" mr={rem(16)} type="dots" />}
       </Stack>
     </Stack>

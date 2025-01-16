@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
+import cn from "classnames";
 import { ActionIcon, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
@@ -34,12 +35,18 @@ type Props = {
   disabled?: boolean;
   defaultVisibility?: "open" | "closed";
   heading?: React.ReactNode;
+  openChatKey?: string;
   userName?: string | string[];
-  conversation: MessageType[];
+  conversation?: MessageType[];
   chatCategory?: string;
   chatContentId?: string;
-  setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
-  setConversation: React.Dispatch<React.SetStateAction<MessageType[]>>;
+  autoFocus?: boolean;
+  disableFocus?: boolean;
+  conversationId?: string | null;
+  onClick?: () => void;
+  setIsTyping?: React.Dispatch<React.SetStateAction<boolean>>;
+  setConversation?: React.Dispatch<React.SetStateAction<MessageType[]>>;
+  setConversationId?: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export default function ChatInput({
@@ -52,8 +59,14 @@ export default function ChatInput({
   conversation,
   chatCategory,
   chatContentId,
+  openChatKey,
+  autoFocus,
+  disableFocus,
+  conversationId,
+  onClick,
   setIsTyping,
   setConversation,
+  setConversationId,
 }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const router = useRouter();
@@ -67,11 +80,6 @@ export default function ChatInput({
   const { sex } = demographics || {};
 
   const query = searchParams.get("query");
-
-  const { conversationId } = useGetConversationId({
-    chatCategory,
-    chatContentId,
-  });
 
   const handleCreateCheckoutSession = useCallback(async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
@@ -126,10 +134,11 @@ export default function ChatInput({
   }, [userDetails, openSubscriptionModal]);
 
   const appendMessage = useCallback((array: MessageType[]) => {
-    setConversation((prevConversation) => {
-      const newConversation = [...prevConversation.slice(0, 49), ...array];
-      return newConversation;
-    });
+    if (setConversation)
+      setConversation((prevConversation) => {
+        const newConversation = [...prevConversation.slice(0, 49), ...array];
+        return newConversation;
+      });
 
     if (query) {
       const query = modifyQuery({
@@ -174,13 +183,13 @@ export default function ChatInput({
         appendMessage(newMessages);
         setImages([]);
 
-        setIsTyping(true);
+        if (setIsTyping) setIsTyping(true);
 
         const payload: { [key: string]: any } = {
           conversationId,
           messages: newMessages,
           chatCategory,
-          chatContentId,
+          contentId: chatContentId,
         };
 
         if (userName) payload.userName = userName;
@@ -194,7 +203,7 @@ export default function ChatInput({
 
         if (response.status === 200) {
           if (response.error) {
-            setConversation((prev) => prev.slice(0, prev.length - 1));
+            if (setConversation) setConversation((prev) => prev.slice(0, prev.length - 1));
             if (response.error === "not following") {
               openErrorModal({
                 description: "Follow this user before asking questions about them.",
@@ -206,13 +215,14 @@ export default function ChatInput({
             } else {
               openErrorModal({ description: response.error });
             }
-            setIsTyping(false);
+            if (setIsTyping) setIsTyping(false);
             return;
           }
 
           const { conversationId, reply } = response.message || {};
 
           if (conversationId && (chatContentId || chatCategory)) {
+            if (setConversationId) setConversationId(conversationId);
             saveToIndexedDb(`conversationId-${chatContentId || chatCategory}`, conversationId);
           }
 
@@ -228,9 +238,9 @@ export default function ChatInput({
           }));
         }
       } catch (err: any) {
-        setConversation((prev) => prev.slice(0, prev.length - 1));
+        if (setConversation) setConversation((prev) => prev.slice(0, prev.length - 1));
       } finally {
-        setIsTyping(false);
+        if (setIsTyping) setIsTyping(false);
       }
     },
     [currentMessage, images, chatContentId, conversationId, conversation && conversation.length]
@@ -274,8 +284,7 @@ export default function ChatInput({
 
   const handleToggleChat = () => {
     setShowChat((prev) => {
-      if (chatContentId || chatCategory)
-        saveToIndexedDb(`openInputChat-${chatContentId || chatCategory}`, !prev);
+      if (openChatKey) saveToIndexedDb(`openInputChat-${openChatKey}`, !prev);
       return !prev;
     });
   };
@@ -286,8 +295,8 @@ export default function ChatInput({
   }, [query]);
 
   useEffect(() => {
-    getFromIndexedDb(`openInputChat-${chatContentId || chatCategory}`).then((verdict) => {
-      if (chatContentId || chatCategory) {
+    getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
+      if (openChatKey) {
         setShowChat(verdict);
       }
     });
@@ -300,25 +309,28 @@ export default function ChatInput({
         <Stack className={classes.container}>
           {heading}
           <form className={classes.enter} onSubmit={handleSubmit}>
-            <Group className={classes.inputGroup}>
+            <Group className={classes.inputGroup} onClick={onClick}>
               <Group className={classes.uploadRow}>{previewImages}</Group>
               <Textarea
                 value={currentMessage}
-                className={classes.input}
+                className={cn(classes.input, { [classes.disableInput]: disableFocus })}
                 onChange={(e) => setCurrentMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 minRows={1}
                 maxRows={4}
                 size="md"
+                tabIndex={disableFocus ? -1 : 0}
                 placeholder="Type your message"
-                autosize
+                data-autofocus={!disableFocus && autoFocus}
                 rightSection={
                   <ImageUploadButton
                     disabled={(images && images?.length >= 2) || false}
                     setImages={setImages}
                   />
                 }
+                autosize
               />
+
               <ActionIcon
                 type={"submit"}
                 variant="default"

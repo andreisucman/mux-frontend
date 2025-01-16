@@ -260,7 +260,8 @@ export default function AnswersPage(props: Props) {
               )}
             </Stack>
             <ChatWithOverlay
-              chatCategory="about"
+              chatCategory="answers"
+              openChatKey="answers"
               dividerLabel="Discuss answers"
               defaultVisibility="open"
             />

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Group, Skeleton, Stack, Text } from "@mantine/core";
+import { Group, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -21,7 +21,7 @@ export default function ProductsRow({
   selectedAsins,
   setSelectedAsins,
 }: Props) {
-  const { color, icon, name, suggestions, startsAt } = task;
+  const { _id: taskId, key: taskKey, color, icon, name, suggestions, startsAt } = task;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
 
@@ -40,7 +40,16 @@ export default function ProductsRow({
         <Stack flex={1}>
           <SuggestionContainer
             title="Products"
-            chatContentId={task.key}
+            chatTitle={
+              <Group style={customStyles ? customStyles : {}}>
+                <IconWithColor icon={icon} color={color} customStyles={{ minHeight: rem(30) }} />
+                <Title order={5} component={"p"} className={classes.name} lineClamp={2}>
+                  {name} products
+                </Title>
+              </Group>
+            }
+            taskKey={taskKey}
+            chatContentId={taskId}
             items={suggestions}
             customStyles={{ borderRadius: "0 0 16px 16px" }}
             selectedAsins={selectedAsins}
