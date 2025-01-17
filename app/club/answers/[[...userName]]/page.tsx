@@ -12,6 +12,7 @@ import {
   SegmentedControl,
   Stack,
   TextInput,
+  Title,
 } from "@mantine/core";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -23,7 +24,7 @@ import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../../ModerationLayout";
-import ChatWithOverlay from "../../ModerationLayout/ChatWithOverlay";
+import ChatWithModal from "../../ModerationLayout/ChatWithModal";
 import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
 import classes from "./answers.module.css";
@@ -242,7 +243,7 @@ export default function AnswersPage(props: Props) {
                   <ListComponent
                     items={questions}
                     rowGutter={16}
-                    render={memoizedQuestionsRow}
+                    render={QuestionSlide}
                     className={classes.list}
                   />
                 ) : (
@@ -259,12 +260,19 @@ export default function AnswersPage(props: Props) {
                 </ActionIcon>
               )}
             </Stack>
-            <ChatWithOverlay
-              chatCategory="answers"
-              openChatKey="answers"
-              dividerLabel="Discuss answers"
-              defaultVisibility="open"
-            />
+            {showType === "answered" && (
+              <ChatWithModal
+                chatCategory="answers"
+                openChatKey="answers"
+                dividerLabel="Discuss answers"
+                defaultVisibility="open"
+                modalTitle={
+                  <Title order={5} component={"p"}>
+                    Discuss answers
+                  </Title>
+                }
+              />
+            )}
           </>
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

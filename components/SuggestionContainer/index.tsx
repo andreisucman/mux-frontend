@@ -66,8 +66,8 @@ export default function SuggestionContainer({
             openChatKey={taskKey}
             modalTitle={chatTitle}
             chatContentId={chatContentId}
-            dividerLabel={"Choose best for me"}
-            defaultVisibility="closed"
+            dividerLabel={"Choose best products"}
+            defaultVisibility="open"
           />
         )}
       </Stack>

@@ -51,6 +51,7 @@ export default function ChatWithModal({
         openChatKey={openChatKey}
         dividerLabel={dividerLabel}
         disabled={disabled}
+        disableFocus
         onClick={open}
       />
     </Stack>

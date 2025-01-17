@@ -1,5 +1,5 @@
 .container {
-  position: sticky;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -16,6 +16,10 @@
     min-height: rem(60);
     padding: 0 rem(16);
   }
+}
+
+.sticky {
+  position: sticky;
 }
 
 .wrapper {

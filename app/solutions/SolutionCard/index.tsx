@@ -26,7 +26,7 @@ export default function SolutionCard({ data }: Props) {
   const [opened, { toggle: toggleCollapse }] = useDisclosure(true);
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
-  const { icon, color, name, instruction, description, example, suggestions, key } = data;
+  const { icon, color, name, instruction, description, example, suggestions } = data;
 
   const sections = [
     {

@@ -25,6 +25,7 @@ export default function AllProof() {
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
+  const sort = searchParams.get("sort");
   const ageInterval = searchParams.get("ageInterval");
   const ethnicity = searchParams.get("ethnicity");
   const concern = searchParams.get("concern");
@@ -40,6 +41,7 @@ export default function AllProof() {
       currentArray,
       query,
       skip,
+      sort,
     }: HandleFetchProofProps) => {
       const data = await fetchProof({
         concern,
@@ -51,6 +53,7 @@ export default function AllProof() {
         ageInterval,
         currentArrayLength: currentArray?.length || 0,
         skip,
+        sort,
       });
 
       if (skip) {
@@ -73,6 +76,7 @@ export default function AllProof() {
       concern,
       currentArray: proof,
       query,
+      sort,
     });
   }, [status, type, part, concern, query, ageInterval, ethnicity, sex]);
 

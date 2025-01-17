@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Stack } from "@mantine/core";
+import { Button, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
@@ -15,6 +15,7 @@ import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { UserDataType } from "@/types/global";
+import ChatWithModal from "../club/ModerationLayout/ChatWithModal";
 import DiaryContent from "./DiaryContent";
 import { DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
@@ -43,6 +44,7 @@ export default function DiaryPage() {
       const response = await callTheServer({
         endpoint: "createDiaryRecord",
         method: "POST",
+        body: { timeZone },
       });
 
       setIsLoading(false);
@@ -153,6 +155,16 @@ export default function DiaryPage() {
           setDiaryRecords={setDiaryRecords}
           setOpenValue={setOpenValue}
           handleFetchDiaryRecords={handleFetchDiaryRecords}
+        />
+        <ChatWithModal
+          modalTitle={
+            <Title order={5} component={"p"}>
+              Chat about diary
+            </Title>
+          }
+          chatCategory="diary"
+          openChatKey="diary"
+          dividerLabel="Chat about diary"
         />
       </SkeletonWrapper>
     </Stack>

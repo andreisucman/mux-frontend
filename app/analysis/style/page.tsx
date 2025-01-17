@@ -6,7 +6,7 @@ import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
+import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -178,12 +178,13 @@ export default function StyleScanResult() {
                 </Group>
               }
             />
-            <ChatWithOverlay
+            <ChatWithModal
               chatCategory="style"
               openChatKey="style"
               chatContentId={styleId}
               dividerLabel={"Discuss style and outlook"}
               defaultVisibility="open"
+              modalTitle={<Title order={5} component={"p"}>Discuss style and outlook</Title>}
             />
           </>
         )}

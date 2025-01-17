@@ -139,7 +139,7 @@ export const silhouettes: {
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
     part: PartEnum.SCALP,
-    position: PositionEnum.SCALP,
+    position: PositionEnum.FRONT,
     url: "/assets/silhouettes/female-scalp.webp",
   },
   {
@@ -147,7 +147,7 @@ export const silhouettes: {
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.HEAD,
     part: PartEnum.MOUTH,
-    position: PositionEnum.MOUTH,
+    position: PositionEnum.FRONT,
     url: "/assets/silhouettes/female-mouth.webp",
   },
   {

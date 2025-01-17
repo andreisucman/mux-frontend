@@ -69,9 +69,10 @@ export default function QuestionSlide({ isSelf, data, submitResponse, skipQuesti
               <Group className={classes.buttons}>
                 <RecordingButton
                   size="sm"
-                  transcribeOnEnd
+                  isLoading={isLoading}
                   setText={setText}
                   setIsLoading={setIsLoading}
+                  transcribeOnEnd
                 />
                 <Button
                   className={classes.submitButton}

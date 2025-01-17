@@ -1,6 +1,6 @@
 .container {
   gap: rem(8);
-  padding: rem(4) rem(16) rem(4) rem(12);
+  padding: rem(8);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
   justify-content: center;

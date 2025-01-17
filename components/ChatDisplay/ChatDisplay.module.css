@@ -6,20 +6,6 @@
   border-radius: var(--mantine-radius-lg);
 }
 
-.scrollArea {
-  display: flex;
-  position: absolute;
-  inset: 0;
-  gap: 0;
-  overflow: auto;
-  padding: rem(16);
-  gap: rem(16);
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 .refresh {
   position: absolute;
   top: rem(12);
@@ -42,4 +28,19 @@
   top: 50%;
   inset: 0;
   z-index: -1;
+}
+
+.empty {
+  margin-top: rem(15);
+  display: block;
+}
+
+.scrollArea {
+  position: static;
+  overflow: auto;
+  gap: 0;
+
+  padding: rem(16) rem(16) 0 rem(16);
+  min-height: clamp(rem(400), 30vh, 40vh);
+  max-height: clamp(rem(400), 30vh, 40vh);
 }

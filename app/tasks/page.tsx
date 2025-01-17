@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext } from "react";
 import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 import { ConsiderationsInput } from "../../components/ConsiderationsInput";
+import ChatWithModal from "../club/ModerationLayout/ChatWithModal";
 import SkeletonWrapper from "../SkeletonWrapper";
 import TasksList from "./TasksList";
 
@@ -56,6 +57,17 @@ export default function Tasks() {
           maxLength={300}
         />
         <TasksList type={type as string} />
+        <ChatWithModal
+          chatCategory="task"
+          defaultVisibility="open"
+          openChatKey="task"
+          dividerLabel={"Discuss tasks"}
+          modalTitle={
+            <Title order={5} component={"p"}>
+              Discuss tasks
+            </Title>
+          }
+        />
       </SkeletonWrapper>
     </Stack>
   );

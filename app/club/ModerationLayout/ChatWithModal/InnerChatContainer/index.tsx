@@ -27,15 +27,16 @@ export default function InnerChatContainer({
   chatCategory,
   chatContentId,
 }: Props) {
-  const [isTyping, setIsTyping] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [conversation, setConversation] = useState<MessageType[]>([]);
 
   useEffect(() => {
-    if (!chatCategory || !chatContentId) return;
+    const key = chatContentId || chatCategory;
+    if (!key) return;
 
-    getFromIndexedDb(`conversationId-${chatContentId || chatCategory}`).then((id) => {
-      if (chatContentId || chatCategory) {
+    getFromIndexedDb(`conversationId-${key}`).then((id) => {
+      if (id) {
         setConversationId(id);
       }
     });
@@ -49,19 +50,13 @@ export default function InnerChatContainer({
         </Text>
       )}
       <ChatDisplay
-        isTyping={isTyping}
+        isThinking={isThinking}
         chatContentId={chatContentId}
         conversationId={conversationId}
         conversation={conversation}
         setConversation={setConversation}
         setConversationId={setConversationId}
         customContainerStyles={{ flex: 1 }}
-        customScrollAreaStyles={{
-          padding: rem(16),
-          position: "static",
-          height: "50vh",
-          maxHeight: rem(600),
-        }}
         isOpen
       />
       <ChatInput
@@ -77,7 +72,8 @@ export default function InnerChatContainer({
         conversationId={conversationId}
         setConversation={setConversation}
         setConversationId={setConversationId}
-        setIsTyping={setIsTyping}
+        setIsThinking={setIsThinking}
+        showEnergy
         autoFocus
       />
     </Stack>

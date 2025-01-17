@@ -52,7 +52,7 @@ export default function DiaryContent({
                 isRelative
               />
               <Title order={5} className={classes.title}>
-                <IconNote className={`${classes.icon} icon`} /> {formattedDate}
+                <IconNote className={`${classes.icon} icon`} /> {formattedDate} note
               </Title>
             </Group>
           </Accordion.Control>

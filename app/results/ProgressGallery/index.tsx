@@ -42,6 +42,7 @@ export default function ProgressGallery({
   const isMobile = useMediaQuery("(max-width: 36em)");
   const type = searchParams.get("type");
   const part = searchParams.get("part");
+  const sort = searchParams.get("sort");
   const position = searchParams.get("position");
 
   const modelObject = progress && progress[0];
@@ -80,6 +81,7 @@ export default function ProgressGallery({
               skip: hasMore,
               currentArray: progress,
               userName,
+              sort,
             })
           }
           hasMore={hasMore}

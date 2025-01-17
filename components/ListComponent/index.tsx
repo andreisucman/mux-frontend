@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { MasonryScroller, useContainerPosition, usePositioner, useResizeObserver } from "masonic";
 import { useViewportSize } from "@mantine/hooks";
+import classes from "./ListComponent.module.css";
 
 type Props = {
   rowGutter?: number;
@@ -29,7 +30,7 @@ export default function ListComponent({ rowGutter, items, className, render }: P
       offset={offset}
       items={items}
       render={render}
-      className={className}
+      className={`${classes.container} ${className}`}
     />
   );
 }

@@ -6,7 +6,6 @@ import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Overlay, Skeleton, Stack, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
 import FoodTaskSelectionModalContent from "@/components/FoodTaskSelectionModalContent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -19,6 +18,7 @@ import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import { FoodAnalysisResponseType } from "./types";
 import classes from "./food.module.css";
+import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
 
 export const runtime = "edge";
 
@@ -165,13 +165,14 @@ export default function FoodScanResult() {
               <Table data={tableData} />
             </Stack>
 
-            {analysisId && (
-              <ChatWithOverlay
+            {data && (
+              <ChatWithModal
                 chatCategory="food"
                 defaultVisibility="open"
                 openChatKey="food"
-                chatContentId={analysisId}
-                dividerLabel={"Discuss food and nutrition"}
+                chatContentId={data._id}
+                dividerLabel={"Chat about food and nutrition"}
+                modalTitle={<Title order={5} component={"p"}>Chat about food and nutrition</Title>}
               />
             )}
           </Stack>

@@ -2,13 +2,14 @@
 
 import React, { use, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Title } from "@mantine/core";
 import DiaryContent from "@/app/diary/DiaryContent";
 import { DiaryRecordType } from "@/app/diary/type";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
-import ChatWithOverlay from "../../ModerationLayout/ChatWithOverlay";
+import ChatWithModal from "../../ModerationLayout/ChatWithModal";
 
 type Props = {
   params: Promise<{ userName: string }>;
@@ -62,7 +63,16 @@ export default function DiaryPage(props: Props) {
         hasMore={hasMore}
         handleFetchDiaryRecords={handleFetchDiaryRecords}
       />
-      <ChatWithOverlay chatCategory="diary" openChatKey="diary" />
+      <ChatWithModal
+        modalTitle={
+          <Title order={5} component={"p"}>
+            Chat about diary
+          </Title>
+        }
+        chatCategory="diary"
+        openChatKey="diary"
+        dividerLabel="Chat about diary"
+      />
     </ClubModerationLayout>
   );
 }

@@ -6,7 +6,6 @@ import cn from "classnames";
 import { ActionIcon, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
-import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
@@ -17,7 +16,6 @@ import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { SexEnum, UserDataType } from "@/types/global";
-import useGetConversationId from "../../functions/useGetConversationId";
 import EnergyIndicator from "../EnergyIndicator";
 import ImageUploadButton from "./ImageUploadButton";
 import InputImagePreview from "./InputImagePreview";
@@ -41,10 +39,11 @@ type Props = {
   chatCategory?: string;
   chatContentId?: string;
   autoFocus?: boolean;
+  showEnergy?: boolean;
   disableFocus?: boolean;
   conversationId?: string | null;
   onClick?: () => void;
-  setIsTyping?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsThinking?: React.Dispatch<React.SetStateAction<boolean>>;
   setConversation?: React.Dispatch<React.SetStateAction<MessageType[]>>;
   setConversationId?: React.Dispatch<React.SetStateAction<string | null>>;
 };
@@ -64,7 +63,8 @@ export default function ChatInput({
   disableFocus,
   conversationId,
   onClick,
-  setIsTyping,
+  showEnergy,
+  setIsThinking,
   setConversation,
   setConversationId,
 }: Props) {
@@ -148,6 +148,23 @@ export default function ChatInput({
     }
   }, []);
 
+  const appendToLastMessage = useCallback(
+    (text: string) => {
+      if (!setConversation) return;
+      setConversation((prevMessages) => {
+        const lastMessage = prevMessages[prevMessages.length - 1];
+        const lastContent = lastMessage.content[lastMessage.content.length - 1];
+        const updatedLastContent = { ...lastContent, text: lastContent.text + text };
+        const updatedLastMessage = {
+          ...lastMessage,
+          content: [updatedLastContent],
+        };
+        return [...prevMessages.slice(0, -1), updatedLastMessage];
+      });
+    },
+    [setConversation, conversation]
+  );
+
   const sendMessage = useCallback(
     async (messages: MessageContent[]) => {
       if (!conversation || currentMessage.trim().length === 0) return;
@@ -183,7 +200,7 @@ export default function ChatInput({
         appendMessage(newMessages);
         setImages([]);
 
-        if (setIsTyping) setIsTyping(true);
+        if (setIsThinking) setIsThinking(true);
 
         const payload: { [key: string]: any } = {
           conversationId,
@@ -194,53 +211,90 @@ export default function ChatInput({
 
         if (userName) payload.userName = userName;
 
-        const response = await callTheServer({
-          endpoint: "addMessage",
+        console.log("payload", payload);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_CHAT_SERVER_URL}/addMessage`, {
           method: "POST",
-          server: "chat",
-          body: payload,
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+          credentials: "include",
         });
 
+        if (!response.ok) throw new Error(response.statusText);
+
+        const contentTypeHeader = response.headers.get("Content-Type");
+        const isJson = contentTypeHeader?.includes("application/json");
+
         if (response.status === 200) {
-          if (response.error) {
-            if (setConversation) setConversation((prev) => prev.slice(0, prev.length - 1));
-            if (response.error === "not following") {
-              openErrorModal({
-                description: "Follow this user before asking questions about them.",
-              });
-            } else if (response.error === "subscription expired") {
-              handleAddSubscription();
-            } else if (response.error === "coach is tired") {
-              openCoachIsTiredModal();
-            } else {
-              openErrorModal({ description: response.error });
+          if (setIsThinking) setIsThinking(false);
+
+          if (isJson) {
+            const data = await response.json();
+
+            if (data.error) {
+              if (setConversation) setConversation((prev) => prev.slice(0, prev.length - 1));
+              if (data.error === "not following") {
+                openErrorModal({
+                  description: "Follow this user before asking questions about them.",
+                });
+              } else if (data.error === "subscription expired") {
+                handleAddSubscription();
+              } else if (data.error === "coach is tired") {
+                openCoachIsTiredModal();
+              } else {
+                openErrorModal({ description: data.error });
+              }
+              if (setIsThinking) setIsThinking(false);
+              return;
             }
-            if (setIsTyping) setIsTyping(false);
-            return;
+          } else {
+            const reader = response.body?.getReader();
+
+            if (!reader) throw new Error("No reader");
+
+            appendMessage([{ role: "assistant", content: [{ type: "text", text: "" }] }]);
+
+            const decoder = new TextDecoder();
+            let done = false;
+            let text = "";
+
+            // Read the stream as it's received
+            while (!done) {
+              const { value, done: doneReading } = await reader.read();
+              done = doneReading;
+              const decodedValue = decoder.decode(value, { stream: true });
+              const chunks = decodedValue.split("<-c->").filter((c) => c.trim());
+
+              for (const chunk of chunks) {
+                const parsedChunk = JSON.parse(chunk);
+                const { data, coachEnergy, conversationId } = parsedChunk;
+                if (data) appendToLastMessage(data);
+
+                if (coachEnergy) {
+                  setUserDetails((prev: UserDataType) => ({
+                    ...prev,
+                    coachEnergy,
+                  }));
+                }
+
+                if (conversationId) {
+                  const key = chatContentId || chatCategory;
+                  if (key) {
+                    if (setConversationId) setConversationId(conversationId);
+                    saveToIndexedDb(`conversationId-${key}`, conversationId);
+                  }
+                }
+
+                text += data;
+              }
+            }
           }
-
-          const { conversationId, reply } = response.message || {};
-
-          if (conversationId && (chatContentId || chatCategory)) {
-            if (setConversationId) setConversationId(conversationId);
-            saveToIndexedDb(`conversationId-${chatContentId || chatCategory}`, conversationId);
-          }
-
-          appendMessage([
-            {
-              role: "assistant",
-              content: [{ type: "text", text: reply || "" }],
-            },
-          ]);
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            coachEnergy: response.message?.coachEnergy,
-          }));
         }
       } catch (err: any) {
+        console.log("Error in sendMessage: ", err);
         if (setConversation) setConversation((prev) => prev.slice(0, prev.length - 1));
       } finally {
-        if (setIsTyping) setIsTyping(false);
+        if (setIsThinking) setIsThinking(false);
       }
     },
     [currentMessage, images, chatContentId, conversationId, conversation && conversation.length]
@@ -297,7 +351,7 @@ export default function ChatInput({
   useEffect(() => {
     getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
       if (openChatKey) {
-        setShowChat(verdict);
+        setShowChat(verdict || defaultVisibility === "open");
       }
     });
   }, [chatContentId]);
@@ -341,7 +395,7 @@ export default function ChatInput({
               </ActionIcon>
             </Group>
           </form>
-          <EnergyIndicator value={coachEnergy || 0} />
+          {showEnergy && <EnergyIndicator value={coachEnergy || 0} />}
         </Stack>
       </Collapse>
     </Stack>

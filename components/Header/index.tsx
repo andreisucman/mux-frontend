@@ -3,8 +3,9 @@
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
+import cn from "classnames";
 import { ActionIcon, Drawer, Group, rem, Title } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { createSpotlight } from "@mantine/spotlight";
 import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
@@ -32,6 +33,7 @@ const showStartButtonRoutes = [
 const [spotlightStore, userSpotlight] = createSpotlight();
 
 function Header() {
+  const pinned = useHeadroom({ fixedAt: 120 });
   const router = useRouter();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +95,7 @@ function Header() {
 
   return (
     <>
-      <header className={classes.container}>
+      <header className={cn(classes.container, { [classes.sticky]: pinned })}>
         <div className={classes.wrapper}>
           <Logo />
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>

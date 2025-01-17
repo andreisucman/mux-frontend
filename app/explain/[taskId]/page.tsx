@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Group, Skeleton, Stack, Switch, Title } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import ChatWithOverlay from "@/app/club/ModerationLayout/ChatWithOverlay";
+import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
@@ -315,11 +315,17 @@ export default function Explain(props: Props) {
                     disableLocalChat
                   />
                 )}
-                <ChatWithOverlay
+                <ChatWithModal
                   chatCategory="task"
                   openChatKey={taskId}
                   chatContentId={taskId}
                   defaultVisibility="open"
+                  modalTitle={
+                    <Title order={5} component={"p"} lineClamp={2}>
+                      {name}
+                    </Title>
+                  }
+                  dividerLabel={"Discuss the task"}
                 />
               </>
             )}

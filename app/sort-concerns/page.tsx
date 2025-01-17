@@ -69,7 +69,6 @@ export default function SortConcerns() {
       <SkeletonWrapper show={!selectedConcerns}>
         <PageHeaderWithReturn title="Sort concerns" showReturn />
         <InstructionContainer
-          sex={sex || SexEnum.FEMALE}
           title="Instructions"
           instruction={`These are the potential ${type ? type : ""} concerns identified from your photos.`}
           description="Drag and drop to change their importance or click the minus sign to ignore."

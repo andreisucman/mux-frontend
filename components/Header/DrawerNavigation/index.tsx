@@ -160,7 +160,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
 
     if (club) {
       finalNavigation.push({
-        title: "My club profile",
+        title: "My club",
         path: "/club",
         icon: <IconSocial stroke={1.25} className="icon" />,
         children: [
@@ -168,7 +168,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           { title: "About", path: `/club/${name}` },
           { title: "Routines", path: `/club/routines/${name}` },
           { title: "Diary", path: `/club/diary/${name}` },
-          { title: "Answers", path: `/club/diary/${name}` },
+          { title: "Answers", path: `/club/answers/${name}` },
         ],
       });
     } else {
