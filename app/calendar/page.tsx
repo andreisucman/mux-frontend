@@ -349,7 +349,7 @@ export default function Calendar() {
   return (
     <Stack flex={1} className="smallPage">
       <PageHeaderWithReturn
-        title="Tasks calendar"
+        title="My calendar"
         isDisabled={mode === "individual"}
         filterData={typeItems}
         icons={typeIcons}

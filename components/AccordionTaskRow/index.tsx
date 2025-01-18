@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import { IconBinoculars, IconCalendar, IconInfoCircle } from "@tabler/icons-react";
+import { IconBinoculars } from "@tabler/icons-react";
 import { ActionIcon, Group, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import { AllTaskType, TypeEnum } from "@/types/global";
 import StatsGroup from "../StatsGroup";
+import AccordionTaskMenu from "./AccordionTaskMenu";
 import classes from "./AccordionTaskRow.module.css";
 
 type Props = {
@@ -62,6 +63,7 @@ export default function AccordionTaskRow({
             <ActionIcon
               variant="default"
               size="sm"
+              component="div"
               onClick={(e) => {
                 e.stopPropagation();
                 if (openTaskDetails) openTaskDetails(data, routineId);
@@ -75,22 +77,20 @@ export default function AccordionTaskRow({
             {name}
           </Text>
         </Group>
-        <StatsGroup
-          completed={completed}
-          completionRate={completionRate}
-          total={total}
-          isChild={true}
-        />
-        {isSelf && (
-          <Group className={classes.iconButtons}>
-            <ActionIcon variant="default" onClick={() => redirectToCalendar(key)}>
-              <IconCalendar className="icon" />
-            </ActionIcon>
-            <ActionIcon variant="default" onClick={openSelectTasksModal}>
-              <IconInfoCircle className="icon" />
-            </ActionIcon>
-          </Group>
-        )}
+        <Group wrap="nowrap">
+          <StatsGroup
+            completed={completed}
+            completionRate={completionRate}
+            total={total}
+            isChild={true}
+          />
+          {isSelf && (
+            <AccordionTaskMenu
+              redirectToCalendar={() => redirectToCalendar(key)}
+              openTaskList={openSelectTasksModal}
+            />
+          )}
+        </Group>
       </Group>
     </Stack>
   );

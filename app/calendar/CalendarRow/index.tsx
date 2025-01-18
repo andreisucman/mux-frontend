@@ -4,7 +4,7 @@ import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { TaskType } from "@/types/global";
-import IconWithColor from "../../TasksList/CreateTaskOverlay/IconWithColor";
+import IconWithColor from "../../tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./CalendarRow.module.css";
 
 type Props = {

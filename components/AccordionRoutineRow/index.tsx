@@ -78,16 +78,25 @@ export default function AccordionRoutineRow({
                 {date}
               </Group>
             </Group>
-            <StatsGroup
-              completed={totalCompleted}
-              completionRate={completionRate}
-              total={totalTotal}
-            />
-            {isSelf && (
-              <ActionIcon variant="default" onClick={() => handleRedirectToCalendar()}>
-                <IconCalendar className="icon" />
-              </ActionIcon>
-            )}
+            <Group wrap="nowrap">
+              <StatsGroup
+                completed={totalCompleted}
+                completionRate={completionRate}
+                total={totalTotal}
+              />
+              {isSelf && (
+                <ActionIcon
+                  variant="default"
+                  component="div"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRedirectToCalendar();
+                  }}
+                >
+                  <IconCalendar className="icon icon__small" />
+                </ActionIcon>
+              )}
+            </Group>
           </Group>
           {!isSelf && (
             <Button

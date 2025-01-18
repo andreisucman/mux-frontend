@@ -30,7 +30,7 @@
 }
 
 .label {
-  cursor: default;
+  cursor: auto;
   padding: rem(16) 0;
 }
 

@@ -52,6 +52,8 @@
 
 .skeleton {
   margin-bottom: rem(16);
+  height: unset;
+  flex: 0;
 }
 
 .active {

@@ -5,6 +5,7 @@
 
 .text {
   white-space: nowrap;
+  font-size: rem(15);
 }
 
 .isChild {

@@ -15,13 +15,13 @@ type Props = {
 function StatsGroup({ total, completed, completionRate, isChild }: Props) {
   return (
     <Group className={classes.container}>
-      <Text className={cn(classes.text, { [classes.isChild]: isChild })}>{completionRate}%</Text>
       <StatCell icon={<IconList className="icon icon__small" />} value={total} isChild={isChild} />
       <StatCell
         icon={<IconSquareCheck className="icon icon__small" />}
         value={completed}
         isChild={isChild}
       />
+      <Text className={cn(classes.text, { [classes.isChild]: isChild })}>({completionRate}%)</Text>
     </Group>
   );
 }

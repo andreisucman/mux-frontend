@@ -7,14 +7,18 @@ import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";
+import { typeItems } from "@/components/PageHeader/data";
+import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import TaskInfoContainer from "@/components/TaskInfoContainer";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchRoutines from "@/functions/fetchRoutines";
 import askConfirmation from "@/helpers/askConfirmation";
+import { typeIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
+import ChatWithModal from "../../ModerationLayout/ChatWithModal";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -87,13 +91,18 @@ export default function ClubRoutines(props: Props) {
           type,
         });
 
-        setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-        setHasMore(data.length === 21);
-
-        if (!openValue) setOpenValue(data[0]?._id);
+        if (data) {
+          if (skip) {
+            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+            setHasMore(data.length === 21);
+          } else {
+            setRoutines(data.slice(0, 20));
+            if (!openValue) setOpenValue(data[0]?._id);
+          }
+        }
       } catch (err) {}
     },
-    [openValue]
+    [routines]
   );
 
   const stealRoutine = useCallback(
@@ -201,7 +210,7 @@ export default function ClubRoutines(props: Props) {
                   value={openValue}
                   onChange={setOpenValue}
                   chevron={false}
-                  className={classes.accordion}
+                  className={`${classes.accordion} scrollbar`}
                   classNames={{
                     content: classes.content,
                     chevron: classes.chevron,
@@ -238,6 +247,19 @@ export default function ClubRoutines(props: Props) {
           </>
         ) : (
           <Loader style={{ margin: "auto" }} />
+        )}
+        {routines && (
+          <ChatWithModal
+            chatCategory="routine"
+            defaultVisibility="open"
+            openChatKey="routine"
+            dividerLabel={"Chat about routines and tasks"}
+            modalTitle={
+              <Title order={5} component={"p"}>
+                Chat about routines and tasks
+              </Title>
+            }
+          />
         )}
       </Stack>
     </ClubModerationLayout>

@@ -33,7 +33,8 @@
   font-size: var(--mantine-font-size-md);
 }
 
-.iconButtons {
-  gap: rem(8);
-  flex-wrap: nowrap;
+.menuItemLabel {
+  display: flex;
+  align-items: center;
+  gap: 0;
 }
