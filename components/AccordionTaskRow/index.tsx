@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { IconBinoculars } from "@tabler/icons-react";
+import cn from "classnames";
 import { ActionIcon, Group, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
@@ -28,6 +29,7 @@ export default function AccordionTaskRow({
 }: Props) {
   const { ids, icon, key, color, name, total, completed } = data;
 
+  const someTaskActive = useMemo(() => ids.some((obj) => obj.status === "active"), [ids]);
   const completionRate = useMemo(() => Math.round((completed / total) * 100), [total, completed]);
 
   const openSelectTasksModal = useCallback(() => {
@@ -42,8 +44,18 @@ export default function AccordionTaskRow({
       size: "sm",
       innerProps: (
         <Stack>
-          {ids.map((id) => (
-            <Group key={id} className={classes.title} onClick={() => redirectToTask(id)}>
+          {ids.map((idObj) => (
+            <Group
+              key={idObj._id}
+              className={classes.title}
+              onClick={() => redirectToTask(idObj._id)}
+            >
+              <div
+                className={cn(classes.indicator, {
+                  [classes.active]: idObj.status === "active",
+                  [classes.canceled]: idObj.status === "canceled",
+                })}
+              />
               <IconWithColor icon={icon} color={color} />
               <Text className={classes.name} lineClamp={2}>
                 {name}
@@ -59,6 +71,23 @@ export default function AccordionTaskRow({
     <Stack className={classes.container}>
       <Group className={classes.wrapper}>
         <Group className={classes.title}>
+          <div
+            className={cn(classes.indicator, {
+              [classes.active]: someTaskActive,
+            })}
+          />
+          <IconWithColor icon={icon} color={color} />
+          <Text className={classes.name} lineClamp={2}>
+            {name}
+          </Text>
+        </Group>
+        <Group wrap="nowrap">
+          <StatsGroup
+            completed={completed}
+            completionRate={completionRate}
+            total={total}
+            isChild={true}
+          />
           {!isSelf && (
             <ActionIcon
               variant="default"
@@ -72,18 +101,6 @@ export default function AccordionTaskRow({
               <IconBinoculars className={"icon icon__small"} />
             </ActionIcon>
           )}
-          <IconWithColor icon={icon} color={color} />
-          <Text className={classes.name} lineClamp={2}>
-            {name}
-          </Text>
-        </Group>
-        <Group wrap="nowrap">
-          <StatsGroup
-            completed={completed}
-            completionRate={completionRate}
-            total={total}
-            isChild={true}
-          />
           {isSelf && (
             <AccordionTaskMenu
               redirectToCalendar={() => redirectToCalendar(key)}

@@ -1,0 +1,12 @@
+.container {
+  gap: rem(8);
+  flex: 1;
+  align-items: center;
+  max-width: rem(400);
+  margin-left: auto;
+  flex-wrap: nowrap;
+}
+
+.picker {
+  white-space: nowrap;
+}

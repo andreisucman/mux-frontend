@@ -180,7 +180,7 @@ export type RoutineType = {
 };
 
 export type AllTaskType = {
-  ids: string[];
+  ids: { _id: string; status: string }[];
   name: string;
   description: string;
   instruction: string;

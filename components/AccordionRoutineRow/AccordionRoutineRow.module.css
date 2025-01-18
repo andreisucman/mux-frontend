@@ -5,6 +5,10 @@
   background-color: var(--mantine-color-gray-3);
 }
 
+.active {
+  background-color: var(--mantine-color-green-7);
+}
+
 .item {
   border: rem(1) solid var(--mantine-color-dark-5);
   border-radius: var(--mantine-radius-lg);
@@ -54,8 +58,4 @@
   margin-bottom: rem(16);
   height: unset;
   flex: 0;
-}
-
-.active {
-  background-color: var(--mantine-color-green-7);
 }

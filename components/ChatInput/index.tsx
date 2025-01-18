@@ -211,8 +211,6 @@ export default function ChatInput({
 
         if (userName) payload.userName = userName;
 
-        console.log("payload", payload);
-
         const response = await fetch(`${process.env.NEXT_PUBLIC_CHAT_SERVER_URL}/addMessage`, {
           method: "POST",
           headers: { "content-type": "application/json" },

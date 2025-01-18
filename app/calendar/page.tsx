@@ -8,6 +8,7 @@ import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import DateSelector from "@/components/DateSelector";
 import OverlayWithText from "@/components/OverlayWithText";
 import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -23,8 +24,9 @@ import classes from "./calendar.module.css";
 export const runtime = "edge";
 
 type LoadTasksProps = {
-  date?: Date;
-  status?: string;
+  dateFrom: string | null;
+  dateTo: string | null;
+  status: string | null;
   routineId?: string;
   type?: string;
   key?: string;
@@ -39,6 +41,8 @@ export default function Calendar() {
   const type = searchParams.get("type") || "head";
   const givenTaskKey = searchParams.get("key");
   const givenMode = searchParams.get("mode");
+  const dateFrom = searchParams.get("dateFrom");
+  const dateTo = searchParams.get("dateTo");
 
   const [displayComponent, setDisplayComponent] = useState<"loading" | "list" | "empty">("loading");
   const [selectedStatus, setSelectedStatus] = useState("active");
@@ -126,6 +130,8 @@ export default function Calendar() {
         type: type as string,
         routineId: relevantRoutine._id,
         mode: mode as string,
+        dateFrom,
+        dateTo,
         timeZone,
       }).then((tasks) => {
         setTasks(tasks);
@@ -149,11 +155,11 @@ export default function Calendar() {
         }
       });
     },
-    [relevantRoutine?._id, timeZone, type, mode, selectedDate]
+    [relevantRoutine?._id, timeZone, type, mode, selectedDate, dateFrom, dateTo]
   );
 
   const loadTasks = useCallback(
-    async ({ date, status, type, key, mode, timeZone, routineId }: LoadTasksProps) => {
+    async ({ dateFrom, dateTo, status, type, key, mode, timeZone, routineId }: LoadTasksProps) => {
       setDisplayComponent("loading");
 
       try {
@@ -168,7 +174,8 @@ export default function Calendar() {
         if (finalStatus) parts.push(`status=${finalStatus}`);
         if (routineId) parts.push(`routineId=${routineId}`);
         if (timeZone) parts.push(`timeZone=${timeZone}`);
-        if (date) parts.push(`date=${date}`);
+        if (dateFrom) parts.push(`dateFrom=${dateFrom}`);
+        if (dateTo) parts.push(`dateTo=${dateTo}`);
 
         const query = parts.join("&");
 
@@ -200,7 +207,7 @@ export default function Calendar() {
         }
       } catch (err) {}
     },
-    [selectedStatus, type]
+    [selectedStatus]
   );
 
   const updateTasks = useCallback(
@@ -284,20 +291,6 @@ export default function Calendar() {
     [selectedStatus, selectedDate, tasks, type]
   );
 
-  const emptyIcon = useMemo(
-    () =>
-      selectedStatus === "disabled" ? (
-        <IconX className="icon" />
-      ) : selectedStatus === "expired" ? (
-        <IconClock className="icon" />
-      ) : (
-        <IconZzz className="icon" />
-      ),
-    [selectedStatus]
-  );
-
-  const emptyText = selectedStatus !== "active" ? `No ${selectedStatus} tasks` : "Rest day";
-
   const handleResetMode = useCallback(() => {
     handleChangeMode("all");
     setSelectedTaskKey(undefined);
@@ -316,6 +309,20 @@ export default function Calendar() {
     [mode, selectedTaskKey, timeZone, relevantRoutine?._id]
   );
 
+  const emptyIcon = useMemo(
+    () =>
+      selectedStatus === "disabled" ? (
+        <IconX className="icon" />
+      ) : selectedStatus === "expired" ? (
+        <IconClock className="icon" />
+      ) : (
+        <IconZzz className="icon" />
+      ),
+    [selectedStatus]
+  );
+
+  const emptyText = selectedStatus !== "active" ? `No ${selectedStatus} tasks` : "Rest day";
+
   useShallowEffect(() => {
     if (!timeZone) return;
     if (!relevantRoutine) {
@@ -332,17 +339,18 @@ export default function Calendar() {
       type: type as string,
       routineId: relevantRoutine._id,
       mode: mode as string,
+      dateFrom,
+      dateTo,
       timeZone,
     }).then((tasks) => {
       setTasks(tasks);
       setOriginalTasks(tasks);
       setSelectedTasks(tasks);
     });
-  }, [relevantRoutine, timeZone, type]);
+  }, [relevantRoutine, timeZone, type, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!givenTaskKey) return;
-
     handleChangeMode("individual", givenTaskKey as string);
   }, [givenTaskKey]);
 
@@ -354,6 +362,7 @@ export default function Calendar() {
         filterData={typeItems}
         icons={typeIcons}
         selectedValue={type}
+        children={<DateSelector />}
         showReturn
         nowrap
       />
@@ -362,6 +371,7 @@ export default function Calendar() {
           level="month"
           m="auto"
           w="100%"
+          date={new Date(dateFrom || new Date())}
           value={mode === "all" ? selectedDate : null}
           onChange={mode === "all" ? (date) => handleSelectDate(date) : undefined}
           renderDay={(date) => (
@@ -373,7 +383,6 @@ export default function Calendar() {
               keysToBeDeleted={keysToBeDeleted}
             />
           )}
-          minDate={new Date()}
           classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
         />
 

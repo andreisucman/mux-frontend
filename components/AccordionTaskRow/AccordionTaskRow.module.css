@@ -38,3 +38,18 @@
   align-items: center;
   gap: 0;
 }
+
+.indicator {
+  width: rem(14);
+  height: rem(14);
+  border-radius: rem(100);
+  background-color: var(--mantine-color-gray-3);
+}
+
+.active {
+  background-color: var(--mantine-color-green-7);
+}
+
+.canceled {
+  background-color: var(--mantine-color-red-7);
+}
