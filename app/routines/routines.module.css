@@ -1,0 +1,44 @@
+.container {
+  flex: 1;
+}
+
+.wrapper {
+  position: relative;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.active {
+  background-color: var(--mantine-color-green-7);
+}
+
+.accordion {
+  position: absolute;
+  inset: 0;
+  background-color: none !important;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+  padding: 0 rem(16) rem(16);
+}
+
+.chevron {
+  display: none;
+}
+
+.label {
+  cursor: default;
+  padding: rem(16) 0;
+}
+
+.control {
+  background: none !important;
+}
+
+.getMoreButton {
+  margin-bottom: rem(16);
+  margin: auto;
+}

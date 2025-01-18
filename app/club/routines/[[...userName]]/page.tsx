@@ -5,15 +5,16 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";
+import TaskInfoContainer from "@/components/TaskInfoContainer";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import fetchRoutines from "@/functions/fetchRoutines";
 import askConfirmation from "@/helpers/askConfirmation";
 import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
-import AccordionRoutineRow from "../AccordionRoutineRow";
-import TaskInfoContainer from "../TaskInfoContainer";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -23,7 +24,7 @@ type GetRoutinesProps = {
   followingUserName?: string | string[];
   type?: string;
   sort: string | null;
-  routines?: RoutineType[];
+  routinesLength?: number;
 };
 
 type Props = {
@@ -75,52 +76,24 @@ export default function ClubRoutines(props: Props) {
     [type, currentUserRoutines?.length]
   );
 
-  const getFollowingRoutines = useCallback(
-    async ({ skip, sort, followingUserName, routines, type }: GetRoutinesProps) => {
+  const handleFetchRoutines = useCallback(
+    async ({ skip, sort, followingUserName, routinesLength, type }: GetRoutinesProps) => {
       try {
-        let endpoint = "getFollowingRoutines";
-
-        if (followingUserName) endpoint += `/${followingUserName}`;
-
-        const parts = [];
-
-        if (type) {
-          parts.push(`type=${type}`);
-        }
-
-        if (sort) {
-          parts.push(`sort=${sort}`);
-        }
-
-        if (skip && routines) {
-          parts.push(`skip=${routines.length}`);
-        }
-
-        const query = parts.join("&");
-
-        if (query) endpoint += `?${query}`;
-
-        const response = await callTheServer({
-          endpoint,
-          method: "GET",
+        const data = await fetchRoutines({
+          skip,
+          sort,
+          followingUserName,
+          routinesLength: routinesLength || 0,
+          type,
         });
 
-        if (response.status === 200) {
-          if (response.error) {
-            openErrorModal({ description: response.error });
-            return;
-          }
+        setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+        setHasMore(data.length === 21);
 
-          if (response.message) {
-            setRoutines((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
-            setHasMore(response.message.length === 21);
-
-            if (!openValue) setOpenValue(response.message[0]?._id);
-          }
-        }
+        if (!openValue) setOpenValue(data[0]?._id);
       } catch (err) {}
     },
-    [routines]
+    [openValue]
   );
 
   const stealRoutine = useCallback(
@@ -210,11 +183,11 @@ export default function ClubRoutines(props: Props) {
     if (!type) return;
     const payload: GetRoutinesProps = {
       followingUserName: userName,
-      routines,
+      routinesLength: (routines && routines.length) || 0,
       type,
       sort,
     };
-    getFollowingRoutines(payload);
+    handleFetchRoutines(payload);
   }, [type, sort, userName]);
 
   return (
@@ -243,10 +216,10 @@ export default function ClubRoutines(props: Props) {
                     variant="default"
                     className={classes.getMoreButton}
                     onClick={() =>
-                      getFollowingRoutines({
+                      handleFetchRoutines({
                         skip: true,
                         followingUserName: userName,
-                        routines,
+                        routinesLength: (routines && routines.length) || 0,
                         sort,
                         type,
                       })

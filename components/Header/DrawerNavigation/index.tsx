@@ -1,11 +1,14 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   IconBooks,
+  IconCalendar,
   IconDoorEnter,
   IconDoorExit,
   IconLicense,
+  IconListDetails,
   IconNotebook,
   IconRotateDot,
+  IconRoute,
   IconScan,
   IconSettings,
   IconShoppingBag,
@@ -51,14 +54,23 @@ const defaultNavigation = [
 
 const defaultAuthenticatedNavigation = [
   {
-    title: "My tasks",
+    title: "My daily tasks",
     path: "/tasks",
-    icon: <IconRotateDot stroke={1.25} className="icon" />,
+    icon: <IconListDetails stroke={1.25} className="icon" />,
     children: [
       { title: "Current", path: "/tasks" },
-      { title: "Calendar", path: "/tasks/calendar" },
       { title: "History", path: "/tasks/history" },
     ],
+  },
+  {
+    title: "My routines",
+    path: "/routines",
+    icon: <IconRoute stroke={1.25} className="icon" />,
+  },
+  {
+    title: "My diary",
+    icon: <IconNotebook stroke={1.25} className="icon" />,
+    path: "/diary",
   },
   {
     title: "My results",
@@ -72,14 +84,14 @@ const defaultAuthenticatedNavigation = [
     ],
   },
   {
-    title: "My diary",
-    icon: <IconNotebook stroke={1.25} className="icon" />,
-    path: "/diary",
-  },
-  {
     title: "My products",
     path: "/products",
     icon: <IconShoppingBag stroke={1.25} className="icon" />,
+  },
+  {
+    title: "My calendar",
+    path: "/calendar",
+    icon: <IconCalendar stroke={1.25} className="icon" />,
   },
 ];
 

@@ -175,10 +175,12 @@ export type RoutineType = {
   finalSchedule: { [key: string]: any };
   status: RoutineStatusEnum;
   createdAt: string;
+  lastDate: string;
   allTasks: AllTaskType[];
 };
 
 export type AllTaskType = {
+  ids: string[];
   name: string;
   description: string;
   instruction: string;

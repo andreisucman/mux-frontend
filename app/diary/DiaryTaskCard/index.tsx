@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import NextImage from "next/image";
-import { Group, Image, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import VideoPlayer from "@/components/VideoPlayer";
 import useShowSkeleton from "@/helpers/useShowSkeleton";

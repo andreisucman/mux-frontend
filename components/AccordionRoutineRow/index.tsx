@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo } from "react";
-import { IconClipboardText, IconHandGrab } from "@tabler/icons-react";
+import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
-import { Accordion, Button, Group, Skeleton, Text } from "@mantine/core";
+import { Accordion, ActionIcon, Button, Group, Skeleton, Text } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AllTaskType, RoutineType, TypeEnum } from "@/types/global";
@@ -13,8 +14,8 @@ type Props = {
   routine: RoutineType;
   type: TypeEnum;
   isSelf: boolean;
-  openTaskDetails: (task: AllTaskType, routineId: string) => void;
-  handleStealRoutine: (routineId: string) => void;
+  openTaskDetails?: (task: AllTaskType, routineId: string) => void;
+  handleStealRoutine?: (routineId: string) => void;
 };
 
 export default function AccordionRoutineRow({
@@ -24,6 +25,7 @@ export default function AccordionRoutineRow({
   openTaskDetails,
   handleStealRoutine,
 }: Props) {
+  const router = useRouter();
   const date = useMemo(() => formatDate({ date: routine.createdAt }), [routine.createdAt]);
 
   const totalTotal = useMemo(
@@ -41,9 +43,21 @@ export default function AccordionRoutineRow({
     [totalTotal, totalCompleted]
   );
 
-  const handleStealClick = useCallback((e: any, routineId: string) => {
-    e.stopPropagation();
-    handleStealRoutine(routineId);
+  const handleRedirectToCalendar = useCallback(
+    (taskKey?: string) => {
+      const dateFrom = new Date(routine.createdAt);
+      const dateTo = new Date(routine.lastDate);
+
+      let url = `/calendar?type=${type}&dateAt=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`;
+      if (taskKey) url += `key=${taskKey}`;
+
+      router.push(url);
+    },
+    [type, routine]
+  );
+
+  const handleRedirectToTask = useCallback((taskId: string) => {
+    router.push(`/explain/${taskId}`);
   }, []);
 
   const showSkeleton = useShowSkeleton();
@@ -69,27 +83,40 @@ export default function AccordionRoutineRow({
               completionRate={completionRate}
               total={totalTotal}
             />
+            {isSelf && (
+              <ActionIcon variant="default" onClick={() => handleRedirectToCalendar()}>
+                <IconCalendar className="icon" />
+              </ActionIcon>
+            )}
           </Group>
-          <Button
-            variant="default"
-            size="compact-sm"
-            component="div"
-            disabled={isSelf}
-            className={cn(classes.button, { [classes.disabled]: isSelf })}
-            onClick={(e) => handleStealClick(e, routine._id)}
-          >
-            <IconHandGrab className="icon icon__small" />{" "}
-            <Text className={classes.buttonText}>Steal this routine</Text>
-          </Button>
+          {!isSelf && (
+            <Button
+              variant="default"
+              size="compact-sm"
+              component="div"
+              disabled={isSelf}
+              className={cn(classes.button, { [classes.disabled]: isSelf })}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (handleStealRoutine) handleStealRoutine(routine._id);
+              }}
+            >
+              <IconHandGrab className="icon icon__small" />{" "}
+              <Text className={classes.buttonText}>Steal this routine</Text>
+            </Button>
+          )}
         </Accordion.Control>
         <Accordion.Panel>
           {routine.allTasks.map((task, i) => (
             <AccordionTaskRow
               key={i}
+              data={task}
+              isSelf={isSelf}
               routineId={routine._id}
               type={type as TypeEnum}
-              data={task}
-              onClick={openTaskDetails}
+              openTaskDetails={openTaskDetails}
+              redirectToCalendar={handleRedirectToCalendar}
+              redirectToTask={handleRedirectToTask}
             />
           ))}
         </Accordion.Panel>

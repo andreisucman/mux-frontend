@@ -1,4 +1,5 @@
 import { AuthStateEnum } from "@/context/UserContext/types";
+import { clearCookies } from "@/helpers/cookies";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
@@ -31,6 +32,7 @@ const fetchUserData = async (props?: FetchUerDataProps): Promise<UserDataType | 
       openErrorModal({
         description: "Account blocked. Please check your email for details.",
       });
+      clearCookies();
     }
   } catch (err) {
   } finally {
