@@ -44,7 +44,7 @@ export default function TaskRow({
         </ActionIcon>
       ) : (
         <Text fw={600} ta="center" size="sm">
-          100%
+          {isCompleted ? "100%" : "0%"}
         </Text>
       ),
     [isCompleted]

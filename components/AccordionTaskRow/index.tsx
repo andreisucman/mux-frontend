@@ -1,13 +1,12 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { IconBinoculars } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Group, Stack, Text, Title } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
-import { formatDate } from "@/helpers/formatDate";
 import { AllTaskType, TypeEnum } from "@/types/global";
 import StatsGroup from "../StatsGroup";
-import AccordionTaskMenu from "./AccordionTaskMenu";
+import RoutineIndividualTasksList from "./IndividualTasksList";
 import classes from "./AccordionTaskRow.module.css";
 
 type Props = {
@@ -28,53 +27,21 @@ export default function AccordionTaskRow({
   redirectToTask,
   redirectToCalendar,
 }: Props) {
+  const [openedIndividualTasks, { open, close }] = useDisclosure(false);
   const { ids, icon, key, color, name, total, completed } = data;
 
   const someTaskActive = useMemo(() => ids.some((obj) => obj.status === "active"), [ids]);
   const completionRate = useMemo(() => Math.round((completed / total) * 100), [total, completed]);
 
-  const openSelectTasksModal = useCallback(() => {
-    modals.openContextModal({
-      modal: "general",
-      centered: true,
-      title: (
-        <Title order={5} component={"p"}>
-          Select task
-        </Title>
-      ),
-      size: "md",
-      innerProps: (
-        <Stack>
-          {ids.map((idObj) => {
-            const date = formatDate({ date: idObj.startsAt });
-            return (
-              <Group
-                key={idObj._id}
-                className={classes.taskRow}
-                onClick={() => redirectToTask(idObj._id)}
-              >
-                <div
-                  className={cn(classes.indicator, {
-                    [classes.active]: idObj.status === "active",
-                    [classes.canceled]: idObj.status === "canceled",
-                  })}
-                />
-                <IconWithColor icon={icon} color={color} />
-                <Text className={classes.name} lineClamp={2}>
-                  {name}
-                </Text>
-                <Text className={classes.taskDate}>{date}</Text>
-              </Group>
-            );
-          })}
-        </Stack>
-      ),
-    });
-  }, []);
+  const handleOpenList = () => {
+    if (ids.length > 1) {
+      openedIndividualTasks ? close() : open();
+    }
+  };
 
   return (
     <Stack className={classes.container}>
-      <Group className={classes.wrapper}>
+      <Group className={classes.wrapper} onClick={handleOpenList}>
         <Group className={classes.title}>
           <div
             className={cn(classes.indicator, {
@@ -106,14 +73,19 @@ export default function AccordionTaskRow({
               <IconBinoculars className={"icon icon__small"} />
             </ActionIcon>
           )}
-          {isSelf && (
-            <AccordionTaskMenu
-              redirectToCalendar={() => redirectToCalendar(key)}
-              openTaskList={openSelectTasksModal}
-            />
-          )}
         </Group>
       </Group>
+      <Collapse in={openedIndividualTasks}>
+        <RoutineIndividualTasksList
+          color={color}
+          icon={icon}
+          isSelf={isSelf}
+          taskKey={key}
+          taskIdsObjects={ids}
+          redirectToCalendar={redirectToCalendar}
+          redirectToTask={redirectToTask}
+        />
+      </Collapse>
     </Stack>
   );
 }

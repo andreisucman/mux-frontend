@@ -1,5 +1,5 @@
 .container {
-  gap: rem(8);
+  cursor:pointer;
 }
 
 .wrapper {
@@ -19,7 +19,7 @@
 .title {
   flex-wrap: nowrap;
   max-width: 65%;
-  gap: rem(12)
+  gap: rem(12);
 }
 
 .grid {
@@ -40,39 +40,18 @@
   gap: 0;
 }
 
+.content {
+  flex-wrap: nowrap;
+  gap: rem(12);
+}
+
 .indicator {
-  min-width: rem(12);
-  min-height: rem(12);
+  min-width: rem(14);
+  min-height: rem(14);
   border-radius: rem(100);
   background-color: var(--mantine-color-gray-3);
 }
 
 .active {
   background-color: var(--mantine-color-green-7);
-}
-
-.canceled {
-  background-color: var(--mantine-color-red-7);
-}
-
-.taskRow {
-  cursor: pointer;
-  border-radius: var(--mantine-radius-lg);
-  flex-wrap: nowrap;
-  padding: 0 rem(16);
-  background-color: var(--mantine-color-dark-6);
-
-  &:hover {
-    background-color: lighten(var(--mantine-color-dark-6), 0.05);
-  }
-}
-
-.taskDate {
-  white-space: nowrap;
-  font-size: var(--mantine-font-size-sm);
-}
-
-.content {
-  flex-wrap: nowrap;
-  gap: rem(12);
 }

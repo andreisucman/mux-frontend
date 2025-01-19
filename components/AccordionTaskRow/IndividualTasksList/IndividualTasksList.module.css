@@ -1,0 +1,43 @@
+.container {
+  cursor: pointer;
+  border-radius: var(--mantine-radius-lg);
+  flex-wrap: nowrap;
+  padding-left: rem(16);
+}
+
+.row {
+  flex-wrap: nowrap;
+  background-color: var(--mantine-color-dark-6);
+  padding: 0 rem(16);
+  border-radius: var(--mantine-radius-lg);
+}
+
+.date {
+  white-space: nowrap;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.name {
+  white-space: wrap;
+  font-size: var(--mantine-font-size-md);
+}
+
+.indicator {
+  width: rem(12);
+  height: rem(12);
+  border-radius: rem(100);
+  background-color: var(--mantine-color-gray-3);
+}
+
+.active {
+  background-color: var(--mantine-color-green-7);
+}
+
+.button {
+  width: 100%;
+  padding: 0 rem(16);
+}
+
+.icon {
+  margin-right: rem(8);
+}

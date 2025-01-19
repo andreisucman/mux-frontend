@@ -96,8 +96,6 @@ export default function AddATaskContainer({
     subscriptions
   );
 
-  console.log("isTrialUsed", isTrialUsed);
-  
   const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
   const isCreateRoutineInCooldown =
     typeNextRoutine && typeNextRoutine.date && new Date(typeNextRoutine.date) > new Date();
