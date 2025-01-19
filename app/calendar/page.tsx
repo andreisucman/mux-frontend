@@ -249,17 +249,18 @@ export default function Calendar() {
 
   const getTasksOfThisDate = useCallback(
     (tasks: TaskType[] | undefined, date: Date, status: string) => {
+      if (!tasks) return [];
+
       const dateMidnight = new Date(date).setHours(0, 0, 0, 0);
 
-      const filteredTasks =
-        tasks?.filter((t) => {
-          const taskDate = new Date(t.startsAt);
+      const filteredTasks = tasks.filter((t) => {
+        const taskDate = new Date(t.startsAt);
 
-          const dateCoincides = taskDate.toISOString() === new Date(dateMidnight).toISOString();
-          const statusCoincides = status === t.status;
+        const dateCoincides = taskDate.toISOString() === new Date(dateMidnight).toISOString();
+        const statusCoincides = status === t.status;
 
-          return dateCoincides && statusCoincides;
-        }) || [];
+        return dateCoincides && statusCoincides;
+      });
 
       return filteredTasks;
     },

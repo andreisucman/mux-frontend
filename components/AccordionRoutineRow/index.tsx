@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -48,16 +49,18 @@ export default function AccordionRoutineRow({
       const dateFrom = new Date(routine.createdAt);
       const dateTo = new Date(routine.lastDate);
 
-      let url = `/calendar?type=${type}&dateAt=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`;
+      let url = `/calendar?type=${type}&dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`;
       if (taskKey) url += `key=${taskKey}`;
 
       router.push(url);
+      modals.closeAll();
     },
     [type, routine]
   );
 
   const handleRedirectToTask = useCallback((taskId: string) => {
     router.push(`/explain/${taskId}`);
+    modals.closeAll();
   }, []);
 
   const showSkeleton = useShowSkeleton();

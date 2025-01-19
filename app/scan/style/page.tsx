@@ -106,6 +106,7 @@ export default function UploadStyle() {
                   stateObject: {
                     referrer: ReferrerEnum.SCAN_STYLE,
                     redirectPath: "/scan/style",
+                    localUserId: userId,
                   },
                 });
                 return;
@@ -147,7 +148,10 @@ export default function UploadStyle() {
     <Stack className={`${classes.container} smallPage`}>
       {typeStyleRequirements ? (
         <>
-          <ScanHeader type={type as TypeEnum} children={demographics ? <SexSelector /> : <></>} />
+          <ScanHeader
+            type={type as TypeEnum}
+            children={demographics ? <SexSelector updateOnServer /> : <></>}
+          />
           <UploadContainer
             latestStyleImage={mainUrl?.url}
             requirements={typeStyleRequirements}

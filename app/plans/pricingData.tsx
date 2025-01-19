@@ -88,7 +88,7 @@ export const improvementCoachContent = [
   {
     icon: <IconToolsKitchen2 className="icon icon__large" style={style} />,
     description:
-      "Suggest personalized recipes to match your calorie count based on your products, kitchenware and special considerations.",
+      "Suggests personalized recipes to match your calorie count based on your products, kitchenware and special considerations.",
   },
 ];
 

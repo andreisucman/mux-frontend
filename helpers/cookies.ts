@@ -1,4 +1,6 @@
-export function clearCookies() {
+import callTheServer from "@/functions/callTheServer";
+
+export async function clearCookies() {
   const cookies = document.cookie.split(";");
 
   for (const cookie of cookies) {
@@ -7,6 +9,8 @@ export function clearCookies() {
 
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
   }
+
+  await callTheServer({ endpoint: "signOut", method: "POST" });
 }
 
 export function getCookieValue(name: string): string | null {

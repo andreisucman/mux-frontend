@@ -8,6 +8,7 @@ import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import PhotoCapturer from "@/components/PhotoCapturer";
 import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
 import CalorieGoalProvider, { CalorieGoalContext } from "@/context/CalorieGoalContext";
+import { UserContext } from "@/context/UserContext";
 import { silhouettes } from "@/data/silhouettes";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
@@ -25,6 +26,8 @@ export default function ScanFoodPage() {
   const [localUrl, setLocalUrl] = useState<string>("");
 
   const { calorieGoal } = useContext(CalorieGoalContext);
+  const { userDetails } = useContext(UserContext);
+  const { _id: userId } = userDetails || {};
 
   const handleAnalyzeFood = useCallback(async () => {
     if (!localUrl) return;
@@ -53,6 +56,7 @@ export default function ScanFoodPage() {
               stateObject: {
                 referrer: ReferrerEnum.SCAN_FOOD,
                 redirectPath: "/scan/food",
+                localUserId: userId,
               },
             });
             setIsLoading(false);
@@ -73,7 +77,7 @@ export default function ScanFoodPage() {
       openErrorModal();
       setIsLoading(false);
     }
-  }, [localUrl, calorieGoal]);
+  }, [localUrl, userDetails, calorieGoal]);
 
   const silhouette = useMemo(
     () => silhouettes.find((rec) => rec.scanType === ScanTypeEnum.FOOD),

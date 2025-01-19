@@ -50,6 +50,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     []
   );
 
+  console.log("isLoggedInCookie",isLoggedInCookie)
   const updateAuthenticationStatus = useCallback((isLoggedInCookie: boolean) => {
     setStatus(isLoggedInCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED);
   }, []);

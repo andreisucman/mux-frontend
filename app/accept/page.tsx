@@ -26,7 +26,7 @@ export default function AcceptIndexPage() {
   const [highlightTos, setHighlightTos] = useState(false);
   const [tosAccepted, setTosAccepted] = useState(false);
 
-  const { _id: userId } = userDetails || {};
+  const { _id: userId, demographics } = userDetails || {};
 
   const startTheFlow = useCallback(async () => {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -42,6 +42,7 @@ export default function AcceptIndexPage() {
           body: {
             timeZone,
             tosAccepted,
+            demographics,
           },
         });
 

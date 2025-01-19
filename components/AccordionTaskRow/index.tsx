@@ -4,6 +4,7 @@ import cn from "classnames";
 import { ActionIcon, Group, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
+import { formatDate } from "@/helpers/formatDate";
 import { AllTaskType, TypeEnum } from "@/types/global";
 import StatsGroup from "../StatsGroup";
 import AccordionTaskMenu from "./AccordionTaskMenu";
@@ -41,27 +42,31 @@ export default function AccordionTaskRow({
           Select task
         </Title>
       ),
-      size: "sm",
+      size: "md",
       innerProps: (
         <Stack>
-          {ids.map((idObj) => (
-            <Group
-              key={idObj._id}
-              className={classes.title}
-              onClick={() => redirectToTask(idObj._id)}
-            >
-              <div
-                className={cn(classes.indicator, {
-                  [classes.active]: idObj.status === "active",
-                  [classes.canceled]: idObj.status === "canceled",
-                })}
-              />
-              <IconWithColor icon={icon} color={color} />
-              <Text className={classes.name} lineClamp={2}>
-                {name}
-              </Text>
-            </Group>
-          ))}
+          {ids.map((idObj) => {
+            const date = formatDate({ date: idObj.startsAt });
+            return (
+              <Group
+                key={idObj._id}
+                className={classes.taskRow}
+                onClick={() => redirectToTask(idObj._id)}
+              >
+                <div
+                  className={cn(classes.indicator, {
+                    [classes.active]: idObj.status === "active",
+                    [classes.canceled]: idObj.status === "canceled",
+                  })}
+                />
+                <IconWithColor icon={icon} color={color} />
+                <Text className={classes.name} lineClamp={2}>
+                  {name}
+                </Text>
+                <Text className={classes.taskDate}>{date}</Text>
+              </Group>
+            );
+          })}
         </Stack>
       ),
     });

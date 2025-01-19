@@ -2,14 +2,13 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Group, Skeleton, Stack, Switch, Title } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
+import { Button, Group, Stack, Switch, Text, Title } from "@mantine/core";
+import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
-import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
@@ -17,12 +16,12 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons } from "@/helpers/icons";
+import { formatDate } from "@/helpers/formatDate";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { daysFrom } from "@/helpers/utils";
-import { RequiredSubmissionType, TaskType } from "@/types/global";
+import { RequiredSubmissionType, TaskStatusErum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
 import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
@@ -52,13 +51,46 @@ export default function Explain(props: Props) {
     example,
     proofEnabled,
     suggestions,
+    completedAt,
     key: taskKey,
+    expiresAt,
     type,
+    status,
   } = taskInfo || {};
 
   const required: RequiredSubmissionType[] = requiredSubmissions || [];
 
-  const notStarted = useMemo(() => new Date() < new Date(startsAt || 0), [startsAt]);
+  const futureStartDate = useMemo(() => {
+    if (startsAt) {
+      if (new Date() < new Date(startsAt || 0)) {
+        return formatDate({ date: startsAt });
+      }
+    }
+    return null;
+  }, [startsAt]);
+
+  const statusNote = useMemo(() => {
+    if (status === TaskStatusErum.EXPIRED) {
+      const statusString = `${upperFirst(status)} on ${formatDate({ date: expiresAt || new Date() })}`;
+      return (
+        <Text className={classes.statusNote} c="red.7">
+          {statusString}
+        </Text>
+      );
+    } else if (status === TaskStatusErum.CANCELED) {
+      return (
+        <Text className={classes.statusNote} c="red.7">
+          Canceled
+        </Text>
+      );
+    } else if (status === TaskStatusErum.COMPLETED) {
+      return (
+        <Text className={classes.statusNote} c="green.7">
+          Completed at {formatDate({ date: completedAt || new Date() })}
+        </Text>
+      );
+    }
+  }, [status, completedAt, expiresAt]);
 
   const {
     recipe,
@@ -237,102 +269,106 @@ export default function Explain(props: Props) {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper show={!name}>
+      <SkeletonWrapper show={!name || !taskInfo}>
         <PageHeaderWithReturn title={name || ""} showReturn />
+        {status !== "active" && statusNote}
+        {futureStartDate && (
+          <Text size="sm" c="green.7">
+            Starts on: {futureStartDate}{" "}
+          </Text>
+        )}
 
-        <Skeleton className="skeleton" visible={!taskInfo}>
-          <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
-            {showWaitComponent ? (
-              <WaitComponent
-                operationKey={`createRecipe-${taskId}`}
-                description={"Creating a recipe"}
-                onComplete={() => handleFetchTaskInfo(taskId || "")}
-              />
-            ) : (
-              <>
-                <Group className={classes.buttonsGroup}>
-                  <Switch
-                    label={"Proof upload"}
-                    disabled={taskStatus === "completed"}
-                    checked={proofEnabled || false}
-                    onChange={() => switchProofUpload(!proofEnabled, taskId)}
-                  />
-                  <Button
-                    size="compact-sm"
-                    variant="default"
-                    disabled={taskStatus === "completed"}
-                    className={classes.disableButton}
-                    onClick={openEditTaskModal}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size="compact-sm"
-                    variant="default"
-                    disabled={taskStatus === "completed"}
-                    className={classes.disableButton}
-                    onClick={handleRedirectToCalendar}
-                  >
-                    Disable
-                  </Button>
-                </Group>
-
-                {required.map((r: RequiredSubmissionType, index) => {
-                  return (
-                    <ProofStatus
-                      key={index}
-                      name={r.name}
-                      dayTime={r.dayTime}
-                      submissionId={r.submissionId}
-                      selectedTask={taskInfo}
-                      setTaskInfo={setTaskInfo}
-                      notStarted={notStarted}
-                      expiresAt={taskInfo && taskInfo.expiresAt}
-                    />
-                  );
-                })}
-
-                <ExplanationContainer title="Description:" text={description} />
-                {isRecipe && (
-                  <CreateRecipeBox
-                    taskId={taskId}
-                    recipe={recipe}
-                    setShowWaitComponent={setShowWaitComponent}
-                  />
-                )}
-                <Stack className={classes.exampleWrapper}>
-                  {example && <ExampleContainer title="Example:" example={example} />}
-                  <ExplanationContainer
-                    title="Steps:"
-                    text={instruction}
-                    customStyles={{ borderRadius: "0 0 1rem 1rem" }}
-                  />
-                </Stack>
-
-                {suggestions && suggestions.length > 0 && (
-                  <SuggestionContainer
-                    title="Products:"
-                    items={suggestions}
-                    chatContentId={taskId}
-                    disableLocalChat
-                  />
-                )}
-                <ChatWithModal
-                  chatCategory="task"
-                  openChatKey={taskId}
-                  chatContentId={taskId}
-                  defaultVisibility="open"
-                  modalTitle={
-                    <Title order={5} component={"p"} lineClamp={2}>
-                      {name}
-                    </Title>
-                  }
-                  dividerLabel={"Discuss the task"}
+        <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
+          {showWaitComponent ? (
+            <WaitComponent
+              operationKey={`createRecipe-${taskId}`}
+              description={"Creating a recipe"}
+              onComplete={() => handleFetchTaskInfo(taskId || "")}
+            />
+          ) : (
+            <>
+              <Group className={classes.buttonsGroup}>
+                <Switch
+                  label={"Proof upload"}
+                  disabled={taskStatus === "completed"}
+                  checked={proofEnabled || false}
+                  onChange={() => switchProofUpload(!proofEnabled, taskId)}
                 />
-              </>
-            )}
-          </Stack>
-        </Skeleton>
+                <Button
+                  size="compact-sm"
+                  variant="default"
+                  disabled={taskStatus === "completed"}
+                  className={classes.disableButton}
+                  onClick={openEditTaskModal}
+                >
+                  Edit
+                </Button>
+                <Button
+                  size="compact-sm"
+                  variant="default"
+                  disabled={taskStatus === "completed"}
+                  className={classes.disableButton}
+                  onClick={handleRedirectToCalendar}
+                >
+                  Disable
+                </Button>
+              </Group>
+
+              {required.map((r: RequiredSubmissionType, index) => {
+                return (
+                  <ProofStatus
+                    key={index}
+                    name={r.name}
+                    dayTime={r.dayTime}
+                    submissionId={r.submissionId}
+                    selectedTask={taskInfo}
+                    setTaskInfo={setTaskInfo}
+                    notStarted={!!futureStartDate}
+                    expiresAt={taskInfo && taskInfo.expiresAt}
+                  />
+                );
+              })}
+
+              <ExplanationContainer title="Description:" text={description} />
+              {isRecipe && (
+                <CreateRecipeBox
+                  taskId={taskId}
+                  recipe={recipe}
+                  setShowWaitComponent={setShowWaitComponent}
+                />
+              )}
+              <Stack className={classes.exampleWrapper}>
+                {example && <ExampleContainer title="Example:" example={example} />}
+                <ExplanationContainer
+                  title="Steps:"
+                  text={instruction}
+                  customStyles={{ borderRadius: "0 0 1rem 1rem" }}
+                />
+              </Stack>
+
+              {suggestions && suggestions.length > 0 && (
+                <SuggestionContainer
+                  title="Products:"
+                  items={suggestions}
+                  chatContentId={taskId}
+                  disableLocalChat
+                />
+              )}
+              <ChatWithModal
+                chatCategory="task"
+                openChatKey={taskId}
+                chatContentId={taskId}
+                defaultVisibility="open"
+                modalTitle={
+                  <Title order={5} component={"p"} lineClamp={2}>
+                    {name}
+                  </Title>
+                }
+                dividerLabel={"Discuss the task"}
+              />
+            </>
+          )}
+        </Stack>
       </SkeletonWrapper>
     </Stack>
   );

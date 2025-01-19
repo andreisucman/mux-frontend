@@ -94,8 +94,7 @@ export default function BeforeAftersPage() {
         } else {
           openErrorModal();
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [searchParams.toString()]
   );

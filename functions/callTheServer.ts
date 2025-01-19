@@ -5,7 +5,7 @@ type Props<T> = {
   method: "GET" | "POST";
   body?: T | FormData;
   accessToken?: string | null;
-  server?: "api" | "chat" | "processing";
+  server?: "api" | "chat" | "processing" | "admin";
 };
 
 const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Props<T>) => {
@@ -28,7 +28,9 @@ const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Prop
         ? process.env.NEXT_PUBLIC_API_SERVER_URL
         : server === "chat"
           ? process.env.NEXT_PUBLIC_CHAT_SERVER_URL
-          : process.env.NEXT_PUBLIC_PROCESSING_SERVER_URL;
+          : server === "admin"
+            ? process.env.NEXT_PUBLIC_ADMIN_SERVER_URL
+            : process.env.NEXT_PUBLIC_PROCESSING_SERVER_URL;
 
     const response = await fetch(`${serverUrl}/${endpoint}`, fetchOptions);
 

@@ -180,7 +180,7 @@ export type RoutineType = {
 };
 
 export type AllTaskType = {
-  ids: { _id: string; status: string }[];
+  ids: { _id: string; startsAt: string; status: string }[];
   name: string;
   description: string;
   instruction: string;
@@ -403,6 +403,7 @@ export type TaskType = {
   color: string;
   type: string;
   startsAt: string;
+  completedAt: string;
   expiresAt: string;
   routineId: string;
   requisite: string;

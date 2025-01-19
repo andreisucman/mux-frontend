@@ -15,6 +15,7 @@ export const protectedPaths = [
   "/club/join",
   "/club/admission",
   "/waitroom",
+  "/routines",
 ];
 
 export const pathsThatRequireId = [

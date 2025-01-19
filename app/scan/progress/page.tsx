@@ -98,6 +98,7 @@ export default function ScanProgress() {
                   stateObject: {
                     referrer: ReferrerEnum.SCAN_PROGRESS,
                     redirectPath: "/scan/progress",
+                    localUserId: userId,
                   },
                 });
                 return;
@@ -147,7 +148,7 @@ export default function ScanProgress() {
         <Stack className={`${classes.container} smallPage`}>
           <ScanHeader
             type={finalType as TypeEnum}
-            children={demographics ? <SexSelector /> : <></>}
+            children={demographics ? <SexSelector updateOnServer /> : <></>}
           />
           {needsScan ? (
             <UploadContainer
