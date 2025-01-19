@@ -50,8 +50,6 @@ export default function ChatDisplay({
       });
 
       if (response.status === 200) {
-        console.log("messages fetched", response.message);
-
         setConversation(response.message);
       }
     } catch (err) {}

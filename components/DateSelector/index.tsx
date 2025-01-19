@@ -51,7 +51,6 @@ function DateSelector() {
     if (!dateFrom && !dateTo) return;
 
     const range: [Date | null, Date | null] = [null, null];
-
     if (dateFrom) range[0] = new Date(dateFrom);
     if (dateTo) range[1] = new Date(dateTo);
 

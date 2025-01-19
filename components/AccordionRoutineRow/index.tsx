@@ -47,10 +47,24 @@ export default function AccordionRoutineRow({
   const handleRedirectToCalendar = useCallback(
     (taskKey?: string) => {
       const dateFrom = new Date(routine.createdAt);
+      dateFrom.setUTCHours(0, 0, 0, 0);
       const dateTo = new Date(routine.lastDate);
+      dateTo.setDate(dateTo.getDate() + 1);
+      dateTo.setUTCHours(0, 0, 0, 0);
 
-      let url = `/calendar?type=${type}&dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}`;
-      if (taskKey) url += `key=${taskKey}`;
+      const parts = [
+        `type=${type}`,
+        `dateFrom=${dateFrom.toISOString()}`,
+        `dateTo=${dateTo.toISOString()}`,
+      ];
+
+      if (taskKey) {
+        parts.push(`key=${taskKey}`);
+      }
+
+      const query = parts.join("&");
+
+      const url = `/calendar${query ? `?${query}` : ""}`;
 
       router.push(url);
       modals.closeAll();

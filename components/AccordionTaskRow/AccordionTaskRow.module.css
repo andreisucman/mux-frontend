@@ -19,6 +19,7 @@
 .title {
   flex-wrap: nowrap;
   max-width: 65%;
+  gap: rem(12)
 }
 
 .grid {
@@ -40,8 +41,8 @@
 }
 
 .indicator {
-  width: rem(12);
-  height: rem(12);
+  min-width: rem(12);
+  min-height: rem(12);
   border-radius: rem(100);
   background-color: var(--mantine-color-gray-3);
 }
@@ -69,4 +70,9 @@
 .taskDate {
   white-space: nowrap;
   font-size: var(--mantine-font-size-sm);
+}
+
+.content {
+  flex-wrap: nowrap;
+  gap: rem(12);
 }

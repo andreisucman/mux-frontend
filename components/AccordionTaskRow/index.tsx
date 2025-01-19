@@ -86,7 +86,7 @@ export default function AccordionTaskRow({
             {name}
           </Text>
         </Group>
-        <Group wrap="nowrap">
+        <Group className={classes.content}>
           <StatsGroup
             completed={completed}
             completionRate={completionRate}
