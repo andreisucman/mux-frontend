@@ -1,13 +1,11 @@
 import React, { useMemo } from "react";
-import { IconCheck, IconSun, IconSunrise, IconSunset } from "@tabler/icons-react";
+import { IconCheck } from "@tabler/icons-react";
 import { ActionIcon, Group, rem, RingProgress, Skeleton, Stack, Text } from "@mantine/core";
-import { useElementSize } from "@mantine/hooks";
 import Timer from "@/components/Timer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { daysFrom } from "@/helpers/utils";
-import { RequiredSubmissionType } from "@/types/global";
 import IconWithColor from "../CreateTaskOverlay/IconWithColor";
 import classes from "./TaskRow.module.css";
 
@@ -18,7 +16,7 @@ type Props = {
   startsAt: string;
   expiresAt: string;
   description: string;
-  requiredSubmissions?: RequiredSubmissionType[];
+  isCompleted: boolean;
   customStyles?: { [key: string]: any };
   onClick?: () => void;
 };
@@ -33,28 +31,10 @@ export default function TaskRow({
   expiresAt,
   description,
   customStyles,
-  requiredSubmissions,
+  isCompleted,
   onClick,
 }: Props) {
   const showSkeleton = useShowSkeleton();
-  const { height, ref } = useElementSize();
-
-  const submitted = requiredSubmissions?.filter((r) => r.isSubmitted);
-  const isCompleted = submitted?.length === requiredSubmissions?.length;
-
-  const completionPercentage = useMemo(
-    () =>
-      (requiredSubmissions &&
-        submitted &&
-        Math.round((submitted?.length / requiredSubmissions?.length) * 100)) ||
-      0,
-    [isCompleted, requiredSubmissions?.length]
-  );
-
-  const dayTimeSpecified = useMemo(
-    () => requiredSubmissions && requiredSubmissions?.filter((s) => s.dayTime).length > 0,
-    [isCompleted, requiredSubmissions?.length]
-  );
 
   const ringLabel = useMemo(
     () =>
@@ -64,7 +44,7 @@ export default function TaskRow({
         </ActionIcon>
       ) : (
         <Text fw={600} ta="center" size="sm">
-          {completionPercentage}%
+          100%
         </Text>
       ),
     [isCompleted]
@@ -75,20 +55,13 @@ export default function TaskRow({
     if (isCompleted) {
       sections.push({ value: 100, color: "green.7" });
     } else {
-      if (completionPercentage > 0) {
-        sections.push({
-          value: completionPercentage || 0,
-          color: "yellow.7",
-        });
-      } else {
-        sections.push({
-          value: completionPercentage || 0,
-          color: "gray.3",
-        });
-      }
+      sections.push({
+        value: 0,
+        color: "gray.3",
+      });
     }
     return sections;
-  }, [isCompleted, completionPercentage]);
+  }, [isCompleted]);
 
   const localStartDate = useMemo(
     () =>
@@ -118,20 +91,6 @@ export default function TaskRow({
   const timerDate = started ? new Date(localExpiryDate) : new Date(localStartDate);
 
   const timerText = isCompleted ? "Archived after" : started ? "Expires in" : "Starts in";
-
-  const dayTimeIcons = useMemo(() => {
-    return requiredSubmissions?.map((submission, index) => {
-      const submissionColor = submission.isSubmitted
-        ? "var(--mantine-color-green-7)"
-        : "var(--mantine-color-gray-3)";
-      if (submission.dayTime === "morning")
-        return <IconSunrise key={index} color={submissionColor} className={"icon icon__small"} />;
-      if (submission.dayTime === "evening")
-        return <IconSunset key={index} color={submissionColor} className={"icon icon__small"} />;
-      if (submission.dayTime === "noon")
-        return <IconSun key={index} color={submissionColor} className={"icon icon__small"} />;
-    });
-  }, [requiredSubmissions?.length]);
 
   const startsOnDate = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
 
@@ -172,7 +131,6 @@ export default function TaskRow({
   return (
     <Skeleton visible={showSkeleton}>
       <Group
-        ref={ref}
         className={classes.container}
         onClick={onClick ? onClick : undefined}
         style={customStyles ? customStyles : {}}
@@ -195,11 +153,6 @@ export default function TaskRow({
           </Text>
           {timer}
         </Stack>
-        {dayTimeSpecified && (
-          <Stack h={height} className={classes.dayTimeContainer}>
-            {dayTimeIcons}
-          </Stack>
-        )}
         <RingProgress
           size={85}
           thickness={8}

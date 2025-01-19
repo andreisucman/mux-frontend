@@ -20,7 +20,7 @@ export default function FoodTaskSelectionModalContent({ tasks, foodUrl }: Props)
     let base64Image: string | null = foodUrl;
     const isAbsolute = foodUrl.startsWith("https://");
 
-    const { _id, requiredSubmissions } = task;
+    const { _id, name, isSubmitted } = task;
 
     if (isAbsolute) {
       base64Image = await imageUrlToBase64(foodUrl);
@@ -29,14 +29,10 @@ export default function FoodTaskSelectionModalContent({ tasks, foodUrl }: Props)
     if (base64Image) {
       saveToIndexedDb("proofImage", base64Image);
 
-      const firstUnsubmitted = requiredSubmissions?.find((s) => !s.isSubmitted);
-
-      if (firstUnsubmitted) {
-        const { name, submissionId } = firstUnsubmitted;
+      if (isSubmitted) {
         const query = modifyQuery({
           params: [
             { name: "submissionName", value: name, action: "replace" },
-            { name: "submissionId", value: submissionId, action: "replace" },
             { name: "analysisId", value: null, action: "delete" },
           ],
         });

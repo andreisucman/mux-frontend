@@ -5,9 +5,6 @@ import {
   IconCheck,
   IconEye,
   IconSquareRoundedCheck,
-  IconSun,
-  IconSunrise,
-  IconSunset,
 } from "@tabler/icons-react";
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -18,35 +15,17 @@ import { TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
 
 type Props = {
-  name: string;
-  submissionId: string;
   expiresAt: string | null;
   selectedTask: TaskType | null;
   notStarted: boolean;
-  dayTime?: "morning" | "noon" | "evening";
   proofEnabled?: boolean;
   setTaskInfo: React.Dispatch<React.SetStateAction<TaskType | null>>;
 };
 
-function ProofStatus({
-  name,
-  expiresAt,
-  submissionId,
-  selectedTask,
-  notStarted,
-  dayTime,
-  setTaskInfo,
-}: Props) {
+function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props) {
   const router = useRouter();
 
-  const { requiredSubmissions, proofEnabled, _id: taskId } = selectedTask || {};
-
-  const relevantSubmission = useMemo(
-    () => requiredSubmissions?.find((s) => s.submissionId === submissionId),
-    [selectedTask]
-  );
-
-  const { proofId, isSubmitted } = relevantSubmission || {};
+  const { proofEnabled, status, isSubmitted, proofId, name, _id: taskId } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>
@@ -57,7 +36,7 @@ function ProofStatus({
       ) : (
         <></>
       ),
-    [selectedTask]
+    [isSubmitted]
   );
 
   const sections = useMemo(
@@ -70,19 +49,7 @@ function ProofStatus({
               color: "gray.3",
             },
           ],
-    [selectedTask]
-  );
-
-  const dayTimeIcon = useMemo(
-    () =>
-      dayTime === "morning" ? (
-        <IconSunrise />
-      ) : dayTime === "noon" ? (
-        <IconSun />
-      ) : dayTime === "evening" ? (
-        <IconSunset />
-      ) : undefined,
-    [selectedTask]
+    [isSubmitted]
   );
 
   const taskExpired = new Date(expiresAt || 0) < new Date();
@@ -115,22 +82,14 @@ function ProofStatus({
     }
 
     return { label, icon };
-  }, [selectedTask, relevantSubmission]);
+  }, [proofId, status, taskExpired]);
 
-  const updateRequiredSubmission = useCallback(async () => {
+  const updateSubmissionStatus = useCallback(async () => {
     if (!taskId) return;
 
     try {
       if (proofEnabled) {
         const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
-
-        if (relevantSubmission) {
-          queryPayload.push({
-            name: "submissionId",
-            value: submissionId,
-            action: "replace",
-          });
-        }
 
         const query = modifyQuery({
           params: queryPayload,
@@ -139,11 +98,10 @@ function ProofStatus({
         router.push(`/upload-proof/${taskId}?${query}`);
       } else {
         const response = await callTheServer({
-          endpoint: "updateRequiredSubmission",
+          endpoint: "updateSubmissionStatus",
           method: "POST",
           body: {
             taskId,
-            submissionId,
             isSubmitted: !isSubmitted,
           },
         });
@@ -157,9 +115,9 @@ function ProofStatus({
         }
       }
     } catch (err) {
-      console.log("Error in updateRequiredSubmission: ", err);
+      console.log("Error in updateSubmissionStatus: ", err);
     }
-  }, [taskId, submissionId, isSubmitted, proofEnabled]);
+  }, [taskId, isSubmitted, proofEnabled]);
 
   return (
     <Group className={classes.container}>
@@ -172,13 +130,13 @@ function ProofStatus({
       />
 
       <Group className={classes.nameGroup}>
-        <Text lineClamp={1}>{upperFirst(name)}</Text> {dayTimeIcon}
+        <Text lineClamp={1}>{upperFirst(name || "")}</Text>
       </Group>
       <Button
         variant={"default"}
         className={classes.ctaButton}
         disabled={notStarted || taskExpired}
-        onClick={updateRequiredSubmission}
+        onClick={updateSubmissionStatus}
       >
         {buttonData.label}
       </Button>

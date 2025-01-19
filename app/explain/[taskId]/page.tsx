@@ -45,7 +45,6 @@ export default function Explain(props: Props) {
 
   const { timeZone } = userDetails || {};
   const {
-    requiredSubmissions,
     isRecipe,
     startsAt,
     example,
@@ -57,8 +56,6 @@ export default function Explain(props: Props) {
     type,
     status,
   } = taskInfo || {};
-
-  const required: RequiredSubmissionType[] = requiredSubmissions || [];
 
   const futureStartDate = useMemo(() => {
     if (startsAt) {
@@ -313,22 +310,12 @@ export default function Explain(props: Props) {
                   Disable
                 </Button>
               </Group>
-
-              {required.map((r: RequiredSubmissionType, index) => {
-                return (
-                  <ProofStatus
-                    key={index}
-                    name={r.name}
-                    dayTime={r.dayTime}
-                    submissionId={r.submissionId}
-                    selectedTask={taskInfo}
-                    setTaskInfo={setTaskInfo}
-                    notStarted={!!futureStartDate}
-                    expiresAt={taskInfo && taskInfo.expiresAt}
-                  />
-                );
-              })}
-
+              <ProofStatus
+                selectedTask={taskInfo}
+                setTaskInfo={setTaskInfo}
+                notStarted={!!futureStartDate}
+                expiresAt={taskInfo && taskInfo.expiresAt}
+              />
               <ExplanationContainer title="Description:" text={description} />
               {isRecipe && (
                 <CreateRecipeBox
@@ -345,7 +332,6 @@ export default function Explain(props: Props) {
                   customStyles={{ borderRadius: "0 0 1rem 1rem" }}
                 />
               </Stack>
-
               {suggestions && suggestions.length > 0 && (
                 <SuggestionContainer
                   title="Products:"

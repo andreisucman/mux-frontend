@@ -215,7 +215,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", type || "");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
               />
             )}
             {displayComponent === "tasks" && (
@@ -237,7 +237,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                         name={record.name}
                         startsAt={record.startsAt}
                         expiresAt={record.expiresAt}
-                        requiredSubmissions={record.requiredSubmissions}
+                        isCompleted={record.isSubmitted}
                       />
                     ))}
                   </Stack>

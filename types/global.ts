@@ -414,7 +414,8 @@ export type TaskType = {
   isRecipe: boolean;
   recipe: RecipeType;
   suggestions: SuggestionType[];
-  requiredSubmissions?: RequiredSubmissionType[];
+  isSubmitted: boolean;
+  proofId: string;
   example: { type: string; url: string };
 };
 

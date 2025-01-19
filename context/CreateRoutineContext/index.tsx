@@ -70,6 +70,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     isTrialUsed,
   }: OnCreateRoutineClickProps) => {
     if (isLoading) return;
+    console.log("isTrialUsed", isTrialUsed);
 
     if (isSubscriptionActive) {
       const typeNextScan = nextScan?.find((obj) => obj.type === type);

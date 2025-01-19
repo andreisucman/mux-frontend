@@ -92,9 +92,12 @@ export default function AddATaskContainer({
   const { nextRoutine, subscriptions } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } = checkSubscriptionActivity(
-    ["peek", "improvement"],
+    ["improvement"],
     subscriptions
   );
+
+  console.log("isTrialUsed", isTrialUsed);
+  
   const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
   const isCreateRoutineInCooldown =
     typeNextRoutine && typeNextRoutine.date && new Date(typeNextRoutine.date) > new Date();
