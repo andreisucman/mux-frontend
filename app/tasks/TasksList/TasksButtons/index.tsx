@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
-import {
-  IconCalendar,
-  IconCirclePlus,
-  IconHistory,
-  IconRoute,
-  IconShoppingBag,
-} from "@tabler/icons-react";
+import { IconCalendar, IconCirclePlus, IconRoute, IconShoppingBag } from "@tabler/icons-react";
 import { Button, Group, rem } from "@mantine/core";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
@@ -68,7 +62,7 @@ export default function TasksButtons({
           const query = modifyQuery({
             params: [{ name: "type", value: type || "head", action: "replace" }],
           });
-          router.push(`/tasks/calendar?${query}`);
+          router.push(`/calendar?${query}`);
         }}
       >
         <IconCalendar style={{ width: rem(20) }} />

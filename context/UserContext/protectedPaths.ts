@@ -1,7 +1,7 @@
 export const protectedPaths = [
   "/tasks",
   "/tasks/history",
-  "/tasks/calendar",
+  "/calendar",
   "/products",
   "/explain",
   "/settings",

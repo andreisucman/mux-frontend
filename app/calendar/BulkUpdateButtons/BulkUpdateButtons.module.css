@@ -1,0 +1,9 @@
+.container {
+  margin-top: rem(16);
+  position: sticky;
+  flex-wrap: nowrap;
+}
+
+.button {
+  flex: 1 0;
+}

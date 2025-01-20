@@ -8,7 +8,7 @@
 /results/proof, // p
 /tasks, // p
 /tasks/history, // p
-/tasks/calendar, // p
+/calendar, // p
 /products, // p
 /explain, // p
 /upload-proof, // p

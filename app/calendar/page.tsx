@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { IconActivity, IconClock, IconX, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
+import { ActionIcon, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -16,7 +16,8 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { typeIcons } from "@/helpers/icons";
-import { TaskType, UserDataType } from "@/types/global";
+import { TaskStatusEnum, TaskType, UserDataType } from "@/types/global";
+import BulkUpdateButtons from "./BulkUpdateButtons";
 import CalendarRow from "./CalendarRow";
 import DayRenderer from "./DayRenderer";
 import classes from "./calendar.module.css";
@@ -45,14 +46,14 @@ export default function Calendar() {
   const dateTo = searchParams.get("dateTo");
 
   const [displayComponent, setDisplayComponent] = useState<"loading" | "list" | "empty">("loading");
-  const [selectedStatus, setSelectedStatus] = useState("active");
+  const [selectedStatus, setSelectedStatus] = useState(TaskStatusEnum.ACTIVE);
   const [tasksToUpdate, setTasksToUpdate] = useState<TaskType[]>([]);
   const [selectedTasks, setSelectedTasks] = useState<TaskType[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [mode, setMode] = useState(givenMode || "all");
   const [tasks, setTasks] = useState<TaskType[]>();
   const [originalTasks, setOriginalTasks] = useState<TaskType[]>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingType, setLoadingType] = useState<TaskStatusEnum>();
   const [selectedTaskKey, setSelectedTaskKey] = useState<string | undefined>(
     givenTaskKey as string
   );
@@ -73,8 +74,6 @@ export default function Calendar() {
       }),
     [tasksToUpdate.length]
   );
-
-  const disableButton = tasksToUpdate.length === 0 || selectedStatus === "expired";
 
   const dates = useMemo(() => {
     const taskList = mode === "individual" ? selectedTasks : tasks;
@@ -118,7 +117,7 @@ export default function Calendar() {
   );
 
   const handleChangeStatus = useCallback(
-    (status: string, taskKey?: string) => {
+    (status: TaskStatusEnum, taskKey?: string) => {
       if (!relevantRoutine) return;
       if (!timeZone) return;
 
@@ -211,12 +210,11 @@ export default function Calendar() {
   );
 
   const updateTasks = useCallback(
-    async (tasksToUpdate: TaskType[], currentStatus: string) => {
-      if (isLoading) return;
+    async (tasksToUpdate: TaskType[], currentStatus: TaskStatusEnum, newStatus: TaskStatusEnum) => {
+      if (loadingType) return;
 
       try {
-        setIsLoading(true);
-        const newStatus = currentStatus === "active" ? "disabled" : "active";
+        setLoadingType(newStatus);
 
         const response = await callTheServer({
           endpoint: "updateStatusOfTasks",
@@ -238,13 +236,13 @@ export default function Calendar() {
           setTasksToUpdate([]);
 
           setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
-          setIsLoading(false);
+          setLoadingType(undefined);
         }
       } catch (err) {
-        setIsLoading(false);
+        setLoadingType(undefined);
       }
     },
-    [isLoading, type]
+    [loadingType, type]
   );
 
   const getTasksOfThisDate = useCallback(
@@ -300,7 +298,7 @@ export default function Calendar() {
   }, [timeZone, originalTasks]);
 
   const handleShowByStatus = useCallback(
-    (status: "active" | "expired" | "disabled") => {
+    (status: TaskStatusEnum) => {
       handleChangeStatus(status, selectedTaskKey);
       if (mode === "all") {
         setSelectedTaskKey(undefined);
@@ -312,9 +310,9 @@ export default function Calendar() {
 
   const emptyIcon = useMemo(
     () =>
-      selectedStatus === "disabled" ? (
+      selectedStatus === TaskStatusEnum.CANCELED ? (
         <IconX className="icon" />
-      ) : selectedStatus === "expired" ? (
+      ) : selectedStatus === TaskStatusEnum.EXPIRED ? (
         <IconClock className="icon" />
       ) : (
         <IconZzz className="icon" />
@@ -391,9 +389,10 @@ export default function Calendar() {
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]: selectedStatus === "active" && !!relevantRoutine,
+              [classes.selectedButton]:
+                selectedStatus === TaskStatusEnum.ACTIVE && !!relevantRoutine,
             })}
-            onClick={() => handleShowByStatus("active")}
+            onClick={() => handleShowByStatus(TaskStatusEnum.ACTIVE)}
             disabled={!relevantRoutine}
           >
             <IconActivity className={"icon"} />
@@ -401,9 +400,10 @@ export default function Calendar() {
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]: selectedStatus === "disabled" && !!relevantRoutine,
+              [classes.selectedButton]:
+                selectedStatus === TaskStatusEnum.CANCELED && !!relevantRoutine,
             })}
-            onClick={() => handleShowByStatus("disabled")}
+            onClick={() => handleShowByStatus(TaskStatusEnum.CANCELED)}
             disabled={!relevantRoutine}
           >
             <IconX className={"icon"} />
@@ -411,9 +411,10 @@ export default function Calendar() {
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]: selectedStatus === "expired" && !!relevantRoutine,
+              [classes.selectedButton]:
+                selectedStatus === TaskStatusEnum.EXPIRED && !!relevantRoutine,
             })}
-            onClick={() => handleShowByStatus("expired")}
+            onClick={() => handleShowByStatus(TaskStatusEnum.EXPIRED)}
             disabled={!relevantRoutine}
           >
             <IconClock className={"icon"} />
@@ -440,14 +441,12 @@ export default function Calendar() {
                 })}
               </Stack>
               {tasksToUpdate.length > 0 && (
-                <Button
-                  mt={16}
-                  loading={isLoading}
-                  disabled={disableButton || isLoading}
-                  onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
-                >
-                  {selectedStatus === "active" ? "Cancel" : "Activate"} selected
-                </Button>
+                <BulkUpdateButtons
+                  loadingType={loadingType}
+                  selectedStatus={selectedStatus}
+                  tasksToUpdate={tasksToUpdate}
+                  updateTasks={updateTasks}
+                />
               )}
             </>
           )}
