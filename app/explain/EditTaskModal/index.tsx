@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { IconRefresh } from "@tabler/icons-react";
-import { Button, Loader, rem, Stack, Text } from "@mantine/core";
+import { Button, Loader, Stack, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import EditExistingTask from "../EditExistingTask";
 import classes from "./EditTaskModal.module.css";

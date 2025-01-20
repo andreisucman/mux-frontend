@@ -446,7 +446,7 @@ export default function Calendar() {
                   disabled={disableButton || isLoading}
                   onClick={() => updateTasks(tasksToUpdate, selectedStatus)}
                 >
-                  {selectedStatus === "active" ? "Disable" : "Enable"} selected
+                  {selectedStatus === "active" ? "Cancel" : "Activate"} selected
                 </Button>
               )}
             </>

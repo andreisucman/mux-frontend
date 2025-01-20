@@ -18,10 +18,9 @@ import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { getFromLocalStorage } from "@/helpers/localStorage";
-import modifyQuery from "@/helpers/modifyQuery";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { daysFrom } from "@/helpers/utils";
-import { RequiredSubmissionType, TaskStatusErum, TaskType } from "@/types/global";
+import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
 import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
@@ -44,18 +43,8 @@ export default function Explain(props: Props) {
   const [showWaitComponent, setShowWaitComponent] = useState(false);
 
   const { timeZone } = userDetails || {};
-  const {
-    isRecipe,
-    startsAt,
-    example,
-    proofEnabled,
-    suggestions,
-    completedAt,
-    key: taskKey,
-    expiresAt,
-    type,
-    status,
-  } = taskInfo || {};
+  const { isRecipe, startsAt, example, proofEnabled, suggestions, completedAt, expiresAt, status } =
+    taskInfo || {};
 
   const futureStartDate = useMemo(() => {
     if (startsAt) {
@@ -67,20 +56,20 @@ export default function Explain(props: Props) {
   }, [startsAt]);
 
   const statusNote = useMemo(() => {
-    if (status === TaskStatusErum.EXPIRED) {
+    if (status === TaskStatusEnum.EXPIRED) {
       const statusString = `${upperFirst(status)} on ${formatDate({ date: expiresAt || new Date() })}`;
       return (
         <Text className={classes.statusNote} c="red.7">
           {statusString}
         </Text>
       );
-    } else if (status === TaskStatusErum.CANCELED) {
+    } else if (status === TaskStatusEnum.CANCELED) {
       return (
         <Text className={classes.statusNote} c="red.7">
           Canceled
         </Text>
       );
-    } else if (status === TaskStatusErum.COMPLETED) {
+    } else if (status === TaskStatusEnum.COMPLETED) {
       return (
         <Text className={classes.statusNote} c="green.7">
           Completed at {formatDate({ date: completedAt || new Date() })}
@@ -173,10 +162,7 @@ export default function Explain(props: Props) {
           if (response.error) {
             setError(response.error);
           } else {
-            const startsAt = setUtcMidnight({
-              date: date ? date : new Date(),
-              timeZone,
-            });
+            const startsAt = new Date(date || new Date());
             const expiresAt = daysFrom({ date: startsAt, days: 1 });
 
             const updatedTask = {
@@ -186,6 +172,7 @@ export default function Explain(props: Props) {
               startsAt: startsAt.toISOString(),
               expiresAt: expiresAt.toISOString(),
             } as TaskType;
+
             setTaskInfo(updatedTask);
             setStep(2);
           }
@@ -223,24 +210,28 @@ export default function Explain(props: Props) {
     });
   }, [taskName, taskId, taskDescription, taskInstruction, startsAt]);
 
-  const handleRedirectToCalendar = useCallback(() => {
-    const query = modifyQuery({
-      params: [
-        { name: "type", value: type, action: "replace" },
-        {
-          name: "key",
-          value: taskKey,
-          action: "replace",
-        },
-        {
-          name: "mode",
-          value: "individual",
-          action: "replace",
-        },
-      ],
+  const updateTaskStatus = useCallback(async () => {
+    const allowedTaskStatuses = [TaskStatusEnum.ACTIVE, TaskStatusEnum.CANCELED];
+    if (taskInfo && taskInfo.status && !allowedTaskStatuses.includes(taskInfo.status)) return;
+
+    const newStatus =
+      taskInfo && taskInfo.status === TaskStatusEnum.ACTIVE
+        ? TaskStatusEnum.CANCELED
+        : TaskStatusEnum.ACTIVE;
+
+    const response = await callTheServer({
+      endpoint: "updateStatusOfTasks",
+      method: "POST",
+      body: { taskIds: [taskId], newStatus, isVoid: true },
     });
-    router.push(`/tasks/calendar?${query}`);
-  }, [type, taskKey]);
+
+    if (response.status === 200) {
+      setTaskInfo((prev: TaskType | null) => ({
+        ...(prev as TaskType),
+        status: newStatus,
+      }));
+    }
+  }, [taskInfo]);
 
   useEffect(() => {
     if (!taskId) return;
@@ -269,7 +260,7 @@ export default function Explain(props: Props) {
       <SkeletonWrapper show={!name || !taskInfo}>
         <PageHeaderWithReturn title={name || ""} showReturn />
         {status !== "active" && statusNote}
-        {futureStartDate && (
+        {futureStartDate && status === "active" && (
           <Text size="sm" c="green.7">
             Starts on: {futureStartDate}{" "}
           </Text>
@@ -294,8 +285,8 @@ export default function Explain(props: Props) {
                 <Button
                   size="compact-sm"
                   variant="default"
-                  disabled={taskStatus === "completed"}
-                  className={classes.disableButton}
+                  disabled={taskStatus !== "active"}
+                  className={classes.actionButton}
                   onClick={openEditTaskModal}
                 >
                   Edit
@@ -303,11 +294,11 @@ export default function Explain(props: Props) {
                 <Button
                   size="compact-sm"
                   variant="default"
-                  disabled={taskStatus === "completed"}
-                  className={classes.disableButton}
-                  onClick={handleRedirectToCalendar}
+                  disabled={taskStatus === "deleted"}
+                  className={classes.actionButton}
+                  onClick={updateTaskStatus}
                 >
-                  Disable
+                  {taskStatus === "active" ? "Cancel" : "Activate"}
                 </Button>
               </Group>
               <ProofStatus

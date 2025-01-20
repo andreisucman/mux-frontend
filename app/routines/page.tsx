@@ -68,6 +68,7 @@ export default function ClubRoutines() {
               type={type as TypeEnum}
               routine={routine}
               isSelf={true}
+              setRoutines={setRoutines}
             />
           );
         }),

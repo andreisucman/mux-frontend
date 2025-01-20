@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
-import { IconBinoculars } from "@tabler/icons-react";
+import { IconBinoculars, IconCalendar } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
-import { AllTaskType, TypeEnum } from "@/types/global";
+import { AllTaskType, TaskStatusEnum, TypeEnum } from "@/types/global";
 import StatsGroup from "../StatsGroup";
 import RoutineIndividualTasksList from "./IndividualTasksList";
 import classes from "./AccordionTaskRow.module.css";
@@ -14,29 +14,36 @@ type Props = {
   data: AllTaskType;
   routineId: string;
   isSelf: boolean;
+  cloneTask: (taskId: string) => void;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   redirectToCalendar: (taskKey: string) => void;
   redirectToTask: (taskId: string) => void;
+  updateTaskStatus: (taskId: string, newStatus: string) => void;
 };
 
 export default function AccordionTaskRow({
   data,
   isSelf,
   routineId,
+  cloneTask,
   openTaskDetails,
   redirectToTask,
+  updateTaskStatus,
   redirectToCalendar,
 }: Props) {
   const [openedIndividualTasks, { open, close }] = useDisclosure(false);
   const { ids, icon, key, color, name, total, completed } = data;
 
+  const notDeletedIds = useMemo(
+    () => ids.filter((idObj) => idObj.status !== TaskStatusEnum.DELETED),
+    [ids]
+  );
+
   const someTaskActive = useMemo(() => ids.some((obj) => obj.status === "active"), [ids]);
   const completionRate = useMemo(() => Math.round((completed / total) * 100), [total, completed]);
 
   const handleOpenList = () => {
-    if (ids.length > 1) {
-      openedIndividualTasks ? close() : open();
-    }
+    openedIndividualTasks ? close() : open();
   };
 
   return (
@@ -60,7 +67,19 @@ export default function AccordionTaskRow({
             total={total}
             isChild={true}
           />
-          {!isSelf && (
+          {isSelf ? (
+            <ActionIcon
+              variant="default"
+              size="sm"
+              component="div"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (redirectToCalendar) redirectToCalendar(key);
+              }}
+            >
+              <IconCalendar className={"icon icon__small"} />
+            </ActionIcon>
+          ) : (
             <ActionIcon
               variant="default"
               size="sm"
@@ -81,9 +100,11 @@ export default function AccordionTaskRow({
           icon={icon}
           isSelf={isSelf}
           taskKey={key}
-          taskIdsObjects={ids}
+          taskIdsObjects={notDeletedIds}
+          cloneTask={cloneTask}
           redirectToCalendar={redirectToCalendar}
           redirectToTask={redirectToTask}
+          updateTaskStatus={updateTaskStatus}
         />
       </Collapse>
     </Stack>

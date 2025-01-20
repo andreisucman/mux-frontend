@@ -1,5 +1,5 @@
 import React from "react";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { IconCopy } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Group, Stack, Text } from "@mantine/core";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
@@ -13,19 +13,22 @@ type Props = {
   color: string;
   isSelf: boolean;
   taskIdsObjects: { startsAt: string; status: string; _id: string }[];
+  cloneTask: (taskId: string) => void;
   redirectToCalendar: (taskKey: string) => void;
   redirectToTask: (taskId: string) => void;
+  updateTaskStatus: (taskId: string, newStatus: string) => void;
 };
 
 export default function RoutineIndividualTasksList({
-  taskKey,
   icon,
   color,
   isSelf,
   taskIdsObjects,
+  cloneTask,
   redirectToTask,
-  redirectToCalendar,
+  updateTaskStatus,
 }: Props) {
+  const lastTaskObject = taskIdsObjects[taskIdsObjects.length - 1];
   return (
     <Stack className={classes.container}>
       {taskIdsObjects.map((idObj) => {
@@ -44,15 +47,22 @@ export default function RoutineIndividualTasksList({
             </Text>
             {isSelf && (
               <AccordionTaskMenu
-                redirectToCalendar={() => redirectToCalendar(taskKey)}
-                redirectToTask={() => redirectToTask(idObj._id)}
+                taskId={idObj._id}
+                taskStatus={idObj.status}
+                redirectToTask={redirectToTask}
+                updateTaskStatus={updateTaskStatus}
               />
             )}
           </Group>
         );
       })}
-      <Button variant="default" className={classes.button}>
-        <IconCirclePlus className={`${classes.icon} icon`} /> Add
+      <Button
+        variant="default"
+        size="compact-sm"
+        onClick={() => cloneTask(lastTaskObject._id)}
+        className={classes.button}
+      >
+        <IconCopy className={`${classes.icon} icon`} /> Add more
       </Button>
     </Stack>
   );

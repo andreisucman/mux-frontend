@@ -3,6 +3,7 @@ import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-rea
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -17,12 +18,14 @@ type Props = {
   isSelf: boolean;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   handleStealRoutine?: (routineId: string) => void;
+  setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 
 export default function AccordionRoutineRow({
   type,
   routine,
   isSelf,
+  setRoutines,
   openTaskDetails,
   handleStealRoutine,
 }: Props) {
@@ -31,12 +34,12 @@ export default function AccordionRoutineRow({
 
   const totalTotal = useMemo(
     () => routine.allTasks.reduce((a, c) => a + c.total, 0),
-    [routine.allTasks.length]
+    [routine.allTasks]
   );
 
   const totalCompleted = useMemo(
     () => routine.allTasks.reduce((a, c) => a + c.completed, 0),
-    [routine.allTasks.length]
+    [routine.allTasks]
   );
 
   const completionRate = useMemo(
@@ -44,7 +47,7 @@ export default function AccordionRoutineRow({
     [totalTotal, totalCompleted]
   );
 
-  const handleRedirectToCalendar = useCallback(
+  const redirectToCalendar = useCallback(
     (taskKey?: string) => {
       const dateFrom = new Date(routine.createdAt);
       dateFrom.setUTCHours(0, 0, 0, 0);
@@ -67,15 +70,45 @@ export default function AccordionRoutineRow({
       const url = `/calendar${query ? `?${query}` : ""}`;
 
       router.push(url);
-      modals.closeAll();
     },
     [type, routine]
   );
 
-  const handleRedirectToTask = useCallback((taskId: string) => {
+  const redirectToTask = useCallback((taskId: string) => {
     router.push(`/explain/${taskId}`);
-    modals.closeAll();
   }, []);
+
+  const updateTaskStatus = useCallback(
+    async (taskId: string, newStatus: string) => {
+      const response = await callTheServer({
+        endpoint: "updateStatusOfTasks",
+        method: "POST",
+        body: { taskIds: [taskId], newStatus, returnOnlyRoutines: true },
+      });
+
+      if (response.status === 200) {
+        const { routines } = response.message;
+        if (setRoutines) setRoutines(routines);
+      }
+    },
+    [setRoutines]
+  );
+
+  const cloneTask = useCallback(
+    async (taskId: string) => {
+      const response = await callTheServer({
+        endpoint: "cloneTask",
+        method: "POST",
+        body: { taskId },
+      });
+
+      if (response.status === 200) {
+        const { routines } = response.message;
+        if (setRoutines) setRoutines(routines);
+      }
+    },
+    [setRoutines]
+  );
 
   const showSkeleton = useShowSkeleton();
 
@@ -107,7 +140,7 @@ export default function AccordionRoutineRow({
                   component="div"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleRedirectToCalendar();
+                    redirectToCalendar();
                   }}
                 >
                   <IconCalendar className="icon icon__small" />
@@ -140,9 +173,11 @@ export default function AccordionRoutineRow({
               isSelf={isSelf}
               routineId={routine._id}
               type={type as TypeEnum}
+              cloneTask={cloneTask}
               openTaskDetails={openTaskDetails}
-              redirectToCalendar={handleRedirectToCalendar}
-              redirectToTask={handleRedirectToTask}
+              redirectToCalendar={redirectToCalendar}
+              redirectToTask={redirectToTask}
+              updateTaskStatus={updateTaskStatus}
             />
           ))}
         </Accordion.Panel>

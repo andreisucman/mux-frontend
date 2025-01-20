@@ -354,11 +354,12 @@ export type NextActionType = {
   parts: { part: PartEnum; date: Date | null }[];
 };
 
-export enum TaskStatusErum {
+export enum TaskStatusEnum {
   ACTIVE = "active",
   COMPLETED = "completed",
   EXPIRED = "expired",
   CANCELED = "canceled",
+  DELETED = "deleted",
 }
 
 export type RecipeType = {
@@ -387,14 +388,6 @@ export type SuggestionType = {
   priceAndUnit: string;
 };
 
-export type RequiredSubmissionType = {
-  submissionId: string;
-  name: string;
-  proofId: string;
-  dayTime?: "morning" | "noon" | "evening";
-  isSubmitted: boolean;
-};
-
 export type TaskType = {
   _id: string;
   name: string;
@@ -410,7 +403,7 @@ export type TaskType = {
   description: string;
   instruction: string;
   proofEnabled: boolean;
-  status: TaskStatusErum;
+  status: TaskStatusEnum;
   isRecipe: boolean;
   recipe: RecipeType;
   suggestions: SuggestionType[];
