@@ -15,3 +15,13 @@ export type DiaryActivityType = {
   contentType: "image" | "video";
   categoryName: "style" | "proof" | "food";
 };
+
+export enum ChatCategoryEnum {
+  TASK = "task",
+  PRODUCT = "product",
+  DIARY = "diary",
+  ANSWERS = "answers",
+  STYLE = "style",
+  FOOD = "food",
+  ROUTINE = "routine",
+}

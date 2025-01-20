@@ -23,7 +23,11 @@
   white-space: nowrap;
 }
 
+.buttonGroup {
+  flex-wrap: nowrap;
+  margin-left: auto;
+}
+
 .button {
   padding: rem(6);
-  margin-left: auto;
 }

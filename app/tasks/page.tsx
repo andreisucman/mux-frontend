@@ -7,8 +7,9 @@ import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
+import ChatWithModal from "../../components/ChatWithModal";
 import { ConsiderationsInput } from "../../components/ConsiderationsInput";
-import ChatWithModal from "../club/ModerationLayout/ChatWithModal";
+import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import TasksList from "./TasksList";
 
@@ -58,10 +59,15 @@ export default function Tasks() {
         />
         <TasksList type={type as string} />
         <ChatWithModal
-          chatCategory="task"
           defaultVisibility="open"
-          openChatKey="task"
+          chatCategory={ChatCategoryEnum.TASK}
+          openChatKey={ChatCategoryEnum.TASK}
           dividerLabel={"Discuss tasks"}
+          starterQuestions={[
+            "which task should i start first",
+            "what tasks require going to gym",
+            "in what order should i complete the tasks to optimize for time",
+          ]}
           modalTitle={
             <Title order={5} component={"p"}>
               Discuss tasks

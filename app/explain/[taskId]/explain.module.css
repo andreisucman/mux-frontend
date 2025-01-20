@@ -26,21 +26,3 @@
 .statusNote {
   font-size: var(--mantine-font-size-sm);
 }
-
-.banner {
-  justify-content: center;
-  text-align: center;
-  background-color: var(--mantine-color-green-7);
-  height: rem(22);
-  border-radius: var(--mantine-radius-md);
-}
-
-.red {
-  background-color: var(--mantine-color-red-7);
-}
-
-.bannerText {
-  color: white;
-  font-weight: 600;
-  font-size: var(--mantine-font-size-sm);
-}

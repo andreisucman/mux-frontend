@@ -44,3 +44,17 @@
   min-height: rem(42);
   border: rem(1) solid var(--mantine-color-dark-5);
 }
+
+.starterQuestions {
+  overflow: auto;
+  flex: 1;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.starterQuestionsWrapper {
+  flex-wrap: nowrap;
+  gap: rem(8);
+}

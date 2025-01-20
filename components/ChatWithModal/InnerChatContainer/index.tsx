@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { rem, Stack, Text } from "@mantine/core";
+import React, { useEffect, useMemo, useState } from "react";
+import { Stack, Text } from "@mantine/core";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatDisplay from "@/components/ChatDisplay";
 import ChatInput from "@/components/ChatInput";
 import { MessageType } from "@/components/ChatInput/types";
+import { conversationStarters } from "@/data/conversationStarters";
 import { getFromIndexedDb } from "@/helpers/indexedDb";
 import classes from "./InnerChatContainer.module.css";
 
@@ -13,7 +15,8 @@ type Props = {
   openChatKey?: string;
   disclaimer?: string;
   dividerLabel?: string;
-  chatCategory?: string;
+  starterQuestions?: string[];
+  chatCategory?: ChatCategoryEnum;
   chatContentId?: string;
 };
 
@@ -24,6 +27,7 @@ export default function InnerChatContainer({
   openChatKey,
   disclaimer,
   dividerLabel,
+  starterQuestions,
   chatCategory,
   chatContentId,
 }: Props) {
@@ -41,6 +45,12 @@ export default function InnerChatContainer({
       }
     });
   }, [chatCategory, chatContentId]);
+
+  const finalStarterQuestions = useMemo(
+    () =>
+      starterQuestions ? starterQuestions : chatCategory ? conversationStarters[chatCategory] : [],
+    [chatCategory, starterQuestions]
+  );
 
   return (
     <Stack className={classes.container}>
@@ -73,8 +83,10 @@ export default function InnerChatContainer({
         setConversation={setConversation}
         setConversationId={setConversationId}
         setIsThinking={setIsThinking}
+        starterQuestions={finalStarterQuestions}
         showEnergy
         autoFocus
+        hideDivider
       />
     </Stack>
   );

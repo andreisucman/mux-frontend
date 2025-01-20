@@ -15,6 +15,7 @@ import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
+import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
 import { TaskStatusEnum, TaskType, UserDataType } from "@/types/global";
 import BulkUpdateButtons from "./BulkUpdateButtons";
@@ -36,6 +37,7 @@ type LoadTasksProps = {
 };
 
 export default function Calendar() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
@@ -99,7 +101,7 @@ export default function Calendar() {
     [tasksToUpdate.length]
   );
 
-  const handleChangeMode = useCallback(
+  const changeMode = useCallback(
     (mode: string, taskKey?: string) => {
       if (!timeZone) return;
       setMode(mode);
@@ -290,8 +292,8 @@ export default function Calendar() {
     [selectedStatus, selectedDate, tasks, type]
   );
 
-  const handleResetMode = useCallback(() => {
-    handleChangeMode("all");
+  const resetMode = useCallback(() => {
+    changeMode("all");
     setSelectedTaskKey(undefined);
     setTasksToUpdate([]);
     setSelectedDate(null);
@@ -307,6 +309,10 @@ export default function Calendar() {
     },
     [mode, selectedTaskKey, timeZone, relevantRoutine?._id]
   );
+
+  const redirectToTask = useCallback((taskId: string) => {
+    router.push(`/explain/${taskId}`);
+  }, []);
 
   const emptyIcon = useMemo(
     () =>
@@ -348,7 +354,7 @@ export default function Calendar() {
 
   useEffect(() => {
     if (!givenTaskKey) return;
-    handleChangeMode("individual", givenTaskKey as string);
+    changeMode("individual", givenTaskKey as string);
   }, [givenTaskKey]);
 
   return (
@@ -431,9 +437,10 @@ export default function Calendar() {
                       mode={mode as string}
                       task={record}
                       tasksToUpdate={tasksToUpdate}
+                      redirectToTask={redirectToTask}
                       selectTask={selectTask}
-                      handleChangeMode={handleChangeMode}
-                      handleResetMode={handleResetMode}
+                      changeMode={changeMode}
+                      resetMode={resetMode}
                     />
                   );
                 })}

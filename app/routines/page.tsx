@@ -12,7 +12,8 @@ import fetchRoutines from "@/functions/fetchRoutines";
 import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
 import { RoutineType, TypeEnum } from "@/types/global";
-import ChatWithModal from "../club/ModerationLayout/ChatWithModal";
+import ChatWithModal from "../../components/ChatWithModal";
+import { ChatCategoryEnum } from "../diary/type";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -148,9 +149,9 @@ export default function ClubRoutines() {
       )}
       {routines && (
         <ChatWithModal
-          chatCategory="routine"
           defaultVisibility="open"
-          openChatKey="routine"
+          chatCategory={ChatCategoryEnum.ROUTINE}
+          openChatKey={ChatCategoryEnum.ROUTINE}
           dividerLabel={"Chat about routines and tasks"}
           modalTitle={
             <Title order={5} component={"p"}>

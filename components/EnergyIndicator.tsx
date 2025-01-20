@@ -7,7 +7,7 @@ type Props = {
 };
 
 function EnergyIndicator({ value }: Props) {
-  const normalizedValue = Math.round((value * 100) / 100000);
+  const normalizedValue = Math.round((value * 100) / 150000);
   const color =
     normalizedValue >= 75
       ? "var(--mantine-color-green-7)"

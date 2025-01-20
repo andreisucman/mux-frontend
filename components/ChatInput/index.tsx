@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
+import { ActionIcon, Button, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -21,6 +21,7 @@ import ImageUploadButton from "./ImageUploadButton";
 import InputImagePreview from "./InputImagePreview";
 import { MessageContent, MessageType } from "./types";
 import classes from "./ChatInput.module.css";
+import { ChatCategoryEnum } from "@/app/diary/type";
 
 const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
   ssr: false,
@@ -36,12 +37,14 @@ type Props = {
   openChatKey?: string;
   userName?: string | string[];
   conversation?: MessageType[];
-  chatCategory?: string;
+  chatCategory?: ChatCategoryEnum;
   chatContentId?: string;
   autoFocus?: boolean;
   showEnergy?: boolean;
+  hideDivider?: boolean;
   disableFocus?: boolean;
   conversationId?: string | null;
+  starterQuestions: string[];
   onClick?: () => void;
   setIsThinking?: React.Dispatch<React.SetStateAction<boolean>>;
   setConversation?: React.Dispatch<React.SetStateAction<MessageType[]>>;
@@ -62,8 +65,10 @@ export default function ChatInput({
   autoFocus,
   disableFocus,
   conversationId,
-  onClick,
+  starterQuestions,
   showEnergy,
+  hideDivider,
+  onClick,
   setIsThinking,
   setConversation,
   setConversationId,
@@ -354,9 +359,23 @@ export default function ChatInput({
     });
   }, [chatContentId]);
 
+  const starterButtons = starterQuestions.map((q) => (
+    <Button variant="default" key={q} size="compact-sm" onClick={() => setCurrentMessage(q)}>
+      {q}
+    </Button>
+  ));
+
+  const showStarterQuestions =
+    starterQuestions.length > 0 && conversation && conversation.length === 0;
+
   return (
     <Stack className={classes.container}>
-      <Divider label={finalDividerLabel} onClick={handleToggleChat} />
+      {!hideDivider && <Divider label={finalDividerLabel} onClick={handleToggleChat} />}
+      {showStarterQuestions && (
+        <Group className={`${classes.starterQuestions}`}>
+          <Group className={classes.starterQuestionsWrapper}>{starterButtons}</Group>
+        </Group>
+      )}
       <Collapse in={showChat}>
         <Stack className={classes.container}>
           {heading}

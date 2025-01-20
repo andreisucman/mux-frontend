@@ -1,9 +1,10 @@
 import React from "react";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
-import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
+import ChatWithModal from "@/components/ChatWithModal";
 import { SuggestionType } from "@/types/global";
 import ProductCell from "./ProductCell";
 import classes from "./SuggestionContainer.module.css";
+import { ChatCategoryEnum } from "@/app/diary/type";
 
 type Props = {
   chatContentId: string;
@@ -62,7 +63,7 @@ export default function SuggestionContainer({
 
         {!disableLocalChat && (
           <ChatWithModal
-            chatCategory="product"
+            chatCategory={ChatCategoryEnum.PRODUCT}
             openChatKey={taskKey}
             modalTitle={chatTitle}
             chatContentId={chatContentId}

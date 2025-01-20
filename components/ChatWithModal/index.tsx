@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatInput from "@/components/ChatInput";
 import InnerChatContainer from "./InnerChatContainer";
 import classes from "./ChatWithModal.module.css";
@@ -13,7 +14,8 @@ type Props = {
   openChatKey?: string;
   disclaimer?: string;
   dividerLabel?: string;
-  chatCategory?: string;
+  starterQuestions?: string[];
+  chatCategory?: ChatCategoryEnum;
   chatContentId?: string;
   defaultVisibility?: "open" | "closed";
 };
@@ -21,6 +23,7 @@ type Props = {
 export default function ChatWithModal({
   isClub,
   disabled,
+  starterQuestions,
   userName,
   disclaimer,
   dividerLabel,
@@ -42,17 +45,18 @@ export default function ChatWithModal({
           dividerLabel={dividerLabel}
           chatCategory={chatCategory}
           chatContentId={chatContentId}
+          starterQuestions={starterQuestions}
           isClub={isClub}
         />
       </Modal>
-
       <ChatInput
         defaultVisibility={defaultVisibility}
         openChatKey={openChatKey}
         dividerLabel={dividerLabel}
         disabled={disabled}
-        disableFocus
         onClick={open}
+        starterQuestions={[]}
+        disableFocus
       />
     </Stack>
   );

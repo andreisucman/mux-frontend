@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from "react";
-import { IconArrowBack, IconSearch } from "@tabler/icons-react";
+import React, { useMemo } from "react";
+import { IconFilter, IconFilterOff, IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -13,8 +13,9 @@ type Props = {
   tasksToUpdate: TaskType[];
   customStyles?: { [key: string]: any };
   selectTask: (task: TaskType) => void;
-  handleChangeMode: (mode: string, taskKey?: string) => void;
-  handleResetMode: () => void;
+  changeMode: (mode: string, taskKey?: string) => void;
+  resetMode: () => void;
+  redirectToTask: (taskId: string) => void;
 };
 
 export default function CalendarRow({
@@ -23,20 +24,13 @@ export default function CalendarRow({
   customStyles,
   tasksToUpdate,
   selectTask,
-  handleChangeMode,
-  handleResetMode,
+  redirectToTask,
+  changeMode,
+  resetMode,
 }: Props) {
   const { key: taskKey, color, icon, name, startsAt, _id: taskId } = task;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
-
-  const handleSeeIndividualTasks = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>, taskKey: string) => {
-      e.stopPropagation();
-      handleChangeMode("individual", taskKey);
-    },
-    [taskKey]
-  );
 
   const checked = useMemo(
     () => tasksToUpdate.map((t) => t._id).includes(taskId),
@@ -58,27 +52,42 @@ export default function CalendarRow({
         <Text className={classes.name} lineClamp={2}>
           {name}
         </Text>
-        {mode === "all" && (
+        <Group className={classes.buttonGroup}>
           <ActionIcon
             variant="default"
             className={classes.button}
-            onClick={(e) => handleSeeIndividualTasks(e, taskKey)}
-          >
-            <IconSearch />
-          </ActionIcon>
-        )}
-        {mode === "individual" && (
-          <ActionIcon
-            variant="default"
             onClick={(e) => {
               e.stopPropagation();
-              handleResetMode();
+              redirectToTask(taskId);
             }}
-            className={classes.button}
           >
-            <IconArrowBack className={"icon"} />
+            <IconSearch className="icon" />
           </ActionIcon>
-        )}
+          {mode === "all" && (
+            <ActionIcon
+              variant="default"
+              className={classes.button}
+              onClick={(e) => {
+                e.stopPropagation();
+                changeMode("individual", taskKey);
+              }}
+            >
+              <IconFilter className="icon" />
+            </ActionIcon>
+          )}
+          {mode === "individual" && (
+            <ActionIcon
+              variant="default"
+              onClick={(e) => {
+                e.stopPropagation();
+                resetMode();
+              }}
+              className={classes.button}
+            >
+              <IconFilterOff className={"icon"} />
+            </ActionIcon>
+          )}
+        </Group>
       </Group>
     </Skeleton>
   );

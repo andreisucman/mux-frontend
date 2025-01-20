@@ -6,7 +6,7 @@ import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
+import ChatWithModal from "@/components/ChatWithModal";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -21,6 +21,7 @@ import SelectStyleGoalModalContent from "./SelectStyleGoalModalContent";
 import { outlookStyles } from "./SelectStyleGoalModalContent/outlookStyles";
 import StyleSuggestionCard from "./StyleSuggestionCard";
 import classes from "./result.module.css";
+import { ChatCategoryEnum } from "@/app/diary/type";
 
 export const runtime = "edge";
 
@@ -179,12 +180,16 @@ export default function StyleScanResult() {
               }
             />
             <ChatWithModal
-              chatCategory="style"
-              openChatKey="style"
+              chatCategory={ChatCategoryEnum.STYLE}
+              openChatKey={ChatCategoryEnum.STYLE}
               chatContentId={styleId}
               dividerLabel={"Discuss style and outlook"}
               defaultVisibility="open"
-              modalTitle={<Title order={5} component={"p"}>Discuss style and outlook</Title>}
+              modalTitle={
+                <Title order={5} component={"p"}>
+                  Discuss style and outlook
+                </Title>
+              }
             />
           </>
         )}

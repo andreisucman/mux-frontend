@@ -15,9 +15,9 @@ import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { UserDataType } from "@/types/global";
-import ChatWithModal from "../club/ModerationLayout/ChatWithModal";
+import ChatWithModal from "../../components/ChatWithModal";
 import DiaryContent from "./DiaryContent";
-import { DiaryRecordType } from "./type";
+import { ChatCategoryEnum, DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
 export default function DiaryPage() {
@@ -162,8 +162,8 @@ export default function DiaryPage() {
               Chat about diary
             </Title>
           }
-          chatCategory="diary"
-          openChatKey="diary"
+          chatCategory={ChatCategoryEnum.DIARY}
+          openChatKey={ChatCategoryEnum.DIARY}
           dividerLabel="Chat about diary"
         />
       </SkeletonWrapper>

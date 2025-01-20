@@ -14,6 +14,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -23,8 +24,8 @@ import fetchQuestions from "@/functions/fetchQuestions";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
+import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
-import ChatWithModal from "../../ModerationLayout/ChatWithModal";
 import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
 import classes from "./answers.module.css";
@@ -262,8 +263,8 @@ export default function AnswersPage(props: Props) {
             </Stack>
             {showType === "answered" && (
               <ChatWithModal
-                chatCategory="answers"
-                openChatKey="answers"
+                chatCategory={ChatCategoryEnum.ANSWERS}
+                openChatKey={ChatCategoryEnum.ANSWERS}
                 dividerLabel="Discuss answers"
                 defaultVisibility="open"
                 modalTitle={

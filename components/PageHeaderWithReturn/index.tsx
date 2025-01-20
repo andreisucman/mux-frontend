@@ -9,7 +9,7 @@ import SortButton from "../SortButton";
 import classes from "./PageHeaderWithReturn.module.css";
 
 type Props = {
-  title: string;
+  title: React.ReactNode | string;
   showReturn?: boolean;
   isDisabled?: boolean;
   returnPath?: string;

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";
 import TaskInfoContainer from "@/components/TaskInfoContainer";
@@ -15,8 +16,8 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
+import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
-import ChatWithModal from "../../ModerationLayout/ChatWithModal";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -253,9 +254,9 @@ export default function ClubRoutines(props: Props) {
         )}
         {routines && (
           <ChatWithModal
-            chatCategory="routine"
+            chatCategory={ChatCategoryEnum.ROUTINE}
+            openChatKey={ChatCategoryEnum.ROUTINE}
             defaultVisibility="open"
-            openChatKey="routine"
             dividerLabel={"Chat about routines and tasks"}
             modalTitle={
               <Title order={5} component={"p"}>

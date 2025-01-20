@@ -3,11 +3,12 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
-import { Button, Group, Stack, Switch, Text, Title } from "@mantine/core";
+import { Badge, Button, Group, rem, Stack, Switch, Text, Title } from "@mantine/core";
 import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import ChatWithModal from "@/app/club/ModerationLayout/ChatWithModal";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import ChatWithModal from "@/components/ChatWithModal";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -249,17 +250,19 @@ export default function Explain(props: Props) {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper show={!name || !taskInfo}>
-        <PageHeaderWithReturn title={name || ""} showReturn />
-        {showBanner && (
-          <Group
-            className={cn(classes.banner, { [classes.red]: status !== TaskStatusEnum.ACTIVE })}
-          >
-            <Text className={classes.bannerText}>
-              {status === TaskStatusEnum.ACTIVE ? <>Starts on: {futureStartDate} </> : statusNote}
-            </Text>
-          </Group>
-        )}
-
+        <PageHeaderWithReturn
+          title={
+            <>
+              <span style={{ marginRight: rem(8) }}>{name}</span>
+              {showBanner && (
+                <Badge mt={-8} color={status !== TaskStatusEnum.ACTIVE ? "red.7" : "green.7"}>
+                  {status === TaskStatusEnum.ACTIVE ? futureStartDate : statusNote}
+                </Badge>
+              )}
+            </>
+          }
+          showReturn
+        />
         <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
           {showWaitComponent ? (
             <WaitComponent
@@ -326,7 +329,7 @@ export default function Explain(props: Props) {
                 />
               )}
               <ChatWithModal
-                chatCategory="task"
+                chatCategory={ChatCategoryEnum.TASK}
                 openChatKey={taskId}
                 chatContentId={taskId}
                 defaultVisibility="open"

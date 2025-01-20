@@ -4,12 +4,12 @@ import React, { use, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Title } from "@mantine/core";
 import DiaryContent from "@/app/diary/DiaryContent";
-import { DiaryRecordType } from "@/app/diary/type";
+import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
 import { TypeEnum } from "@/types/global";
+import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
-import ChatWithModal from "../../ModerationLayout/ChatWithModal";
 
 type Props = {
   params: Promise<{ userName: string }>;
@@ -69,8 +69,8 @@ export default function DiaryPage(props: Props) {
             Chat about diary
           </Title>
         }
-        chatCategory="diary"
-        openChatKey="diary"
+        chatCategory={ChatCategoryEnum.DIARY}
+        openChatKey={ChatCategoryEnum.DIARY}
         dividerLabel="Chat about diary"
       />
     </ClubModerationLayout>
