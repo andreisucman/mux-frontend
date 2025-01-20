@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconActivity, IconClock, IconX, IconZzz } from "@tabler/icons-react";
+import { IconActivity, IconCancel, IconClock, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
@@ -311,7 +311,7 @@ export default function Calendar() {
   const emptyIcon = useMemo(
     () =>
       selectedStatus === TaskStatusEnum.CANCELED ? (
-        <IconX className="icon" />
+        <IconCancel className="icon" />
       ) : selectedStatus === TaskStatusEnum.EXPIRED ? (
         <IconClock className="icon" />
       ) : (
@@ -319,8 +319,6 @@ export default function Calendar() {
       ),
     [selectedStatus]
   );
-
-  const emptyText = selectedStatus !== "active" ? `No ${selectedStatus} tasks` : "Rest day";
 
   useShallowEffect(() => {
     if (!timeZone) return;
@@ -406,7 +404,7 @@ export default function Calendar() {
             onClick={() => handleShowByStatus(TaskStatusEnum.CANCELED)}
             disabled={!relevantRoutine}
           >
-            <IconX className={"icon"} />
+            <IconCancel className={"icon"} />
           </ActionIcon>
           <ActionIcon
             variant="default"
@@ -452,7 +450,7 @@ export default function Calendar() {
           )}
 
           {displayComponent !== "loading" && selectedTasks.length === 0 && (
-            <OverlayWithText icon={emptyIcon} text={emptyText} />
+            <OverlayWithText icon={emptyIcon} text={`No ${selectedStatus} tasks`} />
           )}
         </Stack>
       </SkeletonWrapper>

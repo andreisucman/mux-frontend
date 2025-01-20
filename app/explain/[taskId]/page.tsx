@@ -192,7 +192,7 @@ export default function Explain(props: Props) {
       size: "auto",
       title: (
         <Title order={5} component={"p"}>
-          Edit {taskName}
+          Edit {taskName?.toLowerCase()}
         </Title>
       ),
       innerProps: (

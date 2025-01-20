@@ -62,7 +62,7 @@ export default function RoutineIndividualTasksList({
         onClick={() => cloneTask(lastTaskObject._id)}
         className={classes.button}
       >
-        <IconCopy className={`${classes.icon} icon`} /> Add more
+        <IconCopy className={`${classes.icon} icon icon__small`} /> Add more
       </Button>
     </Stack>
   );
