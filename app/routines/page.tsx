@@ -3,12 +3,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";
 import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import fetchRoutines from "@/functions/fetchRoutines";
+import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
 import { RoutineType, TypeEnum } from "@/types/global";
 import ChatWithModal from "../club/ModerationLayout/ChatWithModal";
@@ -25,6 +26,7 @@ type GetRoutinesProps = {
 };
 
 export default function ClubRoutines() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -132,8 +134,12 @@ export default function ClubRoutines() {
             </Stack>
           ) : (
             <OverlayWithText
-              icon={<IconCircleOff className="icon" />}
               text={`No ${type} routines`}
+              button={
+                <Button variant="default" mt={8} onClick={() => router.push("/tasks")}>
+                  Create task
+                </Button>
+              }
             />
           )}
         </>

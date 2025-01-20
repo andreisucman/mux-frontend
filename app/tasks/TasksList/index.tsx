@@ -215,7 +215,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", type || "");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
               />
             )}
             {displayComponent === "tasks" && (

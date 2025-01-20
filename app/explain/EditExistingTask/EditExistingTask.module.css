@@ -6,3 +6,11 @@
   font-size: var(--mantine-font-size-sm);
   text-align: center;
 }
+
+.banner {
+  justify-content: center;
+  background-color: var(--mantine-color-dark-6);
+  padding: rem(8) rem(16);
+  gap: rem(8);
+  border-radius: var(--mantine-radius-lg);
+}

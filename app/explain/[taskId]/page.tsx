@@ -2,6 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Button, Group, Stack, Switch, Text, Title } from "@mantine/core";
 import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -58,23 +59,11 @@ export default function Explain(props: Props) {
   const statusNote = useMemo(() => {
     if (status === TaskStatusEnum.EXPIRED) {
       const statusString = `${upperFirst(status)} on ${formatDate({ date: expiresAt || new Date() })}`;
-      return (
-        <Text className={classes.statusNote} c="red.7">
-          {statusString}
-        </Text>
-      );
+      return statusString;
     } else if (status === TaskStatusEnum.CANCELED) {
-      return (
-        <Text className={classes.statusNote} c="red.7">
-          Canceled
-        </Text>
-      );
+      return "Canceled";
     } else if (status === TaskStatusEnum.COMPLETED) {
-      return (
-        <Text className={classes.statusNote} c="green.7">
-          Completed at {formatDate({ date: completedAt || new Date() })}
-        </Text>
-      );
+      return `Completed at ${formatDate({ date: completedAt || new Date() })}`;
     }
   }, [status, completedAt, expiresAt]);
 
@@ -255,15 +244,20 @@ export default function Explain(props: Props) {
     setPageLoaded(true);
   }, []);
 
+  const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper show={!name || !taskInfo}>
         <PageHeaderWithReturn title={name || ""} showReturn />
-        {status !== "active" && statusNote}
-        {futureStartDate && status === "active" && (
-          <Text size="sm" c="green.7">
-            Starts on: {futureStartDate}{" "}
-          </Text>
+        {showBanner && (
+          <Group
+            className={cn(classes.banner, { [classes.red]: status !== TaskStatusEnum.ACTIVE })}
+          >
+            <Text className={classes.bannerText}>
+              {status === TaskStatusEnum.ACTIVE ? <>Starts on: {futureStartDate} </> : statusNote}
+            </Text>
+          </Group>
         )}
 
         <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
@@ -285,7 +279,7 @@ export default function Explain(props: Props) {
                 <Button
                   size="compact-sm"
                   variant="default"
-                  disabled={taskStatus !== "active"}
+                  disabled={taskStatus !== TaskStatusEnum.ACTIVE}
                   className={classes.actionButton}
                   onClick={openEditTaskModal}
                 >
@@ -298,7 +292,7 @@ export default function Explain(props: Props) {
                   className={classes.actionButton}
                   onClick={updateTaskStatus}
                 >
-                  {taskStatus === "active" ? "Cancel" : "Activate"}
+                  {taskStatus === TaskStatusEnum.ACTIVE ? "Cancel" : "Activate"}
                 </Button>
               </Group>
               <ProofStatus

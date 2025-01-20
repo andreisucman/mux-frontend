@@ -70,7 +70,10 @@ export default function CalendarRow({
         {mode === "individual" && (
           <ActionIcon
             variant="default"
-            onClick={handleResetMode}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleResetMode();
+            }}
             className={classes.button}
           >
             <IconArrowBack className={"icon"} />

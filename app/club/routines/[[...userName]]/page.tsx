@@ -3,7 +3,7 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchRoutines from "@/functions/fetchRoutines";
 import askConfirmation from "@/helpers/askConfirmation";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
@@ -35,6 +36,7 @@ type Props = {
 export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -237,8 +239,12 @@ export default function ClubRoutines(props: Props) {
               </Stack>
             ) : (
               <OverlayWithText
-                icon={<IconCircleOff className="icon" />}
                 text={`No ${type} routines`}
+                button={
+                  <Button variant="default" mt={8} onClick={() => router.push("/tasks")}>
+                    Create task
+                  </Button>
+                }
               />
             )}
           </>

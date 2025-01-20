@@ -97,7 +97,7 @@ export default function TaskRow({
   const timer = useMemo(
     () =>
       moreThanOneDay ? (
-        <Text size="sm" c={"green.7"}>
+        <Text fz={12} c={"green.7"}>
           Starts on {startsOnDate}
         </Text>
       ) : (
