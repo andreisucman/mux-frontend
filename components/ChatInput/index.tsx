@@ -5,6 +5,7 @@ import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Button, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import { UserContext } from "@/context/UserContext";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -21,7 +22,6 @@ import ImageUploadButton from "./ImageUploadButton";
 import InputImagePreview from "./InputImagePreview";
 import { MessageContent, MessageType } from "./types";
 import classes from "./ChatInput.module.css";
-import { ChatCategoryEnum } from "@/app/diary/type";
 
 const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {
   ssr: false,
@@ -79,6 +79,7 @@ export default function ChatInput({
   const searchParams = useSearchParams();
   const [currentMessage, setCurrentMessage] = useState("");
   const [images, setImages] = useState<File[]>([]);
+  const [showStarterQuestions, setShowStarterQuestions] = useState(false);
   const [showChat, setShowChat] = useState(defaultVisibility === "open");
 
   const { coachEnergy, demographics } = userDetails || {};
@@ -359,20 +360,40 @@ export default function ChatInput({
     });
   }, [chatContentId]);
 
+  useEffect(() => {
+    if (!conversation) return;
+    if (starterQuestions.length === 0) return;
+
+    const showStarterQuestions =
+      starterQuestions.length > 0 && conversation && conversation.length === 0;
+
+    let tId: any;
+
+    if (!showStarterQuestions) {
+      setShowStarterQuestions(false);
+    } else {
+      tId = setTimeout(() => {
+        setShowStarterQuestions(!!showStarterQuestions);
+        clearTimeout(tId);
+      }, 2000);
+    }
+
+    return () => {
+      if (tId) clearTimeout(tId);
+    };
+  }, [conversation && conversation.length === 0]);
+
   const starterButtons = starterQuestions.map((q) => (
     <Button variant="default" key={q} size="compact-sm" onClick={() => setCurrentMessage(q)}>
       {q}
     </Button>
   ));
 
-  const showStarterQuestions =
-    starterQuestions.length > 0 && conversation && conversation.length === 0;
-
   return (
     <Stack className={classes.container}>
       {!hideDivider && <Divider label={finalDividerLabel} onClick={handleToggleChat} />}
       {showStarterQuestions && (
-        <Group className={`${classes.starterQuestions}`}>
+        <Group className={classes.starterQuestions}>
           <Group className={classes.starterQuestionsWrapper}>{starterButtons}</Group>
         </Group>
       )}

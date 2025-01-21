@@ -54,11 +54,11 @@ const defaultNavigation = [
 
 const defaultAuthenticatedNavigation = [
   {
-    title: "My daily tasks",
+    title: "My tasks",
     path: "/tasks",
     icon: <IconListDetails stroke={1.25} className="icon" />,
     children: [
-      { title: "Current", path: "/tasks" },
+      { title: "Today's", path: "/tasks" },
       { title: "History", path: "/tasks/history" },
     ],
   },

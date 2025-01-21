@@ -81,11 +81,11 @@ export default function ChatDisplay({
     if (!conversationId || conversation.length > 0) return;
 
     getMessages(conversationId);
-  }, [conversationId, conversation.length]);
+  }, [conversationId, conversation.length > 0]);
 
   useEffect(() => {
     if (targetRef.current) {
-      scrollIntoView({ alignment: "end" });
+      scrollIntoView({ alignment: "center" });
     }
   }, [targetRef.current, isOpen, conversation]);
 

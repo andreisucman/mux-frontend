@@ -2,14 +2,13 @@
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowRight } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
-import { SexEnum, UserDataType } from "@/types/global";
+import { UserDataType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import ConcernsSortCard from "./ConcernsSortCard";
 import { maintenanceConcerns } from "./maintenanceConcerns";
@@ -27,11 +26,17 @@ export default function SortConcerns() {
   const type = searchParams.get("type");
   const part = searchParams.get("part");
 
-  const { concerns, demographics } = userDetails || {};
-  const { sex } = demographics || {};
+  const { concerns, nextRoutine } = userDetails || {};
 
   const selectedConcerns = useMemo(() => {
     if (!concerns) return null;
+    if (!nextRoutine) return null;
+
+    const routineCreatedParts = nextRoutine
+      .filter((obj) => obj.type === type)
+      .flatMap((obj) => obj.parts)
+      .filter((obj) => obj.date !== null && new Date(obj.date) > new Date())
+      .map((obj) => obj.part);
 
     let selectedConcerns = concerns.filter((obj) => obj.type === type);
 
@@ -39,13 +44,15 @@ export default function SortConcerns() {
       selectedConcerns = selectedConcerns.filter((obj) => obj.part === part);
     }
 
+    selectedConcerns = selectedConcerns.filter((obj) => !routineCreatedParts.includes(obj.part));
+
     if (selectedConcerns.length === 0) {
       const selectedMaintenanceConcerns = maintenanceConcerns.filter((c) => c.part === part);
       selectedConcerns.push(...selectedMaintenanceConcerns);
     }
 
     return selectedConcerns;
-  }, [concerns, type, part]);
+  }, [userDetails, type, part]);
 
   const activeConcerns = useMemo(
     () => selectedConcerns?.filter((obj) => !obj.isDisabled),

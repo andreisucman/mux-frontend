@@ -239,9 +239,9 @@ export interface UserDataType extends DefaultUserType {
   routines: RoutineType[];
   coachEnergy: number;
   nutrition: {
-    dailyCalorieGoal: number;
-    recommendedDailyCalorieGoal: number;
-    remainingDailyCalories: number;
+    dailyCalorieGoal: number | null;
+    recommendedDailyCalorieGoal: number | null;
+    remainingDailyCalories: number | null;
   };
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;

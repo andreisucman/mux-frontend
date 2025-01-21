@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   width: 100%;
   cursor: pointer;
 }
@@ -46,6 +47,13 @@
 }
 
 .starterQuestions {
+  position: absolute;
+  left:0;
+  right:0;
+  top: 0;
+
+  transform: translateY(-150%);
+
   overflow: auto;
   flex: 1;
 
