@@ -237,7 +237,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
                         name={record.name}
                         startsAt={record.startsAt}
                         expiresAt={record.expiresAt}
-                        isCompleted={record.isSubmitted}
+                        status={record.status}
                       />
                     ))}
                   </Stack>

@@ -78,7 +78,7 @@ export default function DiaryContent({
             onChange={setOpenValue}
             className={classes.accordion}
             classNames={{
-              root: classes.root,
+              root: `${classes.root} scrollbar`,
               item: classes.item,
               control: classes.control,
               content: classes.accordionContent,

@@ -128,7 +128,7 @@ export default function AccordionRoutineRow({
             <Group className={classes.title}>
               <div
                 className={cn(classes.indicator, {
-                  [classes.active]: routine.status === "active",
+                  [classes.active]: routine.status === "active" || routine.status === "replaced",
                 })}
               />
               <Group className={classes.name}>

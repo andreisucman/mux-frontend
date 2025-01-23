@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { IconBlur } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Checkbox, Menu } from "@mantine/core";
+import { ActionIcon, Checkbox, Group, Menu } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
@@ -56,6 +56,7 @@ export default function ContentBlurTypeButton({
     label: string;
     value: string;
   }>();
+  const [progress, setProgress] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const pollBlurProgressStatus = useCallback(async (hash: string, blurType: BlurTypeEnum) => {
@@ -73,12 +74,13 @@ export default function ContentBlurTypeButton({
           return;
         }
 
-        const { progress, isRunning } = response.message;
+        const { isRunning, progress: jobProgress } = response.message;
 
         if (isRunning) {
-          // setProgress(progress);
+          setProgress(jobProgress);
         } else {
           handleBlurComplete(response.message);
+          setProgress(0);
         }
       }
     } catch (err) {
@@ -88,7 +90,6 @@ export default function ContentBlurTypeButton({
 
   const handleBlurError = useCallback(
     (hash: string, error: string) => {
-      // setProgress(0);
       setIsLoading(false);
       clearInterval(intervalRef.current || undefined);
       saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
@@ -112,7 +113,6 @@ export default function ContentBlurTypeButton({
   const handleBlurComplete = useCallback(
     (message: { [key: string]: any }) => {
       setIsLoading(false);
-      // setProgress(0);
       clearInterval(intervalRef.current || undefined);
       saveToLocalStorage("blurAnalyses", { [message.hash]: false }, "add");
       handleUpdateRecord({ contentId, updateObject: message });
@@ -142,7 +142,7 @@ export default function ContentBlurTypeButton({
           if (mainUrl || images) {
             handleUpdateRecord({
               contentId,
-              ...response.message,
+              updateObject: response.message,
             });
             setIsLoading(false);
           } else if (hash) {
@@ -209,18 +209,18 @@ export default function ContentBlurTypeButton({
       classNames={{ dropdown: classes.dropdown }}
     >
       <Menu.Target>
-        <ActionIcon
-          variant="default"
-          loading={isLoading}
-          disabled={isDisabled}
+        <Group
           className={cn(classes.target, {
             [classes[position]]: true,
             [classes.relative]: isRelative,
           })}
           style={customStyles || {}}
         >
-          <IconBlur className="icon" />
-        </ActionIcon>
+          {progress > 0 && `${progress.toFixed(0)}%`}
+          <ActionIcon variant="default" loading={isLoading} disabled={isDisabled}>
+            <IconBlur className="icon" />
+          </ActionIcon>
+        </Group>
       </Menu.Target>
       <Menu.Dropdown>
         {items.map((item, i) => (

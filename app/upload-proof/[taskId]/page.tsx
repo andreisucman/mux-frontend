@@ -55,7 +55,6 @@ export default function UploadProof(props: Props) {
   );
 
   const submissionName = searchParams.get("submissionName");
-  const submissionId = searchParams.get("submissionId");
   const { status: taskStatus, expiresAt, requisite } = taskInfo || {};
 
   const { demographics } = userDetails || {};
@@ -93,7 +92,7 @@ export default function UploadProof(props: Props) {
         const response = await callTheServer({
           endpoint: "uploadProof",
           method: "POST",
-          body: { taskId, url: urlArray[0], submissionId, blurType },
+          body: { taskId, url: urlArray[0], blurType },
         });
 
         if (response.status !== 200) {

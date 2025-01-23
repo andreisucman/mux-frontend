@@ -24,13 +24,16 @@ export default function ProofDisplayContainer({
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
 
-  const handleUpdateExistingRecord = useCallback((input: { [key: string]: any }) => {
-    setExistingProofRecord((prev: any) => ({
-      ...(prev || {}),
-      mainUrl: input.mainUrl,
-      mainThumbnail: input.mainThumbnail,
-    }));
-  }, []);
+  const handleUpdateExistingRecord = useCallback(
+    (input: { [key: string]: any }) => {
+      setExistingProofRecord((prev: any) => ({
+        ...(prev || {}),
+        mainUrl: input.mainUrl,
+        mainThumbnail: input.mainThumbnail,
+      }));
+    },
+    [existingProofRecord]
+  );
 
   return (
     <Stack className={classes.container}>

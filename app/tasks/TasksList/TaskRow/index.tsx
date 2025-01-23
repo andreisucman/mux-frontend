@@ -6,6 +6,7 @@ import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { daysFrom } from "@/helpers/utils";
+import { TaskStatusEnum } from "@/types/global";
 import IconWithColor from "../CreateTaskOverlay/IconWithColor";
 import classes from "./TaskRow.module.css";
 
@@ -16,7 +17,7 @@ type Props = {
   startsAt: string;
   expiresAt: string;
   description: string;
-  isCompleted: boolean;
+  status: TaskStatusEnum;
   customStyles?: { [key: string]: any };
   onClick?: () => void;
 };
@@ -31,28 +32,28 @@ export default function TaskRow({
   expiresAt,
   description,
   customStyles,
-  isCompleted,
+  status,
   onClick,
 }: Props) {
   const showSkeleton = useShowSkeleton();
 
   const ringLabel = useMemo(
     () =>
-      isCompleted ? (
+      status === TaskStatusEnum.COMPLETED ? (
         <ActionIcon c="green.7" variant="transparent" radius="xl">
           <IconCheck stroke={3} className="icon icon__large" />
         </ActionIcon>
       ) : (
         <Text fw={600} ta="center" size="sm">
-          {isCompleted ? "100%" : "0%"}
+          0%
         </Text>
       ),
-    [isCompleted]
+    [status]
   );
 
   const sections = useMemo(() => {
     const sections = [];
-    if (isCompleted) {
+    if (status === TaskStatusEnum.COMPLETED) {
       sections.push({ value: 100, color: "green.7" });
     } else {
       sections.push({
@@ -61,7 +62,7 @@ export default function TaskRow({
       });
     }
     return sections;
-  }, [isCompleted]);
+  }, [status]);
 
   const localStartDate = useMemo(
     () =>
@@ -90,7 +91,8 @@ export default function TaskRow({
 
   const timerDate = started ? new Date(localExpiryDate) : new Date(localStartDate);
 
-  const timerText = isCompleted ? "Archived after" : started ? "Expires in" : "Starts in";
+  const timerText =
+    status === TaskStatusEnum.COMPLETED ? "Archived in" : started ? "Expires in" : "Starts in";
 
   const startsOnDate = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
 
@@ -107,7 +109,7 @@ export default function TaskRow({
             children={<Text size="xs">{timerText}</Text>}
             showDays={false}
             customStyles={
-              isCompleted
+              status === TaskStatusEnum.COMPLETED
                 ? {
                     fontSize: "Var(--mantine-font-size-xs)",
                     color: "var(--mantine-color-green-7)",
@@ -125,7 +127,7 @@ export default function TaskRow({
           />
         </>
       ),
-    [startsOnDate, timerDate, isCompleted, timerText]
+    [startsOnDate, timerDate, status, timerText]
   );
 
   return (

@@ -28,3 +28,11 @@
   display: flex;
   margin-right: rem(8);
 }
+
+.transcriptionWrapper {
+  overflow: auto;
+}
+
+.transcription {
+  min-height: rem(200);
+}

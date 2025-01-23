@@ -47,7 +47,7 @@ export default function ClubRoutines(props: Props) {
   const { name, routines: currentUserRoutines } = userDetails || {};
 
   const type = searchParams.get("type") || "head";
-  const sort = searchParams.get("sort") || "-createdAt";
+  const sort = searchParams.get("sort");
   const isSelf = name === userName;
 
   const openTaskDetails = useCallback(

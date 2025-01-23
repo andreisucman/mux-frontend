@@ -11,7 +11,7 @@ import { upperFirst } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
-import { TaskType } from "@/types/global";
+import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
 
 type Props = {
@@ -25,23 +25,23 @@ type Props = {
 function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props) {
   const router = useRouter();
 
-  const { proofEnabled, status, isSubmitted, proofId, name, _id: taskId } = selectedTask || {};
+  const { proofEnabled, status, proofId, name, _id: taskId } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>
-      isSubmitted ? (
+      status === TaskStatusEnum.COMPLETED ? (
         <ThemeIcon c="green.7" variant="transparent" radius="xl" size="sm">
           <IconCheck stroke={4} className={"icon icon__small"} />
         </ThemeIcon>
       ) : (
         <></>
       ),
-    [isSubmitted]
+    [status]
   );
 
   const sections = useMemo(
     () =>
-      isSubmitted
+      status === TaskStatusEnum.COMPLETED
         ? [{ value: 100, color: "green.7" }]
         : [
             {
@@ -49,7 +49,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
               color: "gray.3",
             },
           ],
-    [isSubmitted]
+    [status]
   );
 
   const taskExpired = new Date(expiresAt || 0) < new Date();
@@ -62,7 +62,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
       label = "Expired";
       icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
-      if (isSubmitted) {
+      if (status === TaskStatusEnum.COMPLETED) {
         if (proofId) {
           label = "View";
           icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
@@ -82,7 +82,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
     }
 
     return { label, icon };
-  }, [proofId, status, taskExpired]);
+  }, [proofId, proofEnabled, status, taskExpired]);
 
   const updateSubmissionStatus = useCallback(async () => {
     if (!taskId) return;
@@ -102,7 +102,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
           method: "POST",
           body: {
             taskId,
-            isSubmitted: !isSubmitted,
+            status,
           },
         });
 
@@ -117,13 +117,13 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
     } catch (err) {
       console.log("Error in updateSubmissionStatus: ", err);
     }
-  }, [taskId, isSubmitted, proofEnabled]);
+  }, [taskId, status, proofEnabled]);
 
   return (
     <Group className={classes.container}>
       <RingProgress
         size={40}
-        thickness={isSubmitted ? 5 : 6}
+        thickness={status === TaskStatusEnum.COMPLETED ? 5 : 6}
         label={ringLabel}
         classNames={{ label: classes.ringLabel }}
         sections={sections}

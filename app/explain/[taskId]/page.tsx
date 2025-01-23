@@ -2,8 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import cn from "classnames";
-import { Badge, Button, Group, rem, Stack, Switch, Text, Title } from "@mantine/core";
+import { Badge, Button, Group, rem, Stack, Switch, Title } from "@mantine/core";
 import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
@@ -20,7 +19,6 @@ import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { getFromLocalStorage } from "@/helpers/localStorage";
-import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { daysFrom } from "@/helpers/utils";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
@@ -64,7 +62,7 @@ export default function Explain(props: Props) {
     } else if (status === TaskStatusEnum.CANCELED) {
       return "Canceled";
     } else if (status === TaskStatusEnum.COMPLETED) {
-      return `Completed at ${formatDate({ date: completedAt || new Date() })}`;
+      return "Completed";
     }
   }, [status, completedAt, expiresAt]);
 
@@ -255,7 +253,14 @@ export default function Explain(props: Props) {
             <>
               <span style={{ marginRight: rem(8) }}>{name}</span>
               {showBanner && (
-                <Badge mt={-8} color={status !== TaskStatusEnum.ACTIVE ? "red.7" : "green.7"}>
+                <Badge
+                  mt={-8}
+                  color={
+                    status === TaskStatusEnum.ACTIVE || status === TaskStatusEnum.COMPLETED
+                      ? "green.7"
+                      : "red.7"
+                  }
+                >
                   {status === TaskStatusEnum.ACTIVE ? futureStartDate : statusNote}
                 </Badge>
               )}
@@ -275,7 +280,7 @@ export default function Explain(props: Props) {
               <Group className={classes.buttonsGroup}>
                 <Switch
                   label={"Proof upload"}
-                  disabled={taskStatus === "completed"}
+                  disabled={taskStatus === TaskStatusEnum.COMPLETED}
                   checked={proofEnabled || false}
                   onChange={() => switchProofUpload(!proofEnabled, taskId)}
                 />
@@ -291,7 +296,9 @@ export default function Explain(props: Props) {
                 <Button
                   size="compact-sm"
                   variant="default"
-                  disabled={taskStatus === "deleted"}
+                  disabled={
+                    taskStatus === TaskStatusEnum.DELETED || taskStatus === TaskStatusEnum.COMPLETED
+                  }
                   className={classes.actionButton}
                   onClick={updateTaskStatus}
                 >

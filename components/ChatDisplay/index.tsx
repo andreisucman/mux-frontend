@@ -90,11 +90,14 @@ export default function ChatDisplay({
 
   useEffect(() => {
     if (!targetRef.current) return;
-    if (!scrollTid.current)
+    if (!scrollTid.current) {
       scrollTid.current = setTimeout(() => {
         scrollIntoView({ alignment: "center" });
         clearTimeout(scrollTid.current);
-      }, 1000);
+      }, 2000);
+    } else {
+      scrollIntoView({ alignment: "center" });
+    }
   }, [targetRef.current, lastMessageRef.current, isOpen, conversation]);
 
   return (
