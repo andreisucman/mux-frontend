@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { IconRotate2 } from "@tabler/icons-react";
 import { ActionIcon, Loader, rem, Stack } from "@mantine/core";
 import { useScrollIntoView } from "@mantine/hooks";
@@ -35,6 +35,7 @@ export default function ChatDisplay({
   setConversation,
   setConversationId,
 }: Props) {
+  const scrollTid = useRef<any>();
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
     HTMLDivElement,
@@ -68,7 +69,11 @@ export default function ChatDisplay({
           if (!item.content) return null;
           const messages = item.content.map((obj, objIndex) => (
             <React.Fragment key={objIndex}>
-              <Message message={obj} role={item.role} />
+              <Message
+                divRef={index === conversation.length - 1 ? lastMessageRef : undefined}
+                message={obj}
+                role={item.role}
+              />
             </React.Fragment>
           ));
           return messages;
@@ -84,10 +89,13 @@ export default function ChatDisplay({
   }, [conversationId, conversation.length > 0]);
 
   useEffect(() => {
-    if (targetRef.current) {
-      scrollIntoView({ alignment: "center" });
-    }
-  }, [targetRef.current, isOpen, conversation]);
+    if (!targetRef.current) return;
+    if (!scrollTid.current)
+      scrollTid.current = setTimeout(() => {
+        scrollIntoView({ alignment: "center" });
+        clearTimeout(scrollTid.current);
+      }, 1000);
+  }, [targetRef.current, lastMessageRef.current, isOpen, conversation]);
 
   return (
     <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>

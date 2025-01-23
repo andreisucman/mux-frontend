@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
+import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";

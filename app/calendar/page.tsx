@@ -87,7 +87,7 @@ export default function Calendar() {
         return `${date.getMonth()}-${date.getDate()}`;
       })
       .filter(Boolean);
-  }, [mode, selectedTasks.length, tasks?.length]);
+  }, [mode, selectedTasks && selectedTasks.length, tasks?.length]);
 
   const selectTask = useCallback(
     (task: TaskType) => {
@@ -430,7 +430,7 @@ export default function Calendar() {
           {displayComponent === "list" && (
             <>
               <Stack className={classes.list}>
-                {selectedTasks.map((record, index) => {
+                {selectedTasks && selectedTasks.map((record, index) => {
                   return (
                     <CalendarRow
                       key={index}
@@ -456,7 +456,7 @@ export default function Calendar() {
             </>
           )}
 
-          {displayComponent !== "loading" && selectedTasks.length === 0 && (
+          {displayComponent !== "loading" && selectedTasks && selectedTasks.length === 0 && (
             <OverlayWithText icon={emptyIcon} text={`No ${selectedStatus} tasks`} />
           )}
         </Stack>

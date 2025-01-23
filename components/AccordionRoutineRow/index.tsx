@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
@@ -29,8 +30,15 @@ export default function AccordionRoutineRow({
   openTaskDetails,
   handleStealRoutine,
 }: Props) {
+  const { part, createdAt, lastDate } = routine;
   const router = useRouter();
-  const date = useMemo(() => formatDate({ date: routine.createdAt }), [routine.createdAt]);
+
+  const rowLabel = useMemo(() => {
+    const sameMonth = new Date(createdAt).getMonth() === new Date(lastDate).getMonth();
+    const dateFrom = formatDate({ date: createdAt, hideYear: true, hideMonth: sameMonth });
+    const dateTo = formatDate({ date: lastDate, hideYear: true });
+    return `${upperFirst(part)} - ${dateFrom} - ${dateTo}`;
+  }, [part, createdAt, lastDate]);
 
   const totalTotal = useMemo(
     () => routine.allTasks.reduce((a, c) => a + c.total, 0),
@@ -125,7 +133,7 @@ export default function AccordionRoutineRow({
               />
               <Group className={classes.name}>
                 <IconClipboardText className="icon icon__small" />
-                {date}
+                {rowLabel}
               </Group>
             </Group>
             <Group wrap="nowrap">

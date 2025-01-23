@@ -69,6 +69,7 @@ export default function InnerChatContainer({
         customContainerStyles={{ flex: 1 }}
         isOpen
       />
+
       <ChatInput
         defaultVisibility={"open"}
         conversation={conversation}

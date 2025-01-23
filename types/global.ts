@@ -171,6 +171,7 @@ export type RoutineType = {
   _id: string;
   userId: string;
   type: string;
+  part: string;
   concerns: UserConcernType[];
   finalSchedule: { [key: string]: any };
   status: RoutineStatusEnum;

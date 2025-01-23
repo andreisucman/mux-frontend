@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -5,7 +7,9 @@ import { Stack } from "@mantine/core";
 import { MessageContent } from "../ChatInput/types";
 import classes from "./Message.module.css";
 
-const Markdown = dynamic(() => import("react-markdown"), { ssr: false });
+const Markdown = dynamic(() => import("react-markdown"), {
+  ssr: false,
+});
 
 type props = {
   message: MessageContent;
@@ -13,13 +17,7 @@ type props = {
   divRef?: React.RefObject<HTMLDivElement>;
 };
 
-const textMessage = (message: MessageContent) => (
-  <span className={classes.markdownWrapper}>
-    <Markdown>{message.text}</Markdown>
-  </span>
-);
-
-const imageMessage = (message: MessageContent) => (
+const renderImageMessage = (message: MessageContent) => (
   <Stack className={classes.imageWrapper}>
     <Image
       src={message.image_url?.url || "/"}
@@ -31,7 +29,15 @@ const imageMessage = (message: MessageContent) => (
   </Stack>
 );
 
-const Message: React.FC<props> = ({ message, role, divRef }) => {
+const renderTextMessage = (message: MessageContent) => {
+  return (
+    <span className={classes.markdownWrapper}>
+      <Markdown>{message.text}</Markdown>
+    </span>
+  );
+};
+
+const Message: React.FC<props> = ({ divRef, message, role }) => {
   return (
     <div
       className={
@@ -45,7 +51,7 @@ const Message: React.FC<props> = ({ message, role, divRef }) => {
         ) : (
           <span className={classes.label}>You</span>
         )}
-        {message.type === "text" ? textMessage(message) : imageMessage(message)}
+        {message.type === "text" ? renderTextMessage(message) : renderImageMessage(message)}
       </div>
     </div>
   );
