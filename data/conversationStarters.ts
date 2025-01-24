@@ -1,14 +1,48 @@
 import { ChatCategoryEnum } from "@/app/diary/type";
 
-export const conversationStarters = {
-  [ChatCategoryEnum.ANSWERS]: [],
-  [ChatCategoryEnum.DIARY]: [],
-  [ChatCategoryEnum.FOOD]: [],
-  [ChatCategoryEnum.PRODUCT]: [],
-  [ChatCategoryEnum.ROUTINE]: [],
-  [ChatCategoryEnum.STYLE]: [],
-  [ChatCategoryEnum.TASK]: [
-    "what other products can i use",
-    "what alternative task that targets the same concern can you suggest",
-  ],
-};
+export default function getConversationStarters(chatCategory?: ChatCategoryEnum, isClub?: boolean) {
+  const starters = [];
+
+  switch (chatCategory) {
+    case ChatCategoryEnum.ANSWERS:
+      starters.push(
+        `what did ${isClub ? "they" : "i"} say about ...`,
+        `what was ${isClub ? "their" : "my"} favorite ...`
+      );
+      break;
+    case ChatCategoryEnum.DIARY:
+      starters.push(`what feedback ${isClub ? "they" : "i"} left about minoxidil task`);
+      break;
+    case ChatCategoryEnum.FOOD:
+      starters.push(
+        `what can i add to this food to make it ...`,
+        `what i ate today`,
+        `when i had fried potatoes last time`
+      );
+      break;
+    case ChatCategoryEnum.GENERAL:
+      starters.push(
+        `what type of glasses will look good on me ...`,
+        `will beard look good on me or should i shave clean`,
+        `how can i look more feminine`
+      );
+      break;
+    case ChatCategoryEnum.PRODUCT:
+      starters.push(`which of these is best for me?`, `i need one without hemp`);
+      break;
+    case ChatCategoryEnum.ROUTINE:
+      starters.push(
+        `what tasks ${isClub ? "they" : "i"} have on friday`,
+        `what routine ${isClub ? "they" : "i"} stole from ...`
+      );
+      break;
+    case ChatCategoryEnum.STYLE:
+      starters.push(`what would be a good hat for my style`, `will a brown jacked spoil my look`);
+      break;
+    case ChatCategoryEnum.TASK:
+      starters.push(`which task should i complete first`, "which tasks require going to gym");
+      break;
+  }
+
+  return starters;
+}

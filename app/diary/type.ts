@@ -24,4 +24,5 @@ export enum ChatCategoryEnum {
   STYLE = "style",
   FOOD = "food",
   ROUTINE = "routine",
+  GENERAL = "general",
 }

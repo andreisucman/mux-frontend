@@ -248,7 +248,7 @@ export default function AnswersPage(props: Props) {
                     className={classes.list}
                   />
                 ) : (
-                  <OverlayWithText text={overlayText} icon={overlayIcon} button={overlayButton} />
+                  <OverlayWithText text={overlayText} button={overlayButton} />
                 )}
               </Accordion>
               {hasMore && (

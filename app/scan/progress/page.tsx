@@ -161,7 +161,6 @@ export default function ScanProgress() {
             />
           ) : (
             <OverlayWithText
-              icon={<IconHourglassHigh className="icon" />}
               text={`The next ${type ? type : ""} scan is after ${checkBackDate}.`}
               button={
                 <Button mt={8} variant="default" onClick={() => router.replace(url)}>

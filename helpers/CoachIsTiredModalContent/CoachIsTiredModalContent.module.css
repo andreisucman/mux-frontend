@@ -3,16 +3,18 @@
 }
 
 .content {
-  gap: rem(8);
+  gap: rem(12);
 }
 
 .imageWrapper {
+  min-height: rem(250);
+
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
 }
 
 .image {
-  max-width: rem(200);
+  width: rem(250);
   margin: auto;
 }
 

@@ -4,13 +4,14 @@ import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatDisplay from "@/components/ChatDisplay";
 import ChatInput from "@/components/ChatInput";
 import { MessageType } from "@/components/ChatInput/types";
-import { conversationStarters } from "@/data/conversationStarters";
+import getConversationStarters from "@/data/conversationStarters";
 import { getFromIndexedDb } from "@/helpers/indexedDb";
 import classes from "./InnerChatContainer.module.css";
 
 type Props = {
   disabled?: boolean;
   isClub?: boolean;
+  additionalData?: { [key: string]: any };
   userName?: string | string[];
   openChatKey?: string;
   disclaimer?: string;
@@ -24,6 +25,7 @@ export default function InnerChatContainer({
   disabled,
   userName,
   isClub,
+  additionalData = {},
   openChatKey,
   disclaimer,
   dividerLabel,
@@ -48,7 +50,11 @@ export default function InnerChatContainer({
 
   const finalStarterQuestions = useMemo(
     () =>
-      starterQuestions ? starterQuestions : chatCategory ? conversationStarters[chatCategory] : [],
+      starterQuestions
+        ? starterQuestions
+        : chatCategory
+          ? getConversationStarters(chatCategory, isClub)
+          : [],
     [chatCategory, starterQuestions]
   );
 
@@ -79,6 +85,7 @@ export default function InnerChatContainer({
         chatCategory={chatCategory}
         chatContentId={chatContentId}
         isClub={isClub}
+        additionalData={additionalData}
         openChatKey={openChatKey}
         conversationId={conversationId}
         setConversation={setConversation}

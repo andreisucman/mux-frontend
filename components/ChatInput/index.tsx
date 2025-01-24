@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Collapse, Divider, Group, Skeleton, Stack } from "@mantine/core";
+import { ActionIcon, Button, Collapse, Divider, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import { UserContext } from "@/context/UserContext";
@@ -39,6 +39,7 @@ type Props = {
   conversation?: MessageType[];
   chatCategory?: ChatCategoryEnum;
   chatContentId?: string;
+  additionalData?: { [key: string]: any };
   autoFocus?: boolean;
   showEnergy?: boolean;
   hideDivider?: boolean;
@@ -56,6 +57,7 @@ export default function ChatInput({
   heading,
   disabled,
   defaultVisibility,
+  additionalData = {},
   userName,
   dividerLabel,
   conversation,
@@ -102,9 +104,10 @@ export default function ChatInput({
 
   const openCoachIsTiredModal = useCallback(() => {
     modals.openContextModal({
-      modal: "subscription",
+      modal: "general",
       centered: true,
-      title: "Coach is resting",
+      size: "lg",
+      title: <Title component={"p"} order={5}>Coach is resting</Title>,
       innerProps: <CoachIsTiredModalContent sex={sex as SexEnum} value={coachEnergy || 0} />,
     });
   }, [sex, coachEnergy]);
@@ -213,6 +216,7 @@ export default function ChatInput({
           messages: newMessages,
           chatCategory,
           contentId: chatContentId,
+          ...additionalData,
         };
 
         if (userName) payload.userName = userName;
@@ -301,7 +305,14 @@ export default function ChatInput({
         if (setIsThinking) setIsThinking(false);
       }
     },
-    [currentMessage, images, chatContentId, conversationId, conversation && conversation.length]
+    [
+      currentMessage,
+      images,
+      additionalData,
+      chatContentId,
+      conversationId,
+      conversation && conversation.length,
+    ]
   );
 
   const handleSubmit = useCallback(

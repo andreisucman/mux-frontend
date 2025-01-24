@@ -131,6 +131,8 @@ export default function UploadStyle() {
             router.push(
               `/wait?type=${finalType}&operationKey=${`style-${finalType}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
             );
+          } else {
+            openErrorModal();
           }
         }
       } catch (err) {

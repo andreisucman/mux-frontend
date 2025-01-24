@@ -184,7 +184,6 @@ export default function FoodScanResult() {
         )}
         {displayComponent === "empty" && (
           <OverlayWithText
-            icon={<IconCircleOff className="icon" />}
             text={`Nothing found`}
             button={
               <Button mt={8} variant="default" onClick={() => router.push(`/scan/food`)}>

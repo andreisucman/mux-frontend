@@ -1,0 +1,36 @@
+.skeleton,
+.content {
+  position: relative;
+  flex: 1;
+}
+.button {
+  width: 100%;
+}
+.stack {
+  position: relative;
+  cursor: pointer;
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
+  background-color: var(--mantine-color-dark-6);
+  gap: rem(4);
+  &:hover {
+    background-color: var(--mantine-color-dark-5);
+  }
+}
+.text {
+  cursor: pointer;
+  display: flex;
+  gap: rem(8);
+}
+.deleteIcon {
+  position: absolute;
+  right: rem(16);
+  top: rem(16);
+}
+.date {
+  font-size: var(--mantine-font-size-xs);
+}
+.icon {
+  min-width: rem(16);
+  min-height: rem(16);
+}

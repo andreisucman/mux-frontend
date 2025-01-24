@@ -204,7 +204,6 @@ export default function UploadProof(props: Props) {
             {componentToDisplay === "expired" && (
               <OverlayWithText
                 text="This task expired"
-                icon={<IconHourglassLow className="icon" />}
                 button={overlayButton}
               />
             )}

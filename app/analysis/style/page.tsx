@@ -2,10 +2,10 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -21,7 +21,6 @@ import SelectStyleGoalModalContent from "./SelectStyleGoalModalContent";
 import { outlookStyles } from "./SelectStyleGoalModalContent/outlookStyles";
 import StyleSuggestionCard from "./StyleSuggestionCard";
 import classes from "./result.module.css";
-import { ChatCategoryEnum } from "@/app/diary/type";
 
 export const runtime = "edge";
 
@@ -183,6 +182,7 @@ export default function StyleScanResult() {
               chatCategory={ChatCategoryEnum.STYLE}
               openChatKey={ChatCategoryEnum.STYLE}
               chatContentId={styleId}
+              additionalData={{ styleImage: mainUrl?.url }}
               dividerLabel={"Discuss style and outlook"}
               defaultVisibility="open"
               modalTitle={
@@ -194,11 +194,7 @@ export default function StyleScanResult() {
           </>
         )}
         {displayComponent === "empty" && (
-          <OverlayWithText
-            icon={<IconCircleOff className="icon" />}
-            text={"Nothing found"}
-            button={overlayButton}
-          />
+          <OverlayWithText text={"Nothing found"} button={overlayButton} />
         )}
       </Skeleton>
     </Stack>

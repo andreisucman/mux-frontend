@@ -20,10 +20,7 @@ export default function CoachIsTiredModalContent({ value, sex }: Props) {
       </Stack>
 
       <Stack className={classes.content}>
-        <Text className={classes.text}>
-          {`You've tired your coach out and ${sex === "male" ? "he" : "she"} is
-            resting.`}
-        </Text>
+        <Text className={classes.text}>Your coach is tired and resting.</Text>
         <EnergyIndicator value={value} />
         <Text className={classes.text} c="dimmed">
           You can ask more questions later as {sex === "male" ? "his" : "her"} energy grows.

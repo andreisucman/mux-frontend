@@ -13,6 +13,7 @@ type Props = {
   userName?: string | string[];
   openChatKey?: string;
   disclaimer?: string;
+  additionalData?: { [key: string]: any };
   dividerLabel?: string;
   starterQuestions?: string[];
   chatCategory?: ChatCategoryEnum;
@@ -23,6 +24,7 @@ type Props = {
 export default function ChatWithModal({
   isClub,
   disabled,
+  additionalData,
   starterQuestions,
   userName,
   disclaimer,
@@ -37,7 +39,7 @@ export default function ChatWithModal({
 
   return (
     <Stack className={classes.container}>
-      <Modal opened={opened} onClose={close} size="lg" title={modalTitle} centered>
+      <Modal opened={opened} onClose={close} size="xl" title={modalTitle} centered>
         <InnerChatContainer
           disabled={disabled}
           userName={userName}
@@ -46,6 +48,7 @@ export default function ChatWithModal({
           chatCategory={chatCategory}
           chatContentId={chatContentId}
           starterQuestions={starterQuestions}
+          additionalData={additionalData}
           isClub={isClub}
         />
       </Modal>
