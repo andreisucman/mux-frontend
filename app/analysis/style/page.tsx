@@ -153,44 +153,26 @@ export default function StyleScanResult() {
             >
               <Image height={75} alt="" src={mainUrl?.url || null} className={classes.image} />
             </Stack>
-            <StyleSuggestionCard
-              title={title}
-              styleData={relevantAnalysis}
-              children={
-                <Group className={classes.buttonGroup}>
-                  <Button
-                    variant={"default"}
-                    size="compact-sm"
-                    onClick={openMatchStyle}
-                    disabled={!relevantAnalysis}
-                    className={classes.button}
-                  >
-                    Match style
-                  </Button>
-                  <Button
-                    size="compact-sm"
-                    onClick={handlePublishToClub}
-                    disabled={isLoading}
-                    className={classes.button}
-                  >
-                    Publish
-                  </Button>
-                </Group>
-              }
-            />
-            <ChatWithModal
-              chatCategory={ChatCategoryEnum.STYLE}
-              openChatKey={ChatCategoryEnum.STYLE}
-              chatContentId={styleId}
-              additionalData={{ styleImage: mainUrl?.url }}
-              dividerLabel={"Discuss style and outlook"}
-              defaultVisibility="open"
-              modalTitle={
-                <Title order={5} component={"p"}>
-                  Discuss style and outlook
-                </Title>
-              }
-            />
+            <StyleSuggestionCard title={title} styleData={relevantAnalysis} />
+            <Group className={classes.buttonGroup}>
+              <Button
+                variant={"default"}
+                size="compact-sm"
+                onClick={openMatchStyle}
+                disabled={!relevantAnalysis}
+                className={classes.button}
+              >
+                Match style
+              </Button>
+              <Button
+                size="compact-sm"
+                onClick={handlePublishToClub}
+                disabled={isLoading}
+                className={classes.button}
+              >
+                Publish
+              </Button>
+            </Group>
           </>
         )}
         {displayComponent === "empty" && (
