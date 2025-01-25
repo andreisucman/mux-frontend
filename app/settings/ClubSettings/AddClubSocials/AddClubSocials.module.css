@@ -5,15 +5,15 @@
 .links {
   max-width: rem(300);
   overflow: auto;
-  gap: rem(8);
+  gap: rem(12);
 }
 
 .addGroup {
   flex-wrap: nowrap;
-  gap: rem(8);
+  gap: rem(12);
 }
 
 .valueGroup {
-  gap: rem(8);
+  gap: rem(12);
   flex-wrap: nowrap;
 }

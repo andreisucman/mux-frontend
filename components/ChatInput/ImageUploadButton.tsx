@@ -3,11 +3,12 @@ import { IconPhoto } from "@tabler/icons-react";
 import { ActionIcon } from "@mantine/core";
 
 type Props = {
+  uploadButtonId: string;
   disabled: boolean;
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
 };
 
-export default function ImageUploadButton({ disabled, setImages }: Props) {
+export default function ImageUploadButton({ uploadButtonId, disabled, setImages }: Props) {
   const handleUploadFile = useCallback((e: any) => {
     const files: File[] = e.target.files;
 
@@ -24,7 +25,7 @@ export default function ImageUploadButton({ disabled, setImages }: Props) {
   return (
     <ActionIcon
       component="label"
-      htmlFor="upload_message_image"
+      htmlFor={uploadButtonId}
       disabled={disabled}
       variant="default"
       style={{ border: "none" }}
@@ -33,7 +34,7 @@ export default function ImageUploadButton({ disabled, setImages }: Props) {
       <input
         hidden
         disabled={disabled}
-        id="upload_message_image"
+        id={uploadButtonId}
         type="file"
         accept="image/png, image/jpeg, image/webp"
         onChange={handleUploadFile}

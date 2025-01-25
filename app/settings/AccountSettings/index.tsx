@@ -1,11 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
-  IconArrowRight,
   IconAsterisk,
   IconCreditCard,
   IconDeviceFloppy,
   IconInfoCircle,
-  IconSquareCheck,
 } from "@tabler/icons-react";
 import cn from "classnames";
 import {
@@ -13,9 +11,7 @@ import {
   Alert,
   Button,
   Modal,
-  NumberInput,
   PinInput,
-  rem,
   Skeleton,
   Stack,
   Text,
@@ -158,7 +154,7 @@ export default function AccountSettings() {
   const showSkeleton = useShowSkeleton();
 
   return (
-    <Skeleton visible={showSkeleton}>
+    <Skeleton visible={showSkeleton} style={{ width: "unset" }}>
       <Stack className={classes.stack}>
         <Title order={2} fz={18}>
           Account

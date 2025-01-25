@@ -110,16 +110,15 @@ export default function AddClubSocials({ title }: Props) {
           {title}
         </Text>
       )}
-      <Group className={classes.addGroup}>
+      <Stack className={classes.addGroup}>
         <TextInput
-          maw={425}
           value={name}
           placeholder="Title"
           onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
         />
         <Group className={classes.valueGroup}>
           <TextInput
-            maw={425}
+            flex={1}
             value={value}
             error={error}
             placeholder="https://..."
@@ -136,7 +135,7 @@ export default function AddClubSocials({ title }: Props) {
             <IconCirclePlus className="icon" />
           </ActionIcon>
         </Group>
-      </Group>
+      </Stack>
       {socials.slice(0, 2).map((item) => (
         <SocialLink key={item.value} {...item} deleteSocial={deleteSocial} />
       ))}

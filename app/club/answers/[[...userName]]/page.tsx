@@ -244,7 +244,7 @@ export default function AnswersPage(props: Props) {
                   <ListComponent
                     items={questions}
                     rowGutter={16}
-                    render={QuestionSlide}
+                    render={memoizedQuestionsRow}
                     className={classes.list}
                   />
                 ) : (

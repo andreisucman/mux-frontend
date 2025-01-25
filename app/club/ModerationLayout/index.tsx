@@ -105,10 +105,6 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
 
   const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
-  const chatDisclaimer = userName
-    ? `Answers are based on the ${userName}'s info`
-    : "Answers are based on your info";
-
   useEffect(() => {
     if (!youFollowDataFetched || code) return;
 
@@ -135,8 +131,8 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
     code,
     isSelf,
     userName,
+    userDetails,
     youFollowData,
-    followingUserName,
     isSubscriptionActive,
     youFollowDataFetched,
   ]);

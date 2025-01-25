@@ -10,7 +10,7 @@ export type DefaultUserType = {
 export type HeadValuePartsBoolean = {
   name: string;
   value: boolean;
-  parts: { name: string; value: boolean }[];
+  types: { name: string; value: boolean }[];
 }[];
 
 type ClubBioType = {

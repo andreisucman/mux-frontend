@@ -3,7 +3,16 @@ import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp, IconSend } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Collapse, Divider, Group, Skeleton, Stack, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Collapse,
+  Divider,
+  Group,
+  Skeleton,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import { UserContext } from "@/context/UserContext";
@@ -107,7 +116,11 @@ export default function ChatInput({
       modal: "general",
       centered: true,
       size: "lg",
-      title: <Title component={"p"} order={5}>Coach is resting</Title>,
+      title: (
+        <Title component={"p"} order={5}>
+          Coach is resting
+        </Title>
+      ),
       innerProps: <CoachIsTiredModalContent sex={sex as SexEnum} value={coachEnergy || 0} />,
     });
   }, [sex, coachEnergy]);
@@ -403,7 +416,7 @@ export default function ChatInput({
   return (
     <Stack className={classes.container}>
       {!hideDivider && <Divider label={finalDividerLabel} onClick={handleToggleChat} />}
-      {showStarterQuestions && (
+      {showStarterQuestions && images.length === 0 && (
         <Group className={classes.starterQuestions}>
           <Group className={classes.starterQuestionsWrapper}>{starterButtons}</Group>
         </Group>
@@ -429,6 +442,7 @@ export default function ChatInput({
                   <ImageUploadButton
                     disabled={(images && images?.length >= 2) || false}
                     setImages={setImages}
+                    uploadButtonId={`${chatCategory}-${chatContentId}`}
                   />
                 }
                 autosize

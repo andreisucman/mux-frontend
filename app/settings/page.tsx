@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
-import { Stack } from "@mantine/core";
+import { Group, Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import AccountSettings from "./AccountSettings";
@@ -16,11 +16,13 @@ export default function Settings() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader title="Settings" showReturn hidePartDropdown hideTypeDropdown />
-      <Stack className={classes.content}>
-        <AccountSettings />
+      <Group className={classes.content}>
+        <Stack className={classes.left}>
+          <AccountSettings />
+          <OtherSettings />
+        </Stack>
         {club && <ClubSettings />}
-        <OtherSettings />
-      </Stack>
+      </Group>
     </Stack>
   );
 }

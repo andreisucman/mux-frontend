@@ -7,7 +7,6 @@ import {
   IconLicense,
   IconListDetails,
   IconNotebook,
-  IconRotateDot,
   IconRoute,
   IconScan,
   IconSettings,
@@ -133,10 +132,10 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
     [linkClicked]
   );
 
-  const handleClickSignIn = () => {
-    router.push("/auth");
+  const handleRedirect = useCallback((path: string) => {
+    router.push(path);
     closeDrawer();
-  };
+  }, []);
 
   const finalDefaultNavigation = useMemo(() => {
     const finalItems =
@@ -200,7 +199,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         showLowerDivider
       />
     );
-  }, [typeof userDetails?.club, name, linkClicked]);
+  }, [userDetails?.club, name, linkClicked]);
 
   const legalNavigation = useMemo(() => {
     return (
@@ -219,7 +218,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       <>
         {finalDefaultNavigation}
         {status !== "authenticated" && (
-          <UnstyledButton className={classes.signInButton} onClick={handleClickSignIn}>
+          <UnstyledButton className={classes.signInButton} onClick={() => handleRedirect("/auth")}>
             <IconDoorEnter className="icon" stroke={1.25} />
             Sign in
           </UnstyledButton>
@@ -229,7 +228,10 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       {status === "authenticated" && (
         <>
           {finalAuthenticatedNavigation}
-          <UnstyledButton className={classes.signInButton} onClick={() => router.push("/settings")}>
+          <UnstyledButton
+            className={classes.signInButton}
+            onClick={() => handleRedirect("/settings")}
+          >
             <IconSettings className="icon" stroke={1.25} />
             Settings
           </UnstyledButton>

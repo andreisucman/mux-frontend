@@ -175,7 +175,7 @@ export default function ClubAdmission() {
               Sharing your data gives people a reason to follow you. You can always change your data
               sharing preferences in the settings.
             </Text>
-            <DataSharingSwitches title="Data privacy" />
+            <DataSharingSwitches title="Data sharing" />
             <GlowingButton
               text="Done"
               disabled={disableSecond || loadingButton === "done"}

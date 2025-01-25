@@ -43,7 +43,9 @@ export default function ScanFoodPage() {
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          url: fileUrls[0],
+          // url: fileUrls[0],
+          // url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/rice%20food.webp",
+          url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/potato%20food.jpg",
           calorieGoal,
         },
       });
@@ -70,7 +72,7 @@ export default function ScanFoodPage() {
         }
 
         if (response.message) {
-          defaultRouter.replace(`/analysis/food?analysisId=${response.message}`);
+          defaultRouter.push(`/analysis/food?analysisId=${response.message}`);
         }
       }
     } catch (err: any) {

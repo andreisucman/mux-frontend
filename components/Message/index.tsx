@@ -22,8 +22,8 @@ const renderImageMessage = (message: MessageContent) => (
     <Image
       src={message.image_url?.url || "/"}
       alt=""
-      width={200}
-      height={200}
+      width={150}
+      height={150}
       style={{ objectFit: "contain" }}
     />
   </Stack>

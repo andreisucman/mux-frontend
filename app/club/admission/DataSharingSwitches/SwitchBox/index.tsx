@@ -1,61 +1,72 @@
 import React, { useMemo } from "react";
-import { Group, Stack, Switch } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
+import { ActionIcon, Group, Stack, Switch, Tooltip } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
 import { getPrivacyValue } from "@/helpers/clubPrivacy";
-import { partIcons } from "@/helpers/icons";
-import { getPartIcon, getTypeIcon, typeIcons } from "@/helpers/icons";
+import { getCategoryIcon, getTypeIcon } from "@/helpers/icons";
 import { HeadValuePartsBoolean } from "@/types/global";
+import { tooltipDescriptions } from "../tooltipDescriptions";
 import classes from "./SwitchBox.module.css";
 
 type OnChangeProps = {
   value: boolean;
-  type: string;
-  part?: string;
+  category: string;
+  type?: string;
 };
 
 type Props = {
   privacy?: HeadValuePartsBoolean;
-  type: string;
+  category: string;
+  openTooltip: string;
+  setOpenTooltip: React.Dispatch<React.SetStateAction<string>>;
   onChange: (props: OnChangeProps) => Promise<void>;
 };
 
-export default function SwitchBox({ privacy, type, onChange }: Props) {
-  const relevantTypePrivacy = privacy?.find((rec) => rec.name === type);
+export default function SwitchBox({
+  openTooltip,
+  category,
+  privacy,
+  onChange,
+  setOpenTooltip,
+}: Props) {
+  const clickOutsideRef = useClickOutside(() => setOpenTooltip(""));
+  const relevantCategoryPrivacy = privacy?.find((rec) => rec.name === category);
 
-  const parts = relevantTypePrivacy?.parts;
-
-  const typeIcon = getTypeIcon(relevantTypePrivacy?.name || "", "icon__large");
+  const categoryIcon = getCategoryIcon(category, "icon__large");
   const switchedOn = getPrivacyValue({
     privacy,
-    type,
+    category,
     isMain: true,
   });
 
-  const partSwitches = useMemo(() => {
-    if (!parts || (parts && parts.length <= 1)) return null;
+  const types = relevantCategoryPrivacy?.types;
 
-    return parts.map((part, i) => {
+  const typeSwitches = useMemo(() => {
+    if (!types || (types && types.length <= 1)) return null;
+
+    return types.map((type, i) => {
       const switchedOn = getPrivacyValue({
         privacy,
-        type,
-        partName: part.name,
+        type: type.name,
+        category,
       });
 
-      const partIcon = partIcons[part.name];
+      const typeIcon = getTypeIcon(type.name, "icon");
 
       return (
         <Switch
           key={i}
           label={
             <Group align="center" gap={8}>
-              {partIcon} Share {part.name} data
+              {typeIcon} Share {type.name} data
             </Group>
           }
           checked={switchedOn}
           onChange={(e) =>
             onChange({
               value: e.currentTarget.checked,
-              part: part.name,
-              type,
+              category,
+              type: type.name,
             })
           }
         />
@@ -68,15 +79,26 @@ export default function SwitchBox({ privacy, type, onChange }: Props) {
       <Switch
         label={
           <Group align="center" gap={8}>
-            {typeIcon} Share {type} data
+            {categoryIcon} Share {category} data
+            <Tooltip
+              ref={clickOutsideRef}
+              label={tooltipDescriptions[category]}
+              opened={openTooltip === category}
+              onClick={() => setOpenTooltip((prev) => (prev === category ? "" : category))}
+              multiline
+            >
+              <ActionIcon variant="default">
+                <IconInfoCircle className="icon" />
+              </ActionIcon>
+            </Tooltip>
           </Group>
         }
         size="md"
         checked={switchedOn}
-        onChange={(e) => onChange({ value: e.currentTarget.checked, type })}
+        onChange={(e) => onChange({ value: e.currentTarget.checked, category })}
       />
-      {partSwitches && partSwitches.length > 0 && (
-        <Stack className={classes.wrapper}>{partSwitches}</Stack>
+      {typeSwitches && typeSwitches.length > 0 && (
+        <Stack className={classes.wrapper}>{typeSwitches}</Stack>
       )}
     </Stack>
   );

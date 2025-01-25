@@ -1,29 +1,20 @@
 import {
   IconBubbleText,
   IconClipboardText,
-  IconDental,
   IconGenderFemale,
   IconGenderMale,
+  IconHanger,
   IconHeart,
   IconMan,
-  IconMoodNeutral,
   IconMoodSmile,
   IconNotebook,
   IconTargetArrow,
   IconUserCircle,
-  IconWhirl,
+  IconVideo,
 } from "@tabler/icons-react";
 
 export const typeIcons: { [key: string]: React.ReactNode } = {
   head: <IconMoodSmile className="icon" />,
-  body: <IconMan className="icon" />,
-  health: <IconHeart className="icon" />,
-};
-
-export const partIcons: { [key: string]: React.ReactNode } = {
-  face: <IconMoodNeutral className="icon" />,
-  mouth: <IconDental className="icon" />,
-  scalp: <IconWhirl className="icon" />,
   body: <IconMan className="icon" />,
   health: <IconHeart className="icon" />,
 };
@@ -54,26 +45,30 @@ export const styleIcons: { [key: string]: string } = {
   casual: "🌊",
 };
 
+const getCategoryIcon = (key: string, className: string) => {
+  switch (key) {
+    case "about":
+      return <IconUserCircle className={`icon ${className}`} />;
+    case "progress":
+      return <IconTargetArrow className={`icon ${className}`} />;
+    case "proof":
+      return <IconVideo className={`icon ${className}`} />;
+    case "style":
+      return <IconHanger className={`icon ${className}`} />;
+    case "diary":
+      return <IconNotebook className={`icon ${className}`} />;
+    case "answers":
+      return <IconBubbleText className={`icon ${className}`} />;
+  }
+};
+
 const getTypeIcon = (key: string, className: string) => {
   switch (key) {
     case "head":
       return <IconMoodSmile className={`icon ${className}`} />;
     case "body":
       return <IconMan className={`icon ${className}`} />;
-    case "health":
-      return <IconHeart className={`icon ${className}`} />;
   }
 };
 
-const getPartIcon = (key: string, className: string) => {
-  switch (key) {
-    case "face":
-      return <IconMoodNeutral className={`icon ${className}`} />;
-    case "mouth":
-      return <IconDental className={`icon ${className}`} />;
-    case "scalp":
-      return <IconWhirl className={`icon ${className}`} />;
-  }
-};
-
-export { getTypeIcon, getPartIcon };
+export { getTypeIcon, getCategoryIcon };

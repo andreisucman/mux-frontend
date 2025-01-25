@@ -246,14 +246,13 @@ export default function ClubSettings() {
         Club
       </Title>
       <Stack className={classes.list}>
-        <Stack gap={8}>
+        <Stack gap={12}>
           <Group>
             <div className={classes.avatarWrapper} onClick={openAvatarEditor}>
               <AvatarComponent avatar={avatar} size="md" />
             </div>
             <TextInput
               flex={1}
-              maw={370}
               value={userName}
               disabled={!canUpdateName}
               onChange={(e) => setUserName(e.currentTarget.value)}
@@ -271,7 +270,6 @@ export default function ClubSettings() {
           </Group>
           <TextInput
             flex={1}
-            maw={425}
             value={userIntro}
             onChange={(e) => handleEnterIntro(e.currentTarget.value)}
             leftSection={<Text size="xs">{introCharactersLeft}</Text>}
@@ -286,7 +284,7 @@ export default function ClubSettings() {
             }
           />
         </Stack>
-        <DataSharingSwitches title="Data privacy" />
+        <DataSharingSwitches title="Data sharing" />
         <AddClubSocials title="Socials" />
         {country && (
           <Stack gap={8}>
@@ -296,7 +294,6 @@ export default function ClubSettings() {
             <TextInput
               leftSection={<IconWorld className="icon" />}
               value={country || ""}
-              maw={425}
               readOnly
               rightSection={
                 <ActionIcon variant="default" size="sm" onClick={openChangeCountryConfirmation}>

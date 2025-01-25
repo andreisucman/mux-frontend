@@ -30,10 +30,11 @@ export default function CalorieGoalController({ disabled }: Props) {
   const handleChangeSlider = useCallback(
     (calorieGoal: number) => {
       if (calorieGoalType === CalorieGoalTypeEnum.REMAINING) {
-        setCalorieGoal(remainingDailyCalories);
+        setCalorieGoal(remainingDailyCalories || 0);
         return;
+      } else {
+        setCalorieGoal(calorieGoal);
       }
-      setCalorieGoal(calorieGoal);
       saveToLocalStorage("nutrition", { calorieGoal }, "add");
     },
     [calorieGoalType, remainingDailyCalories]

@@ -2,66 +2,66 @@ import { ClubDataType, HeadValuePartsBoolean } from "@/types/global";
 
 type UpdateClubPrivacyProps = {
   club: ClubDataType | null;
-  type: string;
-  part?: string;
+  category: string;
+  type?: string;
   value: boolean;
 };
 
-export function updateClubPrivacy({ club, type, part, value }: UpdateClubPrivacyProps) {
+export function updateClubPrivacy({ club, type, category, value }: UpdateClubPrivacyProps) {
   try {
     const { privacy } = club || {};
 
     if (!privacy) return;
 
-    const relevantTypePrivacyIndex = privacy.findIndex((rec) => rec.name === type);
+    const relevantCategoryPrivacyIndex = privacy.findIndex((rec) => rec.name === category);
 
-    if (relevantTypePrivacyIndex === -1) return club;
+    if (relevantCategoryPrivacyIndex === -1) return club;
 
-    let relevantTypePrivacy = privacy[relevantTypePrivacyIndex];
-    let updatedParts;
+    let relevantCategoryPrivacy = privacy[relevantCategoryPrivacyIndex];
+    let updatedTypes;
 
-    if (part) {
-      const relevantPartPrivacyIndex = relevantTypePrivacy.parts.findIndex(
-        (rec) => rec.name === part
+    if (type) {
+      const relevantTypePrivacyIndex = relevantCategoryPrivacy.types.findIndex(
+        (rec) => rec.name === type
       );
 
-      if (relevantPartPrivacyIndex === -1) return club;
+      if (relevantTypePrivacyIndex === -1) return club;
 
       const updatedPartPrivacy = {
-        ...relevantTypePrivacy.parts[relevantPartPrivacyIndex],
+        ...relevantCategoryPrivacy.types[relevantTypePrivacyIndex],
         value,
       };
 
-      updatedParts = [
-        ...relevantTypePrivacy.parts.slice(0, relevantPartPrivacyIndex),
+      updatedTypes = [
+        ...relevantCategoryPrivacy.types.slice(0, relevantTypePrivacyIndex),
         updatedPartPrivacy,
-        ...relevantTypePrivacy.parts.slice(relevantPartPrivacyIndex + 1),
+        ...relevantCategoryPrivacy.types.slice(relevantTypePrivacyIndex + 1),
       ];
 
-      relevantTypePrivacy = {
-        ...relevantTypePrivacy,
-        value: updatedParts.every((part) => Boolean(part.value)),
+      relevantCategoryPrivacy = {
+        ...relevantCategoryPrivacy,
+        value: updatedTypes.every((type) => Boolean(type.value)),
       };
     } else {
-      updatedParts = relevantTypePrivacy.parts.map((obj) => ({
+      updatedTypes = relevantCategoryPrivacy.types.map((obj) => ({
         ...obj,
         value,
       }));
-      relevantTypePrivacy = {
-        ...relevantTypePrivacy,
-        value: updatedParts.every((part) => Boolean(part.value)),
+      relevantCategoryPrivacy = {
+        ...relevantCategoryPrivacy,
+        value: updatedTypes.every((type) => Boolean(type.value)),
       };
     }
 
     const updatedTypePrivacy = {
-      ...relevantTypePrivacy,
-      parts: updatedParts,
+      ...relevantCategoryPrivacy,
+      types: updatedTypes,
     };
 
     const newPrivacy = [
-      ...privacy.slice(0, relevantTypePrivacyIndex),
+      ...privacy.slice(0, relevantCategoryPrivacyIndex),
       updatedTypePrivacy,
-      ...privacy.slice(relevantTypePrivacyIndex + 1),
+      ...privacy.slice(relevantCategoryPrivacyIndex + 1),
     ];
 
     return newPrivacy;
@@ -73,13 +73,14 @@ export function updateClubPrivacy({ club, type, part, value }: UpdateClubPrivacy
 type GetPrivacyValueProps = {
   isMain?: boolean;
   privacy?: HeadValuePartsBoolean;
-  partName?: string;
-  type: string;
+  category: string;
+  typeName?: string;
+  type?: string;
 };
 
-export function getPrivacyValue({ isMain, privacy, partName, type }: GetPrivacyValueProps) {
-  const relevantTypePrivacy = privacy?.find((rec) => rec.name === type);
-  if (isMain) return relevantTypePrivacy?.value;
-  if (!partName) return;
-  return relevantTypePrivacy?.parts.find((rec) => rec.name === partName)?.value;
+export function getPrivacyValue({ isMain, privacy, category, type }: GetPrivacyValueProps) {
+  const relevantCategoryPrivacy = privacy?.find((rec) => rec.name === category);
+  if (isMain) return relevantCategoryPrivacy?.value;
+  if (!type) return;
+  return relevantCategoryPrivacy?.types.find((rec) => rec.name === type)?.value;
 }

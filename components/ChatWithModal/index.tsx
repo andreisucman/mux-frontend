@@ -39,7 +39,14 @@ export default function ChatWithModal({
 
   return (
     <Stack className={classes.container}>
-      <Modal opened={opened} onClose={close} size="xl" title={modalTitle} centered>
+      <Modal
+        opened={opened}
+        closeOnClickOutside={false}
+        onClose={close}
+        size="xl"
+        title={modalTitle}
+        centered
+      >
         <InnerChatContainer
           disabled={disabled}
           userName={userName}

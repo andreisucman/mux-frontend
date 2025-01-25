@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -13,22 +13,24 @@ type Props = {
 };
 
 export default function DataSharingSwitches({ title }: Props) {
+  const [openTooltip, setOpenTooltip] = useState("");
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { club } = userDetails || {};
   const { privacy } = club || {};
 
   type UpdatePrivacyProps = {
     value: boolean;
-    type: string;
-    part?: string;
+    type?: string;
+    category: string;
   };
 
   const updatePrivacy = useCallback(
-    async ({ value, type, part }: UpdatePrivacyProps) => {
+    async ({ value, category, type }: UpdatePrivacyProps) => {
       if (!club) return;
 
-      const newPrivacy = updateClubPrivacy({ club, part, type, value });
-
+      console.log("updatePrivacy inputs", value, type, category);
+      const newPrivacy = updateClubPrivacy({ club, category, type, value });
+      console.log("newPrivacy", newPrivacy);
       try {
         const response = await callTheServer({
           endpoint: "updateClubPrivacy",
@@ -48,8 +50,7 @@ export default function DataSharingSwitches({ title }: Props) {
             club: { ...club, privacy: newPrivacy },
           }));
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     },
     [userDetails, privacy]
   );
@@ -62,9 +63,41 @@ export default function DataSharingSwitches({ title }: Props) {
         </Text>
       )}
       <Stack className={classes.wrapper}>
-        <SwitchBox type={"head"} privacy={privacy} onChange={updatePrivacy} />
-        <SwitchBox type={"body"} privacy={privacy} onChange={updatePrivacy} />
-        <SwitchBox type={"health"} privacy={privacy} onChange={updatePrivacy} />
+        <SwitchBox
+          category={"about"}
+          privacy={privacy}
+          onChange={updatePrivacy}
+          openTooltip={openTooltip}
+          setOpenTooltip={setOpenTooltip}
+        />
+        <SwitchBox
+          category={"progress"}
+          privacy={privacy}
+          onChange={updatePrivacy}
+          openTooltip={openTooltip}
+          setOpenTooltip={setOpenTooltip}
+        />
+        <SwitchBox
+          category={"style"}
+          privacy={privacy}
+          onChange={updatePrivacy}
+          openTooltip={openTooltip}
+          setOpenTooltip={setOpenTooltip}
+        />
+        <SwitchBox
+          category={"diary"}
+          privacy={privacy}
+          onChange={updatePrivacy}
+          openTooltip={openTooltip}
+          setOpenTooltip={setOpenTooltip}
+        />
+        <SwitchBox
+          category={"answer"}
+          privacy={privacy}
+          onChange={updatePrivacy}
+          openTooltip={openTooltip}
+          setOpenTooltip={setOpenTooltip}
+        />
       </Stack>
     </Stack>
   );

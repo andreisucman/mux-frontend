@@ -4,7 +4,7 @@
   align-items: center;
   width: fit-content;
   padding: rem(4) rem(16);
-  background-color: var(--mantine-color-dark-6);
+  background-color: var(--mantine-color-dark-5);
   border-radius: 1rem;
   margin-right: auto;
   margin-top: rem(16);
@@ -27,7 +27,6 @@
   margin: rem(8) 0;
   /* user-select: all; */
 
-
   & span {
     &:first-child {
       font-size: 0.8rem;
@@ -48,7 +47,26 @@
   margin: auto;
 
   & p {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: rem(8);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  & ul, ol {
+    margin-top: 0;
+    margin-bottom: rem(8);
+  }
+
+  & li {
+    margin-top: 0;
+    margin-bottom: rem(8);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
