@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
+import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AllTaskType, RoutineType, TypeEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
@@ -32,6 +33,9 @@ export default function AccordionRoutineRow({
 }: Props) {
   const { part, createdAt, lastDate } = routine;
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const status = searchParams.get("status") || "active"; // segment status of overall page
 
   const rowLabel = useMemo(() => {
     const sameMonth = new Date(createdAt).getMonth() === new Date(lastDate).getMonth();
@@ -91,15 +95,22 @@ export default function AccordionRoutineRow({
       const response = await callTheServer({
         endpoint: "updateStatusOfTasks",
         method: "POST",
-        body: { taskIds: [taskId], newStatus, returnOnlyRoutines: true },
+        body: { taskIds: [taskId], newStatus, routineStatus: status, returnOnlyRoutines: true },
       });
 
       if (response.status === 200) {
-        const { routines } = response.message;
+        const { message, error } = response;
+
+        if (error) {
+          openErrorModal({ description: error });
+          return;
+        }
+
+        const { routines } = message;
         if (setRoutines) setRoutines(routines);
       }
     },
-    [setRoutines]
+    [setRoutines, status]
   );
 
   const cloneTask = useCallback(
@@ -107,15 +118,22 @@ export default function AccordionRoutineRow({
       const response = await callTheServer({
         endpoint: "cloneTask",
         method: "POST",
-        body: { taskId },
+        body: { taskId, routineStatus: status },
       });
 
       if (response.status === 200) {
-        const { routines } = response.message;
+        const { message, error } = response;
+
+        if (error) {
+          openErrorModal({ description: error });
+          return;
+        }
+
+        const { routines } = message;
         if (setRoutines) setRoutines(routines);
       }
     },
-    [setRoutines]
+    [setRoutines, status]
   );
 
   const showSkeleton = useShowSkeleton();

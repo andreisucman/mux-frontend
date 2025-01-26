@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconFilterOff } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";

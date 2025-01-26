@@ -145,17 +145,18 @@ export default function ClubAbout(props: Props) {
               </Group>
 
               <Collapse in={showQuestions}>
-                <Stack className={classes.buttonWrapper}>
+                <Group className={classes.buttonWrapper}>
+                  <Text>Answer questions to create your bio</Text>
                   <Button
-                    m="auto"
                     c="white"
+                    size="compact-sm"
                     variant={hasNewAboutQuestions ? "filled" : "default"}
                     component={Link}
                     href={buttonPath}
                   >
                     {buttonText}
                   </Button>
-                </Stack>
+                </Group>
               </Collapse>
             </Stack>
             <EditClubAbout

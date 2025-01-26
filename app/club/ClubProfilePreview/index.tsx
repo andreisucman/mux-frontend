@@ -1,11 +1,19 @@
-import React, { memo, useCallback } from "react";
-import { IconMan, IconMoodSmile, IconSettings } from "@tabler/icons-react";
-import { ActionIcon, Group, rem, Stack, Text, Title } from "@mantine/core";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconMan,
+  IconMoodSmile,
+  IconSettings,
+} from "@tabler/icons-react";
+import cn from "classnames";
+import { ActionIcon, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
+import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
 import SocialsDisplayLine from "./SocialsDisplayLine";
@@ -17,6 +25,7 @@ type Props = {
   data?: ClubUserType | null;
   hasNewAboutQuestions?: boolean;
   showButtons?: boolean;
+  showCollapseKey: string;
   customStyles?: { [key: string]: any };
 };
 
@@ -24,6 +33,7 @@ function ClubProfilePreview({
   type,
   data,
   isMini,
+  showCollapseKey,
   showButtons,
   hasNewAboutQuestions,
   customStyles,
@@ -31,6 +41,7 @@ function ClubProfilePreview({
   const router = useRouter();
   const { scores, bio, name, avatar } = data || {};
   const { headTotalProgress, bodyTotalProgress } = scores || {};
+  const [showCollapsedInfo, setShowCollapsedInfo] = useState(true);
 
   const progessExists = headTotalProgress !== undefined || bodyTotalProgress !== undefined;
   const rowStyle: { [key: string]: any } = {};
@@ -54,45 +65,69 @@ function ClubProfilePreview({
     router.push(`/club/${name}`);
   }, [name]);
 
+  const handleToggleCollapse = () => {
+    setShowCollapsedInfo((prev) => {
+      saveToIndexedDb(`showUserProfileInfo-${showCollapseKey}`, !prev);
+      return !prev;
+    });
+  };
+
+  useEffect(() => {
+    getFromIndexedDb(`showUserProfileInfo-${showCollapseKey}`).then((verdict) => {
+      if (verdict === undefined || verdict === null) verdict = true;
+      setShowCollapsedInfo(verdict);
+    });
+  }, [showCollapseKey]);
+
+  const chevron = showCollapsedInfo ? (
+    <IconChevronDown className="icon" style={{ marginLeft: rem(4) }} />
+  ) : (
+    <IconChevronUp className="icon" style={{ marginLeft: rem(4) }} />
+  );
+
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Group className={classes.row} style={rowStyle}>
-        <Stack gap={rem(4)}>
-          <AvatarComponent avatar={avatar} />
-          {!isMini && (
-            <Text size="xs" c="dimmed" ta="center">
-              {upperFirst(type)}
-            </Text>
-          )}
-        </Stack>
+        {showCollapsedInfo && (
+          <Stack gap={rem(4)}>
+            <AvatarComponent avatar={avatar} />
+            {!isMini && (
+              <Text size="xs" c="dimmed" ta="center">
+                {upperFirst(type)}
+              </Text>
+            )}
+          </Stack>
+        )}
 
         <Stack className={classes.content}>
-          <Title order={4} className={classes.name} lineClamp={2}>
-            {name}
+          <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
+            {name} {chevron}
           </Title>
 
-          {!isMini && (
-            <Text size="sm" lineClamp={5}>
-              {bio?.intro}
-            </Text>
-          )}
-          {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
-          {progessExists && (
-            <Group wrap="nowrap">
-              {headTotalProgress !== undefined && (
-                <ScoreCell
-                  icon={<IconMoodSmile className="icon" />}
-                  score={Math.max(headTotalProgress, 0)}
-                />
-              )}
-              {bodyTotalProgress !== undefined && (
-                <ScoreCell
-                  icon={<IconMan className="icon" />}
-                  score={Math.max(bodyTotalProgress, 0)}
-                />
-              )}
-            </Group>
-          )}
+          <Collapse in={showCollapsedInfo}>
+            {!isMini && (
+              <Text size="sm" lineClamp={5}>
+                {bio?.intro}
+              </Text>
+            )}
+            {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
+            {progessExists && (
+              <Group wrap="nowrap" mt={4}>
+                {headTotalProgress !== undefined && (
+                  <ScoreCell
+                    icon={<IconMoodSmile className="icon" />}
+                    score={Math.max(headTotalProgress, 0)}
+                  />
+                )}
+                {bodyTotalProgress !== undefined && (
+                  <ScoreCell
+                    icon={<IconMan className="icon" />}
+                    score={Math.max(bodyTotalProgress, 0)}
+                  />
+                )}
+              </Group>
+            )}
+          </Collapse>
         </Stack>
         {type === "you" && (
           <ActionIcon
@@ -100,13 +135,13 @@ function ClubProfilePreview({
             size="md"
             component={Link}
             href="/settings"
-            className={classes.clubSettingsButton}
+            className={cn(classes.clubSettingsButton, { [classes.relative]: !showCollapsedInfo })}
           >
             <IconSettings className="icon" />
           </ActionIcon>
         )}
       </Group>
-      {showButtons && (
+      {showButtons && showCollapsedInfo && (
         <MenuButtons
           type={type}
           hasQuestions={!!hasNewAboutQuestions}

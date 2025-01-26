@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
-import { Skeleton, Stack } from "@mantine/core";
+import { SegmentedControl, Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems, routineSortItems } from "@/data/sortItems";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
+import { useRouter } from "@/helpers/custom-router";
+import modifyQuery from "@/helpers/modifyQuery";
+import { routineSegments } from "../[userName]/data";
 import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
 import ClubProgressHeader from "../progress/ClubProgressHeader";
@@ -29,6 +32,8 @@ type Props = {
 };
 
 export default function ClubModerationLayout({ children, pageType, userName }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youFollowData, hasNewAboutQuestions, youFollowDataFetched } =
@@ -36,6 +41,7 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   const [showComponent, setShowComponent] = useState("loading");
 
   const code = searchParams.get("code");
+  const routineStatus = searchParams.get("status") || "active";
 
   const { name, subscriptions, club } = userDetails || {};
   const { followingUserName } = club || {};
@@ -52,6 +58,14 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
     ],
     [userName]
   );
+
+  const handleChangeSegment = (segmentName: string) => {
+    const query = modifyQuery({
+      params: [{ name: "status", value: segmentName, action: "replace" }],
+    });
+
+    router.replace(`${pathname}${query ? `?${query}` : ""}`);
+  };
 
   const headers: { [key: string]: React.ReactNode } = useMemo(
     () => ({
@@ -96,11 +110,21 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
           hideTypeDropdown={showComponent !== "children"}
           pageType={pageType}
           sortItems={routineSortItems}
+          children={
+            showComponent === "children" && (
+              <SegmentedControl
+                size="sm"
+                data={routineSegments}
+                value={routineStatus}
+                onChange={handleChangeSegment}
+              />
+            )
+          }
           showReturn
         />
       ),
     }),
-    [showComponent]
+    [showComponent, routineStatus]
   );
 
   const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
@@ -108,6 +132,7 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   useEffect(() => {
     if (!youFollowDataFetched || code) return;
 
+    console.log("youFollowData", youFollowData, "userName", userName);
     if (youFollowData === null || !userName) {
       setShowComponent("userNotFound");
       return;
@@ -137,6 +162,8 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
     youFollowDataFetched,
   ]);
 
+  const showCollapseKey = `${pathname}-${isSelf ? name : followingUserName}`;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       {headers[pageType]}
@@ -152,6 +179,7 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
               type={isSelf ? "you" : "member"}
               data={isSelf ? youData : youFollowData}
               hasNewAboutQuestions={hasNewAboutQuestions}
+              showCollapseKey={showCollapseKey}
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}

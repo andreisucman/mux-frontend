@@ -9,6 +9,7 @@
   flex-wrap: nowrap;
   align-items: flex-start;
   flex: 1;
+  margin-right: auto;
 
   @media (max-width: $mantine-breakpoint-sm) {
     flex: 0.5;

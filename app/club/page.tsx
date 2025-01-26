@@ -18,7 +18,7 @@ export default function Club() {
   const { youFollowData, hasNewAboutQuestions, youData, youFollowDataFetched } =
     useContext(ClubContext);
 
-  const { club } = userDetails || {};
+  const { club, name } = userDetails || {};
   const { followingUserName, totalFollowers } = club || {};
 
   return (
@@ -26,16 +26,20 @@ export default function Club() {
       <SkeletonWrapper show={!youFollowDataFetched || hasNewAboutQuestions === undefined}>
         <ClubProfileHeader />
         <Group className={classes.top}>
-          <ClubProfilePreview
-            data={youData}
-            type="you"
-            hasNewAboutQuestions={hasNewAboutQuestions}
-            showButtons
-          />
+          {name && (
+            <ClubProfilePreview
+              data={youData}
+              type="you"
+              showCollapseKey={name}
+              hasNewAboutQuestions={hasNewAboutQuestions}
+              showButtons
+            />
+          )}
           {followingUserName && (
             <ClubProfilePreview
               data={youFollowData}
               type="member"
+              showCollapseKey={followingUserName}
               hasNewAboutQuestions={hasNewAboutQuestions}
               showButtons
             />

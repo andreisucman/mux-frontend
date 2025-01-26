@@ -2,7 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
+import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
@@ -26,6 +26,7 @@ type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
   type?: string;
+  status: string | null;
   sort: string | null;
   routinesLength?: number;
 };
@@ -46,6 +47,7 @@ export default function ClubRoutines(props: Props) {
 
   const { name, routines: currentUserRoutines } = userDetails || {};
 
+  const status = searchParams.get("status") || "active";
   const type = searchParams.get("type") || "head";
   const sort = searchParams.get("sort");
   const isSelf = name === userName;
@@ -81,23 +83,26 @@ export default function ClubRoutines(props: Props) {
   );
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, followingUserName, routinesLength, type }: GetRoutinesProps) => {
+    async ({ skip, sort, status, followingUserName, routinesLength, type }: GetRoutinesProps) => {
       try {
-        const data = await fetchRoutines({
+        const response = await fetchRoutines({
           skip,
           sort,
           followingUserName,
           routinesLength: routinesLength || 0,
           type,
+          status,
         });
 
-        if (data) {
+        const { message } = response;
+
+        if (message) {
           if (skip) {
-            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-            setHasMore(data.length === 21);
+            setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
+            setHasMore(message.length === 21);
           } else {
-            setRoutines(data.slice(0, 20));
-            if (!openValue) setOpenValue(data[0]?._id);
+            setRoutines(message.slice(0, 20));
+            if (!openValue) setOpenValue(message[0]?._id);
           }
         }
       } catch (err) {}
@@ -168,6 +173,7 @@ export default function ClubRoutines(props: Props) {
       routines
         ?.filter((routine) => routine.type === type)
         .map((routine) => {
+          console.log("rerendered", routine);
           return (
             <AccordionRoutineRow
               key={routine._id}
@@ -181,6 +187,7 @@ export default function ClubRoutines(props: Props) {
                   onConfirm: () => stealRoutine(routine._id),
                 })
               }
+              setRoutines={setRoutines}
               openTaskDetails={openTaskDetails}
             />
           );
@@ -189,15 +196,16 @@ export default function ClubRoutines(props: Props) {
   );
 
   useEffect(() => {
-    if (!type) return;
+    if (!type || !status) return;
     const payload: GetRoutinesProps = {
       followingUserName: userName,
       routinesLength: (routines && routines.length) || 0,
       type,
       sort,
+      status,
     };
     handleFetchRoutines(payload);
-  }, [type, sort, userName]);
+  }, [type, status, sort, userName]);
 
   return (
     <ClubModerationLayout pageType="routines" userName={userName} showChat showHeader>
@@ -231,6 +239,7 @@ export default function ClubRoutines(props: Props) {
                         routinesLength: (routines && routines.length) || 0,
                         sort,
                         type,
+                        status,
                       })
                     }
                   >
@@ -256,7 +265,6 @@ export default function ClubRoutines(props: Props) {
           <ChatWithModal
             chatCategory={ChatCategoryEnum.ROUTINE}
             openChatKey={ChatCategoryEnum.ROUTINE}
-            defaultVisibility="open"
             dividerLabel={"Chat about routines and tasks"}
             modalTitle={
               <Title order={5} component={"p"}>

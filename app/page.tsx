@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
-import MarkdownLoading from "@/components/ChatDisplay/MarkdownLoading";
 import ComparisonCarousel from "@/components/ComparisonCarousel";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";

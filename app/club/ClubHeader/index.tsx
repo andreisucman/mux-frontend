@@ -16,6 +16,7 @@ type Props = {
   title: string;
   isDisabled?: boolean;
   showReturn?: boolean;
+  children?: React.ReactNode;
   sortItems?: { value: string; label: string }[];
   pageType: string;
   hideTypeDropdown?: boolean;
@@ -27,6 +28,7 @@ export default function ClubHeader({
   showReturn,
   hideTypeDropdown,
   isDisabled,
+  children,
   pageType,
   sortItems,
   onSelect,
@@ -62,6 +64,7 @@ export default function ClubHeader({
         </Title>
       </Group>
       {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
+      {children}
       {isMobile && (
         <FilterDropdown
           icons={pageTypeIcons}

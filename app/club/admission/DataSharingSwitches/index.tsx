@@ -78,6 +78,13 @@ export default function DataSharingSwitches({ title }: Props) {
           setOpenTooltip={setOpenTooltip}
         />
         <SwitchBox
+          category={"proof"}
+          privacy={privacy}
+          onChange={updatePrivacy}
+          openTooltip={openTooltip}
+          setOpenTooltip={setOpenTooltip}
+        />
+        <SwitchBox
           category={"style"}
           privacy={privacy}
           onChange={updatePrivacy}

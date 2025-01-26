@@ -46,8 +46,8 @@
 }
 
 .indicator {
-  min-width: rem(14);
-  min-height: rem(14);
+  min-width: rem(10);
+  min-height: rem(10);
   border-radius: rem(100);
   background-color: var(--mantine-color-gray-3);
 }

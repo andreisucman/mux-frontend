@@ -22,7 +22,7 @@ export default function CalorieGoalProvider({ children }: { children: React.Reac
   const [calorieGoalLocal, setCalorieGoalLocal] = useState<number>(0);
 
   const { nutrition } = userDetails || {};
-  const { remainingDailyCalories = 0 } = nutrition || {};
+  const { remainingDailyCalories } = nutrition || {};
 
   const savedNutrition: { [key: string]: any } | null = getFromLocalStorage("nutrition");
   const { calorieGoalType, calorieGoal } = savedNutrition || {};
@@ -38,7 +38,7 @@ export default function CalorieGoalProvider({ children }: { children: React.Reac
     if (calorieGoalType === CalorieGoalTypeEnum.PORTION) {
       setCalorieGoalLocal(calorieGoal);
     } else {
-      setCalorieGoalLocal(remainingDailyCalories);
+      setCalorieGoalLocal(remainingDailyCalories || 0);
     }
   }, [calorieGoal, calorieGoalType, remainingDailyCalories]);
 

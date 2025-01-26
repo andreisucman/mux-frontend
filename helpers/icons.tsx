@@ -1,22 +1,31 @@
 import {
   IconBubbleText,
   IconClipboardText,
+  IconDental,
   IconGenderFemale,
   IconGenderMale,
   IconHanger,
   IconHeart,
   IconMan,
+  IconMoodNeutral,
   IconMoodSmile,
   IconNotebook,
   IconTargetArrow,
   IconUserCircle,
   IconVideo,
+  IconWhirl,
 } from "@tabler/icons-react";
 
 export const typeIcons: { [key: string]: React.ReactNode } = {
   head: <IconMoodSmile className="icon" />,
   body: <IconMan className="icon" />,
   health: <IconHeart className="icon" />,
+};
+
+export const partIcons: { [key: string]: React.ReactNode } = {
+  face: <IconMoodNeutral className="icon" />,
+  mouth: <IconDental className="icon" />,
+  scalp: <IconWhirl className="icon" />,
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
@@ -57,7 +66,7 @@ const getCategoryIcon = (key: string, className: string) => {
       return <IconHanger className={`icon ${className}`} />;
     case "diary":
       return <IconNotebook className={`icon ${className}`} />;
-    case "answers":
+    case "answer":
       return <IconBubbleText className={`icon ${className}`} />;
   }
 };

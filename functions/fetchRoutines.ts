@@ -4,6 +4,7 @@ import callTheServer from "./callTheServer";
 type FetchRoutinesProps = {
   skip?: boolean;
   sort: string | null;
+  status: string | null;
   followingUserName?: string | string[];
   routinesLength: number;
   type?: string;
@@ -12,9 +13,10 @@ type FetchRoutinesProps = {
 const fetchRoutines = async ({
   skip,
   sort,
+  type,
+  status,
   followingUserName,
   routinesLength,
-  type,
 }: FetchRoutinesProps) => {
   try {
     let endpoint = "getRoutines";
@@ -25,6 +27,10 @@ const fetchRoutines = async ({
 
     if (type) {
       parts.push(`type=${type}`);
+    }
+
+    if (status) {
+      parts.push(`status=${status}`);
     }
 
     if (sort) {
@@ -48,12 +54,7 @@ const fetchRoutines = async ({
       throw new Error(response.error);
     }
 
-    if (response.error) {
-      openErrorModal({ description: response.error });
-      return;
-    }
-
-    return response.message;
+    return response;
   } catch (err) {
     openErrorModal();
   }

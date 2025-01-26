@@ -32,4 +32,5 @@
 
 .buttonWrapper {
   padding: rem(16);
+  justify-content: center;
 }

@@ -22,15 +22,20 @@
 }
 
 .name {
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   font-size: var(--mantine-font-size-md);
   font-weight: 600;
+  width: fit-content;
 }
 
 .clubSettingsButton {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.relative {
+  position: relative;
 }

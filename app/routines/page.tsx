@@ -1,9 +1,17 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
+import {
+  Accordion,
+  ActionIcon,
+  Button,
+  Loader,
+  SegmentedControl,
+  Stack,
+  Title,
+} from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import OverlayWithText from "@/components/OverlayWithText";
 import { typeItems } from "@/components/PageHeader/data";
@@ -11,8 +19,10 @@ import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import fetchRoutines from "@/functions/fetchRoutines";
 import { useRouter } from "@/helpers/custom-router";
 import { typeIcons } from "@/helpers/icons";
+import modifyQuery from "@/helpers/modifyQuery";
 import { RoutineType, TypeEnum } from "@/types/global";
 import ChatWithModal from "../../components/ChatWithModal";
+import { routineSegments } from "../club/[userName]/data";
 import { ChatCategoryEnum } from "../diary/type";
 import classes from "./routines.module.css";
 
@@ -22,37 +32,51 @@ type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
   type?: string;
+  status: string;
   sort: string | null;
   routinesLength?: number;
 };
 
 export default function ClubRoutines() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
 
   const type = searchParams.get("type") || "head";
-  const sort = searchParams.get("sort") || "-createdAt";
+  const status = searchParams.get("status") || "active";
+  const sort = searchParams.get("sort");
+
+  const handleChangeSegment = (segmentName: string) => {
+    const query = modifyQuery({
+      params: [{ name: "status", value: segmentName, action: "replace" }],
+    });
+
+    router.replace(`${pathname}${query ? `?${query}` : ""}`);
+  };
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, routinesLength, type }: GetRoutinesProps) => {
+    async ({ skip, sort, status, routinesLength, type }: GetRoutinesProps) => {
       try {
-        const data = await fetchRoutines({
+        const response = await fetchRoutines({
           skip,
           sort,
+          status,
           routinesLength: routinesLength || 0,
           type,
         });
 
-        if (data) {
+        const { message } = response;
+
+        if (message) {
           if (skip) {
-            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-            setHasMore(data.length === 21);
+            setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
+            setHasMore(message.length === 21);
           } else {
-            setRoutines(data.slice(0, 20));
-            if (!openValue) setOpenValue(data[0]?._id);
+            setRoutines(message.slice(0, 20));
+            if (!openValue) setOpenValue(message[0]?._id);
           }
         }
       } catch (err) {}
@@ -79,14 +103,15 @@ export default function ClubRoutines() {
   );
 
   useEffect(() => {
-    if (!type) return;
+    if (!type || !status) return;
     const payload: GetRoutinesProps = {
       routinesLength: (routines && routines.length) || 0,
       type,
       sort,
+      status,
     };
     handleFetchRoutines(payload);
-  }, [type, sort]);
+  }, [type, status, sort]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -95,6 +120,14 @@ export default function ClubRoutines() {
         filterData={typeItems}
         selectedValue={type}
         icons={typeIcons}
+        children={
+          <SegmentedControl
+            size="sm"
+            data={routineSegments}
+            value={status}
+            onChange={handleChangeSegment}
+          />
+        }
         showReturn
         nowrap
       />
@@ -126,6 +159,7 @@ export default function ClubRoutines() {
                       routinesLength: (routines && routines.length) || 0,
                       sort,
                       type,
+                      status,
                     })
                   }
                 >

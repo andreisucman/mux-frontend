@@ -57,8 +57,8 @@ export default function PageHeaderWithReturn({
           {title}
         </Title>
       </Group>
-      {children}
       {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
+      {children}
       {filterData && (
         <FilterDropdown
           isDisabled={isDisabled}
