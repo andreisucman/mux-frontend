@@ -11,7 +11,7 @@ export default function getConversationStarters(chatCategory?: ChatCategoryEnum,
       );
       break;
     case ChatCategoryEnum.DIARY:
-      starters.push(`what feedback ${isClub ? "they" : "i"} left about minoxidil task`);
+      starters.push(`what feedback ${isClub ? "they" : "i"} left about the minoxidil task`);
       break;
     case ChatCategoryEnum.FOOD:
       starters.push(

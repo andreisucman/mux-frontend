@@ -15,6 +15,7 @@ import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import cloneTask from "@/functions/cloneTask";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
@@ -24,6 +25,7 @@ import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
 import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
+import RecreateDateModalContent from "./RecreateDateModalContent";
 import classes from "./explain.module.css";
 
 export const runtime = "edge";
@@ -173,6 +175,26 @@ export default function Explain(props: Props) {
     [timeZone, taskInfo]
   );
 
+  const handleCloneTask = useCallback(() => {
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Choose new date
+        </Title>
+      ),
+      size: "sm",
+      innerProps: (
+        <RecreateDateModalContent
+          cloneTask={async ({ startingDate }) =>
+            cloneTask({ setTaskInfo, startingDate, taskId, returnTask: true })
+          }
+        />
+      ),
+      modal: "general",
+      centered: true,
+    });
+  }, [taskId]);
+
   const openEditTaskModal = useCallback(() => {
     modals.openContextModal({
       centered: true,
@@ -284,26 +306,39 @@ export default function Explain(props: Props) {
                   checked={proofEnabled || false}
                   onChange={() => switchProofUpload(!proofEnabled, taskId)}
                 />
-                <Button
-                  size="compact-sm"
-                  variant="default"
-                  disabled={taskStatus !== TaskStatusEnum.ACTIVE}
-                  className={classes.actionButton}
-                  onClick={openEditTaskModal}
-                >
-                  Edit
-                </Button>
-                <Button
-                  size="compact-sm"
-                  variant="default"
-                  disabled={
-                    taskStatus === TaskStatusEnum.DELETED || taskStatus === TaskStatusEnum.COMPLETED
-                  }
-                  className={classes.actionButton}
-                  onClick={updateTaskStatus}
-                >
-                  {taskStatus === TaskStatusEnum.ACTIVE ? "Cancel" : "Activate"}
-                </Button>
+                {taskStatus !== TaskStatusEnum.COMPLETED && (
+                  <>
+                    <Button
+                      size="compact-sm"
+                      variant="default"
+                      disabled={taskStatus !== TaskStatusEnum.ACTIVE}
+                      className={classes.actionButton}
+                      onClick={openEditTaskModal}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size="compact-sm"
+                      variant="default"
+                      disabled={taskStatus === TaskStatusEnum.DELETED}
+                      className={classes.actionButton}
+                      onClick={updateTaskStatus}
+                    >
+                      {taskStatus === TaskStatusEnum.ACTIVE ? "Cancel" : "Activate"}
+                    </Button>
+                  </>
+                )}
+                {taskStatus === TaskStatusEnum.COMPLETED && (
+                  <Button
+                    size="compact-sm"
+                    variant="default"
+                    disabled={taskStatus !== TaskStatusEnum.COMPLETED}
+                    className={classes.actionButton}
+                    onClick={handleCloneTask}
+                  >
+                    Recreate
+                  </Button>
+                )}
               </Group>
               <ProofStatus
                 selectedTask={taskInfo}

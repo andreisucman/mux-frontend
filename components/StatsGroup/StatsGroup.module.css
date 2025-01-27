@@ -1,6 +1,7 @@
 .container {
   gap: rem(8);
   flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .text {

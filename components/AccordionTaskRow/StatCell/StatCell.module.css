@@ -7,7 +7,3 @@
   font-size: var(--mantine-font-size-md);
   white-space: nowrap;
 }
-
-.child {
-  font-size: var(--mantine-font-size-sm);
-}

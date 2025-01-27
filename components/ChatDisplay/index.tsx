@@ -109,8 +109,8 @@ export default function ChatDisplay({
       )}
       <Stack
         className={`${classes.scrollArea} scrollbar`}
-        ref={scrollableRef}
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
+        ref={scrollableRef}
       >
         {conversationList}
         <span className={classes.bgText}>Ask advisor</span>

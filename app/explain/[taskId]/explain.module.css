@@ -6,12 +6,6 @@
   flex-wrap: nowrap;
 }
 
-.actionButton {
-  @media (max-width: $mantine-breakpoint-xs) {
-    flex: 1;
-  }
-}
-
 .exampleWrapper {
   gap: 0;
   border-radius: var(--mantine-radius-lg);

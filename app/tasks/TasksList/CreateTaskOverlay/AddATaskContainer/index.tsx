@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Button, Loader, Stack, Text } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
@@ -100,6 +99,8 @@ export default function AddATaskContainer({
   const isCreateRoutineInCooldown =
     typeNextRoutine && typeNextRoutine.date && new Date(typeNextRoutine.date) > new Date();
 
+  const cooldownButtonText = `Improvement assistant after ${formatDate({ date: typeNextRoutine?.date || new Date(), hideYear: true })}`;
+
   return (
     <Stack className={classes.container}>
       {error && (
@@ -146,16 +147,14 @@ export default function AddATaskContainer({
                 >
                   Create task
                 </Button>
-                {!isCreateRoutineInCooldown && (
-                  <Button
-                    disabled={!!isCreateRoutineInCooldown}
-                    onClick={() => {
-                      onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });
-                    }}
-                  >
-                    Create weekly routine
-                  </Button>
-                )}
+                <Button
+                  disabled={!!isCreateRoutineInCooldown}
+                  onClick={() => {
+                    onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });
+                  }}
+                >
+                  {isCreateRoutineInCooldown ? cooldownButtonText : "Create weekly routine"}
+                </Button>
               </>
             )}
 

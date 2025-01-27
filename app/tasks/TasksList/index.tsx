@@ -44,6 +44,9 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
   const pathaname = usePathname();
   const searchParams = useSearchParams();
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [showScanOverlay, setShowScanOverlay] = useState(false);
+  const [scanOverlayButtonText, setScanOverlayButtonText] = useState("");
+  const [scanOverlayMessage, setScanOverlayMessage] = useState("");
   const [relevantTasks, setRelevantTasks] = useState<TaskTypeWithClick[]>();
 
   const [displayComponent, setDisplayComponent] = useState<
@@ -66,10 +69,6 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     () => nextScan?.find((obj) => obj.type === finalNextScanType),
     [nextScan?.length, finalNextScanType]
   );
-
-  const showOverlay =
-    (relevantTypeNextScan && !relevantTypeNextScan.date) ||
-    (relevantTypeNextScan && new Date() > new Date(relevantTypeNextScan.date || ""));
 
   const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
   const isAnalysisGoing = runningAnalyses?.[type];
@@ -159,12 +158,30 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
   }, [type, tasks, pathaname, userDetails]);
 
   useEffect(() => {
+    if (!relevantTypeNextScan) return;
+
+    const neverScanned = !relevantTypeNextScan.date;
+    const scanDatePassed = new Date() > new Date(relevantTypeNextScan.date || 0);
+
+    if (neverScanned) {
+      setScanOverlayButtonText(`Scan ${type}`);
+      setScanOverlayMessage("Scan yourself to view tasks");
+    } else {
+      setScanOverlayButtonText(`Scan ${type} again`);
+      setScanOverlayMessage("It's been one week since your last scan");
+    }
+
+    setShowScanOverlay(neverScanned || scanDatePassed);
+  }, [relevantTypeNextScan]);
+
+  useEffect(() => {
     if (!pageLoaded) return;
     if (!tasks) return;
+    if (showScanOverlay === undefined) return;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (showOverlay) {
+    } else if (showScanOverlay) {
       setDisplayComponent("scanOverlay");
     } else if (relevantTasks && relevantTasks.length === 0) {
       setDisplayComponent("createTaskOverlay");
@@ -173,7 +190,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     } else if (relevantTasks === undefined) {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, showOverlay, relevantTasks, pageLoaded]);
+  }, [isAnalysisGoing, showScanOverlay, relevantTasks, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 
@@ -195,7 +212,13 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
       {displayComponent !== "loading" && (
         <CreateRoutineProvider>
           <Stack className={classes.content}>
-            {displayComponent === "scanOverlay" && <UploadOverlay type={type as TypeEnum} />}
+            {displayComponent === "scanOverlay" && (
+              <UploadOverlay
+                type={type as TypeEnum}
+                buttonText={scanOverlayButtonText}
+                text={scanOverlayMessage}
+              />
+            )}
             {displayComponent === "createTaskOverlay" && (
               <CreateTaskOverlay
                 type={type as TypeEnum}

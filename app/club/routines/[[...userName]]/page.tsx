@@ -15,6 +15,7 @@ import fetchRoutines from "@/functions/fetchRoutines";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
+import openSuccessModal from "@/helpers/openSuccessModal";
 import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
 import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
@@ -116,7 +117,7 @@ export default function ClubRoutines(props: Props) {
         const response = await callTheServer({
           endpoint: "stealRoutine",
           method: "POST",
-          body: { type, routineId },
+          body: { type, routineId, userName },
         });
 
         if (response.status === 200) {
@@ -125,16 +126,11 @@ export default function ClubRoutines(props: Props) {
             return;
           }
 
-          const { routines, tasks } = response.message;
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            routines,
-            tasks,
-          }));
+          openSuccessModal({ description: "Routine added" });
         }
       } catch (err) {}
     },
-    [userDetails]
+    [userDetails, userName]
   );
 
   const handleAddToMyRoutine = useCallback(
@@ -173,7 +169,6 @@ export default function ClubRoutines(props: Props) {
       routines
         ?.filter((routine) => routine.type === type)
         .map((routine) => {
-          console.log("rerendered", routine);
           return (
             <AccordionRoutineRow
               key={routine._id}
@@ -271,6 +266,7 @@ export default function ClubRoutines(props: Props) {
                 Chat about routines and tasks
               </Title>
             }
+            isClub={!isSelf}
           />
         )}
       </Stack>

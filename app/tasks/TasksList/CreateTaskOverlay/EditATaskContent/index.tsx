@@ -47,11 +47,7 @@ function EditATaskContent({
   const previewBody = previewIsTasks ? (
     <Stack className={classes.tasksPreviewContainer}>
       {previewData.map((data, index) => {
-        const multiple = frequency / 7;
-        const current = frequency - multiple * index > 7 ? multiple : 1;
-        return (
-          <NewTaskPreviewRow {...(data as TaskPreviewRecord)} numberOfTasks={current} key={index} />
-        );
+        return <NewTaskPreviewRow {...(data as TaskPreviewRecord)} key={index} />;
       })}
     </Stack>
   ) : (

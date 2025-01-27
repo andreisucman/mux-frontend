@@ -57,10 +57,7 @@ export default function RoutinesHistoryPage() {
           const newData = response.message.map((record: CompletedTaskType) => ({
             ...record,
             onClick: () => {
-              const query = modifyQuery({
-                params: [{ name: "taskId", value: record._id, action: "replace" }],
-              });
-              router.push(`/explain?${query}`);
+              router.push(`/explain/${record._id}?${searchParams.toString()}`);
             },
           }));
           setCompletedTasks((prev) => [...(prev || []), ...newData]);
@@ -114,7 +111,7 @@ export default function RoutinesHistoryPage() {
                 </InfiniteScroll>
               ) : (
                 <OverlayWithText
-                  text={`No tasks completed for ${type}`}
+                  text={`Nothing found for ${type}`}
                   icon={<IconCircleOff className="icon" />}
                 />
               )}

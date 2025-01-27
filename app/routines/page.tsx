@@ -122,7 +122,7 @@ export default function ClubRoutines() {
         icons={typeIcons}
         children={
           <SegmentedControl
-            size="sm"
+            size="xs"
             data={routineSegments}
             value={status}
             onChange={handleChangeSegment}

@@ -2,9 +2,12 @@ import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
-import { Accordion, ActionIcon, Button, Group, Skeleton, Text } from "@mantine/core";
+import { Accordion, ActionIcon, Button, Group, Skeleton, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
+import RecreateDateModalContent from "@/app/explain/[taskId]/RecreateDateModalContent";
 import callTheServer from "@/functions/callTheServer";
+import cloneTask from "@/functions/cloneTask";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -41,7 +44,20 @@ export default function AccordionRoutineRow({
     const sameMonth = new Date(createdAt).getMonth() === new Date(lastDate).getMonth();
     const dateFrom = formatDate({ date: createdAt, hideYear: true, hideMonth: sameMonth });
     const dateTo = formatDate({ date: lastDate, hideYear: true });
-    return `${upperFirst(part)} - ${dateFrom} - ${dateTo}`;
+    let label = `${upperFirst(part)}`;
+
+    if (dateFrom) {
+      const areSame = dateTo.slice(0, 2) === dateFrom.slice(0, 2);
+      const parts = [` - ${dateTo}`];
+
+      if (!areSame) {
+        parts.unshift(` - ${dateFrom}`);
+      }
+
+      label += parts.join("");
+    }
+
+    return label;
   }, [part, createdAt, lastDate]);
 
   const totalTotal = useMemo(
@@ -113,28 +129,25 @@ export default function AccordionRoutineRow({
     [setRoutines, status]
   );
 
-  const cloneTask = useCallback(
-    async (taskId: string) => {
-      const response = await callTheServer({
-        endpoint: "cloneTask",
-        method: "POST",
-        body: { taskId, routineStatus: status },
-      });
-
-      if (response.status === 200) {
-        const { message, error } = response;
-
-        if (error) {
-          openErrorModal({ description: error });
-          return;
-        }
-
-        const { routines } = message;
-        if (setRoutines) setRoutines(routines);
-      }
-    },
-    [setRoutines, status]
-  );
+  const handleCloneTask = useCallback((taskId: string) => {
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Choose new date
+        </Title>
+      ),
+      size: "sm",
+      innerProps: (
+        <RecreateDateModalContent
+          cloneTask={async ({ startingDate }) =>
+            cloneTask({ setRoutines, startingDate, taskId, returnRoutinesWithStatus: status })
+          }
+        />
+      ),
+      modal: "general",
+      centered: true,
+    });
+  }, []);
 
   const showSkeleton = useShowSkeleton();
 
@@ -144,15 +157,8 @@ export default function AccordionRoutineRow({
         <Accordion.Control>
           <Group className={classes.row}>
             <Group className={classes.title}>
-              <div
-                className={cn(classes.indicator, {
-                  [classes.active]: routine.status === "active" || routine.status === "replaced",
-                })}
-              />
-              <Group className={classes.name}>
-                <IconClipboardText className="icon icon__small" />
-                {rowLabel}
-              </Group>
+              <IconClipboardText className="icon icon__small" />
+              {rowLabel}
             </Group>
             <Group wrap="nowrap">
               <StatsGroup
@@ -199,7 +205,7 @@ export default function AccordionRoutineRow({
               isSelf={isSelf}
               routineId={routine._id}
               type={type as TypeEnum}
-              cloneTask={cloneTask}
+              handleCloneTask={handleCloneTask}
               openTaskDetails={openTaskDetails}
               redirectToCalendar={redirectToCalendar}
               redirectToTask={redirectToTask}

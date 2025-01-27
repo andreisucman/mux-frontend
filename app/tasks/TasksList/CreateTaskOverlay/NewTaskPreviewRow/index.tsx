@@ -8,13 +8,9 @@ type Props = {
   date: string;
   icon: string;
   color: string;
-  numberOfTasks: number;
 };
 
-function NewTaskPreviewRow({ name, date, icon, color, numberOfTasks }: Props) {
-  let numberOfTimes =
-    numberOfTasks === 1 ? "once" : numberOfTasks === 2 ? "twice" : `${numberOfTasks} times`;
-
+function NewTaskPreviewRow({ name, date, icon, color }: Props) {
   return (
     <Group className={classes.container}>
       <Text className={classes.date}>{date}</Text>
@@ -22,7 +18,6 @@ function NewTaskPreviewRow({ name, date, icon, color, numberOfTasks }: Props) {
       <Text className={classes.name} lineClamp={2}>
         {name}
       </Text>
-      <Text className={classes.count}>{numberOfTimes}</Text>
     </Group>
   );
 }

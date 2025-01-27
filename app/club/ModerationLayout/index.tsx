@@ -113,7 +113,7 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
           children={
             showComponent === "children" && (
               <SegmentedControl
-                size="sm"
+                size="xs"
                 data={routineSegments}
                 value={routineStatus}
                 onChange={handleChangeSegment}
@@ -132,7 +132,6 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   useEffect(() => {
     if (!youFollowDataFetched || code) return;
 
-    console.log("youFollowData", youFollowData, "userName", userName);
     if (youFollowData === null || !userName) {
       setShowComponent("userNotFound");
       return;
@@ -155,7 +154,7 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   }, [
     code,
     isSelf,
-    userName,
+    followingUserName,
     userDetails,
     youFollowData,
     isSubscriptionActive,

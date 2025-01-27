@@ -30,7 +30,7 @@ export default function CompletedTaskRow({
       timeZone,
     });
 
-    return formatDate({ date });
+    return date.toDateString();
   }, [completedAt]);
 
   const showSkeleton = useShowSkeleton();

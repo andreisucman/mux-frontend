@@ -30,7 +30,7 @@ export default function FollowOverlay({ userName, description }: Props) {
           return;
         }
         const { club } = userDetails || {};
-        const newClub = { ...club, userName };
+        const newClub = { ...club, followingUserName: userName };
 
         if (club) {
           setUserDetails((prev: UserDataType) => ({

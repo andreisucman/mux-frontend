@@ -37,6 +37,7 @@ export default function ScanProgress() {
 
   const type = searchParams.get("type") || "head";
   const finalType = type === "health" ? "head" : type;
+  const showSexSelector = status !== AuthStateEnum.AUTHENTICATED && demographics;
 
   const { needsScan, availableRequirements, nextScanDate } = useCheckScanAvailability({
     nextScan,
@@ -148,7 +149,7 @@ export default function ScanProgress() {
         <Stack className={`${classes.container} smallPage`}>
           <ScanHeader
             type={finalType as TypeEnum}
-            children={demographics ? <SexSelector updateOnServer /> : <></>}
+            children={showSexSelector && <SexSelector updateOnServer />}
           />
           {needsScan ? (
             <UploadContainer

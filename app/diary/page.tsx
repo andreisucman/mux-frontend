@@ -34,8 +34,6 @@ export default function DiaryPage() {
 
   const { tasks, timeZone } = userDetails || {};
 
-  const formattedToday = useMemo(() => formatDate({ date: new Date() }), []);
-
   const createDiaryRecord = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
@@ -46,6 +44,8 @@ export default function DiaryPage() {
         method: "POST",
         body: { timeZone },
       });
+
+      console.log("createDiaryRecord", response);
 
       setIsLoading(false);
 
@@ -82,7 +82,7 @@ export default function DiaryPage() {
     } catch (err) {
       setIsLoading(false);
     }
-  }, [isLoading, timeZone, sort]);
+  }, [isLoading, timeZone]);
 
   const handleClickCreateRecord = useCallback(() => {
     if (!tasks) return;
@@ -99,8 +99,10 @@ export default function DiaryPage() {
         onConfirm: () => router.push(`/tasks?type=${activeTypes[0]}`),
         onCancel: createDiaryRecord,
       });
+    } else {
+      createDiaryRecord();
     }
-  }, [createDiaryRecord, tasks && tasks.length]);
+  }, [createDiaryRecord, tasks]);
 
   const handleFetchDiaryRecords = useCallback(async () => {
     const response = await fetchDiaryRecords({
@@ -114,7 +116,10 @@ export default function DiaryPage() {
         openErrorModal({ description: response.error });
         return;
       }
-      setDiaryRecords((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
+
+      setDiaryRecords((prev) => {
+        return hasMore ? [...(prev || []), ...response.message.slice(0, 20)] : response.message;
+      });
 
       if (response.message.length > 0) {
         setOpenValue(response.message[0]._id);
@@ -131,10 +136,10 @@ export default function DiaryPage() {
   useEffect(() => {
     if (!diaryRecords) return;
     if (!timeZone) return;
-    const firstDate = diaryRecords[0] && diaryRecords[0].createdAt;
-    const formattedFirstDate = formatDate({ date: firstDate || new Date(0) });
-    setDisableAddNew(formattedFirstDate === formattedToday);
-  }, [formattedToday, diaryRecords]);
+    const dates = diaryRecords.map((r) => new Date(r.createdAt).toDateString());
+    const exists = dates.includes(new Date().toDateString());
+    setDisableAddNew(exists);
+  }, [diaryRecords]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

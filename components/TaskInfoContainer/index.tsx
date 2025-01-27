@@ -45,12 +45,6 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
     return previews;
   }, [date]);
 
-  const finalIcon = isEdit ? (
-    <IconCircleCheck className="icon" />
-  ) : (
-    <IconCirclePlus className="icon" style={{ marginRight: rem(6) }} />
-  );
-
   return (
     <Stack flex={1}>
       <EditATaskContent
@@ -73,11 +67,11 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
             });
           }}
         >
-          <Text className={classes.buttonText}>{isEdit ? "Edit task" : "Add to routine"}</Text>
+          {isEdit ? "Edit task" : "Add to routine"}
         </Button>
         {disableAdd && !isEdit && (
-          <Text c="dimmed" className={classes.text}>
-            This task is already in your routine
+          <Text c="green.7" className={classes.text}>
+            Added to your routine
           </Text>
         )}
       </Stack>
