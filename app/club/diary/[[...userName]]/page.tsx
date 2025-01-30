@@ -11,6 +11,8 @@ import { TypeEnum } from "@/types/global";
 import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
 
+export const runtime = "edge";
+
 type Props = {
   params: Promise<{ userName: string }>;
 };

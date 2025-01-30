@@ -45,7 +45,7 @@ function EditATaskContent({
   const previeTitle = previewIsTasks ? "Tasks preview:" : "Dates preview:";
 
   const previewBody = previewIsTasks ? (
-    <Stack className={classes.tasksPreviewContainer}>
+    <Stack className={`${classes.tasksPreviewContainer} scrollbar`}>
       {previewData.map((data, index) => {
         return <NewTaskPreviewRow {...(data as TaskPreviewRecord)} key={index} />;
       })}

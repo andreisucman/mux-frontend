@@ -30,6 +30,8 @@ import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
 import classes from "./answers.module.css";
 
+export const runtime = "edge";
+
 type Props = {
   params: Promise<{ userName: string }>;
 };

@@ -15,6 +15,6 @@
 .tasksPreviewContainer {
   flex: 1;
   gap: rem(12);
-  max-height: rem(150);
+  max-height: rem(200);
   overflow: auto;
 }
