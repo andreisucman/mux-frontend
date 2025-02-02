@@ -84,11 +84,7 @@ export default function GeneralResultsHeader({
         const relevantParts = partItems.filter((part) => response.message.type.includes(part.type));
         setRelevantParts(relevantParts.filter((item) => item.type === type));
       }
-    } catch (err) {
-      openErrorModal({
-        description: "Please try refreshing the page and inform us if the error persists.",
-      });
-    }
+    } catch (err) {}
   }, []);
 
   const openFiltersCard = useCallback(() => {
