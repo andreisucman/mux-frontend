@@ -9,11 +9,10 @@
   width: 100%;
   align-items: center;
   padding: 0 rem(16);
-  min-height: rem(66);
+  min-height: rem(70);
   background-color: alpha(var(--mantine-color-dark-8));
 
   @media (max-width: $mantine-breakpoint-sm) {
-    min-height: rem(60);
     padding: 0 rem(16);
   }
 }
@@ -29,7 +28,6 @@
   justify-content: space-between;
 }
 
-
 .drawerContent,
 .drawerBody {
   display: flex;
@@ -43,4 +41,10 @@
 
 .drawerTitle {
   font-weight: 600;
+}
+
+.navigation {
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: rem(20);
+  }
 }

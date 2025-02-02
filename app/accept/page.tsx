@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack, Text } from "@mantine/core";
+import { useScrollIntoView } from "@mantine/hooks";
 import { nprogress } from "@mantine/nprogress";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -25,6 +26,11 @@ export default function AcceptIndexPage() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [highlightTos, setHighlightTos] = useState(false);
   const [tosAccepted, setTosAccepted] = useState(false);
+
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLButtonElement>({
+    offset: 0,
+    duration: 500,
+  });
 
   const { _id: userId, demographics } = userDetails || {};
 
@@ -103,12 +109,16 @@ export default function AcceptIndexPage() {
         highlightTos={highlightTos}
         tosAccepted={tosAccepted}
         setHighlightTos={setHighlightTos}
-        setTosAccepted={setTosAccepted}
+        setTosAccepted={() => {
+          scrollIntoView();
+          setTosAccepted((prev) => !prev);
+        }}
       />
       <Button
         className={classes.button}
         disabled={!tosAccepted || isLoading}
         loading={isLoading}
+        ref={targetRef}
         onClick={startTheFlow}
       >
         Next
