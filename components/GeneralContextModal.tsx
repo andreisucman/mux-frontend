@@ -1,7 +1,5 @@
 "use client";
 
-import { ContextModalProps } from "@mantine/modals";
-
-export const GeneralContextModal = ({ context, id, innerProps }: ContextModalProps) => {
+export const GeneralContextModal = ({ context, id, innerProps }: any) => {
   return <>{innerProps}</>;
 };
