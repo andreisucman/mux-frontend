@@ -98,7 +98,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
 
   const flipCamera = useCallback(() => {
     setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
-  }, []);
+  }, [hasMultipleCameras]);
 
   const startVideoPreview = useCallback(async () => {
     try {

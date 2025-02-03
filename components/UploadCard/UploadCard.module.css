@@ -4,12 +4,13 @@
 }
 
 .imageCell {
+  position: relative;
   gap: rem(8);
   flex: 1;
   height: 100%;
   width: 100%;
   background-color: var(--mantine-color-dark-6);
-  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+  border-radius: var(--mantine-radius-lg);
   overflow: hidden;
 }
 
@@ -53,9 +54,10 @@
 }
 
 .checkboxAndButtons {
+  position: absolute;
+  bottom: rem(16);
+  right: rem(16);
   gap: rem(16);
-  width: 100%;
-  padding: 0 rem(16) rem(16);
 }
 
 .capturerWrapper {

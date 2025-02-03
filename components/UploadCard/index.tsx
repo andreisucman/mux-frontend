@@ -173,51 +173,50 @@ export default function UploadCard({
               isLoadingOverlay={isBlurLoading}
               placeholder={relevantPlaceholder && relevantPlaceholder.url}
             />
-          </Stack>
-        )}
-
-        {!isLoading && (
-          <Stack className={classes.checkboxAndButtons}>
             <BlurButtons
               disabled={isBlurLoading || !!isLoading}
               originalUrl={originalUrl}
               onBlurClick={onBlurClick}
+              customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 2 }}
             />
 
-            <Group
-              className={classes.buttonGroup}
-              style={customButtonStyles ? customButtonStyles : {}}
-            >
-              {!localUrl && scanType !== "health" && (
-                <Button
-                  className={classes.button}
-                  onClick={openPhotoCapturer}
-                  disabled={isLoading}
-                  variant={"default"}
+            {!isLoading && (
+              <Stack className={classes.checkboxAndButtons}>
+                <Group
+                  className={classes.buttonGroup}
+                  style={customButtonStyles ? customButtonStyles : {}}
                 >
-                  Take a photo
-                </Button>
-              )}
-              {localUrl && (
-                <Button
-                  className={classes.button}
-                  disabled={disableUpload || isLoading}
-                  onClick={handleClickUpload}
-                >
-                  Upload
-                </Button>
-              )}
-              {scanType && !localUrl && latestStyleImage && (
-                <ActionIcon
-                  maw={rem(50)}
-                  disabled={isLoading}
-                  variant="default"
-                  onClick={() => router.replace(`/scan/style/result?type=${type}`)}
-                >
-                  <IconArrowRight className={"icon"} />
-                </ActionIcon>
-              )}
-            </Group>
+                  {!localUrl && scanType !== "health" && (
+                    <Button
+                      className={classes.button}
+                      onClick={openPhotoCapturer}
+                      disabled={isLoading}
+                    >
+                      Take a photo
+                    </Button>
+                  )}
+                  {localUrl && (
+                    <Button
+                      className={classes.button}
+                      disabled={disableUpload || isLoading}
+                      onClick={handleClickUpload}
+                    >
+                      Upload
+                    </Button>
+                  )}
+                  {scanType && !localUrl && latestStyleImage && (
+                    <ActionIcon
+                      maw={rem(50)}
+                      disabled={isLoading}
+                      variant="default"
+                      onClick={() => router.replace(`/scan/style/result?type=${type}`)}
+                    >
+                      <IconArrowRight className={"icon"} />
+                    </ActionIcon>
+                  )}
+                </Group>
+              </Stack>
+            )}
           </Stack>
         )}
       </Stack>

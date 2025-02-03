@@ -28,16 +28,9 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
       <Checkbox
         checked={blurType === "eyes"}
-        className={classes.checkbox}
-        classNames={{
-          body: classes.body,
-          label: classes.label,
-          labelWrapper: classes.labelWrapper,
-          root: classes.root,
-        }}
         label={
           <Group className={classes.labelGroup}>
-            <IconEyeOff className="icon" /> Blur eyes
+            <IconEyeOff className="icon" />
           </Group>
         }
         disabled={disabled}
@@ -45,16 +38,9 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
       />
       <Checkbox
         checked={blurType === "face"}
-        className={classes.checkbox}
-        classNames={{
-          body: classes.body,
-          label: classes.label,
-          labelWrapper: classes.labelWrapper,
-          root: classes.root,
-        }}
         label={
           <Group className={classes.labelGroup}>
-            <IconMoodOff className="icon" /> Blur face
+            <IconMoodOff className="icon" />
           </Group>
         }
         disabled={disabled}
