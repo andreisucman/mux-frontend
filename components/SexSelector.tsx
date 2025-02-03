@@ -43,6 +43,7 @@ export default function SexSelector({ updateOnServer }: Props) {
       value={sex || "female"}
       data={sexes}
       size="xs"
+      style={{ zIndex: 0 }}
       onChange={(value) => handleChangeSex(value)}
     />
   );

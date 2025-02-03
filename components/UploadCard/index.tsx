@@ -13,7 +13,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
+import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
 import BlurButtons from "@/components/BlurButtons";
@@ -100,7 +100,7 @@ export default function UploadCard({
       modals.closeAll();
 
       if (blurType === "original") return;
-      
+
       setIsBlurLoading(true);
 
       await onBlurClick({
