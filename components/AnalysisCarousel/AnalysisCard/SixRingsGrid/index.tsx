@@ -25,7 +25,8 @@ export default function SixRingsGrid({
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
-    return isMobile ? size : size * 0.8;
+    // return isMobile ? size : size * 0.8;
+    return size;
   }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
   const newObjects = useMemo(() => [overallContent, ...ringObjects], [ringObjects.length]);

@@ -23,7 +23,8 @@ export default function OneRingGrid({
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
-    return isMobile ? size * 0.8 : size * 0.6;
+    // return isMobile ? size * 0.8 : size * 0.6;
+    return size;
   }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
   return (
