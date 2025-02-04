@@ -26,8 +26,15 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const [isPortrait, setIsPortrait] = useState(false);
 
   useEffect(() => {
-    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-    setIsPortrait(isPortrait);
+    const mediaQuery = window.matchMedia("(orientation: portrait)");
+    const handleOrientationChange = (e: MediaQueryListEvent) => {
+      setIsPortrait(e.matches);
+    };
+
+    setIsPortrait(mediaQuery.matches);
+    mediaQuery.addEventListener("change", handleOrientationChange);
+
+    return () => mediaQuery.removeEventListener("change", handleOrientationChange);
   }, []);
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
@@ -120,7 +127,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
       setHasMultipleCameras(videoDevices.length > 1);
-
     } catch (err) {
       openErrorModal({
         title: "🚨 An error occurred",
