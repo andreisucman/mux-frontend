@@ -11,7 +11,6 @@
 
 .imageWrapper {
   width: 100%;
-  aspect-ratio: 16/9;
   min-height: rem(150);
   max-height: rem(150);
   background-color: var(--mantine-color-dark-6);

@@ -7,7 +7,6 @@
   flex: 1;
   width: 100%;
   min-width: rem(300);
-  aspect-ratio: 1;
   border: rem(1) solid var(--mantine-color-dark-5);
 }
 
