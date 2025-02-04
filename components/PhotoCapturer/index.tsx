@@ -18,13 +18,20 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
-  const [cameraAspectRatio, setCamerAspectRatio] = useState<number>();
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => {
@@ -69,10 +76,10 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       const video = videoRef.current;
       if (!video.videoWidth || !video.videoHeight) return;
 
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
 
-      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const imageData = canvas.toDataURL("image/jpeg");
 
@@ -83,7 +90,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
     } catch (err) {
       console.log("Error in capturePhoto: ", err);
     }
-  }, [videoRef.current]);
+  }, [handleCapture]);
 
   const flipCamera = useCallback(() => {
     setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
@@ -94,10 +101,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       let constraints: MediaStreamConstraints = {
         audio: false,
         video: {
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
           facingMode,
-          aspectRatio: 9 / 16,
           frameRate: { max: 30 },
         },
       };
@@ -109,17 +113,11 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         streamRef.current = stream;
         videoRef.current.play();
       }
+
+      // Check available cameras
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
-
-      const videoTrack = stream.getVideoTracks()[0];
-      const settings = videoTrack.getSettings();
-
-      setCamerAspectRatio(settings.aspectRatio);
-
-      if (videoDevices.length > 1) {
-        setHasMultipleCameras(true);
-      }
+      setHasMultipleCameras(videoDevices.length > 1);
     } catch (err) {
       openErrorModal({
         title: "🚨 An error occurred",
@@ -127,17 +125,13 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         onClose: () => modals.closeAll(),
       });
     }
-  }, [videoRef.current, facingMode, streamRef.current]);
+  }, [facingMode]);
 
   useEffect(() => {
     startVideoPreview();
-
     return () => {
       if (timeoutIdRef.current) {
         clearTimeout(timeoutIdRef.current);
-      }
-      if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
-        mediaRecorder.current.stop();
       }
       if (videoRef.current) {
         videoRef.current.pause();
@@ -145,12 +139,13 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       }
       if (streamRef.current) {
         stopBothVideoAndAudio(streamRef.current);
+        streamRef.current = null;
       }
     };
-  }, [startVideoPreview]);
+  }, [startVideoPreview, facingMode]);
 
   return (
-    <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
+    <Stack className={classes.container} style={{ aspectRatio: isMobile ? "9/16" : "16/9" }}>
       <video ref={videoRef} autoPlay muted></video>
       {silhouette && (
         <div
