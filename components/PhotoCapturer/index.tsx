@@ -25,12 +25,18 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
+  const [isPortrait, setIsPortrait] = useState(false);
 
-  let constraints: MediaStreamConstraints = {
+  useEffect(() => {
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+    setIsPortrait(isPortrait);
+  }, []);
+
+  let constraints = {
     audio: false,
     video: {
-      width: { ideal: 1080 },
-      height: { ideal: 1920 },
+      width: { ideal: isPortrait ? 1080 : 1920 },
+      height: { ideal: isPortrait ? 1920 : 1080 },
       facingMode,
       frameRate: { max: 30 },
     },
