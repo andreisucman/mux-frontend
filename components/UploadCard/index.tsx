@@ -141,6 +141,7 @@ export default function UploadCard({
       ),
       closeOnClickOutside: false,
       size: "xl",
+      styles: { body: { padding: "0" } },
       innerProps: (
         <PhotoCapturer handleCapture={loadLocally} silhouette={relevantSilhouette?.url || ""} />
       ),
