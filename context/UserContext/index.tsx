@@ -93,10 +93,10 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, [isLoggedInCookie, code]);
 
   useEffect(() => {
-    if (!status || status === AuthStateEnum.UNKNOWN) return;
+    if (!status) return;
 
     if (onProtectedPage) {
-      if (status !== AuthStateEnum.AUTHENTICATED) {
+      if (status !== AuthStateEnum.AUTHENTICATED && status !== AuthStateEnum.UNKNOWN) {
         router.replace("/auth");
       }
     }

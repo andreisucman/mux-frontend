@@ -51,7 +51,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
 
       setIsLoading(false);
     }
-  }, [status, isLoading]);
+  }, [status, userId, type, isLoading]);
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
