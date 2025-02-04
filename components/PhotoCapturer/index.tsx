@@ -92,8 +92,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
     const constraints = {
       audio: false,
       video: {
-        width: { ideal: cameraAspectRatio * 1080 },
-        height: { ideal: 1080 },
         facingMode,
         frameRate: { max: 30 },
       },
@@ -110,27 +108,25 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
         await videoRef.current.play();
+
+        // Calculate aspect ratio from actual video dimensions
+        const { videoWidth, videoHeight } = videoRef.current;
+        if (videoWidth > 0 && videoHeight > 0) {
+          setCamerAspectRatio(videoWidth / videoHeight);
+        }
       }
 
+      // Check for multiple cameras
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter((device) => device.kind === "videoinput");
-      setHasMultipleCameras(videoDevices.length > 1);
-
-      const videoTrack = stream.getVideoTracks()[0];
-      if (videoTrack) {
-        const settings = videoTrack.getSettings();
-        const aspectRatio = settings.aspectRatio || 9 / 16;
-
-        setCamerAspectRatio(aspectRatio);
-      }
+      setHasMultipleCameras(devices.filter((d) => d.kind === "videoinput").length > 1);
     } catch (err) {
       openErrorModal({
-        title: "🚨 An error occurred",
-        description: "Failed to access camera",
+        title: "🚨 Camera Error",
+        description: "Could not access camera",
         onClose: () => modals.closeAll(),
       });
     }
-  }, [facingMode]);
+  }, [facingMode, stopBothVideoAndAudio]);
 
   useEffect(() => {
     startVideoPreview();
