@@ -18,9 +18,10 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
-  const [cameraAspectRatio, setCamerAspectRatio] = useState<number>(9 / 16);
+  const [cameraAspectRatio, setCamerAspectRatio] = useState<number>();
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
@@ -86,57 +87,67 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
 
   const flipCamera = useCallback(() => {
     setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
-  }, [hasMultipleCameras]);
+  }, []);
 
   const startVideoPreview = useCallback(async () => {
-    const constraints = {
-      audio: false,
-      video: {
-        facingMode,
-        frameRate: { max: 30 },
-      },
-    };
-
     try {
-      if (streamRef.current) {
-        stopBothVideoAndAudio(streamRef.current);
-      }
+      let constraints: MediaStreamConstraints = {
+        audio: false,
+        video: {
+          width: { ideal: 1080 },
+          height: { ideal: 1920 },
+          facingMode,
+          aspectRatio: 9 / 16,
+          frameRate: { max: 30 },
+        },
+      };
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
-        await videoRef.current.play();
-
-        // Calculate aspect ratio from actual video dimensions
-        const { videoWidth, videoHeight } = videoRef.current;
-        if (videoWidth > 0 && videoHeight > 0) {
-          setCamerAspectRatio(videoWidth / videoHeight);
-        }
+        videoRef.current.play();
       }
-
-      // Check for multiple cameras
       const devices = await navigator.mediaDevices.enumerateDevices();
-      setHasMultipleCameras(devices.filter((d) => d.kind === "videoinput").length > 1);
+      const videoDevices = devices.filter((device) => device.kind === "videoinput");
+
+      const videoTrack = stream.getVideoTracks()[0];
+      const settings = videoTrack.getSettings();
+
+      setCamerAspectRatio(settings.aspectRatio);
+
+      if (videoDevices.length > 1) {
+        setHasMultipleCameras(true);
+      }
     } catch (err) {
       openErrorModal({
-        title: "🚨 Camera Error",
-        description: "Could not access camera",
+        title: "🚨 An error occurred",
+        description: "Failed to access camera",
         onClose: () => modals.closeAll(),
       });
     }
-  }, [facingMode, stopBothVideoAndAudio]);
+  }, [videoRef.current, facingMode, streamRef.current]);
 
   useEffect(() => {
     startVideoPreview();
 
     return () => {
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
+      }
+      if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
+        mediaRecorder.current.stop();
+      }
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.srcObject = null;
+      }
       if (streamRef.current) {
         stopBothVideoAndAudio(streamRef.current);
       }
     };
-  }, [startVideoPreview]);
+  }, []);
 
   return (
     <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
