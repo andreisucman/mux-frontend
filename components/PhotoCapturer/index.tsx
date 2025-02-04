@@ -20,22 +20,10 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
+  const [cameraAspectRatio, setCamerAspectRatio] = useState<number>(9 / 16);
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
-  const [isPortrait, setIsPortrait] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(orientation: portrait)");
-    const handleOrientationChange = (e: MediaQueryListEvent) => {
-      setIsPortrait(e.matches);
-    };
-
-    setIsPortrait(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handleOrientationChange);
-
-    return () => mediaQuery.removeEventListener("change", handleOrientationChange);
-  }, []);
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => {
@@ -104,8 +92,8 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
     const constraints = {
       audio: false,
       video: {
-        width: { ideal: isPortrait ? 1080 : 1920 },
-        height: { ideal: isPortrait ? 1920 : 1080 },
+        width: { ideal: cameraAspectRatio * 1080 },
+        height: { ideal: 1080 },
         facingMode,
         frameRate: { max: 30 },
       },
@@ -127,6 +115,14 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
       setHasMultipleCameras(videoDevices.length > 1);
+
+      const videoTrack = stream.getVideoTracks()[0];
+      if (videoTrack) {
+        const settings = videoTrack.getSettings();
+        const aspectRatio = settings.aspectRatio || 9 / 16;
+
+        setCamerAspectRatio(aspectRatio);
+      }
     } catch (err) {
       openErrorModal({
         title: "🚨 An error occurred",
@@ -134,7 +130,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         onClose: () => modals.closeAll(),
       });
     }
-  }, [facingMode, isPortrait]);
+  }, [facingMode]);
 
   useEffect(() => {
     startVideoPreview();
@@ -147,13 +143,8 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   }, [startVideoPreview]);
 
   return (
-    <Stack className={classes.container}>
-      <video
-        style={isPortrait ? { aspectRatio: 9 / 16 } : { aspectRatio: 16 / 9 }}
-        ref={videoRef}
-        autoPlay
-        muted
-      ></video>
+    <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
+      <video ref={videoRef} autoPlay muted></video>
       {silhouette && (
         <div
           className={classes.silhouetteOverlay}
