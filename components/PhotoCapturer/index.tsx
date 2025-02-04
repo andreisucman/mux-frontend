@@ -18,7 +18,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
   const [cameraAspectRatio, setCamerAspectRatio] = useState<number>();
@@ -31,16 +30,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
     const isPortrait = window.matchMedia("(orientation: portrait)").matches;
     setIsPortrait(isPortrait);
   }, []);
-
-  let constraints = {
-    audio: false,
-    video: {
-      width: { ideal: isPortrait ? 1080 : 1920 },
-      height: { ideal: isPortrait ? 1920 : 1080 },
-      facingMode,
-      frameRate: { max: 30 },
-    },
-  };
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => {
@@ -106,25 +95,35 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   }, [hasMultipleCameras]);
 
   const startVideoPreview = useCallback(async () => {
+    const constraints = {
+      audio: false,
+      video: {
+        width: { ideal: isPortrait ? 1080 : 1920 },
+        height: { ideal: isPortrait ? 1920 : 1080 },
+        facingMode,
+        frameRate: { max: 30 },
+      },
+    };
+
     try {
+      if (streamRef.current) {
+        stopBothVideoAndAudio(streamRef.current);
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
-        videoRef.current.play();
+        await videoRef.current.play();
       }
+
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
+      setHasMultipleCameras(videoDevices.length > 1);
 
       const videoTrack = stream.getVideoTracks()[0];
-      const settings = videoTrack.getSettings();
-
-      setCamerAspectRatio(settings.aspectRatio);
-
-      if (videoDevices.length > 1) {
-        setHasMultipleCameras(true);
-      }
+      setCamerAspectRatio(videoTrack.getSettings().aspectRatio);
     } catch (err) {
       openErrorModal({
         title: "🚨 An error occurred",
@@ -132,27 +131,17 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         onClose: () => modals.closeAll(),
       });
     }
-  }, [videoRef.current, streamRef.current]);
+  }, [facingMode, isPortrait]);
 
   useEffect(() => {
     startVideoPreview();
 
     return () => {
-      if (timeoutIdRef.current) {
-        clearTimeout(timeoutIdRef.current);
-      }
-      if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
-        mediaRecorder.current.stop();
-      }
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.srcObject = null;
-      }
       if (streamRef.current) {
         stopBothVideoAndAudio(streamRef.current);
       }
     };
-  }, []);
+  }, [startVideoPreview]);
 
   return (
     <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
