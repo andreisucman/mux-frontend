@@ -60,6 +60,11 @@
   gap: rem(16);
 }
 
-.capturerWrapper {
-  aspect-ratio: 9/16;
+.body {
+  padding: 0;
+  aspect-ratio: 16/9;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    aspect-ratio: 9/16;
+  }
 }
