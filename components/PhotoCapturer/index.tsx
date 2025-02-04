@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IconCamera, IconRefresh, IconStopwatch } from "@tabler/icons-react";
+import cn from "classnames";
 import { Button, Group, rem, Stack, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
@@ -23,15 +25,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => {
@@ -145,7 +139,12 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   }, [startVideoPreview, facingMode]);
 
   return (
-    <Stack className={classes.container} style={{ aspectRatio: isMobile ? "9/16" : "16/9" }}>
+    <Stack
+      className={cn(classes.container, {
+        [classes.mobileVideo]: isMobile,
+        [classes.desktopVideo]: !isMobile,
+      })}
+    >
       <video ref={videoRef} autoPlay muted></video>
       {silhouette && (
         <div
