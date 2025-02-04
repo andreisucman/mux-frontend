@@ -148,7 +148,12 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
 
   return (
     <Stack className={classes.container}>
-      <video ref={videoRef} autoPlay muted></video>
+      <video
+        style={isPortrait ? { aspectRatio: 9 / 16 } : { aspectRatio: 16 / 9 }}
+        ref={videoRef}
+        autoPlay
+        muted
+      ></video>
       {silhouette && (
         <div
           className={classes.silhouetteOverlay}
