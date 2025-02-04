@@ -9,6 +9,11 @@
     height: 100%;
     object-fit: contain;
     background-color: var(--mantine-color-dark-6);
+    aspect-ratio: 16/9;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      aspect-ratio: 9/16;
+    }
   }
 }
 
