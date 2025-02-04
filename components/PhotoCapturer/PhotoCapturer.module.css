@@ -4,15 +4,17 @@
   width: 100%;
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
+  aspect-ratio: 4/3;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    aspect-ratio: 9/16;
+  }
 
   & video {
     flex: 1;
+    height: 100%;
     object-fit: contain;
     background-color: var(--mantine-color-dark-6);
-
-    @media (max-width: $mantine-breakpoint-sm) {
-      aspect-ratio: 9/16;
-    }
   }
 }
 

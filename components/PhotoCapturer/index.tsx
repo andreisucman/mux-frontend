@@ -32,7 +32,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       width: { ideal: 1080 },
       height: { ideal: 1920 },
       facingMode,
-      aspectRatio: 9 / 16,
       frameRate: { max: 30 },
     },
   };
