@@ -20,7 +20,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
-  const [cameraAspectRatio, setCamerAspectRatio] = useState<number>();
   const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
@@ -122,8 +121,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
       setHasMultipleCameras(videoDevices.length > 1);
 
-      const videoTrack = stream.getVideoTracks()[0];
-      setCamerAspectRatio(videoTrack.getSettings().aspectRatio);
     } catch (err) {
       openErrorModal({
         title: "🚨 An error occurred",
@@ -144,7 +141,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
   }, [startVideoPreview]);
 
   return (
-    <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
+    <Stack className={classes.container}>
       <video ref={videoRef} autoPlay muted></video>
       {silhouette && (
         <div
