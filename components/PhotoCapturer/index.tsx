@@ -147,7 +147,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         stopBothVideoAndAudio(streamRef.current);
       }
     };
-  }, []);
+  }, [startVideoPreview]);
 
   return (
     <Stack className={classes.container} style={{ aspectRatio: cameraAspectRatio }}>
