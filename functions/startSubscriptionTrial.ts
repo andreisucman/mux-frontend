@@ -1,4 +1,5 @@
 import { modals } from "@mantine/modals";
+import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 
 type Props = {
@@ -15,6 +16,11 @@ export default async function startSubscriptionTrial({ subscriptionName, onCompl
     });
 
     if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({ description: response.error });
+        return;
+      }
+      
       modals.closeAll();
       if (onComplete) onComplete({ isSubscriptionActive: true, isTrialUsed: true });
     }
