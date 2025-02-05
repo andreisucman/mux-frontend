@@ -55,9 +55,14 @@
 
 .checkboxAndButtons {
   position: absolute;
-  bottom: rem(16);
   right: rem(16);
+  left: rem(16);
+  top: 50%;
   gap: rem(16);
+
+  max-width: rem(300);
+  margin: auto;
+  transform: translateY(-50%);
 }
 
 .body {
