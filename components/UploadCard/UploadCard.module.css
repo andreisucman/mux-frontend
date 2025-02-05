@@ -33,14 +33,9 @@
   height: rem(36);
 }
 
-.buttonGroup {
-  width: 100%;
-}
-
 .button {
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .secondary {
@@ -59,8 +54,8 @@
   left: rem(16);
   top: 50%;
   gap: rem(16);
+  width: fit-content;
 
-  max-width: rem(300);
   margin: auto;
   transform: translateY(-50%);
 }

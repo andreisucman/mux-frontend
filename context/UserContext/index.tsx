@@ -13,6 +13,16 @@ import { UserDataType } from "@/types/global";
 import { blockFetchUserDataPaths, pathsThatRequireId, protectedPaths } from "./protectedPaths";
 import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
 
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch((error) => {
+        console.error("Service Worker registration failed:", error);
+      });
+    });
+  }
+}
+
 const defaultSetUser = () => {};
 
 const defaultSetStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>> = () => {};
@@ -132,6 +142,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   });
 
   useEffect(() => {
+    registerServiceWorker();
     setPageLoaded(true);
   }, []);
 
