@@ -22,7 +22,7 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
       originalUrl,
       blurType: newBlurType,
     });
-  }, []);
+  }, [originalUrl]);
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
@@ -30,7 +30,7 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
         checked={blurType === "eyes"}
         label={
           <Group className={classes.labelGroup}>
-            <IconEyeOff className="icon" />
+            <IconEyeOff className="icon" /> Blur eyes
           </Group>
         }
         disabled={disabled}
@@ -40,7 +40,7 @@ export default function BlurButtons({ disabled, originalUrl, customStyles, onBlu
         checked={blurType === "face"}
         label={
           <Group className={classes.labelGroup}>
-            <IconMoodOff className="icon" />
+            <IconMoodOff className="icon" /> Blur face
           </Group>
         }
         disabled={disabled}

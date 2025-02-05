@@ -1,8 +1,8 @@
 import React from "react";
+import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 import uploadToSpaces from "./uploadToSpaces";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 
 export type OnBlurClickProps = {
   blurType: BlurTypeEnum;
@@ -66,6 +66,7 @@ export async function onBlurImageClick({
   setEyesBlurredUrl,
 }: OnBlurClickProps) {
   if (!originalUrl) return;
+
   try {
     if (blurType === "face") {
       if (!faceBlurredUrl) {
@@ -86,7 +87,6 @@ export async function onBlurImageClick({
           blurType: BlurTypeEnum.EYES,
           type: "image",
         });
-
         setEyesBlurredUrl(blurredImageResponse.url);
         setLocalUrl(blurredImageResponse.url);
       } else {

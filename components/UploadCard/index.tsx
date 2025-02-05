@@ -2,18 +2,8 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
-import {
-  ActionIcon,
-  Button,
-  Group,
-  Loader,
-  Progress,
-  rem,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useMediaQuery, useViewportSize } from "@mantine/hooks";
+import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
 import BlurButtons from "@/components/BlurButtons";
@@ -177,7 +167,19 @@ export default function UploadCard({
             <BlurButtons
               disabled={isBlurLoading || !!isLoading}
               originalUrl={originalUrl}
-              onBlurClick={onBlurClick}
+              onBlurClick={async ({ originalUrl, blurType }) => {
+                setIsBlurLoading(true);
+                await onBlurClick({
+                  originalUrl,
+                  blurType,
+                  faceBlurredUrl,
+                  eyesBlurredUrl,
+                  setEyesBlurredUrl,
+                  setFaceBlurredUrl,
+                  setLocalUrl,
+                });
+                setIsBlurLoading(false);
+              }}
               customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 2 }}
             />
 

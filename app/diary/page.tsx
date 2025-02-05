@@ -45,8 +45,6 @@ export default function DiaryPage() {
         body: { timeZone },
       });
 
-      console.log("createDiaryRecord", response);
-
       setIsLoading(false);
 
       if (response.status === 200) {

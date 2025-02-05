@@ -14,7 +14,6 @@ import {
   Title,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
@@ -25,7 +24,6 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import modifyQuery from "@/helpers/modifyQuery";
-import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { SexEnum, UserDataType } from "@/types/global";
