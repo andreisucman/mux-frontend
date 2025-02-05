@@ -159,7 +159,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             </Text>
           )}
           <Button type="submit" className={classes.button}>
-            <IconMail className="icon" style={{ marginRight: rem(6) }} /> Sign in
+            <IconMail className="icon" style={{ marginRight: rem(6) }} /> Reset password
           </Button>
           <UnstyledButton
             className={classes.secondaryButton}

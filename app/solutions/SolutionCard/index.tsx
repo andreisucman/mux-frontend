@@ -100,6 +100,7 @@ export default function SolutionCard({ data }: Props) {
                   rowStyles={{ marginLeft: 0 }}
                   selectedAsins={selectedAsins}
                   setSelectedAsins={setSelectedAsins}
+                  disableLocalChat
                 />
               </Collapse>
             </Stack>

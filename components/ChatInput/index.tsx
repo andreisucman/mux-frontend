@@ -14,8 +14,10 @@ import {
   Title,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
@@ -23,6 +25,7 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import modifyQuery from "@/helpers/modifyQuery";
+import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { SexEnum, UserDataType } from "@/types/global";
@@ -84,7 +87,7 @@ export default function ChatInput({
   setConversation,
   setConversationId,
 }: Props) {
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -189,6 +192,11 @@ export default function ChatInput({
 
   const sendMessage = useCallback(
     async (messages: MessageContent[]) => {
+      if (status !== AuthStateEnum.AUTHENTICATED) {
+        router.replace("/auth");
+        return;
+      }
+
       if (!conversation || currentMessage.trim().length === 0) return;
       if (!currentMessage) return;
 
