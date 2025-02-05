@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconHourglassHigh } from "@tabler/icons-react";
 import { Button, Skeleton, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -70,8 +69,8 @@ export default function ScanProgress() {
         });
       }, updateInterval);
 
-      const [originalImageUrl, blurredImageUrl] = await uploadToSpaces({
-        itemsArray: [url, blurredImage],
+      const [originalImageUrl] = await uploadToSpaces({
+        itemsArray: [url],
         mime: "image/jpeg",
       });
 
@@ -87,7 +86,7 @@ export default function ScanProgress() {
               position,
               blurType,
               image: originalImageUrl,
-              blurredImage: blurredImageUrl,
+              blurredImage,
             },
           });
 

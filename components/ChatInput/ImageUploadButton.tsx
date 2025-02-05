@@ -13,7 +13,7 @@ export default function ImageUploadButton({ uploadButtonId, disabled, setImages 
     const files: File[] = e.target.files;
 
     if (files && files.length > 0) {
-      const validTypes = ["image/png", "image/jpeg", "image/webp"];
+      const validTypes = ["image/png", "image/jpeg"];
       const filteredFiles = Array.from(files).filter((file) => validTypes.includes(file.type));
 
       if (filteredFiles.length > 0) {

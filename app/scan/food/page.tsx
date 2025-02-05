@@ -36,16 +36,14 @@ export default function ScanFoodPage() {
     try {
       const fileUrls = await uploadToSpaces({
         itemsArray: [localUrl],
-        mime: "image/webp",
+        mime: "image/jpg",
       });
 
       const response = await callTheServer({
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          // url: fileUrls[0],
-          // url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/rice%20food.webp",
-          url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/potato%20food.jpg",
+          url: fileUrls[0],
           calorieGoal,
         },
       });
