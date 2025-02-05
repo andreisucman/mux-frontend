@@ -5,7 +5,7 @@ import "@mantine/nprogress/styles.layer.css";
 import "@mantine/spotlight/styles.layer.css";
 import "@mantine/carousel/styles.layer.css";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
@@ -26,7 +26,21 @@ type Props = {
   children: React.ReactNode;
 };
 
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch((error) => {
+        console.error("Service Worker registration failed:", error);
+      });
+    });
+  }
+}
+
 export default function RootLayout({ children }: Props) {
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
