@@ -172,7 +172,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
     }
 
     setShowScanOverlay(neverScanned || scanDatePassed);
-  }, [relevantTypeNextScan]);
+  }, [userDetails, type]);
 
   useEffect(() => {
     if (!pageLoaded) return;

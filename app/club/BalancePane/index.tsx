@@ -56,7 +56,7 @@ function BalancePane() {
       return (
         <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
           <Group gap={8}>
-            To enable withdrawals add your bank account or card.
+            To enable withdrawals add your bank account.
             <Button component={Link} href="/club/admission" ml="auto" size="compact-sm">
               Add
             </Button>
