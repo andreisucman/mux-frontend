@@ -46,9 +46,17 @@ export default function SortConcerns() {
 
     selectedConcerns = selectedConcerns.filter((obj) => !routineCreatedParts.includes(obj.part));
 
+    console.log("selectedConcerns", selectedConcerns);
+
     if (selectedConcerns.length === 0) {
-      const selectedMaintenanceConcerns = maintenanceConcerns.filter((c) => c.part === part);
-      selectedConcerns.push(...selectedMaintenanceConcerns);
+      const maintenanceConcernsToAdd = [];
+
+      if (part) {
+        maintenanceConcernsToAdd.push(...maintenanceConcerns.filter((c) => c.part === part));
+      } else if (type) {
+        maintenanceConcernsToAdd.push(...maintenanceConcerns.filter((c) => c.type === type));
+      }
+      selectedConcerns.push(...maintenanceConcernsToAdd);
     }
 
     return selectedConcerns;

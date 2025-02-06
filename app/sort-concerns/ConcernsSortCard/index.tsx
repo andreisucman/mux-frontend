@@ -23,16 +23,19 @@ export default function ConcernsSortCard({
 }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const saveNewConcerns = useCallback((newConcerns: UserConcernType[]) => {
-    try {
-      setUserDetails((prev: UserDataType) => ({
-        ...prev,
-        concerns: newConcerns,
-      }));
-    } catch (err) {
-      console.log("Error in saveNewConcerns: ", err);
-    }
-  }, []);
+  const saveNewConcerns = useCallback(
+    (newConcerns: UserConcernType[]) => {
+      try {
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          concerns: newConcerns,
+        }));
+      } catch (err) {
+        console.log("Error in saveNewConcerns: ", err);
+      }
+    },
+    [userDetails]
+  );
 
   const handleUpdateConcern = useCallback(
     async (updatedItem: UserConcernType) => {

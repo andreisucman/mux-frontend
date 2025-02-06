@@ -75,12 +75,13 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
       const typeNextScan = nextScan?.find((obj) => obj.type === type);
       const partsScanned = typeNextScan?.parts.filter((obj) => Boolean(obj.date));
 
-      if (partsScanned && partsScanned.length > 1) {
+      if (partsScanned && partsScanned.length > 0) {
         const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
         const scannedPartKeys = partsScanned.map((obj) => obj.part);
         const relevantRoutines = typeNextRoutine?.parts.filter((obj) =>
           scannedPartKeys.includes(obj.part)
         );
+
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }
     } else {
