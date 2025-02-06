@@ -9,12 +9,11 @@ import {
   IconChecklist,
   IconEye,
   IconHandGrab,
-  IconMoodCheck,
   IconMessages,
-  IconMoodSpark,
+  IconMoodCheck,
   IconNotebook,
+  IconUser,
   IconScaleOutline,
-  IconShoppingBag,
   IconToolsKitchen2,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
@@ -60,23 +59,19 @@ export const freePlanContent = [
 export const peekLicenseContent = [
   {
     icon: <IconHandGrab className="icon icon__large" style={style} />,
-    description: "Steal the most effective routines of the club members.",
-  },
-  {
-    icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "Read the progress diary of the club members.",
+    description: "See and steal the most effective routines of the club members.",
   },
   {
     icon: <IconEye className="icon icon__large" style={style} />,
     description: "See the personality, style, tips and socials of the club members.",
   },
   {
-    icon: <IconBubbleText className="icon icon__large" style={style} />,
-    description: "See the answers to FAQs of the club members.",
+    icon: <IconNotebook className="icon icon__large" style={style} />,
+    description: "Read the progress diary of the club members.",
   },
   {
-    icon: <IconMoodSpark className="icon icon__large" style={style} />,
-    description: "Access the advisor and improvement coaches.",
+    icon: <IconBubbleText className="icon icon__large" style={style} />,
+    description: "See the answers to the FAQs of the club members.",
   },
 ];
 
@@ -92,22 +87,22 @@ export const improvementCoachContent = [
   },
 ];
 
-export const analystCoachContent = [
-  {
-    icon: <IconShoppingBag className="icon icon__large" style={style} />,
-    description:
-      "Chooses the best products for your tasks based on your criteria and special considerations.",
-  },
-];
-
 export const advisorCoachContent = [
   {
     icon: <IconMessages className="icon icon__large" style={style} />,
-    description: "Answers your questions about progress, tasks, and more.",
+    description: "1. Answers your questions about routines, tasks. products and food.",
   },
   {
     icon: <IconMoodCheck className="icon icon__large" style={style} />,
     description:
-      "Tells if a product is a good fit for you based on the product images and your appearance.",
+      "2. Helps you choose the best products based on your preferences and special considerations.",
+  },
+  {
+    icon: <IconNotebook className="icon icon__large" style={style} />,
+    description: "3. Helps you find and summarize your diary notes and FAQ answers.",
+  },
+  {
+    icon: <IconUser className="icon icon__large" style={style} />,
+    description: "4. Answers your questions based on other people's information.",
   },
 ];

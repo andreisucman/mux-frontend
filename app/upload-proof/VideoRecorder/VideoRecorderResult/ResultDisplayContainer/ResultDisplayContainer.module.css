@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   position: relative;
   border-radius: var(--mantine-radius-lg);
   background-color: var(--mantine-color-dark-6);
@@ -9,11 +10,8 @@
   flex: 1;
 }
 
-.item {
-  border-radius: var(--mantine-radius-lg);
-  object-fit: contain;
-  position: relative;
+.image {
   height: 100%;
-  width: 100%;
-  flex: 1;
+  width: unset;
+  aspect-ratio: 9 / 16;
 }

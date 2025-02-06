@@ -69,8 +69,8 @@ export default function VideoPlayer({
         url={url}
         style={{
           position: "absolute",
-          inset: 0,
           objectFit: "contain",
+          inset: 0,
         }}
         light={thumbnail}
         playIcon={

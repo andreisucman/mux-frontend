@@ -12,6 +12,7 @@ import { getSupportedMimeType } from "@/helpers/utils";
 import { SexEnum } from "@/types/global";
 import RecordingStatus from "./RecordingStatus";
 import VideoRecorderResult from "./VideoRecorderResult";
+import ResultDisplayContainer from "./VideoRecorderResult/ResultDisplayContainer";
 import classes from "./VideoRecorder.module.css";
 
 type Props = {
@@ -46,7 +47,6 @@ const segments = [
 ];
 
 export default function VideoRecorder({
-  sex,
   taskExpired,
   instruction,
   silhouette,
@@ -72,16 +72,6 @@ export default function VideoRecorder({
   const [captureType, setCaptureType] = useState<string>();
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
 
-  let constraints: MediaStreamConstraints = {
-    video: {
-      width: { ideal: 1080 },
-      height: { ideal: 1920 },
-      facingMode,
-      aspectRatio: 9 / 16,
-      frameRate: { max: 30 },
-    },
-  };
-
   const showStartRecording = !isRecording && !isVideoLoading && !originalUrl;
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
@@ -97,8 +87,11 @@ export default function VideoRecorder({
     setIsVideoLoading(true);
     parts.current = [];
 
-    constraints = {
-      ...constraints,
+    let constraints: MediaStreamConstraints = {
+      video: {
+        facingMode,
+        aspectRatio: 9 / 16,
+      },
       audio: true,
     };
 
@@ -333,6 +326,14 @@ export default function VideoRecorder({
 
   const startVideoPreview = useCallback(async () => {
     try {
+      let constraints: MediaStreamConstraints = {
+        video: {
+          facingMode,
+          aspectRatio: 9 / 16,
+        },
+        audio: true,
+      };
+
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
       if (videoRef.current) {
@@ -376,8 +377,10 @@ export default function VideoRecorder({
         }
       }
 
-      setOriginalUrl(typeRecord ? typeRecord : "");
-      setLocalUrl(typeRecord ? typeRecord : "");
+      const savedUrl = typeRecord ? typeRecord : "";
+
+      setOriginalUrl(savedUrl);
+      setLocalUrl(savedUrl);
       setRecordedBlob(blob);
     };
     loadSaved();
@@ -422,70 +425,72 @@ export default function VideoRecorder({
       <SegmentedControl value={captureType} onChange={handleChangeCaptureType} data={segments} />
 
       {!originalUrl && (
-        <Skeleton visible={isVideoLoading} className="skeleton">
-          <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
-            {isRecording && <RecordingStatus recordingTime={recordingTime} />}
-            {silhouette && (
-              <div
-                className={classes.silhouetteOverlay}
-                style={{
-                  mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
-                  maskComposite: "exclude",
-                }}
-              />
-            )}
+        <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
+          {isRecording && <RecordingStatus recordingTime={recordingTime} />}
+          {silhouette && (
+            <div
+              className={classes.silhouetteOverlay}
+              style={{
+                mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
+                maskComposite: "exclude",
+              }}
+            />
+          )}
+          <div className={classes.videoWrapper}>
             <video ref={videoRef} className={classes.video} autoPlay muted></video>
-            <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
-              {!isRecording && hasMultipleCameras && (
-                <Button
-                  variant="default"
-                  onClick={flipCamera}
-                  className={classes.button}
-                  style={{ flexGrow: 0, padding: 0 }}
-                  miw={rem(50)}
-                  disabled={taskExpired}
-                >
-                  <IconCameraRotate className="icon" />
-                </Button>
-              )}
-              {isRecording && (
-                <Button
-                  variant="default"
-                  onClick={handleStop}
-                  className={classes.button}
-                  disabled={taskExpired}
-                >
-                  <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
-                </Button>
-              )}
-              {showStartRecording && (
-                <Button
-                  onClick={captureType === "image" ? capturePhoto : startRecording}
-                  className={classes.button}
-                  disabled={taskExpired}
-                >
-                  {startText}
-                </Button>
-              )}
-            </Group>
-          </Stack>
-        </Skeleton>
+          </div>
+          <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
+            {!isRecording && hasMultipleCameras && (
+              <Button
+                variant="default"
+                onClick={flipCamera}
+                className={classes.button}
+                style={{ flexGrow: 0, padding: 0 }}
+                miw={rem(50)}
+                disabled={taskExpired}
+              >
+                <IconCameraRotate className="icon" />
+              </Button>
+            )}
+            {isRecording && (
+              <Button
+                variant="default"
+                onClick={handleStop}
+                className={classes.button}
+                disabled={taskExpired}
+              >
+                <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
+              </Button>
+            )}
+            {showStartRecording && (
+              <Button
+                onClick={captureType === "image" ? capturePhoto : startRecording}
+                className={classes.button}
+                disabled={taskExpired}
+              >
+                {startText}
+              </Button>
+            )}
+          </Group>
+        </Stack>
       )}
       {originalUrl && (
-        <VideoRecorderResult
-          captureType={captureType}
-          isVideoLoading={isVideoLoading}
-          localUrl={localUrl}
-          originalUrl={originalUrl}
-          eyesBlurredUrl={eyesBlurredUrl}
-          faceBlurredUrl={faceBlurredUrl}
-          handleResetImage={handleResetImage}
-          handleResetRecording={handleResetRecording}
-          handleSubmit={handleSubmit}
-          setEyesBlurredUrl={setEyesBlurredUrl}
-          setFaceBlurredUrl={setFaceBlurredUrl}
-          setLocalUrl={setLocalUrl}
-        />
+        <Stack className={classes.content}>
+          <VideoRecorderResult
+            captureType={captureType}
+            isVideoLoading={isVideoLoading}
+            localUrl={localUrl}
+            originalUrl={originalUrl}
+            eyesBlurredUrl={eyesBlurredUrl}
+            faceBlurredUrl={faceBlurredUrl}
+            handleResetImage={handleResetImage}
+            handleResetRecording={handleResetRecording}
+            handleSubmit={handleSubmit}
+            setEyesBlurredUrl={setEyesBlurredUrl}
+            setFaceBlurredUrl={setFaceBlurredUrl}
+            setLocalUrl={setLocalUrl}
+          />
+        </Stack>
       )}
     </Stack>
   );

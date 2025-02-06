@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { IconArrowBackUp, IconCloudUpload } from "@tabler/icons-react";
+import { IconArrowBackUp } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import BlurButtons from "@/components/BlurButtons";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -69,6 +69,8 @@ export default function VideoRecorderResult({
 
           if (response.status === 200) {
             const { mainUrl, progress, isRunning } = response.message || {};
+
+            console.log("polling", response.message);
 
             if (response.error) {
               setProgress(0);
@@ -146,6 +148,7 @@ export default function VideoRecorderResult({
 
       setIsBlurLoading(false);
     }
+
     if (captureType === "video") {
       await onBlurVideoClick({
         originalUrl,
@@ -168,7 +171,7 @@ export default function VideoRecorderResult({
 
         await onBlurImageClick({
           originalUrl,
-          blurType: BlurTypeEnum.FACE,
+          blurType,
           faceBlurredUrl,
           eyesBlurredUrl,
           setEyesBlurredUrl,
@@ -182,7 +185,7 @@ export default function VideoRecorderResult({
       if (captureType === "video") {
         await onBlurVideoClick({
           originalUrl,
-          blurType: BlurTypeEnum.FACE,
+          blurType,
           faceBlurredUrl,
           eyesBlurredUrl,
           setLocalUrl,
@@ -205,9 +208,6 @@ export default function VideoRecorderResult({
   return (
     <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
       <Group className={classes.buttonGroup}>
-        <Button onClick={handleSubmit} className={classes.button} disabled={isBlurLoading}>
-          Upload
-        </Button>
         <ActionIcon
           variant="default"
           disabled={isBlurLoading}
@@ -217,18 +217,28 @@ export default function VideoRecorderResult({
         >
           <IconArrowBackUp className="icon" />
         </ActionIcon>
+        <Button onClick={handleSubmit} className={classes.button} disabled={isBlurLoading}>
+          Upload
+        </Button>
       </Group>
+      <BlurButtons
+        disabled={isBlurLoading}
+        originalUrl={originalUrl}
+        onBlurClick={handleBlurClick}
+        customStyles={{
+          position: "absolute",
+          bottom: rem(16),
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 1,
+        }}
+      />
       <ResultDisplayContainer
         createdAt={new Date().toString()}
         captureType={captureType}
         isBlurLoading={isBlurLoading}
         progress={progress}
         url={localUrl}
-      />
-      <BlurButtons
-        disabled={isBlurLoading}
-        originalUrl={originalUrl}
-        onBlurClick={handleBlurClick}
       />
     </Stack>
   );
