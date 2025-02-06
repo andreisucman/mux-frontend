@@ -211,7 +211,7 @@ export default function TasksList({ type, customStyles, disableAll }: Props) {
       </Group>
       {displayComponent !== "loading" && (
         <CreateRoutineProvider>
-          <Stack className={classes.content}>
+          <Stack className={`${classes.content} scrollbar`}>
             {displayComponent === "scanOverlay" && (
               <UploadOverlay
                 type={type as TypeEnum}

@@ -171,9 +171,11 @@ export default function ClubRoutines() {
             <OverlayWithText
               text={`No ${type} routines`}
               button={
-                <Button variant="default" mt={8} onClick={() => router.push("/tasks")}>
-                  Create task
-                </Button>
+                status === "active" ? (
+                  <Button variant="default" mt={8} onClick={() => router.push("/tasks")}>
+                    Create task
+                  </Button>
+                ) : undefined
               }
             />
           )}

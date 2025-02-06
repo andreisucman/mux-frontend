@@ -9,6 +9,7 @@ import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
+import modifyQuery from "@/helpers/modifyQuery";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { TypeEnum } from "@/types/global";
 import { UserContext } from "../UserContext";
@@ -41,8 +42,9 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     checkSubscriptionActivity(["improvement", "peek"], subscriptions) || {};
 
   const handleCreateCheckoutSession = async () => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns?${searchParams.toString()}`;
-    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
+    const newQuery = modifyQuery({ params: [{ name: "type", value: type, action: "replace" }] });
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns?${newQuery ? newQuery : ""}`;
+    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${newQuery ? newQuery : ""}`;
 
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,

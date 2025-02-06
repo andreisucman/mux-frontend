@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
+import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconRefresh, IconVideo } from "@tabler/icons-react";
 import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -298,7 +298,7 @@ export default function VideoRecorder({
 
   const flipCamera = useCallback(() => {
     setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
-  }, []);
+  }, [facingMode]);
 
   const handleChangeCaptureType = useCallback(
     async (captureType: string) => {
@@ -390,7 +390,7 @@ export default function VideoRecorder({
     if (!componentLoaded) return;
     if (!showStartRecording) return;
     startVideoPreview();
-  }, [componentLoaded, showStartRecording]);
+  }, [facingMode, componentLoaded, showStartRecording]);
 
   useEffect(() => {
     setComponentLoaded(true);
@@ -449,7 +449,7 @@ export default function VideoRecorder({
                 miw={rem(50)}
                 disabled={taskExpired}
               >
-                <IconCameraRotate className="icon" />
+                <IconRefresh className="icon" />
               </Button>
             )}
             {isRecording && (

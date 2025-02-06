@@ -26,8 +26,7 @@ export default function SevenRingsGrid({
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
-    // return size * 0.75;
-    return size * 0.9;
+    return size;
   }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
   return (

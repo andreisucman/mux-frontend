@@ -105,10 +105,10 @@ export default function AnalysisCarousel({ type }: Props) {
 
     const slides = [
       analysisCard,
-      analysisPotentialCard,
-      currentBetterCard,
-      potentialBetterCard,
-      concernsCard,
+      // analysisPotentialCard,
+      // currentBetterCard,
+      // potentialBetterCard,
+      // concernsCard,
     ];
 
     return slides;

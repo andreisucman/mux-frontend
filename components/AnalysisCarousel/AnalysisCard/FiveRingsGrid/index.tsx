@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Stack } from "@mantine/core";
 import { CircleObjectType } from "@/components/AnalysisCarousel/AnalysisCard";
 import RingComponent from "@/components/RingComponent";
@@ -26,8 +26,7 @@ export default function FiveRingsGrid({
 }: Props) {
   const ringSize = useMemo(() => {
     const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
-    // return isMobile ? size : size * 0.8;
-    return size * 0.9;
+    return size;
   }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
   return (
