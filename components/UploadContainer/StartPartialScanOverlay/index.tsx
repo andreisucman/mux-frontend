@@ -54,7 +54,7 @@ export default function StartPartialScanOverlay({
           return;
         }
         const redirectUrl = encodeURIComponent(`/analysis?${searchParams.toString()}`);
-        router.push(`/wait?operationKey=${`type-${type}`}&redirectUrl=${redirectUrl}`);
+        router.push(`/wait?operationKey=${type}&redirectUrl=${redirectUrl}`);
       }
     } catch (err) {
       setIsButtonLoading(false);

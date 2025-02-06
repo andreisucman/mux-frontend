@@ -6,7 +6,6 @@ import { modals } from "@mantine/modals";
 import PricingCard from "@/app/plans/PricingCard";
 import {
   advisorCoachContent,
-  analystCoachContent,
   improvementCoachContent,
   peekLicenseContent,
 } from "@/app/plans/pricingData";
@@ -45,9 +44,7 @@ export default function openSubscriptionModal({
       ? improvementCoachContent
       : modalType === "advisor"
         ? advisorCoachContent
-        : modalType === "peek"
-          ? peekLicenseContent
-          : analystCoachContent;
+        : peekLicenseContent;
 
   modals.openContextModal({
     modal: "general",
