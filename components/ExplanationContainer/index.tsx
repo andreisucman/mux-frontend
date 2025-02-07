@@ -14,9 +14,9 @@ export default function ExplanationContainer({ title, text, customStyles, size =
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
-      <Text className={classes.title} c="dimmed">
+      {title && <Text className={classes.title} c="dimmed">
         {title}
-      </Text>
+      </Text>}
 
       {textArray?.map((textRow, index) => (
         <Text key={index} size={size} className={classes.description}>

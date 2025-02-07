@@ -24,7 +24,7 @@ export default function SixRingsGrid({
   openExplanationModal,
 }: Props) {
   const ringSize = useMemo(() => {
-    const size = calculateCircleRadius(containerWidth, containerHeight, ringObjects.length);
+    const size = calculateCircleRadius(containerWidth, 550, ringObjects.length);
     return size * 0.8;
   }, [containerWidth, containerHeight, ringObjects.length, isMobile]);
 
