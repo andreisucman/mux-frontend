@@ -106,10 +106,11 @@ export default function ClubSettings() {
         });
 
         if (response.status === 200) {
+          const { defaultClubPayoutData, defaultClubPrivacy } = response.message;
           setUserDetails((prev: UserDataType) => ({
             ...prev,
             country: newCountry,
-            club: { ...prev.club, payouts: response.message },
+            club: { ...prev.club, payouts: defaultClubPayoutData, privacy: defaultClubPrivacy },
           }));
 
           router.push("/club/admission");

@@ -28,7 +28,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/progress/${userName}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
   const handleRedirect = () => {
     if (isLoading) return;

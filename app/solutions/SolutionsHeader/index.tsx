@@ -18,6 +18,7 @@ export default function SolutionsHeader() {
         collection={"solution"}
         searchPlaceholder="Search solutions"
         showActivityIndicator
+        forceEnabled
       />
     </Group>
   );

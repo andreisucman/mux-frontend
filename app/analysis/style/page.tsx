@@ -5,8 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import { ChatCategoryEnum } from "@/app/diary/type";
-import ChatWithModal from "@/components/ChatWithModal";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -20,7 +18,7 @@ import AnalysisHeader from "../AnalysisHeader";
 import SelectStyleGoalModalContent from "./SelectStyleGoalModalContent";
 import { outlookStyles } from "./SelectStyleGoalModalContent/outlookStyles";
 import StyleSuggestionCard from "./StyleSuggestionCard";
-import classes from "./result.module.css";
+import classes from "./style.module.css";
 
 export const runtime = "edge";
 

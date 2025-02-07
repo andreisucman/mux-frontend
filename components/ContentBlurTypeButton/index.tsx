@@ -21,7 +21,7 @@ type Props = {
   hash?: string;
   position?: "top-right" | "bottom-right" | "top-left" | "bottom-left";
   isRelative?: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   isDisabled: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   currentMain: BlurredUrlType;

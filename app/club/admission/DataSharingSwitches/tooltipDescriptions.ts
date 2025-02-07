@@ -1,9 +1,8 @@
 export const tooltipDescriptions: { [key: string]: string } = {
-  progress: "Allow your followers to see your progress scan images.",
-  proof: "Allow your followers to see your proof uploads.",
-  style: "Allow your followers to see your style analyses.",
-  diary: "Allow your followers to see your diary.",
-  answer: "Allow your followers to see you answers to FAQ.",
-  about:
-    "Allow your followers to access your concerns, considerations, and demographics through their advisor coach.",
+  progress: "Makes your progress scan images public.",
+  proof: "Makes your proof uploads public.",
+  style: "Makes your style analyses public.",
+  diary: "Allows your followers to see your diary.",
+  answer: "Allows your followers to see you answers to FAQ.",
+  about: "Allows your followers to see your concerns, considerations, and demographic information.",
 };

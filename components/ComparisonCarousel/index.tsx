@@ -73,7 +73,7 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
   const showSkeleton = useShowSkeleton();
 
   return (
-    <Skeleton className={"skeleton"} visible={showSkeleton || !slides} mih={minHeight}>
+    <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
         <Group className={classes.title}>
           {partIcons[part]}

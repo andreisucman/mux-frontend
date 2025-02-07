@@ -26,9 +26,6 @@ export default function ContentModerationButtons({
   setContent,
 }: Props) {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const [isBlurLoading, setIsBlurLoading] = useState(false);
-
-  const disabled = isDeleteLoading || isBlurLoading;
 
   return (
     <Group className={cn(classes.container, { [classes.relative]: isRelative })}>
@@ -39,7 +36,7 @@ export default function ContentModerationButtons({
           setContent={setContent}
           isLoading={isDeleteLoading}
           setIsLoading={setIsDeleteLoading}
-          isDisabled={disabled}
+          isDisabled={isDeleteLoading}
           isRelative
         />
       )}
@@ -47,11 +44,10 @@ export default function ContentModerationButtons({
         <ContentBlurTypeButton
           contentId={contentId}
           currentMain={currentMain}
-          contentCategory={"style"}
+          contentCategory={collectionKey as "progress"}
           setRecords={setContent}
-          isLoading={isBlurLoading}
           setIsLoading={setIsDeleteLoading}
-          isDisabled={disabled}
+          isDisabled={isDeleteLoading}
           isRelative
         />
       )}
