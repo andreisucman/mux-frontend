@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Button, Skeleton, Stack } from "@mantine/core";
 import AnalysisCarousel from "@/components/AnalysisCarousel";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
-import { TypeEnum } from "@/types/global";
 import AnalysisHeader from "./AnalysisHeader";
 import classes from "./analysis.module.css";
 
@@ -20,12 +18,9 @@ export default function Analysis() {
   );
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
-  const searchParams = useSearchParams();
-  const type = searchParams.get("type") || "head";
 
   const { latestProgress } = userDetails || {};
-  const latestTypeProgress = latestProgress?.[(type as TypeEnum.BODY) || TypeEnum.HEAD];
-  const { overall, ...rest } = latestTypeProgress || {};
+  const { overall, ...rest } = latestProgress || {};
 
   const isEmpty = useMemo(
     () =>
@@ -36,8 +31,8 @@ export default function Analysis() {
   );
 
   const overlayButton = (
-    <Button mt={8} variant="default" onClick={() => router.push(`/scan/progress?type=${type}`)}>
-      {type ? `Scan your ${type}` : "Scan"}
+    <Button mt={8} variant="default" onClick={() => router.push("/scan/progress")}>
+      Scan
     </Button>
   );
 
@@ -49,23 +44,23 @@ export default function Analysis() {
   }, []);
 
   useEffect(() => {
-    if (!type || !userDetails) return;
+    if (!userDetails) return;
 
     if (rest !== null && isEmpty) {
       setDisplayComponent("upload");
-    } else if (latestTypeProgress) {
+    } else if (latestProgress) {
       setDisplayComponent("carousel");
     }
-  }, [isEmpty, type, userDetails]);
+  }, [isEmpty, userDetails]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} />
+      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} />
       <Skeleton visible={displayComponent === "loading"} className={`${classes.skeleton} skeleton`}>
         {displayComponent === "upload" && (
-          <OverlayWithText text={`No ${type} analysis`} button={overlayButton} />
+          <OverlayWithText text={`No progress analysis`} button={overlayButton} />
         )}
-        {displayComponent === "carousel" && <AnalysisCarousel type={type as TypeEnum} />}
+        {displayComponent === "carousel" && <AnalysisCarousel />}
       </Skeleton>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { PositionEnum, ScanTypeEnum, TypeEnum } from "@/types/global";
 
 export const silhouettes: {

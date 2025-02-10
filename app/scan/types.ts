@@ -1,10 +1,8 @@
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
-import { TypeEnum } from "@/types/global";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 
 export type UploadProgressProps = {
   url: string;
-  type: TypeEnum;
   part: PartEnum;
   position: string;
   blurType: BlurTypeEnum;

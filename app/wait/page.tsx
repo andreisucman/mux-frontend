@@ -15,13 +15,11 @@ export default function WaitPage() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const type = searchParams.get("type") || "head";
-  const operationKey = searchParams.get("operationKey");
+  const operationKey = searchParams.get("operationKey") || "progress";
   const onErrorRedirect = searchParams.get("onErrorRedirectUrl") || "";
   const onErrorRedirectUrl = decodeURIComponent(onErrorRedirect);
 
-  const encodedRedirectUrl =
-    searchParams.get("redirectUrl") || `/analysis${type ? `?type=${type}` : ""}`;
+  const encodedRedirectUrl = searchParams.get("redirectUrl") || "/analysis";
   const redirectUrl = decodeURIComponent(encodedRedirectUrl);
 
   const hideDisclaimer = useMemo(() => {
@@ -44,20 +42,20 @@ export default function WaitPage() {
         console.error("Invalid redirect URL", e);
       }
     },
-    [type, redirectUrl, userDetails, typeof router]
+    [redirectUrl, userDetails, typeof router]
   );
 
   const onError = useCallback(() => {
     setUserDetails(null);
     deleteFromLocalStorage("userDetails");
-    deleteFromLocalStorage("runningAnalyses", type || "head");
-  }, [type]);
+    deleteFromLocalStorage("runningAnalyses", operationKey || "progress");
+  }, [operationKey]);
 
   return (
     <Stack flex={1} className="smallPage">
       <WaitComponent
         description="Analyzing your data"
-        operationKey={operationKey || type}
+        operationKey={operationKey}
         errorRedirectUrl={onErrorRedirectUrl || "/scan"}
         hideDisclaimer={hideDisclaimer}
         onComplete={onComplete}

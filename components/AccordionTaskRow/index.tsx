@@ -10,7 +10,6 @@ import RoutineIndividualTasksList from "./IndividualTasksList";
 import classes from "./AccordionTaskRow.module.css";
 
 type Props = {
-  type: TypeEnum;
   data: AllTaskType;
   routineId: string;
   isSelf: boolean;

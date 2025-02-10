@@ -1,17 +1,16 @@
 import { upperFirst } from "@mantine/hooks";
 import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
-import { partItems, typeItems } from "@/components/PageHeader/data";
+import { partItems } from "@/components/PageHeader/data";
 import callTheServer from "./callTheServer";
 
 type GetUsersFiltersProps = {
   userName?: string | string[];
   collection: string;
   fields?: string[];
-  type?: string | null;
 };
 
-const getUsersFilters = async ({ userName, type, collection, fields }: GetUsersFiltersProps) => {
+const getUsersFilters = async ({ userName, collection, fields }: GetUsersFiltersProps) => {
   let result = {
     availableTypes: [] as FilterItemType[],
     availableParts: [] as FilterPartItemType[],
@@ -28,7 +27,6 @@ const getUsersFilters = async ({ userName, type, collection, fields }: GetUsersF
 
     if (collection) parts.push(`collection=${collection}`);
     if (fields) parts.push(`fields=${fields.join(",")}`);
-    if (type) parts.push(`type=${type}`);
 
     const query = parts.join("&");
 
@@ -40,16 +38,11 @@ const getUsersFilters = async ({ userName, type, collection, fields }: GetUsersF
     });
 
     if (response.status === 200) {
-      const { type, part, styleName } = response.message || {};
+      const { part, styleName } = response.message || {};
 
       if (response.message) {
-        if (type) {
-          result.availableTypes = typeItems.filter((item) => type.includes(item.value));
-        }
         if (part) {
-          result.availableParts = partItems.filter(
-            (item) => type.includes(item.type) && part.includes(item.value)
-          );
+          result.availableParts = partItems.filter((item) => part.includes(item.value));
         }
         if (styleName) {
           result.availableStyleNames = outlookStyles

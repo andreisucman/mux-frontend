@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import femaleBodyBack from "@/public/assets/placeholders/female-body-back.svg";
 import femaleBodyFront from "@/public/assets/placeholders/female-body-front.svg";
 import femaleBodyLeft from "@/public/assets/placeholders/female-body-left.svg";

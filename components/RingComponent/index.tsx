@@ -10,21 +10,18 @@ type RingComponentProps = {
   customStyles?: { [key: string]: any };
   isPotential?: boolean;
   showTitle?: boolean;
-  fontSize?: number;
   onClick?: (args: any) => void;
 };
 
 const RingComponent = ({
   data,
   ringSize,
-  fontSize,
   isPotential,
   customStyles,
   showTitle = true,
   onClick,
 }: RingComponentProps) => {
   const modelObject = data[0];
-  const finalFontSize = fontSize ? fontSize : Math.min(ringSize * 0.12, 24);
   const labelValue = isPotential ? modelObject.value + data[1].value : modelObject.value;
 
   return (
@@ -44,11 +41,7 @@ const RingComponent = ({
           </Text>
         }
       />
-      {showTitle && (
-        <Text fz={finalFontSize} className={classes.label}>
-          {upperFirst(modelObject.label)}
-        </Text>
-      )}
+      {showTitle && <Text className={classes.label}>{upperFirst(modelObject.label)}</Text>}
     </Stack>
   );
 };

@@ -2,11 +2,11 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Skeleton, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
@@ -19,26 +19,15 @@ import classes from "./style.module.css";
 
 export const runtime = "edge";
 
-const defaultStyleRequirements = {
-  head: [
-    {
-      title: "Style scan: Head",
-      instruction: "Upload a photo of your head how you usually style it.",
-      type: TypeEnum.HEAD,
-      part: PartEnum.STYLE,
-      position: PositionEnum.FRONT,
-    },
-  ],
-  body: [
-    {
-      title: "Style scan: Outfit",
-      instruction: "Take a full body photo of your outfit.",
-      type: TypeEnum.BODY,
-      part: PartEnum.STYLE,
-      position: PositionEnum.FRONT,
-    },
-  ],
-};
+const defaultStyleRequirements = [
+  {
+    title: "Style scan",
+    instruction: "Take a photo of yourself in your outfit.",
+    type: TypeEnum.BODY,
+    part: PartEnum.STYLE,
+    position: PositionEnum.FRONT,
+  },
+];
 
 type HandleUploadStyleProps = {
   url: string;
@@ -53,11 +42,7 @@ export default function UploadStyle() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { _id: userId, latestStyleAnalysis, demographics } = userDetails || {};
-  const type = searchParams.get("type") || "head";
-  const finalType = type === "health" ? "head" : type;
-  const typeStyleRequirements = defaultStyleRequirements?.[finalType as "head" | "body"];
-  const typeStyleAnalysis = latestStyleAnalysis?.[finalType as "head" | "body"];
-  const { mainUrl } = typeStyleAnalysis || {};
+  const { mainUrl } = latestStyleAnalysis || {};
 
   const handleUpload = useCallback(
     async ({ url, type }: HandleUploadStyleProps) => {
@@ -92,7 +77,6 @@ export default function UploadStyle() {
             endpoint: "startStyleAnalysis",
             method: "POST",
             body: {
-              type,
               image: fileUrls[0],
               localUserId: userId,
             },
@@ -126,10 +110,10 @@ export default function UploadStyle() {
 
             if (intervalId) clearInterval(intervalId);
 
-            const redirectUrl = encodeURIComponent(`/analysis/style?${type ? `type=${type}` : ""}`);
+            const redirectUrl = encodeURIComponent(`/analysis/style`);
             const onErrorRedirectUrl = encodeURIComponent(`/scan/style?${searchParams.toString()}`);
             router.push(
-              `/wait?type=${finalType}&operationKey=${`style-${finalType}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
+              `/wait?operationKey=style&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
             );
           } else {
             openErrorModal();
@@ -148,25 +132,15 @@ export default function UploadStyle() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {typeStyleRequirements ? (
-        <>
-          <ScanHeader
-            type={type as TypeEnum}
-            children={demographics ? <SexSelector updateOnServer /> : <></>}
-          />
-          <UploadContainer
-            latestStyleImage={mainUrl?.url}
-            requirements={typeStyleRequirements}
-            type={type as TypeEnum}
-            progress={progress}
-            isLoading={isLoading}
-            handleUpload={handleUpload}
-            scanType={ScanTypeEnum.STYLE}
-          />
-        </>
-      ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
-      )}
+      <ScanHeader children={demographics && <SexSelector updateOnServer />} />
+      <UploadContainer
+        latestStyleImage={mainUrl?.url}
+        requirements={defaultStyleRequirements}
+        progress={progress}
+        isLoading={isLoading}
+        scanType={ScanTypeEnum.STYLE}
+        handleUpload={handleUpload}
+      />
     </Stack>
   );
 }

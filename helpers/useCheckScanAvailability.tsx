@@ -2,46 +2,28 @@ import { useMemo } from "react";
 import { RequirementType } from "@/components/UploadContainer/types";
 import { NextActionType } from "@/types/global";
 import { getAvailableRequirements } from "./getAvailableRequirements";
-import { parseScanDate } from "./utils";
 
 type Props = {
-  scanType: "head" | "body" | "style";
   nextScan?: NextActionType[];
-  requiredProgress?: {
-    head: RequirementType[];
-    body: RequirementType[];
-  };
+  requiredProgress?: RequirementType[];
 };
 
-function useCheckScanAvailability({ scanType, nextScan, requiredProgress }: Props) {
-  const currentNextScan = useMemo(
-    () => nextScan?.find((obj) => obj.type === scanType),
-    [scanType, typeof nextScan]
-  );
-
-  const currentNextScanDate = useMemo(() => parseScanDate(currentNextScan), [currentNextScan]);
-
+function useCheckScanAvailability({ nextScan, requiredProgress }: Props) {
   const currentRequirements = useMemo(
     () =>
       getAvailableRequirements({
-        type: scanType,
-        typeNextScan: currentNextScan,
+        nextScan,
         requiredProgress,
       }),
-    [scanType, currentNextScan, requiredProgress]
+    [nextScan, requiredProgress]
   );
 
-  const needsScan = useMemo(
-    () =>
-      !currentNextScanDate || (currentNextScanDate && new Date(currentNextScanDate) < new Date()),
-    [currentNextScanDate]
-  );
+  const checkBackDate =
+    nextScan && nextScan.length
+      ? Math.min(...nextScan.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
+      : null;
 
-  return {
-    needsScan,
-    availableRequirements: currentRequirements,
-    nextScanDate: currentNextScanDate,
-  };
+  return { currentRequirements, checkBackDate };
 }
 
 export default useCheckScanAvailability;

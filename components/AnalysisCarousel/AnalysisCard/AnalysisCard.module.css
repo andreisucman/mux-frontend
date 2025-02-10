@@ -1,4 +1,7 @@
 .container {
+  position: absolute;
+  inset: 0;
+
   display: flex;
   align-items: center;
   flex: 1;
@@ -7,9 +10,11 @@
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
   padding: rem(16);
+
+  overflow: auto;
 }
 
-.wrapper {
+.content {
   flex: 1;
   gap: 0;
   width: 100%;
@@ -21,4 +26,9 @@
   text-align: left;
   width: 100%;
   font-size: var(--mantine-font-size-sm);
+}
+
+.row {
+  align-items: flex-start;
+  flex-wrap: nowrap;
 }

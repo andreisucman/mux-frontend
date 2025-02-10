@@ -1,23 +1,23 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Button, Skeleton, Stack } from "@mantine/core";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import { Button, Loader, Stack } from "@mantine/core";
 import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
+import InputWithCheckboxes from "@/components/InputWithCheckboxes";
 import OverlayWithText from "@/components/OverlayWithText";
 import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
+import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import { formatDate } from "@/helpers/formatDate";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
-import { ScanTypeEnum, TypeEnum, UserDataType } from "@/types/global";
+import { ScanTypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
@@ -26,25 +26,19 @@ export const runtime = "edge";
 
 export default function ScanProgress() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { status, userDetails, setUserDetails } = useContext(UserContext);
+  const { parts, setParts } = useContext(ScanPartsChoicesContext);
 
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, requiredProgress, demographics, nextScan } = userDetails || {};
-
-  const type = searchParams.get("type") || "head";
-  const finalType = type === "health" ? "head" : type;
+  const { _id: userId, requiredProgress, demographics, nextScan, toAnalyze } = userDetails || {};
   const showSexSelector = status !== AuthStateEnum.AUTHENTICATED && demographics;
 
-  const { needsScan, availableRequirements, nextScanDate } = useCheckScanAvailability({
+  const { currentRequirements, checkBackDate } = useCheckScanAvailability({
     nextScan,
     requiredProgress,
-    scanType: finalType as "head" | "body",
   });
-
-  const checkBackDate = formatDate({ date: nextScanDate, hideYear: true });
 
   const handleUpload = useCallback(
     async ({ url, type, part, position, blurType, blurredImage }: UploadProgressProps) => {
@@ -134,26 +128,38 @@ export default function ScanProgress() {
 
   useShallowEffect(() => {
     if (!userId) return;
-    if (!needsScan) return;
-    if (availableRequirements && availableRequirements.length === 0) {
-      router.push(`/wait?type=${finalType}&operationKey=${finalType}`);
+    if (currentRequirements && currentRequirements.length === 0) {
+      router.push(`/wait?operationKey=progress`);
     }
-  }, [availableRequirements?.length, userId, needsScan]);
+  }, [currentRequirements?.length, userId]);
 
-  const url = `/analysis${type ? (type === "head" ? "?type=head" : "?type=body") : ""}`;
+  const uploadedParts = useMemo(() => {
+    return [...new Set(toAnalyze?.map((obj) => obj.part))].filter((rec) => Boolean(rec));
+  }, [toAnalyze]) as string[];
+
+  console.log("toAnalyze", toAnalyze);
 
   return (
     <>
-      {availableRequirements ? (
+      {currentRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
           <ScanHeader
-            type={finalType as TypeEnum}
-            children={showSexSelector && <SexSelector updateOnServer />}
+            children={
+              <>
+                {showSexSelector && <SexSelector updateOnServer />}
+                {parts && (
+                  <InputWithCheckboxes
+                    uploadedParts={uploadedParts}
+                    data={parts}
+                    setParts={setParts}
+                  />
+                )}
+              </>
+            }
           />
-          {needsScan ? (
+          {currentRequirements.length > 0 ? (
             <UploadContainer
-              requirements={availableRequirements || []}
-              type={type as TypeEnum}
+              requirements={currentRequirements || []}
               progress={progress}
               isLoading={isLoading}
               scanType={ScanTypeEnum.PROGRESS}
@@ -161,17 +167,17 @@ export default function ScanProgress() {
             />
           ) : (
             <OverlayWithText
-              text={`The next ${type ? type : ""} scan is after ${checkBackDate}.`}
+              text={`The next scan is after ${checkBackDate}.`}
               button={
-                <Button mt={8} variant="default" onClick={() => router.replace(url)}>
-                  See the latest {type} analysis
+                <Button mt={8} variant="default" onClick={() => router.replace("/analysis")}>
+                  See the latest analysis
                 </Button>
               }
             />
           )}
         </Stack>
       ) : (
-        <Skeleton className="skeleton" flex={1}></Skeleton>
+        <Loader m="0 auto" pt="15%" />
       )}
     </>
   );

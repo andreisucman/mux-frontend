@@ -7,13 +7,11 @@ type FetchRoutinesProps = {
   status: string | null;
   followingUserName?: string | string[];
   routinesLength: number;
-  type?: string;
 };
 
 const fetchRoutines = async ({
   skip,
   sort,
-  type,
   status,
   followingUserName,
   routinesLength,
@@ -24,10 +22,6 @@ const fetchRoutines = async ({
     if (followingUserName) endpoint += `/${followingUserName}`;
 
     const parts = [];
-
-    if (type) {
-      parts.push(`type=${type}`);
-    }
 
     if (status) {
       parts.push(`status=${status}`);

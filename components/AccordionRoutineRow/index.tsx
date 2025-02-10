@@ -12,14 +12,13 @@ import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { AllTaskType, RoutineType, TypeEnum } from "@/types/global";
+import { AllTaskType, RoutineType } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import StatsGroup from "../StatsGroup";
 import classes from "./AccordionRoutineRow.module.css";
 
 type Props = {
   routine: RoutineType;
-  type: TypeEnum;
   isSelf: boolean;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   handleStealRoutine?: (routineId: string) => void;
@@ -27,7 +26,6 @@ type Props = {
 };
 
 export default function AccordionRoutineRow({
-  type,
   routine,
   isSelf,
   setRoutines,
@@ -83,11 +81,7 @@ export default function AccordionRoutineRow({
       dateTo.setDate(dateTo.getDate() + 1);
       dateTo.setUTCHours(0, 0, 0, 0);
 
-      const parts = [
-        `type=${type}`,
-        `dateFrom=${dateFrom.toISOString()}`,
-        `dateTo=${dateTo.toISOString()}`,
-      ];
+      const parts = [`dateFrom=${dateFrom.toISOString()}`, `dateTo=${dateTo.toISOString()}`];
 
       if (taskKey) {
         parts.push(`key=${taskKey}`);
@@ -99,7 +93,7 @@ export default function AccordionRoutineRow({
 
       router.push(url);
     },
-    [type, routine]
+    [routine]
   );
 
   const redirectToTask = useCallback((taskId: string) => {
@@ -204,7 +198,6 @@ export default function AccordionRoutineRow({
               data={task}
               isSelf={isSelf}
               routineId={routine._id}
-              type={type as TypeEnum}
               handleCloneTask={handleCloneTask}
               openTaskDetails={openTaskDetails}
               redirectToCalendar={redirectToCalendar}

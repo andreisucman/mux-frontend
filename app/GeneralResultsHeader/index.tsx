@@ -139,18 +139,6 @@ export default function GeneralResultsHeader({
             isDisabled={!additionalFiltersActive}
           />
         )}
-        {!hideTypeDropdown && (
-          <FilterDropdown
-            data={availableTypes}
-            icons={typesDisabled ? undefined : typeIcons}
-            placeholder="Filter by type"
-            selectedValue={type}
-            filterType="type"
-            allowDeselect
-            addToQuery
-            isDisabled={typesDisabled}
-          />
-        )}
         {!hidePartDropdown && (
           <FilterDropdown
             data={relevantParts}

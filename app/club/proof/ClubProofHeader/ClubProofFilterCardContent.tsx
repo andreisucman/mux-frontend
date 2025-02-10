@@ -3,9 +3,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
+import { FilterPartItemType } from "@/components/FilterDropdown/types";
 import getUsersFilters from "@/functions/getUsersFilters";
-import { partIcons, typeIcons } from "@/helpers/icons";
+import { partIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./ClubProofFilterCardContent.module.css";
 
@@ -17,12 +17,9 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
-  const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
 
   const part = searchParams.get("part");
-  const type = searchParams.get("type");
 
   const handleResetFilters = useCallback(() => {
     const query = modifyQuery({
@@ -37,55 +34,24 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
     modals.closeAll();
   }, [pathname, modals]);
 
-  const onSelectType = useCallback(
-    (type?: string | null) => {
-      let relevantParts: FilterPartItemType[];
-
-      if (!type) {
-        relevantParts = [];
-      } else {
-        relevantParts = availableParts.filter((part) => part.type === type);
-      }
-      setRelevantParts(relevantParts);
-    },
-    [availableParts]
-  );
-
   useEffect(() => {
     getUsersFilters({
       userName,
       collection: "proof",
-      fields: ["type", "part"],
+      fields: ["part"],
     }).then((result) => {
-      const { availableTypes, availableParts } = result;
-      setAvailableTypes(availableTypes);
-      setAvailableParts(availableParts);
+      const { availableParts } = result;
 
-      if (type) {
-        setRelevantParts(availableParts.filter((part) => part.type === type));
-      }
+      setAvailableParts(availableParts);
     });
   }, [userName]);
 
-  const typesDisabled = availableTypes.length === 0;
-  const partsDisabled = relevantParts.length === 0;
+  const partsDisabled = availableParts.length === 0;
 
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={availableTypes}
-        icons={typesDisabled ? undefined : typeIcons}
-        placeholder="Filter by type"
-        selectedValue={type}
-        filterType="type"
-        onSelect={onSelectType}
-        allowDeselect
-        isDisabled={typesDisabled}
-        customStyles={{ maxWidth: "unset" }}
-        addToQuery
-      />
-      <FilterDropdown
-        data={relevantParts}
+        data={availableParts}
         icons={partsDisabled ? undefined : partIcons}
         placeholder="Filter by part"
         selectedValue={part}

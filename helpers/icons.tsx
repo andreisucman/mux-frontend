@@ -26,6 +26,7 @@ export const partIcons: { [key: string]: React.ReactNode } = {
   face: <IconMoodNeutral className="icon" />,
   mouth: <IconDental className="icon" />,
   scalp: <IconWhirl className="icon" />,
+  body: <IconMan className="icon" />,
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {

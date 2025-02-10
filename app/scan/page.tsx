@@ -6,8 +6,8 @@ import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import { ScanTypeEnum } from "@/types/global";
-import { ReferrerEnum } from "../auth/AuthForm/types";
 import SexSelector from "../../components/SexSelector";
+import { ReferrerEnum } from "../auth/AuthForm/types";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
 
@@ -57,12 +57,12 @@ export default function ScanIndexPage() {
           <StartButton
             scanType={ScanTypeEnum.PROGRESS}
             type={"body"}
-            onClick={() => handleRedirect("/scan/progress", "type=head")}
+            onClick={() => handleRedirect("/scan/progress")}
           />
           <StartButton
             scanType={ScanTypeEnum.STYLE}
             type={"body"}
-            onClick={() => handleRedirect("/scan/style", "type=head")}
+            onClick={() => handleRedirect("/scan/style")}
           />
           <StartButton
             scanType={ScanTypeEnum.FOOD}

@@ -2,110 +2,92 @@
 
 import React, { useMemo } from "react";
 import { Skeleton, Stack, Text } from "@mantine/core";
-import { useElementSize, useMediaQuery } from "@mantine/hooks";
+import { useElementSize } from "@mantine/hooks";
 import { getRingColor } from "@/helpers/utils";
-import { ProgressType } from "@/types/global";
-import FiveRingsGrid from "./FiveRingsGrid";
-import OneRingGrid from "./OneRingGrid";
-import SevenRingsGrid from "./SevenRingsGrid";
-import SixRingsGrid from "./SixRingsGrid";
-import ThreeRingsGrid from "./ThreeRingsGrid";
+import { FormattedRatingType, ProgressType } from "@/types/global";
+import RowBlock from "./RowBlock";
 import classes from "./AnalysisCard.module.css";
 
 type Props = {
-  record: { [key: string]: ProgressType | null | number };
   title: string;
+  currentRecord: { [key: string]: ProgressType | null | number };
+  potentialRecord: { [key: string]: FormattedRatingType | null | number };
 };
 
-export type CircleObjectType = { label: string; value: any; color: string }[];
+export default function AnalysisCard({ title, currentRecord, potentialRecord }: Props) {
+  const { height: containerHeight, ref } = useElementSize();
 
-export default function AnalysisCard({ record, title }: Props) {
-  const { width: containerWidth, height: containerHeight, ref } = useElementSize();
-  const isMobile = !!useMediaQuery("(max-width: 36em)");
-  const partValues = Object.values(record)
+  console.log("potentialRecord", potentialRecord);
+
+  const partValues = Object.values(currentRecord)
+    .filter((rec) => typeof rec !== "number")
+    .filter(Boolean);
+  const potentialPartValues = Object.values(potentialRecord)
     .filter((rec) => typeof rec !== "number")
     .filter(Boolean);
 
-  const averageScore = record.overall as number;
+  const partKeys = Object.keys(potentialRecord).filter((v) => v !== "overall");
 
-  const ringColor = useMemo(() => getRingColor(averageScore), []);
-
-  const overallContent = [{ label: "Overall", value: averageScore, color: ringColor }];
-
-  const featureRingObjects = useMemo(
+  const explanations = useMemo(
     () =>
-      partValues.flatMap((obj) => {
-        const scores = Object.entries((obj as ProgressType).scores);
-        const parts = [
-          ...scores
-            .filter(([key]) => key !== "overall")
-            .map(([key, value]) => [
-              {
-                label: key,
-                value,
-                color: getRingColor(value),
-              },
-            ]),
-        ];
+      potentialPartValues
+        .map((obj) => obj?.explanations)
+        .map((obj) =>
+          (obj || []).reduce((a: { [key: string]: any }, c) => {
+            a[c!.feature] = c?.explanation;
+            return a;
+          }, {})
+        ),
+    [potentialPartValues.length]
+  );
 
-        return parts;
-      }),
+  const rings = useMemo(
+    () =>
+      partValues.map((obj) =>
+        Object.entries((obj as ProgressType).scores)
+          .filter(([key]) => key !== "overall")
+          .map(([key, value]) => [
+            {
+              label: key,
+              value,
+              color: getRingColor(value),
+            },
+          ])
+      ),
     [partValues.length]
   );
 
-  const len = featureRingObjects.length;
+  const overalls = useMemo(
+    () =>
+      partValues.map((obj, i) =>
+        Object.entries((obj as ProgressType).scores)
+          .filter(([key]) => key === "overall")
+          .map(([key, value]) => [
+            {
+              label: partKeys[i],
+              value,
+              color: getRingColor(value),
+            },
+          ])
+      ),
+    [partValues.length]
+  );
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
-      <Stack className={classes.container}>
+      <Stack className={`${classes.container} scrollbar`} ref={ref}>
         <Text className={classes.title} c="dimmed">
           {title}
         </Text>
-        <Stack className={classes.wrapper} ref={ref}>
-          {len === 1 && (
-            <OneRingGrid
-              ringObjects={featureRingObjects}
-              containerHeight={containerHeight}
-              containerWidth={containerWidth}
-              isMobile={isMobile}
+        <Stack className={classes.content}>
+          {rings.map((ringBlock, i) => (
+            <RowBlock
+              key={i}
+              ringsGroup={ringBlock}
+              explanations={explanations[i]}
+              titleObject={overalls[i][0]}
             />
-          )}
-          {len === 2 && (
-            <ThreeRingsGrid
-              ringObjects={featureRingObjects}
-              containerHeight={containerHeight}
-              containerWidth={containerWidth}
-              overallContent={overallContent}
-              isMobile={isMobile}
-            />
-          )}
-          {len === 4 && (
-            <FiveRingsGrid
-              ringObjects={featureRingObjects}
-              containerHeight={containerHeight}
-              containerWidth={containerWidth}
-              overallContent={overallContent}
-              isMobile={isMobile}
-            />
-          )}
-          {len === 5 && (
-            <SixRingsGrid
-              ringObjects={featureRingObjects}
-              containerHeight={containerHeight}
-              containerWidth={containerWidth}
-              overallContent={overallContent}
-              isMobile={isMobile}
-            />
-          )}
-          {len === 6 && (
-            <SevenRingsGrid
-              ringObjects={featureRingObjects}
-              containerHeight={containerHeight}
-              containerWidth={containerWidth}
-              overallContent={overallContent}
-              isMobile={isMobile}
-            />
-          )}
+          ))}
         </Stack>
       </Stack>
     </Skeleton>

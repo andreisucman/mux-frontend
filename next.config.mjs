@@ -5,7 +5,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 export default withBundleAnalyzer({
-  reactStrictMode: false,
+  reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -13,7 +13,6 @@ export default withBundleAnalyzer({
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
   images: {
-    // dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         hostname: "mux.nyc3.cdn.digitaloceanspaces.com",

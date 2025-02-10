@@ -29,7 +29,6 @@ export default function ClubProof(props: Props) {
   const [hasMore, setHasMore] = useState(false);
 
   const searchParams = useSearchParams();
-  const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -39,22 +38,12 @@ export default function ClubProof(props: Props) {
   const isSelf = name === userName;
 
   const handleFetchProof = useCallback(
-    async ({
-      type,
-      part,
-      userName,
-      sort,
-      concern,
-      currentArray,
-      query,
-      skip,
-    }: HandleFetchProofProps) => {
+    async ({ part, userName, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
       const data = await fetchUsersProof({
         concern,
         part,
         query,
         sort,
-        type,
         currentArrayLength: (currentArray && currentArray.length) || 0,
         userName,
         skip,
@@ -73,8 +62,8 @@ export default function ClubProof(props: Props) {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProof({ userName, type, sort, part, concern, query });
-  }, [status, userName, type, part, sort, concern, query]);
+    handleFetchProof({ userName, sort, part, concern, query });
+  }, [status, userName, part, sort, concern, query]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="proof">

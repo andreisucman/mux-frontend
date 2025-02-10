@@ -51,13 +51,8 @@ function ClubProfilePreview({
 
     let url = `/club/progress/${name}`;
 
-    if (!!headTotalProgress) {
-      url += `&type=head`;
-    } else if (!!bodyTotalProgress) {
-      url += `&type=body`;
-    }
     router.push(url);
-  }, [headTotalProgress, bodyTotalProgress, name]);
+  }, [name]);
 
   const redirectToTrackingAbout = useCallback(() => {
     if (!data) return;

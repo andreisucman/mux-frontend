@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconFilterOff } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { PositionsFilterItemType } from "@/app/results/proof/ProofHeader/types";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import { partItems, positionItems } from "@/components/PageHeader/data";
 import getUsersFilters from "@/functions/getUsersFilters";
-import { partIcons, typeIcons } from "@/helpers/icons";
+import { partIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./ClubProgressFilterCardContent.module.css";
 
@@ -21,7 +20,6 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
 
@@ -71,33 +69,15 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
   }, [userName]);
 
   useEffect(() => {
-    if (availableTypes.length === 0) return;
-    onSelectType(type);
-  }, [type, availableTypes.length]);
-
-  useEffect(() => {
     if (relevantParts.length === 0) return;
     onSelectPart(part);
   }, [part, relevantParts.length]);
 
-  const typesDisabled = availableTypes.length === 0;
   const partsDisabled = relevantParts.length === 0;
   const positionsDisabled = relevantPositions.length === 0;
 
   return (
     <Stack className={classes.container}>
-      <FilterDropdown
-        data={availableTypes}
-        icons={typesDisabled ? undefined : typeIcons}
-        filterType="type"
-        selectedValue={type}
-        placeholder="Filter by type"
-        isDisabled={typesDisabled}
-        onSelect={onSelectType}
-        customStyles={{ maxWidth: "unset" }}
-        allowDeselect
-        addToQuery
-      />
       <FilterDropdown
         data={relevantParts}
         icons={partsDisabled ? undefined : partIcons}

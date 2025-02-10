@@ -7,7 +7,6 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import { delayExecution } from "@/helpers/utils";
 import Disclaimer from "./Disclaimer";
 import classes from "./WaitComponent.module.css";
 
@@ -33,7 +32,7 @@ function WaitComponent({
   onError,
 }: Props) {
   const router = useRouter();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<number>();
 
   const { _id: userId } = userDetails || {};
@@ -65,16 +64,14 @@ function WaitComponent({
           const { jobProgress, ...otherData } = response.message;
 
           if (jobProgress < 100) {
-            if (intervalId) setProgress(jobProgress);
+            setProgress(jobProgress);
           } else if (jobProgress >= 100) {
             setProgress(100);
 
             deleteFromLocalStorage("runningAnalyses", operationKey);
             clearInterval(intervalId);
 
-            await delayExecution(1000);
-
-            if (onComplete) onComplete(otherData);
+            onComplete(otherData);
           }
         }
       } catch (err) {

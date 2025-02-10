@@ -8,11 +8,9 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import getPartialScanUploadText from "@/helpers/getPartialScanUploadText";
 import openErrorModal from "@/helpers/openErrorModal";
-import { TypeEnum } from "@/types/global";
 import classes from "./StartPartialScanOverlay.module.css";
 
 type Props = {
-  type: TypeEnum;
   userId: string | null;
   distinctUploadedParts: string[];
   outerStyles?: { [key: string]: unknown };
@@ -21,7 +19,6 @@ type Props = {
 
 export default function StartPartialScanOverlay({
   userId,
-  type,
   distinctUploadedParts,
   outerStyles,
   innerStyles,
@@ -34,8 +31,6 @@ export default function StartPartialScanOverlay({
 
   const { toAnalyze } = userDetails || {};
 
-  const uploadedParts = toAnalyze?.[type as TypeEnum.HEAD | TypeEnum.BODY];
-
   const handleStartAnalysis = useCallback(async () => {
     try {
       if (!userId) throw new Error("Missing user id");
@@ -44,7 +39,7 @@ export default function StartPartialScanOverlay({
       const response = await callTheServer({
         endpoint: "startProgressAnalysis",
         method: "POST",
-        body: { userId, type, blurType },
+        body: { userId, blurType },
       });
 
       if (response.status === 200) {
@@ -54,29 +49,29 @@ export default function StartPartialScanOverlay({
           return;
         }
         const redirectUrl = encodeURIComponent(`/analysis?${searchParams.toString()}`);
-        router.push(`/wait?operationKey=${type}&redirectUrl=${redirectUrl}`);
+        router.push(`/wait?redirectUrl=${redirectUrl}`);
       }
     } catch (err) {
       setIsButtonLoading(false);
     }
-  }, [userId, type, blurType]);
+  }, [userId, blurType]);
 
   const toDisplay = useMemo(() => {
-    const contentUrlTypes = uploadedParts?.flatMap((part) => part.contentUrlTypes);
+    const contentUrlTypes = toAnalyze?.flatMap((part) => part.contentUrlTypes);
     let toDisplay = contentUrlTypes?.filter((obj) => obj.name !== "original") || [];
 
     if (toDisplay.length === 0) {
-      toDisplay = uploadedParts?.map((p) => p.mainUrl) || [];
+      toDisplay = toAnalyze?.map((p) => p.mainUrl) || [];
     }
     return toDisplay;
-  }, [uploadedParts?.length]);
+  }, [toAnalyze?.length]);
 
   const analysisString = getPartialScanUploadText(distinctUploadedParts);
 
   return (
     <Stack className={classes.container} style={outerStyles ? outerStyles : {}}>
       <Stack className={classes.wrapper} style={innerStyles ? innerStyles : {}} c="dimmed">
-        {uploadedParts && uploadedParts.length > 0 && (
+        {toAnalyze && toAnalyze.length > 0 && (
           <ImageCardStack images={toDisplay.map((part) => part.url || "")} />
         )}
         <Text mb={rem(12)}>{analysisString}</Text>

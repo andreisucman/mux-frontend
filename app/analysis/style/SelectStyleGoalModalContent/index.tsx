@@ -5,7 +5,7 @@ import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
-import { StyleAnalysisType, StyleGoalsType, TypeEnum } from "@/types/global";
+import { StyleAnalysisType, StyleGoalsType } from "@/types/global";
 import { outlookStyles } from "./outlookStyles";
 import StyleGoalModalRow from "./StyleGoalModalRow";
 import classes from "./SelectStyleContent.module.css";
@@ -13,11 +13,10 @@ import classes from "./SelectStyleContent.module.css";
 type Props = {
   userId: string;
   relevantStyleAnalysis: StyleAnalysisType;
-  type: TypeEnum;
   styleName?: string;
 };
 
-function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styleName }: Props) {
+function SelectStyleGoalModalContent({ userId, relevantStyleAnalysis, styleName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -35,7 +34,6 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
         endpoint: "startSuggestChangeAnalysis",
         method: "POST",
         body: {
-          type,
           userId,
           analysisId: styleId,
           goalStyle: selectedGoal,
@@ -43,12 +41,12 @@ function SelectStyleGoalModalContent({ type, userId, relevantStyleAnalysis, styl
       });
 
       if (response.status === 200) {
-        const redirectUrl = encodeURIComponent(`/analysis/style?type=${type}`);
+        const redirectUrl = encodeURIComponent(`/analysis/style`);
         const onErrorRedirectUrl = encodeURIComponent(`${pathname}?${searchParams.toString()}`);
         router.push(
-          `/wait?type=${type}&operationKey=${`style-${type}`}&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}`
+          `/wait?&operationKey=style&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}`
         );
-        saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
+        saveToLocalStorage("runningAnalyses", { style: true }, "add");
       }
     } catch (err) {}
   };

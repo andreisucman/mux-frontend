@@ -6,12 +6,12 @@ import { modals } from "@mantine/modals";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import SortButton from "@/components/SortButton";
 import { progressSortItems } from "@/data/sortItems";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
-import { clubPageTypeItems } from "@/components/PageHeader/data";
 import ClubProgressFilterCardContent from "./ClubProgressFilterCardContent";
 import classes from "./ProgressHeader.module.css";
 
@@ -28,9 +28,7 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
-    const requiredParams = allParams.filter((param) =>
-      ["type", "part", "position"].includes(param)
-    );
+    const requiredParams = allParams.filter((param) => ["part", "position"].includes(param));
     return requiredParams.length;
   }, [searchParams.toString()]);
 

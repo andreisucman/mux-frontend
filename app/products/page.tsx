@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconTrash } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
@@ -11,7 +10,7 @@ import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { addToAmazonCart } from "@/helpers/addToAmazonCart";
-import { TaskType, TypeEnum } from "@/types/global";
+import { TaskType } from "@/types/global";
 import ProductsRow from "./ProductsRow";
 import classes from "./products.module.css";
 
@@ -20,17 +19,13 @@ export const runtime = "edge";
 export default function Products() {
   const { status } = useContext(UserContext);
   const { ref } = useElementSize();
-  const searchParams = useSearchParams();
 
   const [uniqueTasks, setUniqueTasks] = useState<TaskType[]>();
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
-  const type = searchParams.get("type");
-
-  const fetchProducts = useCallback(async (type: TypeEnum) => {
+  const fetchProducts = useCallback(async () => {
     try {
       let endpoint = "getTasksProducts";
-      if (type) endpoint += `?type=${type}`;
 
       const response = await callTheServer({
         endpoint,
@@ -48,8 +43,8 @@ export default function Products() {
   }, []);
 
   useEffect(() => {
-    fetchProducts(type as TypeEnum);
-  }, [type, status]);
+    fetchProducts();
+  }, [status]);
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
@@ -72,10 +67,7 @@ export default function Products() {
                 })}
               </Stack>
             ) : (
-              <OverlayWithText
-                icon={<IconCircleOff className="icon" />}
-                text={`No suggested products for your ${type ? type : ""} routine.`}
-              />
+              <OverlayWithText icon={<IconCircleOff className="icon" />} text={`Nothing found`} />
             )}
           </>
         ) : (

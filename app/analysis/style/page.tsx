@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Button, Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -13,7 +12,7 @@ import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
-import { TypeEnum, UserDataType } from "@/types/global";
+import { UserDataType } from "@/types/global";
 import AnalysisHeader from "../AnalysisHeader";
 import SelectStyleGoalModalContent from "./SelectStyleGoalModalContent";
 import { outlookStyles } from "./SelectStyleGoalModalContent/outlookStyles";
@@ -24,7 +23,6 @@ export const runtime = "edge";
 
 export default function StyleScanResult() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [displayComponent, setDisplayComponent] = useState<"loading" | "analysis" | "empty">(
@@ -32,12 +30,10 @@ export default function StyleScanResult() {
   );
 
   const { _id: userId, latestStyleAnalysis } = userDetails || {};
-  const type = searchParams.get("type") || "head";
-  const relevantAnalysis = latestStyleAnalysis?.[type as "head"];
-  const { styleName, isPublic, _id: styleId, mainUrl } = relevantAnalysis || {};
+  const { styleName, isPublic, _id: styleId, mainUrl } = latestStyleAnalysis || {};
 
   const openMatchStyle = useCallback(() => {
-    if (!relevantAnalysis || !userId) return;
+    if (!latestStyleAnalysis || !userId) return;
 
     modals.openContextModal({
       modal: "general",
@@ -49,14 +45,13 @@ export default function StyleScanResult() {
       ),
       innerProps: (
         <SelectStyleGoalModalContent
-          type={type as TypeEnum}
-          relevantStyleAnalysis={relevantAnalysis}
+          relevantStyleAnalysis={latestStyleAnalysis}
           userId={userId}
           styleName={styleName}
         />
       ),
     });
-  }, [styleName, type, relevantAnalysis, userId]);
+  }, [styleName, latestStyleAnalysis, userId]);
 
   const handlePublishToClub = useCallback(async () => {
     if (isLoading) return;
@@ -66,7 +61,6 @@ export default function StyleScanResult() {
         title: "Sign in to continue",
         stateObject: {
           redirectPath: "/analysis/style",
-          redirectQuery: `type=${type}`,
           localUserId: userId,
           referrer: ReferrerEnum.ANALYSIS_STYLE,
         },
@@ -107,7 +101,7 @@ export default function StyleScanResult() {
     } finally {
       setIsLoading(false);
     }
-  }, [styleId, isLoading, status, latestStyleAnalysis, userId, type]);
+  }, [styleId, isLoading, status, latestStyleAnalysis, userId]);
 
   const handleChangeType = useCallback((newType?: string | null) => {
     if (!newType) return;
@@ -123,41 +117,41 @@ export default function StyleScanResult() {
     [styleName]
   );
 
-  const title = `Your ${type === "head" ? "head" : "outfit"} looks ${relevantOutlook?.icon} ${styleName}`;
+  const title = `You look ${relevantOutlook?.icon} ${styleName}`;
 
   const overlayButton = (
-    <Button mt={8} variant="default" onClick={() => router.push(`/scan/style?type=${type}`)}>
-      {type ? `Scan your ${type === "head" ? "head" : "outfit"}` : "Scan"}
+    <Button mt={8} variant="default" onClick={() => router.push("/scan/style")}>
+      Scan style
     </Button>
   );
 
   useEffect(() => {
-    if (relevantAnalysis) {
+    if (latestStyleAnalysis) {
       setDisplayComponent("analysis");
-    } else if (relevantAnalysis === null) {
+    } else if (latestStyleAnalysis === null) {
       setDisplayComponent("empty");
     }
-  }, [relevantAnalysis]);
+  }, [latestStyleAnalysis]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} type={type} showReturn />
+      <AnalysisHeader title="Analysis" onTypeChange={handleChangeType} showReturn />
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={displayComponent === "loading"}>
         {displayComponent === "analysis" && (
           <>
             <Stack
               className={classes.imageWrapper}
-              style={relevantAnalysis ? {} : { visibility: "hidden" }}
+              style={latestStyleAnalysis ? {} : { visibility: "hidden" }}
             >
               <Image height={75} alt="" src={mainUrl?.url || null} className={classes.image} />
             </Stack>
-            <StyleSuggestionCard title={title} styleData={relevantAnalysis} />
+            <StyleSuggestionCard title={title} styleData={latestStyleAnalysis} />
             <Group className={classes.buttonGroup}>
               <Button
                 variant={"default"}
                 size="compact-sm"
                 onClick={openMatchStyle}
-                disabled={!relevantAnalysis}
+                disabled={!latestStyleAnalysis}
                 className={classes.button}
               >
                 Match style

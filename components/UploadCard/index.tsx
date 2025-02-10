@@ -11,7 +11,7 @@ import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { placeholders } from "@/data/placeholders";
 import { silhouettes } from "@/data/silhouettes";
 import { OnBlurClickProps } from "@/functions/blur";
@@ -23,7 +23,6 @@ import classes from "./UploadCard.module.css";
 
 type Props = {
   sex: SexEnum;
-  type: TypeEnum;
   part: PartEnum;
   scanType?: ScanTypeEnum;
   progress: number;
@@ -32,7 +31,6 @@ type Props = {
   isLoading?: boolean;
   instruction: string;
   customButtonStyles?: { [key: string]: any };
-  customContentStyles?: { [key: string]: any };
   onBlurClick: (args: OnBlurClickProps) => Promise<void>;
   handleUpload: (args: UploadProgressProps) => Promise<void>;
 };
@@ -40,7 +38,6 @@ type Props = {
 export default function UploadCard({
   sex,
   scanType,
-  type,
   part,
   progress,
   position,
@@ -48,7 +45,6 @@ export default function UploadCard({
   instruction,
   latestStyleImage,
   customButtonStyles,
-  customContentStyles,
   onBlurClick,
   handleUpload,
 }: Props) {
@@ -63,21 +59,21 @@ export default function UploadCard({
   const [localUrl, setLocalUrl] = useState("");
 
   const disableUpload =
-    (blurType === "eyes" && !eyesBlurredUrl && type === "head") ||
-    (blurType === "face" && !faceBlurredUrl && type === "body") ||
+    (blurType === "eyes" && !eyesBlurredUrl) ||
+    (blurType === "face" && !faceBlurredUrl) ||
     !localUrl;
 
   const blurredImage =
     blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
 
   const relevantPlaceholder = useMemo(
-    () => getPlaceholderOrOverlay({ sex, part, type, position, scanType, data: placeholders }),
-    [sex, part, type, position, scanType, placeholders]
+    () => getPlaceholderOrOverlay({ sex, part, position, scanType, data: placeholders }),
+    [sex, part, position, scanType, placeholders]
   );
 
   const relevantSilhouette = useMemo(
-    () => getPlaceholderOrOverlay({ sex, part, type, position, scanType, data: silhouettes }),
-    [sex, part, type, position, scanType]
+    () => getPlaceholderOrOverlay({ sex, part, position, scanType, data: silhouettes }),
+    [sex, part, position, scanType]
   );
 
   const loadLocally = useCallback(
@@ -116,9 +112,9 @@ export default function UploadCard({
   }, []);
 
   const handleClickUpload = useCallback(async () => {
-    await handleUpload({ blurType, part, position, type, url: originalUrl, blurredImage });
+    await handleUpload({ blurType, part, position, url: originalUrl, blurredImage });
     handleDeleteImage();
-  }, [blurType, part, position, type, originalUrl, blurredImage]);
+  }, [blurType, part, position, originalUrl, blurredImage]);
 
   const openPhotoCapturer = useCallback(() => {
     modals.openContextModal({
@@ -145,81 +141,71 @@ export default function UploadCard({
         description="All of your uploads are private unless you publish them in the Club."
         customStyles={{ flex: 0 }}
       />
-      <Stack
-        className={classes.centralContent}
-        style={customContentStyles ? customContentStyles : {}}
-      >
-        {isLoading ? (
-          <Stack m="auto" w="100%" maw={200}>
+
+      <Stack className={classes.imageCell}>
+        <ImageDisplayContainer
+          handleDelete={handleDeleteImage}
+          image={localUrl || latestStyleImage}
+          isLoadingOverlay={isBlurLoading}
+          placeholder={relevantPlaceholder && relevantPlaceholder.url}
+        />
+        <BlurButtons
+          disabled={isBlurLoading || !!isLoading}
+          originalUrl={originalUrl}
+          onBlurClick={async ({ originalUrl, blurType }) => {
+            setIsBlurLoading(true);
+            await onBlurClick({
+              originalUrl,
+              blurType,
+              faceBlurredUrl,
+              eyesBlurredUrl,
+              setEyesBlurredUrl,
+              setFaceBlurredUrl,
+              setLocalUrl,
+            });
+            setIsBlurLoading(false);
+          }}
+          customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 2 }}
+        />
+        {isLoading && (
+          <Stack className={classes.progressCell}>
             <Progress value={progress} w="100%" size={12} mt={4} />
             <Text size="sm" ta="center" c="dimmed">
               Uploading...
             </Text>
           </Stack>
-        ) : (
-          <Stack className={classes.imageCell}>
-            <ImageDisplayContainer
-              handleDelete={handleDeleteImage}
-              image={localUrl || latestStyleImage}
-              isLoadingOverlay={isBlurLoading}
-              placeholder={relevantPlaceholder && relevantPlaceholder.url}
-            />
-            <BlurButtons
-              disabled={isBlurLoading || !!isLoading}
-              originalUrl={originalUrl}
-              onBlurClick={async ({ originalUrl, blurType }) => {
-                setIsBlurLoading(true);
-                await onBlurClick({
-                  originalUrl,
-                  blurType,
-                  faceBlurredUrl,
-                  eyesBlurredUrl,
-                  setEyesBlurredUrl,
-                  setFaceBlurredUrl,
-                  setLocalUrl,
-                });
-                setIsBlurLoading(false);
-              }}
-              customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 2 }}
-            />
-
-            {!isLoading && (
-              <Stack className={classes.checkboxAndButtons}>
-                <Group
-                  className={classes.buttonGroup}
-                  style={customButtonStyles ? customButtonStyles : {}}
+        )}
+        {!isLoading && (
+          <Stack className={classes.checkboxAndButtons}>
+            <Group
+              className={classes.buttonGroup}
+              style={customButtonStyles ? customButtonStyles : {}}
+            >
+              {!localUrl && (
+                <Button className={classes.button} onClick={openPhotoCapturer} disabled={isLoading}>
+                  Take the photo
+                </Button>
+              )}
+              {localUrl && (
+                <Button
+                  className={classes.button}
+                  disabled={disableUpload || isLoading}
+                  onClick={handleClickUpload}
                 >
-                  {!localUrl && scanType !== "health" && (
-                    <Button
-                      className={classes.button}
-                      onClick={openPhotoCapturer}
-                      disabled={isLoading}
-                    >
-                      Take the photo
-                    </Button>
-                  )}
-                  {localUrl && (
-                    <Button
-                      className={classes.button}
-                      disabled={disableUpload || isLoading}
-                      onClick={handleClickUpload}
-                    >
-                      Upload
-                    </Button>
-                  )}
-                  {scanType && !localUrl && latestStyleImage && (
-                    <ActionIcon
-                      maw={rem(50)}
-                      disabled={isLoading}
-                      variant="default"
-                      onClick={() => router.replace(`/scan/style/result?type=${type}`)}
-                    >
-                      <IconArrowRight className={"icon"} />
-                    </ActionIcon>
-                  )}
-                </Group>
-              </Stack>
-            )}
+                  Upload
+                </Button>
+              )}
+              {scanType && !localUrl && latestStyleImage && (
+                <ActionIcon
+                  maw={rem(50)}
+                  disabled={isLoading}
+                  variant="default"
+                  onClick={() => router.replace("/scan/style/result")}
+                >
+                  <IconArrowRight className={"icon"} />
+                </ActionIcon>
+              )}
+            </Group>
           </Stack>
         )}
       </Stack>

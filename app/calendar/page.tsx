@@ -160,7 +160,7 @@ export default function Calendar() {
   );
 
   const loadTasks = useCallback(
-    async ({ dateFrom, dateTo, status, type, key, mode, timeZone, routineId }: LoadTasksProps) => {
+    async ({ dateFrom, dateTo, status, key, mode, timeZone, routineId }: LoadTasksProps) => {
       setDisplayComponent("loading");
 
       try {
@@ -170,7 +170,6 @@ export default function Calendar() {
         const finalStatus = status || selectedStatus;
 
         if (key) parts.push(`key=${key}`);
-        if (type) parts.push(`type=${type}`);
         if (mode) parts.push(`mode=${mode}`);
         if (finalStatus) parts.push(`status=${finalStatus}`);
         if (routineId) parts.push(`routineId=${routineId}`);
@@ -430,20 +429,21 @@ export default function Calendar() {
           {displayComponent === "list" && (
             <>
               <Stack className={classes.list}>
-                {selectedTasks && selectedTasks.map((record, index) => {
-                  return (
-                    <CalendarRow
-                      key={index}
-                      mode={mode as string}
-                      task={record}
-                      tasksToUpdate={tasksToUpdate}
-                      redirectToTask={redirectToTask}
-                      selectTask={selectTask}
-                      changeMode={changeMode}
-                      resetMode={resetMode}
-                    />
-                  );
-                })}
+                {selectedTasks &&
+                  selectedTasks.map((record, index) => {
+                    return (
+                      <CalendarRow
+                        key={index}
+                        mode={mode as string}
+                        task={record}
+                        tasksToUpdate={tasksToUpdate}
+                        redirectToTask={redirectToTask}
+                        selectTask={selectTask}
+                        changeMode={changeMode}
+                        resetMode={resetMode}
+                      />
+                    );
+                  })}
               </Stack>
               {tasksToUpdate.length > 0 && (
                 <BulkUpdateButtons

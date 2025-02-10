@@ -91,7 +91,6 @@ export default function ClubRoutines(props: Props) {
           sort,
           followingUserName,
           routinesLength: routinesLength || 0,
-          type,
           status,
         });
 
@@ -172,7 +171,6 @@ export default function ClubRoutines(props: Props) {
           return (
             <AccordionRoutineRow
               key={routine._id}
-              type={type as TypeEnum}
               routine={routine}
               isSelf={isSelf}
               handleStealRoutine={() =>

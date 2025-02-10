@@ -7,20 +7,13 @@ import DragAndDrop from "./DragAndDrop";
 import classes from "./ConcernsSortCard.module.css";
 
 type Props = {
-  type: string;
   disabled?: boolean;
   maxHeight: number;
   concerns: UserConcernType[];
   customStyles?: { [key: string]: any };
 };
 
-export default function ConcernsSortCard({
-  type,
-  concerns,
-  disabled,
-  maxHeight,
-  customStyles,
-}: Props) {
+export default function ConcernsSortCard({ concerns, disabled, maxHeight, customStyles }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const saveNewConcerns = useCallback(
@@ -53,9 +46,9 @@ export default function ConcernsSortCard({
           },
         });
 
-        const updatedConcerns = userDetails.concerns
-          .filter((obj) => obj.type === type)
-          .map((c) => (c.name === updatedItem.name ? updatedItem : c));
+        const updatedConcerns = userDetails.concerns.map((c) =>
+          c.name === updatedItem.name ? updatedItem : c
+        );
 
         setUserDetails((prev: UserDataType) => ({
           ...prev,

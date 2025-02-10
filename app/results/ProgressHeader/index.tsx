@@ -3,14 +3,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
-import { partItems, positionItems } from "@/components/PageHeader/data";
+import { FilterItemType } from "@/components/FilterDropdown/types";
+import { positionItems } from "@/components/PageHeader/data";
 import SortButton from "@/components/SortButton";
+import { progressSortItems } from "@/data/sortItems";
 import getUsersFilters from "@/functions/getUsersFilters";
-import { partIcons, typeIcons } from "@/helpers/icons";
+import { partIcons } from "@/helpers/icons";
 import { PositionsFilterItemType } from "../proof/ProofHeader/types";
 import TitleDropdown from "../TitleDropdown";
-import { progressSortItems } from "@/data/sortItems";
 import classes from "./ProgressHeader.module.css";
 
 type Props = {
@@ -25,24 +25,11 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const position = searchParams.get("position");
 
-  const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
-  const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
   const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>([]);
-
-  const onSelectType = useCallback(
-    (type?: string | null) => {
-      let relevantParts: FilterPartItemType[] = [];
-      if (type) {
-        relevantParts = partItems.filter((part) => part.type === type);
-      }
-      setRelevantParts(relevantParts);
-    },
-    [partItems]
-  );
 
   const onSelectPart = useCallback(
     (part?: string | null) => {
@@ -56,24 +43,18 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
   );
 
   useEffect(() => {
-    getUsersFilters({ collection: "progress", fields: ["type"] }).then((result) => {
-      const { availableTypes } = result;
-      setAvailableTypes(availableTypes);
+    getUsersFilters({ collection: "progress", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
     });
   }, []);
 
   useEffect(() => {
-    if (availableTypes.length === 0) return;
-    onSelectType(type);
-  }, [type, availableTypes.length]);
-
-  useEffect(() => {
-    if (relevantParts.length === 0) return;
+    if (availableParts.length === 0) return;
     onSelectPart(part);
-  }, [part, relevantParts.length]);
+  }, [part, availableParts.length]);
 
-  const typesDisabled = isDisabled || availableTypes.length === 0;
-  const partsDisabled = isDisabled || relevantParts.length === 0;
+  const partsDisabled = isDisabled || availableParts.length === 0;
   const positionsDisabled = isDisabled || relevantPositions.length === 0;
 
   return (
@@ -84,22 +65,11 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
         </ActionIcon>
       )}
       <TitleDropdown titles={titles} />
-      <SortButton sortItems={progressSortItems} isDisabled={typesDisabled} />
+      <SortButton sortItems={progressSortItems} isDisabled={partsDisabled} />
       {!hideDropdowns && (
         <>
           <FilterDropdown
-            data={availableTypes}
-            icons={typesDisabled ? undefined : typeIcons}
-            filterType="type"
-            selectedValue={type}
-            placeholder="Filter by type"
-            isDisabled={typesDisabled}
-            onSelect={onSelectType}
-            allowDeselect
-            addToQuery
-          />
-          <FilterDropdown
-            data={relevantParts}
+            data={availableParts}
             icons={partsDisabled ? undefined : partIcons}
             filterType="part"
             placeholder="Filter by part"

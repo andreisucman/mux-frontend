@@ -26,7 +26,6 @@ export default function BeforeAftersPage() {
   const [beforeAfters, setBeforeAfters] = useState<SimpleBeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
   const ageInterval = searchParams.get("ageInterval");
@@ -45,10 +44,6 @@ export default function BeforeAftersPage() {
 
         if (skip && existingCount && existingCount > 0) {
           queryParams.push(`skip=${existingCount}`);
-        }
-
-        if (type) {
-          queryParams.push(`type=${type}`);
         }
 
         if (bodyType) {
@@ -108,7 +103,7 @@ export default function BeforeAftersPage() {
 
   useEffect(() => {
     fetchBeforeAfters();
-  }, [type, part, sex, ageInterval, ethnicity, bodyType, concern]);
+  }, [part, sex, ageInterval, ethnicity, bodyType, concern]);
 
   return (
     <Stack className={`${classes.container} mediumPage`} ref={ref}>

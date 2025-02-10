@@ -4,7 +4,6 @@ import { IconChevronLeft, IconHanger, IconProgress, IconSoup } from "@tabler/ico
 import { ActionIcon, Group, Title } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons } from "@/helpers/icons";
 import classes from "./AnalysisHeader.module.css";
 
 const categoryIcons = {
@@ -12,11 +11,6 @@ const categoryIcons = {
   "/analysis/style": <IconHanger className="icon" />,
   "/analysis/food": <IconSoup className="icon" />,
 };
-
-const types = [
-  { label: "Head", value: "head" },
-  { label: "Body", value: "body" },
-];
 
 const categories = [
   { label: "Progress", value: "/analysis" },
@@ -31,7 +25,7 @@ type Props = {
   onTypeChange?: (newType?: null | string) => void;
 };
 
-export default function AnalysisHeader({ title, type, showReturn, onTypeChange }: Props) {
+export default function AnalysisHeader({ title, showReturn }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -52,15 +46,6 @@ export default function AnalysisHeader({ title, type, showReturn, onTypeChange }
         filterType="category"
         placeholder="Select category"
         onSelect={(url?: string | null) => router.replace(url || "/")}
-      />
-      <FilterDropdown
-        data={types}
-        icons={typeIcons}
-        selectedValue={type}
-        filterType="type"
-        placeholder="Select type"
-        onSelect={onTypeChange}
-        addToQuery
       />
     </Group>
   );

@@ -5,11 +5,11 @@ import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import SortButton from "@/components/SortButton";
+import { styleSortItems } from "@/data/sortItems";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { useRouter } from "@/helpers/custom-router";
-import { styleIcons, typeIcons } from "@/helpers/icons";
+import { styleIcons } from "@/helpers/icons";
 import TitleDropdown from "../../TitleDropdown";
-import { styleSortItems } from "@/data/sortItems";
 import classes from "./StyleHeader.module.css";
 
 type Props = {
@@ -26,7 +26,6 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
   const [availableStyles, setAvailableStyles] = useState<FilterItemType[]>([]);
 
   const styleName = searchParams.get("styleName");
-  const type = searchParams.get("type");
 
   const typesDisabled = isDisabled || availableTypes.length === 0;
   const stylesDisabled = isDisabled || availableStyles.length === 0;
@@ -45,12 +44,11 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
     getUsersFilters({
       collection: "style",
       fields: ["styleName"],
-      type,
     }).then((result) => {
       const { availableStyleNames } = result;
       setAvailableStyles(availableStyleNames);
     });
-  }, [type]);
+  }, []);
 
   return (
     <Group className={classes.container}>
@@ -60,19 +58,7 @@ export default function StyleHeader({ showReturn, isDisabled, titles, onSelect }
         </ActionIcon>
       )}
       <TitleDropdown titles={titles} />
-
       <SortButton isDisabled={typesDisabled} sortItems={styleSortItems} />
-      <FilterDropdown
-        filterType="type"
-        data={availableTypes}
-        icons={typesDisabled ? undefined : typeIcons}
-        selectedValue={type}
-        onSelect={onSelect}
-        placeholder="Filter by type"
-        isDisabled={typesDisabled}
-        allowDeselect
-        addToQuery
-      />
       <FilterDropdown
         data={availableStyles}
         filterType="styleName"

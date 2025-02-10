@@ -4,7 +4,6 @@ import { FetchProofProps } from "./fetchProof";
 
 export default async function fetchUsersProof({
   userName,
-  type,
   part,
   query,
   concern,
@@ -19,10 +18,6 @@ export default async function fetchUsersProof({
 
     if (query) {
       queryParams.push(`query=${encodeURIComponent(query)}`);
-    }
-
-    if (type) {
-      queryParams.push(`type=${encodeURIComponent(type)}`);
     }
 
     if (sort) {

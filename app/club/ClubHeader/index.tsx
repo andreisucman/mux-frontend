@@ -4,12 +4,11 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import FilterDropdown from "@/components/FilterDropdown";
-import { clubPageTypeItems, typeItems } from "@/components/PageHeader/data";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import SortButton from "@/components/SortButton";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
-import { pageTypeIcons, typeIcons } from "@/helpers/icons";
-import { TypeEnum } from "@/types/global";
+import { pageTypeIcons } from "@/helpers/icons";
 import classes from "./ClubHeader.module.css";
 
 type Props = {
@@ -26,20 +25,15 @@ type Props = {
 export default function ClubHeader({
   title,
   showReturn,
-  hideTypeDropdown,
   isDisabled,
   children,
   pageType,
   sortItems,
-  onSelect,
 }: Props) {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const router = useRouter();
   const params = useParams();
   const userName = Array.isArray(params?.userName) ? params?.userName?.[0] : params.userName;
-  const searchParams = useSearchParams();
-
-  const type = searchParams.get("type") || TypeEnum.HEAD;
 
   const handleRedirect = useCallback(
     (pageName?: string | null) => {
@@ -74,18 +68,6 @@ export default function ClubHeader({
           placeholder="Select page"
           filterType="page"
           isDisabled={isDisabled}
-        />
-      )}
-      {!hideTypeDropdown && (
-        <FilterDropdown
-          icons={typeIcons}
-          data={typeItems}
-          filterType="type"
-          selectedValue={type}
-          onSelect={onSelect}
-          placeholder="Select type"
-          isDisabled={isDisabled}
-          addToQuery
         />
       )}
       {!isMobile && (

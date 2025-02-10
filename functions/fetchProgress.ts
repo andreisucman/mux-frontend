@@ -25,10 +25,6 @@ export default async function fetchProgress({
 
     const queryParams = [];
 
-    if (type) {
-      queryParams.push(`type=${type}`);
-    }
-
     if (sort) {
       queryParams.push(`sort=${sort}`);
     }
@@ -60,6 +56,6 @@ export default async function fetchProgress({
 
     return response.message;
   } catch (err) {
-     openErrorModal();
+    openErrorModal();
   }
 }

@@ -63,7 +63,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
           Which routine to create?
         </Title>
       ),
-      innerProps: <SelectPartForRoutineModalContent type={type as TypeEnum} parts={parts} />,
+      innerProps: <SelectPartForRoutineModalContent parts={parts} />,
     });
   };
 
@@ -74,15 +74,11 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     if (isLoading) return;
 
     if (isSubscriptionActive) {
-      const typeNextScan = nextScan?.find((obj) => obj.type === type);
-      const partsScanned = typeNextScan?.parts.filter((obj) => Boolean(obj.date));
+      const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
 
       if (partsScanned && partsScanned.length > 0) {
-        const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
         const scannedPartKeys = partsScanned.map((obj) => obj.part);
-        const relevantRoutines = typeNextRoutine?.parts.filter((obj) =>
-          scannedPartKeys.includes(obj.part)
-        );
+        const relevantRoutines = nextRoutine?.filter((obj) => scannedPartKeys.includes(obj.part));
 
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }

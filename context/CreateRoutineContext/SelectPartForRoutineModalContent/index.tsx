@@ -7,14 +7,12 @@ import Timer from "@/components/Timer";
 import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { partIcons } from "@/helpers/icons";
-import { TypeEnum } from "@/types/global";
 
 type Props = {
   parts: { part: string; date: Date | null }[];
-  type: TypeEnum;
 };
 
-export default function SelectPartForRoutineModalContent({ parts, type }: Props) {
+export default function SelectPartForRoutineModalContent({ parts }: Props) {
   const router = useRouter();
   const activeParts = parts.filter((part) => !part.date || new Date(part.date) < new Date());
 
@@ -29,7 +27,7 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
         <Button
           variant="default"
           component={Link}
-          href={`/sort-concerns?type=${type}`}
+          href={"/sort-concerns"}
           onClick={() => modals.closeAll()}
         >
           <IconStack2 className="icon" style={{ marginRight: rem(6) }} /> All
@@ -52,7 +50,7 @@ export default function SelectPartForRoutineModalContent({ parts, type }: Props)
             variant="default"
             key={index}
             disabled={!!isCooldown}
-            onClick={() => handleClick(`/sort-concerns?type=${type}&part=${key}`)}
+            onClick={() => handleClick("/sort-concerns")}
           >
             {render}
           </Button>

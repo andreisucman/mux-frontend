@@ -1,18 +1,9 @@
-import React, { memo } from "react";
+import React from "react";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, rem } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
-import FilterDropdown from "@/components/FilterDropdown";
-import SexSelector from "@/components/SexSelector";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons } from "@/helpers/icons";
-import { TypeEnum } from "@/types/global";
 import classes from "./ScanHeader.module.css";
-
-const typeFilters = [
-  { label: "Head", value: "head" },
-  { label: "Body", value: "body" },
-];
 
 const titles = [
   { label: "Scan progress", value: "/scan/progress" },
@@ -21,12 +12,11 @@ const titles = [
 ];
 
 type Props = {
-  type?: TypeEnum;
   children?: React.ReactNode;
-  onSelect?: () => void;
+
 };
 
-function ScanHeader({ type, children, onSelect }: Props) {
+function ScanHeader({ children }: Props) {
   const router = useRouter();
 
   return (
@@ -38,20 +28,8 @@ function ScanHeader({ type, children, onSelect }: Props) {
         <TitleDropdown titles={titles} customDropdownStyles={{ minWidth: rem(210) }} />
         {children}
       </Group>
-
-      {type && (
-        <FilterDropdown
-          data={typeFilters}
-          icons={typeIcons}
-          onSelect={onSelect}
-          selectedValue={type}
-          filterType={"type"}
-          placeholder="Select type"
-          addToQuery
-        />
-      )}
     </Group>
   );
 }
 
-export default memo(ScanHeader);
+export default ScanHeader;

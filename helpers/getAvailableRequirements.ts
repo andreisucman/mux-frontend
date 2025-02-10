@@ -1,24 +1,17 @@
 import { RequirementType } from "@/components/UploadContainer/types";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
-import { NextActionType, TypeEnum } from "@/types/global";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
+import { NextActionType } from "@/types/global";
 import { parseScanDate } from "./utils";
 
 type Props = {
-  requiredProgress?: {
-    head: RequirementType[];
-    body: RequirementType[];
-  };
-  typeNextScan?: NextActionType;
-  type: string;
+  requiredProgress?: RequirementType[];
+  nextScan?: NextActionType[];
 };
 
-export function getAvailableRequirements({ requiredProgress, typeNextScan, type }: Props) {
-  const typeRequirements = requiredProgress?.[type as TypeEnum.HEAD | TypeEnum.BODY] || [];
-
-  let requirements: RequirementType[] = typeRequirements;
-
-  if (typeNextScan && typeNextScan.parts.length > 0) {
-    const availableParts = typeNextScan.parts.filter((part) => {
+export function getAvailableRequirements({ requiredProgress, nextScan }: Props) {
+  let available = requiredProgress;
+  if (nextScan && nextScan.length > 0) {
+    const availableParts = nextScan.filter((part) => {
       const partDate = parseScanDate(part);
       if (partDate) {
         return partDate < new Date();
@@ -29,10 +22,12 @@ export function getAvailableRequirements({ requiredProgress, typeNextScan, type 
 
     const availablePartsKeys = availableParts.map((p) => p.part);
 
-    requirements = typeRequirements.filter((tr) =>
-      availablePartsKeys.includes(tr.part as PartEnum)
-    );
+    if (requiredProgress) {
+      available = [...requiredProgress].filter((tr) =>
+        availablePartsKeys.includes(tr.part as PartEnum)
+      );
+    }
   }
 
-  return requirements;
+  return available;
 }

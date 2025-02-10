@@ -7,14 +7,12 @@ export type FetchStyleProps = {
   sort?: string | null;
   currentArrayLength?: number;
   skip?: boolean;
-  type: string | null;
   sex?: string | null;
   ageInterval?: string | null;
   ethnicity?: string | null;
 };
 
 export default async function fetchStyle({
-  type,
   styleName,
   skip,
   sort,
@@ -27,10 +25,6 @@ export default async function fetchStyle({
     let finalEndpoint = `getAllStyleRecords`;
 
     const queryParams = [];
-
-    if (type) {
-      queryParams.push(`type=${type}`);
-    }
 
     if (sort) {
       queryParams.push(`sort=${sort}`);

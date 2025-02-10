@@ -94,7 +94,7 @@ export default function DiaryPage() {
       askConfirmation({
         title: "Confirm action",
         body: `You still have active ${activeTypesString} tasks. Would you like to complete them first?`,
-        onConfirm: () => router.push(`/tasks?type=${activeTypes[0]}`),
+        onConfirm: () => router.push("/tasks"),
         onCancel: createDiaryRecord,
       });
     } else {

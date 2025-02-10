@@ -1,8 +1,7 @@
 import React, { memo } from "react";
 import { usePathname } from "next/navigation";
-import { IconClipboardData, IconNotes } from "@tabler/icons-react";
 import cn from "classnames";
-import { Button, Group, rem, Text } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
 import classes from "./MenuButtons.module.css";
 
 type Props = {

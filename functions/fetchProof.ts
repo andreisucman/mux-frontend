@@ -3,7 +3,6 @@ import callTheServer from "./callTheServer";
 
 export type FetchProofProps = {
   userName?: string | string[];
-  type: string | null;
   part: string | null;
   query: string | null;
   concern: string | null;
@@ -16,7 +15,6 @@ export type FetchProofProps = {
 };
 
 export default async function fetchProof({
-  type,
   sex,
   ageInterval,
   ethnicity,
@@ -32,10 +30,6 @@ export default async function fetchProof({
 
     if (query) {
       queryParams.push(`query=${encodeURIComponent(query)}`);
-    }
-
-    if (type) {
-      queryParams.push(`type=${encodeURIComponent(type)}`);
     }
 
     if (part) {

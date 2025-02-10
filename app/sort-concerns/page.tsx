@@ -8,7 +8,7 @@ import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
-import { UserDataType } from "@/types/global";
+import { UserConcernType, UserDataType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import ConcernsSortCard from "./ConcernsSortCard";
 import { maintenanceConcerns } from "./maintenanceConcerns";
@@ -23,53 +23,40 @@ export default function SortConcerns() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
 
   const { concerns, nextRoutine } = userDetails || {};
 
-  const selectedConcerns = useMemo(() => {
+  let selectedConcerns: UserConcernType[] | null = useMemo(() => {
     if (!concerns) return null;
     if (!nextRoutine) return null;
 
     const routineCreatedParts = nextRoutine
-      .filter((obj) => obj.type === type)
-      .flatMap((obj) => obj.parts)
       .filter((obj) => obj.date !== null && new Date(obj.date) > new Date())
       .map((obj) => obj.part);
 
-    let selectedConcerns = concerns.filter((obj) => obj.type === type);
-
-    if (part) {
-      selectedConcerns = selectedConcerns.filter((obj) => obj.part === part);
-    }
-
-    selectedConcerns = selectedConcerns.filter((obj) => !routineCreatedParts.includes(obj.part));
-
-    console.log("selectedConcerns", selectedConcerns);
+    selectedConcerns = concerns.filter((obj) => !routineCreatedParts.includes(obj.part));
 
     if (selectedConcerns.length === 0) {
       const maintenanceConcernsToAdd = [];
 
       if (part) {
         maintenanceConcernsToAdd.push(...maintenanceConcerns.filter((c) => c.part === part));
-      } else if (type) {
-        maintenanceConcernsToAdd.push(...maintenanceConcerns.filter((c) => c.type === type));
       }
       selectedConcerns.push(...maintenanceConcernsToAdd);
     }
 
     return selectedConcerns;
-  }, [userDetails, type, part]);
+  }, [userDetails, part]);
 
   const activeConcerns = useMemo(
     () => selectedConcerns?.filter((obj) => !obj.isDisabled),
-    [selectedConcerns?.length, type, part]
+    [selectedConcerns?.length, part]
   );
 
   async function onButtonClick() {
     setIsLoading(true);
-    router.push(`/considerations?${searchParams.toString()}`);
+    router.push("/considerations");
   }
 
   useEffect(() => {
@@ -77,7 +64,7 @@ export default function SortConcerns() {
       ...prev,
       concerns: selectedConcerns,
     }));
-  }, [type, typeof selectedConcerns]);
+  }, [typeof selectedConcerns]);
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
@@ -85,7 +72,7 @@ export default function SortConcerns() {
         <PageHeaderWithReturn title="Sort concerns" showReturn />
         <InstructionContainer
           title="Instructions"
-          instruction={`These are the potential ${type ? type : ""} concerns identified from your photos.`}
+          instruction={`These are the potential concerns identified from your photos.`}
           description="Drag and drop to change their importance or click the minus sign to ignore."
           customStyles={{ flex: 0 }}
         />
@@ -98,11 +85,7 @@ export default function SortConcerns() {
         >
           Next
         </Button>
-        <ConcernsSortCard
-          concerns={selectedConcerns || []}
-          type={type as string}
-          maxHeight={height}
-        />
+        <ConcernsSortCard concerns={selectedConcerns || []} maxHeight={height} />
       </SkeletonWrapper>
     </Stack>
   );

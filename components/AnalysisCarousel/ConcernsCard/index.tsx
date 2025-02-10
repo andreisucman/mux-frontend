@@ -9,18 +9,17 @@ import GlowingButton from "@/components/GlowingButton";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
-import { TypeEnum, UserConcernType } from "@/types/global";
+import { UserConcernType } from "@/types/global";
 import classes from "./ConcernsCard.module.css";
 
 type Props = {
   userId: string | null;
   status: AuthStateEnum;
   title: string;
-  type: TypeEnum;
   concerns: UserConcernType[];
 };
 
-function ConcernsCard({ status, userId, concerns, type, title }: Props) {
+function ConcernsCard({ status, userId, concerns, title }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { height: containerHeight, ref } = useElementSize();
@@ -42,7 +41,6 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
       openAuthModal({
         stateObject: {
           redirectPath: "/tasks",
-          redirectQuery: `type=${type}`,
           localUserId: userId,
           referrer: ReferrerEnum.ANALYSIS_PROGRESS,
         },
@@ -51,7 +49,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
 
       setIsLoading(false);
     }
-  }, [status, userId, type, isLoading]);
+  }, [status, userId, isLoading]);
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
@@ -63,7 +61,7 @@ function ConcernsCard({ status, userId, concerns, type, title }: Props) {
           Start your change
         </Title>
         <Stack className={classes.wrapper}>
-          <ConcernsSortCard concerns={concerns} type={type} maxHeight={maxHeight} disabled />
+          <ConcernsSortCard concerns={concerns} maxHeight={maxHeight} disabled />
           <GlowingButton
             loading={isLoading}
             disabled={isLoading}

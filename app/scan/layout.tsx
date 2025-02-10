@@ -2,7 +2,7 @@
 
 import React from "react";
 import BlurChoicesProvider from "@/context/BlurChoicesContext";
-import UploadPartsChoicesProvider from "@/context/UploadPartsChoicesContext";
+import ScanPartsChoicesProvider from "@/context/ScanPartsChoicesContext";
 
 type Props = {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ type Props = {
 export default function ScanLayout({ children }: Props) {
   return (
     <BlurChoicesProvider>
-      <UploadPartsChoicesProvider>{children}</UploadPartsChoicesProvider>
+      <ScanPartsChoicesProvider>{children}</ScanPartsChoicesProvider>
     </BlurChoicesProvider>
   );
 }

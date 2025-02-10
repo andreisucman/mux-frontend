@@ -5,7 +5,6 @@ import { FetchStyleProps } from "./fetchStyle";
 export default async function fetchUsersStyle({
   followingUserName,
   styleName,
-  type,
   sort,
   skip,
   currentArrayLength,
@@ -14,10 +13,6 @@ export default async function fetchUsersStyle({
     let finalEndpoint = `getUsersStyleRecords${followingUserName ? `/${followingUserName}` : ""}`;
 
     const queryParams = [];
-
-    if (type) {
-      queryParams.push(`type=${type}`);
-    }
 
     if (sort) {
       queryParams.push(`sort=${sort}`);

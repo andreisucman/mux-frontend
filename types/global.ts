@@ -1,5 +1,5 @@
 import { RequirementType } from "@/components/UploadContainer/types";
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 
 export type DefaultUserType = {
   timeZone: string;
@@ -116,33 +116,19 @@ export type ToAnalyzeType = {
 };
 
 export type UserPotentialRecordType = {
-  head: {
-    overall: number;
-    face: FormattedRatingType | null;
-    mouth: FormattedRatingType | null;
-    scalp: FormattedRatingType | null;
-  };
-  body: { overall: number; body: FormattedRatingType | null };
+  overall: number;
+  face: FormattedRatingType | null;
+  mouth: FormattedRatingType | null;
+  scalp: FormattedRatingType | null;
+  body: FormattedRatingType | null;
 };
 
 export type UserProgressRecordType = {
-  head: {
-    overall: number;
-    face: ProgressType | null;
-    mouth: ProgressType | null;
-    scalp: ProgressType | null;
-  };
-  body: { overall: number; body: ProgressType | null };
-};
-
-export type UserLatestStyleAnalysis = {
-  head: StyleAnalysisType | null;
-  body: StyleAnalysisType | null;
-};
-
-export type HigherThanType = {
-  head: { overall: number; face: number; mouth: number; scalp: number };
-  body: { overall: number; body: number };
+  overall: number;
+  face: ProgressType | null;
+  mouth: ProgressType | null;
+  scalp: ProgressType | null;
+  body: ProgressType | null;
 };
 
 export type UserConcernType = {
@@ -217,23 +203,15 @@ export interface UserDataType extends DefaultUserType {
   club: ClubDataType | null;
   concerns: UserConcernType[];
   demographics: DemographicsType;
-  requiredProgress: {
-    head: RequirementType[];
-    body: RequirementType[];
-  };
-  toAnalyze: {
-    head: ToAnalyzeType[];
-    body: ToAnalyzeType[];
-  };
+  requiredProgress: RequirementType[];
+  toAnalyze: ToAnalyzeType[];
   streaks: StreaksType;
   subscriptions: UserSubscriptionsType;
   nextScan: NextActionType[];
   nextRoutine: NextActionType[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
-  latestStyleAnalysis: UserLatestStyleAnalysis;
-  currentlyHigherThan: HigherThanType;
-  potentiallyHigherThan: HigherThanType;
+  latestStyleAnalysis: StyleAnalysisType;
   latestScores: LatestScoresType;
   latestScoresDifference: LatestScoresType;
   tasks: TaskType[];
@@ -349,11 +327,7 @@ export enum ScanTypeEnum {
   FOOD = "food",
 }
 
-export type NextActionType = {
-  type: TypeEnum;
-  date: Date | null;
-  parts: { part: PartEnum; date: Date | null }[];
-};
+export type NextActionType = { part: PartEnum; date: Date | null };
 
 export enum TaskStatusEnum {
   ACTIVE = "active",
