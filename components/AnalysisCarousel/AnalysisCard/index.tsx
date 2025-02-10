@@ -17,8 +17,6 @@ type Props = {
 export default function AnalysisCard({ title, currentRecord, potentialRecord }: Props) {
   const { height: containerHeight, ref } = useElementSize();
 
-  console.log("potentialRecord", potentialRecord);
-
   const partValues = Object.values(currentRecord)
     .filter((rec) => typeof rec !== "number")
     .filter(Boolean);

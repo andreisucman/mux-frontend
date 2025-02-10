@@ -35,13 +35,14 @@ export default function ScanProgress() {
   const { _id: userId, requiredProgress, demographics, nextScan, toAnalyze } = userDetails || {};
   const showSexSelector = status !== AuthStateEnum.AUTHENTICATED && demographics;
 
-  const { currentRequirements, checkBackDate } = useCheckScanAvailability({
+  const { availableRequirements, checkBackDate } = useCheckScanAvailability({
+    parts,
     nextScan,
     requiredProgress,
   });
 
   const handleUpload = useCallback(
-    async ({ url, type, part, position, blurType, blurredImage }: UploadProgressProps) => {
+    async ({ url, part, position, blurType, blurredImage }: UploadProgressProps) => {
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -75,7 +76,6 @@ export default function ScanProgress() {
             method: "POST",
             body: {
               userId,
-              type,
               part,
               position,
               blurType,
@@ -127,21 +127,21 @@ export default function ScanProgress() {
   );
 
   useShallowEffect(() => {
-    if (!userId) return;
-    if (currentRequirements && currentRequirements.length === 0) {
+    if (!userId || !requiredProgress || !availableRequirements) return;
+    if (requiredProgress.length > 0) return;
+
+    if (availableRequirements.length === 0) {
       router.push(`/wait?operationKey=progress`);
     }
-  }, [currentRequirements?.length, userId]);
+  }, [availableRequirements?.length, userId]);
 
   const uploadedParts = useMemo(() => {
     return [...new Set(toAnalyze?.map((obj) => obj.part))].filter((rec) => Boolean(rec));
   }, [toAnalyze]) as string[];
 
-  console.log("toAnalyze", toAnalyze);
-
   return (
     <>
-      {currentRequirements ? (
+      {availableRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
           <ScanHeader
             children={
@@ -157,9 +157,9 @@ export default function ScanProgress() {
               </>
             }
           />
-          {currentRequirements.length > 0 ? (
+          {availableRequirements.length > 0 ? (
             <UploadContainer
-              requirements={currentRequirements || []}
+              requirements={availableRequirements || []}
               progress={progress}
               isLoading={isLoading}
               scanType={ScanTypeEnum.PROGRESS}

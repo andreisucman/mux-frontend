@@ -16,10 +16,14 @@ export default function AnalysisCarousel({}: Props) {
   const { _id: userId, concerns, potential, latestProgress } = userDetails || {};
 
   const getSlides = useCallback(() => {
-    const analysisPotentialCard = (
+    const analysisCard = (
       <Carousel.Slide key={"analysisCard"}>
         {potential && latestProgress && (
-          <AnalysisCard title="Current condition" currentRecord={latestProgress} potentialRecord={potential} />
+          <AnalysisCard
+            title="Current condition"
+            currentRecord={latestProgress}
+            potentialRecord={potential}
+          />
         )}
       </Carousel.Slide>
     );
@@ -37,7 +41,7 @@ export default function AnalysisCarousel({}: Props) {
       </Carousel.Slide>
     );
 
-    const slides = [analysisPotentialCard, concernsCard];
+    const slides = [analysisCard, concernsCard];
 
     return slides;
   }, [concerns, userId, status]);

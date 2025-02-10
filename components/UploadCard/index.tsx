@@ -17,7 +17,7 @@ import { silhouettes } from "@/data/silhouettes";
 import { OnBlurClickProps } from "@/functions/blur";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import getPlaceholderOrOverlay from "@/helpers/getPlaceholderOrSilhouette";
-import { ScanTypeEnum, SexEnum, TypeEnum } from "@/types/global";
+import { ScanTypeEnum, SexEnum } from "@/types/global";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
 
@@ -141,7 +141,6 @@ export default function UploadCard({
         description="All of your uploads are private unless you publish them in the Club."
         customStyles={{ flex: 0 }}
       />
-
       <Stack className={classes.imageCell}>
         <ImageDisplayContainer
           handleDelete={handleDeleteImage}

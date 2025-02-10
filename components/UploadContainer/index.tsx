@@ -66,8 +66,6 @@ export default function UploadContainer({
     })
     .filter(Boolean);
 
-    console.log("parts",parts)
-
   const somethingUploaded = slides && slides.length === 0 && toAnalyze && toAnalyze.length > 0;
 
   useShallowEffect(() => {

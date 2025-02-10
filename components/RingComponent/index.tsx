@@ -1,6 +1,5 @@
 import { memo } from "react";
-import { IconQuestionMark } from "@tabler/icons-react";
-import { ActionIcon, RingProgress, Stack, Text } from "@mantine/core";
+import { RingProgress, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import classes from "./RingComponent.module.css";
 
@@ -10,7 +9,7 @@ type RingComponentProps = {
   customStyles?: { [key: string]: any };
   isPotential?: boolean;
   showTitle?: boolean;
-  onClick?: (args: any) => void;
+  fontSize?: number;
 };
 
 const RingComponent = ({
@@ -18,19 +17,14 @@ const RingComponent = ({
   ringSize,
   isPotential,
   customStyles,
+  fontSize = 14,
   showTitle = true,
-  onClick,
 }: RingComponentProps) => {
   const modelObject = data[0];
   const labelValue = isPotential ? modelObject.value + data[1].value : modelObject.value;
 
   return (
-    <Stack className={classes.container} style={customStyles ? customStyles : {}} onClick={onClick}>
-      {isPotential && onClick && (
-        <ActionIcon className={classes.actionIcon} variant="default">
-          <IconQuestionMark />
-        </ActionIcon>
-      )}
+    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <RingProgress
         size={ringSize || 1}
         thickness={ringSize * 0.09 || 1}
@@ -41,7 +35,11 @@ const RingComponent = ({
           </Text>
         }
       />
-      {showTitle && <Text className={classes.label}>{upperFirst(modelObject.label)}</Text>}
+      {showTitle && (
+        <Text fz={fontSize} c="dimmed" className={classes.label}>
+          {upperFirst(modelObject.label)}
+        </Text>
+      )}
     </Stack>
   );
 };
