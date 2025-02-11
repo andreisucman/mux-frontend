@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Group, rem, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import TextareaComponent from "@/components/TextAreaComponent";
@@ -15,14 +15,12 @@ import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { UserConcernType, UserDataType, UserSubscriptionsType } from "@/types/global";
-import RecordingButton from "../club/answers/RecordingButton";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./considerations.module.css";
 
 export const runtime = "edge";
 
 type CreateRoutineProps = {
-  type: string | null;
   concerns?: UserConcernType[];
   subscriptions?: UserSubscriptionsType;
   specialConsiderations: string;
@@ -38,7 +36,6 @@ export default function Considerations() {
   const { demographics, specialConsiderations } = userDetails || {};
   const { sex } = demographics || {};
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
 
   const placeholder =
@@ -49,7 +46,7 @@ export default function Considerations() {
   const handleCreateRoutine = () => {
     updateSpecialConsiderations(text);
     const { concerns, subscriptions } = userDetails || {};
-    createRoutine({ concerns, subscriptions, specialConsiderations: text, type });
+    createRoutine({ concerns, subscriptions, specialConsiderations: text });
   };
 
   const updateSpecialConsiderations = useCallback(
@@ -76,8 +73,8 @@ export default function Considerations() {
   );
 
   const createRoutine = useCallback(
-    async ({ type, concerns, subscriptions, specialConsiderations }: CreateRoutineProps) => {
-      if (isLoading || !type || !concerns || !subscriptions) return;
+    async ({ concerns, subscriptions, specialConsiderations }: CreateRoutineProps) => {
+      if (isLoading || !concerns || !subscriptions) return;
       setIsLoading(true);
 
       const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
@@ -87,7 +84,6 @@ export default function Considerations() {
           endpoint: "createRoutine",
           method: "POST",
           body: {
-            type,
             part,
             concerns,
             specialConsiderations,
@@ -119,7 +115,7 @@ export default function Considerations() {
               price: "4",
               isCentered: true,
               modalType: "improvement",
-              underButtonText: "No credit card required",
+              underButtonText: isTrialUsed ? "" : "No credit card required",
               buttonText,
               onClick,
               onClose: () => fetchUserData({ setUserDetails }),
@@ -127,14 +123,14 @@ export default function Considerations() {
 
             return;
           }
-          saveToLocalStorage("runningAnalyses", { [type]: true }, "add");
+          saveToLocalStorage("runningAnalyses", { routine: true }, "add");
           router.replace(redirectUrl);
         }
       } catch (err) {
         setIsLoading(false);
       }
     },
-    [type, part, isLoading, userDetails]
+    [part, isLoading, userDetails]
   );
 
   useEffect(() => {

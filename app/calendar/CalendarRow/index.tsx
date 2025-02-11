@@ -40,7 +40,7 @@ export default function CalendarRow({
   const showSkeleton = useShowSkeleton();
 
   return (
-    <Skeleton visible={showSkeleton}>
+    <Skeleton visible={showSkeleton} mih={50}>
       <Group
         className={classes.container}
         onClick={() => selectTask(task)}

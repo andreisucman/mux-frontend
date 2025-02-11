@@ -1,7 +1,11 @@
 .container {
   margin-top: rem(16);
-  position: sticky;
+  position: fixed;
   flex-wrap: nowrap;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .button {

@@ -150,7 +150,7 @@ export default function ChatInput({
       buttonText,
       onClick,
       onClose: () => fetchUserData({ setUserDetails }),
-      underButtonText: userName ? "" : "No credit card required",
+      underButtonText: userName ? "" : isTrialUsed ? "" : "No credit card required",
     };
 
     openSubscriptionModal(payload);

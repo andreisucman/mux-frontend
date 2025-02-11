@@ -393,7 +393,7 @@ export default function Calendar() {
           </ActionIcon>
         </Group>
 
-        <Stack className={classes.content}>
+        <Stack className={`${classes.content} scrollbar`}>
           {displayComponent === "loading" && <Loader m="0 auto" pt="15%" />}
           {displayComponent === "list" && (
             <>
@@ -413,6 +413,7 @@ export default function Calendar() {
                       />
                     );
                   })}
+                  <div className={classes.emptyRow} />
               </Stack>
               {tasksToUpdate.length > 0 && (
                 <BulkUpdateButtons

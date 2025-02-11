@@ -3,6 +3,12 @@
   min-height: rem(250);
   flex: 1;
   gap: 0;
+  overflow: auto;
+}
+
+.list {
+  position: absolute;
+  inset: 0;
 }
 
 .icon {
@@ -32,4 +38,9 @@
 .calendarMonth {
   width: 100%;
   text-align: center;
+}
+
+.emptyRow {
+  min-height: rem(32);
+  width: 100%;
 }
