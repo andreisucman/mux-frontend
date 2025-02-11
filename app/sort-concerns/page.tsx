@@ -35,13 +35,9 @@ export default function SortConcerns() {
       .filter((obj) => obj.date !== null && new Date(obj.date) > new Date())
       .map((obj) => obj.part);
 
-    console.log("routineCreatedParts", routineCreatedParts);
-
     const remaining = concerns
       .filter((obj) => !routineCreatedParts.includes(obj.part))
       .filter((obj) => obj.part === part);
-
-    console.log("remaining", remaining);
 
     if (remaining.length === 0) {
       const maintenanceConcernsToAdd = [];

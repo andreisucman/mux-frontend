@@ -14,10 +14,7 @@ import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
-import {
-  deleteFromLocalStorage,
-  getFromLocalStorage,
-} from "@/helpers/localStorage";
+import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { SexEnum, TaskType } from "@/types/global";
 import ProofDisplayContainer from "../ProofDisplayContainer";
@@ -199,10 +196,7 @@ export default function UploadProof(props: Props) {
               />
             )}
             {componentToDisplay === "expired" && (
-              <OverlayWithText
-                text="This task expired"
-                button={overlayButton}
-              />
+              <OverlayWithText text="This task expired" button={overlayButton} />
             )}
           </Stack>
         </Skeleton>

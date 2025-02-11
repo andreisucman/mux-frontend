@@ -124,8 +124,6 @@ export async function onBlurVideoClick({
 
         const { url, hash } = blurredVideoResponse;
 
-        console.log("blurredVideoResponse 127", blurredVideoResponse)
-
         if (url) {
           setLocalUrl(url);
           setFaceBlurredUrl(url);
@@ -146,8 +144,6 @@ export async function onBlurVideoClick({
         });
 
         const { url, hash } = blurredVideoResponse;
-
-        console.log("blurredVideoResponse 150", blurredVideoResponse)
 
         if (url) {
           setEyesBlurredUrl(url);

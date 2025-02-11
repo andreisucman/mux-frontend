@@ -73,8 +73,6 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
     [partValues.length]
   );
 
-  console.log("overalls", overalls);
-
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
       <Stack className={`${classes.container} scrollbar`} ref={ref}>

@@ -16,6 +16,7 @@ import { AllTaskType, RoutineType } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import StatsGroup from "../StatsGroup";
 import classes from "./AccordionRoutineRow.module.css";
+import { partIcons } from "@/helpers/icons";
 
 type Props = {
   routine: RoutineType;
@@ -151,7 +152,7 @@ export default function AccordionRoutineRow({
         <Accordion.Control>
           <Group className={classes.row}>
             <Group className={classes.title}>
-              <IconClipboardText className="icon icon__small" />
+              {partIcons[part]}
               {rowLabel}
             </Group>
             <Group wrap="nowrap">

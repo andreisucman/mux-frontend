@@ -70,8 +70,6 @@ export default function VideoRecorderResult({
           if (response.status === 200) {
             const { mainUrl, progress, isRunning } = response.message || {};
 
-            console.log("polling", response.message);
-
             if (response.error) {
               setProgress(0);
               setIsBlurLoading(false);

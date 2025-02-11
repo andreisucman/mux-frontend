@@ -19,7 +19,7 @@ export default function Tasks() {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeader title="Current's tasks" hideTypeDropdown hidePartDropdown />
+        <PageHeader title="Today's tasks" hideTypeDropdown hidePartDropdown />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}

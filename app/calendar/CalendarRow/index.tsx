@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { IconFilter, IconFilterOff, IconSearch } from "@tabler/icons-react";
+import { IconFilter, IconFilterOff, IconInfoCircle } from "@tabler/icons-react";
 import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -61,7 +61,7 @@ export default function CalendarRow({
               redirectToTask(taskId);
             }}
           >
-            <IconSearch className="icon" />
+            <IconInfoCircle className="icon" />
           </ActionIcon>
           {mode === "all" && (
             <ActionIcon

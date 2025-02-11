@@ -38,7 +38,7 @@ export default function ResultDisplayContainer({
           url={url}
           thumbnail={thumbnail}
           createdAt={createdAt}
-          customStyles={{ borderRadius: rem(16), overflow: "hidden" }}
+          customStyles={{ borderRadius: rem(16), overflow: "hidden", minHeight: rem(600) }}
           isRelative
         />
       )}
