@@ -52,7 +52,7 @@ function EditATaskContent({
     </Stack>
   ) : (
     <Group>
-      <Text>{previewData.slice(0, 3).join(", ")}</Text>
+      <Text size="sm">{previewData.slice(0, 3).join(", ")}</Text>
       {tasksLeft && tasksLeft > 1 && (
         <Text size="xs" c="dimmed" ta="center">
           and {tasksLeft} more days...
@@ -108,7 +108,7 @@ function EditATaskContent({
             <NumberInput
               max={70}
               min={1}
-              size="md"
+              size="sm"
               maw={rem(100)}
               value={frequency}
               onChange={(value) => {
@@ -117,8 +117,8 @@ function EditATaskContent({
               }}
               clampBehavior="strict"
               readOnly={readOnly}
-            />{" "}
-            time(s) a week
+            />
+            <Text size="sm">time(s) a week</Text>
           </Group>
         </Stack>
       )}

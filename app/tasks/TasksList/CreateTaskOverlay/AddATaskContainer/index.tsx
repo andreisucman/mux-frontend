@@ -1,31 +1,30 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Button, Loader, Stack, Text } from "@mantine/core";
-import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
-import { TypeEnum } from "@/types/global";
+import CreateATaskContent from "../CreateATaskContent";
 import EditATaskContent from "../EditATaskContent";
-import { HandleSaveTaskProps, RawTaskType } from "./types";
+import { RawTaskType } from "./types";
 import classes from "./AddATaskContainer.module.css";
 
 type Props = {
-  type: TypeEnum;
   timeZone?: string;
   onCreateRoutineClick: (args?: any) => void;
-  handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
+  handleSaveTask: (args: any) => Promise<void>;
 };
 
 type HandleCreateTaskProps = {
+  concern: string | null;
+  part: string | null;
   timeZone?: string;
   isLoading: boolean;
   description: string;
 };
 
 export default function AddATaskContainer({
-  type,
   timeZone,
   handleSaveTask,
   onCreateRoutineClick,
@@ -38,9 +37,11 @@ export default function AddATaskContainer({
   const [frequency, setFrequency] = useState<number>(1);
   const [date, setDate] = useState<Date | null>(new Date());
   const [step, setStep] = useState(1);
+  const [selectedConcern, setSelectedConcern] = useState<string | null>(null);
+  const [selectedPart, setSelectedPart] = useState<string | null>(null);
 
   const handleCreateTask = useCallback(
-    async ({ timeZone, isLoading, description }: HandleCreateTaskProps) => {
+    async ({ concern, part, timeZone, isLoading, description }: HandleCreateTaskProps) => {
       if (!timeZone) return;
       if (isLoading) return;
       if (!description) return;
@@ -52,7 +53,7 @@ export default function AddATaskContainer({
         const response = await callTheServer({
           endpoint: "createTaskFromDescription",
           method: "POST",
-          body: { description, type, timeZone },
+          body: { concern, part, description, timeZone },
         });
 
         if (response.status === 200) {
@@ -88,18 +89,21 @@ export default function AddATaskContainer({
 
   const tasksLeft = datesPreview.length - 3;
 
-  const { nextRoutine, subscriptions } = userDetails || {};
+  const { nextRoutine, nextScan, subscriptions, concerns } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } = checkSubscriptionActivity(
     ["improvement"],
     subscriptions
   );
 
-  const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
-  const isCreateRoutineInCooldown =
-    typeNextRoutine && typeNextRoutine.date && new Date(typeNextRoutine.date) > new Date();
+  const scannedParts = nextScan?.filter((r) => r.date).map((r) => r.part);
+  const isCreateRoutineInCooldown = nextRoutine?.every((ro) => new Date(ro.date || 0) > new Date());
+  const earliestCreateRoutineDate =
+    nextRoutine && nextRoutine.length
+      ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
+      : null;
 
-  const cooldownButtonText = `Improvement assistant after ${formatDate({ date: typeNextRoutine?.date || new Date(), hideYear: true })}`;
+  const cooldownButtonText = `Improvement assistant after ${formatDate({ date: new Date(earliestCreateRoutineDate || new Date()), hideYear: true })}`;
 
   return (
     <Stack className={classes.container}>
@@ -113,16 +117,15 @@ export default function AddATaskContainer({
         <>
           <Stack flex={1}>
             {step === 1 && (
-              <TextareaComponent
-                text={description}
-                setText={setDescription}
-                placeholder={
-                  type === "head"
-                    ? "Moisturizing face with coconut oil"
-                    : type === "health"
-                      ? "A salad with kinoa and cucumbers"
-                      : "Narrow grip incline bench press with a barbell"
-                }
+              <CreateATaskContent
+                allConcerns={concerns}
+                allParts={scannedParts || []}
+                selectedConcern={selectedConcern}
+                selectedPart={selectedPart}
+                setSelectedConcern={setSelectedConcern}
+                setSelectedPart={setSelectedPart}
+                description={description}
+                setDescription={setDescription}
               />
             )}
             {step === 2 && (
@@ -143,7 +146,17 @@ export default function AddATaskContainer({
               <>
                 <Button
                   variant="default"
-                  onClick={() => handleCreateTask({ isLoading, timeZone, description })}
+                  loading={isLoading}
+                  disabled={!selectedConcern || !selectedPart || !description}
+                  onClick={() =>
+                    handleCreateTask({
+                      concern: selectedConcern,
+                      part: selectedPart,
+                      isLoading,
+                      timeZone,
+                      description,
+                    })
+                  }
                 >
                   Create task
                 </Button>
@@ -160,8 +173,13 @@ export default function AddATaskContainer({
 
             {step === 2 && rawTask && (
               <Button
+                loading={isLoading}
+                disabled={!selectedConcern || !selectedPart}
                 onClick={() =>
                   handleSaveTask({
+                    concern: selectedConcern,
+                    part: selectedPart,
+                    timeZone,
                     date,
                     frequency,
                     isLoading,
@@ -175,12 +193,12 @@ export default function AddATaskContainer({
               </Button>
             )}
             {step === 2 && rawTask && (
-              <Button variant="default" onClick={() => setStep(1)}>
+              <Button variant="default" disabled={isLoading} onClick={() => setStep(1)}>
                 Return
               </Button>
             )}
             {step === 1 && rawTask && (
-              <Button variant="default" onClick={() => setStep(2)}>
+              <Button variant="default" disabled={isLoading} onClick={() => setStep(2)}>
                 Next
               </Button>
             )}

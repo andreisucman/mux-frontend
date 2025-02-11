@@ -1,10 +1,8 @@
 import { rem, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { TypeEnum } from "@/types/global";
 import AddATaskContainer from "./AddATaskContainer";
 
 type OpenCreateNewTaskProps = {
-  type: TypeEnum;
   handleSaveTask: (...args: any) => Promise<void>;
   onCreateRoutineClick: (args?: any) => void;
   timeZone?: string;
@@ -12,7 +10,6 @@ type OpenCreateNewTaskProps = {
 };
 
 export default function openCreateNewTask({
-  type,
   timeZone,
   handleSaveTask,
   onCreateRoutineClick,
@@ -24,12 +21,11 @@ export default function openCreateNewTask({
     size: "auto",
     title: (
       <Title order={5} component={"p"}>
-        Add a {type} improvement task
+        Add a task
       </Title>
     ),
     innerProps: (
       <AddATaskContainer
-        type={type}
         timeZone={timeZone}
         handleSaveTask={handleSaveTask}
         onCreateRoutineClick={onCreateRoutineClick}

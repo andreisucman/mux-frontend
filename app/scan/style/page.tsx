@@ -31,12 +31,10 @@ const defaultStyleRequirements = [
 
 type HandleUploadStyleProps = {
   url: string;
-  type: TypeEnum;
 };
 
 export default function UploadStyle() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +43,7 @@ export default function UploadStyle() {
   const { mainUrl } = latestStyleAnalysis || {};
 
   const handleUpload = useCallback(
-    async ({ url, type }: HandleUploadStyleProps) => {
+    async ({ url }: HandleUploadStyleProps) => {
       if (!url) return;
 
       let intervalId: any = null;
@@ -102,7 +100,7 @@ export default function UploadStyle() {
               return;
             }
 
-            saveToLocalStorage("runningAnalyses", { [`style-${type}`]: true }, "add");
+            saveToLocalStorage("runningAnalyses", { style: true }, "add");
             setUserDetails((prev: UserDataType) => ({
               ...prev,
               _id: response.message,
@@ -110,8 +108,8 @@ export default function UploadStyle() {
 
             if (intervalId) clearInterval(intervalId);
 
-            const redirectUrl = encodeURIComponent(`/analysis/style`);
-            const onErrorRedirectUrl = encodeURIComponent(`/scan/style?${searchParams.toString()}`);
+            const redirectUrl = encodeURIComponent("/analysis/style");
+            const onErrorRedirectUrl = encodeURIComponent("/scan/style");
             router.push(
               `/wait?operationKey=style&redirectUrl=${redirectUrl}&onErrorRedirectUrl=${onErrorRedirectUrl}}`
             );

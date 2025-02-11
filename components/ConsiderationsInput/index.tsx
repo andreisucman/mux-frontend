@@ -1,25 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { ActionIcon, Text, TextInput } from "@mantine/core";
+import { UserContext } from "@/context/UserContext";
+import updateSpecialConsiderations from "@/functions/updateSpecialConsiderations";
 import classes from "./ConsiderationsInput.module.css";
 
 type Props = {
   defaultValue: string;
   placeholder: string;
   maxLength: number;
-  saveValue: (value: string, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
 };
 
-export function ConsiderationsInput({
-  defaultValue = "",
-  placeholder = "",
-  maxLength,
-  saveValue,
-}: Props) {
+export function ConsiderationsInput({ defaultValue = "", placeholder = "", maxLength }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState("");
+  const { setUserDetails } = useContext(UserContext);
 
   const isDirty = defaultValue.trim() !== value.trim();
   const charactersLeft = maxLength - value.trim().length;
@@ -36,7 +33,7 @@ export function ConsiderationsInput({
       w={"100%"}
       onChange={(event) => {
         if (event.target.value.length > maxLength) return;
-        setValue(event.target.value);
+        updateSpecialConsiderations({ value: event.target.value, setIsLoading, setUserDetails });
       }}
       rightSection={
         <ActionIcon
@@ -44,7 +41,7 @@ export function ConsiderationsInput({
           loading={isLoading}
           onClick={() => {
             if (value.trim().length > maxLength) return;
-            saveValue(value, setIsLoading);
+            updateSpecialConsiderations({ value, setIsLoading, setUserDetails });
           }}
         >
           <IconDeviceFloppy className="icon" />

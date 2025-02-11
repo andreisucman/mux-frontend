@@ -45,7 +45,7 @@ export default function UploadContainer({
   const slides = requirements
     .map((item, index) => {
       if (!userDetails) return;
-      if (!parts.includes(item.part)) return;
+      if (scanType === ScanTypeEnum.PROGRESS && !parts?.includes(item.part)) return;
 
       const { demographics } = userDetails || {};
       const { sex } = demographics || {};
@@ -71,7 +71,7 @@ export default function UploadContainer({
   useShallowEffect(() => {
     if (somethingUploaded && requirements.length > 0) {
       setDisplayComponent("partialScanOverlay");
-    } else if (parts.length === 0) {
+    } else if (parts?.length === 0) {
       setDisplayComponent("empty");
     } else if (requirements.length > 0) {
       setDisplayComponent("upload");

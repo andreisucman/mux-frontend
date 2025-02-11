@@ -1,40 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IconCalendarWeek, IconCirclePlus } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
-import { TypeEnum } from "@/types/global";
-import { HandleSaveTaskProps } from "./AddATaskContainer/types";
+import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import openCreateNewTask from "./openCreateNewTask";
 import classes from "./CreateTaskOverlay.module.css";
 
 type Props = {
-  type: TypeEnum;
   timeZone?: string;
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
   customStyles?: { [key: string]: any };
 };
 
-export default function CreateTaskOverlay({ type, timeZone, customStyles, handleSaveTask }: Props) {
+export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTask }: Props) {
   const [showWeeklyButton, setShowWeeklyButton] = useState(false);
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
     useContext(CreateRoutineContext);
   const { userDetails } = useContext(UserContext);
 
   const onCreateManuallyClick = () => {
-    openCreateNewTask({ type, timeZone, handleSaveTask, onCreateRoutineClick });
+    openCreateNewTask({ timeZone, handleSaveTask, onCreateRoutineClick });
   };
 
   useEffect(() => {
     if (!userDetails) return;
 
     const { nextRoutine } = userDetails;
+    const allInCooldown = nextRoutine?.every((r) => new Date() > new Date(r.date || 0));
 
-    const typeNextRoutine = nextRoutine?.find((obj) => obj.type === type);
-    const isCreateRoutineInCooldown =
-      typeNextRoutine && typeNextRoutine.date && new Date(typeNextRoutine.date) > new Date();
-
-    setShowWeeklyButton(!isCreateRoutineInCooldown);
+    setShowWeeklyButton(!allInCooldown);
   }, [userDetails]);
 
   return (

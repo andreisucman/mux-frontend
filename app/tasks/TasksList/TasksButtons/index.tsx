@@ -1,39 +1,31 @@
 "use client";
 
 import React, { useContext } from "react";
-import { IconCalendar, IconCirclePlus, IconRoute, IconShoppingBag } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
+import {
+  IconCalendar,
+  IconCirclePlus,
+  IconListDetails,
+  IconRoute,
+  IconShoppingBag,
+} from "@tabler/icons-react";
 import { Button, Group, rem } from "@mantine/core";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
+import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
-import { TypeEnum } from "@/types/global";
-import { HandleSaveTaskProps } from "../CreateTaskOverlay/AddATaskContainer/types";
 import openCreateNewTask from "../CreateTaskOverlay/openCreateNewTask";
 import classes from "./TasksButtons.module.css";
 
 type Props = {
-  disableSuggestions?: boolean;
-  disableCalendar?: boolean;
-  disableCreate?: boolean;
-  disableHistory?: boolean;
-  type: TypeEnum;
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
 };
 
-export default function TasksButtons({
-  type,
-  disableCreate,
-  disableCalendar,
-  disableHistory,
-  disableSuggestions,
-  handleSaveTask,
-}: Props) {
+export default function TasksButtons({ handleSaveTask }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
-  const { tasks, timeZone } = userDetails || {};
-  const relevantTasks = tasks?.filter((t) => t.type === type);
-  const tooManyTasksForToday = relevantTasks && relevantTasks?.length >= 10;
+  const { timeZone } = userDetails || {};
 
   const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
@@ -41,52 +33,45 @@ export default function TasksButtons({
     <Group className={classes.container}>
       <Button
         className={classes.button}
-        disabled={disableSuggestions}
         variant="default"
         size="xs"
-        onClick={() => {
-          const query = modifyQuery({
-            params: [{ name: "type", value: type || "head", action: "replace" }],
-          });
-          router.push(`/products?${query}`);
-        }}
+        onClick={() => router.push("/products")}
       >
         <IconShoppingBag style={{ width: rem(20) }} />
       </Button>
       <Button
         className={classes.button}
         variant="default"
-        disabled={disableCalendar}
         size="xs"
-        onClick={() => {
-          const query = modifyQuery({
-            params: [{ name: "type", value: type || "head", action: "replace" }],
-          });
-          router.push(`/calendar?${query}`);
-        }}
+        onClick={() => router.push("/calendar")}
       >
         <IconCalendar style={{ width: rem(20) }} />
       </Button>
+      {pathname === "/tasks" && (
+        <Button
+          className={classes.button}
+          variant="default"
+          size="xs"
+          onClick={() => router.push("/routines")}
+        >
+          <IconRoute style={{ width: rem(20) }} />
+        </Button>
+      )}
+      {pathname === "/routines" && (
+        <Button
+          className={classes.button}
+          variant="default"
+          size="xs"
+          onClick={() => router.push("/tasks")}
+        >
+          <IconListDetails style={{ width: rem(20) }} />
+        </Button>
+      )}
       <Button
         className={classes.button}
         variant="default"
-        disabled={disableHistory}
         size="xs"
-        onClick={() => {
-          const query = modifyQuery({
-            params: [{ name: "type", value: type || "head", action: "replace" }],
-          });
-          router.push(`/routines?${query}`);
-        }}
-      >
-        <IconRoute style={{ width: rem(20) }} />
-      </Button>
-      <Button
-        className={classes.button}
-        variant="default"
-        disabled={disableCreate || tooManyTasksForToday}
-        size="xs"
-        onClick={() => openCreateNewTask({ type, handleSaveTask, onCreateRoutineClick, timeZone })}
+        onClick={() => openCreateNewTask({ handleSaveTask, onCreateRoutineClick, timeZone })}
       >
         <IconCirclePlus style={{ width: rem(20) }} />
       </Button>

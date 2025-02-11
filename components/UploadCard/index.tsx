@@ -164,7 +164,7 @@ export default function UploadCard({
             });
             setIsBlurLoading(false);
           }}
-          customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 2 }}
+          customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 1 }}
         />
         {isLoading && (
           <Stack className={classes.progressCell}>

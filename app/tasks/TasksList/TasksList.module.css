@@ -14,12 +14,6 @@
   font-weight: 600;
 }
 
-.titleGroup {
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: rem(12);
-}
-
 .scrollArea {
   position: relative;
   flex: 1;

@@ -1,17 +1,14 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { IconCirclePlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { rem, Title } from "@mantine/core";
+import { usePathname } from "next/navigation";
+import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
-import modifyQuery from "@/helpers/modifyQuery";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
-import { TypeEnum } from "@/types/global";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
 
@@ -30,11 +27,9 @@ const defaultCreateRoutineContext = {
 export const CreateRoutineContext = createContext(defaultCreateRoutineContext);
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
-
-  const type = searchParams.get("type") || "head";
 
   const { nextRoutine, nextScan, subscriptions } = userDetails || {};
 
@@ -42,9 +37,8 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     checkSubscriptionActivity(["improvement", "peek"], subscriptions) || {};
 
   const handleCreateCheckoutSession = async () => {
-    const newQuery = modifyQuery({ params: [{ name: "type", value: type, action: "replace" }] });
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns?${newQuery ? newQuery : ""}`;
-    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${newQuery ? newQuery : ""}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns`;
+    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
 
     createCheckoutSession({
       priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
@@ -99,7 +93,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         isCentered: true,
         modalType: "improvement",
         buttonText,
-        underButtonText: "No credit card required",
+        underButtonText: isTrialUsed ? "" : "No credit card required",
         onClick,
         onClose: () => fetchUserData({ setUserDetails }),
       });

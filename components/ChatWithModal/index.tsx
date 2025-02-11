@@ -19,6 +19,7 @@ type Props = {
   chatCategory?: ChatCategoryEnum;
   chatContentId?: string;
   defaultVisibility?: "open" | "closed";
+  customStyles?: { [key: string]: any };
 };
 
 export default function ChatWithModal({
@@ -34,11 +35,12 @@ export default function ChatWithModal({
   chatCategory,
   chatContentId,
   defaultVisibility,
+  customStyles,
 }: Props) {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <Stack className={classes.container}>
+    <Stack className={classes.container} style={customStyles || {}}>
       <Modal
         opened={opened}
         closeOnClickOutside={false}

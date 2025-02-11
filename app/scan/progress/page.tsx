@@ -139,6 +139,21 @@ export default function ScanProgress() {
     return [...new Set(toAnalyze?.map((obj) => obj.part))].filter((rec) => Boolean(rec));
   }, [toAnalyze]) as string[];
 
+  const showCarousel = useMemo(() => {
+    return (
+      (availableRequirements && availableRequirements.length > 0) ||
+      (toAnalyze && toAnalyze.length > 0)
+    );
+  }, [availableRequirements, toAnalyze]);
+
+  const nextScanText = useMemo(() => {
+    if (!parts) return "";
+    let chunks = [...parts];
+    chunks.splice(-1, 0, "and");
+    const partsString = chunks?.join(" ");
+    return `The next ${partsString} scan is after ${checkBackDate}.`;
+  }, [parts]);
+
   return (
     <>
       {availableRequirements ? (
@@ -157,7 +172,7 @@ export default function ScanProgress() {
               </>
             }
           />
-          {availableRequirements.length > 0 ? (
+          {showCarousel ? (
             <UploadContainer
               requirements={availableRequirements || []}
               progress={progress}
@@ -167,7 +182,7 @@ export default function ScanProgress() {
             />
           ) : (
             <OverlayWithText
-              text={`The next scan is after ${checkBackDate}.`}
+              text={nextScanText}
               button={
                 <Button mt={8} variant="default" onClick={() => router.replace("/analysis")}>
                   See the latest analysis

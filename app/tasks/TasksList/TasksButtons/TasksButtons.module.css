@@ -1,7 +1,7 @@
 .container {
   flex-wrap: nowrap;
   gap: rem(12);
-  flex: 1;
+  width: 100%;
 }
 
 .button {

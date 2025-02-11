@@ -24,7 +24,9 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
     .filter((rec) => typeof rec !== "number")
     .filter(Boolean);
 
-  const partKeys = Object.keys(potentialRecord).filter((v) => v !== "overall");
+  const partKeys = Object.entries(potentialRecord)
+    .filter(([key, value]) => key !== "overall" && Boolean(value))
+    .map((g) => g[0]);
 
   const explanations = useMemo(
     () =>
@@ -59,7 +61,7 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
     () =>
       partValues.map((obj, i) =>
         Object.entries((obj as ProgressType).scores)
-          .filter(([key]) => key === "overall")
+          .filter(([key, _]) => key === "overall")
           .map(([key, value]) => [
             {
               label: partKeys[i],
@@ -70,6 +72,8 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
       ),
     [partValues.length]
   );
+
+  console.log("overalls", overalls);
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
