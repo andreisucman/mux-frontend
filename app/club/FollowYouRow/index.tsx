@@ -13,7 +13,7 @@ type Props = {
 };
 
 function FollowYouRow({ data }: Props) {
-  const { _id, name, avatar, scores } = data;
+  const { name, avatar, scores } = data;
 
   const headScore = scores.headTotalProgress;
   const bodyScore = scores.bodyTotalProgress;

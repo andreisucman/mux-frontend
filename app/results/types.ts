@@ -1,4 +1,4 @@
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { ProgressImageType, TypeEnum } from "@/types/global";
 
 export type SimpleProgressType = {

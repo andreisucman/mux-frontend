@@ -13,21 +13,10 @@ import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
   data: SimpleBeforeAfterType;
-  minHeight: number;
 };
 
-export default function ComparisonCarousel({ data, minHeight }: Props) {
-  const {
-    userName,
-    part,
-    images,
-    initialImages,
-    initialDate,
-    updatedAt,
-    avatar,
-    latestHeadScoreDifference,
-    latestBodyScoreDifference,
-  } = data;
+export default function ComparisonCarousel({ data }: Props) {
+  const { userName, part, images, initialImages, initialDate, updatedAt, avatar } = data;
 
   const [slides, setSlides] = useState<React.ReactNode[]>();
 
@@ -83,7 +72,6 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
         <Carousel
           slideSize={{ base: "50%" }}
           align="start"
-          withControls
           slidesToScroll={2}
           withIndicators={slides && slides.length > 2}
           className={classes.carousel}
@@ -92,17 +80,12 @@ export default function ComparisonCarousel({ data, minHeight }: Props) {
             root: classes.carouselRoot,
             control: "carouselControl",
           }}
+          withControls
         >
           {slides}
         </Carousel>
 
-        <CardMetaPanel
-          name={userName || ""}
-          avatar={avatar}
-          formattedDate={formattedDate}
-          headProgress={latestHeadScoreDifference}
-          bodyProgress={latestBodyScoreDifference}
-        />
+        <CardMetaPanel name={userName || ""} avatar={avatar} formattedDate={formattedDate} />
       </Stack>
     </Skeleton>
   );

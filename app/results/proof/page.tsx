@@ -25,20 +25,18 @@ export default function ResultsProof() {
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const sort = searchParams.get("sort") || "-createdAt";
 
   const handleFetchProof = useCallback(
-    async ({ type, part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
+    async ({ part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
       const data = await fetchUsersProof({
         concern,
         part,
         query,
         sort,
-        type,
         currentArrayLength: currentArray?.length || 0,
         skip,
       });
@@ -56,8 +54,8 @@ export default function ResultsProof() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProof({ type, part, sort, concern, query });
-  }, [status, type, part, sort, concern, query]);
+    handleFetchProof({ part, sort, concern, query });
+  }, [status, part, sort, concern, query]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>

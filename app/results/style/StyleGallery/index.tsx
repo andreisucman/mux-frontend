@@ -43,7 +43,6 @@ export default function StyleGallery({
 }: Props) {
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type");
   const styleName = searchParams.get("styleName");
 
   const modelObject = styles && styles[0];
@@ -81,7 +80,6 @@ export default function StyleGallery({
               currentArray: styles,
               followingUserName: userName,
               styleName,
-              type,
             })
           }
           hasMore={hasMore}

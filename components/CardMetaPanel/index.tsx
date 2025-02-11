@@ -9,20 +9,11 @@ import classes from "./CardMetaPanel.module.css";
 type Props = {
   avatar?: { [key: string]: any } | null;
   name: string | null;
-  headProgress: number;
-  bodyProgress: number;
   formattedDate: string;
   customStyles?: { [key: string]: any };
 };
 
-export default function CardMetaPanel({
-  avatar,
-  name,
-  formattedDate,
-  headProgress,
-  bodyProgress,
-  customStyles,
-}: Props) {
+export default function CardMetaPanel({ avatar, name, formattedDate, customStyles }: Props) {
   return (
     <UnstyledButton
       className={classes.container}
@@ -36,17 +27,9 @@ export default function CardMetaPanel({
           {name}
         </Text>
       </Group>
-      {headProgress !== undefined && bodyProgress !== undefined && (
-        <Group className={classes.scoreWrapper}>
-          {headProgress !== undefined && (
-            <ScoreCell icon={<IconMoodSmile className="icon" />} score={headProgress} />
-          )}
-          {bodyProgress !== undefined && (
-            <ScoreCell icon={<IconMan className="icon" />} score={bodyProgress} />
-          )}
-        </Group>
-      )}
-      <Text size="sm" c="dimmed">{formattedDate}</Text>
+      <Text size="sm" c="dimmed">
+        {formattedDate}
+      </Text>
     </UnstyledButton>
   );
 }

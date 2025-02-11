@@ -25,7 +25,7 @@ type Props = {
 export default function ClubStyle(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
-  
+
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [styles, setStyles] = useState<SimpleStyleType[]>();
@@ -35,13 +35,11 @@ export default function ClubStyle(props: Props) {
 
   const isSelf = name === userName;
 
-  const type = searchParams.get("type");
   const styleName = searchParams.get("styleName");
 
   const handleFetchUsersStyles = useCallback(
-    async ({ type, currentArray, styleName, skip, followingUserName }: HandleFetchStyleProps) => {
+    async ({ currentArray, styleName, skip, followingUserName }: HandleFetchStyleProps) => {
       const items = await fetchUsersStyle({
-        type,
         styleName,
         currentArrayLength: currentArray?.length || 0,
         followingUserName,
@@ -79,8 +77,8 @@ export default function ClubStyle(props: Props) {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchUsersStyles({ type, styleName, followingUserName: userName });
-  }, [status, type, styleName, userName]);
+    handleFetchUsersStyles({ styleName, followingUserName: userName });
+  }, [status, styleName, userName]);
 
   return (
     <ClubModerationLayout pageType="style" userName={userName}>

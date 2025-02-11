@@ -1,4 +1,5 @@
-import { PartEnum } from "@/context/UploadPartsChoicesContext/types";
+
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { DemographicsType, ProgressImageType, TypeEnum, UserConcernType } from "@/types/global";
 
 export type SimpleBeforeAfterType = {
@@ -18,6 +19,4 @@ export type SimpleBeforeAfterType = {
   concerns: UserConcernType[];
   avatar: { [key: string]: any } | null;
   userName: string | null;
-  latestBodyScoreDifference: number;
-  latestHeadScoreDifference: number;
 };

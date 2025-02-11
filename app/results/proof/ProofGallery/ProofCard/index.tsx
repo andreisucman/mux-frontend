@@ -121,13 +121,7 @@ function ProofCard({
             isLite ? (
               <></>
             ) : (
-              <CardMetaPanel
-                avatar={avatar}
-                name={userName}
-                formattedDate={formattedDate}
-                bodyProgress={latestBodyScoreDifference || 0}
-                headProgress={latestFaceScoreDifference || 0}
-              />
+              <CardMetaPanel avatar={avatar} name={userName} formattedDate={formattedDate} />
             )
           }
         />

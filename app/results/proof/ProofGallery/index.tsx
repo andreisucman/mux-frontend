@@ -41,7 +41,6 @@ export default function ProofGallery({
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const query = searchParams.get("query");
@@ -62,7 +61,7 @@ export default function ProofGallery({
         showFooter={isPublicPage && !isSelf}
       />
     ),
-    [type, part, concern, isMobile, isSelf, appliedBlurType]
+    [part, concern, isMobile, isSelf, appliedBlurType]
   );
 
   return (
@@ -79,7 +78,6 @@ export default function ProofGallery({
               userName,
               currentArray: proof,
               concern,
-              type,
               part,
               query,
               sort,

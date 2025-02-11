@@ -1,9 +1,0 @@
-.container {
-  flex: 1;
-  position: relative;
-}
-
-.responsive {
-  position: absolute;
-  inset: 0;
-}

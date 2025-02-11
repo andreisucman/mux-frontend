@@ -21,7 +21,6 @@ export default function AllProof() {
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type");
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
@@ -32,7 +31,6 @@ export default function AllProof() {
 
   const handleFetchProof = useCallback(
     async ({
-      type,
       part,
       ethnicity,
       sex,
@@ -47,7 +45,6 @@ export default function AllProof() {
         concern,
         part,
         query,
-        type,
         ethnicity,
         sex,
         ageInterval,
@@ -68,7 +65,6 @@ export default function AllProof() {
 
   useEffect(() => {
     handleFetchProof({
-      type,
       part,
       ageInterval,
       ethnicity,
@@ -78,7 +74,7 @@ export default function AllProof() {
       query,
       sort,
     });
-  }, [status, type, part, concern, query, ageInterval, ethnicity, sex]);
+  }, [status, part, concern, query, ageInterval, ethnicity, sex]);
 
   return (
     <Stack className={"mediumPage"} flex={1}>

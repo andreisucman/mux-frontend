@@ -41,8 +41,6 @@ function StyleCard({
     isPublic,
     userName,
     avatar,
-    latestHeadScoreDifference,
-    latestBodyScoreDifference,
   } = data;
 
   const title = useMemo(() => {
@@ -82,15 +80,7 @@ function StyleCard({
         />
         {showVotes && <VotesCountIndicator votes={votes} />}
       </div>
-      {showMeta && (
-        <CardMetaPanel
-          name={userName}
-          avatar={avatar}
-          formattedDate={formattedDate}
-          bodyProgress={latestBodyScoreDifference}
-          headProgress={latestHeadScoreDifference}
-        />
-      )}
+      {showMeta && <CardMetaPanel name={userName} avatar={avatar} formattedDate={formattedDate} />}
     </Skeleton>
   );
 }

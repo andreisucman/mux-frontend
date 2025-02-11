@@ -22,14 +22,12 @@ export default function AllStyle() {
   const [hasMore, setHasMore] = useState(false);
 
   const sex = searchParams.get("sex");
-  const type = searchParams.get("type") || "head";
   const styleName = searchParams.get("styleName");
   const ageInterval = searchParams.get("ageInterval");
   const ethnicity = searchParams.get("ethnicity");
 
   const handleFetchStyles = useCallback(
     async ({
-      type,
       styleName,
       skip,
       currentArray,
@@ -39,7 +37,6 @@ export default function AllStyle() {
     }: HandleFetchStyleProps) => {
       try {
         const styles = await fetchStyle({
-          type,
           styleName,
           currentArrayLength: currentArray?.length || 0,
           ethnicity,
@@ -81,8 +78,8 @@ export default function AllStyle() {
   }, []);
 
   useEffect(() => {
-    handleFetchStyles({ type, styleName, sex, ageInterval, ethnicity });
-  }, [type, styleName, sex, ageInterval, ethnicity]);
+    handleFetchStyles({ styleName, sex, ageInterval, ethnicity });
+  }, [styleName, sex, ageInterval, ethnicity]);
 
   return (
     <Stack className={"mediumPage"} flex={1}>

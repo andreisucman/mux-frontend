@@ -95,9 +95,7 @@ export default function BeforeAftersPage() {
   );
 
   const memoizedComparisonCarousel = useCallback(
-    (props: any) => (
-      <ComparisonCarousel data={props.data} key={props.index} minHeight={width * 0.75} />
-    ),
+    (props: any) => <ComparisonCarousel data={props.data} key={props.index} />,
     [searchParams.toString(), width]
   );
 
