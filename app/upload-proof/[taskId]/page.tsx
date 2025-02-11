@@ -2,7 +2,6 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconHourglassLow } from "@tabler/icons-react";
 import { Button, Skeleton, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -18,7 +17,6 @@ import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
-  saveToLocalStorage,
 } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { SexEnum, TaskType } from "@/types/global";
@@ -198,7 +196,6 @@ export default function UploadProof(props: Props) {
                 taskExpired={taskExpired}
                 instruction={requisite || ""}
                 uploadProof={uploadProof}
-                silhouette="/assets/silhouettes/rectangle.webp"
               />
             )}
             {componentToDisplay === "expired" && (

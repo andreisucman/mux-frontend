@@ -27,7 +27,7 @@ export default function SortConcerns() {
 
   const { concerns, nextRoutine } = userDetails || {};
 
-  let selectedConcerns: UserConcernType[] | null = useMemo(() => {
+  const selectedConcerns: UserConcernType[] | null = useMemo(() => {
     if (!concerns) return null;
     if (!nextRoutine) return null;
 
@@ -35,23 +35,30 @@ export default function SortConcerns() {
       .filter((obj) => obj.date !== null && new Date(obj.date) > new Date())
       .map((obj) => obj.part);
 
-    selectedConcerns = concerns.filter((obj) => !routineCreatedParts.includes(obj.part));
+    console.log("routineCreatedParts", routineCreatedParts);
 
-    if (selectedConcerns.length === 0) {
+    const remaining = concerns
+      .filter((obj) => !routineCreatedParts.includes(obj.part))
+      .filter((obj) => obj.part === part);
+
+    console.log("remaining", remaining);
+
+    if (remaining.length === 0) {
       const maintenanceConcernsToAdd = [];
 
       if (part) {
         maintenanceConcernsToAdd.push(...maintenanceConcerns.filter((c) => c.part === part));
       }
-      selectedConcerns.push(...maintenanceConcernsToAdd);
+
+      remaining.push(...maintenanceConcernsToAdd);
     }
 
-    return selectedConcerns;
+    return remaining;
   }, [userDetails, part]);
 
   const activeConcerns = useMemo(
     () => selectedConcerns?.filter((obj) => !obj.isDisabled),
-    [selectedConcerns?.length, part]
+    [selectedConcerns]
   );
 
   async function onButtonClick() {

@@ -7,6 +7,7 @@ type Props = {
   isLoading: boolean;
   progress?: number;
   description?: string;
+  title?:string;
   showDisclaimer?: boolean;
   loaderType?: "bars" | "oval";
   customStyles?: { [key: string]: any };
@@ -16,6 +17,7 @@ type Props = {
 export default function ProgressLoadingOverlay({
   isLoading,
   progress,
+  title,
   description,
   showDisclaimer,
   customStyles,
@@ -49,6 +51,7 @@ export default function ProgressLoadingOverlay({
             className={classes.container}
             style={customContainerStyles ? customContainerStyles : {}}
           >
+             {title && <Text>{title}</Text>}
             <Loader type={loaderType} />
             {text && <Text>{text}</Text>}
             {showDisclaimer && <Disclaimer />}

@@ -133,7 +133,6 @@ export type UserProgressRecordType = {
 
 export type UserConcernType = {
   name: string;
-  type: TypeEnum;
   part: PartEnum;
   explanation: string;
   importance: number;

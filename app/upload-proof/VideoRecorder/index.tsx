@@ -1,5 +1,11 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconRefresh, IconVideo } from "@tabler/icons-react";
+import {
+  IconCamera,
+  IconCameraRotate,
+  IconPlayerStopFilled,
+  IconRefresh,
+  IconVideo,
+} from "@tabler/icons-react";
 import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -19,7 +25,7 @@ type Props = {
   sex: SexEnum;
   taskExpired: boolean;
   instruction: string;
-  silhouette: string;
+  silhouette?: string;
   uploadProof: (props: any) => Promise<void>;
 };
 
@@ -156,8 +162,14 @@ export default function VideoRecorder({
       const url = URL.createObjectURL(blob);
       setRecordedBlob(blob);
       setOriginalUrl(url);
-      setLocalUrl(url);
       saveVideo(blob);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result as string;
+        setLocalUrl(base64data);
+      };
 
       if (videoRef.current) {
         videoRef.current.pause();

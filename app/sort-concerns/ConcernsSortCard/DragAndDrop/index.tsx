@@ -57,7 +57,7 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
           <ActionIcon
             variant="default"
             disabled={disabled}
-            mt={rem(4)}
+            mt={rem(12)}
             onClick={() => {
               handleUpdateConcern({ ...item, isDisabled: !item.isDisabled });
             }}

@@ -29,7 +29,7 @@ export default function ResultDisplayContainer({
 
   return (
     <div className={classes.container}>
-      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress} />
+      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress} title="Blur in progress" />
       {captureType === "image" && imageExtension && (
         <NextImage src={url} className={classes.image} width={300} height={533} alt="" />
       )}

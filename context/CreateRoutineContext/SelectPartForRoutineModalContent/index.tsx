@@ -35,9 +35,11 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
       )}
       {parts.map((part, index) => {
         const { part: key, date } = part;
+
         const isCooldown = date && new Date(date) > new Date();
         const icon = partIcons[key];
         const text = upperFirst(key);
+
         const render = !!isCooldown ? (
           <Timer date={date} children={<Group gap={8}>{icon} Next after</Group>} showDays />
         ) : (
@@ -45,12 +47,13 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
             {icon} {text}
           </Group>
         );
+
         return (
           <Button
             variant="default"
             key={index}
             disabled={!!isCooldown}
-            onClick={() => handleClick("/sort-concerns")}
+            onClick={() => handleClick(`/sort-concerns?part=${key}`)}
           >
             {render}
           </Button>

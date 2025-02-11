@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { IconArrowBackUp } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import BlurButtons from "@/components/BlurButtons";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -46,7 +46,7 @@ export default function VideoRecorderResult({
   handleResetRecording,
 }: Props) {
   const blurContext = useContext(BlurChoicesContext);
-  const { blurType, setBlurType } = blurContext;
+  const { blurType } = blurContext;
   const [isBlurLoading, setIsBlurLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -215,7 +215,7 @@ export default function VideoRecorderResult({
           className={classes.button}
           style={{ flex: 0, minWidth: rem(40) }}
         >
-          <IconArrowBackUp className="icon" />
+          <IconX className="icon" />
         </ActionIcon>
         <Button onClick={handleSubmit} className={classes.button} disabled={isBlurLoading}>
           Upload

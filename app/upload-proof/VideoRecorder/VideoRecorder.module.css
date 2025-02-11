@@ -7,7 +7,6 @@
 
   flex: 1;
   width: 100%;
-  aspect-ratio: 9 / 16;
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
 }

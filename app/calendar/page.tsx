@@ -10,13 +10,11 @@ import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import DateSelector from "@/components/DateSelector";
 import OverlayWithText from "@/components/OverlayWithText";
-import { typeItems } from "@/components/PageHeader/data";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { useRouter } from "@/helpers/custom-router";
-import { typeIcons } from "@/helpers/icons";
 import { TaskStatusEnum, TaskType, UserDataType } from "@/types/global";
 import BulkUpdateButtons from "./BulkUpdateButtons";
 import CalendarRow from "./CalendarRow";
@@ -29,8 +27,6 @@ type LoadTasksProps = {
   dateFrom: string | null;
   dateTo: string | null;
   status: string | null;
-  routineId?: string;
-  type?: string;
   key?: string;
   mode: string;
   timeZone: string;
@@ -41,7 +37,6 @@ export default function Calendar() {
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const type = searchParams.get("type") || "head";
   const givenTaskKey = searchParams.get("key");
   const givenMode = searchParams.get("mode");
   const dateFrom = searchParams.get("dateFrom");
@@ -60,12 +55,7 @@ export default function Calendar() {
     givenTaskKey as string
   );
 
-  const { routines, timeZone } = userDetails || {};
-
-  const relevantRoutine = useMemo(
-    () => routines?.find((routine) => routine.type === type),
-    [type, routines?.length]
-  );
+  const { timeZone } = userDetails || {};
 
   const keysToBeDeleted = useMemo(
     () =>
@@ -110,17 +100,16 @@ export default function Calendar() {
         const newTasks = tasks?.filter((t) => t.key === taskKey) || [];
         setSelectedTasks(newTasks);
       } else if (mode === "all") {
-        if (!relevantRoutine || !originalTasks) return;
+        if (!originalTasks) return;
         setTasks(originalTasks);
         setSelectedTasks(originalTasks);
       }
     },
-    [timeZone, tasks, originalTasks, relevantRoutine]
+    [timeZone, tasks, originalTasks]
   );
 
   const handleChangeStatus = useCallback(
     (status: TaskStatusEnum, taskKey?: string) => {
-      if (!relevantRoutine) return;
       if (!timeZone) return;
 
       setSelectedStatus(status);
@@ -128,8 +117,6 @@ export default function Calendar() {
       loadTasks({
         status,
         key: taskKey,
-        type: type as string,
-        routineId: relevantRoutine._id,
         mode: mode as string,
         dateFrom,
         dateTo,
@@ -156,11 +143,11 @@ export default function Calendar() {
         }
       });
     },
-    [relevantRoutine?._id, timeZone, type, mode, selectedDate, dateFrom, dateTo]
+    [timeZone, mode, selectedDate, dateFrom, dateTo]
   );
 
   const loadTasks = useCallback(
-    async ({ dateFrom, dateTo, status, key, mode, timeZone, routineId }: LoadTasksProps) => {
+    async ({ dateFrom, dateTo, status, key, mode, timeZone }: LoadTasksProps) => {
       setDisplayComponent("loading");
 
       try {
@@ -172,7 +159,6 @@ export default function Calendar() {
         if (key) parts.push(`key=${key}`);
         if (mode) parts.push(`mode=${mode}`);
         if (finalStatus) parts.push(`status=${finalStatus}`);
-        if (routineId) parts.push(`routineId=${routineId}`);
         if (timeZone) parts.push(`timeZone=${timeZone}`);
         if (dateFrom) parts.push(`dateFrom=${dateFrom}`);
         if (dateTo) parts.push(`dateTo=${dateTo}`);
@@ -243,7 +229,7 @@ export default function Calendar() {
         setLoadingType(undefined);
       }
     },
-    [loadingType, type]
+    [loadingType]
   );
 
   const getTasksOfThisDate = useCallback(
@@ -263,7 +249,7 @@ export default function Calendar() {
 
       return filteredTasks;
     },
-    [type]
+    []
   );
 
   const handleSelectDate = useCallback(
@@ -288,7 +274,7 @@ export default function Calendar() {
       setSelectedDate(isSameDate ? null : newDate);
       setSelectedTasks(newTasks);
     },
-    [selectedStatus, selectedDate, tasks, type]
+    [selectedStatus, selectedDate, tasks]
   );
 
   const resetMode = useCallback(() => {
@@ -306,7 +292,7 @@ export default function Calendar() {
         setTasksToUpdate([]);
       }
     },
-    [mode, selectedTaskKey, timeZone, relevantRoutine?._id]
+    [mode, selectedTaskKey, timeZone]
   );
 
   const redirectToTask = useCallback((taskId: string) => {
@@ -327,19 +313,11 @@ export default function Calendar() {
 
   useShallowEffect(() => {
     if (!timeZone) return;
-    if (!relevantRoutine) {
-      setSelectedTasks([]);
-      setTasks([]);
-      setDisplayComponent("list");
-      return;
-    }
     setTasks(undefined);
 
     loadTasks({
       status: selectedStatus,
       key: selectedTaskKey,
-      type: type as string,
-      routineId: relevantRoutine._id,
       mode: mode as string,
       dateFrom,
       dateTo,
@@ -349,7 +327,7 @@ export default function Calendar() {
       setOriginalTasks(tasks);
       setSelectedTasks(tasks);
     });
-  }, [relevantRoutine, timeZone, type, dateFrom, dateTo]);
+  }, [timeZone, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!givenTaskKey) return;
@@ -361,9 +339,6 @@ export default function Calendar() {
       <PageHeaderWithReturn
         title="My calendar"
         isDisabled={mode === "individual"}
-        filterData={typeItems}
-        icons={typeIcons}
-        selectedValue={type}
         children={<DateSelector />}
         showReturn
         nowrap
@@ -392,33 +367,27 @@ export default function Calendar() {
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]:
-                selectedStatus === TaskStatusEnum.ACTIVE && !!relevantRoutine,
+              [classes.selectedButton]: selectedStatus === TaskStatusEnum.ACTIVE,
             })}
             onClick={() => handleShowByStatus(TaskStatusEnum.ACTIVE)}
-            disabled={!relevantRoutine}
           >
             <IconActivity className={"icon"} />
           </ActionIcon>
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]:
-                selectedStatus === TaskStatusEnum.CANCELED && !!relevantRoutine,
+              [classes.selectedButton]: selectedStatus === TaskStatusEnum.CANCELED,
             })}
             onClick={() => handleShowByStatus(TaskStatusEnum.CANCELED)}
-            disabled={!relevantRoutine}
           >
             <IconCancel className={"icon"} />
           </ActionIcon>
           <ActionIcon
             variant="default"
             className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]:
-                selectedStatus === TaskStatusEnum.EXPIRED && !!relevantRoutine,
+              [classes.selectedButton]: selectedStatus === TaskStatusEnum.EXPIRED,
             })}
             onClick={() => handleShowByStatus(TaskStatusEnum.EXPIRED)}
-            disabled={!relevantRoutine}
           >
             <IconClock className={"icon"} />
           </ActionIcon>
