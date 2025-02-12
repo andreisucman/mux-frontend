@@ -57,7 +57,7 @@ export default function InputWithCheckboxes({ data, uploadedParts, setParts }: P
     <Combobox store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
       <Combobox.DropdownTarget>
         <PillsInput pointer onClick={() => combobox.toggleDropdown()} flex={1}>
-          <Pill.Group>
+          <Pill.Group style={{ flexWrap: "nowrap" }}>
             {values.length > 0 ? values : <Input.Placeholder>Pick parts to scan</Input.Placeholder>}
             <Combobox.EventsTarget>
               <PillsInput.Field

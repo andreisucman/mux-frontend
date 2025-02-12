@@ -13,7 +13,6 @@ const titles = [
 
 type Props = {
   children?: React.ReactNode;
-
 };
 
 function ScanHeader({ children }: Props) {
@@ -25,7 +24,11 @@ function ScanHeader({ children }: Props) {
         <ActionIcon variant="default" onClick={() => router.back()}>
           <IconChevronLeft className="icon" />
         </ActionIcon>
-        <TitleDropdown titles={titles} customDropdownStyles={{ minWidth: rem(210) }} />
+        <TitleDropdown
+          titles={titles}
+          customDropdownStyles={{ minWidth: rem(210) }}
+          customHeadStyles={{ marginRight: "unset" }}
+        />
         {children}
       </Group>
     </Group>

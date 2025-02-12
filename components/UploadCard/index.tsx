@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
+import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
 import BlurButtons from "@/components/BlurButtons";
@@ -57,6 +57,8 @@ export default function UploadCard({
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [localUrl, setLocalUrl] = useState("");
+
+  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const disableUpload =
     (blurType === "eyes" && !eyesBlurredUrl) ||
@@ -127,7 +129,8 @@ export default function UploadCard({
       ),
       closeOnClickOutside: false,
       size: "xl",
-      classNames: { body: classes.body },
+      fullScreen: isMobile,
+      classNames: { body: classes.body, content: classes.content },
       innerProps: (
         <PhotoCapturer handleCapture={loadLocally} silhouette={relevantSilhouette?.url || ""} />
       ),

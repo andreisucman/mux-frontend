@@ -52,12 +52,22 @@
 }
 
 .body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
   padding: 0;
   aspect-ratio: 16/9;
 
   @media (max-width: $mantine-breakpoint-sm) {
     aspect-ratio: 9/16;
   }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  
 }
 
 .progressCell {

@@ -150,7 +150,7 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
         <div
           className={classes.silhouetteOverlay}
           style={{
-            mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
+            mask: `url('${silhouette}') center/cover no-repeat, linear-gradient(#000 0 0)`,
             maskComposite: "exclude",
           }}
         />
