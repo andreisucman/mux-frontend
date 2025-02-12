@@ -19,9 +19,10 @@ import classes from "./TasksButtons.module.css";
 
 type Props = {
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
+  disableCreateTask?: boolean;
 };
 
-export default function TasksButtons({ handleSaveTask }: Props) {
+export default function TasksButtons({ handleSaveTask, disableCreateTask }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
@@ -69,6 +70,7 @@ export default function TasksButtons({ handleSaveTask }: Props) {
       )}
       <Button
         className={classes.button}
+        disabled={disableCreateTask}
         variant="default"
         size="xs"
         onClick={() => openCreateNewTask({ handleSaveTask, onCreateRoutineClick, timeZone })}

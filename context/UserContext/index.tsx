@@ -84,13 +84,10 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!code) return;
 
     const state = searchParams.get("state");
-    const decodedState = decodeURIComponent(state || "") || "{}";
-    const parsedState = JSON.parse(decodedState);
 
     authenticate({
-      code,
       state,
-      referrer: parsedState.referrer,
+      code,
       router,
       setStatus,
       setUserDetails,

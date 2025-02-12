@@ -87,7 +87,6 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       authenticate({
         email,
         password,
-        referrer: stateObject.referrer,
         state,
         router,
         setStatus,

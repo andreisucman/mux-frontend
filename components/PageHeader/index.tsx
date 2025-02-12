@@ -66,18 +66,6 @@ export default function PageHeader({
       {onFilterClick && (
         <FilterButton onFilterClick={onFilterClick} activeFiltersCount={activeFiltersCount} />
       )}
-      {!hideTypeDropdown && (
-        <FilterDropdown
-          data={typeItems}
-          icons={typeIcons}
-          filterType="type"
-          placeholder="Filter by type"
-          selectedValue={type}
-          onSelect={onSelect}
-          isDisabled={isDisabled}
-          addToQuery
-        />
-      )}
       {!hidePartDropdown && relevantParts.length > 0 && (
         <FilterDropdown
           data={relevantParts}

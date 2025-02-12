@@ -73,7 +73,7 @@ export default function TasksList({ customStyles }: Props) {
     if (!nextScan) return;
 
     const neverScanned = nextScan.every((r) => !r.date);
-    const allPassed = nextScan.every((r) => new Date() > new Date(r.date || 0));
+    const allPassed = nextScan.every((r) => r.date && new Date() > new Date(r.date || 0));
 
     if (neverScanned) {
       setScanOverlayButtonText("Scan");
@@ -111,6 +111,7 @@ export default function TasksList({ customStyles }: Props) {
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <TasksButtons
+        disableCreateTask={showScanOverlay}
         handleSaveTask={(props: HandleSaveTaskProps) =>
           saveTaskFromDescription({ ...props, setDisplayComponent })
         }

@@ -69,7 +69,7 @@ export default function UploadContainer({
   const somethingUploaded = slides && slides.length === 0 && toAnalyze && toAnalyze.length > 0;
 
   useShallowEffect(() => {
-    if (somethingUploaded && requirements.length > 0) {
+    if (somethingUploaded) {
       setDisplayComponent("partialScanOverlay");
     } else if (parts?.length === 0) {
       setDisplayComponent("empty");

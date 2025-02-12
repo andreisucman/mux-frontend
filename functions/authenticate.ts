@@ -1,5 +1,4 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
@@ -9,7 +8,6 @@ type AuthenticateProps = {
   code?: string;
   state: string | null;
   email?: string;
-  referrer: ReferrerEnum;
   password?: string;
   router: AppRouterInstance;
   setStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>>;
@@ -20,7 +18,6 @@ const authenticate = async ({
   code,
   state,
   router,
-  referrer,
   email,
   password,
   setStatus,
@@ -39,7 +36,6 @@ const authenticate = async ({
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         localUserId,
         email,
-        referrer,
         password,
       },
     });

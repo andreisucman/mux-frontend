@@ -10,7 +10,10 @@ type Props = {
 };
 
 function useCheckScanAvailability({ parts, nextScan, requiredProgress }: Props) {
-  let result: { availableRequirements: RequirementType[] | undefined; checkBackDate: string | null } = {
+  let result: {
+    availableRequirements: RequirementType[] | undefined;
+    checkBackDate: string | null;
+  } = {
     availableRequirements: undefined,
     checkBackDate: formatDate({ date: new Date() }),
   };
@@ -35,11 +38,7 @@ function useCheckScanAvailability({ parts, nextScan, requiredProgress }: Props) 
   result.availableRequirements = result.availableRequirements.filter((tr) =>
     availablePartsKeys.includes(tr.part)
   );
-
-  const date =
-    nextScan && nextScan.length
-      ? Math.min(...nextScan.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
-      : null;
+  const date = Math.min(...nextScan.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)));
 
   result.checkBackDate = formatDate({ date: new Date(date || Infinity) });
 

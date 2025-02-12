@@ -22,7 +22,7 @@ type Props = {
 
 export default function SexSelector({ updateOnServer }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { demographics, email } = userDetails || {};
+  const { demographics, _id: userId } = userDetails || {};
   const { sex } = demographics || {};
 
   const handleChangeSex = useCallback(
@@ -32,10 +32,10 @@ export default function SexSelector({ updateOnServer }: Props) {
         demographics: { ...(prev || {}).demographics, sex: value },
       }));
 
-      if (updateOnServer && !email)
-        callTheServer({ endpoint: "updateSex", method: "POST", body: { sex } });
+      if (updateOnServer)
+        callTheServer({ endpoint: "updateSex", method: "POST", body: { sex, userId } });
     },
-    [demographics]
+    [demographics, userId]
   );
 
   return (

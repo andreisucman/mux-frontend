@@ -149,11 +149,11 @@ export default function ScanProgress() {
   const nextScanText = useMemo(() => {
     if (!parts) return "";
     let chunks = [...parts];
-    if (chunks.length > 0) {
+    if (chunks.length > 1) {
       chunks.splice(-1, 0, "and");
-      const partsString = chunks?.join(" ");
-      return `The next ${partsString} scan is after ${checkBackDate}.`;
     }
+    const partsString = chunks?.join(" ");
+    return `The next ${partsString} scan is after ${checkBackDate}.`;
   }, [parts]);
 
   return (

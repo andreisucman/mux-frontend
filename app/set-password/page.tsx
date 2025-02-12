@@ -32,6 +32,7 @@ export default function SetPassword() {
     deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
     setUserDetails(null);
+    
 
     if (protectedPaths.includes(pathname)) {
       router.replace("/auth");

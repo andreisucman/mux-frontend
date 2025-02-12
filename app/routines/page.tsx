@@ -11,7 +11,6 @@ import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import fetchRoutines from "@/functions/fetchRoutines";
-import fetchUserData from "@/functions/fetchUserData";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
@@ -51,7 +50,7 @@ export default function ClubRoutines() {
   const [scanOverlayMessage, setScanOverlayMessage] = useState("");
   const [pageLoaded, setPageLoaded] = useState(false);
 
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const { nextScan, timeZone, specialConsiderations } = userDetails || {};
 
   const status = searchParams.get("status") || "active";
@@ -124,7 +123,7 @@ export default function ClubRoutines() {
     if (!nextScan) return;
 
     const neverScanned = nextScan.every((r) => !r.date);
-    const allPassed = nextScan.every((r) => new Date() > new Date(r.date || 0));
+    const allPassed = nextScan.every((r) => r.date && new Date() > new Date(r.date || 0));
 
     if (neverScanned) {
       setScanOverlayButtonText("Scan");
@@ -175,6 +174,7 @@ export default function ClubRoutines() {
           maxLength={300}
         />
         <TasksButtons
+          disableCreateTask={showScanOverlay}
           handleSaveTask={(props: HandleSaveTaskProps) =>
             saveTaskFromDescription({ ...props, setDisplayComponent })
           }
