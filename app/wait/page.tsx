@@ -46,8 +46,6 @@ export default function WaitPage() {
   );
 
   const onError = useCallback(() => {
-    setUserDetails(null);
-    deleteFromLocalStorage("userDetails");
     deleteFromLocalStorage("runningAnalyses", operationKey || "progress");
   }, [operationKey]);
 
