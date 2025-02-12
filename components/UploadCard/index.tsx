@@ -13,7 +13,6 @@ import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { placeholders } from "@/data/placeholders";
-import { silhouettes } from "@/data/silhouettes";
 import { OnBlurClickProps } from "@/functions/blur";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import getPlaceholderOrOverlay from "@/helpers/getPlaceholderOrSilhouette";
@@ -73,11 +72,6 @@ export default function UploadCard({
     [sex, part, position, scanType, placeholders]
   );
 
-  const relevantSilhouette = useMemo(
-    () => getPlaceholderOrOverlay({ sex, part, position, scanType, data: silhouettes }),
-    [sex, part, position, scanType]
-  );
-
   const loadLocally = useCallback(
     async (base64string: string) => {
       if (!base64string) return;
@@ -131,11 +125,9 @@ export default function UploadCard({
       size: "xl",
       fullScreen: isMobile,
       classNames: { body: classes.body, content: classes.content },
-      innerProps: (
-        <PhotoCapturer handleCapture={loadLocally} silhouette={relevantSilhouette?.url || ""} />
-      ),
+      innerProps: <PhotoCapturer handleCapture={loadLocally} />,
     });
-  }, [loadLocally, relevantSilhouette, width, height]);
+  }, [loadLocally, width, height]);
 
   return (
     <Stack className={classes.container}>

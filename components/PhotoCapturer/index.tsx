@@ -8,7 +8,6 @@ import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
 
 type Props = {
-  silhouette: string;
   hideTimerButton?: boolean;
   handleCapture: (base64string: string) => void;
 };
@@ -16,7 +15,7 @@ type Props = {
 const TIMER_SECONDS = 5;
 const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
-export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButton }: Props) {
+export default function PhotoCapturer({ handleCapture, hideTimerButton }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -146,15 +145,6 @@ export default function PhotoCapturer({ handleCapture, silhouette, hideTimerButt
       })}
     >
       <video ref={videoRef} autoPlay muted></video>
-      {silhouette && (
-        <div
-          className={classes.silhouetteOverlay}
-          style={{
-            mask: `url('${silhouette}') center/${isMobile ? "cover" : "contain"} no-repeat, linear-gradient(#000 0 0)`,
-            maskComposite: "exclude",
-          }}
-        />
-      )}
       {timerStarted && (
         <div className={classes.timerOverlay}>
           <Text fz={40}>{secondsLeft}</Text>

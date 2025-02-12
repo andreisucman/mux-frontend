@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useRouter as useDefaultRouter } from "next/navigation";
 import { Button, rem, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -9,13 +9,11 @@ import PhotoCapturer from "@/components/PhotoCapturer";
 import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
 import CalorieGoalProvider, { CalorieGoalContext } from "@/context/CalorieGoalContext";
 import { UserContext } from "@/context/UserContext";
-import { silhouettes } from "@/data/silhouettes";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import foodImage from "@/public/assets/placeholders/food.svg";
-import { ScanTypeEnum } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import CalorieGoalController from "./CalorieGoal";
 import classes from "./food.module.css";
@@ -79,11 +77,6 @@ export default function ScanFoodPage() {
     }
   }, [localUrl, userDetails, calorieGoal]);
 
-  const silhouette = useMemo(
-    () => silhouettes.find((rec) => rec.scanType === ScanTypeEnum.FOOD),
-    []
-  );
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <ScanHeader />
@@ -108,7 +101,6 @@ export default function ScanFoodPage() {
         ) : (
           <PhotoCapturer
             handleCapture={(base64string: string) => setLocalUrl(base64string)}
-            silhouette={silhouette?.url || ""}
             hideTimerButton
           />
         )}

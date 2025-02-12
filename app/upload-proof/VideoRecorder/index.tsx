@@ -18,14 +18,12 @@ import { getSupportedMimeType } from "@/helpers/utils";
 import { SexEnum } from "@/types/global";
 import RecordingStatus from "./RecordingStatus";
 import VideoRecorderResult from "./VideoRecorderResult";
-import ResultDisplayContainer from "./VideoRecorderResult/ResultDisplayContainer";
 import classes from "./VideoRecorder.module.css";
 
 type Props = {
   sex: SexEnum;
   taskExpired: boolean;
   instruction: string;
-  silhouette?: string;
   uploadProof: (props: any) => Promise<void>;
 };
 
@@ -52,12 +50,7 @@ const segments = [
   },
 ];
 
-export default function VideoRecorder({
-  taskExpired,
-  instruction,
-  silhouette,
-  uploadProof,
-}: Props) {
+export default function VideoRecorder({ taskExpired, instruction, uploadProof }: Props) {
   const { blurType } = useContext(BlurChoicesContext);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
@@ -439,15 +432,6 @@ export default function VideoRecorder({
       {!originalUrl && (
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}
-          {silhouette && (
-            <div
-              className={classes.silhouetteOverlay}
-              style={{
-                mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
-                maskComposite: "exclude",
-              }}
-            />
-          )}
           <div className={classes.videoWrapper}>
             <video ref={videoRef} className={classes.video} autoPlay muted></video>
           </div>

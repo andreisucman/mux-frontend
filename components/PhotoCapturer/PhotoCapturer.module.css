@@ -23,15 +23,6 @@
   aspect-ratio: 16 / 9;
 }
 
-.silhouetteOverlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 .buttonGroup {
   position: absolute;
   right: rem(16);
