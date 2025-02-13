@@ -13,16 +13,16 @@ type Props = {
 
 export default function AnalysisCarousel({}: Props) {
   const { status, userDetails } = useContext(UserContext);
-  const { _id: userId, concerns, potential, latestProgress } = userDetails || {};
+  const { _id: userId, concerns, latestScores, latestProgress } = userDetails || {};
 
   const getSlides = useCallback(() => {
     const analysisCard = (
       <Carousel.Slide key={"analysisCard"}>
-        {potential && latestProgress && (
+        {latestScores && latestProgress && (
           <AnalysisCard
             title="Current condition"
             currentRecord={latestProgress}
-            potentialRecord={potential}
+            latestScores={latestScores}
           />
         )}
       </Carousel.Slide>

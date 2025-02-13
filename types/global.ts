@@ -48,12 +48,6 @@ export type ClubUserType = {
   _id: string;
   name: string;
   bio: ClubBioType;
-  scores: {
-    headCurrentScore: number;
-    headTotalProgress: number;
-    bodyCurrentScore: number;
-    bodyTotalProgress: number;
-  };
   avatar: { [key: string]: any };
 };
 
@@ -211,8 +205,8 @@ export interface UserDataType extends DefaultUserType {
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
   latestStyleAnalysis: StyleAnalysisType;
-  latestScores: LatestScoresType;
-  latestScoresDifference: LatestScoresType;
+  latestScores: FormattedRatingType;
+  latestScoresDifference: { [key: string]: number };
   tasks: TaskType[];
   routines: RoutineType[];
   coachEnergy: number;
@@ -254,7 +248,7 @@ export type ProgressType = {
   initialDate: string;
   images: ProgressImageType[];
   initialImages: ProgressImageType[];
-  scores: { [key: string]: any };
+  scores: FormattedRatingType;
   scoresDifference: { [key: string]: any };
   explanation: string;
   specialConsiderations: string | null;
@@ -300,8 +294,6 @@ export type StyleAnalysisType = {
   currentSuggestion: string;
   matchSuggestion: string;
   isPublic: boolean;
-  latestHeadScoreDifference: number;
-  latestBodyScoreDifference: number;
   analysis: { [key: string]: number } | null;
   compareAnalysis: { [key: string]: number } | null;
   userName: string | null;
@@ -384,14 +376,4 @@ export type TaskType = {
   isSubmitted: boolean;
   proofId: string;
   example: { type: string; url: string };
-};
-
-export type LatestScoresType = {
-  head: {
-    overall: number;
-    face: number;
-    mouth: number;
-    scalp: number;
-  } | null;
-  body: { overall: number; body: number } | null;
 };

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { IconMedal2 } from "@tabler/icons-react";
-import { Button, Group, Progress, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Progress, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import checkRewardCompletion from "@/helpers/checkRewardCompletion";
 import useShowSkeleton from "@/helpers/useShowSkeleton";

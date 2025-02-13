@@ -11,20 +11,21 @@ import classes from "./AnalysisCard.module.css";
 type Props = {
   title: string;
   currentRecord: { [key: string]: ProgressType | null | number };
-  potentialRecord: { [key: string]: FormattedRatingType | null | number };
+  latestScores: { [key: string]: FormattedRatingType | null | number };
 };
 
-export default function AnalysisCard({ title, currentRecord, potentialRecord }: Props) {
+export default function AnalysisCard({ title, currentRecord, latestScores }: Props) {
   const { height: containerHeight, ref } = useElementSize();
 
   const partValues = Object.values(currentRecord)
     .filter((rec) => typeof rec !== "number")
     .filter(Boolean);
-  const potentialPartValues = Object.values(potentialRecord)
+
+  const potentialPartValues = Object.values(latestScores)
     .filter((rec) => typeof rec !== "number")
     .filter(Boolean);
 
-  const partKeys = Object.entries(potentialRecord)
+  const partKeys = Object.entries(latestScores)
     .filter(([key, value]) => key !== "overall" && Boolean(value))
     .map((g) => g[0]);
 
@@ -45,12 +46,13 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
     () =>
       partValues.map((obj) =>
         Object.entries((obj as ProgressType).scores)
+          .filter(([_, value]) => typeof value === "number")
           .filter(([key]) => key !== "overall")
           .map(([key, value]) => [
             {
               label: key,
               value,
-              color: getRingColor(value),
+              color: getRingColor(value as number),
             },
           ])
       ),
@@ -61,12 +63,13 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
     () =>
       partValues.map((obj, i) =>
         Object.entries((obj as ProgressType).scores)
+          .filter(([_, value]) => typeof value === "number")
           .filter(([key, _]) => key === "overall")
           .map(([key, value]) => [
             {
               label: partKeys[i],
               value,
-              color: getRingColor(value),
+              color: getRingColor(value as number),
             },
           ])
       ),
@@ -83,9 +86,9 @@ export default function AnalysisCard({ title, currentRecord, potentialRecord }: 
           {rings.map((ringBlock, i) => (
             <RowBlock
               key={i}
-              ringsGroup={ringBlock}
+              ringsGroup={ringBlock as any}
               explanations={explanations[i]}
-              titleObject={overalls[i][0]}
+              titleObject={overalls[i][0] as any}
             />
           ))}
         </Stack>

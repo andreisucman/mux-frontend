@@ -101,6 +101,7 @@ export default function ScanFoodPage() {
         ) : (
           <PhotoCapturer
             handleCapture={(base64string: string) => setLocalUrl(base64string)}
+            silhouette="/plate.webp"
             hideTimerButton
           />
         )}

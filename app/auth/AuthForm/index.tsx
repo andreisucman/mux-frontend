@@ -38,6 +38,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
   const secondaryButtonText = showResetPassword ? "Return" : "Reset password";
+  const buttonText = showResetPassword ? "Reset password" : "Sign in with email";
 
   const handleEnterEmail = (e: React.FormEvent<HTMLInputElement>) => {
     if (emailError) setEmailError("");
@@ -111,7 +112,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             variant="default"
           >
             <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
-            Sign in
+            Sign in with Google
           </Button>
           <Text c="dimmed" size="xs" ta="center">
             or using email...
@@ -158,7 +159,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             </Text>
           )}
           <Button type="submit" className={classes.button}>
-            <IconMail className="icon" style={{ marginRight: rem(6) }} /> Reset password
+            <IconMail className="icon" style={{ marginRight: rem(6) }} /> {buttonText}
           </Button>
           <UnstyledButton
             className={classes.secondaryButton}

@@ -40,7 +40,9 @@ export default function RootLayout({ children }: Props) {
           rel="stylesheet"
         />
       </head>
-      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID!} />
+      {process.env.NEXT_PUBLIC_ENV !== "dev" && (
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID!} />
+      )}
       <body>
         <div className="bgPattern" />
         <MantineProvider theme={theme} defaultColorScheme="dark" forceColorScheme="dark">

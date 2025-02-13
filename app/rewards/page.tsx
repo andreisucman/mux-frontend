@@ -94,11 +94,10 @@ export default function Rewards() {
             });
             return;
           }
-          const newRewards = rewards?.map((rec) =>
-            rec._id === rewardId ? { ...rec, left: rec.left - 1 } : rec
-          );
-          setRewards(newRewards);
-          openSuccessModal({ description: response.message });
+          setRewards(response.message);
+          openSuccessModal({
+            description: `The reward has been added to your Club balance.`,
+          });
         }
       } catch (err) {
       } finally {
