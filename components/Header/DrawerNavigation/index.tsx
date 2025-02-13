@@ -96,17 +96,17 @@ const defaultAuthenticatedNavigation = [
 
 const legalLinks = [
   {
-    title: "Terms of Service",
+    title: "Terms",
     path: "/legal/terms",
     icon: <IconLicense stroke={1.25} className="icon icon__small" />,
   },
   {
-    title: "Privacy Policy",
+    title: "Privacy",
     path: "/legal/privacy",
     icon: <IconLicense stroke={1.25} className="icon icon__small" />,
   },
   {
-    title: "Club Agreement",
+    title: "Club",
     path: "/legal/club",
     icon: <IconLicense stroke={1.25} className="icon icon__small" />,
   },
@@ -208,6 +208,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         closeDrawer={closeDrawer}
         linkClicked={linkClicked}
         links={legalLinks}
+        customStyles={{ flexDirection: "row" }}
       />
     );
   }, [status, linkClicked]);

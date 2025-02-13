@@ -7,6 +7,7 @@ type Props = {
   showLowerDivider?: boolean;
   links: NavigationLinkType[];
   linkClicked: string;
+  customStyles?: { [key: string]: any };
   clickLink: (path: string) => void;
   closeDrawer: () => void;
 };
@@ -16,11 +17,12 @@ export default function NavigationStack({
   linkClicked,
   showUpperDivider,
   showLowerDivider,
+  customStyles,
   clickLink,
   closeDrawer,
 }: Props) {
   return (
-    <Stack>
+    <Stack style={customStyles || {}}>
       {showUpperDivider && <Divider />}
       {links.map((link, index) => (
         <LinkRow
