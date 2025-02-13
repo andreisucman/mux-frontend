@@ -63,10 +63,8 @@ export default function ClubDataContextProvider({ children }: Props) {
 
     if (!name) return;
 
-    const headCurrentScore = latestScores?.head?.overall || 0;
-    const bodyCurrentScore = latestScores?.body?.overall || 0;
-    const headTotalProgress = latestScoresDifference?.head?.overall || 0;
-    const bodyTotalProgress = latestScoresDifference?.body?.overall || 0;
+    const currentScore = latestScores?.currentScore || 0;
+    const totalProgress = latestScoresDifference?.overall || 0;
 
     const data: ClubUserType = {
       _id: userId as string,
@@ -74,10 +72,8 @@ export default function ClubDataContextProvider({ children }: Props) {
       bio: bio!,
       avatar: avatar!,
       scores: {
-        headCurrentScore,
-        headTotalProgress,
-        bodyCurrentScore,
-        bodyTotalProgress,
+        currentScore,
+        totalProgress,
       },
     };
 

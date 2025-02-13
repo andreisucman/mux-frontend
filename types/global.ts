@@ -49,6 +49,10 @@ export type ClubUserType = {
   name: string;
   bio: ClubBioType;
   avatar: { [key: string]: any };
+  scores: {
+    currentScore: number;
+    totalProgress: number;
+  };
 };
 
 export type DemographicsType = {

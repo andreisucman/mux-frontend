@@ -40,10 +40,10 @@ function ClubProfilePreview({
 }: Props) {
   const router = useRouter();
   const { scores, bio, name, avatar } = data || {};
-  const { headTotalProgress, bodyTotalProgress } = scores || {};
+  const { totalProgress } = scores || {};
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(true);
 
-  const progessExists = headTotalProgress !== undefined || bodyTotalProgress !== undefined;
+  const progessExists = totalProgress !== undefined;
   const rowStyle: { [key: string]: any } = {};
 
   const redirectToProgress = useCallback(() => {
@@ -108,16 +108,10 @@ function ClubProfilePreview({
             {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
             {progessExists && (
               <Group wrap="nowrap" mt={4}>
-                {headTotalProgress !== undefined && (
+                {totalProgress !== undefined && (
                   <ScoreCell
                     icon={<IconMoodSmile className="icon" />}
-                    score={Math.max(headTotalProgress, 0)}
-                  />
-                )}
-                {bodyTotalProgress !== undefined && (
-                  <ScoreCell
-                    icon={<IconMan className="icon" />}
-                    score={Math.max(bodyTotalProgress, 0)}
+                    score={Math.max(totalProgress, 0)}
                   />
                 )}
               </Group>

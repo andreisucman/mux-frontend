@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { IconMan, IconMoodSmile } from "@tabler/icons-react";
+import { IconTrendingUp } from "@tabler/icons-react";
 import { Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
@@ -15,9 +15,6 @@ type Props = {
 function FollowYouRow({ data }: Props) {
   const { name, avatar, scores } = data;
 
-  const headScore = scores.headTotalProgress;
-  const bodyScore = scores.bodyTotalProgress;
-
   const showSkeleton = useShowSkeleton();
 
   return (
@@ -28,11 +25,8 @@ function FollowYouRow({ data }: Props) {
           {name}
         </Text>
 
-        {headScore !== undefined && (
-          <ScoreCell icon={<IconMoodSmile className="icon" />} score={headScore} />
-        )}
-        {bodyScore !== undefined && (
-          <ScoreCell icon={<IconMan className="icon" />} score={bodyScore} />
+        {scores.totalProgress !== undefined && (
+          <ScoreCell icon={<IconTrendingUp className="icon" />} score={scores.totalProgress} />
         )}
       </Link>
     </Skeleton>
