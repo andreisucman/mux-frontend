@@ -21,7 +21,7 @@ export default function RowBlock({ titleObject, ringsGroup, explanations }: Prop
       <Collapse in={openCollapse} className={classes.stack}>
         {ringsGroup.map((ring, index) => (
           <Group className={classes.row} key={index}>
-            <RingComponent data={ring} ringSize={75} />
+            {ringsGroup.length > 1 && <RingComponent data={ring} ringSize={75} />}
             <Text>{explanations[ring[0].label]}</Text>
           </Group>
         ))}

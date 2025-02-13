@@ -60,7 +60,7 @@ export default function ConcernsSortCard({ concerns, disabled, maxHeight, custom
   );
 
   return (
-    <Stack style={customStyles ? customStyles : {}} className={classes.container} mah={maxHeight}>
+    <Stack style={customStyles ? customStyles : {}} className={`${classes.container} scrollbar`} mah={maxHeight}>
       <Stack className={classes.wrapper}>
         <DragAndDrop
           disabled={disabled}
