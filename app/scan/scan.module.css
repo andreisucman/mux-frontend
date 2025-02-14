@@ -2,7 +2,7 @@
   width: 100%;
   margin: auto;
 
-  max-width: clamp(rem(1180), 38.5%, rem(1480));
+  max-width: clamp(rem(760), 38.5%, rem(920));
 
   @media (max-width: $mantine-breakpoint-xs) {
     transform: unset;
