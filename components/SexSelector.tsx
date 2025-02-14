@@ -33,7 +33,7 @@ export default function SexSelector({ updateOnServer }: Props) {
       }));
 
       if (updateOnServer)
-        callTheServer({ endpoint: "updateSex", method: "POST", body: { sex, userId } });
+        callTheServer({ endpoint: "updateSex", method: "POST", body: { sex: value, userId } });
     },
     [demographics, userId]
   );

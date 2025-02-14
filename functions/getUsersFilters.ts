@@ -1,5 +1,3 @@
-import { upperFirst } from "@mantine/hooks";
-import { outlookStyles } from "@/app/analysis/style/SelectStyleGoalModalContent/outlookStyles";
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
 import { partItems } from "@/components/PageHeader/data";
 import callTheServer from "./callTheServer";
@@ -38,16 +36,11 @@ const getUsersFilters = async ({ userName, collection, fields }: GetUsersFilters
     });
 
     if (response.status === 200) {
-      const { part, styleName } = response.message || {};
+      const { part } = response.message || {};
 
       if (response.message) {
         if (part) {
           result.availableParts = partItems.filter((item) => part.includes(item.value));
-        }
-        if (styleName) {
-          result.availableStyleNames = outlookStyles
-            .filter((item) => styleName.includes(item.name))
-            .map((rec) => ({ value: rec.name, label: upperFirst(rec.name) }));
         }
       }
     }

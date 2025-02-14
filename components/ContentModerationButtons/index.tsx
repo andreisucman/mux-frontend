@@ -12,7 +12,7 @@ type Props = {
   isRelative?: boolean;
   contentId: string;
   currentMain?: BlurredUrlType;
-  collectionKey: "progress" | "style" | "proof" | "diary" | "about";
+  collectionKey: "progress" | "proof" | "diary" | "about";
   setContent?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 

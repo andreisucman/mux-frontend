@@ -3,7 +3,7 @@ import { IconInfoCircle } from "@tabler/icons-react";
 import { ActionIcon, Group, Stack, Switch, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import { getPrivacyValue } from "@/helpers/clubPrivacy";
-import { getCategoryIcon, getTypeIcon } from "@/helpers/icons";
+import { getCategoryIcon, getPartIcon } from "@/helpers/icons";
 import { HeadValuePartsBoolean } from "@/types/global";
 import { tooltipDescriptions } from "../tooltipDescriptions";
 import classes from "./SwitchBox.module.css";
@@ -11,7 +11,7 @@ import classes from "./SwitchBox.module.css";
 type OnChangeProps = {
   value: boolean;
   category: string;
-  type?: string;
+  part?: string;
 };
 
 type Props = {
@@ -39,26 +39,26 @@ export default function SwitchBox({
     isMain: true,
   });
 
-  const types = relevantCategoryPrivacy?.types;
+  const parts = relevantCategoryPrivacy?.parts;
 
-  const typeSwitches = useMemo(() => {
-    if (!types || (types && types.length <= 1)) return null;
+  const partswitches = useMemo(() => {
+    if (!parts || (parts && parts.length <= 1)) return null;
 
-    return types.map((type, i) => {
+    return parts.map((part, i) => {
       const switchedOn = getPrivacyValue({
         privacy,
-        type: type.name,
+        part: part.name,
         category,
       });
 
-      const typeIcon = getTypeIcon(type.name, "icon");
+      const partIcon = getPartIcon(part.name, "icon");
 
       return (
         <Switch
           key={i}
           label={
             <Group align="center" gap={8}>
-              {typeIcon} Share {type.name} data
+              {partIcon} Share {part.name} data
             </Group>
           }
           checked={switchedOn}
@@ -66,7 +66,7 @@ export default function SwitchBox({
             onChange({
               value: e.currentTarget.checked,
               category,
-              type: type.name,
+              part: part.name,
             })
           }
         />
@@ -97,8 +97,8 @@ export default function SwitchBox({
         checked={switchedOn}
         onChange={(e) => onChange({ value: e.currentTarget.checked, category })}
       />
-      {typeSwitches && typeSwitches.length > 0 && (
-        <Stack className={classes.wrapper}>{typeSwitches}</Stack>
+      {partswitches && partswitches.length > 0 && (
+        <Stack className={classes.wrapper}>{partswitches}</Stack>
       )}
     </Stack>
   );

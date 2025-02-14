@@ -33,7 +33,6 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   about: <IconUserCircle className="icon" />,
   routines: <IconClipboardText className="icon" />,
   progress: <IconTargetArrow className="icon" />,
-  style: <IconTargetArrow className="icon" />,
   proof: <IconTargetArrow className="icon" />,
   diary: <IconNotebook className="icon" />,
   answers: <IconBubbleText className="icon" />,
@@ -44,15 +43,17 @@ export const sexIcons = {
   male: <IconGenderMale className="icon" style={{ display: "flex" }} />,
 };
 
-export const styleIcons: { [key: string]: string } = {
-  rugged: "🛠️",
-  athletic: "🎽",
-  bohemian: "🌿",
-  edgy: "💥",
-  professional: "💼",
-  classic: "🎩",
-  minimalist: "🧑",
-  casual: "🌊",
+const getPartIcon = (key: string, className: string) => {
+  switch (key) {
+    case "face":
+      return <IconMoodNeutral className={`icon ${className}`} />;
+    case "mouth":
+      return <IconDental className={`icon ${className}`} />;
+    case "scalp":
+      return <IconWhirl className={`icon ${className}`} />;
+    case "body":
+      return <IconMan className={`icon ${className}`} />;
+  }
 };
 
 const getCategoryIcon = (key: string, className: string) => {
@@ -63,8 +64,6 @@ const getCategoryIcon = (key: string, className: string) => {
       return <IconTargetArrow className={`icon ${className}`} />;
     case "proof":
       return <IconVideo className={`icon ${className}`} />;
-    case "style":
-      return <IconHanger className={`icon ${className}`} />;
     case "diary":
       return <IconNotebook className={`icon ${className}`} />;
     case "answer":
@@ -72,13 +71,4 @@ const getCategoryIcon = (key: string, className: string) => {
   }
 };
 
-const getTypeIcon = (key: string, className: string) => {
-  switch (key) {
-    case "head":
-      return <IconMoodSmile className={`icon ${className}`} />;
-    case "body":
-      return <IconMan className={`icon ${className}`} />;
-  }
-};
-
-export { getTypeIcon, getCategoryIcon };
+export { getCategoryIcon, getPartIcon };

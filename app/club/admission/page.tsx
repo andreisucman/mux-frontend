@@ -128,7 +128,7 @@ export default function ClubAdmission() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title="Club admission" showReturn hidePartDropdown hideTypeDropdown />
+        <PageHeader title="Club admission" showReturn hidePartDropdown />
         <Stack className={classes.content}>
           <Stack>
             <Title order={4}>1. Add your bank for payouts</Title>

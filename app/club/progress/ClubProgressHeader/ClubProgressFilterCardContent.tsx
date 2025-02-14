@@ -4,8 +4,8 @@ import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { PositionsFilterItemType } from "@/app/results/proof/ProofHeader/types";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
-import { partItems, positionItems } from "@/components/PageHeader/data";
+import { FilterPartItemType } from "@/components/FilterDropdown/types";
+import { positionItems } from "@/components/PageHeader/data";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -23,20 +23,8 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
   const part = searchParams.get("part");
   const position = searchParams.get("position");
 
-  const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
-  const [relevantParts, setRelevantParts] = useState<FilterPartItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
   const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>([]);
-
-  const onSelectType = useCallback(
-    (type?: string | null) => {
-      let relevantParts: FilterPartItemType[] = [];
-      if (type) {
-        relevantParts = partItems.filter((part) => part.type === type);
-      }
-      setRelevantParts(relevantParts);
-    },
-    [partItems]
-  );
 
   const onSelectPart = useCallback(
     (part?: string | null) => {
@@ -52,7 +40,6 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
   const handleResetFilters = () => {
     const query = modifyQuery({
       params: [
-        { name: "type", value: null, action: "delete" },
         { name: "part", value: null, action: "delete" },
         { name: "position", value: null, action: "delete" },
       ],
@@ -62,24 +49,24 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
   };
 
   useEffect(() => {
-    getUsersFilters({ userName, collection: "progress", fields: ["type"] }).then((result) => {
-      const { availableTypes } = result;
-      setAvailableTypes(availableTypes);
+    getUsersFilters({ userName, collection: "progress", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvailableParts(availableParts);
     });
   }, [userName]);
 
   useEffect(() => {
-    if (relevantParts.length === 0) return;
+    if (availableParts.length === 0) return;
     onSelectPart(part);
-  }, [part, relevantParts.length]);
+  }, [part, availableParts.length]);
 
-  const partsDisabled = relevantParts.length === 0;
+  const partsDisabled = availableParts.length === 0;
   const positionsDisabled = relevantPositions.length === 0;
 
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={relevantParts}
+        data={availableParts}
         icons={partsDisabled ? undefined : partIcons}
         filterType="part"
         placeholder="Filter by part"

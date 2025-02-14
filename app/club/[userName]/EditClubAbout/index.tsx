@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { IconBolt, IconDeviceFloppy } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Stack, Tooltip } from "@mantine/core";
+import { Button, Group, SegmentedControl, Stack, Tooltip } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
@@ -11,7 +10,6 @@ import classes from "./EditClubAbout.module.css";
 
 type BioDataType = {
   philosophy: string;
-  style: string;
   tips: string;
 };
 

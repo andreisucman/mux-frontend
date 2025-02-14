@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Group, Title } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { createSpotlight } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
-import { partItems, typeItems } from "@/components/PageHeader/data";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
-import { partIcons, typeIcons } from "@/helpers/icons";
-import openErrorModal from "@/helpers/openErrorModal";
+import { partIcons } from "@/helpers/icons";
 import TitleDropdown from "../results/TitleDropdown";
 import FilterCardContent from "./FilterCardContent";
 import { ExistingFiltersType } from "./types";
@@ -19,45 +16,35 @@ import classes from "./GeneralResultsHeader.module.css";
 
 const collectionMap: { [key: string]: string } = {
   "/": "progress",
-  "/style": "style",
   "/proof": "proof",
 };
 
 const titles = [
   { label: "Progress", value: "/" },
-  { label: "Style", value: "/style" },
   { label: "Proof", value: "/proof" },
 ];
 
 type Props = {
   showFilter?: boolean;
   showSearch?: boolean;
-  hideTypeDropdown?: boolean;
   hidePartDropdown?: boolean;
   onSelect?: (item?: FilterItemType) => void;
 };
 
 const [spotlightStore, proofSpotlight] = createSpotlight();
 
-export default function GeneralResultsHeader({
-  showFilter,
-  showSearch,
-  hideTypeDropdown,
-  hidePartDropdown,
-}: Props) {
+export default function GeneralResultsHeader({ showFilter, showSearch, hidePartDropdown }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
 
-  const [availableTypes, setAvailableTypes] = useState<FilterItemType[]>([]);
   const [relevantParts, setRelevantParts] = useState<FilterItemType[]>([]);
   const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
-    const requiredParams = allParams.filter((param) => !["type", "part", "query"].includes(param));
+    const requiredParams = allParams.filter((param) => !["part", "query"].includes(param));
     return requiredParams.length;
   }, [searchParams.toString()]);
 
@@ -66,7 +53,7 @@ export default function GeneralResultsHeader({
     return Object.values(otherFilters || {}).some((value: any) => value.length > 0);
   }, [filters]);
 
-  const getExistingFilters = useCallback(async (pathname: string, type: string | null) => {
+  const getExistingFilters = useCallback(async (pathname: string) => {
     try {
       const response = await callTheServer({
         endpoint: `getExistingFilters/${collectionMap[pathname]}`,
@@ -75,14 +62,7 @@ export default function GeneralResultsHeader({
 
       if (response.status === 200) {
         setFilters(response.message);
-
-        const relevantTypeItems = typeItems.filter((item) =>
-          response.message.type.includes(item.value)
-        );
-        setAvailableTypes(relevantTypeItems);
-
-        const relevantParts = partItems.filter((part) => response.message.type.includes(part.type));
-        setRelevantParts(relevantParts.filter((item) => item.type === type));
+        setRelevantParts(response.message.part);
       }
     } catch (err) {}
   }, []);
@@ -101,22 +81,9 @@ export default function GeneralResultsHeader({
   }, [filters]);
 
   useEffect(() => {
-    getExistingFilters(pathname, type);
+    getExistingFilters(pathname);
   }, []);
 
-  useShallowEffect(() => {
-    if (!filters) return;
-
-    let partFilterItems: FilterPartItemType[] = [];
-
-    if (type) {
-      partFilterItems = partItems.filter((part) => part.type === type);
-    }
-
-    setRelevantParts(partFilterItems);
-  }, [type, filters]);
-
-  const typesDisabled = availableTypes.length === 0;
   const partsDisabled = relevantParts.length === 0;
 
   return (

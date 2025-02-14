@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect } from "react";
-import { IconTargetArrow } from "@tabler/icons-react";
-import { rem, Stack, Table, Text, Title } from "@mantine/core";
+import { Stack, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
@@ -72,7 +71,7 @@ export default function ClubJoin() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title="Join the Club" hidePartDropdown hideTypeDropdown showReturn />
+        <PageHeader title="Join the Club" hidePartDropdown showReturn />
         <Stack className={classes.wrapper}>
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>

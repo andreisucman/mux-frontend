@@ -33,7 +33,6 @@ export default function ScanProgress() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { _id: userId, requiredProgress, demographics, nextScan, toAnalyze } = userDetails || {};
-  const showSexSelector = status !== AuthStateEnum.AUTHENTICATED && demographics;
 
   const { availableRequirements, checkBackDate } = useCheckScanAvailability({
     parts,
@@ -163,7 +162,7 @@ export default function ScanProgress() {
           <ScanHeader
             children={
               <>
-                {showSexSelector && <SexSelector updateOnServer />}
+                <SexSelector updateOnServer />
                 {parts && (
                   <InputWithCheckboxes
                     uploadedParts={uploadedParts}

@@ -3,11 +3,11 @@ import { ClubDataType, HeadValuePartsBoolean } from "@/types/global";
 type UpdateClubPrivacyProps = {
   club: ClubDataType | null;
   category: string;
-  type?: string;
+  part?: string;
   value: boolean;
 };
 
-export function updateClubPrivacy({ club, type, category, value }: UpdateClubPrivacyProps) {
+export function updateClubPrivacy({ club, part, category, value }: UpdateClubPrivacyProps) {
   try {
     const { privacy } = club || {};
 
@@ -18,44 +18,44 @@ export function updateClubPrivacy({ club, type, category, value }: UpdateClubPri
     if (relevantCategoryPrivacyIndex === -1) return club;
 
     let relevantCategoryPrivacy = privacy[relevantCategoryPrivacyIndex];
-    let updatedTypes;
+    let updatedParts;
 
-    if (type) {
-      const relevantTypePrivacyIndex = relevantCategoryPrivacy.types.findIndex(
-        (rec) => rec.name === type
+    if (part) {
+      const relevantTypePrivacyIndex = relevantCategoryPrivacy.parts.findIndex(
+        (rec) => rec.name === part
       );
 
       if (relevantTypePrivacyIndex === -1) return club;
 
       const updatedPartPrivacy = {
-        ...relevantCategoryPrivacy.types[relevantTypePrivacyIndex],
+        ...relevantCategoryPrivacy.parts[relevantTypePrivacyIndex],
         value,
       };
 
-      updatedTypes = [
-        ...relevantCategoryPrivacy.types.slice(0, relevantTypePrivacyIndex),
+      updatedParts = [
+        ...relevantCategoryPrivacy.parts.slice(0, relevantTypePrivacyIndex),
         updatedPartPrivacy,
-        ...relevantCategoryPrivacy.types.slice(relevantTypePrivacyIndex + 1),
+        ...relevantCategoryPrivacy.parts.slice(relevantTypePrivacyIndex + 1),
       ];
 
       relevantCategoryPrivacy = {
         ...relevantCategoryPrivacy,
-        value: updatedTypes.every((type) => Boolean(type.value)),
+        value: updatedParts.every((part) => Boolean(part.value)),
       };
     } else {
-      updatedTypes = relevantCategoryPrivacy.types.map((obj) => ({
+      updatedParts = relevantCategoryPrivacy.parts.map((obj) => ({
         ...obj,
         value,
       }));
       relevantCategoryPrivacy = {
         ...relevantCategoryPrivacy,
-        value: updatedTypes.every((type) => Boolean(type.value)),
+        value: updatedParts.every((part) => Boolean(part.value)),
       };
     }
 
     const updatedTypePrivacy = {
       ...relevantCategoryPrivacy,
-      types: updatedTypes,
+      types: updatedParts,
     };
 
     const newPrivacy = [
@@ -74,13 +74,12 @@ type GetPrivacyValueProps = {
   isMain?: boolean;
   privacy?: HeadValuePartsBoolean;
   category: string;
-  typeName?: string;
-  type?: string;
+  part?: string;
 };
 
-export function getPrivacyValue({ isMain, privacy, category, type }: GetPrivacyValueProps) {
+export function getPrivacyValue({ isMain, privacy, category, part }: GetPrivacyValueProps) {
   const relevantCategoryPrivacy = privacy?.find((rec) => rec.name === category);
   if (isMain) return relevantCategoryPrivacy?.value;
-  if (!type) return;
-  return relevantCategoryPrivacy?.types.find((rec) => rec.name === type)?.value;
+  if (!part) return;
+  return relevantCategoryPrivacy?.parts.find((rec) => rec.name === part)?.value;
 }

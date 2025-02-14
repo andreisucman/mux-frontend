@@ -5,6 +5,7 @@ import { Group, Select, SelectProps } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
+import { upperFirst } from "@mantine/hooks";
 
 type Props = {
   icons?: { [key: string]: React.ReactNode };
@@ -81,7 +82,7 @@ export default function FilterDropdown({
     return (
       <Group flex="1" gap="xs">
         {icons && icons[option.value]}
-        {option.label}
+        {upperFirst(option.label)}
         {checked && <IconCheck style={{ marginInlineStart: "auto" }} className="icon" />}
       </Group>
     );

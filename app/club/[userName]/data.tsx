@@ -4,10 +4,6 @@ export const aboutSegments = [
     label: "Philosophy",
   },
   {
-    value: "style",
-    label: "Style",
-  },
-  {
     value: "tips",
     label: "Tips",
   },

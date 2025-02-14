@@ -15,7 +15,7 @@ export default function Settings() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Settings" showReturn hidePartDropdown hideTypeDropdown />
+      <PageHeader title="Settings" showReturn hidePartDropdown />
       <Group className={classes.content}>
         <Stack className={classes.left}>
           <AccountSettings />

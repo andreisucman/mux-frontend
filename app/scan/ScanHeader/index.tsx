@@ -7,7 +7,6 @@ import classes from "./ScanHeader.module.css";
 
 const titles = [
   { label: "Scan progress", value: "/scan/progress" },
-  { label: "Scan style", value: "/scan/style" },
   { label: "Scan food", value: "/scan/food" },
 ];
 

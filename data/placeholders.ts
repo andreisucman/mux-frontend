@@ -9,8 +9,6 @@ import femaleHeadLeft from "@/public/assets/placeholders/female-head-left.svg";
 import femaleHeadRight from "@/public/assets/placeholders/female-head-right.svg";
 import femaleMouth from "@/public/assets/placeholders/female-mouth.svg";
 import femaleScalp from "@/public/assets/placeholders/female-scalp.svg";
-import femaleStyleBody from "@/public/assets/placeholders/female-style-body.svg";
-import femaleStyleHead from "@/public/assets/placeholders/female-style-head.svg";
 import food from "@/public/assets/placeholders/food.svg";
 import maleBodyBack from "@/public/assets/placeholders/male-body-back.svg";
 import maleBodyFront from "@/public/assets/placeholders/male-body-front.svg";
@@ -21,8 +19,6 @@ import maleHeadLeft from "@/public/assets/placeholders/male-head-left.svg";
 import maleHeadRight from "@/public/assets/placeholders/male-head-right.svg";
 import maleMouth from "@/public/assets/placeholders/male-mouth.svg";
 import maleScalp from "@/public/assets/placeholders/male-scalp.svg";
-import maleStyleBody from "@/public/assets/placeholders/male-style-body.svg";
-import maleStyleHead from "@/public/assets/placeholders/male-style-head.svg";
 import { PositionEnum, ScanTypeEnum, TypeEnum } from "@/types/global";
 
 export const placeholders: {
@@ -75,21 +71,6 @@ export const placeholders: {
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.STYLE,
-    type: TypeEnum.HEAD,
-    position: PositionEnum.FRONT,
-    url: maleStyleHead,
-  },
-  {
-    sex: ["male"],
-    scanType: ScanTypeEnum.STYLE,
-    type: TypeEnum.BODY,
-    part: PartEnum.BODY,
-    position: PositionEnum.FRONT,
-    url: maleStyleBody,
-  },
-  {
-    sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
     type: TypeEnum.BODY,
     part: PartEnum.BODY,
@@ -135,20 +116,6 @@ export const placeholders: {
     part: PartEnum.FACE,
     position: PositionEnum.RIGHT,
     url: femaleHeadRight,
-  },
-  {
-    sex: ["female"],
-    scanType: ScanTypeEnum.STYLE,
-    type: TypeEnum.HEAD,
-    position: PositionEnum.FRONT,
-    url: femaleStyleHead,
-  },
-  {
-    sex: ["female"],
-    scanType: ScanTypeEnum.STYLE,
-    type: TypeEnum.BODY,
-    position: PositionEnum.FRONT,
-    url: femaleStyleBody,
   },
   {
     sex: ["female"],

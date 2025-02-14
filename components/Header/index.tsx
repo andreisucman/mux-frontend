@@ -23,7 +23,6 @@ import classes from "./Header.module.css";
 const showStartButtonRoutes = [
   "/",
   "/progress",
-  "/style",
   "/proof",
   "/solutions",
   "/rewards",

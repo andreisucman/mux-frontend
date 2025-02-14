@@ -8,7 +8,7 @@ import classes from "./DeleteContentButton.module.css";
 
 type Props = {
   contentId: string;
-  collectionKey: "progress" | "style" | "proof" | "diary" | "about";
+  collectionKey: "progress" | "proof" | "diary" | "about";
   position?: "top-right" | "top-left";
   isRelative?: boolean;
   isLoading: boolean;

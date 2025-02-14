@@ -44,7 +44,7 @@ export default function PlansPage() {
 
   return (
     <Stack className={classes.container}>
-      <PageHeader title="Plans" hidePartDropdown hideTypeDropdown />
+      <PageHeader title="Plans" hidePartDropdown />
       <Group className={classes.content}>
         <PricingCard content={freePlanContent} name={"Free"} addGradient />
         <PricingCard

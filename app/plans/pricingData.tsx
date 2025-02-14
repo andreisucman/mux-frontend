@@ -103,6 +103,6 @@ export const advisorCoachContent = [
   },
   {
     icon: <IconUser className="icon icon__large" style={style} />,
-    description: "4. Answers your questions based on other people's information.",
+    description: "4. Answers your questions about the person you follow.",
   },
 ];

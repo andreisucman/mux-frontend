@@ -25,7 +25,7 @@ const authenticate = async ({
 }: AuthenticateProps) => {
   try {
     const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
-    const { redirectPath, redirectQuery, localUserId } = parsedState;
+    const { redirectPath, redirectQuery } = parsedState;
 
     const response = await callTheServer({
       endpoint: "authenticate",
@@ -34,7 +34,6 @@ const authenticate = async ({
         state,
         code,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        localUserId,
         email,
         password,
       },

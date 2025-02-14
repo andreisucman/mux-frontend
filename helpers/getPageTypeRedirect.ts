@@ -16,9 +16,6 @@ export default function getPageTypeRedirect(value: string, userName?: string | s
     case "progress":
       path = `/club/progress/${userName}`;
       break;
-    case "style":
-      path = `/club/style/${userName}`;
-      break;
     case "proof":
       path = `/club/proof/${userName}`;
       break;

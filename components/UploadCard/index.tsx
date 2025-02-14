@@ -72,6 +72,8 @@ export default function UploadCard({
     [sex, part, position, scanType, placeholders]
   );
 
+  console.log("relevantPlaceholder", sex, part, position, scanType);
+
   const loadLocally = useCallback(
     async (base64string: string) => {
       if (!base64string) return;
@@ -164,7 +166,7 @@ export default function UploadCard({
         {isLoading && (
           <Stack className={classes.progressCell}>
             <Progress value={progress} w="100%" size={12} mt={4} />
-            <Text size="sm" ta="center" c="dimmed">
+            <Text size="sm" ta="center">
               Uploading...
             </Text>
           </Stack>
@@ -188,16 +190,6 @@ export default function UploadCard({
                 >
                   Upload
                 </Button>
-              )}
-              {scanType && !localUrl && latestStyleImage && (
-                <ActionIcon
-                  maw={rem(50)}
-                  disabled={isLoading}
-                  variant="default"
-                  onClick={() => router.replace("/scan/style/result")}
-                >
-                  <IconArrowRight className={"icon"} />
-                </ActionIcon>
               )}
             </Group>
           </Stack>

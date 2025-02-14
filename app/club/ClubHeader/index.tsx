@@ -18,7 +18,6 @@ type Props = {
   children?: React.ReactNode;
   sortItems?: { value: string; label: string }[];
   pageType: string;
-  hideTypeDropdown?: boolean;
   onSelect?: (value?: string | null) => void;
 };
 

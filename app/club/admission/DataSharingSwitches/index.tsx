@@ -20,15 +20,15 @@ export default function DataSharingSwitches({ title }: Props) {
 
   type UpdatePrivacyProps = {
     value: boolean;
-    type?: string;
+    part?: string;
     category: string;
   };
 
   const updatePrivacy = useCallback(
-    async ({ value, category, type }: UpdatePrivacyProps) => {
+    async ({ value, category, part }: UpdatePrivacyProps) => {
       if (!club) return;
 
-      const newPrivacy = updateClubPrivacy({ club, category, type, value });
+      const newPrivacy = updateClubPrivacy({ club, category, part, value });
       try {
         const response = await callTheServer({
           endpoint: "updateClubPrivacy",
@@ -77,13 +77,6 @@ export default function DataSharingSwitches({ title }: Props) {
         />
         <SwitchBox
           category={"proof"}
-          privacy={privacy}
-          onChange={updatePrivacy}
-          openTooltip={openTooltip}
-          setOpenTooltip={setOpenTooltip}
-        />
-        <SwitchBox
-          category={"style"}
           privacy={privacy}
           onChange={updatePrivacy}
           openTooltip={openTooltip}

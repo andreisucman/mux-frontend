@@ -7,7 +7,6 @@ import classes from "./DisplayClubAbout.module.css";
 
 type BioDataType = {
   philosophy: string;
-  style: string;
   tips: string;
 };
 

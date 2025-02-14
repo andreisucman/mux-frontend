@@ -10,18 +10,16 @@ export type DefaultUserType = {
 export type HeadValuePartsBoolean = {
   name: string;
   value: boolean;
-  types: { name: string; value: boolean }[];
+  parts: { name: string; value: boolean }[];
 }[];
 
 type ClubBioType = {
   intro: string;
   philosophy: string;
-  style: string;
   tips: string;
   socials: { value: string; label: string }[];
   nextRegenerateBio: {
     philosophy: string | null;
-    style: string | null;
     tips: string | null;
   };
 };
@@ -317,7 +315,6 @@ export enum TypeEnum {
 
 export enum ScanTypeEnum {
   PROGRESS = "progress",
-  STYLE = "style",
   HEALTH = "health",
   FOOD = "food",
 }

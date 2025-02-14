@@ -17,7 +17,6 @@ export const runtime = "edge";
 
 type BioDataType = {
   philosophy: string;
-  style: string;
   tips: string;
 };
 
@@ -40,7 +39,6 @@ export default function ClubAbout(props: Props) {
 
   const [bioData, setBioData] = useState<BioDataType>({
     philosophy: "",
-    style: "",
     tips: "",
   });
 
@@ -108,7 +106,6 @@ export default function ClubAbout(props: Props) {
 
     setBioData({
       philosophy: bio?.philosophy || "",
-      style: bio?.style || "",
       tips: bio?.tips || "",
     });
   }, [isSelf, typeof youData, typeof youFollowData]);

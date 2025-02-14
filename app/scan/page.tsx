@@ -60,11 +60,6 @@ export default function ScanIndexPage() {
             onClick={() => handleRedirect("/scan/progress")}
           />
           <StartButton
-            scanType={ScanTypeEnum.STYLE}
-            type={"body"}
-            onClick={() => handleRedirect("/scan/style")}
-          />
-          <StartButton
             scanType={ScanTypeEnum.FOOD}
             type={"food"}
             onClick={() => handleRedirect("/scan/food")}

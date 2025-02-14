@@ -89,6 +89,7 @@ export default function AnalysisCard({ title, currentRecord, latestScores }: Pro
               ringsGroup={ringBlock as any}
               explanations={explanations[i]}
               titleObject={overalls[i][0] as any}
+              isSingle={rings.length === 1}
             />
           ))}
         </Stack>

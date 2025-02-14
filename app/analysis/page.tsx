@@ -7,7 +7,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
-import AnalysisHeader from "./AnalysisHeader";
+import AnalysisHeader from "../club/AnalysisHeader";
 import classes from "./analysis.module.css";
 
 export const runtime = "edge";

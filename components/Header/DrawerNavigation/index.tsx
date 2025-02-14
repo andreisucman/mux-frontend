@@ -30,7 +30,6 @@ const defaultNavigation = [
     path: "/",
     children: [
       { title: "Progress", path: "/" },
-      { title: "Style", path: "/style" },
       { title: "Proof", path: "/proof" },
     ],
   },
@@ -77,7 +76,6 @@ const defaultAuthenticatedNavigation = [
     path: "/results",
     children: [
       { title: "Progress", path: "/results" },
-      { title: "Style", path: "/results/style" },
       { title: "Proof", path: "/results/proof" },
       { title: "Analysis", path: "/analysis" },
     ],
@@ -146,7 +144,6 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
                   ...rec,
                   children: [
                     { title: "Progress", path: `/scan/progress` },
-                    { title: "Style", path: `/scan/style` },
                     { title: "Food", path: `/scan/food` },
                   ],
                 }

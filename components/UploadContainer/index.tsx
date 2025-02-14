@@ -52,7 +52,7 @@ export default function UploadContainer({
 
       return (
         <UploadCard
-          sex={sex || SexEnum.MALE}
+          sex={sex || SexEnum.FEMALE}
           scanType={scanType}
           isLoading={isLoading}
           progress={progress}

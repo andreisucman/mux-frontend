@@ -3,5 +3,4 @@ export enum PartEnum {
   BODY = "body",
   MOUTH = "mouth",
   SCALP = "scalp",
-  STYLE = "style"
 }

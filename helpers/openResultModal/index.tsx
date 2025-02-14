@@ -7,15 +7,13 @@ import { SimpleProofType } from "@/app/results/proof/types";
 import { SimpleProgressType } from "@/app/results/types";
 import { SimpleBeforeAfterType } from "@/app/types";
 import AvatarComponent from "@/components/AvatarComponent";
-import StyleModalContent from "@/components/StyleModalContent";
-import { SimpleStyleType } from "@/components/StyleModalContent/types";
 import Link from "../custom-router/patch-router/link";
 import classes from "./openResultModal.module.css";
 
 type OpenViewModalProps = {
-  record: SimpleBeforeAfterType | SimpleProofType | SimpleStyleType | SimpleProgressType;
+  record: SimpleBeforeAfterType | SimpleProofType | SimpleProgressType;
   title: React.ReactNode;
-  type: "style" | "progress" | "proof";
+  type: "progress" | "proof";
   isPublicPage?: boolean;
   isFullScreen?: boolean;
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
@@ -27,16 +25,9 @@ export default function openResultModal({
   type,
   isPublicPage,
   isFullScreen,
-  setRecords,
 }: OpenViewModalProps) {
   const content =
-    type === "style" ? (
-      <StyleModalContent
-        record={record as SimpleStyleType}
-        isPublicPage={isPublicPage}
-        setRecords={setRecords!}
-      />
-    ) : type === "progress" ? (
+    type === "progress" ? (
       <ProgressModalContent record={record as SimpleBeforeAfterType} isPublicPage={isPublicPage} />
     ) : (
       <ProofModalContent record={record as SimpleProofType} isPublicPage={isPublicPage} />

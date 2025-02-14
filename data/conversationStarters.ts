@@ -36,9 +36,6 @@ export default function getConversationStarters(chatCategory?: ChatCategoryEnum,
         `what routine ${isClub ? "they" : "i"} stole from ...`
       );
       break;
-    case ChatCategoryEnum.STYLE:
-      starters.push(`what would be a good hat for my style`, `will a brown jacked spoil my look`);
-      break;
     case ChatCategoryEnum.TASK:
       starters.push(`which task should i complete first`, "which tasks require going to gym");
       break;

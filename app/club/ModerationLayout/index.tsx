@@ -16,7 +16,6 @@ import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
 import ClubProgressHeader from "../progress/ClubProgressHeader";
 import ClubProofHeader from "../proof/ClubProofHeader";
-import ClubStyleHeader from "../style/ClubStyleHeader";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
 import classes from "./ClubModerationLayout.module.css";
@@ -28,7 +27,7 @@ type Props = {
   showChat?: boolean;
   showHeader?: boolean;
   userName?: string;
-  pageType: "about" | "routines" | "diary" | "progress" | "proof" | "style" | "answers";
+  pageType: "about" | "routines" | "diary" | "progress" | "proof" | "answers";
 };
 
 export default function ClubModerationLayout({ children, pageType, userName }: Props) {
@@ -53,7 +52,6 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   const clubResultTitles = useMemo(
     () => [
       { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
-      { label: "Style", value: `/club/style${userName ? `/${userName}` : ""}` },
       { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
     ],
     [userName]
@@ -69,14 +67,6 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
 
   const headers: { [key: string]: React.ReactNode } = useMemo(
     () => ({
-      style: (
-        <ClubStyleHeader
-          titles={clubResultTitles}
-          isDisabled={showComponent !== "children"}
-          userName={userName}
-          showReturn
-        />
-      ),
       progress: (
         <ClubProgressHeader
           titles={clubResultTitles}
@@ -93,21 +83,14 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
           showReturn
         />
       ),
-      about: <ClubHeader title={"Club"} pageType={pageType} showReturn hideTypeDropdown />,
-      answers: <ClubHeader title={"Club"} pageType={pageType} showReturn hideTypeDropdown />,
+      about: <ClubHeader title={"Club"} pageType={pageType} showReturn />,
+      answers: <ClubHeader title={"Club"} pageType={pageType} showReturn />,
       diary: (
-        <ClubHeader
-          title={"Club"}
-          hideTypeDropdown={true}
-          pageType={pageType}
-          sortItems={diarySortItems}
-          showReturn
-        />
+        <ClubHeader title={"Club"} pageType={pageType} sortItems={diarySortItems} showReturn />
       ),
       routines: (
         <ClubHeader
           title={"Club"}
-          hideTypeDropdown={showComponent !== "children"}
           pageType={pageType}
           sortItems={routineSortItems}
           children={
