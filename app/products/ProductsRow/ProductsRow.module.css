@@ -20,3 +20,7 @@
 .date {
   white-space: nowrap;
 }
+
+.modalTitle {
+  flex-wrap: nowrap;
+}

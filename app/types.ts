@@ -1,11 +1,10 @@
 
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
-import { DemographicsType, ProgressImageType, TypeEnum, UserConcernType } from "@/types/global";
+import { DemographicsType, ProgressImageType, UserConcernType } from "@/types/global";
 
 export type SimpleBeforeAfterType = {
   _id: string;
   userId: string;
-  type: TypeEnum;
   part: PartEnum;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];

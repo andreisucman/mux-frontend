@@ -56,12 +56,12 @@ export default function ScanIndexPage() {
         <Group className={classes.content}>
           <StartButton
             scanType={ScanTypeEnum.PROGRESS}
-            type={"body"}
+            part={"body"}
             onClick={() => handleRedirect("/scan/progress")}
           />
           <StartButton
             scanType={ScanTypeEnum.FOOD}
-            type={"food"}
+            part={"food"}
             onClick={() => handleRedirect("/scan/food")}
           />
         </Group>

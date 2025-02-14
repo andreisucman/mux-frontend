@@ -131,7 +131,7 @@ export default function TaskRow({
   );
 
   return (
-    <Skeleton visible={showSkeleton}>
+    <Skeleton visible={showSkeleton} mih={70}>
       <Group
         className={classes.container}
         onClick={onClick ? onClick : undefined}
@@ -150,13 +150,13 @@ export default function TaskRow({
           <Text className={classes.title} lineClamp={1}>
             {name}
           </Text>
-          <Text className={classes.description} c="dimmed" size="sm" lineClamp={2}>
+          <Text className={classes.description} c="dimmed" size="sm" lineClamp={1}>
             {description}
           </Text>
           {timer}
         </Stack>
         <RingProgress
-          size={85}
+          size={70}
           thickness={8}
           label={ringLabel}
           className={classes.ringProgress}

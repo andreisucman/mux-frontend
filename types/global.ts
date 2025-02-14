@@ -103,7 +103,6 @@ export type BlurredUrlType = {
 };
 
 export type ToAnalyzeType = {
-  type: TypeEnum | null;
   createdAt: Date;
   mainUrl: BlurredUrlType;
   contentUrlTypes: BlurredUrlType[];
@@ -140,12 +139,10 @@ export type StreaksType = {
   mouthStreak: number;
   scalpStreak: number;
   bodyStreak: number;
-  healthStreak: number;
   clubFaceStreak: number;
   clubMouthStreak: number;
   clubScalpStreak: number;
   clubBodyStreak: number;
-  clubHealthStreak: number;
 };
 
 export type RoutineType = {
@@ -206,7 +203,6 @@ export interface UserDataType extends DefaultUserType {
   nextRoutine: NextActionType[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
-  latestStyleAnalysis: StyleAnalysisType;
   latestScores: FormattedRatingType;
   latestScoresDifference: { [key: string]: number };
   tasks: TaskType[];
@@ -243,7 +239,6 @@ export type ProgressImageType = {
 export type ProgressType = {
   _id: string;
   userId: string;
-  type: TypeEnum;
   part: PartEnum;
   sex?: SexEnum;
   createdAt: string;
@@ -275,47 +270,13 @@ export type FormattedRatingType = {
   [key: string]: number;
 };
 
-export type StyleAnalysisType = {
-  _id: string;
-  userId: string;
-  createdAt: string;
-  compareDate: string;
-  mainUrl: BlurredUrlType;
-  compareMainUrl: BlurredUrlType;
-  urls: BlurredUrlType[];
-  compareUrls: BlurredUrlType[];
-  votes: number;
-  compareVotes: number;
-  demographics: DemographicsType;
-  type: TypeEnum;
-  goalStyle: StyleGoalsType | null;
-  hash: string;
-  styleName: string;
-  compareStyleName: string;
-  currentDescription: string;
-  currentSuggestion: string;
-  matchSuggestion: string;
-  isPublic: boolean;
-  analysis: { [key: string]: number } | null;
-  compareAnalysis: { [key: string]: number } | null;
-  userName: string | null;
-  avatar: { [key: string]: any } | null;
-};
-
 export enum SexEnum {
   MALE = "male",
   FEMALE = "female",
 }
 
-export enum TypeEnum {
-  HEAD = "head",
-  BODY = "body",
-  HEALTH = "health",
-}
-
 export enum ScanTypeEnum {
   PROGRESS = "progress",
-  HEALTH = "health",
   FOOD = "food",
 }
 

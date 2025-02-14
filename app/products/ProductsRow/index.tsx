@@ -41,9 +41,9 @@ export default function ProductsRow({
           <SuggestionContainer
             title="Products"
             chatTitle={
-              <Group style={customStyles ? customStyles : {}}>
+              <Group className={classes.modalTitle} style={customStyles ? customStyles : {}}>
                 <IconWithColor icon={icon} color={color} customStyles={{ minHeight: rem(30) }} />
-                <Title order={5} component={"p"} className={classes.name} lineClamp={2}>
+                <Title order={5} component={"p"} className={classes.name} lineClamp={1}>
                   {name} products
                 </Title>
               </Group>

@@ -1,10 +1,11 @@
 import React from "react";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import { SuggestionType } from "@/types/global";
 import ProductCell from "./ProductCell";
 import classes from "./SuggestionContainer.module.css";
-import { ChatCategoryEnum } from "@/app/diary/type";
 
 type Props = {
   chatContentId: string;
@@ -36,6 +37,8 @@ export default function SuggestionContainer({
   const bestItems = items.filter((item) => item.rank === 1);
   const chosenItems = bestItems.length > 1 ? bestItems : items;
 
+  const isMobile = useMediaQuery("(max-width: 36em)");
+
   return (
     <Skeleton className="skeleton" visible={!items}>
       <Stack className={classes.container} style={customStyles ? customStyles : {}}>
@@ -51,6 +54,7 @@ export default function SuggestionContainer({
                 <ProductCell
                   key={index}
                   item={item}
+                  isMobile={!!isMobile}
                   allItems={items}
                   showOnCellAtc={showOnCellAtc || false}
                   selectedAsins={selectedAsins}
@@ -67,8 +71,8 @@ export default function SuggestionContainer({
             openChatKey={taskKey}
             modalTitle={chatTitle}
             chatContentId={chatContentId}
-            dividerLabel={"Choose best products"}
             defaultVisibility="open"
+            hideDivider
           />
         )}
       </Stack>

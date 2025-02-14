@@ -4,7 +4,7 @@ import cn from "classnames";
 import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
-import { AllTaskType, TaskStatusEnum, TypeEnum } from "@/types/global";
+import { AllTaskType, TaskStatusEnum } from "@/types/global";
 import StatsGroup from "../StatsGroup";
 import RoutineIndividualTasksList from "./IndividualTasksList";
 import classes from "./AccordionTaskRow.module.css";

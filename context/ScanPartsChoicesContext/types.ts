@@ -3,4 +3,5 @@ export enum PartEnum {
   BODY = "body",
   MOUTH = "mouth",
   SCALP = "scalp",
+  FOOD = "food",
 }

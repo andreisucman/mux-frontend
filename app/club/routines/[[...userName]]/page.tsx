@@ -16,7 +16,7 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
-import { AllTaskType, RoutineType, TypeEnum, UserDataType } from "@/types/global";
+import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
 import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
 import classes from "./routines.module.css";

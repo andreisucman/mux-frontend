@@ -59,20 +59,15 @@ function DateSelector() {
 
   return (
     <Group className={classes.container}>
-      {someDateExists && (
-        <ActionIcon size="sm" variant="default" onClick={resetDates}>
-          <IconX className="icon" />
-        </ActionIcon>
-      )}
       <DatePickerInput
         type="range"
         placeholder="Pick date range"
-        valueFormat="DD MMM YY"
+        valueFormat="DD MMM"
         value={value}
         flex={1}
         onChange={changeDates}
         className={classes.picker}
-        leftSection={<IconCalendar className="icon" />}
+        // leftSection={<IconCalendar className="icon" />}
       />
     </Group>
   );

@@ -1,16 +1,12 @@
 .container {
   gap: rem(8);
-  flex: 1;
   align-items: center;
-  max-width: rem(300);
   margin-left: auto;
   flex-wrap: nowrap;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    max-width: unset;
-  }
 }
 
 .picker {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

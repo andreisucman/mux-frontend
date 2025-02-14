@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { IconBodyScan } from "@tabler/icons-react";
 import { Skeleton, Text, UnstyledButton } from "@mantine/core";
-import { IconScanFood, IconScanStyle } from "@/components/customIcons";
+import { IconScanFood } from "@/components/customIcons";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
 import { ScanTypeEnum } from "@/types/global";
@@ -10,17 +10,16 @@ import classes from "./StartButton.module.css";
 
 type Props = {
   scanType: ScanTypeEnum;
-  type: "head" | "body" | "food";
   onClick: () => void;
+  part: "body" | "food";
 };
 
 const icons: { [key: string]: React.ReactNode } = {
   progress: <IconBodyScan className="icon icon__large" />,
-  style: <IconScanStyle className={`icon ${classes.icon}`} />,
   food: <IconScanFood className={`icon ${classes.icon}`} />,
 };
 
-export default function StartButton({ onClick, scanType, type }: Props) {
+export default function StartButton({ onClick, scanType, part }: Props) {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [relevantPlaceholder, setRelevantPlaceholder] = useState<StaticImageData>();
   const { userDetails } = useContext(UserContext);
@@ -32,10 +31,10 @@ export default function StartButton({ onClick, scanType, type }: Props) {
 
     const relevantPlaceholder = placeholders.find(
       (item) =>
-        item.sex.includes(sex || "female") && item.scanType === scanType && item.type === type
+        item.sex.includes(sex || "female") && item.scanType === scanType && item.part === part
     );
     setRelevantPlaceholder(relevantPlaceholder?.url);
-  }, [sex,pageLoaded, scanType, type]);
+  }, [sex, pageLoaded, scanType]);
 
   useEffect(() => {
     setPageLoaded(true);

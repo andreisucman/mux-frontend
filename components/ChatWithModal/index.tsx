@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Stack } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatInput from "@/components/ChatInput";
 import InnerChatContainer from "./InnerChatContainer";
@@ -15,6 +15,7 @@ type Props = {
   disclaimer?: string;
   additionalData?: { [key: string]: any };
   dividerLabel?: string;
+  hideDivider?: boolean;
   starterQuestions?: string[];
   chatCategory?: ChatCategoryEnum;
   chatContentId?: string;
@@ -30,6 +31,7 @@ export default function ChatWithModal({
   userName,
   disclaimer,
   dividerLabel,
+  hideDivider,
   modalTitle,
   openChatKey,
   chatCategory,
@@ -37,6 +39,7 @@ export default function ChatWithModal({
   defaultVisibility,
   customStyles,
 }: Props) {
+  const isMobile = useMediaQuery("(max-width: 36em)");
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
@@ -47,6 +50,8 @@ export default function ChatWithModal({
         onClose={close}
         size="xl"
         title={modalTitle}
+        fullScreen={isMobile}
+        classNames={{ content: classes.modalContent, body: classes.modalBody }}
         centered
       >
         <InnerChatContainer
@@ -68,6 +73,7 @@ export default function ChatWithModal({
         disabled={disabled}
         onClick={open}
         starterQuestions={[]}
+        hideDivider={hideDivider}
         disableFocus
       />
     </Stack>

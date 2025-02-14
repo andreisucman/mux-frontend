@@ -4,14 +4,9 @@ import { Stack } from "@mantine/core";
 import ConcernsCard from "@/components/AnalysisCarousel//ConcernsCard";
 import AnalysisCard from "@/components/AnalysisCarousel/AnalysisCard";
 import { UserContext } from "@/context/UserContext";
-import { StyleAnalysisType } from "@/types/global";
 import classes from "./AnalysisCarousel.module.css";
 
-type Props = {
-  styleAnalyses?: StyleAnalysisType[];
-};
-
-export default function AnalysisCarousel({}: Props) {
+export default function AnalysisCarousel() {
   const { status, userDetails } = useContext(UserContext);
   const { _id: userId, concerns, latestScores, latestProgress } = userDetails || {};
 
@@ -57,7 +52,7 @@ export default function AnalysisCarousel({}: Props) {
         classNames={{
           root: classes.root,
           controls: classes.controls,
-          control: "carouselControl",
+          control: `carouselControl ${classes.carouselControl}`,
           viewport: classes.viewport,
           container: classes.container,
         }}

@@ -36,7 +36,7 @@ export const freePlanContent = [
   },
   {
     icon: <IconChecklist className="icon icon__large" style={style} />,
-    description: "Create tasks to address your health, beauty, and body concerns.",
+    description: "Create tasks to address your health an appearance concerns.",
   },
   {
     icon: <IconAdjustmentsHorizontal className="icon icon__large" style={style} />,
@@ -78,12 +78,12 @@ export const peekLicenseContent = [
 export const improvementCoachContent = [
   {
     icon: <IconChecklist className="icon icon__large" style={style} />,
-    description: "Creates weekly health, face, and body routines based on your physical condition.",
+    description: "Creates weekly routines based on your physical condition and concerns.",
   },
   {
     icon: <IconToolsKitchen2 className="icon icon__large" style={style} />,
     description:
-      "Suggests personalized recipes to match your calorie count based on your products, kitchenware and special considerations.",
+      "Suggests personal recipes to match your calorie count based on your physical condition, products at hand and kitchenware.",
   },
 ];
 

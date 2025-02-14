@@ -7,7 +7,6 @@ import DiaryContent from "@/app/diary/DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
-import { TypeEnum } from "@/types/global";
 import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubModerationLayout from "../../ModerationLayout";
 
@@ -26,7 +25,6 @@ export default function DiaryPage(props: Props) {
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || TypeEnum.HEAD;
   const sort = searchParams.get("sort") || "-createdAt";
 
   const handleFetchDiaryRecords = useCallback(async () => {
@@ -48,13 +46,13 @@ export default function DiaryPage(props: Props) {
     } catch (err) {
       openErrorModal();
     }
-  }, [diaryRecords, sort, hasMore, type]);
+  }, [diaryRecords, sort, hasMore]);
 
   useEffect(() => {
     if (!userName) return;
 
     handleFetchDiaryRecords();
-  }, [type, sort, userName]);
+  }, [sort, userName]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="diary">
