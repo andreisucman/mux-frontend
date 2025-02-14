@@ -13,7 +13,6 @@ import classes from "./ChatDisplay.module.css";
 type Props = {
   conversation: MessageType[];
   isThinking: boolean;
-  isOpen: boolean;
   chatContentId?: string;
   conversationId: string | null;
   isInList?: boolean;
@@ -25,7 +24,6 @@ type Props = {
 
 export default function ChatDisplay({
   isThinking,
-  isOpen,
   isInList,
   customContainerStyles,
   customScrollAreaStyles,
@@ -52,6 +50,11 @@ export default function ChatDisplay({
 
       if (response.status === 200) {
         setConversation(response.message);
+
+        scrollTid.current = setTimeout(() => {
+          scrollIntoView({ alignment: "center" });
+          clearTimeout(scrollTid.current);
+        }, 1000);
       }
     } catch (err) {}
   }, []);
@@ -89,16 +92,8 @@ export default function ChatDisplay({
   }, [conversationId, conversation.length > 0]);
 
   useEffect(() => {
-    if (!targetRef.current) return;
-    if (!scrollTid.current) {
-      scrollTid.current = setTimeout(() => {
-        scrollIntoView({ alignment: "center" });
-        clearTimeout(scrollTid.current);
-      }, 2000);
-    } else {
-      scrollIntoView({ alignment: "center" });
-    }
-  }, [targetRef.current, lastMessageRef.current, isOpen, conversation]);
+    scrollIntoView();
+  }, [conversation.length]);
 
   return (
     <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
