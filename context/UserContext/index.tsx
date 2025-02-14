@@ -123,7 +123,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
     if (onProtectedPage) {
       if (!userDetailsState.emailVerified) {
-        if (pathname !== "/settings") {
+        if (pathname !== "/settings" && pathname !== "/verify-email") {
           router.push("/verify-email");
           return;
         }

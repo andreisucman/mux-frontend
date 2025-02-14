@@ -16,17 +16,14 @@ export const protectedPaths = [
   "/waitroom",
   "/routines",
   "/diary",
+  "/verify-email",
 ];
 
-export const pathsThatRequireId = [
-  "/analysis/food",
-  "/analysis",
-  "/scan/progress",
-  "/scan/food",
-];
+export const pathsThatRequireId = ["/analysis/food", "/analysis", "/scan/progress", "/scan/food"];
 
 export const blockFetchUserDataPaths = [
   "/",
+  "/auth",
   "/accept",
   "/proof",
   "/scan/progress",

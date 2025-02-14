@@ -2,12 +2,10 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowRight, IconRotate } from "@tabler/icons-react";
-import { Button, PinInput, rem, Stack, Text, Title } from "@mantine/core";
+import { Button, PinInput, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import verifyEmail from "@/functions/verifyEmail";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -25,7 +23,7 @@ export default function VerifyEmail() {
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [canResendOn, setCanResendOn] = useState(new Date());
-  const { email, emailVerified } = userDetails || {};
+  const { email } = userDetails || {};
 
   const redirectUrl = searchParams.get("redirectUrl");
 
@@ -44,16 +42,31 @@ export default function VerifyEmail() {
       setIsLoading(true);
 
       try {
-        const isSuccess = await verifyEmail({ code });
-        setUserDetails((prev: UserDataType) => ({ ...prev, emailVerified: isSuccess }));
+        const response = await callTheServer({
+          endpoint: "verifyEmail",
+          method: "POST",
+          body: { code },
+        });
+
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal({ description: response.error });
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        setUserDetails((prev: UserDataType) => ({ ...prev, emailVerified: response.message }));
+
+        if (response.message) {
+          handleRedirect(redirectUrl);
+        }
       } catch (err) {
-        setIsLoading(false);
+        setCode("");
         openErrorModal();
-        setIsLoading;
-        console.log("Error in handleVerifyEmail: ", err);
       }
     },
-    [isLoading]
+    [isLoading, userDetails, redirectUrl]
   );
 
   const handleResendEmail = useCallback(
@@ -96,11 +109,6 @@ export default function VerifyEmail() {
       setCanResendOn(new Date((canResendEmailVerificaitonOn as Date | null) || 0));
     }
   }, []);
-
-  useEffect(() => {
-    if (!emailVerified) return;
-    handleRedirect(redirectUrl);
-  }, [emailVerified]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

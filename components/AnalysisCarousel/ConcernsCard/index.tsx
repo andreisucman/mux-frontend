@@ -36,11 +36,11 @@ function ConcernsCard({ status, userId, concerns, title }: Props) {
     setIsLoading(true);
 
     if (status === AuthStateEnum.AUTHENTICATED) {
-      router.push("/routines");
+      router.push("/tasks");
     } else {
       openAuthModal({
         stateObject: {
-          redirectPath: "/routines",
+          redirectPath: "/tasks",
           localUserId: userId,
           referrer: ReferrerEnum.ANALYSIS_PROGRESS,
         },
