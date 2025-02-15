@@ -87,8 +87,8 @@ export default function DiaryPage() {
 
     if (activeTasks.length > 0) {
       const activeParts = [...new Set(activeTasks.map((t) => t.part))];
-      if (activeParts.length > 1) activeParts.splice(activeParts.length - 2, 0, "and");
-      const activePartsString = activeParts.join(", ");
+      if (activeParts.length > 1) activeParts.splice(activeParts.length - 1, 0, "and,");
+      const activePartsString = activeParts.join(", ").split(",,").join(" ");
 
       askConfirmation({
         title: "Confirm action",

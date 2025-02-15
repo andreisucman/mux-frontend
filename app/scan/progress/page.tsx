@@ -149,9 +149,9 @@ export default function ScanProgress() {
     if (!parts) return "";
     let chunks = [...parts];
     if (chunks.length > 1) {
-      chunks.splice(-1, 0, "and");
+      chunks.splice(-1, 0, "and,");
     }
-    const partsString = chunks?.join(" ");
+    const partsString = chunks?.join(", ").split(",,").join(" ");
     return `The next ${partsString} scan is after ${checkBackDate}.`;
   }, [parts]);
 
