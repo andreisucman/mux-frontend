@@ -384,9 +384,10 @@ export default function ChatInput({
 
   useEffect(() => {
     getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
+      console.log(`openInputChat-${openChatKey}`, "verdict", verdict);
       if (openChatKey) {
-        if (verdict === undefined || verdict === null) verdict = true;
-        setShowChat(verdict || defaultVisibility === "open");
+        if (verdict === undefined || verdict === null) verdict = defaultVisibility === "open";
+        setShowChat(verdict);
       }
     });
   }, [chatContentId]);

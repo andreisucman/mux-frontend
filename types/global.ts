@@ -322,7 +322,7 @@ export type TaskType = {
   key: string;
   icon: string;
   color: string;
-  type: string;
+  part: string;
   startsAt: string;
   completedAt: string;
   expiresAt: string;

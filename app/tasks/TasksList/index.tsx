@@ -3,7 +3,8 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import { Button, Loader, Stack } from "@mantine/core";
+import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
@@ -15,7 +16,7 @@ import Link from "@/helpers/custom-router/patch-router/link";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import { TaskType } from "@/types/global";
 import CreateTaskOverlay from "./CreateTaskOverlay";
-import RoutineRow from "./TaskRow";
+import TaskRow from "./TaskRow";
 import TasksButtons from "./TasksButtons";
 import classes from "./TasksList.module.css";
 
@@ -37,7 +38,6 @@ export default function TasksList({ customStyles }: Props) {
   const [showScanOverlay, setShowScanOverlay] = useState(false);
   const [scanOverlayButtonText, setScanOverlayButtonText] = useState("");
   const [scanOverlayMessage, setScanOverlayMessage] = useState("");
-  const [relevantTasks, setRelevantTasks] = useState<TaskTypeWithClick[]>();
 
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "content"
@@ -59,15 +59,19 @@ export default function TasksList({ customStyles }: Props) {
 
   useSWR(userId, () => fetchUserData({ setUserDetails }));
 
-  useEffect(() => {
-    const relevant = tasks?.map((fTask) => ({
+  const taskGroups = useMemo(() => {
+    if (!tasks) return;
+
+    const tasksWithOnClick = tasks.map((fTask) => ({
       ...fTask,
       onClick: () => {
         router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
       },
     }));
-    setRelevantTasks(relevant);
-  }, [tasks, pathaname, userDetails]);
+    const parts = [...new Set(tasks.map((t) => t.part))];
+
+    return parts.map((part) => tasksWithOnClick.filter((t) => t.part === part));
+  }, [tasks]);
 
   useEffect(() => {
     if (!nextScan) return;
@@ -97,14 +101,14 @@ export default function TasksList({ customStyles }: Props) {
       setDisplayComponent("wait");
     } else if (showScanOverlay) {
       setDisplayComponent("scanOverlay");
-    } else if (relevantTasks && relevantTasks.length === 0) {
+    } else if (taskGroups && taskGroups.length === 0) {
       setDisplayComponent("createTaskOverlay");
-    } else if (relevantTasks && relevantTasks.length > 0) {
+    } else if (taskGroups && taskGroups.length > 0) {
       setDisplayComponent("content");
-    } else if (relevantTasks === undefined) {
+    } else if (taskGroups === undefined) {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, showScanOverlay, relevantTasks, pageLoaded]);
+  }, [isAnalysisGoing, showScanOverlay, taskGroups, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 
@@ -135,7 +139,6 @@ export default function TasksList({ customStyles }: Props) {
                 operationKey={"routine"}
                 description="Creating your task(s)"
                 onComplete={() => {
-                  setRelevantTasks(undefined);
                   fetchUserData({ setUserDetails });
                 }}
                 onError={() => {
@@ -147,26 +150,40 @@ export default function TasksList({ customStyles }: Props) {
             )}
             {displayComponent === "content" && (
               <Stack className={classes.scrollArea}>
-                {relevantTasks && (
+                {taskGroups && (
                   <Stack className={classes.listWrapper}>
                     {canAddDiaryRecord && (
-                      <Button component={Link} href={"/diary"} c="white">
+                      <Button component={Link} href="/diary" c="white">
                         Add a diary note for today
                       </Button>
                     )}
-                    {relevantTasks.map((record, index: number) => (
-                      <RoutineRow
-                        key={index}
-                        icon={record.icon}
-                        onClick={record.onClick}
-                        description={record.description}
-                        color={record.color}
-                        name={record.name}
-                        startsAt={record.startsAt}
-                        expiresAt={record.expiresAt}
-                        status={record.status}
-                      />
-                    ))}
+                    {taskGroups.map((group, index) => {
+                      const name = group[0].part;
+                      return (
+                        <Stack key={index}>
+                          <Divider
+                            label={
+                              <Text c="dimmed" size="sm">
+                                {upperFirst(name)}
+                              </Text>
+                            }
+                          />
+                          {group.map((t, i) => (
+                            <TaskRow
+                              key={i}
+                              icon={t.icon}
+                              onClick={t.onClick}
+                              description={t.description}
+                              color={t.color}
+                              name={t.name}
+                              startsAt={t.startsAt}
+                              expiresAt={t.expiresAt}
+                              status={t.status}
+                            />
+                          ))}
+                        </Stack>
+                      );
+                    })}
                   </Stack>
                 )}
               </Stack>
