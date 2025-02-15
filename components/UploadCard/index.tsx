@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Button, Group, Progress, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -11,10 +11,12 @@ import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
+import { placeholders } from "@/data/placeholders";
 import { OnBlurClickProps } from "@/functions/blur";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
+import getPlaceholderOrSilhouette from "@/helpers/getPlaceholderOrSilhouette";
 
 type Props = {
   sex: SexEnum;
@@ -61,6 +63,11 @@ export default function UploadCard({
 
   const blurredImage =
     blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
+
+  const relevantPlaceholder = useMemo(
+    () => getPlaceholderOrSilhouette({ sex, part, position, scanType, data: placeholders }),
+    [sex, part, position, scanType, placeholders]
+  );
 
   const loadLocally = useCallback(
     async (base64string: string) => {
@@ -131,6 +138,7 @@ export default function UploadCard({
           handleDelete={handleDeleteImage}
           image={localUrl || latestStyleImage}
           isLoadingOverlay={isBlurLoading}
+          placeholder={relevantPlaceholder && relevantPlaceholder.url}
         />
         <BlurButtons
           disabled={isBlurLoading || !!isLoading}
