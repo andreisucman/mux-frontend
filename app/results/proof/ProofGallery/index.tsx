@@ -39,7 +39,6 @@ export default function ProofGallery({
   handleFetchProof,
 }: Props) {
   const searchParams = useSearchParams();
-  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
@@ -54,14 +53,13 @@ export default function ProofGallery({
       <ProofCard
         data={props.data}
         key={props.index}
-        isMobile={!!isMobile}
         setProof={setProof}
         isPublicPage={isPublicPage}
         showContentModerationButtons={!isPublicPage && isSelf}
         showFooter={isPublicPage && !isSelf}
       />
     ),
-    [part, concern, isMobile, isSelf, appliedBlurType]
+    [part, concern, isSelf, appliedBlurType]
   );
 
   return (

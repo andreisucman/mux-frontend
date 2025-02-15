@@ -4,7 +4,7 @@ import { Group, Text } from "@mantine/core";
 import classes from "./ScoreCell.module.css";
 
 type Props = {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   score: number;
   customStyles?: { [key: string]: any };
 };

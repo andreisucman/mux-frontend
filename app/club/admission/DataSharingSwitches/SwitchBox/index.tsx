@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
-import { IconInfoCircle } from "@tabler/icons-react";
-import { ActionIcon, Group, Stack, Switch, Tooltip } from "@mantine/core";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { IconChevronDown, IconChevronUp, IconInfoCircle } from "@tabler/icons-react";
+import { ActionIcon, Collapse, Group, rem, Stack, Switch, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import { getPrivacyValue } from "@/helpers/clubPrivacy";
 import { getCategoryIcon, getPartIcon } from "@/helpers/icons";
+import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { HeadValuePartsBoolean } from "@/types/global";
 import { tooltipDescriptions } from "../tooltipDescriptions";
 import classes from "./SwitchBox.module.css";
@@ -29,6 +30,7 @@ export default function SwitchBox({
   onChange,
   setOpenTooltip,
 }: Props) {
+  const [openCollapse, setOpenCollapse] = useState(false);
   const clickOutsideRef = useClickOutside(() => setOpenTooltip(""));
   const relevantCategoryPrivacy = privacy?.find((rec) => rec.name === category);
 
@@ -74,31 +76,59 @@ export default function SwitchBox({
     });
   }, [privacy]);
 
+  const handleToggleCollapse = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    if (!partswitches || partswitches.length === 1) return;
+    setOpenCollapse((prev) => {
+      saveToIndexedDb(`openPrivacyCollapse-${category}`, !prev);
+      return !prev;
+    });
+  };
+
+  useEffect(() => {
+    getFromIndexedDb(`openPrivacyCollapse-${category}`).then((verdict) => {
+      if (verdict === undefined || verdict === null) verdict = true;
+      setOpenCollapse(verdict);
+    });
+  }, [category]);
+
+  const chevron = openCollapse ? (
+    <IconChevronUp className={`${classes.chevron} icon`} onClick={handleToggleCollapse} />
+  ) : (
+    <IconChevronDown className={`${classes.chevron} icon`} onClick={handleToggleCollapse} />
+  );
+
   return (
     <Stack className={classes.container}>
-      <Switch
-        label={
-          <Group align="center" gap={8}>
-            {categoryIcon} Share {category} data
-            <Tooltip
-              ref={clickOutsideRef}
-              label={tooltipDescriptions[category]}
-              opened={openTooltip === category}
-              onClick={() => setOpenTooltip((prev) => (prev === category ? "" : category))}
-              multiline
-            >
-              <ActionIcon variant="default">
-                <IconInfoCircle className="icon" />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-        }
-        size="md"
-        checked={switchedOn}
-        onChange={(e) => onChange({ value: e.currentTarget.checked, category })}
-      />
+      <Group className={classes.switchRow}>
+        <Switch
+          label={
+            <Group className={classes.categorySwitchLabel}>
+              {categoryIcon} Share {category} data
+              <Tooltip
+                ref={clickOutsideRef}
+                label={tooltipDescriptions[category]}
+                opened={openTooltip === category}
+                onClick={() => setOpenTooltip((prev) => (prev === category ? "" : category))}
+                multiline
+              >
+                <ActionIcon variant="default">
+                  <IconInfoCircle className="icon" />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+          }
+          size="md"
+          checked={switchedOn}
+          onChange={(e) => onChange({ value: e.currentTarget.checked, category })}
+        />
+        {partswitches && partswitches.length > 1 && chevron}
+      </Group>
+
       {partswitches && partswitches.length > 0 && (
-        <Stack className={classes.wrapper}>{partswitches}</Stack>
+        <Collapse in={openCollapse}>
+          <Stack className={classes.stack}>{partswitches}</Stack>
+        </Collapse>
       )}
     </Stack>
   );

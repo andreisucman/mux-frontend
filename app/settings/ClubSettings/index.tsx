@@ -242,7 +242,7 @@ export default function ClubSettings() {
   const introCharactersLeft = MAX_INTRO_CHARACTERS - userIntro.length;
 
   return (
-    <Skeleton className={classes.stack} visible={showSkeleton}>
+    <Skeleton className={classes.container} visible={showSkeleton}>
       <Title order={2} fz={18}>
         Club
       </Title>

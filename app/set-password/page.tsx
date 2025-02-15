@@ -32,13 +32,10 @@ export default function SetPassword() {
     deleteFromLocalStorage("userDetails");
     setStatus("unauthenticated");
     setUserDetails(null);
-    
 
-    if (protectedPaths.includes(pathname)) {
-      router.replace("/auth");
-    }
+    router.replace("/auth");
     modals.closeAll();
-  }, []);
+  }, [protectedPaths, pathname]);
 
   const handleEnterPassword = (e: React.FormEvent<HTMLInputElement>) => {
     if (error) setError("");
@@ -68,6 +65,7 @@ export default function SetPassword() {
           if (response.error) {
             openErrorModal({
               description: `Your access token is ${response.error}. Request a new password reset.`,
+              onClose: handleSignOut,
             });
             return;
           }
@@ -78,7 +76,7 @@ export default function SetPassword() {
           });
         }
       } catch (err) {
-        openErrorModal();
+        openErrorModal({ onClose: handleSignOut });
       }
     },
     [accessToken, password]

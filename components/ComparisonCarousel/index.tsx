@@ -17,7 +17,6 @@ type Props = {
 
 export default function ComparisonCarousel({ data }: Props) {
   const { userName, part, images, initialImages, initialDate, updatedAt, avatar } = data;
-
   const [slides, setSlides] = useState<React.ReactNode[]>();
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);

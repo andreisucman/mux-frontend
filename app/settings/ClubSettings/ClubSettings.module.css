@@ -1,8 +1,4 @@
-.icon {
-  margin-right: rem(8);
-}
-
-.stack {
+.container {
   display: flex;
   flex-direction: column;
   padding: rem(16);
@@ -11,6 +7,11 @@
   border-radius: var(--mantine-radius-lg);
   width: unset;
   flex: 1 0;
+  min-width: rem(300);
+}
+
+.icon {
+  margin-right: rem(8);
 }
 
 .item {

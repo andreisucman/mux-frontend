@@ -3,9 +3,7 @@ import callTheServer from "./callTheServer";
 
 export type FetchProgressProps = {
   userName?: string | string[];
-  type: string | null;
   part: string | null;
-  position: string | null;
   skip?: boolean;
   sort: string | null;
   currentArrayLength?: number;
@@ -13,9 +11,7 @@ export type FetchProgressProps = {
 
 export default async function fetchProgress({
   userName,
-  type,
   part,
-  position,
   skip,
   sort,
   currentArrayLength,
@@ -31,10 +27,6 @@ export default async function fetchProgress({
 
     if (part) {
       queryParams.push(`part=${part}`);
-    }
-
-    if (position) {
-      queryParams.push(`position=${position}`);
     }
 
     if (skip && currentArrayLength) {

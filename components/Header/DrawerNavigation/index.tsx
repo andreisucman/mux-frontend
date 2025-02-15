@@ -175,6 +175,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           { title: "Profile", path: "/club" },
           { title: "About", path: `/club/${name}` },
           { title: "Routines", path: `/club/routines/${name}` },
+          { title: "Results", path: `/club/progress/${name}` },
           { title: "Diary", path: `/club/diary/${name}` },
           { title: "Answers", path: `/club/answers/${name}` },
         ],

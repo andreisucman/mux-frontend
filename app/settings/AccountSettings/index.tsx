@@ -54,7 +54,7 @@ export default function AccountSettings() {
       });
 
       if (response.status === 200) {
-        router.replace(response.message);
+        location.replace(response.message);
       }
     } catch (err) {}
   }, []);

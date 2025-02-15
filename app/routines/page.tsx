@@ -127,7 +127,7 @@ export default function ClubRoutines() {
 
     if (neverScanned) {
       setScanOverlayButtonText("Scan");
-      setScanOverlayMessage("Scan yourself to view tasks");
+      setScanOverlayMessage("Scan yourself to view routines");
     }
 
     if (allPassed) {

@@ -105,7 +105,7 @@ export default function EditClubAbout({
       if (canRegenerate) {
         askConfirmation({
           title: "Please confirm",
-          body: "You can only generate bio from questions once a week. Continue?",
+          body: "You can do it once a week only. Continue?",
           onConfirm: () => generateBioFromQuestions(segment, setIsLoading),
         });
       } else {

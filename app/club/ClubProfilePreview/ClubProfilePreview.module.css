@@ -28,6 +28,7 @@
   font-size: var(--mantine-font-size-md);
   font-weight: 600;
   width: fit-content;
+  gap: rem(12);
 }
 
 .clubSettingsButton {

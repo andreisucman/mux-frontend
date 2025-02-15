@@ -89,7 +89,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     let constraints: MediaStreamConstraints = {
       video: {
         facingMode,
-        aspectRatio: 9 / 16,
       },
       audio: true,
     };
@@ -302,6 +301,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [recordedBlob, uploadProof, captureType]);
 
   const flipCamera = useCallback(() => {
+    handleResetRecording();
     setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
   }, [facingMode]);
 
@@ -334,7 +334,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       let constraints: MediaStreamConstraints = {
         video: {
           facingMode,
-          aspectRatio: 9 / 16,
         },
         audio: true,
       };
@@ -357,7 +356,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         onClose: () => modals.closeAll(),
       });
     }
-  }, [videoRef.current, streamRef.current, isRecording, isVideoLoading]);
+  }, [videoRef.current, streamRef.current, isRecording, isVideoLoading, facingMode]);
 
   useEffect(() => {
     const savedCaptureType: string | null = getFromLocalStorage("captureType");

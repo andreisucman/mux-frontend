@@ -51,7 +51,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
   };
 
   const handleSubmitForm = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
 
       const emailValid = validateEmail(email);
@@ -67,7 +67,11 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       }
 
       if (showResetPassword) {
-        sendPasswordResetEmail({ email });
+        const status = await sendPasswordResetEmail({ email });
+        if (status) {
+          setEmail("");
+          setShowResetPassword(false);
+        }
         return;
       }
 

@@ -1,7 +1,7 @@
 .cell {
   display: flex;
   align-items: center;
-  gap: rem(6);
+  gap: rem(8);
   flex-direction: row;
   justify-content: center;
   flex-wrap: nowrap;

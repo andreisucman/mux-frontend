@@ -2,9 +2,9 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   IconChevronDown,
   IconChevronUp,
-  IconMan,
   IconMoodSmile,
   IconSettings,
+  IconTrendingUp,
 } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
@@ -43,7 +43,6 @@ function ClubProfilePreview({
   const { totalProgress } = scores || {};
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(true);
 
-  const progessExists = totalProgress !== undefined;
   const rowStyle: { [key: string]: any } = {};
 
   const redirectToProgress = useCallback(() => {
@@ -96,26 +95,24 @@ function ClubProfilePreview({
 
         <Stack className={classes.content}>
           <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
-            {name} {chevron}
+            <Group align="center" gap={4}>
+              {chevron} {name}
+            </Group>
+            {totalProgress !== undefined && (
+              <Group align="center" gap={8}>
+                <IconTrendingUp className="icon" />
+                {String(totalProgress)}
+              </Group>
+            )}
           </Title>
 
           <Collapse in={showCollapsedInfo}>
             {!isMini && (
-              <Text size="sm" lineClamp={5}>
+              <Text size="sm" lineClamp={5} mb={2}>
                 {bio?.intro}
               </Text>
             )}
             {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
-            {progessExists && (
-              <Group wrap="nowrap" mt={4}>
-                {totalProgress !== undefined && (
-                  <ScoreCell
-                    icon={<IconMoodSmile className="icon" />}
-                    score={Math.max(totalProgress, 0)}
-                  />
-                )}
-              </Group>
-            )}
           </Collapse>
         </Stack>
         {type === "you" && (

@@ -123,7 +123,6 @@ export default function ClubAbout(props: Props) {
   }, []);
 
   const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";
-  const buttonPath = userName ? `/club/answers/${userName}` : `/club/answers`;
 
   return (
     <ClubModerationLayout userName={userName} pageType="about">
@@ -143,13 +142,12 @@ export default function ClubAbout(props: Props) {
 
               <Collapse in={showQuestions}>
                 <Group className={classes.buttonWrapper}>
-                  <Text>Answer questions to create your bio</Text>
+                  <Text size="sm">Answer questions to create your bio</Text>
                   <Button
                     c="white"
-                    size="compact-sm"
                     variant={hasNewAboutQuestions ? "filled" : "default"}
                     component={Link}
-                    href={buttonPath}
+                    href={`/club/answers/${userName}?showType=answered`}
                   >
                     {buttonText}
                   </Button>

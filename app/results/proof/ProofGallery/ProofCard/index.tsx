@@ -15,7 +15,6 @@ import ProofCardHeader from "./ProofCardHeader";
 import classes from "./ProofCard.module.css";
 
 type Props = {
-  isMobile: boolean;
   isLite?: boolean;
   showFooter?: boolean;
   isPublicPage?: boolean;
@@ -28,7 +27,6 @@ type Props = {
 function ProofCard({
   data,
   isLite,
-  isMobile,
   showFooter,
   isPublicPage,
   showContentModerationButtons,
@@ -44,11 +42,8 @@ function ProofCard({
     icon,
     taskName,
     createdAt,
-    userId,
     mainThumbnail,
     contentType,
-    latestBodyScoreDifference,
-    latestFaceScoreDifference,
     _id: proofId,
   } = data;
 
@@ -72,10 +67,9 @@ function ProofCard({
       record: data,
       type: "proof",
       title,
-      isFullScreen: isMobile,
       isPublicPage,
     });
-  }, [isPublicPage, data, isMobile, userName]);
+  }, [isPublicPage, data, userName]);
 
   const showSkeleton = useShowSkeleton();
 

@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
-import { IconArrowRight } from "@tabler/icons-react";
-import { ActionIcon, Button, Group, Progress, rem, Stack, Text, Title } from "@mantine/core";
+import React, { useCallback, useContext, useState } from "react";
+import { Button, Group, Progress, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
@@ -12,10 +11,7 @@ import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
-import { placeholders } from "@/data/placeholders";
 import { OnBlurClickProps } from "@/functions/blur";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import getPlaceholderOrOverlay from "@/helpers/getPlaceholderOrSilhouette";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
@@ -47,7 +43,6 @@ export default function UploadCard({
   onBlurClick,
   handleUpload,
 }: Props) {
-  const router = useRouter();
   const { blurType } = useContext(BlurChoicesContext);
   const [isBlurLoading, setIsBlurLoading] = useState(false);
   const { width, height } = useViewportSize();
@@ -66,13 +61,6 @@ export default function UploadCard({
 
   const blurredImage =
     blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
-
-  const relevantPlaceholder = useMemo(
-    () => getPlaceholderOrOverlay({ sex, part, position, scanType, data: placeholders }),
-    [sex, part, position, scanType, placeholders]
-  );
-
-  console.log("relevantPlaceholder", sex, part, position, scanType);
 
   const loadLocally = useCallback(
     async (base64string: string) => {
@@ -143,7 +131,6 @@ export default function UploadCard({
           handleDelete={handleDeleteImage}
           image={localUrl || latestStyleImage}
           isLoadingOverlay={isBlurLoading}
-          placeholder={relevantPlaceholder && relevantPlaceholder.url}
         />
         <BlurButtons
           disabled={isBlurLoading || !!isLoading}

@@ -2,7 +2,22 @@
   gap: rem(12);
 }
 
-.wrapper {
+.stack {
   padding-left: rem(16);
+  gap: rem(12);
+}
+
+.categorySwitchLabel {
+  align-items: center;
+  gap: rem(8);
+}
+
+.chevron {
+  cursor: pointer;
+  margin-left: rem(4);
+}
+
+.switchRow {
+  flex-wrap: nowrap;
   gap: rem(12);
 }

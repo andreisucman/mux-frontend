@@ -39,7 +39,7 @@ export default function ClubHeader({
       if (!pageName) return;
       const path = getPageTypeRedirect(pageName, userName);
 
-      router.push(path);
+      router.replace(path);
     },
     [userName]
   );

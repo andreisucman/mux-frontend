@@ -40,10 +40,8 @@ export default function ProgressGallery({
 }: Props) {
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
-  const position = searchParams.get("position");
 
   const modelObject = progress && progress[0];
   const appliedBlurType = modelObject?.images[0].mainUrl.name;
@@ -59,7 +57,7 @@ export default function ProgressGallery({
         handleContainerClick={handleContainerClick}
       />
     ),
-    [position, isSelf, isPublicPage, appliedBlurType, typeof progress]
+    [isSelf, isPublicPage, appliedBlurType, typeof progress]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);
@@ -75,9 +73,7 @@ export default function ProgressGallery({
           }
           loadMore={() =>
             handleFetchProgress({
-              type,
               part,
-              position,
               skip: hasMore,
               currentArray: progress,
               userName,

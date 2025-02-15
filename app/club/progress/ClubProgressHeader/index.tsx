@@ -28,7 +28,7 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
-    const requiredParams = allParams.filter((param) => ["part", "position"].includes(param));
+    const requiredParams = allParams.filter((param) => param === "part");
     return requiredParams.length;
   }, [searchParams.toString()]);
 

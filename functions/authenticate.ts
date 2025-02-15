@@ -84,14 +84,9 @@ const authenticate = async ({
         }
       }
 
-      console.log("redirectUrl", redirectUrl);
-
       const { emailVerified } = response.message;
 
-      console.log("repsonse message auth", response.message);
-
       if (!emailVerified) {
-        console.log("line 94", router);
         const url = `/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`;
         router.push(url);
         return;

@@ -28,29 +28,17 @@ export default function ResultsProgress() {
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
-  const position = searchParams.get("position");
 
   const handleFetchProgress = useCallback(
-    async ({
-      type,
-      part,
-      skip,
-      sort,
-      position,
-      userName,
-      currentArray,
-    }: HandleFetchProgressProps) => {
+    async ({ part, skip, sort, userName, currentArray }: HandleFetchProgressProps) => {
       try {
         setProgress(undefined);
         const items = await fetchProgress({
-          type,
           part,
           sort,
           skip,
-          position,
           userName,
           currentArrayLength: (currentArray && currentArray.length) || 0,
         });
@@ -83,8 +71,8 @@ export default function ResultsProgress() {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProgress({ type, part, sort, position });
-  }, [status, type, sort, part, position]);
+    handleFetchProgress({ part, sort });
+  }, [status, sort, part]);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>

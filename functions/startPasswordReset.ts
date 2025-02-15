@@ -7,6 +7,7 @@ type SendPasswordResetEmailProps = {
 };
 
 const sendPasswordResetEmail = async ({ email }: SendPasswordResetEmailProps) => {
+  let status = false;
   try {
     const response = await callTheServer({
       endpoint: "sendPasswordResetEmail",
@@ -19,9 +20,12 @@ const sendPasswordResetEmail = async ({ email }: SendPasswordResetEmailProps) =>
         openErrorModal({ description: response.error });
         return;
       }
+      status = true;
       openSuccessModal({ title: "Check your email", description: response.message });
     }
   } catch (err) {
+  } finally {
+    return status;
   }
 };
 

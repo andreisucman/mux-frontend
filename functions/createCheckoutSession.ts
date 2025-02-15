@@ -36,7 +36,7 @@ export default async function createCheckoutSession({
       const { redirectUrl, subscriptionId, subscriptions } = response.message;
 
       if (redirectUrl) {
-        location.href = redirectUrl;
+        location.replace(redirectUrl);
         return;
       }
 

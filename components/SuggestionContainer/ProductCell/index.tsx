@@ -43,7 +43,6 @@ const ProductCell = ({ isMobile,item, allItems, selectedAsins, showOnCellAtc, se
       classNames: { content: "scrollbars" },
       innerProps: <ProductModalBody item={item} allItems={allItems} />,
       withinPortal: false,
-      fullScreen: isMobile
     });
   }, [modalTitle, item]);
 

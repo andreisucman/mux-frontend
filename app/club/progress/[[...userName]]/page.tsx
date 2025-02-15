@@ -30,27 +30,15 @@ export default function ClubProgress(props: Props) {
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
-  const position = searchParams.get("position");
 
   const isSelf = userName === userDetails?.name;
 
   const handleFetchProgress = useCallback(
-    async ({
-      type,
-      part,
-      currentArray,
-      sort,
-      position,
-      userName,
-      skip,
-    }: HandleFetchProgressProps) => {
+    async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
       const data = await fetchProgress({
         part,
-        type,
-        position,
         sort,
         currentArrayLength: (currentArray && currentArray.length) || 0,
         userName,
@@ -84,8 +72,8 @@ export default function ClubProgress(props: Props) {
   useEffect(() => {
     if (status !== "authenticated") return;
 
-    handleFetchProgress({ type, part, sort, position, userName });
-  }, [status, userName, sort, type, part]);
+    handleFetchProgress({ part, sort, userName });
+  }, [status, userName, sort, part]);
 
   return (
     <ClubModerationLayout userName={userName} pageType="progress">

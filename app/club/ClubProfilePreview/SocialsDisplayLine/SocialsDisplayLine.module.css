@@ -13,7 +13,7 @@
 .link {
   display: flex;
   align-items: center;
-  gap: rem(4);
+  gap: rem(8);
 
   &:hover {
     color: white;

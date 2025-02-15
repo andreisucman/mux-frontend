@@ -15,17 +15,11 @@ type OpenViewModalProps = {
   title: React.ReactNode;
   type: "progress" | "proof";
   isPublicPage?: boolean;
-  isFullScreen?: boolean;
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
-export default function openResultModal({
-  record,
-  title,
-  type,
-  isPublicPage,
-  isFullScreen,
-}: OpenViewModalProps) {
+export default function openResultModal({ record, title, type, isPublicPage }: OpenViewModalProps) {
+
   const content =
     type === "progress" ? (
       <ProgressModalContent record={record as SimpleBeforeAfterType} isPublicPage={isPublicPage} />
@@ -39,7 +33,6 @@ export default function openResultModal({
     title,
     size: rem(960),
     innerProps: content,
-    fullScreen: isFullScreen,
     removeScrollProps: { allowPinchZoom: true },
     styles: {
       content: { display: "flex", flexDirection: "column" },
