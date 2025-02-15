@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -11,7 +11,6 @@ import callTheServer from "@/functions/callTheServer";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
-import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { UserDataType } from "@/types/global";
@@ -31,7 +30,6 @@ export default function DiaryPage() {
   const [disableAddNew, setDisableAddNew] = useState(true);
 
   const sort = searchParams.get("sort") || "-createdAt";
-
   const { tasks, timeZone } = userDetails || {};
 
   const createDiaryRecord = useCallback(async () => {
@@ -88,12 +86,13 @@ export default function DiaryPage() {
     const activeTasks = tasks.filter((task) => task.status === "active") || [];
 
     if (activeTasks.length > 0) {
-      const activeTypes = [...new Set(activeTasks.map((t) => t.type))];
-      const activeTypesString = activeTypes.join(", and");
+      const activeParts = [...new Set(activeTasks.map((t) => t.part))];
+      if (activeParts.length > 1) activeParts.splice(activeParts.length - 2, 0, "and");
+      const activePartsString = activeParts.join(", ");
 
       askConfirmation({
         title: "Confirm action",
-        body: `You still have active ${activeTypesString} tasks. Would you like to complete them first?`,
+        body: `You still have active ${activePartsString} tasks. Would you like to complete them first?`,
         onConfirm: () => router.push("/tasks"),
         onCancel: createDiaryRecord,
       });

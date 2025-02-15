@@ -32,7 +32,6 @@ export default function TasksList({ customStyles }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const router = useRouter();
-  const pathaname = usePathname();
   const searchParams = useSearchParams();
   const [pageLoaded, setPageLoaded] = useState(false);
   const [showScanOverlay, setShowScanOverlay] = useState(false);
