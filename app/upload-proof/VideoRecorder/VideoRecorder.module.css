@@ -21,13 +21,14 @@
 }
 
 .video {
-  position: absolute;
   height: 100%;
+  width: 100%;
+  position: absolute;
+  object-fit: contain;
 }
 
 .buttonGroup {
   position: absolute;
-  left: rem(16);
   right: rem(16);
   top: rem(16);
   z-index: 3;

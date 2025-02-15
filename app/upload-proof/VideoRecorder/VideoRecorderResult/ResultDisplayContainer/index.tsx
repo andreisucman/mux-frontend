@@ -29,7 +29,11 @@ export default function ResultDisplayContainer({
 
   return (
     <div className={classes.container}>
-      <ProgressLoadingOverlay isLoading={isBlurLoading} progress={progress} title="Blur in progress" />
+      <ProgressLoadingOverlay
+        isLoading={isBlurLoading}
+        progress={progress}
+        title="Blur in progress"
+      />
       {captureType === "image" && imageExtension && (
         <NextImage src={url} className={classes.image} width={300} height={533} alt="" />
       )}
@@ -38,7 +42,7 @@ export default function ResultDisplayContainer({
           url={url}
           thumbnail={thumbnail}
           createdAt={createdAt}
-          customStyles={{ borderRadius: rem(16), overflow: "hidden", minHeight: rem(600) }}
+          customStyles={{ borderRadius: rem(16), overflow: "hidden" }}
           isRelative
         />
       )}

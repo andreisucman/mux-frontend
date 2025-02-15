@@ -378,11 +378,6 @@ export default function ChatInput({
   };
 
   useEffect(() => {
-    if (!query) return;
-    setCurrentMessage(query as string);
-  }, [query]);
-
-  useEffect(() => {
     getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
       console.log(`openInputChat-${openChatKey}`, "verdict", verdict);
       if (openChatKey) {
@@ -391,6 +386,11 @@ export default function ChatInput({
       }
     });
   }, [chatContentId]);
+
+  useEffect(() => {
+    if (!query) return;
+    setCurrentMessage(query as string);
+  }, [query]);
 
   useEffect(() => {
     if (!conversation) return;

@@ -7,12 +7,14 @@ import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
+import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import fetchRoutines from "@/functions/fetchRoutines";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
+import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import { RoutineType } from "@/types/global";
@@ -43,7 +45,7 @@ export default function ClubRoutines() {
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "content"
+    "loading" | "wait" | "empty" | "scanOverlay" | "createTaskOverlay" | "content"
   >("loading");
   const [showScanOverlay, setShowScanOverlay] = useState<boolean>();
   const [scanOverlayButtonText, setScanOverlayButtonText] = useState("");
@@ -83,13 +85,17 @@ export default function ClubRoutines() {
             setHasMore(message.length === 21);
           } else {
             setRoutines(message.slice(0, 20));
-            if (!openValue) setOpenValue(message[0]?._id);
           }
         }
       } catch (err) {}
     },
     [routines]
   );
+
+  const handleSetOpenValue = useCallback((part: string | null) => {
+    saveToIndexedDb("openRoutinesRow", part);
+    setOpenValue(part);
+  }, []);
 
   const accordionItems = useMemo(
     () =>
@@ -141,12 +147,15 @@ export default function ClubRoutines() {
   useEffect(() => {
     if (!routines || !pageLoaded) return;
     if (showScanOverlay === undefined) return;
+    const noRoutines = routines && routines.length === 0;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
+    } else if (noRoutines && status !== "active") {
+      setDisplayComponent("empty");
     } else if (showScanOverlay) {
       setDisplayComponent("scanOverlay");
-    } else if (routines && routines.length === 0) {
+    } else if (noRoutines) {
       setDisplayComponent("createTaskOverlay");
     } else if (routines && routines.length > 0) {
       setDisplayComponent("content");
@@ -154,6 +163,13 @@ export default function ClubRoutines() {
       setDisplayComponent("loading");
     }
   }, [isAnalysisGoing, showScanOverlay, routines, pageLoaded]);
+
+  useEffect(() => {
+    getFromIndexedDb("openRoutinesRow").then((part) => {
+      console.log("part", part);
+      setOpenValue(part);
+    });
+  }, []);
 
   useEffect(() => setPageLoaded(true), []);
 
@@ -183,7 +199,7 @@ export default function ClubRoutines() {
           <Stack className={classes.wrapper}>
             <Accordion
               value={openValue}
-              onChange={setOpenValue}
+              onChange={handleSetOpenValue}
               chevron={false}
               className={`${classes.accordion} scrollbar`}
               classNames={{
@@ -216,6 +232,7 @@ export default function ClubRoutines() {
         {displayComponent === "scanOverlay" && (
           <UploadOverlay buttonText={scanOverlayButtonText} text={scanOverlayMessage} />
         )}
+        {displayComponent === "empty" && <OverlayWithText text="Nothing found" />}
         {displayComponent === "createTaskOverlay" && (
           <CreateTaskOverlay
             timeZone={timeZone}

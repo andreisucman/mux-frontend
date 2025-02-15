@@ -372,7 +372,7 @@ export default function Explain(props: Props) {
               )}
               <ChatWithModal
                 chatCategory={ChatCategoryEnum.TASK}
-                openChatKey={taskId}
+                openChatKey={ChatCategoryEnum.TASK}
                 chatContentId={taskId}
                 defaultVisibility="open"
                 modalTitle={

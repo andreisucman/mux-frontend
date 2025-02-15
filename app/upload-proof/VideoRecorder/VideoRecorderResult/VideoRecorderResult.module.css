@@ -25,7 +25,6 @@
 .buttonGroup {
   position: absolute;
   top: rem(16);
-  left: 50%;
-  transform: translateX(-50%);
+  right: rem(16);
   z-index: 1;
 }
