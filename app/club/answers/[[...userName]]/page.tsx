@@ -29,6 +29,7 @@ import ClubModerationLayout from "../../ModerationLayout";
 import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
 import classes from "./answers.module.css";
+import ClubHeader from "../../ClubHeader";
 
 export const runtime = "edge";
 
@@ -203,7 +204,11 @@ export default function AnswersPage(props: Props) {
   ) : undefined;
 
   return (
-    <ClubModerationLayout userName={userName} pageType="answers">
+    <ClubModerationLayout
+      header={<ClubHeader title={"Club"} pageType="answers" showReturn />}
+      userName={userName}
+      pageType="answers"
+    >
       <Stack className={classes.content}>
         <Group className={classes.controlWrapper}>
           {isSelf && (

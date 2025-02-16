@@ -2,7 +2,6 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   IconChevronDown,
   IconChevronUp,
-  IconMoodSmile,
   IconSettings,
   IconTrendingUp,
 } from "@tabler/icons-react";
@@ -10,7 +9,6 @@ import cn from "classnames";
 import { ActionIcon, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
-import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
@@ -74,9 +72,9 @@ function ClubProfilePreview({
   }, [showCollapseKey]);
 
   const chevron = showCollapsedInfo ? (
-    <IconChevronDown className="icon" style={{ marginLeft: rem(4) }} />
-  ) : (
     <IconChevronUp className="icon" style={{ marginLeft: rem(4) }} />
+  ) : (
+    <IconChevronDown className="icon" style={{ marginLeft: rem(4) }} />
   );
 
   return (
@@ -98,14 +96,7 @@ function ClubProfilePreview({
             <Group align="center" gap={4}>
               {chevron} {name}
             </Group>
-            {totalProgress !== undefined && (
-              <Group align="center" gap={8}>
-                <IconTrendingUp className="icon" />
-                {String(totalProgress)}
-              </Group>
-            )}
           </Title>
-
           <Collapse in={showCollapsedInfo}>
             {!isMini && (
               <Text size="sm" lineClamp={5} mb={2}>
@@ -113,6 +104,12 @@ function ClubProfilePreview({
               </Text>
             )}
             {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
+            {totalProgress !== undefined && (
+              <Group align="center" gap={8}>
+                <IconTrendingUp className="icon" />
+                {String(totalProgress)}
+              </Group>
+            )}
           </Collapse>
         </Stack>
         {type === "you" && (

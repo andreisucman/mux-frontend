@@ -5,9 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { Title } from "@mantine/core";
 import DiaryContent from "@/app/diary/DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
+import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
 import ChatWithModal from "../../../../components/ChatWithModal";
+import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
@@ -54,8 +56,22 @@ export default function DiaryPage(props: Props) {
     handleFetchDiaryRecords();
   }, [sort, userName]);
 
+  const noResults = !diaryRecords || diaryRecords.length === 0;
+
   return (
-    <ClubModerationLayout userName={userName} pageType="diary">
+    <ClubModerationLayout
+      header={
+        <ClubHeader
+          isDisabled={noResults}
+          title={"Club"}
+          pageType="diary"
+          sortItems={diarySortItems}
+          showReturn
+        />
+      }
+      userName={userName}
+      pageType="diary"
+    >
       <DiaryContent
         diaryRecords={diaryRecords}
         openValue={openValue}

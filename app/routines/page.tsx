@@ -179,6 +179,7 @@ export default function ClubRoutines() {
         <PageHeaderWithReturn
           title="My routines"
           filterData={routineSegments}
+          filterName="status"
           selectedValue={status}
           onSelect={handleChangeSegment}
           showReturn

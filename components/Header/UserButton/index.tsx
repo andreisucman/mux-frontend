@@ -16,7 +16,7 @@ type Props = {
   handleSignOut: () => void;
 };
 
-function UserButton({ avatar = null, name, handleSignOut }: Props) {
+function UserButton({ avatar, name, handleSignOut }: Props) {
   return (
     <Menu withArrow classNames={{ itemLabel: classes.itemLabel }}>
       <Menu.Target>
@@ -41,7 +41,7 @@ function UserButton({ avatar = null, name, handleSignOut }: Props) {
         {name && (
           <Menu.Item component={Link} href="/club" style={{ paddingBottom: rem(4) }}>
             <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />{" "}
-            <strong>{name}</strong>
+            <strong className={classes.name}>{name}</strong>
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/tasks">

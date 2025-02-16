@@ -1,23 +1,35 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
+import {
+  Accordion,
+  ActionIcon,
+  Button,
+  Loader,
+  SegmentedControl,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
+import ChatWithModal from "@/components/ChatWithModal";
 import OverlayWithText from "@/components/OverlayWithText";
 import TaskInfoContainer from "@/components/TaskInfoContainer";
 import { UserContext } from "@/context/UserContext";
+import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import fetchRoutines from "@/functions/fetchRoutines";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
+import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
-import ChatWithModal from "../../../../components/ChatWithModal";
+import { routineSegments } from "../../[userName]/data";
+import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 import classes from "./routines.module.css";
 
@@ -26,7 +38,6 @@ export const runtime = "edge";
 type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
-  type?: string;
   status: string | null;
   sort: string | null;
   routinesLength?: number;
@@ -40,6 +51,7 @@ export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -49,14 +61,13 @@ export default function ClubRoutines(props: Props) {
   const { name, routines: currentUserRoutines } = userDetails || {};
 
   const status = searchParams.get("status") || "active";
-  const type = searchParams.get("type") || "head";
   const sort = searchParams.get("sort");
   const isSelf = name === userName;
 
   const openTaskDetails = useCallback(
     (task: AllTaskType, routineId: string) => {
       try {
-        const relevantRoutine = currentUserRoutines?.find((r) => r.type === type);
+        const relevantRoutine = currentUserRoutines?.find((r) => r._id === routineId);
         const existingTasksKeys = relevantRoutine?.allTasks.map((t) => t.key);
         const existsInRoutines = existingTasksKeys?.includes(task.key) || false;
 
@@ -80,11 +91,11 @@ export default function ClubRoutines(props: Props) {
         });
       } catch (err) {}
     },
-    [type, currentUserRoutines?.length]
+    [currentUserRoutines]
   );
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, status, followingUserName, routinesLength, type }: GetRoutinesProps) => {
+    async ({ skip, sort, status, followingUserName, routinesLength }: GetRoutinesProps) => {
       try {
         const response = await fetchRoutines({
           skip,
@@ -116,7 +127,7 @@ export default function ClubRoutines(props: Props) {
         const response = await callTheServer({
           endpoint: "stealRoutine",
           method: "POST",
-          body: { type, routineId, userName },
+          body: { routineId, userName },
         });
 
         if (response.status === 200) {
@@ -134,14 +145,14 @@ export default function ClubRoutines(props: Props) {
 
   const handleAddToMyRoutine = useCallback(
     async (taskKey: string, routineId: string, total: number, startsAt: Date | null) => {
-      if (!taskKey || !routineId || !startsAt || !type) return false;
+      if (!taskKey || !routineId || !startsAt) return false;
 
       let isSuccess = false;
       try {
         const response = await callTheServer({
           endpoint: "stealTask",
           method: "POST",
-          body: { taskKey, routineId, total, followingUserName: userName, type },
+          body: { taskKey, routineId, total, followingUserName: userName },
         });
 
         if (response.status === 200) {
@@ -160,48 +171,78 @@ export default function ClubRoutines(props: Props) {
         return isSuccess;
       }
     },
-    [type, userDetails]
+    [userDetails]
   );
+
+  const handleChangeSegment = (segmentName: string) => {
+    const query = modifyQuery({
+      params: [{ name: "status", value: segmentName, action: "replace" }],
+    });
+
+    router.replace(`${pathname}${query ? `?${query}` : ""}`);
+  };
 
   const accordionItems = useMemo(
     () =>
-      routines
-        ?.filter((routine) => routine.type === type)
-        .map((routine) => {
-          return (
-            <AccordionRoutineRow
-              key={routine._id}
-              routine={routine}
-              isSelf={isSelf}
-              handleStealRoutine={() =>
-                askConfirmation({
-                  title: "Steal routine",
-                  body: "This will replace your current routine with the selected one. Are you sure?",
-                  onConfirm: () => stealRoutine(routine._id),
-                })
-              }
-              setRoutines={setRoutines}
-              openTaskDetails={openTaskDetails}
-            />
-          );
-        }),
-    [type, routines, isSelf]
+      routines &&
+      routines.map((routine) => {
+        return (
+          <AccordionRoutineRow
+            key={routine._id}
+            routine={routine}
+            isSelf={isSelf}
+            handleStealRoutine={() =>
+              askConfirmation({
+                title: "Steal routine",
+                body: "This will replace your current routine with the selected one. Are you sure?",
+                onConfirm: () => stealRoutine(routine._id),
+              })
+            }
+            setRoutines={setRoutines}
+            openTaskDetails={openTaskDetails}
+          />
+        );
+      }),
+    [routines, isSelf]
   );
 
   useEffect(() => {
-    if (!type || !status) return;
+    if (!status) return;
     const payload: GetRoutinesProps = {
       followingUserName: userName,
       routinesLength: (routines && routines.length) || 0,
-      type,
       sort,
       status,
     };
     handleFetchRoutines(payload);
-  }, [type, status, sort, userName]);
+  }, [status, sort, userName]);
+
+  const noResults = !routines || routines.length === 0;
 
   return (
-    <ClubModerationLayout pageType="routines" userName={userName} showChat showHeader>
+    <ClubModerationLayout
+      header={
+        <ClubHeader
+          title={"Club"}
+          pageType={"routines"}
+          sortItems={status !== "active" ? routineSortItems : undefined}
+          children={
+            <SegmentedControl
+              size="xs"
+              data={routineSegments}
+              value={status}
+              onChange={handleChangeSegment}
+            />
+          }
+          isDisabled={noResults}
+          showReturn
+        />
+      }
+      pageType="routines"
+      userName={userName}
+      showChat
+      showHeader
+    >
       <Stack className={classes.container}>
         {accordionItems ? (
           <>
@@ -231,7 +272,6 @@ export default function ClubRoutines(props: Props) {
                         followingUserName: userName,
                         routinesLength: (routines && routines.length) || 0,
                         sort,
-                        type,
                         status,
                       })
                     }
@@ -242,11 +282,14 @@ export default function ClubRoutines(props: Props) {
               </Stack>
             ) : (
               <OverlayWithText
-                text={`No ${type} routines`}
+                text={"Nothing found"}
                 button={
-                  <Button variant="default" mt={8} onClick={() => router.push("/tasks")}>
-                    Create task
-                  </Button>
+                  isSelf &&
+                  status === "active" && (
+                    <Button variant="default" mt={8} onClick={() => router.push("/routines")}>
+                      Create task
+                    </Button>
+                  )
                 }
               />
             )}

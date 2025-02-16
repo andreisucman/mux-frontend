@@ -80,7 +80,7 @@ export default function FilterDropdown({
 
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {
     return (
-      <Group flex="1" gap="xs">
+      <Group className={classes.dropdownRow}>
         {icons && icons[option.value]}
         {upperFirst(option.label)}
         {checked && <IconCheck style={{ marginInlineStart: "auto" }} className="icon" />}

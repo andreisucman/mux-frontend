@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
@@ -9,6 +9,7 @@ import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import ClubModerationLayout from "../../ModerationLayout";
+import ClubProofHeader from "../ClubProofHeader";
 
 export const runtime = "edge";
 
@@ -36,6 +37,14 @@ export default function ClubProof(props: Props) {
 
   const { name } = userDetails || {};
   const isSelf = name === userName;
+
+  const clubResultTitles = useMemo(
+    () => [
+      { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
+      { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
+    ],
+    [userName]
+  );
 
   const handleFetchProof = useCallback(
     async ({ part, userName, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
@@ -65,8 +74,21 @@ export default function ClubProof(props: Props) {
     handleFetchProof({ userName, sort, part, concern, query });
   }, [status, userName, part, sort, concern, query]);
 
+  const noResults = !proof || proof.length === 0;
+
   return (
-    <ClubModerationLayout userName={userName} pageType="proof">
+    <ClubModerationLayout
+      header={
+        <ClubProofHeader
+          isDisabled={noResults}
+          titles={clubResultTitles}
+          userName={userName}
+          showReturn
+        />
+      }
+      userName={userName}
+      pageType="proof"
+    >
       {proof ? (
         <ProofGallery
           proof={proof}

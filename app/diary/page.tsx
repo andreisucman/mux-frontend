@@ -138,10 +138,18 @@ export default function DiaryPage() {
     setDisableAddNew(exists);
   }, [diaryRecords]);
 
+  const noResults = !diaryRecords || diaryRecords.length === 0;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn title="Diary" sortItems={diarySortItems} nowrap showReturn />
+        <PageHeaderWithReturn
+          isDisabled={noResults}
+          title="Diary"
+          sortItems={diarySortItems}
+          nowrap
+          showReturn
+        />
         <Button
           onClick={handleClickCreateRecord}
           disabled={disableAddNew || isLoading}

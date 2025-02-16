@@ -1,6 +1,7 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import { PAGE_TYPES } from "next/dist/lib/page-types";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
@@ -8,6 +9,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import ClubHeader from "../ClubHeader";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
@@ -123,9 +125,16 @@ export default function ClubAbout(props: Props) {
   }, []);
 
   const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";
+  const buttonLink = hasNewAboutQuestions
+    ? `/club/answers/${userName}`
+    : `/club/answers/${userName}?showType=answered`;
 
   return (
-    <ClubModerationLayout userName={userName} pageType="about">
+    <ClubModerationLayout
+      header={<ClubHeader title={"Club"} pageType="about" showReturn />}
+      userName={userName}
+      pageType="about"
+    >
       <Skeleton
         visible={showSkeleton || hasNewAboutQuestions === undefined}
         className={`${classes.skeleton} skeleton`}
@@ -147,7 +156,7 @@ export default function ClubAbout(props: Props) {
                     c="white"
                     variant={hasNewAboutQuestions ? "filled" : "default"}
                     component={Link}
-                    href={`/club/answers/${userName}?showType=answered`}
+                    href={buttonLink}
                   >
                     {buttonText}
                   </Button>

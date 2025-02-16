@@ -31,7 +31,7 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
-    const requiredParams = allParams.filter((param) => ["type", "part"].includes(param));
+    const requiredParams = allParams.filter((param) => ["part"].includes(param));
     return requiredParams.length;
   }, [searchParams.toString()]);
 
@@ -60,37 +60,35 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
   }, [userName]);
 
   return (
-    <>
-      <Group className={classes.container}>
-        {showReturn && (
-          <ActionIcon variant="default" onClick={() => router.back()}>
-            <IconChevronLeft className="icon" />
-          </ActionIcon>
-        )}
-        <TitleDropdown titles={titles} />
-        <SortButton sortItems={proofSortItems} isDisabled={isDisabled} />
-        <FilterButton
-          activeFiltersCount={paramsCount}
-          onFilterClick={openFiltersCard}
-          isDisabled={isDisabled}
-        />
-        <SearchButton
-          isDisabled={isDisabled}
-          collection="proof"
-          searchPlaceholder="Search proof"
-          userName={userName}
-          spotlight={proofSpotlight}
-          spotlightStore={spotlightStore}
-        />
-        <FilterDropdown
-          icons={pageTypeIcons}
-          data={clubPageTypeItems}
-          selectedValue={"proof"}
-          onSelect={handleRedirect}
-          placeholder="Select page"
-          filterType="page"
-        />
-      </Group>
-    </>
+    <Group className={classes.container}>
+      {showReturn && (
+        <ActionIcon variant="default" onClick={() => router.back()}>
+          <IconChevronLeft className="icon" />
+        </ActionIcon>
+      )}
+      <TitleDropdown titles={titles} />
+      <SortButton sortItems={proofSortItems} isDisabled={isDisabled} />
+      <FilterButton
+        activeFiltersCount={paramsCount}
+        onFilterClick={openFiltersCard}
+        isDisabled={isDisabled}
+      />
+      <SearchButton
+        isDisabled={isDisabled}
+        collection="proof"
+        searchPlaceholder="Search proof"
+        userName={userName}
+        spotlight={proofSpotlight}
+        spotlightStore={spotlightStore}
+      />
+      <FilterDropdown
+        icons={pageTypeIcons}
+        data={clubPageTypeItems}
+        selectedValue={"progress"}
+        onSelect={handleRedirect}
+        placeholder="Select page"
+        filterType="page"
+      />
+    </Group>
   );
 }

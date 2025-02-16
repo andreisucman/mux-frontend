@@ -64,6 +64,7 @@ export default function PageHeader({
           selectedValue={part}
           onSelect={onSelect}
           isDisabled={isDisabled}
+          allowDeselect
           addToQuery
         />
       )}

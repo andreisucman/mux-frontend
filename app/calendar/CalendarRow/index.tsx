@@ -3,7 +3,7 @@ import { IconFilter, IconFilterOff, IconInfoCircle } from "@tabler/icons-react";
 import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { TaskType } from "@/types/global";
+import { TaskStatusEnum, TaskType } from "@/types/global";
 import IconWithColor from "../../tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./CalendarRow.module.css";
 
@@ -28,7 +28,7 @@ export default function CalendarRow({
   changeMode,
   resetMode,
 }: Props) {
-  const { key: taskKey, color, icon, name, startsAt, _id: taskId } = task;
+  const { key: taskKey, color, status, icon, name, startsAt, _id: taskId } = task;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
 
@@ -46,7 +46,7 @@ export default function CalendarRow({
         onClick={() => selectTask(task)}
         style={customStyles ? customStyles : {}}
       >
-        <Checkbox checked={checked} readOnly />
+        <Checkbox checked={checked} disabled={status !== TaskStatusEnum.ACTIVE} readOnly />
         <Text className={classes.date}>{date}</Text>
         <IconWithColor icon={icon} color={color} />
         <Text className={classes.name} lineClamp={2}>

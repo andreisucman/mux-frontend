@@ -193,7 +193,7 @@ export default function Calendar() {
         }
       } catch (err) {}
     },
-    [selectedStatus]
+    []
   );
 
   const updateTasks = useCallback(
@@ -327,7 +327,7 @@ export default function Calendar() {
       setOriginalTasks(tasks);
       setSelectedTasks(tasks);
     });
-  }, [timeZone, dateFrom, dateTo]);
+  }, [timeZone, dateFrom, dateTo, selectedStatus, mode]);
 
   useEffect(() => {
     if (!givenTaskKey) return;
@@ -413,7 +413,7 @@ export default function Calendar() {
                       />
                     );
                   })}
-                  <div className={classes.emptyRow} />
+                <div className={classes.emptyRow} />
               </Stack>
               {tasksToUpdate.length > 0 && (
                 <BulkUpdateButtons

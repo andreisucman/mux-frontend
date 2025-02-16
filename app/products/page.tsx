@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconTrash } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
-import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { addToAmazonCart } from "@/helpers/addToAmazonCart";
 import { TaskType } from "@/types/global";
@@ -17,15 +17,19 @@ import classes from "./products.module.css";
 export const runtime = "edge";
 
 export default function Products() {
-  const { status } = useContext(UserContext);
+  const searchParams = useSearchParams();
   const { ref } = useElementSize();
+
+  const part = searchParams.get("part");
 
   const [uniqueTasks, setUniqueTasks] = useState<TaskType[]>();
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (part: string | null) => {
     try {
       let endpoint = "getTasksProducts";
+
+      if (part) endpoint += `?part=${part}`;
 
       const response = await callTheServer({
         endpoint,
@@ -43,13 +47,13 @@ export default function Products() {
   }, []);
 
   useEffect(() => {
-    fetchProducts();
-  }, [status]);
+    fetchProducts(part);
+  }, [part]);
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
       <SkeletonWrapper>
-        <PageHeader title="Products for tasks" showReturn hidePartDropdown />
+        <PageHeader title="Products for tasks" showReturn />
         {uniqueTasks ? (
           <>
             {uniqueTasks.length > 0 ? (

@@ -3,46 +3,40 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
-import { List } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import CompletedTaskRow from "../TasksList/TaskRow/CompletedTaskRow";
-import { CompletedTaskType } from "./type";
+import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
+import HistoryHeader from "./HistoryHeader";
+import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";
 
 export default function RoutinesHistoryPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [completedTasks, setCompletedTasks] = useState<CompletedTaskType[]>();
+  const [inactiveTasks, setInactiveTasks] = useState<InactiveTaskType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const type = searchParams.get("type") || "head";
+  const status = searchParams.get("status");
+  const part = searchParams.get("part");
 
-  type FetchCompletedTasksProps = {
-    type: string | null;
-    loadMore?: boolean;
-  };
-
-  const fetchCompletedTasks = useCallback(
-    async (props: FetchCompletedTasksProps | undefined) => {
-      const { loadMore, type } = props || {};
+  const fetchInactiveTasks = useCallback(
+    async (status: string | null, part: string | null, loadMore?: boolean) => {
       try {
-        let endpoint = "getCompletedTasks";
+        let endpoint = "getInactiveTasks";
 
         const parts = [];
 
-        if (loadMore && completedTasks) {
-          parts.push(`skip=${completedTasks.length}`);
-        }
-        if (type) {
-          parts.push(`type=${type}`);
+        if (status) parts.push(`status=${status}`);
+        if (part) parts.push(`part=${part}`);
+
+        if (loadMore && inactiveTasks) {
+          parts.push(`skip=${inactiveTasks.length}`);
         }
 
         const query = parts.join("&");
@@ -54,66 +48,63 @@ export default function RoutinesHistoryPage() {
         });
 
         if (response.status === 200) {
-          const newData = response.message.map((record: CompletedTaskType) => ({
+          const newData = response.message.map((record: InactiveTaskType) => ({
             ...record,
             onClick: () => {
               router.push(`/explain/${record._id}?${searchParams.toString()}`);
             },
           }));
-          setCompletedTasks((prev) => [...(prev || []), ...newData]);
+
+          if (loadMore) {
+            setInactiveTasks((prev) => [...(prev || []), ...newData]);
+          } else {
+            setInactiveTasks(newData);
+          }
           setHasMore(newData.length === 9);
         }
       } catch (err) {
         openErrorModal();
       }
     },
-    [type, hasMore, completedTasks?.length]
+    [hasMore, inactiveTasks]
   );
 
   useEffect(() => {
-    fetchCompletedTasks({ type });
-  }, [type]);
+    fetchInactiveTasks(status, part);
+  }, [status, part]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader
-          title="Tasks history"
-          onSelect={() => setCompletedTasks([])}
-          showReturn
-          hidePartDropdown
-        />
+        <HistoryHeader title="Tasks history" selectedStatus={status} selectedPart={part} />
         <Stack className={classes.content}>
-          {completedTasks ? (
+          {inactiveTasks ? (
             <>
-              {completedTasks.length > 0 ? (
+              {inactiveTasks.length > 0 ? (
                 <InfiniteScroll
                   loader={
                     <Stack mb={rem(16)} key={0}>
                       <Loader type="oval" m="auto" />
                     </Stack>
                   }
-                  loadMore={() => fetchCompletedTasks({ type, loadMore: true })}
+                  loadMore={() => fetchInactiveTasks(status, part, true)}
                   useWindow={false}
                   hasMore={hasMore}
                   pageStart={0}
                 >
-                  {completedTasks && (
-                    <List
-                      items={completedTasks}
+                  {inactiveTasks && (
+                    <ListComponent
+                      items={inactiveTasks}
                       rowGutter={16}
                       render={(props: any) => {
                         const { key, ...rest } = props.data;
-                        return <CompletedTaskRow {...rest} key={key} />;
+                        return <InactiveTaskRow {...rest} key={key} />;
                       }}
                     />
                   )}
                 </InfiniteScroll>
               ) : (
-                <OverlayWithText
-                  text={`Nothing found for ${type}`}
-                  icon={<IconCircleOff className="icon" />}
-                />
+                <OverlayWithText text={`Nothing found`} icon={<IconCircleOff className="icon" />} />
               )}
             </>
           ) : (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -10,6 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openResultModal from "@/helpers/openResultModal";
 import ClubModerationLayout from "../../ModerationLayout";
+import ClubProgressHeader from "../ClubProgressHeader";
 
 export const runtime = "edge";
 
@@ -34,6 +35,14 @@ export default function ClubProgress(props: Props) {
   const sort = searchParams.get("sort");
 
   const isSelf = userName === userDetails?.name;
+
+  const clubResultTitles = useMemo(
+    () => [
+      { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
+      { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
+    ],
+    [userName]
+  );
 
   const handleFetchProgress = useCallback(
     async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
@@ -75,8 +84,21 @@ export default function ClubProgress(props: Props) {
     handleFetchProgress({ part, sort, userName });
   }, [status, userName, sort, part]);
 
+  const noResults = !progress || progress.length === 0;
+
   return (
-    <ClubModerationLayout userName={userName} pageType="progress">
+    <ClubModerationLayout
+      header={
+        <ClubProgressHeader
+          isDisabled={noResults}
+          titles={clubResultTitles}
+          userName={userName}
+          showReturn
+        />
+      }
+      userName={userName}
+      pageType="progress"
+    >
       {progress ? (
         <ProgressGallery
           progress={progress}

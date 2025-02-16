@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconCalendar, IconX } from "@tabler/icons-react";
-import { ActionIcon, Group } from "@mantine/core";
+import { Group } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import modifyQuery from "@/helpers/modifyQuery";
+import { daysFrom } from "@/helpers/utils";
 import classes from "./DateSelector.module.css";
 
 function DateSelector() {
@@ -12,50 +12,46 @@ function DateSelector() {
   const searchParams = useSearchParams();
   const [value, setValue] = useState<[Date | null, Date | null]>([null, null]);
 
-  const dateFrom = searchParams.get("dateFrom");
-  const dateTo = searchParams.get("dateTo");
+  const dateFromParam = searchParams.get("dateFrom");
+  const dateToParam = searchParams.get("dateTo");
 
   const changeDates = useCallback(
-    (range: [Date | null, Date | null]) => {
+    (range: [Date | string | null, Date | string | null]) => {
+      console.log("value", range);
+      const defaultDateFrom = daysFrom({ days: -7 });
+      const defaultDateTo = daysFrom({ days: 7 });
+
+      let dateFrom = null;
+      let dateTo = null;
       const params = [];
 
-      setValue(range);
+      if (range[0]) {
+        dateFrom = new Date(range[0]);
 
-      if (range[0] && range[1]) {
-        params.push(
-          { name: "dateFrom", value: new Date(range[0]).toISOString(), action: "replace" },
-          { name: "dateTo", value: new Date(range[1]).toISOString(), action: "replace" }
-        );
-        const query = modifyQuery({ params });
-        router.replace(`${pathname}?${query}`);
+        if (range[1]) {
+          dateTo = new Date(range[1]);
+        }
+      } else {
+        dateFrom = defaultDateFrom;
+        dateTo = defaultDateTo;
       }
+
+      if (dateFrom)
+        params.push({ name: "dateFrom", value: dateFrom.toISOString(), action: "replace" });
+
+      if (dateTo) params.push({ name: "dateTo", value: dateTo.toISOString(), action: "replace" });
+
+      setValue([dateFrom, dateTo]);
+
+      const query = modifyQuery({ params });
+      router.replace(`${pathname}?${query}`);
     },
-    [pathname]
+    [pathname, router]
   );
 
-  const resetDates = useCallback(() => {
-    setValue([null, null]);
-    const query = modifyQuery({
-      params: [
-        { name: "dateFrom", value: null, action: "delete" },
-        { name: "dateTo", value: null, action: "delete" },
-      ],
-    });
-
-    router.replace(`${pathname}?${query}`);
-  }, [pathname]);
-
-  const someDateExists = value.filter(Boolean).length > 0;
-
   useEffect(() => {
-    if (!dateFrom && !dateTo) return;
-
-    const range: [Date | null, Date | null] = [null, null];
-    if (dateFrom) range[0] = new Date(dateFrom);
-    if (dateTo) range[1] = new Date(dateTo);
-
-    setValue(range);
-  }, [dateFrom, dateTo]);
+    changeDates([dateFromParam, dateToParam]);
+  }, []);
 
   return (
     <Group className={classes.container}>
@@ -67,7 +63,6 @@ function DateSelector() {
         flex={1}
         onChange={changeDates}
         className={classes.picker}
-        // leftSection={<IconCalendar className="icon" />}
       />
     </Group>
   );

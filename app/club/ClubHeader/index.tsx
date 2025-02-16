@@ -66,7 +66,6 @@ export default function ClubHeader({
           onSelect={handleRedirect}
           placeholder="Select page"
           filterType="page"
-          isDisabled={isDisabled}
         />
       )}
       {!isMobile && (

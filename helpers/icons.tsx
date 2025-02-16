@@ -1,6 +1,9 @@
 import {
   IconBubbleText,
+  IconCancel,
+  IconCheckbox,
   IconClipboardText,
+  IconClock,
   IconDental,
   IconGenderFemale,
   IconGenderMale,
@@ -32,6 +35,12 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
 export const sexIcons = {
   female: <IconGenderFemale className="icon" style={{ display: "flex" }} />,
   male: <IconGenderMale className="icon" style={{ display: "flex" }} />,
+};
+
+export const statusIcons = {
+  completed: <IconCheckbox className="icon" style={{ display: "flex" }} />,
+  expired: <IconClock className="icon" style={{ display: "flex" }} />,
+  canceled: <IconCancel className="icon" style={{ display: "flex" }} />,
 };
 
 const getPartIcon = (key: string, className: string) => {

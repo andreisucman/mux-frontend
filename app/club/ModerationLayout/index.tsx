@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
-import { SegmentedControl, Skeleton, Stack } from "@mantine/core";
+import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
-import { diarySortItems, routineSortItems } from "@/data/sortItems";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
-import { routineSegments } from "../[userName]/data";
-import ClubHeader from "../ClubHeader";
 import ClubProfilePreview from "../ClubProfilePreview";
-import ClubProgressHeader from "../progress/ClubProgressHeader";
-import ClubProofHeader from "../proof/ClubProofHeader";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
 import classes from "./ClubModerationLayout.module.css";
@@ -24,14 +18,14 @@ export const runtime = "edge";
 
 type Props = {
   children: React.ReactNode;
+  header: React.ReactNode;
   showChat?: boolean;
   showHeader?: boolean;
   userName?: string;
   pageType: "about" | "routines" | "diary" | "progress" | "proof" | "answers";
 };
 
-export default function ClubModerationLayout({ children, pageType, userName }: Props) {
-  const router = useRouter();
+export default function ClubModerationLayout({ children, header, pageType, userName }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
@@ -40,7 +34,6 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   const [showComponent, setShowComponent] = useState("loading");
 
   const code = searchParams.get("code");
-  const routineStatus = searchParams.get("status") || "active";
 
   const { name, subscriptions, club } = userDetails || {};
   const { followingUserName } = club || {};
@@ -48,67 +41,6 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
   const isSelf = name === userName;
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
-
-  const clubResultTitles = useMemo(
-    () => [
-      { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
-      { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
-    ],
-    [userName]
-  );
-
-  const handleChangeSegment = (segmentName: string) => {
-    const query = modifyQuery({
-      params: [{ name: "status", value: segmentName, action: "replace" }],
-    });
-
-    router.replace(`${pathname}${query ? `?${query}` : ""}`);
-  };
-
-  const headers: { [key: string]: React.ReactNode } = useMemo(
-    () => ({
-      progress: (
-        <ClubProgressHeader
-          titles={clubResultTitles}
-          isDisabled={showComponent !== "children"}
-          userName={userName}
-          showReturn
-        />
-      ),
-      proof: (
-        <ClubProofHeader
-          isDisabled={showComponent !== "children"}
-          titles={clubResultTitles}
-          userName={userName}
-          showReturn
-        />
-      ),
-      about: <ClubHeader title={"Club"} pageType={pageType} showReturn />,
-      answers: <ClubHeader title={"Club"} pageType={pageType} showReturn />,
-      diary: (
-        <ClubHeader title={"Club"} pageType={pageType} sortItems={diarySortItems} showReturn />
-      ),
-      routines: (
-        <ClubHeader
-          title={"Club"}
-          pageType={pageType}
-          sortItems={routineSortItems}
-          children={
-            showComponent === "children" && (
-              <SegmentedControl
-                size="xs"
-                data={routineSegments}
-                value={routineStatus}
-                onChange={handleChangeSegment}
-              />
-            )
-          }
-          showReturn
-        />
-      ),
-    }),
-    [showComponent, routineStatus]
-  );
 
   const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
@@ -148,7 +80,7 @@ export default function ClubModerationLayout({ children, pageType, userName }: P
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      {headers[pageType]}
+      {header}
       <Skeleton
         className={`skeleton ${classes.skeleton}`}
         visible={showComponent === "loading" || !!code}

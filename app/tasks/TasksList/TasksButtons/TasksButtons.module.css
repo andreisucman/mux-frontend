@@ -1,6 +1,5 @@
 .container {
   flex-wrap: nowrap;
-  gap: rem(12);
   width: 100%;
 }
 

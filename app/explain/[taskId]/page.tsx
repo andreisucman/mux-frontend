@@ -320,7 +320,7 @@ export default function Explain(props: Props) {
                     <Button
                       size="compact-sm"
                       variant="default"
-                      disabled={taskStatus === TaskStatusEnum.DELETED}
+                      disabled={taskStatus === TaskStatusEnum.DELETED || taskStatus === TaskStatusEnum.EXPIRED}
                       className={classes.actionButton}
                       onClick={updateTaskStatus}
                     >

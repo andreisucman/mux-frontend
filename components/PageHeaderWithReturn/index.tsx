@@ -13,6 +13,7 @@ type Props = {
   showReturn?: boolean;
   isDisabled?: boolean;
   returnPath?: string;
+  filterName?: string;
   nowrap?: boolean;
   sortItems?: { value: string; label: string }[];
   selectedValue?: string | null;
@@ -31,6 +32,7 @@ export default function PageHeaderWithReturn({
   showReturn,
   children,
   filterData,
+  filterName,
   selectedValue,
   icons,
   onSelect,
@@ -65,8 +67,8 @@ export default function PageHeaderWithReturn({
           data={filterData}
           icons={icons}
           selectedValue={selectedValue}
-          placeholder="Filter by type"
-          filterType="type"
+          placeholder={`Filter by ${filterName}`}
+          filterType={filterName}
           onSelect={onSelect}
           addToQuery
           allowDeselect

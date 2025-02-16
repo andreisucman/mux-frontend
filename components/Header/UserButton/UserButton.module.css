@@ -3,3 +3,9 @@
   align-items: center;
   gap: 0;
 }
+
+.name {
+  max-width: rem(75);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

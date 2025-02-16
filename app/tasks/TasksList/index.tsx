@@ -39,7 +39,7 @@ export default function TasksList({ customStyles }: Props) {
   const [scanOverlayMessage, setScanOverlayMessage] = useState("");
 
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "wait" | "scanOverlay" | "createTaskOverlay" | "content"
+    "loading" | "wait" | "empty" | "scanOverlay" | "createTaskOverlay" | "content"
   >("loading");
 
   const { nextScan, nextDiaryRecordAfter, tasks, _id: userId, timeZone } = userDetails || {};
@@ -152,7 +152,7 @@ export default function TasksList({ customStyles }: Props) {
                 {taskGroups && (
                   <Stack className={classes.listWrapper}>
                     {canAddDiaryRecord && (
-                      <Button component={Link} href="/diary" c="white">
+                      <Button size="compact-sm" component={Link} href="/diary" c="white">
                         Add a diary note for today
                       </Button>
                     )}
