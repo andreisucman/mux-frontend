@@ -26,7 +26,7 @@ type Props = {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   currentMain: BlurredUrlType;
   contentCategory: "progress" | "proof";
-  setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  setRecords?: React.Dispatch<React.SetStateAction<any | undefined>>;
   onComplete?: (props: { [key: string]: any }) => void;
   customStyles?: { [key: string]: any };
 };

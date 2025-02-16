@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import { positionItems } from "@/components/PageHeader/data";
 import SortButton from "@/components/SortButton";
 import { progressSortItems } from "@/data/sortItems";
 import getUsersFilters from "@/functions/getUsersFilters";
 import { partIcons } from "@/helpers/icons";
-import { PositionsFilterItemType } from "../proof/ProofHeader/types";
 import TitleDropdown from "../TitleDropdown";
 import classes from "./ProgressHeader.module.css";
 
@@ -26,21 +24,8 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
-  const position = searchParams.get("position");
 
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
-  const [relevantPositions, setRelevantPositions] = useState<PositionsFilterItemType[]>([]);
-
-  const onSelectPart = useCallback(
-    (part?: string | null) => {
-      let relevantPositions: PositionsFilterItemType[] = [];
-      if (part) {
-        relevantPositions = positionItems.filter((position) => position.parts.includes(part));
-      }
-      setRelevantPositions(relevantPositions);
-    },
-    [positionItems]
-  );
 
   useEffect(() => {
     getUsersFilters({ collection: "progress", fields: ["part"] }).then((result) => {
@@ -49,13 +34,7 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
     });
   }, []);
 
-  useEffect(() => {
-    if (availableParts.length === 0) return;
-    onSelectPart(part);
-  }, [part, availableParts.length]);
-
   const partsDisabled = isDisabled || availableParts.length === 0;
-  const positionsDisabled = isDisabled || relevantPositions.length === 0;
 
   return (
     <Group className={classes.container}>
@@ -74,17 +53,7 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
             filterType="part"
             placeholder="Filter by part"
             selectedValue={part}
-            onSelect={onSelectPart}
             isDisabled={partsDisabled}
-            allowDeselect
-            addToQuery
-          />
-          <FilterDropdown
-            data={relevantPositions}
-            filterType="position"
-            placeholder="Filter by position"
-            selectedValue={position}
-            isDisabled={positionsDisabled}
             allowDeselect
             addToQuery
           />
