@@ -13,13 +13,10 @@ import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import fetchRoutines from "@/functions/fetchRoutines";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "@/helpers/custom-router";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
-import modifyQuery from "@/helpers/modifyQuery";
 import { RoutineType } from "@/types/global";
 import ChatWithModal from "../../components/ChatWithModal";
-import { routineSegments } from "../club/[userName]/data";
 import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
@@ -32,14 +29,11 @@ type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
   type?: string;
-  status: string;
   sort: string | null;
   routinesLength?: number;
 };
 
 export default function ClubRoutines() {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -55,25 +49,14 @@ export default function ClubRoutines() {
   const { userDetails } = useContext(UserContext);
   const { nextScan, timeZone, specialConsiderations } = userDetails || {};
 
-  const status = searchParams.get("status") || "active";
   const sort = searchParams.get("sort");
 
-  const handleChangeSegment = (segmentName?: string | null) => {
-    if (!segmentName) return;
-    const query = modifyQuery({
-      params: [{ name: "status", value: segmentName, action: "replace" }],
-    });
-
-    router.replace(`${pathname}${query ? `?${query}` : ""}`);
-  };
-
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, status, routinesLength }: GetRoutinesProps) => {
+    async ({ skip, sort, routinesLength }: GetRoutinesProps) => {
       try {
         const response = await fetchRoutines({
           skip,
           sort,
-          status,
           routinesLength: routinesLength || 0,
         });
 
@@ -116,14 +99,12 @@ export default function ClubRoutines() {
   const isAnalysisGoing = runningAnalyses?.routine;
 
   useEffect(() => {
-    if (!status) return;
     const payload: GetRoutinesProps = {
       routinesLength: (routines && routines.length) || 0,
       sort,
-      status,
     };
     handleFetchRoutines(payload);
-  }, [status, sort]);
+  }, [sort]);
 
   useEffect(() => {
     if (!nextScan) return;
@@ -147,17 +128,15 @@ export default function ClubRoutines() {
   useEffect(() => {
     if (!routines || !pageLoaded) return;
     if (showScanOverlay === undefined) return;
-    const noRoutines = routines && routines.length === 0;
+    const routinesExist = routines && routines.length > 0;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (noRoutines && status !== "active") {
-      setDisplayComponent("empty");
     } else if (showScanOverlay) {
       setDisplayComponent("scanOverlay");
-    } else if (noRoutines) {
+    } else if (!routinesExist) {
       setDisplayComponent("createTaskOverlay");
-    } else if (routines && routines.length > 0) {
+    } else if (routinesExist) {
       setDisplayComponent("content");
     } else if (routines === undefined) {
       setDisplayComponent("loading");
@@ -175,15 +154,7 @@ export default function ClubRoutines() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn
-          title="My routines"
-          filterData={routineSegments}
-          filterName="status"
-          selectedValue={status}
-          onSelect={handleChangeSegment}
-          showReturn
-          nowrap
-        />
+        <PageHeaderWithReturn title="My routines" showReturn nowrap />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}
@@ -220,7 +191,6 @@ export default function ClubRoutines() {
                     skip: true,
                     routinesLength: (routines && routines.length) || 0,
                     sort,
-                    status,
                   })
                 }
               >
@@ -249,7 +219,6 @@ export default function ClubRoutines() {
               handleFetchRoutines({
                 routinesLength: (routines && routines.length) || 0,
                 sort,
-                status,
               });
               setDisplayComponent("content");
             }}
