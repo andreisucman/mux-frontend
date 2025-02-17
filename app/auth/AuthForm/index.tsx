@@ -89,6 +89,15 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
       const state = encodeURIComponent(JSON.stringify(stateObject));
 
+      console.log("password", {
+        email,
+        password,
+        state,
+        router,
+        setStatus,
+        setUserDetails,
+      });
+
       authenticate({
         email,
         password,
@@ -133,15 +142,13 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
         />
 
         {!showResetPassword && (
-          <>
-            <PasswordInput
-              value={password}
-              onChange={handleEnterPassword}
-              placeholder={"Enter your password"}
-              error={passwordError}
-              required
-            />
-          </>
+          <PasswordInput
+            value={password}
+            onChange={handleEnterPassword}
+            placeholder={"Enter your password"}
+            error={passwordError}
+            required
+          />
         )}
         <Stack className={classes.footer}>
           {!showResetPassword && (

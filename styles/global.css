@@ -2,6 +2,11 @@
 @import "./scrollbar.css";
 @import "./gradientSpin.css";
 
+html,
+body {
+  background-color: #2e2e2e; // keep fixed for pwa
+}
+
 * {
   box-sizing: border-box;
 }
@@ -95,7 +100,9 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
 }
 
-.smallPage, .mediumPage, .largePage {
+.smallPage,
+.mediumPage,
+.largePage {
   margin: 0 auto;
   flex: 1 0;
 }
