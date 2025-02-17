@@ -2,11 +2,6 @@
 @import "./scrollbar.css";
 @import "./gradientSpin.css";
 
-html,
-body {
-  background-color: #2e2e2e; // keep fixed for pwa
-}
-
 * {
   box-sizing: border-box;
 }
