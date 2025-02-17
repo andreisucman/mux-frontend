@@ -2,7 +2,7 @@
   "name": "Max You Out",
   "short_name": "MUX",
   "description": "Become 5 star all around",
-  "start_url": "/tasks",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#2e2e2e",
