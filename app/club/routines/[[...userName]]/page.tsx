@@ -101,7 +101,6 @@ export default function ClubRoutines(props: Props) {
           sort,
           followingUserName,
           routinesLength: routinesLength || 0,
-          status,
         });
 
         const { message } = response;
