@@ -1,7 +1,6 @@
 import React from "react";
 import { IconExclamationCircle } from "@tabler/icons-react";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
-import { SexEnum } from "@/types/global";
 import classes from "./InstructionContainer.module.css";
 
 type Props = {

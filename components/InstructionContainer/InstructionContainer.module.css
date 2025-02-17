@@ -15,5 +15,5 @@
   margin-top: rem(8);
   gap: rem(8);
   flex-wrap: nowrap;
-  align-items: top;
+  align-items: flex-start;
 }
