@@ -48,7 +48,7 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
               })}
             >
               <Text>{normalizeString(item.name)}</Text>
-              <Text size="sm" c="dimmed" lineClamp={2}>
+              <Text size="sm" c="dimmed" lineClamp={3}>
                 {item.explanation}
               </Text>
             </div>
