@@ -21,18 +21,19 @@ import { ScanTypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
+import { requirements } from "@/helpers/getPasswordStrength";
 
 export const runtime = "edge";
 
 export default function ScanProgress() {
   const router = useRouter();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const { parts, setParts } = useContext(ScanPartsChoicesContext);
 
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, requiredProgress, demographics, nextScan, toAnalyze } = userDetails || {};
+  const { _id: userId, requiredProgress, nextScan, toAnalyze } = userDetails || {};
 
   const { availableRequirements, checkBackDate } = useCheckScanAvailability({
     parts,
@@ -140,10 +141,10 @@ export default function ScanProgress() {
 
   const showCarousel = useMemo(() => {
     return (
-      (availableRequirements && availableRequirements.length > 0) ||
+      (requirements && requirements.length > 0) ||
       (toAnalyze && toAnalyze.length > 0)
     );
-  }, [availableRequirements, toAnalyze]);
+  }, [requirements, toAnalyze]);
 
   const nextScanText = useMemo(() => {
     if (!parts) return "";

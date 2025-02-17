@@ -4,7 +4,7 @@ import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterPartItemType } from "@/components/FilterDropdown/types";
-import getUsersFilters from "@/functions/getUsersFilters";
+import getUsersFilters from "@/functions/getFilters";
 import { partIcons } from "@/helpers/icons";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./ClubProgressFilterCardContent.module.css";

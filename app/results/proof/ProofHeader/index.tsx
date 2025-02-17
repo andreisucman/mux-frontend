@@ -8,7 +8,7 @@ import { FilterPartItemType } from "@/components/FilterDropdown/types";
 import SearchButton from "@/components/SearchButton";
 import SortButton from "@/components/SortButton";
 import { proofSortItems } from "@/data/sortItems";
-import getUsersFilters from "@/functions/getUsersFilters";
+import getUsersFilters from "@/functions/getFilters";
 import { partIcons } from "@/helpers/icons";
 import TitleDropdown from "../../TitleDropdown";
 import classes from "./ProofHeader.module.css";

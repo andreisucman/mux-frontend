@@ -8,16 +8,15 @@ type GetUsersFiltersProps = {
   fields?: string[];
 };
 
-const getUsersFilters = async ({ userName, collection, fields }: GetUsersFiltersProps) => {
+const getFilters = async ({ userName, collection, fields }: GetUsersFiltersProps) => {
   let result = {
-    availableTypes: [] as FilterItemType[],
+    availableStatuses: [] as FilterItemType[],
     availableParts: [] as FilterPartItemType[],
-    availableStyleNames: [] as FilterItemType[],
   };
   try {
     if (!collection) throw new Error("Collection is missing");
 
-    let endpoint = "getUsersFilters";
+    let endpoint = "getFilters";
 
     if (userName) endpoint += `/${userName}`;
 
@@ -50,4 +49,4 @@ const getUsersFilters = async ({ userName, collection, fields }: GetUsersFilters
   }
 };
 
-export default getUsersFilters;
+export default getFilters;

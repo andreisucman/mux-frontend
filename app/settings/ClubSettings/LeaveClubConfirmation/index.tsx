@@ -13,7 +13,7 @@ const tableData = {
       <IconCash className="icon icon__title" />,
       "Your outstanding balance will be paid to you and you will stop earning.",
     ],
-    [<IconEye className="icon icon__title" />, "All of your followers will be lost forever."],
+    [<IconEye className="icon icon__title" />, "All of your followers will be lost."],
   ],
 };
 

@@ -19,17 +19,15 @@ function ScanHeader({ children }: Props) {
 
   return (
     <Group className={classes.container}>
-      <Group className={classes.head}>
-        <ActionIcon variant="default" onClick={() => router.back()}>
-          <IconChevronLeft className="icon" />
-        </ActionIcon>
-        <TitleDropdown
-          titles={titles}
-          customDropdownStyles={{ minWidth: rem(210) }}
-          customHeadStyles={{ marginRight: "unset" }}
-        />
-        {children}
-      </Group>
+      <ActionIcon variant="default" onClick={() => router.back()}>
+        <IconChevronLeft className="icon" />
+      </ActionIcon>
+      <TitleDropdown
+        titles={titles}
+        customDropdownStyles={{ minWidth: rem(210) }}
+        customHeadStyles={{ marginRight: "unset" }}
+      />
+      {children}
     </Group>
   );
 }

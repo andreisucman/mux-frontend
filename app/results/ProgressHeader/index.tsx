@@ -6,7 +6,7 @@ import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import SortButton from "@/components/SortButton";
 import { progressSortItems } from "@/data/sortItems";
-import getUsersFilters from "@/functions/getUsersFilters";
+import getFilters from "@/functions/getFilters";
 import { partIcons } from "@/helpers/icons";
 import TitleDropdown from "../TitleDropdown";
 import classes from "./ProgressHeader.module.css";
@@ -28,7 +28,7 @@ export default function ProgressHeader({ titles, showReturn, hideDropdowns, isDi
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
   useEffect(() => {
-    getUsersFilters({ collection: "progress", fields: ["part"] }).then((result) => {
+    getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
       const { availableParts } = result;
       setAvaiableParts(availableParts);
     });

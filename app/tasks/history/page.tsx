@@ -6,9 +6,11 @@ import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
+import getFilters from "@/functions/getFilters";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
@@ -22,8 +24,8 @@ export default function RoutinesHistoryPage() {
   const [inactiveTasks, setInactiveTasks] = useState<InactiveTaskType[]>();
   const [hasMore, setHasMore] = useState(false);
 
-  const status = searchParams.get("status");
   const part = searchParams.get("part");
+  const status = searchParams.get("status");
 
   const fetchInactiveTasks = useCallback(
     async (status: string | null, part: string | null, loadMore?: boolean) => {
@@ -76,7 +78,7 @@ export default function RoutinesHistoryPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <HistoryHeader title="Tasks history" selectedStatus={status} selectedPart={part} />
+        <HistoryHeader title="Tasks history" />
         <Stack className={classes.content}>
           {inactiveTasks ? (
             <>

@@ -14,7 +14,6 @@ type Props = {
   handleCapture: (base64string: string) => void;
 };
 
-const TIMER_SECONDS = 5;
 const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
 export default function PhotoCapturer({
@@ -28,7 +27,7 @@ export default function PhotoCapturer({
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
-  const [secondsLeft, setSecondsLeft] = useState(TIMER_SECONDS);
+  const [secondsLeft, setSecondsLeft] = useState(5);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
   const isMobile = useMediaQuery("(max-width: 36em)");
@@ -41,17 +40,19 @@ export default function PhotoCapturer({
     });
   }, []);
 
-  const startDelayedCapture = () => {
+  const startDelayedCapture = (seconds: number) => {
     if (timerStarted) return;
     setTimerStarted(true);
     try {
+      setSecondsLeft(seconds);
+
       timeoutIdRef.current = setInterval(() => {
         setSecondsLeft((prev) => {
           if (prev <= 0) {
             clearInterval(timeoutIdRef.current);
             setTimerStarted(false);
             capturePhoto();
-            return TIMER_SECONDS;
+            return seconds;
           } else {
             return prev - 1;
           }
@@ -172,18 +173,31 @@ export default function PhotoCapturer({
           <Button
             variant="default"
             disabled={timerStarted}
-            onClick={startDelayedCapture}
+            onClick={() => startDelayedCapture(5)}
             className={classes.button}
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
           >
-            <IconStopwatch className="icon" />
+            5 <IconStopwatch className="icon" />
+          </Button>
+        )}
+        {!hideTimerButton && (
+          <Button
+            variant="default"
+            disabled={timerStarted}
+            onClick={() => startDelayedCapture(15)}
+            className={classes.button}
+            style={{ flexGrow: 0, padding: 0 }}
+            miw={rem(50)}
+          >
+            15 <IconStopwatch className="icon" />
           </Button>
         )}
         {hasMultipleCameras && (
           <Button
             variant="default"
             onClick={flipCamera}
+            disabled={timerStarted}
             className={classes.button}
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
