@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -76,7 +76,6 @@ export default function ClubHeader({
           onSelect={handleRedirect}
           placeholder="Select page"
           filterType="page"
-          isDisabled={isDisabled}
         />
       )}
     </Group>

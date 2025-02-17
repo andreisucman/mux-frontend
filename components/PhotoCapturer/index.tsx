@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { IconCamera, IconRefresh, IconStopwatch } from "@tabler/icons-react";
+import { IconCamera, IconCameraRotate, IconStopwatch } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Group, rem, Stack, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -8,6 +8,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
 
 type Props = {
+  defaultFacingMode?: "user" | "environment";
   hideTimerButton?: boolean;
   silhouette?: string;
   handleCapture: (base64string: string) => void;
@@ -16,8 +17,13 @@ type Props = {
 const TIMER_SECONDS = 5;
 const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
-export default function PhotoCapturer({ handleCapture, hideTimerButton, silhouette }: Props) {
-  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+export default function PhotoCapturer({
+  handleCapture,
+  defaultFacingMode = "user",
+  hideTimerButton,
+  silhouette,
+}: Props) {
+  const [facingMode, setFacingMode] = useState<"user" | "environment">(defaultFacingMode);
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -150,7 +156,7 @@ export default function PhotoCapturer({ handleCapture, hideTimerButton, silhouet
         <div
           className={classes.silhouetteOverlay}
           style={{
-            mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
+            mask: `url('${silhouette}') center/cover no-repeat, linear-gradient(#000 0 0)`,
             maskComposite: "exclude",
           }}
         />
@@ -182,7 +188,7 @@ export default function PhotoCapturer({ handleCapture, hideTimerButton, silhouet
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
           >
-            <IconRefresh className="icon" />
+            <IconCameraRotate className="icon" />
           </Button>
         )}
         <Button

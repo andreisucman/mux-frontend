@@ -1,10 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
-import {
-  IconChevronDown,
-  IconChevronUp,
-  IconSettings,
-  IconTrendingUp,
-} from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp, IconSettings, IconTrendingUp } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -39,7 +34,7 @@ function ClubProfilePreview({
   const router = useRouter();
   const { scores, bio, name, avatar } = data || {};
   const { totalProgress } = scores || {};
-  const [showCollapsedInfo, setShowCollapsedInfo] = useState(true);
+  const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
 
   const rowStyle: { [key: string]: any } = {};
 
@@ -66,7 +61,7 @@ function ClubProfilePreview({
 
   useEffect(() => {
     getFromIndexedDb(`showUserProfileInfo-${showCollapseKey}`).then((verdict) => {
-      if (verdict === undefined || verdict === null) verdict = true;
+      if (verdict !== false) verdict = true;
       setShowCollapsedInfo(verdict);
     });
   }, [showCollapseKey]);

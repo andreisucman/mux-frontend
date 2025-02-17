@@ -101,15 +101,21 @@ export default function ScanFoodPage() {
         ) : (
           <PhotoCapturer
             handleCapture={(base64string: string) => setLocalUrl(base64string)}
-            silhouette="/plate.webp"
+            silhouette={foodImage && foodImage.src}
+            defaultFacingMode="environment"
             hideTimerButton
           />
         )}
+        {localUrl && !isLoading && (
+          <Button
+            disabled={!localUrl || isLoading}
+            className={classes.button}
+            onClick={handleAnalyzeFood}
+          >
+            Analyze
+          </Button>
+        )}
       </Stack>
-
-      <Button disabled={!localUrl || isLoading} onClick={handleAnalyzeFood}>
-        Analyze
-      </Button>
     </Stack>
   );
 }

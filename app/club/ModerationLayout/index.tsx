@@ -76,7 +76,7 @@ export default function ClubModerationLayout({ children, header, pageType, userN
     youFollowDataFetched,
   ]);
 
-  const showCollapseKey = `${pathname}-${isSelf ? name : followingUserName}`;
+  const showCollapseKey = isSelf ? name : followingUserName;
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -93,7 +93,7 @@ export default function ClubModerationLayout({ children, header, pageType, userN
               type={isSelf ? "you" : "member"}
               data={isSelf ? youData : youFollowData}
               hasNewAboutQuestions={hasNewAboutQuestions}
-              showCollapseKey={showCollapseKey}
+              showCollapseKey={showCollapseKey || ""}
               customStyles={{ flex: 0 }}
             />
             {showComponent === "children" && children}

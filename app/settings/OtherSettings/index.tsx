@@ -24,16 +24,15 @@ export default function OtherSettings() {
 
     try {
       const response = await callTheServer({
-        endpoint: "updateClubData",
+        endpoint: "updateUserData",
         method: "POST",
         body: { dailyCalorieGoal: caloriesPerDay },
       });
 
       if (response.status === 200) {
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          nutrition: { ...prev.nutrition, dailyCalorieGoal: caloriesPerDay },
-        }));
+        const { message } = response;
+
+        setUserDetails(message);
       }
     } catch (err) {
     } finally {

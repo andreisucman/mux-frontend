@@ -1,9 +1,8 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   IconCamera,
-  IconCameraRotate,
   IconPlayerStopFilled,
-  IconRefresh,
+  IconCameraRotate,
   IconVideo,
 } from "@tabler/icons-react";
 import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
@@ -444,7 +443,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
                 miw={rem(50)}
                 disabled={taskExpired}
               >
-                <IconRefresh className="icon" />
+                <IconCameraRotate className="icon" />
               </Button>
             )}
             {isRecording && (

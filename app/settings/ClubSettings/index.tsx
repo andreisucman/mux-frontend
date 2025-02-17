@@ -174,7 +174,7 @@ export default function ClubSettings() {
         }
 
         const response = await callTheServer({
-          endpoint: "updateClubData",
+          endpoint: "updateUserData",
           method: "POST",
           body: { [type]: data },
         });

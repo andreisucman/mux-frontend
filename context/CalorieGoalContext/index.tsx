@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import { UserContext } from "../UserContext";
 import { CalorieGoalTypeEnum } from "./types";
 
 const defaultCalorieGoal = {
@@ -14,6 +15,10 @@ const defaultCalorieGoal = {
 export const CalorieGoalContext = createContext(defaultCalorieGoal);
 
 export default function CalorieGoalProvider({ children }: { children: React.ReactNode }) {
+  const { userDetails } = useContext(UserContext);
+  const { nutrition: userNutrition } = userDetails || {};
+  const { remainingDailyCalories } = userNutrition || {};
+
   const [calorieGoalTypeLocal, setCalorieGoalTypeLocal] = useState<CalorieGoalTypeEnum>(
     CalorieGoalTypeEnum.PORTION
   );
@@ -27,8 +32,10 @@ export default function CalorieGoalProvider({ children }: { children: React.Reac
 
     if (calorieGoalType === CalorieGoalTypeEnum.PORTION) {
       setCalorieGoalLocal(calorieGoal);
+    } else {
+      setCalorieGoalLocal(remainingDailyCalories || 0);
     }
-  }, []);
+  }, [calorieGoalTypeLocal]);
 
   const setCalorieGoalType = useCallback((choice: CalorieGoalTypeEnum) => {
     saveToLocalStorage("nutrition", { calorieGoalType: choice }, "add");

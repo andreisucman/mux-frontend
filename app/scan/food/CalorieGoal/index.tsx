@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { Group, SegmentedControl, Slider, Stack, Text } from "@mantine/core";
 import { CalorieGoalContext } from "@/context/CalorieGoalContext";
 import { CalorieGoalTypeEnum } from "@/context/CalorieGoalContext/types";
 import { UserContext } from "@/context/UserContext";
-import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./CalorieGoal.module.css";
 
@@ -35,7 +34,6 @@ export default function CalorieGoalController({ disabled }: Props) {
       } else {
         setCalorieGoal(calorieGoal);
       }
-      saveToLocalStorage("nutrition", { calorieGoal }, "add");
     },
     [calorieGoalType, remainingDailyCalories]
   );

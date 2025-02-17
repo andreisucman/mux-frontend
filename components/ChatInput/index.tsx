@@ -92,7 +92,7 @@ export default function ChatInput({
   const [currentMessage, setCurrentMessage] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [showStarterQuestions, setShowStarterQuestions] = useState(false);
-  const [showChat, setShowChat] = useState(defaultVisibility === "open");
+  const [showChat, setShowChat] = useState(false);
 
   const { coachEnergy, demographics } = userDetails || {};
   const { sex } = demographics || {};
@@ -379,7 +379,6 @@ export default function ChatInput({
 
   useEffect(() => {
     getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
-      console.log(`openInputChat-${openChatKey}`, "verdict", verdict);
       if (openChatKey) {
         if (verdict === undefined || verdict === null) verdict = defaultVisibility === "open";
         setShowChat(verdict);

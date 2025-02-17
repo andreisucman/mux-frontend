@@ -69,7 +69,7 @@ export default function ClubAbout(props: Props) {
         );
 
         const response = await callTheServer({
-          endpoint: "updateClubData",
+          endpoint: "updateUserData",
           method: "POST",
           body: { bio: updatedBio },
         });
@@ -121,7 +121,8 @@ export default function ClubAbout(props: Props) {
 
   useEffect(() => {
     const savedShowQuestions = getFromLocalStorage("showAboutQuestions");
-    setShowQuestions(!!savedShowQuestions);
+    if (savedShowQuestions !== undefined && savedShowQuestions !== null)
+      setShowQuestions(!!savedShowQuestions);
   }, []);
 
   const buttonText = hasNewAboutQuestions ? "Answer questions" : "See your answers";

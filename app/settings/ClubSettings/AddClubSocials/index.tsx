@@ -75,7 +75,7 @@ export default function AddClubSocials({ title }: Props) {
   const updateSocials = useCallback(async (newSocials: { [key: string]: any }) => {
     try {
       await callTheServer({
-        endpoint: "updateClubData",
+        endpoint: "updateUserData",
         method: "POST",
         body: {
           socials: newSocials,

@@ -166,7 +166,6 @@ export default function ClubRoutines() {
 
   useEffect(() => {
     getFromIndexedDb("openRoutinesRow").then((part) => {
-      console.log("part", part);
       setOpenValue(part);
     });
   }, []);

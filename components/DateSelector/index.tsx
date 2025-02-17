@@ -17,7 +17,6 @@ function DateSelector() {
 
   const changeDates = useCallback(
     (range: [Date | string | null, Date | string | null]) => {
-      console.log("value", range);
       const defaultDateFrom = daysFrom({ days: -7 });
       const defaultDateTo = daysFrom({ days: 7 });
 

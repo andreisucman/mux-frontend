@@ -51,7 +51,6 @@ export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -174,14 +173,6 @@ export default function ClubRoutines(props: Props) {
     [userDetails]
   );
 
-  const handleChangeSegment = (segmentName: string) => {
-    const query = modifyQuery({
-      params: [{ name: "status", value: segmentName, action: "replace" }],
-    });
-
-    router.replace(`${pathname}${query ? `?${query}` : ""}`);
-  };
-
   const accordionItems = useMemo(
     () =>
       routines &&
@@ -226,14 +217,6 @@ export default function ClubRoutines(props: Props) {
           title={"Club"}
           pageType={"routines"}
           sortItems={status !== "active" ? routineSortItems : undefined}
-          children={
-            <SegmentedControl
-              size="xs"
-              data={routineSegments}
-              value={status}
-              onChange={handleChangeSegment}
-            />
-          }
           isDisabled={noResults}
           showReturn
         />
