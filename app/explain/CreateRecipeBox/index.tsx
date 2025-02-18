@@ -70,7 +70,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
                 price: "4",
                 isCentered: true,
                 modalType: "improvement",
-                underButtonText: "No credit card required",
+                underButtonText: isTrialUsed ? "" : "No credit card required",
                 onClick,
                 buttonText,
                 onClose: () => fetchUserData({ setUserDetails }),
@@ -110,15 +110,13 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
 
   return (
     <Group className={classes.container}>
-      {recipe ? (
-        <>
-          <IconBolt className="icon icon__large" /> About {recipe.kcal} kcal
-        </>
-      ) : (
-        <Button className={classes.button} disabled={!canCreateRecipe} onClick={openEditTaskModal}>
-          Create a recipe
-        </Button>
-      )}
+      <Button
+        className={classes.button}
+        disabled={!canCreateRecipe || !!recipe}
+        onClick={openEditTaskModal}
+      >
+        Create a recipe
+      </Button>
     </Group>
   );
 }

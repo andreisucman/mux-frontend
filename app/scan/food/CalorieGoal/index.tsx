@@ -1,5 +1,6 @@
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import { Group, SegmentedControl, Slider, Stack, Text } from "@mantine/core";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Group, SegmentedControl, Slider, Stack, Text, Tooltip } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
 import { CalorieGoalContext } from "@/context/CalorieGoalContext";
 import { CalorieGoalTypeEnum } from "@/context/CalorieGoalContext/types";
 import { UserContext } from "@/context/UserContext";
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export default function CalorieGoalController({ disabled }: Props) {
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
   const { status, userDetails } = useContext(UserContext);
   const { calorieGoal, calorieGoalType, setCalorieGoal, setCalorieGoalType } =
     useContext(CalorieGoalContext);
@@ -79,7 +82,21 @@ export default function CalorieGoalController({ disabled }: Props) {
         onChange={handleChangeSlider}
         classNames={{ label: classes.label, thumb: classes.thumb }}
         disabled={disabled}
-        labelAlwaysOn
+        thumbChildren={
+          <Tooltip
+            opened={openTooltip}
+            disabled={calorieGoalType === CalorieGoalTypeEnum.PORTION}
+            label="Daily calorie goal can be changed in the settings"
+            ref={clickOutsideRef}
+            onClick={() => setOpenTooltip((prev) => !prev)}
+          >
+            {
+              <Text fw={600} fz={14}>
+                {calorieGoal}
+              </Text>
+            }
+          </Tooltip>
+        }
       />
     </Stack>
   );

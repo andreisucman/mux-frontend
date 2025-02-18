@@ -293,7 +293,6 @@ export enum TaskStatusEnum {
 export type RecipeType = {
   name: string;
   image: string;
-  kcal: number;
   description: string;
   instruction: string;
   canPersonalize: boolean;
