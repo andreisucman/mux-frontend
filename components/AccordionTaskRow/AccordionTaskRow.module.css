@@ -1,5 +1,5 @@
 .container {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .wrapper {
@@ -43,15 +43,4 @@
 .content {
   flex-wrap: nowrap;
   gap: rem(12);
-}
-
-.indicator {
-  min-width: rem(10);
-  min-height: rem(10);
-  border-radius: rem(100);
-  background-color: var(--mantine-color-gray-3);
-}
-
-.active {
-  background-color: var(--mantine-color-green-7);
 }

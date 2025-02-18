@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IconCamera, IconToolsKitchen2 } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import TextareaComponent from "@/components/TextAreaComponent";
@@ -65,8 +64,9 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
             handleDelete={handleDelete}
             placeholder={pantryImage}
             customImageStyles={{
+              position: "static",
               height: "unset",
-              maxHeight: rem(110),
+              maxHeight: rem(300),
             }}
           />
           <Button
@@ -75,7 +75,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
             variant={"default"}
             className={classes.imageButton}
           >
-            Upload photo
+            Upload products
             <input
               hidden
               id="upload_products_photo"

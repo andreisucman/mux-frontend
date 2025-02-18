@@ -1,17 +1,9 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import {
-  Accordion,
-  ActionIcon,
-  Button,
-  Loader,
-  SegmentedControl,
-  Stack,
-  Title,
-} from "@mantine/core";
+import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
@@ -24,11 +16,9 @@ import callTheServer from "@/functions/callTheServer";
 import fetchRoutines from "@/functions/fetchRoutines";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
-import { routineSegments } from "../../[userName]/data";
 import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 import classes from "./routines.module.css";
@@ -38,7 +28,6 @@ export const runtime = "edge";
 type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
-  status: string | null;
   sort: string | null;
   routinesLength?: number;
 };
@@ -59,7 +48,6 @@ export default function ClubRoutines(props: Props) {
 
   const { name, routines: currentUserRoutines } = userDetails || {};
 
-  const status = searchParams.get("status") || "active";
   const sort = searchParams.get("sort");
   const isSelf = name === userName;
 
@@ -94,7 +82,7 @@ export default function ClubRoutines(props: Props) {
   );
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, status, followingUserName, routinesLength }: GetRoutinesProps) => {
+    async ({ skip, sort, followingUserName, routinesLength }: GetRoutinesProps) => {
       try {
         const response = await fetchRoutines({
           skip,
@@ -197,15 +185,13 @@ export default function ClubRoutines(props: Props) {
   );
 
   useEffect(() => {
-    if (!status) return;
     const payload: GetRoutinesProps = {
       followingUserName: userName,
       routinesLength: (routines && routines.length) || 0,
       sort,
-      status,
     };
     handleFetchRoutines(payload);
-  }, [status, sort, userName]);
+  }, [sort, userName]);
 
   const noResults = !routines || routines.length === 0;
 
@@ -215,7 +201,7 @@ export default function ClubRoutines(props: Props) {
         <ClubHeader
           title={"Club"}
           pageType={"routines"}
-          sortItems={status !== "active" ? routineSortItems : undefined}
+          sortItems={routineSortItems}
           isDisabled={noResults}
           showReturn
         />
@@ -254,7 +240,6 @@ export default function ClubRoutines(props: Props) {
                         followingUserName: userName,
                         routinesLength: (routines && routines.length) || 0,
                         sort,
-                        status,
                       })
                     }
                   >
@@ -266,8 +251,7 @@ export default function ClubRoutines(props: Props) {
               <OverlayWithText
                 text={"Nothing found"}
                 button={
-                  isSelf &&
-                  status === "active" && (
+                  isSelf && (
                     <Button variant="default" mt={8} onClick={() => router.push("/routines")}>
                       Create task
                     </Button>

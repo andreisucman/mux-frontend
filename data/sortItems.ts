@@ -1,6 +1,6 @@
 export const historySortItems = [
-  { label: "Older", value: "createdAt" },
-  { label: "Newer", value: "-createdAt" },
+  { label: "Older", value: "startsAt" },
+  { label: "Newer", value: "-startsAt" },
 ];
 
 export const diarySortItems = [

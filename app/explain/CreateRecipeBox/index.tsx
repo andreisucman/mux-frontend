@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconBolt, IconCirclePlus, IconSquareRoundedCheck } from "@tabler/icons-react";
-import { Button, Group, rem, Text, Title } from "@mantine/core";
+import { IconBolt } from "@tabler/icons-react";
+import { Button, Group, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -29,6 +29,8 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
   const { _id: userId } = userDetails || {};
   const { canPersonalize } = recipe || {};
 
+  const canCreateRecipe = !recipe || !!canPersonalize;
+
   const generateRecipe = useCallback(
     async (constraints?: string, productsImage?: string) => {
       if (!taskId) return;
@@ -43,10 +45,9 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
         if (response.status === 200) {
           if (response.error) {
             if (response.error === "subscription expired") {
-              const { subscriptions, demographics } = userDetails || {};
+              const { subscriptions } = userDetails || {};
               const { improvement } = subscriptions || {};
               const { isTrialUsed } = improvement || {};
-              const { sex } = demographics || {};
 
               const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
 
@@ -97,7 +98,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
     modals.openContextModal({
       centered: true,
       modal: "general",
-      size: "auto",
+      size: "md",
       title: (
         <Title order={5} component={"p"}>
           Recipe settings
@@ -110,12 +111,12 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
   return (
     <Group className={classes.container}>
       {recipe ? (
-        <Text size="xl">
-          <IconBolt className="icon icon__large" /> About {recipe.calories} cal.
-        </Text>
+        <>
+          <IconBolt className="icon icon__large" /> About {recipe.kcal} kcal
+        </>
       ) : (
-        <Button className={classes.button} disabled={!canPersonalize} onClick={openEditTaskModal}>
-          Create recipe
+        <Button className={classes.button} disabled={!canCreateRecipe} onClick={openEditTaskModal}>
+          Create a recipe
         </Button>
       )}
     </Group>

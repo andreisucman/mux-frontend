@@ -48,6 +48,8 @@ export default function Explain(props: Props) {
   const { isRecipe, startsAt, example, proofEnabled, suggestions, completedAt, expiresAt, status } =
     taskInfo || {};
 
+  const timeExpired = new Date() > new Date(expiresAt || 0);
+
   const futureStartDate = useMemo(() => {
     if (startsAt) {
       if (new Date() < new Date(startsAt || 0)) {
@@ -58,7 +60,9 @@ export default function Explain(props: Props) {
   }, [startsAt]);
 
   const statusNote = useMemo(() => {
-    if (status === TaskStatusEnum.EXPIRED) {
+    if (!status) return;
+
+    if (status === TaskStatusEnum.EXPIRED || timeExpired) {
       const statusString = `${upperFirst(status)} on ${formatDate({ date: expiresAt || new Date() })}`;
       return statusString;
     } else if (status === TaskStatusEnum.CANCELED) {
@@ -66,7 +70,7 @@ export default function Explain(props: Props) {
     } else if (status === TaskStatusEnum.COMPLETED) {
       return "Completed";
     }
-  }, [status, completedAt, expiresAt]);
+  }, [status, completedAt, expiresAt, timeExpired]);
 
   const {
     recipe,
@@ -186,14 +190,14 @@ export default function Explain(props: Props) {
       innerProps: (
         <RecreateDateModalContent
           cloneTask={async ({ startingDate }) =>
-            cloneTask({ setTaskInfo, startingDate, taskId, returnTask: true })
+            cloneTask({ setTaskInfo, startingDate, taskId, returnTask: true, timeZone })
           }
         />
       ),
       modal: "general",
       centered: true,
     });
-  }, [taskId]);
+  }, [taskId, timeZone]);
 
   const openEditTaskModal = useCallback(() => {
     modals.openContextModal({
@@ -266,6 +270,8 @@ export default function Explain(props: Props) {
   }, []);
 
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
+  const exampleType = recipe ? "image" : example?.type;
+  const exampleUrl = recipe ? recipe.image : example?.url;
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -273,7 +279,7 @@ export default function Explain(props: Props) {
         <PageHeaderWithReturn
           title={
             <>
-              <span style={{ marginRight: rem(8) }}>{name}</span>
+              <span style={{ marginRight: rem(8) }}>{recipe?.name || name}</span>
               {showBanner && (
                 <Badge
                   mt={-8}
@@ -295,7 +301,11 @@ export default function Explain(props: Props) {
             <WaitComponent
               operationKey={`createRecipe-${taskId}`}
               description={"Creating a recipe"}
-              onComplete={() => handleFetchTaskInfo(taskId || "")}
+              onComplete={() => {
+                handleFetchTaskInfo(taskId || "");
+                setShowWaitComponent(false);
+              }}
+              customContainerStyles={{ margin: "unset", paddingTop: "25%" }}
             />
           ) : (
             <>
@@ -306,7 +316,8 @@ export default function Explain(props: Props) {
                   checked={proofEnabled || false}
                   onChange={() => switchProofUpload(!proofEnabled, taskId)}
                 />
-                {taskStatus !== TaskStatusEnum.COMPLETED && (
+                {(taskStatus === TaskStatusEnum.ACTIVE ||
+                  taskStatus === TaskStatusEnum.CANCELED) && (
                   <>
                     <Button
                       size="compact-sm"
@@ -320,7 +331,7 @@ export default function Explain(props: Props) {
                     <Button
                       size="compact-sm"
                       variant="default"
-                      disabled={taskStatus === TaskStatusEnum.DELETED || taskStatus === TaskStatusEnum.EXPIRED}
+                      disabled={timeExpired}
                       className={classes.actionButton}
                       onClick={updateTaskStatus}
                     >
@@ -328,11 +339,12 @@ export default function Explain(props: Props) {
                     </Button>
                   </>
                 )}
-                {taskStatus === TaskStatusEnum.COMPLETED && (
+                {(taskStatus === TaskStatusEnum.COMPLETED ||
+                  taskStatus === TaskStatusEnum.EXPIRED ||
+                  timeExpired) && (
                   <Button
                     size="compact-sm"
                     variant="default"
-                    disabled={taskStatus !== TaskStatusEnum.COMPLETED}
                     className={classes.actionButton}
                     onClick={handleCloneTask}
                   >
@@ -346,7 +358,10 @@ export default function Explain(props: Props) {
                 notStarted={!!futureStartDate}
                 expiresAt={taskInfo && taskInfo.expiresAt}
               />
-              <ExplanationContainer title="Description:" text={description} />
+              <ExplanationContainer
+                title="Description:"
+                text={recipe?.description || description}
+              />
               {isRecipe && (
                 <CreateRecipeBox
                   taskId={taskId}
@@ -355,10 +370,12 @@ export default function Explain(props: Props) {
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {example && <ExampleContainer title="Example:" example={example} />}
+                {exampleType && exampleUrl && (
+                  <ExampleContainer title="Example:" type={exampleType} url={exampleUrl} />
+                )}
                 <ExplanationContainer
                   title="Steps:"
-                  text={instruction}
+                  text={recipe?.instruction || instruction}
                   customStyles={{ borderRadius: "0 0 1rem 1rem" }}
                 />
               </Stack>

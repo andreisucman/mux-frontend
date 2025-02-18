@@ -1,9 +1,10 @@
 .container {
-  padding: rem(8) rem(16);
+  padding: rem(16);
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
   justify-content: center;
   align-items: center;
+  gap: rem(8);
 }
 
 .button {

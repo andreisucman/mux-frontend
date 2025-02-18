@@ -26,7 +26,7 @@ export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTa
     if (!userDetails) return;
 
     const { nextRoutine } = userDetails;
-    const allInCooldown = nextRoutine?.every((r) => r.date && new Date() > new Date(r.date || 0));
+    const allInCooldown = nextRoutine?.every((r) => r.date && new Date() < new Date(r.date || 0));
 
     setShowWeeklyButton(!allInCooldown);
   }, [userDetails]);

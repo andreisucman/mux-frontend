@@ -7,10 +7,11 @@ import classes from "./ExampleContainer.module.css";
 
 type Props = {
   title?: string;
-  example?: { type: string; url: string };
+  type: string;
+  url: string;
 };
 
-export default function ExampleContainer({ title, example }: Props) {
+export default function ExampleContainer({ title, type, url }: Props) {
   const [isReady, setIsReady] = useState(false);
 
   return (
@@ -21,11 +22,11 @@ export default function ExampleContainer({ title, example }: Props) {
         </Text>
       )}
       <Skeleton visible={!isReady} className={classes.exampleContainer} style={{ borderRadius: 0 }}>
-        {example && example.type === "video" ? (
+        {type === "video" ? (
           <iframe
             width="560"
             height="315"
-            src={example.url}
+            src={url}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -34,19 +35,15 @@ export default function ExampleContainer({ title, example }: Props) {
             onLoad={() => setIsReady(true)}
           ></iframe>
         ) : (
-          <>
-            {example && (
-              <Image
-                className={classes.exampleImage}
-                src={example.url}
-                width={100}
-                height={100}
-                alt=""
-                unoptimized
-                onLoad={() => setIsReady(true)}
-              />
-            )}
-          </>
+          <Image
+            className={classes.exampleImage}
+            src={url}
+            width={100}
+            height={100}
+            alt=""
+            unoptimized
+            onLoad={() => setIsReady(true)}
+          />
         )}
       </Skeleton>
     </Stack>

@@ -6,17 +6,22 @@ import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
-import { FilterItemType } from "@/components/FilterDropdown/types";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
-import getFilters from "@/functions/getFilters";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
 import HistoryHeader from "./HistoryHeader";
 import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";
+
+type FetchInactiveTasksProps = {
+  status: string | null;
+  part: string | null;
+  sort?: string | null;
+  loadMore?: boolean;
+};
 
 export default function RoutinesHistoryPage() {
   const router = useRouter();
@@ -26,9 +31,10 @@ export default function RoutinesHistoryPage() {
 
   const part = searchParams.get("part");
   const status = searchParams.get("status");
+  const sort = searchParams.get("sort");
 
   const fetchInactiveTasks = useCallback(
-    async (status: string | null, part: string | null, loadMore?: boolean) => {
+    async ({ status, part, loadMore, sort }: FetchInactiveTasksProps) => {
       try {
         let endpoint = "getInactiveTasks";
 
@@ -36,6 +42,7 @@ export default function RoutinesHistoryPage() {
 
         if (status) parts.push(`status=${status}`);
         if (part) parts.push(`part=${part}`);
+        if (sort) parts.push(`sort=${sort}`);
 
         if (loadMore && inactiveTasks) {
           parts.push(`skip=${inactiveTasks.length}`);
@@ -72,8 +79,8 @@ export default function RoutinesHistoryPage() {
   );
 
   useEffect(() => {
-    fetchInactiveTasks(status, part);
-  }, [status, part]);
+    fetchInactiveTasks({ status, part, sort });
+  }, [status, part, sort]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -89,7 +96,7 @@ export default function RoutinesHistoryPage() {
                       <Loader type="oval" m="auto" />
                     </Stack>
                   }
-                  loadMore={() => fetchInactiveTasks(status, part, true)}
+                  loadMore={() => fetchInactiveTasks({status, part, loadMore: true})}
                   useWindow={false}
                   hasMore={hasMore}
                   pageStart={0}

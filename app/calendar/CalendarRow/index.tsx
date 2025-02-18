@@ -46,7 +46,7 @@ export default function CalendarRow({
         onClick={() => selectTask(task)}
         style={customStyles ? customStyles : {}}
       >
-        <Checkbox checked={checked} disabled={status !== TaskStatusEnum.ACTIVE} readOnly />
+        <Checkbox checked={checked} disabled={status === TaskStatusEnum.EXPIRED} readOnly />
         <Text className={classes.date}>{date}</Text>
         <IconWithColor icon={icon} color={color} />
         <Text className={classes.name} lineClamp={2}>

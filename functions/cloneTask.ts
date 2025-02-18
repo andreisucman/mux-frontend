@@ -5,6 +5,7 @@ import callTheServer from "./callTheServer";
 
 export type CloneTaskProps = {
   taskId: string;
+  timeZone?: string;
   startingDate: Date | null;
   returnTask?: boolean;
   returnRoutinesWithStatus?: string;
@@ -14,6 +15,7 @@ export type CloneTaskProps = {
 
 export default async function cloneTask({
   taskId,
+  timeZone,
   startingDate,
   returnTask,
   returnRoutinesWithStatus,
@@ -23,7 +25,7 @@ export default async function cloneTask({
   const response = await callTheServer({
     endpoint: "cloneTask",
     method: "POST",
-    body: { taskId, startingDate, returnTask, returnRoutinesWithStatus },
+    body: { taskId, startingDate, timeZone, returnTask, returnRoutinesWithStatus },
   });
 
   if (response.status === 200) {
@@ -45,5 +47,7 @@ export default async function cloneTask({
     }
 
     modals.closeAll();
+
+    return newTask._id;
   }
 }

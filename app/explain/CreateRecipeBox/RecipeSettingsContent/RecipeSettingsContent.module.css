@@ -1,4 +1,5 @@
 .imageComponentWrapper {
+  position: relative;
   background-color: var(--mantine-color-dark-6);
   border-radius: var(--mantine-radius-lg);
   padding: rem(16);
@@ -7,6 +8,10 @@
 }
 
 .imageButton {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   max-width: rem(200);
   width: 100%;
 }

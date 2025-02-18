@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { IconBinoculars, IconCalendar } from "@tabler/icons-react";
-import cn from "classnames";
 import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import { AllTaskType, TaskStatusEnum } from "@/types/global";
+import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
 import RoutineIndividualTasksList from "./IndividualTasksList";
 import classes from "./AccordionTaskRow.module.css";
@@ -49,11 +49,7 @@ export default function AccordionTaskRow({
     <Stack className={classes.container}>
       <Group className={classes.wrapper} onClick={handleOpenList}>
         <Group className={classes.title}>
-          <div
-            className={cn(classes.indicator, {
-              [classes.active]: someTaskActive,
-            })}
-          />
+          <Indicator status={someTaskActive ? "active" : ""} />
           <IconWithColor icon={icon} color={color} />
           <Text className={classes.name} lineClamp={2}>
             {name}

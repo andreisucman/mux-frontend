@@ -5,6 +5,12 @@ export const partItems = [
   { label: "Body", value: "body" },
 ];
 
+export const taskStatuses = [
+  { label: "Completed", value: "completed" },
+  { label: "Canceled", value: "canceled" },
+  { label: "Expired", value: "expired" },
+];
+
 export const positionItems = [
   {
     label: "Front",

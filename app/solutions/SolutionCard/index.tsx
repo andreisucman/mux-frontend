@@ -60,7 +60,7 @@ export default function SolutionCard({ data }: Props) {
             />
           </Group>
           <Stack className={classes.exampleWrapper}>
-            {example && <ExampleContainer title="Example" example={example} />}
+            {example && <ExampleContainer title="Example" type={example.type} url={example.url} />}
             <ExplanationContainer
               title={"Instruction:"}
               text={instruction}

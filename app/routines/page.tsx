@@ -11,6 +11,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
+import { routineSortItems } from "@/data/sortItems";
 import fetchRoutines from "@/functions/fetchRoutines";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
@@ -151,17 +152,19 @@ export default function ClubRoutines() {
 
   useEffect(() => setPageLoaded(true), []);
 
+  const noResults = !routines || routines.length === 0;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn title="My routines" showReturn nowrap />
+        <PageHeaderWithReturn title="My routines" sortItems={routineSortItems} isDisabled={noResults} showReturn nowrap />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}
           maxLength={300}
         />
         <TasksButtons
-          disableCreateTask={showScanOverlay}
+          disableCreateTask={showScanOverlay || displayComponent === "wait"}
           handleSaveTask={(props: HandleSaveTaskProps) =>
             saveTaskFromDescription({ ...props, setDisplayComponent })
           }

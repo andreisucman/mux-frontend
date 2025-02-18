@@ -89,15 +89,6 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
       const state = encodeURIComponent(JSON.stringify(stateObject));
 
-      console.log("password", {
-        email,
-        password,
-        state,
-        router,
-        setStatus,
-        setUserDetails,
-      });
-
       authenticate({
         email,
         password,

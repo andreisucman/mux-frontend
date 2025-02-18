@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { IconActivity, IconCancel, IconClock, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Group, Loader, Stack } from "@mantine/core";
+import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -364,33 +364,36 @@ export default function Calendar() {
         />
 
         <Group>
-          <ActionIcon
+          <Button
+            size="compact-sm"
             variant="default"
             className={cn(classes.taskStatusButton, {
               [classes.selectedButton]: selectedStatus === TaskStatusEnum.ACTIVE,
             })}
             onClick={() => handleShowByStatus(TaskStatusEnum.ACTIVE)}
           >
-            <IconActivity className={"icon"} />
-          </ActionIcon>
-          <ActionIcon
+            Active
+          </Button>
+          <Button
+            size="compact-sm"
             variant="default"
             className={cn(classes.taskStatusButton, {
               [classes.selectedButton]: selectedStatus === TaskStatusEnum.CANCELED,
             })}
             onClick={() => handleShowByStatus(TaskStatusEnum.CANCELED)}
           >
-            <IconCancel className={"icon"} />
-          </ActionIcon>
-          <ActionIcon
+            Canceled
+          </Button>
+          <Button
+            size="compact-sm"
             variant="default"
             className={cn(classes.taskStatusButton, {
               [classes.selectedButton]: selectedStatus === TaskStatusEnum.EXPIRED,
             })}
             onClick={() => handleShowByStatus(TaskStatusEnum.EXPIRED)}
           >
-            <IconClock className={"icon"} />
-          </ActionIcon>
+            Expired
+          </Button>
         </Group>
 
         <Stack className={`${classes.content} scrollbar`}>

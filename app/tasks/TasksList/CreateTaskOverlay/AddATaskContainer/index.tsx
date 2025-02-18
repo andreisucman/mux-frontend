@@ -97,7 +97,7 @@ export default function AddATaskContainer({
   );
 
   const scannedParts = nextScan?.filter((r) => r.date).map((r) => r.part);
-  const isCreateRoutineInCooldown = nextRoutine?.every((ro) => new Date(ro.date || 0) > new Date());
+  const isCreateRoutineInCooldown = nextRoutine?.every((ro) => ro.date && new Date(ro.date || 0) > new Date());
   const earliestCreateRoutineDate =
     nextRoutine && nextRoutine.length
       ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))

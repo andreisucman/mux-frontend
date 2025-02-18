@@ -1,5 +1,5 @@
 import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
-import { partItems } from "@/components/PageHeader/data";
+import { partItems, taskStatuses } from "@/components/PageHeader/data";
 import callTheServer from "./callTheServer";
 
 type GetUsersFiltersProps = {
@@ -35,11 +35,16 @@ const getFilters = async ({ userName, collection, fields }: GetUsersFiltersProps
     });
 
     if (response.status === 200) {
-      const { part } = response.message || {};
+      const { part, status } = response.message || {};
+
 
       if (response.message) {
         if (part) {
           result.availableParts = partItems.filter((item) => part.includes(item.value));
+        }
+
+        if (status) {
+          result.availableStatuses = taskStatuses.filter((item) => status.includes(item.value));
         }
       }
     }

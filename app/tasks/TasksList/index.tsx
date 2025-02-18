@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import {  useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -14,7 +14,6 @@ import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTa
 import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
-import { TaskType } from "@/types/global";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import TaskRow from "./TaskRow";
 import TasksButtons from "./TasksButtons";
@@ -23,10 +22,6 @@ import classes from "./TasksList.module.css";
 type Props = {
   customStyles?: { [key: string]: any };
 };
-
-interface TaskTypeWithClick extends TaskType {
-  onClick: () => void;
-}
 
 export default function TasksList({ customStyles }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -114,7 +109,7 @@ export default function TasksList({ customStyles }: Props) {
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <TasksButtons
-        disableCreateTask={showScanOverlay}
+        disableCreateTask={showScanOverlay || displayComponent === "wait"}
         handleSaveTask={(props: HandleSaveTaskProps) =>
           saveTaskFromDescription({ ...props, setDisplayComponent })
         }
@@ -144,7 +139,7 @@ export default function TasksList({ customStyles }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", "routine");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
               />
             )}
             {displayComponent === "content" && (

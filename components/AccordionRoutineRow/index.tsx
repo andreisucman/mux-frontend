@@ -10,13 +10,14 @@ import callTheServer from "@/functions/callTheServer";
 import cloneTask from "@/functions/cloneTask";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
+import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AllTaskType, RoutineType } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
+import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
 import classes from "./AccordionRoutineRow.module.css";
-import { partIcons } from "@/helpers/icons";
 
 type Props = {
   routine: RoutineType;
@@ -146,12 +147,19 @@ export default function AccordionRoutineRow({
 
   const showSkeleton = useShowSkeleton();
 
+  const allActiveTasks = useMemo(() => {
+    return routine.allTasks.filter((at) =>
+      at.ids.some((idObj) => idObj.status === "active" || idObj.status === "canceled")
+    );
+  }, [routine.allTasks]);
+
   return (
     <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
         <Accordion.Control>
           <Group className={classes.row}>
             <Group className={classes.title}>
+              <Indicator status={routine.status} />
               {partIcons[part]}
               {rowLabel}
             </Group>
@@ -193,7 +201,7 @@ export default function AccordionRoutineRow({
           )}
         </Accordion.Control>
         <Accordion.Panel>
-          {routine.allTasks.map((task, i) => (
+          {allActiveTasks.map((task, i) => (
             <AccordionTaskRow
               key={i}
               data={task}

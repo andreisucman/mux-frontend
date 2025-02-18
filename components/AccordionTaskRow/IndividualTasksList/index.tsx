@@ -3,6 +3,7 @@ import { IconCopy } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Group, Stack, Text } from "@mantine/core";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
+import Indicator from "@/components/Indicator";
 import { formatDate } from "@/helpers/formatDate";
 import AccordionTaskMenu from "../AccordionTaskMenu";
 import classes from "./IndividualTasksList.module.css";
@@ -35,12 +36,7 @@ export default function RoutineIndividualTasksList({
         const date = formatDate({ date: idObj.startsAt });
         return (
           <Group key={idObj._id} className={classes.row}>
-            <div
-              className={cn(classes.indicator, {
-                [classes.active]: idObj.status === "active",
-                [classes.canceled]: idObj.status === "canceled",
-              })}
-            />
+            <Indicator status={idObj.status} />
             <IconWithColor icon={icon} color={color} />
             <Text className={classes.taskDate} mr="auto">
               {date}
