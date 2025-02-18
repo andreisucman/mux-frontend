@@ -5,7 +5,7 @@ import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import RecreateDateModalContent from "@/app/explain/[taskId]/RecreateDateModalContent";
+import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
 import cloneTask from "@/functions/cloneTask";
 import { useRouter } from "@/helpers/custom-router";
@@ -135,9 +135,7 @@ export default function AccordionRoutineRow({
       size: "sm",
       innerProps: (
         <RecreateDateModalContent
-          cloneTask={async ({ startingDate }) =>
-            cloneTask({ setRoutines, startingDate, taskId, returnRoutinesWithStatus: status })
-          }
+          cloneTask={async ({ startingDate }) => cloneTask({ setRoutines, startingDate, taskId })}
         />
       ),
       modal: "general",

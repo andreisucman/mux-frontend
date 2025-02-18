@@ -37,7 +37,7 @@ export default function getConversationStarters(chatCategory?: ChatCategoryEnum,
       );
       break;
     case ChatCategoryEnum.TASK:
-      starters.push(`which task should i complete first`, "which tasks require going to gym");
+      starters.push(`which task should i complete first`);
       break;
   }
 

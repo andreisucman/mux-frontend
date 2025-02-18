@@ -5,27 +5,23 @@ import callTheServer from "./callTheServer";
 
 export type CloneTaskProps = {
   taskId: string;
-  timeZone?: string;
   startingDate: Date | null;
   returnTask?: boolean;
-  returnRoutinesWithStatus?: string;
   setTaskInfo?: React.Dispatch<React.SetStateAction<TaskType | null>>;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 
 export default async function cloneTask({
   taskId,
-  timeZone,
   startingDate,
   returnTask,
-  returnRoutinesWithStatus,
   setTaskInfo,
   setRoutines,
 }: CloneTaskProps) {
   const response = await callTheServer({
     endpoint: "cloneTask",
     method: "POST",
-    body: { taskId, startingDate, timeZone, returnTask, returnRoutinesWithStatus },
+    body: { taskId, startingDate, returnTask },
   });
 
   if (response.status === 200) {
@@ -36,10 +32,13 @@ export default async function cloneTask({
       return;
     }
 
-    const { routines, newTask } = message;
+    const { routine, newTask } = message;
 
-    if (routines && setRoutines) {
-      setRoutines(routines);
+    if (routine && setRoutines) {
+      setRoutines((prev: RoutineType[] | undefined) => {
+        if (!prev) return prev;
+        return prev.map((r) => (String(r._id) === String(routine._id) ? routine : r));
+      });
     }
 
     if (newTask && setTaskInfo) {
@@ -48,6 +47,6 @@ export default async function cloneTask({
 
     modals.closeAll();
 
-    return newTask._id;
+    if (newTask) return newTask._id;
   }
 }

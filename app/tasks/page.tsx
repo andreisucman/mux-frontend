@@ -33,7 +33,6 @@ export default function Tasks() {
           dividerLabel={"Discuss tasks"}
           starterQuestions={[
             "which task should i start first",
-            "which of my tasks require going to gym",
             "in what order should i complete my tasks to optimize for time",
           ]}
           modalTitle={

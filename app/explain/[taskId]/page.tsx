@@ -25,7 +25,7 @@ import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
 import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
-import RecreateDateModalContent from "./RecreateDateModalContent";
+import SelectDateModalContent from "./SelectDateModalContent";
 import classes from "./explain.module.css";
 
 export const runtime = "edge";
@@ -188,7 +188,7 @@ export default function Explain(props: Props) {
       ),
       size: "sm",
       innerProps: (
-        <RecreateDateModalContent
+        <SelectDateModalContent
           cloneTask={async ({ startingDate }) =>
             cloneTask({ setTaskInfo, startingDate, taskId, returnTask: true, timeZone })
           }
