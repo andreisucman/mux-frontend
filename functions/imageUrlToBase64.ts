@@ -1,6 +1,7 @@
 export default async function imageUrlToBase64(imageUrl: string): Promise<string | null> {
   try {
     const response = await fetch(imageUrl);
+
     if (!response.ok) {
       throw new Error("Image could not be fetched");
     }

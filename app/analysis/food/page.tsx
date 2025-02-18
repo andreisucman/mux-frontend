@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Overlay, Skeleton, Stack, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -52,7 +51,7 @@ export default function FoodScanResult() {
   };
 
   const displayData = useMemo(() => {
-    if (!energy || !shouldEat) return;
+    if (energy === undefined || shouldEat === undefined) return;
 
     let response = [] as { name: string; value: number }[];
 

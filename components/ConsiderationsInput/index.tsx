@@ -33,7 +33,7 @@ export function ConsiderationsInput({ defaultValue = "", placeholder = "", maxLe
       w={"100%"}
       onChange={(event) => {
         if (event.target.value.length > maxLength) return;
-        updateSpecialConsiderations({ value: event.target.value, setIsLoading, setUserDetails });
+        setValue(event.target.value)
       }}
       rightSection={
         <ActionIcon

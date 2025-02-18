@@ -41,7 +41,8 @@ export default function ScanFoodPage() {
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          url: fileUrls[0],
+          // url: fileUrls[0],
+          url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/pasta.webp",
           calorieGoal,
         },
       });

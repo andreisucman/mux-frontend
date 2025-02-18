@@ -76,7 +76,7 @@ export default function CalorieGoalController({ disabled }: Props) {
         max={5000}
         step={100}
         value={calorieGoal}
-        onChangeEnd={handleChangeSlider}
+        onChange={handleChangeSlider}
         classNames={{ label: classes.label, thumb: classes.thumb }}
         disabled={disabled}
         labelAlwaysOn
