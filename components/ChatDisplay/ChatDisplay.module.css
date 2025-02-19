@@ -36,11 +36,11 @@
 }
 
 .scrollArea {
-  position: static;
+  position: relative;
   overflow: auto;
   gap: 0;
 
+  max-height: rem(600);
   padding: rem(16) rem(16) 0 rem(16);
   min-height: clamp(rem(400), 30vh, 40vh);
-  max-height: clamp(rem(400), 30vh, 40vh);
 }

@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { IconRotate2 } from "@tabler/icons-react";
 import { ActionIcon, Loader, rem, Stack } from "@mantine/core";
-import { useScrollIntoView } from "@mantine/hooks";
+import { useScrollIntoView, useViewportSize } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import { MessageType } from "../ChatInput/types";
@@ -39,6 +39,7 @@ export default function ChatDisplay({
     HTMLDivElement,
     HTMLDivElement
   >({ duration: 500, cancelable: false, isList: isInList });
+  const { height } = useViewportSize();
 
   const getMessages = useCallback(async (conversationId: string | null) => {
     try {

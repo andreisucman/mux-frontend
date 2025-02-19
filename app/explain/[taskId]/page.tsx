@@ -128,6 +128,7 @@ export default function Explain(props: Props) {
       description,
       instruction,
       isLoading,
+      applyToAll,
       setIsLoading,
       setError,
       setStep,
@@ -148,6 +149,7 @@ export default function Explain(props: Props) {
             startDate: date,
             updatedDescription: description,
             updatedInstruction: instruction,
+            applyToAll,
             timeZone,
           },
         });

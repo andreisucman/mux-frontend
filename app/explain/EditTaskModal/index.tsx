@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button, Loader, Stack, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import askConfirmation from "@/helpers/askConfirmation";
 import { formatDate } from "@/helpers/formatDate";
 import EditExistingTask from "../EditExistingTask";
 import classes from "./EditTaskModal.module.css";
@@ -9,6 +11,7 @@ export type UpdateTaskProps = {
   description: string;
   instruction: string;
   date: Date | null;
+  applyToAll?: boolean;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
@@ -20,7 +23,7 @@ type Props = {
   startsAt: string;
   description: string;
   instruction: string;
-  updateTask: (props: UpdateTaskProps) => void;
+  updateTask: (props: UpdateTaskProps) => Promise<void>;
 };
 
 export default function EditTaskModal({
@@ -45,6 +48,48 @@ export default function EditTaskModal({
     updatedInstruction !== instruction ||
     starsKeyDate !== nowKeyDate;
 
+  const handleUpdateTask = async (applyToAll?: boolean) => {
+    try {
+      const payload: UpdateTaskProps = {
+        taskId,
+        description: updatedDescription,
+        instruction: updatedInstruction,
+        date,
+        isLoading,
+        setIsLoading,
+        setError,
+        setStep,
+      };
+
+      if (applyToAll) payload.applyToAll = true;
+
+      updateTask(payload);
+      modals.closeAll();
+    } catch (err) {}
+  };
+
+  const saveEdits = () => {
+    const descriptionUpdated = updatedDescription !== description;
+    const instructionUpdated = updatedInstruction !== instruction;
+
+    if (descriptionUpdated || instructionUpdated) {
+      const parts = [];
+
+      if (descriptionUpdated) parts.push("description");
+      if (instructionUpdated) parts.push("instruction");
+
+      const text = `Do you want to update the ${parts.join(", and")} of the other tasks of the same type?`;
+      askConfirmation({
+        title: "Update other tasks?",
+        body: text,
+        onConfirm: () => handleUpdateTask(true),
+        onCancel: () => handleUpdateTask(),
+      });
+    } else {
+      handleUpdateTask();
+    }
+  };
+
   return (
     <Stack className={classes.container}>
       {error && (
@@ -65,21 +110,7 @@ export default function EditTaskModal({
                 setUpdatedDescription={setUpdatedDescription}
                 setUpdatedInstruction={setUpdatedInstruciton}
               />
-              <Button
-                onClick={() =>
-                  updateTask({
-                    taskId,
-                    description: updatedDescription,
-                    instruction: updatedInstruction,
-                    date,
-                    isLoading,
-                    setIsLoading,
-                    setError,
-                    setStep,
-                  })
-                }
-                disabled={!isDirty}
-              >
+              <Button onClick={saveEdits} disabled={!isDirty}>
                 Update task
               </Button>
             </>
