@@ -42,19 +42,17 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
 
   return (
     <Stack>
+      <Text size="sm" c="dimmed" ta="center">
+        Specify your constraints
+      </Text>
       <TextareaComponent
         text={constraints}
-        heading={
-          <Text size="xs" c="dimmed">
-            Constraints (optional):
-          </Text>
-        }
-        placeholder={"Example: I only have potatoes, oil, onions, a pan and gas stove."}
+        placeholder={"Example: I only have potatoes, olive oil, onions, a pan and gas stove."}
         setText={setConstraints}
         editable
       />
       <Text size="sm" c="dimmed" ta="center">
-        or upload a photo of your products...
+        or take a photo of your products
       </Text>
       <Stack>
         <Stack className={classes.imageComponentWrapper}>
@@ -65,29 +63,31 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
             placeholder={pantryImage}
             customImageStyles={{
               position: "static",
-              height: "unset",
               maxHeight: rem(300),
+              height: "100%",
             }}
           />
-          <Button
-            component="label"
-            htmlFor="upload_products_photo"
-            variant={"default"}
-            className={classes.imageButton}
-          >
-            Upload products
-            <input
-              hidden
-              id="upload_products_photo"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </Button>
+          {!image && (
+            <Button
+              component="label"
+              htmlFor="upload_products_photo"
+              variant={"default"}
+              className={classes.imageButton}
+            >
+              Upload products
+              <input
+                hidden
+                id="upload_products_photo"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Button>
+          )}
         </Stack>
       </Stack>
       <Button loading={isLoading} disabled={isLoading} onClick={handleGenerate}>
-         Generate recipe
+        Generate recipe
       </Button>
     </Stack>
   );

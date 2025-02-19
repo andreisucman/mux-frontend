@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCalendar, IconClipboardText, IconHandGrab } from "@tabler/icons-react";
+import { IconCalendar, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -34,15 +34,15 @@ export default function AccordionRoutineRow({
   openTaskDetails,
   handleStealRoutine,
 }: Props) {
-  const { part, createdAt, lastDate } = routine;
+  const { part, startsAt, lastDate } = routine;
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const status = searchParams.get("status") || "active"; // segment status of overall page
 
   const rowLabel = useMemo(() => {
-    const sameMonth = new Date(createdAt).getMonth() === new Date(lastDate).getMonth();
-    const dateFrom = formatDate({ date: createdAt, hideYear: true, hideMonth: sameMonth });
+    const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
+    const dateFrom = formatDate({ date: startsAt, hideYear: true, hideMonth: sameMonth });
     const dateTo = formatDate({ date: lastDate, hideYear: true });
     let label = `${upperFirst(part)}`;
 
@@ -58,7 +58,7 @@ export default function AccordionRoutineRow({
     }
 
     return label;
-  }, [part, createdAt, lastDate]);
+  }, [part, startsAt, lastDate]);
 
   const totalTotal = useMemo(
     () => routine.allTasks.reduce((a, c) => a + c.total, 0),
@@ -77,7 +77,7 @@ export default function AccordionRoutineRow({
 
   const redirectToCalendar = useCallback(
     (taskKey?: string) => {
-      const dateFrom = new Date(routine.createdAt);
+      const dateFrom = new Date(routine.startsAt);
       dateFrom.setUTCHours(0, 0, 0, 0);
       const dateTo = new Date(routine.lastDate);
       dateTo.setDate(dateTo.getDate() + 1);
@@ -135,7 +135,7 @@ export default function AccordionRoutineRow({
       size: "sm",
       innerProps: (
         <RecreateDateModalContent
-          cloneTask={async ({ startingDate }) => cloneTask({ setRoutines, startingDate, taskId })}
+         onSubmit={async ({ startDate }) => cloneTask({ setRoutines, startDate, taskId })}
         />
       ),
       modal: "general",

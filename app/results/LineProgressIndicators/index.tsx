@@ -59,7 +59,7 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
             {title}
           </Text>
         )}
-        <Stack gap={8}>{indicators}</Stack>
+        <Stack className={`${classes.indicatorsWrapper} scrollbar`}>{indicators}</Stack>
       </Stack>
     </Stack>
   );

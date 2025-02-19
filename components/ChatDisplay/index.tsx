@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { IconRotate2 } from "@tabler/icons-react";
 import { ActionIcon, Loader, rem, Stack } from "@mantine/core";
-import { useElementSize, useScrollIntoView, useViewportSize } from "@mantine/hooks";
+import { useElementSize, useScrollIntoView } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import { MessageType } from "../ChatInput/types";
@@ -97,7 +97,11 @@ export default function ChatDisplay({
   }, [conversation]);
 
   return (
-    <Stack className={classes.container} ref={ref} style={customContainerStyles ? customContainerStyles : {}}>
+    <Stack
+      className={classes.container}
+      ref={ref}
+      style={customContainerStyles ? customContainerStyles : {}}
+    >
       {conversationList.length > 0 && (
         <ActionIcon variant="default" className={classes.refresh} onClick={startNewChat}>
           <IconRotate2 className="icon icon__small" />

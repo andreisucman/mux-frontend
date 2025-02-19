@@ -17,6 +17,7 @@ export const protectedPaths = [
   "/routines",
   "/diary",
   "/verify-email",
+  "/start-date",
 ];
 
 export const pathsThatRequireId = ["/analysis/food", "/analysis", "/scan/progress", "/scan/food"];

@@ -27,7 +27,11 @@ export default function HistoryHeader({ title, onSelect }: Props) {
   const part = searchParams.get("part");
 
   useEffect(() => {
-    getFilters({ collection: "task", fields: ["part", "status"] }).then((result) => {
+    getFilters({
+      collection: "task",
+      filter: ["status=canceled", "status=expired", "status=completed"],
+      fields: ["part", "status"],
+    }).then((result) => {
       const { availableParts, availableStatuses } = result;
       setAvaiableParts(availableParts);
       setAvailableStatuses(availableStatuses);

@@ -9,13 +9,18 @@ type Props = {
   title?: string;
   type: string;
   url: string;
+  customStyles?: { [key: string]: any };
+  customClass?: string;
 };
 
-export default function ExampleContainer({ title, type, url }: Props) {
+export default function ExampleContainer({ title, type, url, customClass, customStyles }: Props) {
   const [isReady, setIsReady] = useState(false);
 
   return (
-    <Stack className={classes.container}>
+    <Stack
+      className={customClass ? `${classes.container} ${classes[customClass]}` : classes.container}
+      style={customStyles || {}}
+    >
       {title && (
         <Text c="dimmed" className={classes.title}>
           {title}

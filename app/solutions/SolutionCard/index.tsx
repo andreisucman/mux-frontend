@@ -60,11 +60,18 @@ export default function SolutionCard({ data }: Props) {
             />
           </Group>
           <Stack className={classes.exampleWrapper}>
-            {example && <ExampleContainer title="Example" type={example.type} url={example.url} />}
+            {example && (
+              <ExampleContainer
+                title="Example"
+                type={example.type}
+                url={example.url}
+                customClass={example ? "solutionsCard" : undefined}
+              />
+            )}
             <ExplanationContainer
               title={"Instruction:"}
               text={instruction}
-              customStyles={example ? { borderRadius: "0 0 1rem 1rem" } : {}}
+              customClass={example ? "solutionsCard" : undefined}
             />
           </Stack>
 

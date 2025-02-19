@@ -9,7 +9,7 @@ type ModifyQueryParams = {
 };
 
 export default function modifyQuery({ params }: ModifyQueryParams) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") return "";
 
   try {
     const initialParams = new URLSearchParams(window.location.search);

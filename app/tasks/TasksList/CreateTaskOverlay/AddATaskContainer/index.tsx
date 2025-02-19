@@ -103,7 +103,7 @@ export default function AddATaskContainer({
       ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
       : null;
 
-  const cooldownButtonText = `Improvement assistant after ${formatDate({ date: new Date(earliestCreateRoutineDate || new Date()), hideYear: true })}`;
+  const cooldownButtonText = `Next weekly routine after ${formatDate({ date: new Date(earliestCreateRoutineDate || new Date()), hideYear: true })}`;
 
   return (
     <Stack className={classes.container}>
@@ -118,7 +118,7 @@ export default function AddATaskContainer({
           <Stack flex={1}>
             {step === 1 && (
               <CreateATaskContent
-                allConcerns={concerns}
+                allConcerns={concerns || []}
                 allParts={scannedParts || []}
                 selectedConcern={selectedConcern}
                 selectedPart={selectedPart}

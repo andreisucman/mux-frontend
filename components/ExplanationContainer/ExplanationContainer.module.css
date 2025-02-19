@@ -9,3 +9,8 @@
 .title {
   font-size: var(--mantine-font-size-xs);
 }
+
+.solutionsCard {
+  background-color: var(--mantine-color-dark-5);
+  border-radius: 0 0 rem(16) rem(16);
+}

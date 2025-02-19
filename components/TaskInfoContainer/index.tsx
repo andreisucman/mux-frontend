@@ -11,7 +11,7 @@ type Props = {
   alreadyExists?: boolean;
   isEdit?: boolean;
   rawTask: AllTaskType;
-  onSubmit: (total: number, startingDate: Date | null) => Promise<boolean>;
+  onSubmit: (total: number, startDate: Date | null) => Promise<boolean>;
 };
 
 export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyExists }: Props) {

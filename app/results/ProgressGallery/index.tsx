@@ -84,7 +84,7 @@ export default function ProgressGallery({
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={3}
+            maxColumnCount={4}
             columnGutter={16}
             columnWidth={gridColumnWidth}
             render={memoizedProgressCard}

@@ -9,3 +9,9 @@
 .wrapper {
   gap: rem(4);
 }
+
+.indicatorsWrapper {
+  gap: rem(8);
+  max-height: rem(175);
+  overflow: auto;
+}

@@ -208,8 +208,8 @@ export default function Explain(props: Props) {
       size: "sm",
       innerProps: (
         <SelectDateModalContent
-          cloneTask={async ({ startingDate }) =>
-            cloneTask({ setTaskInfo, startingDate, taskId, resetNewTask: true, returnTask: true })
+         onSubmit={async ({ startDate }) =>
+            cloneTask({ setTaskInfo, startDate, taskId, resetNewTask: true, returnTask: true })
           }
         />
       ),

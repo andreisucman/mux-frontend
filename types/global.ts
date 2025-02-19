@@ -153,7 +153,7 @@ export type RoutineType = {
   concerns: UserConcernType[];
   finalSchedule: { [key: string]: any };
   status: RoutineStatusEnum;
-  createdAt: string;
+  startsAt: string;
   lastDate: string;
   allTasks: AllTaskType[];
 };

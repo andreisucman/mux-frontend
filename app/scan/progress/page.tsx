@@ -10,7 +10,6 @@ import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
 import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
 import { UserContext } from "@/context/UserContext";
-import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
@@ -21,7 +20,6 @@ import { ScanTypeEnum, UserDataType } from "@/types/global";
 import ScanHeader from "../ScanHeader";
 import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
-import { requirements } from "@/helpers/getPasswordStrength";
 
 export const runtime = "edge";
 
@@ -140,11 +138,9 @@ export default function ScanProgress() {
   }, [toAnalyze]) as string[];
 
   const showCarousel = useMemo(() => {
-    return (
-      (requirements && requirements.length > 0) ||
-      (toAnalyze && toAnalyze.length > 0)
-    );
-  }, [requirements, toAnalyze]);
+    const partRequirements = availableRequirements?.filter((r) => parts?.includes(r.part));
+    return partRequirements && partRequirements?.length > 0;
+  }, [requiredProgress, toAnalyze]);
 
   const nextScanText = useMemo(() => {
     if (!parts) return "";

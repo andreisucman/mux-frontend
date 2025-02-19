@@ -6,6 +6,7 @@ import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
+import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import ChatWithModal from "@/components/ChatWithModal";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -70,7 +71,7 @@ export default function ClubRoutines(props: Props) {
             <TaskInfoContainer
               rawTask={task}
               onSubmit={async (total: number, startsAt: Date | null) =>
-                handleAddToMyRoutine(task.key, routineId, total, startsAt)
+                handleStealTask(task.key, routineId, total, startsAt)
               }
               alreadyExists={existsInRoutines}
             />
@@ -107,13 +108,18 @@ export default function ClubRoutines(props: Props) {
     [routines]
   );
 
+  type StealRoutineProps = {
+    routineId: string;
+    startDate: Date | null;
+  };
+
   const stealRoutine = useCallback(
-    async (routineId: string) => {
+    async ({ routineId, startDate }: StealRoutineProps) => {
       try {
         const response = await callTheServer({
           endpoint: "stealRoutine",
           method: "POST",
-          body: { routineId, userName },
+          body: { routineId, userName, startDate },
         });
 
         if (response.status === 200) {
@@ -129,16 +135,16 @@ export default function ClubRoutines(props: Props) {
     [userDetails, userName]
   );
 
-  const handleAddToMyRoutine = useCallback(
-    async (taskKey: string, routineId: string, total: number, startsAt: Date | null) => {
-      if (!taskKey || !routineId || !startsAt) return false;
+  const handleStealTask = useCallback(
+    async (taskKey: string, routineId: string, total: number, startDate: Date | null) => {
+      if (!taskKey || !routineId || !startDate) return false;
 
       let isSuccess = false;
       try {
         const response = await callTheServer({
           endpoint: "stealTask",
           method: "POST",
-          body: { taskKey, routineId, total, followingUserName: userName },
+          body: { taskKey, routineId, startDate, total, followingUserName: userName },
         });
 
         if (response.status === 200) {
@@ -160,6 +166,30 @@ export default function ClubRoutines(props: Props) {
     [userDetails]
   );
 
+  const handleStealRoutine = useCallback((routine: RoutineType) => {
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Choose start date
+        </Title>
+      ),
+      size: "sm",
+      innerProps: (
+        <SelectDateModalContent
+          onSubmit={({ startDate }) =>
+            askConfirmation({
+              title: "Steal routine",
+              body: "This will replace your current routine with this one. Continue?",
+              onConfirm: () => stealRoutine({ routineId: routine._id, startDate }),
+            })
+          }
+        />
+      ),
+      modal: "general",
+      centered: true,
+    });
+  }, []);
+
   const accordionItems = useMemo(
     () =>
       routines &&
@@ -169,13 +199,7 @@ export default function ClubRoutines(props: Props) {
             key={routine._id}
             routine={routine}
             isSelf={isSelf}
-            handleStealRoutine={() =>
-              askConfirmation({
-                title: "Steal routine",
-                body: "This will replace your current routine with the selected one. Are you sure?",
-                onConfirm: () => stealRoutine(routine._id),
-              })
-            }
+            handleStealRoutine={() => handleStealRoutine(routine)}
             setRoutines={setRoutines}
             openTaskDetails={openTaskDetails}
           />

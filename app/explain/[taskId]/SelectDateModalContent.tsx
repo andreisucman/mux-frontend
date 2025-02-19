@@ -4,18 +4,18 @@ import { Button, Stack } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 
 type Props = {
-  cloneTask: ({ startingDate }: { startingDate: Date | null }) => Promise<string | undefined>;
+  onSubmit: ({ startDate }: { startDate: Date | null }) => Promise<string | undefined> | void;
 };
 
-export default function SelectDateModalContent({ cloneTask }: Props) {
+export default function SelectDateModalContent({ onSubmit }: Props) {
   const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const onClick = async () => {
     setIsLoading(true);
-    const newTaskId = await cloneTask({
-      startingDate: recreateTaskOnDate,
+    const newTaskId = await onSubmit({
+      startDate: recreateTaskOnDate,
     });
     if (newTaskId) router.replace(`/explain/${newTaskId}`);
     setIsLoading(false);

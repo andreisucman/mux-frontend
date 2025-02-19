@@ -8,6 +8,7 @@ import InstructionContainer from "@/components/InstructionContainer";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
+import modifyQuery from "@/helpers/modifyQuery";
 import { UserConcernType, UserDataType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import ConcernsSortCard from "./ConcernsSortCard";
@@ -61,7 +62,8 @@ export default function SortConcerns() {
 
   async function onButtonClick() {
     setIsLoading(true);
-    router.push("/considerations");
+    const stringParams = searchParams.toString();
+    router.push(`/considerations${stringParams ? `?${stringParams}` : ""}`);
   }
 
   useEffect(() => {

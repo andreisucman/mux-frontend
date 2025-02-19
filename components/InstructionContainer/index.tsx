@@ -29,7 +29,10 @@ export default function InstructionContainer({
         </Stack>
         {description && (
           <Group className={classes.note} style={instruction ? {} : { visibility: "hidden" }}>
-            <IconExclamationCircle color="var(--mantine-color-orange-6)" className="icon" />
+            <IconExclamationCircle
+              color="var(--mantine-color-orange-6)"
+              className={`${classes.icon} icon`}
+            />
             <Text size="sm" c="orange.6">
               {description}
             </Text>

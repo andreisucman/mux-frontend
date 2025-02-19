@@ -25,7 +25,7 @@ function ConcernsCard({ status, userId, concerns, title }: Props) {
   const { height: containerHeight, ref } = useElementSize();
 
   const maxHeight = useMemo(() => {
-    const elementsMaxHeight = concerns.length * 80 + (concerns.length - 1) * 16;
+    const elementsMaxHeight = concerns.length * 100 + (concerns.length - 1) * 16;
     const containerMaxHeight = containerHeight - 16 - 38;
     return Math.min(elementsMaxHeight, containerMaxHeight);
   }, [concerns.length, containerHeight > 0]);

@@ -10,6 +10,7 @@ import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
+import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
 import HistoryHeader from "./HistoryHeader";
@@ -57,6 +58,10 @@ export default function RoutinesHistoryPage() {
         });
 
         if (response.status === 200) {
+          if (response.message.length === 0) {
+            router.replace("/tasks/history");
+          }
+
           const newData = response.message.map((record: InactiveTaskType) => ({
             ...record,
             onClick: () => {
@@ -96,7 +101,7 @@ export default function RoutinesHistoryPage() {
                       <Loader type="oval" m="auto" />
                     </Stack>
                   }
-                  loadMore={() => fetchInactiveTasks({status, part, loadMore: true})}
+                  loadMore={() => fetchInactiveTasks({ status, part, loadMore: true })}
                   useWindow={false}
                   hasMore={hasMore}
                   pageStart={0}

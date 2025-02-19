@@ -6,9 +6,10 @@ type GetUsersFiltersProps = {
   userName?: string | string[];
   collection: string;
   fields?: string[];
+  filter?: string[];
 };
 
-const getFilters = async ({ userName, collection, fields }: GetUsersFiltersProps) => {
+const getFilters = async ({ userName, filter, collection, fields }: GetUsersFiltersProps) => {
   let result = {
     availableStatuses: [] as FilterItemType[],
     availableParts: [] as FilterPartItemType[],
@@ -22,6 +23,7 @@ const getFilters = async ({ userName, collection, fields }: GetUsersFiltersProps
 
     const parts = [];
 
+    if (filter) parts.push(...filter);
     if (collection) parts.push(`collection=${collection}`);
     if (fields) parts.push(`fields=${fields.join(",")}`);
 
@@ -36,7 +38,6 @@ const getFilters = async ({ userName, collection, fields }: GetUsersFiltersProps
 
     if (response.status === 200) {
       const { part, status } = response.message || {};
-
 
       if (response.message) {
         if (part) {

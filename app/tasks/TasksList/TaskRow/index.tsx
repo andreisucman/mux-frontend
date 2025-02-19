@@ -150,7 +150,7 @@ export default function TaskRow({
           <Text className={classes.title} lineClamp={1}>
             {name}
           </Text>
-          <Text className={classes.description} c="dimmed" size="sm" lineClamp={1}>
+          <Text className={classes.description} c="dimmed" size="sm" mb={2} lineClamp={1}>
             {description}
           </Text>
           {timer}

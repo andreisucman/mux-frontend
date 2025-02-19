@@ -27,6 +27,9 @@ export default function EditExistingTask({
 }: Props) {
   const latestDateOfWeek = daysFrom({ days: 7 });
 
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+
   return (
     <Stack flex={1}>
       {readOnly && (
@@ -63,7 +66,7 @@ export default function EditExistingTask({
         <DatePickerInput
           value={date}
           onChange={setDate}
-          excludeDate={(date) => new Date(date) < new Date() || new Date(date) > latestDateOfWeek}
+          excludeDate={(date) => new Date(date) < todayMidnight || new Date(date) > latestDateOfWeek}
           placeholder="Pick date"
           size="sm"
           closeOnChange
