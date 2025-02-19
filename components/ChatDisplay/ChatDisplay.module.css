@@ -2,8 +2,9 @@
   position: relative;
   flex: 1;
   overflow: auto;
-  background-color: alpha(var(--mantine-color-dark-6), 0.5);
+  /* background-color: alpha(var(--mantine-color-dark-6), 0.5); */
   border-radius: var(--mantine-radius-lg);
+  background-color: alpha(var(--mantine-color-red-6), 0.5);
 }
 
 .refresh {
@@ -39,8 +40,9 @@
   position: relative;
   overflow: auto;
   gap: 0;
+  background-color: alpha(var(--mantine-color-green-6), 0.5);
 
-  max-height: rem(600);
   padding: rem(16) rem(16) 0 rem(16);
+  max-height: clamp(rem(400), 30vh, 40vh);
   min-height: clamp(rem(400), 30vh, 40vh);
 }
