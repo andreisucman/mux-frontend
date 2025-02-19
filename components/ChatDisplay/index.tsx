@@ -39,7 +39,7 @@ export default function ChatDisplay({
     HTMLDivElement,
     HTMLDivElement
   >({ duration: 500, cancelable: false, isList: isInList });
-  const { height } = useElementSize();
+  const { height, ref } = useElementSize();
 
   const getMessages = useCallback(async (conversationId: string | null) => {
     try {
@@ -97,7 +97,7 @@ export default function ChatDisplay({
   }, [conversation]);
 
   return (
-    <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
+    <Stack className={classes.container} ref={ref} style={customContainerStyles ? customContainerStyles : {}}>
       {conversationList.length > 0 && (
         <ActionIcon variant="default" className={classes.refresh} onClick={startNewChat}>
           <IconRotate2 className="icon icon__small" />
@@ -107,6 +107,7 @@ export default function ChatDisplay({
         className={`${classes.scrollArea} scrollbar`}
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
         ref={scrollableRef}
+        h={height}
       >
         {conversationList}
         <span className={classes.bgText}>Ask advisor</span>

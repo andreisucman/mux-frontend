@@ -45,8 +45,17 @@ export default function Explain(props: Props) {
   const [showWaitComponent, setShowWaitComponent] = useState(false);
 
   const { timeZone } = userDetails || {};
-  const { isRecipe, startsAt, example, proofEnabled, suggestions, completedAt, expiresAt, status } =
-    taskInfo || {};
+  const {
+    isRecipe,
+    startsAt,
+    productTypes,
+    example,
+    proofEnabled,
+    suggestions,
+    completedAt,
+    expiresAt,
+    status,
+  } = taskInfo || {};
 
   const timeExpired = new Date() > new Date(expiresAt || 0);
 
@@ -88,6 +97,14 @@ export default function Explain(props: Props) {
   const name = taskName || recipeName;
   const instruction = taskInstruction || recipeInstruction;
   const description = taskDescription || recipeDescription;
+
+  const productsNeeded = useMemo(
+    () => (productTypes ? productTypes.map((name) => upperFirst(name)).join(", ") : ""),
+    [productTypes]
+  );
+  const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
+  const exampleType = recipe ? "image" : example?.type;
+  const exampleUrl = recipe ? recipe.image : example?.url;
 
   const switchProofUpload = useCallback(
     async (proofEnabled: boolean, taskId?: string | null) => {
@@ -271,10 +288,6 @@ export default function Explain(props: Props) {
     setPageLoaded(true);
   }, []);
 
-  const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
-  const exampleType = recipe ? "image" : example?.type;
-  const exampleUrl = recipe ? recipe.image : example?.url;
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper show={!name || !taskInfo}>
@@ -364,7 +377,10 @@ export default function Explain(props: Props) {
                 title="Description:"
                 text={recipe?.description || description}
               />
-              {isRecipe && (
+              {productsNeeded.length > 0 && (
+                <ExplanationContainer title="Products needed:" text={productsNeeded} />
+              )}
+              {isRecipe && !recipe && (
                 <CreateRecipeBox
                   taskId={taskId}
                   recipe={recipe}
@@ -381,6 +397,7 @@ export default function Explain(props: Props) {
                   customStyles={{ borderRadius: "0 0 1rem 1rem" }}
                 />
               </Stack>
+
               {suggestions && suggestions.length > 0 && (
                 <SuggestionContainer
                   title="Products:"

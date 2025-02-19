@@ -43,6 +43,10 @@
   background-color: alpha(var(--mantine-color-green-6), 0.5);
 
   padding: rem(16) rem(16) 0 rem(16);
-  max-height: clamp(rem(400), 30vh, 40vh);
-  min-height: clamp(rem(400), 30vh, 40vh);
+  min-height: clamp(rem(500), 30vh, 40vh);
+  max-height: clamp(rem(500), 30vh, 40vh);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    max-height: unset;
+  }
 }
