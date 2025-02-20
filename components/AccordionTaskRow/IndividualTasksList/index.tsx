@@ -1,6 +1,5 @@
 import React from "react";
 import { IconCopy } from "@tabler/icons-react";
-import cn from "classnames";
 import { Button, Group, Stack, Text } from "@mantine/core";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import Indicator from "@/components/Indicator";
@@ -35,7 +34,7 @@ export default function RoutineIndividualTasksList({
       {taskIdsObjects.map((idObj) => {
         const date = formatDate({ date: idObj.startsAt });
         return (
-          <Group key={idObj._id} className={classes.row}>
+          <Group key={idObj._id} className={classes.row} onClick={() => redirectToTask(idObj._id)}>
             <Indicator status={idObj.status} />
             <IconWithColor icon={icon} color={color} />
             <Text className={classes.taskDate} mr="auto">

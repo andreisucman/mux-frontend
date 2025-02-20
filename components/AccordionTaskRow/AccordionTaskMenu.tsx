@@ -20,7 +20,7 @@ export default function AccordionTaskMenu({
   return (
     <Menu withArrow classNames={{ itemLabel: classes.menuItemLabel }}>
       <Menu.Target>
-        <ActionIcon variant="default" size="sm">
+        <ActionIcon variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
           <IconDots className="icon icon__small" />
         </ActionIcon>
       </Menu.Target>

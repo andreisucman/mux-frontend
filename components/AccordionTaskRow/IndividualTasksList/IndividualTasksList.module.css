@@ -10,6 +10,10 @@
   background-color: var(--mantine-color-dark-6);
   padding: 0 rem(16);
   border-radius: var(--mantine-radius-lg);
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  }
 }
 
 .date {
