@@ -47,7 +47,7 @@ export default function SliderComparisonCarousel({
 
       <Carousel
         align="center"
-        height="55vh"
+        height="50vh"
         orientation="vertical"
         className={classes.carousel}
         classNames={{

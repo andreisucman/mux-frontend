@@ -175,7 +175,6 @@ export type AllTaskType = {
 export enum RoutineStatusEnum {
   ACTIVE = "active",
   INACTIVE = "inactive",
-  REPLACED = "replaced",
 }
 
 export enum AuthRedirectToEnum {

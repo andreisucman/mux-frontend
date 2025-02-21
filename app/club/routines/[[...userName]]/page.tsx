@@ -3,7 +3,7 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Button, Loader, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Button, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
@@ -46,8 +46,10 @@ export default function ClubRoutines(props: Props) {
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { name, routines: currentUserRoutines } = userDetails || {};
+  const { name, routines: currentUserRoutines, club } = userDetails || {};
+  const { followingUserName } = club || {};
 
   const sort = searchParams.get("sort");
   const isSelf = name === userName;
@@ -71,13 +73,20 @@ export default function ClubRoutines(props: Props) {
             <TaskInfoContainer
               rawTask={task}
               onSubmit={async (total: number, startsAt: Date | null) =>
-                handleStealTask(task.key, routineId, total, startsAt)
+                handleStealTask({
+                  taskKey: task.key,
+                  routineId,
+                  total,
+                  startDate: startsAt,
+                })
               }
               alreadyExists={existsInRoutines}
             />
           ),
         });
-      } catch (err) {}
+      } catch (err) {
+        console.log("Error: ", err);
+      }
     },
     [currentUserRoutines]
   );
@@ -115,6 +124,7 @@ export default function ClubRoutines(props: Props) {
 
   const stealRoutine = useCallback(
     async ({ routineId, startDate }: StealRoutineProps) => {
+      setIsLoading(true);
       try {
         const response = await callTheServer({
           endpoint: "stealRoutine",
@@ -130,13 +140,24 @@ export default function ClubRoutines(props: Props) {
 
           openSuccessModal({ description: "Routine added" });
         }
-      } catch (err) {}
+      } catch (err) {
+        modals.closeAll();
+      } finally {
+        setIsLoading(false);
+      }
     },
-    [userDetails, userName]
+    [userDetails, userName, modals]
   );
 
+  type StealTaskProps = {
+    taskKey: string;
+    routineId: string;
+    total: number;
+    startDate: Date | null;
+  };
+
   const handleStealTask = useCallback(
-    async (taskKey: string, routineId: string, total: number, startDate: Date | null) => {
+    async ({ taskKey, routineId, total, startDate }: StealTaskProps) => {
       if (!taskKey || !routineId || !startDate) return false;
 
       let isSuccess = false;
@@ -176,11 +197,15 @@ export default function ClubRoutines(props: Props) {
       size: "sm",
       innerProps: (
         <SelectDateModalContent
+          buttonText="Steal routine"
           onSubmit={({ startDate }) =>
             askConfirmation({
               title: "Steal routine",
               body: "This will replace your current routine with this one. Continue?",
-              onConfirm: () => stealRoutine({ routineId: routine._id, startDate }),
+              onConfirm: () => {
+                stealRoutine({ routineId: routine._id, startDate });
+                modals.close("general");
+              },
             })
           }
         />
@@ -215,7 +240,7 @@ export default function ClubRoutines(props: Props) {
       sort,
     };
     handleFetchRoutines(payload);
-  }, [sort, userName]);
+  }, [sort, userName, followingUserName]);
 
   const noResults = !routines || routines.length === 0;
 
@@ -236,6 +261,7 @@ export default function ClubRoutines(props: Props) {
       showHeader
     >
       <Stack className={classes.container}>
+        <LoadingOverlay visible={isLoading} itemType="bars" />
         {accordionItems ? (
           <>
             {accordionItems.length > 0 ? (

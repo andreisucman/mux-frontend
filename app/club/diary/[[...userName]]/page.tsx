@@ -1,14 +1,15 @@
 "use client";
 
-import React, { use, useCallback, useEffect, useState } from "react";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Title } from "@mantine/core";
 import DiaryContent from "@/app/diary/DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
+import ChatWithModal from "@/components/ChatWithModal";
+import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
-import ChatWithModal from "../../../../components/ChatWithModal";
 import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 
@@ -26,6 +27,9 @@ export default function DiaryPage(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>(null);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const { userDetails } = useContext(UserContext);
+  const { club } = userDetails || {};
+  const { followingUserName } = club || {};
 
   const sort = searchParams.get("sort") || "-createdAt";
 
@@ -48,13 +52,13 @@ export default function DiaryPage(props: Props) {
     } catch (err) {
       openErrorModal();
     }
-  }, [diaryRecords, sort, hasMore]);
+  }, [diaryRecords, sort, hasMore, userName]);
 
   useEffect(() => {
     if (!userName) return;
 
     handleFetchDiaryRecords();
-  }, [sort, userName]);
+  }, [sort, userName, followingUserName]);
 
   const noResults = !diaryRecords || diaryRecords.length === 0;
 

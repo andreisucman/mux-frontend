@@ -139,8 +139,10 @@ export default function ScanProgress() {
 
   const showCarousel = useMemo(() => {
     const partRequirements = availableRequirements?.filter((r) => parts?.includes(r.part));
-    return partRequirements && partRequirements?.length > 0;
-  }, [requiredProgress, toAnalyze]);
+    const hide =
+      partRequirements && partRequirements?.length === 0 && toAnalyze && toAnalyze?.length === 0;
+    return !hide;
+  }, [requiredProgress, toAnalyze, availableRequirements]);
 
   const nextScanText = useMemo(() => {
     if (!parts) return "";

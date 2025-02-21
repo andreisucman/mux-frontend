@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import {  useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
@@ -29,15 +28,12 @@ export default function TasksList({ customStyles }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [showScanOverlay, setShowScanOverlay] = useState(false);
-  const [scanOverlayButtonText, setScanOverlayButtonText] = useState("");
-  const [scanOverlayMessage, setScanOverlayMessage] = useState("");
 
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "wait" | "empty" | "scanOverlay" | "createTaskOverlay" | "content"
+    "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
 
-  const { nextScan, nextDiaryRecordAfter, tasks, _id: userId, timeZone } = userDetails || {};
+  const { nextDiaryRecordAfter, tasks, _id: userId, timeZone } = userDetails || {};
 
   const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
   const isAnalysisGoing = runningAnalyses?.routine;
@@ -68,33 +64,11 @@ export default function TasksList({ customStyles }: Props) {
   }, [tasks]);
 
   useEffect(() => {
-    if (!nextScan) return;
-
-    const neverScanned = nextScan.every((r) => !r.date);
-    const allPassed = nextScan.every((r) => r.date && new Date() > new Date(r.date || 0));
-
-    if (neverScanned) {
-      setScanOverlayButtonText("Scan");
-      setScanOverlayMessage("Scan yourself to view tasks");
-    }
-
-    if (allPassed) {
-      setScanOverlayButtonText("Scan again");
-      setScanOverlayMessage("It's been one week since your last scan");
-    }
-
-    setShowScanOverlay(neverScanned || allPassed);
-  }, [userDetails]);
-
-  useEffect(() => {
     if (!pageLoaded) return;
     if (!tasks) return;
-    if (showScanOverlay === undefined) return;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (showScanOverlay) {
-      setDisplayComponent("scanOverlay");
     } else if (taskGroups && taskGroups.length === 0) {
       setDisplayComponent("createTaskOverlay");
     } else if (taskGroups && taskGroups.length > 0) {
@@ -102,14 +76,14 @@ export default function TasksList({ customStyles }: Props) {
     } else if (taskGroups === undefined) {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, showScanOverlay, taskGroups, pageLoaded]);
+  }, [isAnalysisGoing, taskGroups, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <TasksButtons
-        disableCreateTask={showScanOverlay || displayComponent === "wait"}
+        disableCreateTask={displayComponent === "wait"}
         handleSaveTask={(props: HandleSaveTaskProps) =>
           saveTaskFromDescription({ ...props, setDisplayComponent })
         }
@@ -117,9 +91,6 @@ export default function TasksList({ customStyles }: Props) {
       {displayComponent !== "loading" && (
         <CreateRoutineProvider>
           <Stack className={`${classes.content} scrollbar`}>
-            {displayComponent === "scanOverlay" && (
-              <UploadOverlay buttonText={scanOverlayButtonText} text={scanOverlayMessage} />
-            )}
             {displayComponent === "createTaskOverlay" && (
               <CreateTaskOverlay
                 timeZone={timeZone}

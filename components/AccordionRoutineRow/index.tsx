@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCalendar, IconHandGrab } from "@tabler/icons-react";
+import { IconCalendar, IconCheckbox, IconHandGrab } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -8,12 +8,13 @@ import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
 import cloneTask from "@/functions/cloneTask";
+import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { AllTaskType, RoutineType } from "@/types/global";
+import { AllTaskType, RoutineStatusEnum, RoutineType } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
@@ -34,11 +35,9 @@ export default function AccordionRoutineRow({
   openTaskDetails,
   handleStealRoutine,
 }: Props) {
-  const { part, startsAt, lastDate } = routine;
+  const { part, startsAt, status: routineStatus, lastDate } = routine;
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const status = searchParams.get("status") || "active"; // segment status of overall page
 
   const rowLabel = useMemo(() => {
     const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
@@ -74,6 +73,8 @@ export default function AccordionRoutineRow({
     () => Math.round((totalCompleted / totalTotal) * 100),
     [totalTotal, totalCompleted]
   );
+
+  const lastDatePassed = useMemo(() => new Date() > new Date(lastDate), [lastDate]);
 
   const redirectToCalendar = useCallback(
     (taskKey?: string) => {
@@ -135,12 +136,35 @@ export default function AccordionRoutineRow({
       size: "sm",
       innerProps: (
         <RecreateDateModalContent
-         onSubmit={async ({ startDate }) => cloneTask({ setRoutines, startDate, taskId })}
+          buttonText="Clone task"
+          onSubmit={async ({ startDate }) => cloneTask({ setRoutines, startDate, taskId })}
         />
       ),
       modal: "general",
       centered: true,
     });
+  }, []);
+
+  const handleActivateRoutine = useCallback(async (routineId: string) => {
+    const response = await callTheServer({
+      endpoint: "activateRoutine",
+      method: "POST",
+      body: { routineId },
+    });
+
+    if (response.status === 200) {
+      if (setRoutines) {
+        setRoutines((prev) => {
+          const newRoutines = prev?.map((r) =>
+            r._id === routineId
+              ? { ...r, status: RoutineStatusEnum.ACTIVE }
+              : { ...r, status: RoutineStatusEnum.INACTIVE }
+          );
+
+          return newRoutines?.sort((a, b) => a.status.localeCompare(b.status));
+        });
+      }
+    }
   }, []);
 
   const showSkeleton = useShowSkeleton();
@@ -154,7 +178,7 @@ export default function AccordionRoutineRow({
   return (
     <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
-        <Accordion.Control>
+        <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>
               <Indicator status={routine.status} />
@@ -195,6 +219,26 @@ export default function AccordionRoutineRow({
             >
               <IconHandGrab className="icon icon__small" />{" "}
               <Text className={classes.buttonText}>Steal this routine</Text>
+            </Button>
+          )}
+          {isSelf && !lastDatePassed && routineStatus !== RoutineStatusEnum.ACTIVE && (
+            <Button
+              variant="default"
+              size="compact-sm"
+              component="div"
+              disabled={!isSelf}
+              className={cn(classes.button, { [classes.disabled]: !isSelf })}
+              onClick={(e) => {
+                e.stopPropagation();
+                askConfirmation({
+                  title: "Confirm action",
+                  body: "This will deactivate your currently active routine. Continue?",
+                  onConfirm: () => handleActivateRoutine(routine._id),
+                });
+              }}
+            >
+              <IconCheckbox className="icon icon__small" />{" "}
+              <Text className={classes.buttonText}>Activate</Text>
             </Button>
           )}
         </Accordion.Control>

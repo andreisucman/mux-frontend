@@ -8,7 +8,6 @@ import OverlayWithText from "@/components/OverlayWithText";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
-import { useRouter } from "@/helpers/custom-router";
 import ClubProfilePreview from "../ClubProfilePreview";
 import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
@@ -26,7 +25,6 @@ type Props = {
 };
 
 export default function ClubModerationLayout({ children, header, pageType, userName }: Props) {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youFollowData, hasNewAboutQuestions, youFollowDataFetched } =

@@ -44,6 +44,9 @@ function EditATaskContent({
   const latestDateOfWeek = daysFrom({ days: 7 });
   const previeTitle = previewIsTasks ? "Tasks preview:" : "Dates preview:";
 
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+
   const previewBody = previewIsTasks ? (
     <Stack className={`${classes.tasksPreviewContainer} scrollbar`}>
       {previewData.map((data, index) => {
@@ -129,7 +132,7 @@ function EditATaskContent({
         <DatePickerInput
           value={date}
           onChange={setDate}
-          excludeDate={(date) => new Date(date) < new Date() || new Date(date) > latestDateOfWeek}
+          excludeDate={(date) => new Date(date) < todayMidnight || new Date(date) > latestDateOfWeek}
           placeholder="Pick date"
           size="sm"
           closeOnChange

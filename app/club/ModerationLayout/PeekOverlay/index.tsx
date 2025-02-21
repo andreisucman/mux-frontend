@@ -94,7 +94,7 @@ export default function PeekOverlay({ description, userName }: Props) {
         innerProps: (
           <JoinClubConfirmation
             handleJoinClub={handleJoinClub}
-            description="To get the Peek license you have to join the Club first. Here's what you need to know."
+            description="To get the Peek license you have to join the Club first."
             type="confirm"
           />
         ),

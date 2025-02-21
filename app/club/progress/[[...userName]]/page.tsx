@@ -34,7 +34,10 @@ export default function ClubProgress(props: Props) {
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
 
-  const isSelf = userName === userDetails?.name;
+  const { name, club } = userDetails || {};
+  const { followingUserName } = club || {};
+
+  const isSelf = userName === name;
 
   const clubResultTitles = useMemo(
     () => [
@@ -43,6 +46,8 @@ export default function ClubProgress(props: Props) {
     ],
     [userName]
   );
+
+  const noResults = !progress || progress.length === 0;
 
   const handleFetchProgress = useCallback(
     async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
@@ -82,9 +87,7 @@ export default function ClubProgress(props: Props) {
     if (status !== "authenticated") return;
 
     handleFetchProgress({ part, sort, userName });
-  }, [status, userName, sort, part]);
-
-  const noResults = !progress || progress.length === 0;
+  }, [status, userName, sort, part, followingUserName]);
 
   return (
     <ClubModerationLayout

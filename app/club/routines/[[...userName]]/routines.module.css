@@ -1,5 +1,6 @@
 .container {
   flex: 1;
+  position: relative;
 }
 
 .wrapper {
@@ -30,11 +31,11 @@
 }
 
 .label {
-  cursor: auto;
   padding: rem(16) 0;
 }
 
 .control {
+  cursor: pointer;
   background: none !important;
 }
 

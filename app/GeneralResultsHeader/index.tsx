@@ -50,7 +50,7 @@ export default function GeneralResultsHeader({ showFilter, showSearch, hidePartD
 
   const additionalFiltersActive = useMemo(() => {
     const { type, part, ...otherFilters } = filters || {};
-    return Object.values(otherFilters || {}).some((value: any) => value.length > 0);
+    return Object.values(otherFilters || {}).some((value: any) => value && value.length > 0);
   }, [filters]);
 
   const getExistingFilters = useCallback(async (pathname: string) => {

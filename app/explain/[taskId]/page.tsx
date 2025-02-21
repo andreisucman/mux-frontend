@@ -208,7 +208,8 @@ export default function Explain(props: Props) {
       size: "sm",
       innerProps: (
         <SelectDateModalContent
-         onSubmit={async ({ startDate }) =>
+          buttonText="Clone task"
+          onSubmit={async ({ startDate }) =>
             cloneTask({ setTaskInfo, startDate, taskId, resetNewTask: true, returnTask: true })
           }
         />
@@ -384,6 +385,7 @@ export default function Explain(props: Props) {
                 <CreateRecipeBox
                   taskId={taskId}
                   recipe={recipe}
+                  isDisabled={status !== TaskStatusEnum.ACTIVE || timeExpired}
                   setShowWaitComponent={setShowWaitComponent}
                 />
               )}

@@ -35,7 +35,8 @@ export default function ClubProof(props: Props) {
   const sort = searchParams.get("sort");
   const concern = searchParams.get("concern");
 
-  const { name } = userDetails || {};
+  const { name, club } = userDetails || {};
+  const { followingUserName } = club || {};
   const isSelf = name === userName;
 
   const clubResultTitles = useMemo(
@@ -72,7 +73,7 @@ export default function ClubProof(props: Props) {
     if (status !== "authenticated") return;
 
     handleFetchProof({ userName, sort, part, concern, query });
-  }, [status, userName, part, sort, concern, query]);
+  }, [status, userName, part, sort, concern, query, followingUserName]);
 
   const noResults = !proof || proof.length === 0;
 

@@ -10,7 +10,7 @@
 }
 
 .description {
-  padding: rem(8) rem(16);
+  padding: rem(16);
   border-radius: var(--mantine-radius-lg);
   font-size: var(--mantine-font-size-sm);
   background-color: var(--mantine-color-dark-6);

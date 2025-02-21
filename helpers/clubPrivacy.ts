@@ -9,6 +9,7 @@ type UpdateClubPrivacyProps = {
 
 export function updateClubPrivacy({ club, part, category, value }: UpdateClubPrivacyProps) {
   try {
+    console.log("updateClubPrivayc inputs", { club, part, category, value });
     const { privacy } = club || {};
 
     if (!privacy) return;
@@ -16,26 +17,31 @@ export function updateClubPrivacy({ club, part, category, value }: UpdateClubPri
     const relevantCategoryPrivacyIndex = privacy.findIndex((rec) => rec.name === category);
 
     if (relevantCategoryPrivacyIndex === -1) return club;
+    console.log("relevantCategoryPrivacyIndex", relevantCategoryPrivacyIndex);
 
     let relevantCategoryPrivacy = privacy[relevantCategoryPrivacyIndex];
     let updatedParts;
 
+    console.log("relevantCategoryPrivacy", relevantCategoryPrivacy);
+
     if (part) {
-      const relevantTypePrivacyIndex = relevantCategoryPrivacy.parts.findIndex(
+      const relevantPartPrivacyIndex = relevantCategoryPrivacy.parts.findIndex(
         (rec) => rec.name === part
       );
 
-      if (relevantTypePrivacyIndex === -1) return club;
+      if (relevantPartPrivacyIndex === -1) return club;
 
       const updatedPartPrivacy = {
-        ...relevantCategoryPrivacy.parts[relevantTypePrivacyIndex],
+        ...relevantCategoryPrivacy.parts[relevantPartPrivacyIndex],
         value,
       };
 
+      console.log("updatedPartPrivacy", updatedPartPrivacy);
+
       updatedParts = [
-        ...relevantCategoryPrivacy.parts.slice(0, relevantTypePrivacyIndex),
+        ...relevantCategoryPrivacy.parts.slice(0, relevantPartPrivacyIndex),
         updatedPartPrivacy,
-        ...relevantCategoryPrivacy.parts.slice(relevantTypePrivacyIndex + 1),
+        ...relevantCategoryPrivacy.parts.slice(relevantPartPrivacyIndex + 1),
       ];
 
       relevantCategoryPrivacy = {
@@ -47,20 +53,25 @@ export function updateClubPrivacy({ club, part, category, value }: UpdateClubPri
         ...obj,
         value,
       }));
+
+      console.log("updatedParts", updatedParts);
+
       relevantCategoryPrivacy = {
         ...relevantCategoryPrivacy,
         value: updatedParts.every((part) => Boolean(part.value)),
       };
+
+      console.log("relevantCategoryPrivacy", relevantCategoryPrivacy);
     }
 
-    const updatedTypePrivacy = {
+    const updatedCategoryPrivacy = {
       ...relevantCategoryPrivacy,
-      types: updatedParts,
+      parts: updatedParts,
     };
 
     const newPrivacy = [
       ...privacy.slice(0, relevantCategoryPrivacyIndex),
-      updatedTypePrivacy,
+      updatedCategoryPrivacy,
       ...privacy.slice(relevantCategoryPrivacyIndex + 1),
     ];
 

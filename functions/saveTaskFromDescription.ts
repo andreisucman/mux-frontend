@@ -14,9 +14,7 @@ export type HandleSaveTaskProps = {
   setError: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayComponent: React.Dispatch<
-    React.SetStateAction<
-      "loading" | "empty" | "wait" | "scanOverlay" | "createTaskOverlay" | "content"
-    >
+    React.SetStateAction<"loading" | "empty" | "wait" | "createTaskOverlay" | "content">
   >;
 };
 

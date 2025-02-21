@@ -71,7 +71,7 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
         </Button>
         {disableAdd && !isEdit && (
           <Text c="green.7" className={classes.text}>
-            Added to your routine
+            Task added to your routine
           </Text>
         )}
       </Stack>

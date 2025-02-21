@@ -24,7 +24,7 @@ export default function AccordionTaskMenu({
           <IconDots className="icon icon__small" />
         </ActionIcon>
       </Menu.Target>
-      <Menu.Dropdown>
+      <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
         <Menu.Item onClick={() => redirectToTask(taskId)}>
           <IconInfoCircle className={`icon icon__small`} style={{ marginRight: rem(6) }} />
           See task

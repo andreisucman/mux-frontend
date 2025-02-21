@@ -19,11 +19,11 @@ const confirmData = {
   body: [
     [
       <IconEye className="icon icon__title" />,
-      "Joining the Club lets you see the public data of other Club members (if you have the Peek license).",
+      "Joining the Club lets you buy the Peek license to see the public data of other Club members.",
     ],
     [
       <IconLock className="icon icon__title" />,
-      "Nobody can see your data when you join the Club. But you can enable data sharing in the settings.",
+      "Your data is private when you join the Club. You can turn on data sharing in the settings.",
     ],
   ],
 };

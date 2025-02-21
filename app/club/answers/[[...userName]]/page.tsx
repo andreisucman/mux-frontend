@@ -24,12 +24,12 @@ import fetchQuestions from "@/functions/fetchQuestions";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import ChatWithModal from "../../../../components/ChatWithModal";
+import ChatWithModal from "@/components/ChatWithModal";
+import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
 import classes from "./answers.module.css";
-import ClubHeader from "../../ClubHeader";
 
 export const runtime = "edge";
 
@@ -57,7 +57,8 @@ export default function AnswersPage(props: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [hasMore, setHasMore] = useState(false);
 
-  const { name } = userDetails || {};
+  const { name, club } = userDetails || {};
+  const { followingUserName } = club || {};
 
   const isSelf = name === userName;
   const showType = searchParams.get("showType") || (isSelf ? "new" : "answered");
@@ -177,7 +178,7 @@ export default function AnswersPage(props: Props) {
     if (status !== AuthStateEnum.AUTHENTICATED) return;
 
     handleFetchQuestions();
-  }, [status, showType, userName]);
+  }, [status, showType, userName, followingUserName]);
 
   const overlayText = isSelf
     ? showType === "new"

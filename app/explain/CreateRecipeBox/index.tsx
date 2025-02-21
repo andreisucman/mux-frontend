@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconBolt } from "@tabler/icons-react";
-import { Button, Group, Text, Title } from "@mantine/core";
+import { Button, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -18,11 +17,17 @@ import classes from "./CreateRecipeBox.module.css";
 type Props = {
   taskId: string | null;
   recipe?: RecipeType;
+  isDisabled?: boolean;
   userDetails?: UserDataType;
   setShowWaitComponent: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }: Props) {
+export default function CreateRecipeBox({
+  taskId,
+  recipe,
+  isDisabled,
+  setShowWaitComponent,
+}: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -112,7 +117,7 @@ export default function CreateRecipeBox({ taskId, recipe, setShowWaitComponent }
     <Group className={classes.container}>
       <Button
         className={classes.button}
-        disabled={!canCreateRecipe || !!recipe}
+        disabled={!canCreateRecipe || !!recipe || isDisabled}
         onClick={openEditTaskModal}
       >
         Create a recipe

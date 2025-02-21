@@ -10,7 +10,7 @@ export default function Indicator({ status }: Props) {
   return (
     <div
       className={cn(classes.container, {
-        [classes.active]: ["active", "replaced"].includes(status),
+        [classes.active]: status === "active",
         [classes.completed]: status === "completed",
         [classes.inactive]: status === "inactive",
       })}

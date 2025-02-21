@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
-import UploadOverlay from "@/components/AnalysisCarousel/UploadOverlay";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
@@ -40,15 +39,12 @@ export default function ClubRoutines() {
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "wait" | "empty" | "scanOverlay" | "createTaskOverlay" | "content"
+    "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
-  const [showScanOverlay, setShowScanOverlay] = useState<boolean>();
-  const [scanOverlayButtonText, setScanOverlayButtonText] = useState("");
-  const [scanOverlayMessage, setScanOverlayMessage] = useState("");
   const [pageLoaded, setPageLoaded] = useState(false);
 
   const { userDetails } = useContext(UserContext);
-  const { nextScan, timeZone, specialConsiderations } = userDetails || {};
+  const { timeZone, specialConsiderations } = userDetails || {};
 
   const sort = searchParams.get("sort");
 
@@ -108,33 +104,11 @@ export default function ClubRoutines() {
   }, [sort]);
 
   useEffect(() => {
-    if (!nextScan) return;
-
-    const neverScanned = nextScan.every((r) => !r.date);
-    const allPassed = nextScan.every((r) => r.date && new Date() > new Date(r.date || 0));
-
-    if (neverScanned) {
-      setScanOverlayButtonText("Scan");
-      setScanOverlayMessage("Scan yourself to view routines");
-    }
-
-    if (allPassed) {
-      setScanOverlayButtonText("Scan again");
-      setScanOverlayMessage("It's been one week since your last scan");
-    }
-
-    setShowScanOverlay(neverScanned || allPassed);
-  }, [userDetails]);
-
-  useEffect(() => {
     if (!routines || !pageLoaded) return;
-    if (showScanOverlay === undefined) return;
     const routinesExist = routines && routines.length > 0;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (showScanOverlay) {
-      setDisplayComponent("scanOverlay");
     } else if (!routinesExist) {
       setDisplayComponent("createTaskOverlay");
     } else if (routinesExist) {
@@ -142,7 +116,7 @@ export default function ClubRoutines() {
     } else if (routines === undefined) {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, showScanOverlay, routines, pageLoaded]);
+  }, [isAnalysisGoing, routines, pageLoaded]);
 
   useEffect(() => {
     getFromIndexedDb("openRoutinesRow").then((part) => {
@@ -154,19 +128,25 @@ export default function ClubRoutines() {
 
   const noResults = !routines || routines.length === 0;
 
-  console.log("routiens",routines)
+  console.log("routiens", routines);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn title="My routines" sortItems={routineSortItems} isDisabled={noResults} showReturn nowrap />
+        <PageHeaderWithReturn
+          title="My routines"
+          sortItems={routineSortItems}
+          isDisabled={noResults}
+          showReturn
+          nowrap
+        />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}
           maxLength={300}
         />
         <TasksButtons
-          disableCreateTask={showScanOverlay || displayComponent === "wait"}
+          disableCreateTask={displayComponent === "wait"}
           handleSaveTask={(props: HandleSaveTaskProps) =>
             saveTaskFromDescription({ ...props, setDisplayComponent })
           }
@@ -203,9 +183,6 @@ export default function ClubRoutines() {
               </ActionIcon>
             )}
           </Stack>
-        )}
-        {displayComponent === "scanOverlay" && (
-          <UploadOverlay buttonText={scanOverlayButtonText} text={scanOverlayMessage} />
         )}
         {displayComponent === "empty" && <OverlayWithText text="Nothing found" />}
         {displayComponent === "createTaskOverlay" && (
