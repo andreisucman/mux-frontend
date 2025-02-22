@@ -50,13 +50,13 @@ export default function ClubAbout(props: Props) {
         const response = await callTheServer({
           endpoint: "updateUserData",
           method: "POST",
-          body: { about },
+          body: { bio: { about } },
         });
 
         if (response.status === 200) {
           setYouData((prev: { [key: string]: any }) => ({
             ...prev,
-            about,
+            bio: { ...prev.bio, about },
           }));
         }
       } catch (err) {
@@ -89,7 +89,7 @@ export default function ClubAbout(props: Props) {
     }
 
     setAbout(about);
-  }, [isSelf, typeof youData, typeof youFollowData]);
+  }, [isSelf, youData, youFollowData]);
 
   useEffect(() => {
     if (hasNewAboutQuestions === undefined) return;

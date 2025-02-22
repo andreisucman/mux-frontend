@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useShallowEffect } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import fetchQuestions from "@/functions/fetchQuestions";
@@ -28,6 +28,7 @@ type Props = {
 };
 
 export default function ClubDataContextProvider({ children }: Props) {
+  const pathname = usePathname();
   const params = useParams();
   const userName = Array.isArray(params?.userName) ? params.userName?.[0] : params.userName;
 
@@ -38,8 +39,10 @@ export default function ClubDataContextProvider({ children }: Props) {
   const [hasNewAboutQuestions, setHasNewAboutQuestions] = useState();
   const [hasAboutAnswers, setHasAboutAnswers] = useState();
 
-  const { club, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
+  const { club, name, latestScores, latestScoresDifference, _id: userId } = userDetails || {};
   const { followingUserName } = club || {};
+
+  const onAboutPage = pathname === `/club/${name}`;
 
   const fetchYouFollow = useCallback(async (userName?: string) => {
     try {
@@ -92,7 +95,7 @@ export default function ClubDataContextProvider({ children }: Props) {
       setHasAboutAnswers(hasAnswers);
       setHasNewAboutQuestions(hasNewQuestions);
     });
-  }, [userName, club, status]);
+  }, [userName, club, onAboutPage, status]);
 
   return (
     <ClubContext.Provider

@@ -64,7 +64,7 @@ export default function EditClubAbout({
           setYouData((prev: ClubUserType) => {
             return {
               ...prev,
-              nextRegenerateBio,
+              bio: { ...prev.bio, nextRegenerateBio },
             };
           });
         }
