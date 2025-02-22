@@ -1,11 +1,9 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
-import { IconChevronDown, IconChevronUp, IconSettings, IconTrendingUp } from "@tabler/icons-react";
-import cn from "classnames";
-import { ActionIcon, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
+import { Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import { useRouter } from "@/helpers/custom-router";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
@@ -16,7 +14,6 @@ type Props = {
   type: "you" | "member";
   isMini?: boolean;
   data?: ClubUserType | null;
-  hasNewAboutQuestions?: boolean;
   showButtons?: boolean;
   showCollapseKey: string;
   customStyles?: { [key: string]: any };
@@ -28,7 +25,6 @@ function ClubProfilePreview({
   isMini,
   showCollapseKey,
   showButtons,
-  hasNewAboutQuestions,
   customStyles,
 }: Props) {
   const router = useRouter();
@@ -46,10 +42,10 @@ function ClubProfilePreview({
     router.push(url);
   }, [name]);
 
-  const redirectToTrackingAbout = useCallback(() => {
+  const redirectToRoutines = useCallback(() => {
     if (!data) return;
 
-    router.push(`/club/${name}`);
+    router.push(`/club/routines/${name}`);
   }, [name]);
 
   const handleToggleCollapse = () => {
@@ -116,10 +112,8 @@ function ClubProfilePreview({
       </Group>
       {showButtons && (
         <MenuButtons
-          type={type}
-          hasQuestions={!!hasNewAboutQuestions}
           redirectToProgress={redirectToProgress}
-          redirectToTrackingAbout={redirectToTrackingAbout}
+          redirectToRoutines={redirectToRoutines}
         />
       )}
     </Stack>

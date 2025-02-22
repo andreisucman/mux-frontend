@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconUserOff } from "@tabler/icons-react";
 import { Skeleton, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -27,8 +27,7 @@ type Props = {
 export default function ClubModerationLayout({ children, header, pageType, userName }: Props) {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
-  const { youData, youFollowData, hasNewAboutQuestions, youFollowDataFetched } =
-    useContext(ClubContext);
+  const { youData, youFollowData, youFollowDataFetched } = useContext(ClubContext);
   const [showComponent, setShowComponent] = useState("loading");
 
   const code = searchParams.get("code");
@@ -90,7 +89,6 @@ export default function ClubModerationLayout({ children, header, pageType, userN
             <ClubProfilePreview
               type={isSelf ? "you" : "member"}
               data={isSelf ? youData : youFollowData}
-              hasNewAboutQuestions={hasNewAboutQuestions}
               showCollapseKey={showCollapseKey || ""}
               customStyles={{ flex: 0 }}
             />

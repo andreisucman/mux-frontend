@@ -5,25 +5,15 @@ import { Button, Group } from "@mantine/core";
 import classes from "./MenuButtons.module.css";
 
 type Props = {
-  type: "you" | "member";
-  hasQuestions: boolean;
   isVertical?: boolean;
   redirectToProgress: () => void;
-  redirectToTrackingAbout: () => void;
+  redirectToRoutines: () => void;
 };
 
-function MenuButtons({
-  type,
-  hasQuestions,
-  isVertical = false,
-  redirectToProgress,
-  redirectToTrackingAbout,
-}: Props) {
+function MenuButtons({ isVertical = false, redirectToProgress, redirectToRoutines }: Props) {
   const pathname = usePathname();
-  const isAbout = pathname.startsWith("/club/about");
+  const isAbout = pathname.startsWith("/club/routines");
   const isProgress = pathname.startsWith("/club/progress");
-
-  const showQuestions = type === "you" && hasQuestions && !isAbout;
 
   return (
     <Group className={cn(classes.container, { [classes.vertical]: isVertical })}>
@@ -36,12 +26,12 @@ function MenuButtons({
         Progress
       </Button>
       <Button
-        variant={showQuestions ? "filled" : "default"}
+        variant={"default"}
         size="compact-sm"
         className={cn(classes.button, { [classes.selected]: isAbout })}
-        onClick={redirectToTrackingAbout}
+        onClick={redirectToRoutines}
       >
-        About
+        Routines
       </Button>
     </Group>
   );

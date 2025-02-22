@@ -15,13 +15,9 @@ export type HeadValuePartsBoolean = {
 
 type ClubBioType = {
   intro: string;
-  philosophy: string;
-  tips: string;
+  about: string;
   socials: { value: string; label: string }[];
-  nextRegenerateBio: {
-    philosophy: string | null;
-    tips: string | null;
-  };
+  nextRegenerateBio: string | null;
 };
 
 export type ClubDataType = {

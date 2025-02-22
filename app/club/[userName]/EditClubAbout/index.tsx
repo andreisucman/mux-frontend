@@ -1,30 +1,23 @@
 import React, { useCallback, useState } from "react";
-import { Button, Group, SegmentedControl, Stack, Tooltip } from "@mantine/core";
+import { Button, Group, Stack, Tooltip } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
 import openErrorModal from "@/helpers/openErrorModal";
 import { ClubUserType } from "@/types/global";
-import { aboutSegments } from "../data";
 import classes from "./EditClubAbout.module.css";
-
-type BioDataType = {
-  philosophy: string;
-  tips: string;
-};
 
 type Props = {
   hasAboutAnswers?: boolean;
   hasNewAboutQuestions?: boolean;
   youData: ClubUserType | null;
-  bioData: BioDataType;
+  about: string;
   isSelf: boolean;
   updateClubBio: (
-    dirtyParts: string[],
-    bioData: BioDataType,
+    about: string,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => Promise<void>;
-  setBioData: React.Dispatch<React.SetStateAction<BioDataType>>;
+  setAbout: React.Dispatch<React.SetStateAction<string>>;
   setYouData: React.Dispatch<React.SetStateAction<ClubUserType>>;
 };
 
@@ -32,61 +25,46 @@ export default function EditClubAbout({
   hasAboutAnswers,
   hasNewAboutQuestions,
   youData,
-  bioData,
+  about,
   isSelf,
   updateClubBio,
-  setBioData,
+  setAbout,
   setYouData,
 }: Props) {
-  const [showSegment, setShowSegment] = useState("philosophy");
   const [isLoading, setIsLoading] = useState(false);
 
-  const dirtyParts = Object.keys(bioData)
-    .map((key) =>
-      bioData[key as keyof BioDataType] === (youData?.bio as { [key: string]: any })?.[key]
-        ? null
-        : key
-    )
-    .filter(Boolean);
-
   const { bio } = youData || {};
-  const { nextRegenerateBio } = bio || {};
+  const { about: existingAbout, nextRegenerateBio } = bio || {};
 
-  const nextDate = nextRegenerateBio && nextRegenerateBio[showSegment as "philosophy"];
-  const canRegenerate = !nextDate || new Date(nextDate) <= new Date();
+  const isDirty = existingAbout !== about;
+
+  const canRegenerate = !nextRegenerateBio || new Date(nextRegenerateBio) <= new Date();
 
   const tooltipLabel = !hasAboutAnswers
     ? "Answer questions first"
     : canRegenerate
       ? ""
-      : `Next after ${new Date(nextDate).toDateString()}.`;
+      : `Next after ${new Date(nextRegenerateBio).toDateString()}.`;
 
   const generateBioFromQuestions = useCallback(
-    async (segment: string, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    async (setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
       try {
         setIsLoading(true);
 
         const response = await callTheServer({
           endpoint: "generateBioFromQuestions",
           method: "POST",
-          body: { segment },
         });
 
         if (response.status === 200) {
           const { content, nextRegenerateBio } = response.message;
 
-          setBioData((prev: any) => ({
-            ...(prev || {}),
-            [showSegment]: content,
-          }));
+          setAbout(content);
 
           setYouData((prev: ClubUserType) => {
             return {
               ...prev,
-              bio: {
-                ...prev.bio,
-                nextRegenerateBio: { ...prev.bio.nextRegenerateBio, ...nextRegenerateBio },
-              },
+              nextRegenerateBio,
             };
           });
         }
@@ -95,40 +73,31 @@ export default function EditClubAbout({
         setIsLoading(false);
       }
     },
-    [bioData, youData, showSegment]
+    [youData]
   );
 
-  const handleGenerateBioFromQuestions = useCallback(
-    (segment: string) => {
-      if (isLoading) return;
+  const handleGenerateBioFromQuestions = useCallback(() => {
+    if (isLoading) return;
 
-      if (canRegenerate) {
-        askConfirmation({
-          title: "Please confirm",
-          body: "You can do it once a week only. Continue?",
-          onConfirm: () => generateBioFromQuestions(segment, setIsLoading),
-        });
-      } else {
-        openErrorModal({
-          description: `You can regenerate ${segment} after ${new Date(nextDate).toDateString()}`,
-        });
-      }
-    },
-    [youData, nextDate, isLoading, canRegenerate]
-  );
+    if (canRegenerate) {
+      askConfirmation({
+        title: "Please confirm",
+        body: "You can do it once a week only. Continue?",
+        onConfirm: () => generateBioFromQuestions(setIsLoading),
+      });
+    } else {
+      openErrorModal({
+        description: `You can regenerate your bio after ${new Date(nextRegenerateBio).toDateString()}`,
+      });
+    }
+  }, [youData, nextRegenerateBio, isLoading, canRegenerate]);
 
   return (
     <Stack className={classes.wrapper}>
-      <SegmentedControl data={aboutSegments} value={showSegment} onChange={setShowSegment} />
       <TextareaComponent
-        text={bioData[showSegment as keyof BioDataType]}
-        setText={(text) =>
-          setBioData((prev: any) => ({
-            ...(prev || {}),
-            [showSegment]: text,
-          }))
-        }
-        placeholder={`Your ${showSegment}`}
+        text={about}
+        setText={setAbout}
+        placeholder={"About you"}
         readOnly={!isSelf}
         isLoading={isLoading}
         isUnbounded
@@ -141,7 +110,7 @@ export default function EditClubAbout({
               <Button
                 className={classes.generateButton}
                 disabled={!hasAboutAnswers || !canRegenerate || isLoading}
-                onClick={() => handleGenerateBioFromQuestions(showSegment)}
+                onClick={() => handleGenerateBioFromQuestions()}
               >
                 Generate from answers
               </Button>
@@ -150,8 +119,8 @@ export default function EditClubAbout({
 
           <Button
             className={classes.saveButton}
-            onClick={() => updateClubBio(dirtyParts as string[], bioData, setIsLoading)}
-            disabled={dirtyParts.length === 0 || !isSelf || isLoading}
+            onClick={() => updateClubBio(about, setIsLoading)}
+            disabled={!isDirty || !isSelf || isLoading}
           >
             Save
           </Button>

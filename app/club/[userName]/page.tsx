@@ -1,7 +1,6 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
-import { PAGE_TYPES } from "next/dist/lib/page-types";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
@@ -17,11 +16,6 @@ import classes from "./about.module.css";
 
 export const runtime = "edge";
 
-type BioDataType = {
-  philosophy: string;
-  tips: string;
-};
-
 type Props = {
   params: Promise<{ userName: string }>;
 };
@@ -34,15 +28,11 @@ export default function ClubAbout(props: Props) {
   const { userDetails } = useContext(UserContext);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [showQuestions, setShowQuestions] = useState(true);
+  const [about, setAbout] = useState<string>("");
 
   const { name } = userDetails || {};
 
   const isSelf = name === userName;
-
-  const [bioData, setBioData] = useState<BioDataType>({
-    philosophy: "",
-    tips: "",
-  });
 
   const chevron = showQuestions ? (
     <IconChevronUp className="icon" />
@@ -50,34 +40,23 @@ export default function ClubAbout(props: Props) {
     <IconChevronDown className="icon" />
   );
 
-  const questionsTitle = showQuestions ? "Create bio questions:" : "Show create bio questions";
+  const questionsTitle = showQuestions ? "Create about questions:" : "Show create about questions";
 
   const updateClubBio = useCallback(
-    async (
-      dirtyParts: string[],
-      bioData: BioDataType,
-      setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-    ) => {
+    async (about: string, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
       try {
         setIsLoading(true);
-        const updatedBio = dirtyParts.reduce(
-          (a, c) => {
-            if (c) a[c as string] = bioData[c as keyof BioDataType];
-            return a;
-          },
-          {} as { [key: string]: string }
-        );
 
         const response = await callTheServer({
           endpoint: "updateUserData",
           method: "POST",
-          body: { bio: updatedBio },
+          body: { about },
         });
 
         if (response.status === 200) {
           setYouData((prev: { [key: string]: any }) => ({
             ...prev,
-            bio: { ...prev.bio, ...updatedBio },
+            about,
           }));
         }
       } catch (err) {
@@ -98,18 +77,18 @@ export default function ClubAbout(props: Props) {
   useEffect(() => {
     if (!youData && !youFollowData) return;
 
-    let bio: { [key: string]: any } = {};
+    const { bio: yourBio } = youData || {};
+    const { bio: youFollowBio } = youFollowData || {};
+
+    let about = "";
 
     if (isSelf) {
-      bio = youData?.bio || {};
+      about = yourBio?.about || "";
     } else {
-      bio = youFollowData?.bio || {};
+      about = youFollowBio?.about || "";
     }
 
-    setBioData({
-      philosophy: bio?.philosophy || "",
-      tips: bio?.tips || "",
-    });
+    setAbout(about);
   }, [isSelf, typeof youData, typeof youFollowData]);
 
   useEffect(() => {
@@ -149,10 +128,9 @@ export default function ClubAbout(props: Props) {
                 </Text>
                 {chevron}
               </Group>
-
               <Collapse in={showQuestions}>
                 <Group className={classes.buttonWrapper}>
-                  <Text size="sm">Answer questions to create your bio</Text>
+                  <Text size="sm">Answer questions to create your about</Text>
                   <Button
                     c="white"
                     variant={hasNewAboutQuestions ? "filled" : "default"}
@@ -165,18 +143,18 @@ export default function ClubAbout(props: Props) {
               </Collapse>
             </Stack>
             <EditClubAbout
-              bioData={bioData}
+              about={about}
               isSelf={isSelf}
               youData={youData}
               hasAboutAnswers={hasAboutAnswers}
               hasNewAboutQuestions={hasNewAboutQuestions}
-              setBioData={setBioData}
+              setAbout={setAbout}
               updateClubBio={updateClubBio}
               setYouData={setYouData}
             />
           </>
         ) : (
-          <DisplayClubAbout bioData={bioData} />
+          <DisplayClubAbout about={about} />
         )}
       </Skeleton>
     </ClubModerationLayout>

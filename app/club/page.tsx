@@ -15,32 +15,24 @@ export const runtime = "edge";
 
 export default function Club() {
   const { userDetails } = useContext(UserContext);
-  const { youFollowData, hasNewAboutQuestions, youData, youFollowDataFetched } =
-    useContext(ClubContext);
+  const { youFollowData, youData, youFollowDataFetched } = useContext(ClubContext);
 
   const { club, name } = userDetails || {};
   const { followingUserName, totalFollowers } = club || {};
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper show={!youFollowDataFetched || hasNewAboutQuestions === undefined}>
+      <SkeletonWrapper show={!youFollowDataFetched}>
         <ClubProfileHeader />
         <Group className={classes.top}>
           {name && (
-            <ClubProfilePreview
-              data={youData}
-              type="you"
-              showCollapseKey={name}
-              hasNewAboutQuestions={hasNewAboutQuestions}
-              showButtons
-            />
+            <ClubProfilePreview data={youData} type="you" showCollapseKey={name} showButtons />
           )}
           {followingUserName && (
             <ClubProfilePreview
               data={youFollowData}
               type="member"
               showCollapseKey={followingUserName}
-              hasNewAboutQuestions={hasNewAboutQuestions}
               showButtons
             />
           )}
