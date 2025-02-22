@@ -3,15 +3,18 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Stack, Title } from "@mantine/core";
+import { Group, Loader, rem, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
+import { UserDataType } from "@/types/global";
 import { ReferrerEnum } from "../auth/AuthForm/types";
 import RewardCard from "./RewardCard";
 import { RewardCardType } from "./types";
@@ -26,7 +29,8 @@ export type ClaimRewardProps = {
 };
 
 export default function Rewards() {
-  const { status, userDetails } = useContext(UserContext);
+  const router = useRouter();
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [rewards, setRewards] = useState<RewardCardType[]>();
   const [hasMore, setHasMore] = useState(false);
 
@@ -94,10 +98,37 @@ export default function Rewards() {
             });
             return;
           }
-          setRewards(response.message);
+
+          const { rewards, rewardValue } = response.message;
+
+          setRewards(rewards);
           openSuccessModal({
-            description: `The reward has been added to your Club balance.`,
+            description: (
+              <Group gap={8}>
+                Reward added to your Club balance.
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    router.push("/club");
+                    modals.closeAll();
+                  }}
+                >
+                  Click to see.
+                </span>
+              </Group>
+            ),
           });
+
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            club: {
+              ...prev.club,
+              payouts: {
+                ...prev?.club?.payouts,
+                balance: prev?.club?.payouts?.balance + rewardValue,
+              },
+            },
+          }));
         }
       } catch (err) {
       } finally {

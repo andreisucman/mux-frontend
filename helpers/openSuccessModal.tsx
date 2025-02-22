@@ -1,9 +1,10 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import React from "react";
 
 type Props = {
   title?: string;
-  description?: string;
+  description?: string | React.ReactNode;
   onClose?: () => void;
 };
 

@@ -13,9 +13,7 @@ export default function ScoreCell({ icon, score, customStyles }: Props) {
   return (
     <Group className={classes.cell} style={customStyles ? customStyles : {}}>
       <IconTrendingUp className="icon" />
-      <Text className={classes.text}>
-        {icon} {score}
-      </Text>
+      <Text className={classes.text}>{score}</Text>
     </Group>
   );
 }

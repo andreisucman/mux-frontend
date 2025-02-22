@@ -27,3 +27,14 @@
 .stack {
   gap: rem(12);
 }
+
+.alertIcon {
+  margin-right: rem(8);
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin-top: rem(2);
+    margin-bottom: unset;
+  }
+}

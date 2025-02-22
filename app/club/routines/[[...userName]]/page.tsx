@@ -3,7 +3,16 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Button, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
+import {
+  Accordion,
+  ActionIcon,
+  Button,
+  Loader,
+  LoadingOverlay,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
@@ -125,24 +134,35 @@ export default function ClubRoutines(props: Props) {
   const stealRoutine = useCallback(
     async ({ routineId, startDate }: StealRoutineProps) => {
       setIsLoading(true);
-      try {
-        const response = await callTheServer({
-          endpoint: "stealRoutine",
-          method: "POST",
-          body: { routineId, userName, startDate },
-        });
 
-        if (response.status === 200) {
-          if (response.error) {
-            openErrorModal({ description: response.error });
-            return;
-          }
+      const response = await callTheServer({
+        endpoint: "stealRoutine",
+        method: "POST",
+        body: { routineId, userName, startDate },
+      });
 
-          openSuccessModal({ description: "Routine added" });
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          setIsLoading(false);
+          return;
         }
-      } catch (err) {
-        modals.closeAll();
-      } finally {
+
+        openSuccessModal({
+          description: (
+            <Text>
+              Routine added.{" "}
+              <span
+                onClick={() => {
+                  router.push("/routines");
+                  modals.closeAll();
+                }}
+              >
+                Click to view.
+              </span>
+            </Text>
+          ),
+        });
         setIsLoading(false);
       }
     },
@@ -187,33 +207,39 @@ export default function ClubRoutines(props: Props) {
     [userDetails]
   );
 
-  const handleStealRoutine = useCallback((routine: RoutineType) => {
-    modals.openContextModal({
-      title: (
-        <Title order={5} component={"p"}>
-          Choose start date
-        </Title>
-      ),
-      size: "sm",
-      innerProps: (
-        <SelectDateModalContent
-          buttonText="Steal routine"
-          onSubmit={({ startDate }) =>
-            askConfirmation({
-              title: "Steal routine",
-              body: "This will replace your current routine with this one. Continue?",
-              onConfirm: () => {
-                stealRoutine({ routineId: routine._id, startDate });
-                modals.close("general");
-              },
-            })
-          }
-        />
-      ),
-      modal: "general",
-      centered: true,
-    });
-  }, []);
+  const handleStealRoutine = useCallback(
+    (routine: RoutineType) => {
+      const handleSubmit =
+        currentUserRoutines && currentUserRoutines.length > 0
+          ? ({ startDate }: { startDate: Date | null }) =>
+              askConfirmation({
+                title: "Steal routine",
+                body: "This will replace your current routine. Continue?",
+                onConfirm: () => {
+                  modals.closeAll();
+
+                  stealRoutine({ routineId: routine._id, startDate });
+                },
+              })
+          : ({ startDate }: { startDate: Date | null }) => {
+              modals.closeAll();
+              stealRoutine({ routineId: routine._id, startDate });
+            };
+
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose start date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: <SelectDateModalContent buttonText="Steal routine" onSubmit={handleSubmit} />,
+        modal: "general",
+        centered: true,
+      });
+    },
+    [currentUserRoutines, modals]
+  );
 
   const accordionItems = useMemo(
     () =>
@@ -260,8 +286,12 @@ export default function ClubRoutines(props: Props) {
       showChat
       showHeader
     >
+      <LoadingOverlay
+        visible={isLoading}
+        style={{ position: "fixed", inset: 0, borderRadius: "1rem" }}
+      />
+
       <Stack className={classes.container}>
-        <LoadingOverlay visible={isLoading} itemType="bars" />
         {accordionItems ? (
           <>
             {accordionItems.length > 0 ? (

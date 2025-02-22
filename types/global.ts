@@ -285,7 +285,8 @@ export enum TaskStatusEnum {
   ACTIVE = "active",
   COMPLETED = "completed",
   EXPIRED = "expired",
-  CANCELED = "canceled",
+  CANCELED = "canceled", // when a user cancels a task
+  INACTIVE = "inactive", // when a user changes the routine
   DELETED = "deleted",
 }
 

@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import { IconTrendingUp } from "@tabler/icons-react";
 import { Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
@@ -25,9 +24,7 @@ function FollowYouRow({ data }: Props) {
           {name}
         </Text>
 
-        {scores.totalProgress !== undefined && (
-          <ScoreCell icon={<IconTrendingUp className="icon" />} score={scores.totalProgress} />
-        )}
+        {scores.totalProgress !== undefined && <ScoreCell score={scores.totalProgress} />}
       </Link>
     </Skeleton>
   );

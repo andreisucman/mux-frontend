@@ -147,7 +147,11 @@ export default function ClubAdmission() {
             </Group>
           </Stack>
           {submittedNotEnabled && (
-            <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+            <Alert
+              variant="light"
+              styles={{ icon: { marginRight: rem(8) } }}
+              icon={<IconInfoCircle className="icon" />}
+            >
               <Stack gap={8}>
                 <Title order={5}>Verifying</Title>
                 Your information is still being verified. Meanwhile you can explore the club. If you
@@ -157,7 +161,11 @@ export default function ClubAdmission() {
             </Alert>
           )}
           {!payoutsEnabled && disabledReason && (
-            <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+            <Alert
+              variant="light"
+              styles={{ icon: { marginRight: rem(8) } }}
+              icon={<IconInfoCircle className="icon" />}
+            >
               <Stack gap={8}>
                 <Title order={5}>Payouts disabled</Title>
                 Your payouts have been disabled. Please log into your wallet to fix that.

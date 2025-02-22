@@ -153,7 +153,6 @@ export default function SearchButton({
         overlayProps={{ blur: 0 }}
         scrollable={false}
         limit={10}
-        centered
       />
     </>
   );

@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
-import { IconCalendar, IconCheckbox, IconHandGrab } from "@tabler/icons-react";
+import { IconCalendar, IconHandGrab, IconRefresh } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Button, Group, Skeleton, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -14,7 +13,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { AllTaskType, RoutineStatusEnum, RoutineType } from "@/types/global";
+import { AllTaskType, RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
@@ -35,9 +34,8 @@ export default function AccordionRoutineRow({
   openTaskDetails,
   handleStealRoutine,
 }: Props) {
-  const { part, startsAt, status: routineStatus, lastDate } = routine;
+  const { part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const rowLabel = useMemo(() => {
     const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
@@ -74,7 +72,21 @@ export default function AccordionRoutineRow({
     [totalTotal, totalCompleted]
   );
 
-  const lastDatePassed = useMemo(() => new Date() > new Date(lastDate), [lastDate]);
+  const routineCanBeReactivated = useMemo(() => {
+    const lastDatePassed = new Date() > new Date(lastDate);
+    const hasExpiredTasks = allTasks.filter((at) =>
+      at.ids.some((idObj) => idObj.status === TaskStatusEnum.EXPIRED)
+    );
+    return (
+      isSelf && !lastDatePassed && routineStatus !== RoutineStatusEnum.ACTIVE && hasExpiredTasks
+    );
+  }, [isSelf, routineStatus, allTasks]);
+
+  const allActiveTasks = useMemo(() => {
+    return allTasks.filter((at) =>
+      at.ids.some((idObj) => idObj.status === "active" || idObj.status === "canceled")
+    );
+  }, [allTasks]);
 
   const redirectToCalendar = useCallback(
     (taskKey?: string) => {
@@ -153,6 +165,11 @@ export default function AccordionRoutineRow({
     });
 
     if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({ description: response.error });
+        return;
+      }
+      
       if (setRoutines) {
         setRoutines((prev) => {
           const newRoutines = prev?.map((r) =>
@@ -169,14 +186,8 @@ export default function AccordionRoutineRow({
 
   const showSkeleton = useShowSkeleton();
 
-  const allActiveTasks = useMemo(() => {
-    return routine.allTasks.filter((at) =>
-      at.ids.some((idObj) => idObj.status === "active" || idObj.status === "canceled")
-    );
-  }, [routine.allTasks]);
-
   return (
-    <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
+    <Skeleton visible={showSkeleton} className={classes.skeleton}>
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
@@ -221,13 +232,13 @@ export default function AccordionRoutineRow({
               <Text className={classes.buttonText}>Steal this routine</Text>
             </Button>
           )}
-          {isSelf && !lastDatePassed && routineStatus !== RoutineStatusEnum.ACTIVE && (
+          {routineCanBeReactivated && (
             <Button
               variant="default"
               size="compact-sm"
               component="div"
-              disabled={!isSelf}
-              className={cn(classes.button, { [classes.disabled]: !isSelf })}
+              disabled={!routineCanBeReactivated}
+              className={cn(classes.button, { [classes.disabled]: !routineCanBeReactivated })}
               onClick={(e) => {
                 e.stopPropagation();
                 askConfirmation({
@@ -237,8 +248,8 @@ export default function AccordionRoutineRow({
                 });
               }}
             >
-              <IconCheckbox className="icon icon__small" />{" "}
-              <Text className={classes.buttonText}>Activate</Text>
+              <IconRefresh className="icon icon__small" />{" "}
+              <Text className={classes.buttonText}>Reactivate</Text>
             </Button>
           )}
         </Accordion.Control>

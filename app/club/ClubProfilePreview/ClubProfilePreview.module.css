@@ -28,13 +28,7 @@
   font-size: var(--mantine-font-size-md);
   font-weight: 600;
   width: fit-content;
-  gap: rem(12);
-}
-
-.clubSettingsButton {
-  position: absolute;
-  right: 0;
-  top: 0;
+  gap: rem(8);
 }
 
 .relative {

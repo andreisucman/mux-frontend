@@ -1,7 +1,7 @@
-import React from "react";
-import { IconEye } from "@tabler/icons-react";
+import React, { useContext } from "react";
 import { Button, Group, Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
+import { UserContext } from "@/context/UserContext";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import classes from "./FollowHistoryModalCard.module.css";
 
@@ -14,7 +14,12 @@ type Props = {
 };
 
 export default function FollowHistoryModalCard({ data, onClick }: Props) {
-  const { avatar, followingUserName } = data;
+  const { userDetails } = useContext(UserContext);
+  const { club } = userDetails || {};
+  const { followingUserName } = club || {};
+  const { avatar, followingUserName: serverFollowingUserName } = data;
+
+  const alreadyFollowing = serverFollowingUserName === followingUserName;
 
   const showSkeleton = useShowSkeleton();
 
@@ -28,8 +33,12 @@ export default function FollowHistoryModalCard({ data, onClick }: Props) {
           </Text>
         </Group>
 
-        <Button onClick={() => onClick(followingUserName)} variant="default">
-          Follow again
+        <Button
+          disabled={alreadyFollowing}
+          onClick={() => onClick(serverFollowingUserName)}
+          variant="default"
+        >
+          {alreadyFollowing ? "Following" : "Follow again"}
         </Button>
       </Group>
     </Skeleton>

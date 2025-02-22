@@ -54,7 +54,11 @@ function BalancePane() {
   const alert = useMemo(() => {
     if (!detailsSubmitted)
       return (
-        <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+        <Alert
+          variant="light"
+          classNames={{ icon: classes.alertIcon }}
+          icon={<IconInfoCircle className="icon" />}
+        >
           <Group gap={8}>
             To enable withdrawals add your bank account.
             <Button component={Link} href="/club/admission" ml="auto" size="compact-sm">
@@ -65,14 +69,22 @@ function BalancePane() {
       );
     if (submittedNotEnabled)
       return (
-        <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+        <Alert
+          variant="light"
+          classNames={{ icon: classes.alertIcon }}
+          icon={<IconInfoCircle className="icon" />}
+        >
           <Stack gap={8}>We're checking your information.</Stack>
         </Alert>
       );
 
     if (!payoutsEnabled && disabledReason)
       return (
-        <Alert variant="light" icon={<IconInfoCircle className="icon" />}>
+        <Alert
+          variant="light"
+          classNames={{ icon: classes.alertIcon }}
+          icon={<IconInfoCircle className="icon" />}
+        >
           <Stack gap={8}>
             Your payouts have been disabled. Sign in to your wallet to fix that.
           </Stack>

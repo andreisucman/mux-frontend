@@ -21,7 +21,7 @@ const sendPasswordResetEmail = async ({ email }: SendPasswordResetEmailProps) =>
         return;
       }
       status = true;
-      openSuccessModal({ title: "Check your email", description: response.message });
+      openSuccessModal({ title: "✔️ Check your email", description: response.message });
     }
   } catch (err) {
   } finally {

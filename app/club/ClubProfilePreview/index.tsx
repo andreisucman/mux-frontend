@@ -87,11 +87,17 @@ function ClubProfilePreview({
         )}
 
         <Stack className={classes.content}>
-          <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
-            <Group align="center" gap={4}>
-              {chevron} {name}
-            </Group>
-          </Title>
+          <Group align="center" gap={8}>
+            <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
+              {chevron} {name}{" "}
+            </Title>
+            {!showCollapsedInfo && type === "you" && (
+              <Text size="xs" fw={"normal"} c="dimmed">
+                (You)
+              </Text>
+            )}
+          </Group>
+
           <Collapse in={showCollapsedInfo}>
             {!isMini && (
               <Text size="sm" lineClamp={5} mb={2}>
@@ -107,19 +113,8 @@ function ClubProfilePreview({
             )}
           </Collapse>
         </Stack>
-        {type === "you" && (
-          <ActionIcon
-            variant="default"
-            size="md"
-            component={Link}
-            href="/settings"
-            className={cn(classes.clubSettingsButton, { [classes.relative]: !showCollapsedInfo })}
-          >
-            <IconSettings className="icon" />
-          </ActionIcon>
-        )}
       </Group>
-      {showButtons && showCollapsedInfo && (
+      {showButtons && (
         <MenuButtons
           type={type}
           hasQuestions={!!hasNewAboutQuestions}

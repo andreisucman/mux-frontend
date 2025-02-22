@@ -76,6 +76,8 @@ export default function Explain(props: Props) {
       return statusString;
     } else if (status === TaskStatusEnum.CANCELED) {
       return "Canceled";
+    } else if (status === TaskStatusEnum.INACTIVE) {
+      return "Inactive";
     } else if (status === TaskStatusEnum.COMPLETED) {
       return "Completed";
     }
@@ -357,6 +359,7 @@ export default function Explain(props: Props) {
                 )}
                 {(taskStatus === TaskStatusEnum.COMPLETED ||
                   taskStatus === TaskStatusEnum.EXPIRED ||
+                  taskStatus === TaskStatusEnum.INACTIVE ||
                   timeExpired) && (
                   <Button
                     size="compact-sm"
@@ -364,7 +367,7 @@ export default function Explain(props: Props) {
                     className={classes.actionButton}
                     onClick={handleCloneTask}
                   >
-                    Recreate
+                    Clone
                   </Button>
                 )}
               </Group>
