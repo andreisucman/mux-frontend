@@ -34,9 +34,6 @@ export default function SuggestionContainer({
   customStyles,
   setSelectedAsins,
 }: Props) {
-  const bestItems = items.filter((item) => item.rank === 1);
-  const chosenItems = bestItems.length > 1 ? bestItems : items;
-
   const isMobile = useMediaQuery("(max-width: 36em)");
 
   return (
@@ -50,7 +47,7 @@ export default function SuggestionContainer({
           )}
           <Group className={classes.content}>
             <Group className={classes.suggestionRow} style={rowStyles ? rowStyles : {}}>
-              {chosenItems?.map((item, index) => (
+              {items?.map((item, index) => (
                 <ProductCell
                   key={index}
                   item={item}

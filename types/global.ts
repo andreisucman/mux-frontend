@@ -307,8 +307,8 @@ export type SuggestionType = {
   variant: string;
   rank: number;
   reasoning: string;
-  analysisResult: { [key: string]: boolean };
   priceAndUnit: string;
+  productFeatures: string[];
 };
 
 export type TaskType = {

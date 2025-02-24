@@ -81,7 +81,7 @@ export default function BeforeAftersPage() {
 
         if (response.status === 200) {
           if (skip) {
-            setBeforeAfters([...(beforeAfters || []), ...response.message.slice(0, 20)]);
+            setBeforeAfters((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
           } else {
             setBeforeAfters(response.message.slice(0, 20));
           }
@@ -91,7 +91,7 @@ export default function BeforeAftersPage() {
         }
       } catch (err) {}
     },
-    [searchParams.toString()]
+    [beforeAfters, searchParams.toString()]
   );
 
   const memoizedComparisonCarousel = useCallback(

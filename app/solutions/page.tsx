@@ -17,7 +17,7 @@ import classes from "./solutions.module.css";
 export const runtime = "edge";
 
 type FetchSolutionsProps = {
-  skip?: boolean;
+  hasMore?: boolean;
   name?: string;
   concern?: string | null;
   query?: string | null;
@@ -32,8 +32,8 @@ export default function Solutions() {
 
   const [hasMore, setHasMore] = useState(false);
 
-  const fetchSolutions = useCallback(async ({ skip, query, solutions }: FetchSolutionsProps) => {
-    try {
+  const fetchSolutions = useCallback(
+    async ({ hasMore, query, solutions }: FetchSolutionsProps) => {
       let finalEndpoint = "getAllSolutions";
       const queryParams = [];
 
@@ -41,7 +41,7 @@ export default function Solutions() {
         queryParams.push(`query=${encodeURIComponent(query)}`);
       }
 
-      if (skip && solutions && solutions.length > 0) {
+      if (hasMore && solutions && solutions.length > 0) {
         queryParams.push(`skip=${solutions.length}`);
       }
 
@@ -55,8 +55,8 @@ export default function Solutions() {
       });
 
       if (response.status === 200) {
-        if (skip) {
-          setSolutions([...(solutions || []), ...response.message.slice(0, 20)]);
+        if (hasMore) {
+          setSolutions((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
         } else {
           setSolutions(response.message.slice(0, 20));
         }
@@ -64,9 +64,9 @@ export default function Solutions() {
       } else {
         openErrorModal();
       }
-    } catch (err) {
-    }
-  }, []);
+    },
+    [solutions]
+  );
 
   const memoizedSolutionsCard = useCallback(
     (props: any) => <SolutionCard data={props.data} key={props.index} />,
@@ -90,7 +90,7 @@ export default function Solutions() {
                     <Loader m="auto" />
                   </Stack>
                 }
-                loadMore={() => fetchSolutions({ skip: hasMore, query, solutions })}
+                loadMore={() => fetchSolutions({ hasMore, query, solutions })}
                 useWindow={true}
                 hasMore={hasMore}
                 pageStart={0}

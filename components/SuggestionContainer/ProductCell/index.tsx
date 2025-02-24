@@ -15,7 +15,14 @@ type Props = {
   setSelectedAsins?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const ProductCell = ({ isMobile,item, allItems, selectedAsins, showOnCellAtc, setSelectedAsins }: Props) => {
+const ProductCell = ({
+  isMobile,
+  item,
+  allItems,
+  selectedAsins,
+  showOnCellAtc,
+  setSelectedAsins,
+}: Props) => {
   const added = selectedAsins?.includes(item.asin);
   const modalTitle = `Product preview`;
 
@@ -41,7 +48,7 @@ const ProductCell = ({ isMobile,item, allItems, selectedAsins, showOnCellAtc, se
       ),
       size: "lg",
       classNames: { content: "scrollbars" },
-      innerProps: <ProductModalBody item={item} allItems={allItems} />,
+      innerProps: <ProductModalBody item={item} />,
       withinPortal: false,
     });
   }, [modalTitle, item]);
