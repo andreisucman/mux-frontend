@@ -26,7 +26,7 @@ type Props = {
   uploadProof: (props: any) => Promise<void>;
 };
 
-const RECORDING_TIME = 15000;
+const RECORDING_TIME = 20000;
 const beepUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/beep.mp3`;
 const shutterUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 

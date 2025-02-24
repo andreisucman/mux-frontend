@@ -9,7 +9,6 @@ type UpdateClubPrivacyProps = {
 
 export function updateClubPrivacy({ club, part, category, value }: UpdateClubPrivacyProps) {
   try {
-    console.log("updateClubPrivayc inputs", { club, part, category, value });
     const { privacy } = club || {};
 
     if (!privacy) return;
@@ -17,12 +16,9 @@ export function updateClubPrivacy({ club, part, category, value }: UpdateClubPri
     const relevantCategoryPrivacyIndex = privacy.findIndex((rec) => rec.name === category);
 
     if (relevantCategoryPrivacyIndex === -1) return club;
-    console.log("relevantCategoryPrivacyIndex", relevantCategoryPrivacyIndex);
 
     let relevantCategoryPrivacy = privacy[relevantCategoryPrivacyIndex];
     let updatedParts;
-
-    console.log("relevantCategoryPrivacy", relevantCategoryPrivacy);
 
     if (part) {
       const relevantPartPrivacyIndex = relevantCategoryPrivacy.parts.findIndex(
@@ -35,8 +31,6 @@ export function updateClubPrivacy({ club, part, category, value }: UpdateClubPri
         ...relevantCategoryPrivacy.parts[relevantPartPrivacyIndex],
         value,
       };
-
-      console.log("updatedPartPrivacy", updatedPartPrivacy);
 
       updatedParts = [
         ...relevantCategoryPrivacy.parts.slice(0, relevantPartPrivacyIndex),
@@ -54,14 +48,10 @@ export function updateClubPrivacy({ club, part, category, value }: UpdateClubPri
         value,
       }));
 
-      console.log("updatedParts", updatedParts);
-
       relevantCategoryPrivacy = {
         ...relevantCategoryPrivacy,
         value: updatedParts.every((part) => Boolean(part.value)),
       };
-
-      console.log("relevantCategoryPrivacy", relevantCategoryPrivacy);
     }
 
     const updatedCategoryPrivacy = {

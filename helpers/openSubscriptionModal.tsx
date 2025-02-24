@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { Stack, Text, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import PricingCard from "@/app/plans/PricingCard";
 import {
   advisorCoachContent,
   improvementCoachContent,
   peekLicenseContent,
 } from "@/app/plans/pricingData";
+import SubscriptionModalContent from "./SubscriptionModalContent";
 
 type Props = {
   modalType: "improvement" | "advisor" | "peek";
@@ -57,22 +57,16 @@ export default function openSubscriptionModal({
       </Title>
     ),
     innerProps: (
-      <Stack flex={1}>
-        {description && <Text size="sm">{description}</Text>}
-        <PricingCard
-          name={name}
-          price={price}
-          addGradient={true}
-          content={content}
-          icon={buttonIcon}
-          buttonText={buttonText}
-          underButtonText={underButtonText}
-          customHeadingStyles={{
-            borderRadius: 0,
-          }}
-          onClick={onClick}
-        />
-      </Stack>
+      <SubscriptionModalContent
+        name={name}
+        price={price}
+        content={content}
+        buttonIcon={buttonIcon}
+        buttonText={buttonText}
+        underButtonText={underButtonText}
+        description={description}
+        onClick={onClick}
+      />
     ),
     onClose,
   });

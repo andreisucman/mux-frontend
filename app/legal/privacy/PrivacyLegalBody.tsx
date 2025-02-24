@@ -59,7 +59,10 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>
             If you choose to participate in our revenue sharing program (the Club) we display your
             graphical, audio and textual information to other suitable users as outline in the{" "}
-            <Link href="/legal/club">{"Club's"} terms of service</Link>.
+            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
+              Club&apos;s terms of service
+            </Link>
+            .
           </li>
           <li>Process subscription, rewards, and revenue share payments (for the Club members).</li>
           <li>Suggest relevant third-party products based on your data.</li>
@@ -71,7 +74,10 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>With our payment processors when you subscribe to our plans</li>
           <li>
             With other eligible members of the Club if you opt into our revenue sharing program as
-            outline by the <Link href="/legal/club">{"Club's"} terms of service</Link>
+            outline by the{" "}
+            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
+              Club&apos;s terms of service
+            </Link>
           </li>
           <li>With our third-party service providers for data analysis, hosting, and marketing.</li>
           <li>
@@ -152,7 +158,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title>Information Automatically Collected</Title>
         <Text>
           We automatically collect certain information when you interact with our services. This
-          information {"doesn't"} identify you directly but helps us maintain the functionality,
+          information doesn&apos;t identify you directly but helps us maintain the functionality,
           security, and performance of our website.
         </Text>
         <Text>
@@ -183,7 +189,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             interactions.
           </li>
           <li>
-            System and error reports: Information about your {"system's"} activity and any errors
+            System and error reports: Information about your system&apos;s activity and any errors
             encountered while using our services.
           </li>
         </ul>
@@ -248,7 +254,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             authorities in case of legal disputes.
           </li>
           <li>
-            Vital interests: In situations where {"someone's"} safety or health is at risk, we may
+            Vital interests: In situations where someone&apos;s safety or health is at risk, we may
             process your information to protect those vital interests. For example, this might apply
             in emergency situations where prompt action is required.
           </li>
@@ -274,7 +280,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>
-            In an {"individual's"} best interest: When it is clearly in your or someone {"else's"}{" "}
+            In an individual&apos;s best interest: When it is clearly in your or someone else&apos;s
             interest to process information, but obtaining consent is impractical or not feasible
             (e.g., in emergencies).
           </li>
@@ -411,8 +417,13 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           be transferred to, stored, and processed by us in the U.S. and other countries where we or
           our third-party service providers operate. This also applies to third parties with whom we
           share your information as outlined in the section titled{" "}
-          <Link href="/legal/privacy#when-and-with-whom-do-we-share-your-personal-information"></Link>
-          WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
+          <Link
+            href="/legal/privacy#when-and-with-whom-do-we-share-your-personal-information"
+            style={{ textDecoration: "underline" }}
+          >
+            {" "}
+            WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
+          </Link>
         </Text>
         <Title>For Residents of the EEA, UK, or Switzerland:</Title>
         <Text>
@@ -424,7 +435,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <Text>
           To protect your personal data during transfers, we rely on mechanisms such as the European
-          {"Commission's"} Standard Contractual Clauses (SCCs). These clauses ensure that any
+          Commission&apos;s Standard Contractual Clauses (SCCs). These clauses ensure that any
           transfer of personal information from the EEA, UK, or Switzerland to non-EEA countries
           complies with European data protection standards. We have also implemented similar
           safeguards with third-party service providers and partners to whom your data may be
@@ -611,9 +622,12 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>
           To exercise your rRights: To exercise any of these rights, please contact us using the
           details provided in the{" "}
-          <Link href="/legal/club#how-can-you-contact-us-about-this-notice">
+          <Link
+            href="/legal/club#how-can-you-contact-us-about-this-notice"
+            style={{ textDecoration: "underline" }}
+          >
             HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-          </Link>
+          </Link>{" "}
           section below. We will review and address your requests in accordance with applicable data
           protection laws, and may ask for verification of your identity to process your request.
         </Text>
@@ -694,7 +708,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Title order={2}>12. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</Title>
         <Text>
           Residents of California, Colorado, Connecticut, Utah, and Virginia have specific rights
-          regarding their personal information. {"Here's what we've collected"} in the past:
+          regarding their personal information. Here&apos;s what we&apos;ve collected in the past:
         </Text>
         <Title>Categories of Personal Information We Collect:</Title>
         <table>
@@ -816,14 +830,19 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
 
         <Title>How We Use and Share Your Personal Information:</Title>
         <Text>
-          <strong>Use:</strong> We use your personal information as described in the section
-          <Link href="how-do-we-process-your-information">HOW DO WE PROCESS YOUR INFORMATION?</Link>
+          <strong>Use:</strong> We use your personal information as described in the section{" "}
+          <Link href="how-do-we-process-your-information" style={{ textDecoration: "underline" }}>
+            HOW DO WE PROCESS YOUR INFORMATION?
+          </Link>{" "}
           for purposes such as providing and improving our Services.
         </Text>
         <Text>
           <strong>Sharing:</strong> We may share your personal information with our service
-          providers under written contracts. For details, see the section
-          <Link href="when-and-with-whom-do-we-share-your-personal-information">
+          providers under written contracts. For details, see the section{" "}
+          <Link
+            href="when-and-with-whom-do-we-share-your-personal-information"
+            style={{ textDecoration: "underline" }}
+          >
             WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
           </Link>
         </Text>
@@ -863,7 +882,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         <Text>
           Yes, depending on the country you reside in, there may be additional privacy rights and
           regulations that apply to the collection and processing of your personal information.
-          {"Here's"} an overview for residents in Australia, New Zealand, and South Africa:
+          Here&apos;s an overview for residents in Australia, New Zealand, and South Africa:
         </Text>
 
         <Title>Australia</Title>
@@ -875,8 +894,11 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>
             <strong>Access and correction:</strong> You have the right to request access to your
             personal information and to request its correction if it is inaccurate. To make such a
-            request, please contact us using the contact details provided in the section
-            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+            request, please contact us using the contact details provided in the section{" "}
+            <Link
+              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
+              style={{ textDecoration: "underline" }}
+            >
               HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
             </Link>
           </li>
@@ -893,13 +915,16 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>
             <strong>Access and correction:</strong> You have the right to request access to and
             correction of your personal information. To make such a request, please contact us using
-            the contact details provided in the section
-            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+            the contact details provided in the section{" "}
+            <Link
+              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
+              style={{ textDecoration: "underline" }}
+            >
               HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
             </Link>
           </li>
           <li>
-            <strong>Complaints:</strong> If you believe we are not complying with New {"Zealand's"}
+            <strong>Complaints:</strong> If you believe we are not complying with New Zealand&apos;s
             Privacy Principles, you can file a complaint with the Office of the Privacy Commissioner
             (OPC).
           </li>
@@ -914,8 +939,11 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           </li>
           <li>
             <strong>Rights and contacts:</strong> For any questions or to exercise your rights,
-            please reach out to us via the contact details in the section
-            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+            please reach out to us via the contact details in the section{" "}
+            <Link
+              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
+              style={{ textDecoration: "underline" }}
+            >
               HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
             </Link>
           </li>
@@ -930,8 +958,11 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>
             <strong>Access and correction:</strong> You have the right to request access to your
             personal information and to request its correction if it is inaccurate. To exercise
-            these rights, please contact us using the contact details provided in the section
-            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+            these rights, please contact us using the contact details provided in the section{" "}
+            <Link
+              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
+              style={{ textDecoration: "underline" }}
+            >
               HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
             </Link>
           </li>
@@ -973,8 +1004,11 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           </li>
           <li>
             <strong>Rights and contacts:</strong> For further details or to exercise your rights,
-            please reach out to us via the contact information in the section
-            <Link href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}>
+            please reach out to us via the contact information in the section{" "}
+            <Link
+              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
+              style={{ textDecoration: "underline" }}
+            >
               HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
             </Link>
           </li>
@@ -1025,7 +1059,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
       </Stack>
 
       <Stack
-        style={{ marginBottom: rem(32) }}
+        style={{ marginBottom: rem(48) }}
         id="how-can-you-review-update-or-delete-the-data-we-collect-from-you"
       >
         <Title order={2}>

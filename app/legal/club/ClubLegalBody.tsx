@@ -19,10 +19,12 @@ export default function ClubLegalBody({ addTitle }: Props) {
           revenue sharing program ("Club").
         </Text>
         <Text>
-          It complement and expand on {"our platform's"}{" "}
-          <Link href={`/legal/terms`}>General Terms of Service</Link> ("General TOS"). Where
-          conflicts arise Club Terms take precedence over the General TOS for matters relating
-          specifically to the Club.
+          It complement and expand on our platform&apos;s{" "}
+          <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+            General Terms of Service
+          </Link>{" "}
+          ("General TOS"). Where conflicts arise Club Terms take precedence over the General TOS for
+          matters relating specifically to the Club.
         </Text>
         <Text>
           Please read Club Terms carefully before joining. By accessing or using the Club, you agree
@@ -40,7 +42,10 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <ol>
           <li>
             Be a registered user of the platform, in compliance with our{" "}
-            <Link href={`/legal/terms`}>General TOS</Link>.
+            <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+              General TOS
+            </Link>
+            .
           </li>
           <li>Be at least 18 years old.</li>
           <li>
@@ -90,8 +95,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>3. Income from Followers:</Title>
         <ul>
           <li>
-            You earn 50% from the net Peek license subscription revenue amount for each user that follows you
-            in the Club, each month.
+            You earn 50% from the net Peek license subscription revenue amount for each user that
+            follows you in the Club, each month.
           </li>
           <li>
             Your rewards are deposited to your balance every day at midnight UTC according to the
@@ -125,8 +130,11 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <ul>
           <li>
             As a Club member, you are responsible for the content you upload, ensuring it adheres to
-            our <Link href={`/legal/terms`}>General TOS</Link> and does not violate any laws,
-            rights, or intellectual property.
+            our{" "}
+            <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+              General TOS
+            </Link>{" "}
+            and does not violate any laws, rights, or intellectual property.
           </li>
           <li>
             <strong>Daily Task Completion Proof:</strong> This content, which involves you
@@ -157,10 +165,10 @@ export default function ClubLegalBody({ addTitle }: Props) {
         </ul>
         <Title order={3}>5. Leaving the Club:</Title>
         <Text>
-          You can leave the Club at any time by visiting your Settings page at
-          <Link href="/settings" style={{ display: "inline-block" }}>
+          You can leave the Club at any time by visiting your Settings page at{" "}
+          <Link href="/settings" style={{ display: "inline-block", textDecoration: "underline" }}>
             www.muxout.com/settings
-          </Link>
+          </Link>{" "}
           and clicking the "Leave Club" button.
         </Text>
         <Text>
@@ -181,8 +189,9 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={3}>2. Earnings from Followers:</Title>
         <ul>
           <li>
-            You will receive 50% of the net app&apos;s subscription revenue for each user who follows you.
-            The actual amount is calculated based on the Peek license plan cost minus payment processing fee (~3-3.5%).
+            You will receive 50% of the net app&apos;s subscription revenue for each user who
+            follows you. The actual amount is calculated based on the Peek license plan cost minus
+            payment processing fee.
           </li>
           <li>
             Payments deposited to your bank account are subject to Stripe&apos;s processing times,
@@ -233,8 +242,11 @@ export default function ClubLegalBody({ addTitle }: Props) {
           You may not upload content that includes nudity, sexually explicit material, illegal
           activities, hate speech, or any content that violates the rights of others. For a full
           list of prohibited content, please refer to our{" "}
-          <Link href={`/legal/terms`}>General TOS</Link>. We reserve the right to remove content
-          that violates these guidelines without prior notice.
+          <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+            General TOS
+          </Link>
+          . We reserve the right to remove content that violates these guidelines without prior
+          notice.
         </Text>
         <Title order={3}>3. Reporting Mechanism:</Title>
         <Text>
@@ -255,9 +267,12 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>8. Limitation of Liability</Title>
         <Text>
           In addition to the limitations outlined in our{" "}
-          <Link href={`/legal/terms`}>General TOS</Link>, we are not responsible for any
-          unauthorized use or access to your content by third parties, including followers who may
-          violate these terms by sharing or misusing your images, videos audio or textual content.
+          <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+            General TOS
+          </Link>
+          , we are not responsible for any unauthorized use or access to your content by third
+          parties, including followers who may violate these terms by sharing or misusing your
+          images, videos audio or textual content.
         </Text>
       </Stack>
       <Stack>
@@ -271,10 +286,14 @@ export default function ClubLegalBody({ addTitle }: Props) {
         </Text>
         <Text>
           These Club Terms are governed by the same laws and dispute resolution provisions as
-          outlined in the <Link href={`/legal/terms`}>General TOS</Link>.
+          outlined in the{" "}
+          <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+            General TOS
+          </Link>
+          .
         </Text>
       </Stack>
-      <Stack style={{ marginBottom: rem(32) }}>
+      <Stack style={{ marginBottom: rem(48) }}>
         <Title order={2}>10. Contact Us</Title>
         <Text>
           If you have any questions regarding these Club Terms, please contact us at

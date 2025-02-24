@@ -76,7 +76,6 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
 
     setIsLoading(true);
     await handleJoinClub();
-    setIsLoading(false);
   };
 
   const checkboxLabel = useMemo(

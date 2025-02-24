@@ -210,8 +210,12 @@ export default function TermsLegalBody({ addTitle }: Props) {
         </Text>
         <Title order={3}>Sensitive Data Handling</Title>
         <Text>
-          We collect and process personal data as outlined in our [Privacy Policy]. This may include
-          sensitive data, such as images and videos of your body and audio recordings of your voice.
+          We collect and process personal data as outlined in our{" "}
+          <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
+            Privacy Policy
+          </Link>
+          . This may include sensitive data, such as images and videos of your body and audio
+          recordings of your voice.
         </Text>
         <Text>
           By using our services, you consent to the collection, storage, and processing of this
@@ -336,7 +340,11 @@ export default function TermsLegalBody({ addTitle }: Props) {
             responsible for any fees associated with receiving payments, and we disclaim any
             liability for issues arising from inaccurate payment details or the onboarding process.
             The full terms and conditions of the "Club" are detailed in a separate document, which
-            can be accessed <Link href="/legal/club">here</Link>.
+            can be accessed{" "}
+            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
+              here
+            </Link>
+            .
           </Text>
         </Stack>
         <Stack>
@@ -626,7 +634,10 @@ export default function TermsLegalBody({ addTitle }: Props) {
             your Contributions to us. However, you understand that by submitting Contributions, you
             are granting us permission to use them as described above without additional
             compensation, aside from any financial compensation agreed upon through in the{" "}
-            <Link href="/legal/club">{"Club's terms of service"}</Link>.
+            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
+              {"Club's terms of service"}
+            </Link>
+            .
           </Text>
           <Text>
             If you provide suggestions, ideas, or feedback regarding the Services, you agree that we
@@ -839,7 +850,10 @@ export default function TermsLegalBody({ addTitle }: Props) {
             Upon initiating the account deletion request, all of your data will become private
             immediately (if it was public) and will be deleted permanently from our systems after 7
             days from the request in accordance with our{" "}
-            <Link href="/legal/privacy">Privacy Policy</Link>.
+            <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
+              Privacy Policy
+            </Link>
+            .
           </Text>
 
           <Title order={2}>15. MODIFICATIONS AND INTERRUPTIONS</Title>
@@ -897,9 +911,9 @@ export default function TermsLegalBody({ addTitle }: Props) {
             disputes expressly excluded below), such disputes will be resolved exclusively through
             binding arbitration. By agreeing to arbitration, you waive your right to file a lawsuit
             in court or have a jury trial. Arbitration will follow the Commercial Arbitration Rules
-            of the American Arbitration Association (AAA) and, where applicable, the {"AAA's"}
+            of the American Arbitration Association (AAA) and, where applicable, the AAA&apos;s
             Supplementary Procedures for Consumer Related Disputes (AAA Consumer Rules). These rules
-            can be found on the {"AAA's"} website.
+            can be found on the AAA&apos;s website.
           </Text>
           <Text>
             Arbitration fees and arbitrator compensation will be governed by, and where applicable,
@@ -1148,7 +1162,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             Terms.
           </Text>
         </Stack>
-        <Stack style={{ marginBottom: rem(32) }}>
+        <Stack style={{ marginBottom: rem(48) }}>
           <Title order={2}>25. CONTACT US</Title>
           <Text>
             To resolve a complaint regarding the Services or to receive further information about
