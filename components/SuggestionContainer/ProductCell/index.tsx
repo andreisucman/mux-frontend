@@ -7,22 +7,13 @@ import { SuggestionType } from "@/types/global";
 import classes from "./ProductCell.module.css";
 
 type Props = {
-  isMobile: boolean;
   item: SuggestionType;
-  allItems: SuggestionType[];
   showOnCellAtc: boolean;
   selectedAsins?: string[];
   setSelectedAsins?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const ProductCell = ({
-  isMobile,
-  item,
-  allItems,
-  selectedAsins,
-  showOnCellAtc,
-  setSelectedAsins,
-}: Props) => {
+const ProductCell = ({ item, selectedAsins, showOnCellAtc, setSelectedAsins }: Props) => {
   const added = selectedAsins?.includes(item.asin);
   const modalTitle = `Product preview`;
 
@@ -46,7 +37,7 @@ const ProductCell = ({
           {modalTitle}
         </Title>
       ),
-      size: "lg",
+      size: "md",
       classNames: { content: "scrollbars" },
       innerProps: <ProductModalBody item={item} />,
       withinPortal: false,

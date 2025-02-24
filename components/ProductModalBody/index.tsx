@@ -3,8 +3,9 @@
 import React from "react";
 import Image from "next/image";
 import { IconCircleCheck, IconLink } from "@tabler/icons-react";
-import { ActionIcon, Group, List, Rating, rem, Stack, Text } from "@mantine/core";
+import { Button, Group, Rating, rem, Stack, Text } from "@mantine/core";
 import { SuggestionType } from "@/types/global";
+import classes from "./ProuctModalBody.module.css";
 
 type Props = {
   item: SuggestionType;
@@ -18,8 +19,8 @@ export default function ProductModalBody({ item }: Props) {
           <Image
             src={item.image}
             alt={item.name}
-            width={50}
-            height={50}
+            width={100}
+            height={100}
             style={{ borderRadius: rem(100), objectFit: "cover" }}
           />
           <Stack gap={4}>
@@ -29,25 +30,37 @@ export default function ProductModalBody({ item }: Props) {
               <Text size="sm">({item.rating})</Text>
             </Group>
           </Stack>
-          <ActionIcon
-            variant="default"
-            component="a"
-            href={`${item.url}&AssociateTag=${process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_ID}`}
-          >
-            <IconLink className="icon icon__small" />
-          </ActionIcon>
         </Group>
         <Text>{item.reasoning}</Text>
       </Stack>
 
-      <List>
-        {item.productFeatures.map((feature, index) => (
-          <Group key={index} align="center">
-            <IconCircleCheck className="icon" color="var(--mantine-color-green-7)" />
-            {feature}
-          </Group>
-        ))}
-      </List>
+      {item.productFeatures.length > 0 && (
+        <Stack className={classes.content}>
+          <Text size="sm" c="dimmed">
+            Features:
+          </Text>
+          <Stack className={classes.contentWrapper}>
+            {item.productFeatures.map((feature, index) => (
+              <Group key={index} align="center" wrap="nowrap">
+                <IconCircleCheck
+                  className="icon"
+                  color="var(--mantine-color-green-7)"
+                  style={{ minWidth: rem(24) }}
+                />
+                {feature}
+              </Group>
+            ))}
+          </Stack>
+        </Stack>
+      )}
+      <Button
+        component="a"
+        c="white"
+        href={`${item.url}&AssociateTag=${process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_ID}`}
+      >
+        <IconLink className="icon icon__small" style={{ marginRight: rem(8) }} />
+        Buy from Amazon
+      </Button>
     </Stack>
   );
 }

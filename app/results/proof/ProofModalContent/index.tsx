@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
-import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { normalizeString } from "@/helpers/utils";

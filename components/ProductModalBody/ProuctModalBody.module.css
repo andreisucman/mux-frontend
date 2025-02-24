@@ -1,0 +1,10 @@
+.content {
+  gap: rem(8);
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+}
+
+.contentWrapper {
+  gap: rem(8);
+}
