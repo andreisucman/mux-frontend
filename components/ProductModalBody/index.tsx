@@ -26,6 +26,8 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
     HTMLDivElement
   >({ axis: "x", duration: 500 });
 
+  console.log("defaultItem", defaultItem);
+
   const categoryButtons = [...new Set(items.map((i) => i.suggestion))].map((category) => (
     <Button
       size="compact-sm"

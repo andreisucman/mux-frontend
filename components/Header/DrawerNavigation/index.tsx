@@ -7,6 +7,7 @@ import {
   IconLicense,
   IconListDetails,
   IconNotebook,
+  IconInfoSquareRounded,
   IconRoute,
   IconScan,
   IconSettings,
@@ -15,7 +16,7 @@ import {
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";
-import { Divider, Stack, Text, UnstyledButton } from "@mantine/core";
+import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
@@ -35,7 +36,7 @@ const defaultNavigation = [
   },
   {
     title: "Scan",
-    icon: <IconScan stroke={1.25} className="icon" />,
+    icon: <IconScan stroke={1.35} className="icon" />,
     path: "/scan",
   },
   {
@@ -47,6 +48,11 @@ const defaultNavigation = [
     title: "Rewards",
     path: "/rewards",
     icon: <IconTrophy stroke={1.25} className="icon" />,
+  },
+  {
+    title: "About",
+    path: "/about",
+    icon: <IconInfoSquareRounded stroke={1.35} style={{maxWidth: rem(19)}} />,
   },
 ];
 

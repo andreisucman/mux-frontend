@@ -29,4 +29,5 @@ export const blockFetchUserDataPaths = [
   "/proof",
   "/scan/progress",
   "/scan/food",
+  "/about",
 ];
