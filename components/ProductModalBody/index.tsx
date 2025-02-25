@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { IconCircleCheck, IconLink } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Checkbox, Group, Rating, rem, Stack, Text, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { upperFirst, useScrollIntoView } from "@mantine/hooks";
 import { addToAmazonCart } from "@/helpers/addToAmazonCart";
 import { SuggestionType } from "@/types/global";
 import HorizontalScrollRow from "./HorizontalScrollRow";
@@ -14,12 +14,17 @@ import classes from "./ProuctModalBody.module.css";
 type Props = {
   defaultItem: SuggestionType;
   items: SuggestionType[];
+  disableAtc?: boolean;
 };
 
-export default function ProductModalBody({ items, defaultItem }: Props) {
+export default function ProductModalBody({ items, defaultItem, disableAtc }: Props) {
   const [selectedCategory, setSelectedCategory] = useState(defaultItem.suggestion);
   const [selectedItem, setSelectedItem] = useState(defaultItem);
   const [selectedProducts, setSelectedProducts] = useState<SuggestionType[]>([]);
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
+    HTMLDivElement,
+    HTMLDivElement
+  >({ axis: "x", duration: 500 });
 
   const categoryButtons = [...new Set(items.map((i) => i.suggestion))].map((category) => (
     <Button
@@ -29,7 +34,6 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
       key={category}
       onClick={() => {
         setSelectedCategory(category);
-        console.log("category", category, "selectedCategory", selectedCategory);
         if (category !== selectedCategory) {
           const selectedCategoryItems = items.filter((i) => i.suggestion === category);
           console.log(selectedCategoryItems);
@@ -43,29 +47,38 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
 
   const selectedCategoryItems = items
     .filter((i) => i.suggestion === selectedCategory)
-    .map((i, index) => (
-      <Stack
-        key={index}
-        className={cn(classes.selectProductContainer, {
-          [classes.selected]: selectedItem._id === i._id,
-        })}
-        onClick={() => setSelectedItem(i)}
-      >
-        <Stack className={classes.selectProductImageWrapper}>
-          <Image
-            src={i.image}
-            width={50}
-            height={50}
-            alt=""
-            unoptimized
-            className={classes.selectProductImage}
-          />
+    .map((i, index) => {
+      const isSelected = selectedItem._id === i._id;
+
+      return (
+        <Stack
+          key={index}
+          className={cn(classes.selectProductContainer, {
+            [classes.selected]: isSelected,
+          })}
+          onClick={() => setSelectedItem(i)}
+          ref={isSelected ? targetRef : undefined}
+        >
+          <Stack className={classes.selectProductImageWrapper}>
+            <Image
+              src={i.image}
+              width={50}
+              height={50}
+              alt=""
+              unoptimized
+              className={classes.selectProductImage}
+            />
+          </Stack>
+          <Text className={classes.selectProductName} lineClamp={1}>
+            {i.name}
+          </Text>
         </Stack>
-        <Text className={classes.selectProductName} lineClamp={1}>
-          {i.name}
-        </Text>
-      </Stack>
-    ));
+      );
+    });
+
+  useEffect(() => {
+    scrollIntoView();
+  }, [selectedCategory]);
 
   const addedProducts = selectedProducts.map((p) => (
     <Stack
@@ -100,10 +113,12 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
   return (
     <Stack>
       {categoryButtons.length > 1 && <HorizontalScrollRow children={categoryButtons} />}
-      {selectedCategoryItems.length > 1 && <HorizontalScrollRow children={selectedCategoryItems} />}
+      {selectedCategoryItems.length > 1 && (
+        <HorizontalScrollRow children={selectedCategoryItems} ref={scrollableRef} />
+      )}
       <Stack className={classes.selectedItemStack}>
         <Stack gap={4}>
-          <Title order={5} component="div">
+          <Title order={5} component="div" lineClamp={2}>
             {selectedItem.name}
           </Title>
           <Group wrap="nowrap" gap={rem(8)}>
@@ -112,14 +127,16 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
           </Group>
         </Stack>
         {selectedItem && <Text>{selectedItem.intro}</Text>}
-        <Button
-          className={classes.atcButton}
-          variant="default"
-          onClick={() => handleAddToCard(selectedItem)}
-        >
-          <Checkbox checked={!!isAddedToCart} readOnly mr={8} />
-          {isAddedToCart ? "Remove from cart" : "Add to cart"}
-        </Button>
+        {!disableAtc && (
+          <Button
+            className={classes.atcButton}
+            variant="default"
+            onClick={() => handleAddToCard(selectedItem)}
+          >
+            <Checkbox checked={!!isAddedToCart} readOnly mr={8} />
+            {isAddedToCart ? "Select" : "Deselect"}
+          </Button>
+        )}
       </Stack>
 
       {selectedItem.productFeatures.length > 0 && (
@@ -127,7 +144,7 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
           <Text size="sm" c="dimmed">
             Features:
           </Text>
-          <Stack className={classes.contentWrapper}>
+          <Stack className={cn(classes.featuresStack, { scrollbar: true })}>
             {selectedItem.productFeatures.map((feature, index) => (
               <Group key={index} className={classes.featureRow}>
                 <IconCircleCheck
@@ -142,13 +159,15 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
         </Stack>
       )}
       {addedProducts.length > 0 && <HorizontalScrollRow children={addedProducts} />}
-      <Button
-        onClick={() => addToAmazonCart(selectedProducts.map((p) => p.asin))}
-        disabled={!selectedAsinsLength}
-      >
-        <IconLink className="icon icon__small" style={{ marginRight: rem(8) }} />
-        Buy selected {selectedAsinsLength > 0 ? `(${selectedAsinsLength})` : undefined}
-      </Button>
+      {!disableAtc && (
+        <Button
+          onClick={() => addToAmazonCart(selectedProducts.map((p) => p.asin))}
+          disabled={!selectedAsinsLength}
+        >
+          <IconLink className="icon icon__small" style={{ marginRight: rem(8) }} />
+          Add to Amazon cart {selectedAsinsLength > 0 ? `(${selectedAsinsLength})` : undefined}
+        </Button>
+      )}
     </Stack>
   );
 }

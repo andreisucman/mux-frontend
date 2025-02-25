@@ -41,7 +41,7 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
         const text = upperFirst(key);
 
         const render = !!isCooldown ? (
-          <Timer date={date} children={<Group gap={8}>{icon} Next after</Group>} showDays />
+          <Timer date={date} children={<Group gap={8}>{icon} Next {key} after</Group>} showDays />
         ) : (
           <Group gap={8}>
             {icon} {text}

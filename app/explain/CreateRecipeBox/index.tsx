@@ -13,6 +13,7 @@ import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { RecipeType, UserDataType } from "@/types/global";
 import RecipeSettingsContent from "./RecipeSettingsContent";
 import classes from "./CreateRecipeBox.module.css";
+import { useRouter } from "@/helpers/custom-router";
 
 type Props = {
   taskId: string | null;
@@ -28,6 +29,7 @@ export default function CreateRecipeBox({
   isDisabled,
   setShowWaitComponent,
 }: Props) {
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -68,6 +70,7 @@ export default function CreateRecipeBox({
                 : () =>
                     startSubscriptionTrial({
                       subscriptionName: "improvement",
+                      router
                     });
 
               openSubscriptionModal({

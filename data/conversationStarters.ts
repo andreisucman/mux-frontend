@@ -11,24 +11,17 @@ export default function getConversationStarters(chatCategory?: ChatCategoryEnum,
       );
       break;
     case ChatCategoryEnum.DIARY:
-      starters.push(`what feedback ${isClub ? "they" : "i"} left about the minoxidil task`);
+      starters.push(`what feedback ${isClub ? "they" : "i"} left about the ... task`);
       break;
     case ChatCategoryEnum.FOOD:
       starters.push(
         `what can i add to this food to make it ...`,
         `what i ate today`,
-        `when i had fried potatoes last time`
-      );
-      break;
-    case ChatCategoryEnum.GENERAL:
-      starters.push(
-        `what type of glasses will look good on me ...`,
-        `will beard look good on me or should i shave clean`,
-        `how can i look more feminine`
+        `when i had ... last time`
       );
       break;
     case ChatCategoryEnum.PRODUCT:
-      starters.push(`which of these is best for me?`, `i need one without hemp`);
+      starters.push(`which of these is best for me?`, `i need one without ...`);
       break;
     case ChatCategoryEnum.ROUTINE:
       starters.push(
@@ -37,7 +30,7 @@ export default function getConversationStarters(chatCategory?: ChatCategoryEnum,
       );
       break;
     case ChatCategoryEnum.TASK:
-      starters.push(`which task should i complete first`);
+      starters.push(`can i swap the ... product and still get results?`);
       break;
   }
 

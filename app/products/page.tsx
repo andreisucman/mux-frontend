@@ -93,7 +93,7 @@ export default function Products() {
             onClick={() => addToAmazonCart(selectedAsins)}
             flex={1}
           >
-            Add to cart {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
+            Add to Amazon cart {selectedAsins.length > 0 ? `(${selectedAsins.length})` : ""}
           </Button>
         </Group>
       )}

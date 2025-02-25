@@ -9,11 +9,13 @@ import {
   IconRoute,
   IconShoppingBag,
 } from "@tabler/icons-react";
-import { Button, Group, rem } from "@mantine/core";
+import { Button, Group, rem, Text, UnstyledButton } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
+import openErrorModal from "@/helpers/openErrorModal";
 import openCreateNewTask from "../CreateTaskOverlay/openCreateNewTask";
 import classes from "./TasksButtons.module.css";
 
@@ -26,9 +28,35 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
   const router = useRouter();
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
-  const { timeZone } = userDetails || {};
+  const { timeZone, nextScan } = userDetails || {};
 
   const { onCreateRoutineClick } = useContext(CreateRoutineContext);
+
+  const onCreateManuallyClick = () => {
+    const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
+    if (!partsScanned || partsScanned.length === 0) {
+      openErrorModal({
+        title: "🚨 Please scan yourself",
+        description: (
+          <Text>
+            You need to scan yourself to be able to create tasks. Click{" "}
+            <UnstyledButton
+              onClick={() => {
+                router.push("/scan/progress");
+                modals.closeAll();
+              }}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              here
+            </UnstyledButton>{" "}
+            to start.
+          </Text>
+        ),
+      });
+      return;
+    }
+    openCreateNewTask({ timeZone, handleSaveTask, onCreateRoutineClick });
+  };
 
   return (
     <Group className={classes.container}>
@@ -73,7 +101,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
         disabled={disableCreateTask}
         variant="default"
         size="xs"
-        onClick={() => openCreateNewTask({ handleSaveTask, onCreateRoutineClick, timeZone })}
+        onClick={onCreateManuallyClick}
       >
         <IconCirclePlus style={{ width: rem(20) }} />
       </Button>

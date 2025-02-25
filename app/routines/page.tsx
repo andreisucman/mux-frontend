@@ -128,8 +128,6 @@ export default function ClubRoutines() {
 
   const noResults = !routines || routines.length === 0;
 
-  console.log("routiens", routines);
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>

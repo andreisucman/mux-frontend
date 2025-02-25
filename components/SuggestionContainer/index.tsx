@@ -1,6 +1,5 @@
 import React from "react";
-import { Group, Skeleton, Stack, Text } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { Skeleton, Stack, Text } from "@mantine/core";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import { SuggestionType } from "@/types/global";
@@ -35,8 +34,6 @@ export default function SuggestionContainer({
   customStyles,
   setSelectedAsins,
 }: Props) {
-  const isMobile = useMediaQuery("(max-width: 36em)");
-
   return (
     <Skeleton className="skeleton" visible={!items}>
       <Stack className={classes.container} style={customStyles ? customStyles : {}}>

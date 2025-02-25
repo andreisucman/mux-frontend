@@ -3,7 +3,7 @@ import { modals } from "@mantine/modals";
 
 type Props = {
   title?: string;
-  description?: string;
+  description?: string | React.ReactNode;
   onClose?: () => void;
 };
 

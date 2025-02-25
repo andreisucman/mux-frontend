@@ -140,6 +140,7 @@ export default function ChatInput({
         : () =>
             startSubscriptionTrial({
               subscriptionName: "advisor",
+              router
             });
 
     const payload = {

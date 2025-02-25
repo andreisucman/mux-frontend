@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Stack } from "@mantine/core";
+import { Button, Stack, Text, UnstyledButton } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
+import { useRouter } from "@/helpers/custom-router";
+import openErrorModal from "@/helpers/openErrorModal";
 import openCreateNewTask from "./openCreateNewTask";
 import classes from "./CreateTaskOverlay.module.css";
 
@@ -13,12 +16,36 @@ type Props = {
 };
 
 export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTask }: Props) {
+  const router = useRouter();
   const [showWeeklyButton, setShowWeeklyButton] = useState(false);
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
     useContext(CreateRoutineContext);
   const { userDetails } = useContext(UserContext);
+  const { nextScan } = userDetails || {};
 
   const onCreateManuallyClick = () => {
+    const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
+    if (!partsScanned || partsScanned.length === 0) {
+      openErrorModal({
+        title: "🚨 Please scan yourself",
+        description: (
+          <Text>
+            You need to scan yourself to be able to create tasks. Click{" "}
+            <UnstyledButton
+              onClick={() => {
+                router.push("/scan/progress");
+                modals.closeAll();
+              }}
+              style={{ textDecoration: "underline" }}
+            >
+              here
+            </UnstyledButton>{" "}
+            to start.
+          </Text>
+        ),
+      });
+      return;
+    }
     openCreateNewTask({ timeZone, handleSaveTask, onCreateRoutineClick });
   };
 

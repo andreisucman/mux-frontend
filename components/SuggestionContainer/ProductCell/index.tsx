@@ -37,9 +37,9 @@ const ProductCell = ({ item, items, selectedAsins, showOnCellAtc, setSelectedAsi
           Product preview
         </Title>
       ),
-      size: "md",
+      size: "lg",
       classNames: { content: "scrollbars" },
-      innerProps: <ProductModalBody defaultItem={item} items={items} />,
+      innerProps: <ProductModalBody defaultItem={item} items={items} disableAtc={showOnCellAtc} />,
       withinPortal: false,
     });
   }, [item]);

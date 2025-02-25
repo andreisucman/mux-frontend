@@ -8,6 +8,7 @@ import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
+import { useRouter } from "@/helpers/custom-router";
 import openSubscriptionModal from "@/helpers/openSubscriptionModal";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
@@ -27,6 +28,7 @@ const defaultCreateRoutineContext = {
 export const CreateRoutineContext = createContext(defaultCreateRoutineContext);
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -85,6 +87,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
             startSubscriptionTrial({
               subscriptionName: "improvement",
               onComplete: onCreateRoutineClick,
+              router,
             });
 
       openSubscriptionModal({

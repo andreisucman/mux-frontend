@@ -86,6 +86,7 @@ export default function StartDate() {
               : () =>
                   startSubscriptionTrial({
                     subscriptionName: "improvement",
+                    router,
                   });
 
             openSubscriptionModal({
@@ -134,6 +135,7 @@ export default function StartDate() {
             maxDate={daysFrom({ days: 7 })}
             value={startDate}
             onChange={setStartDate}
+            hideOutsideDates
             classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
           />
           <Text className={classes.date}>{text}</Text>
