@@ -5,8 +5,7 @@ export const data = [
     question: "What is Muxout?",
     answer: (
       <Text>
-        Muxout is a platform where people improve how they look and earn by inspiring others to do
-        the same.
+        Muxout is a platform where people maximize their outlook and help others do the same.
       </Text>
     ),
   },
@@ -16,19 +15,19 @@ export const data = [
       <Stack>
         <Text>First, you scan yourself to get feedback on your appearance from our AI.</Text>
         <Text>
-          After you receive your feedback and list of potential concerns you can start creating your
-          routines. You can create routines manually by adding individual tasks, or you can use our
+          After you get your feedback and a list of potential concerns you can start creating your
+          routines. You can create routines manually by adding individual tasks or using our
           'Improvement Coach' to create a routine for the whole week based on your condition.
         </Text>
         <Text>After you have your routines you can start completing the tasks in them.</Text>
         <Text>
           When you complete a task you can upload a video or image as proof. Uploading proofs is not
-          required, but important, especially if you plan to sell your routines later, when you have
-          visible results.
+          required, but it is important, especially if you plan to monetize your routines later when
+          you have visible results.
         </Text>
         <Text>
-          Each week you have to scan yourself again to record your improvement and identify new
-          concerns (if any). All of your scans are privately stored on your results page.
+          Each week you rescan yourself to record your improvement and identify new concerns (if
+          any). All of your scans are privately stored on your results page.
         </Text>
         <Text>
           After you make visible progress you may choose to turn your profile public to inspire
@@ -56,11 +55,11 @@ export const data = [
     question: "Is Muxout free?",
     answer: (
       <Text>
-        Muxout is a free to use platform. It has optional paid addons such as the 'Improvement
+        Muxout is a free-to-use platform. It has optional paid addons such as the 'Improvement
         Coach' - the AI that creates personal routines for you, and the 'Advisor Coach' - the AI
-        that answers your questions about the tasks, products, activity, and the person you follow.
-        There is also the 'Peek License' that allows you to follow public users to see and steal
-        their routines.
+        that answers your questions about the tasks, products, activities, and the person you
+        follow. There is also the 'Peek License' that allows you to follow public users to see and
+        steal their routines.
       </Text>
     ),
   },
