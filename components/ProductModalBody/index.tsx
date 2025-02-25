@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { IconCircleCheck, IconLink } from "@tabler/icons-react";
 import cn from "classnames";
@@ -32,7 +32,7 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
         console.log("category", category, "selectedCategory", selectedCategory);
         if (category !== selectedCategory) {
           const selectedCategoryItems = items.filter((i) => i.suggestion === category);
-          console.log(selectedCategoryItems)
+          console.log(selectedCategoryItems);
           setSelectedItem(selectedCategoryItems[0]);
         }
       }}
@@ -96,11 +96,6 @@ export default function ProductModalBody({ items, defaultItem }: Props) {
 
   const isAddedToCart = selectedProducts.map((p) => p._id).includes(selectedItem._id);
   const selectedAsinsLength = selectedProducts.length;
-
-  // useEffect(() => {
-  //   const selectedCategoryItems = items.filter((i) => i.suggestion === selectedCategory);
-  //   setSelectedItem(selectedCategoryItems[0]);
-  // }, [selectedCategory]);
 
   return (
     <Stack>
