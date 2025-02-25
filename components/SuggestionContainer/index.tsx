@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import { SuggestionType } from "@/types/global";
+import HorizontalScrollRow from "../ProductModalBody/HorizontalScrollRow";
 import ProductCell from "./ProductCell";
 import classes from "./SuggestionContainer.module.css";
 
@@ -45,23 +46,20 @@ export default function SuggestionContainer({
               {title}
             </Text>
           )}
-          <Group className={classes.content}>
-            <Group className={classes.suggestionRow} style={rowStyles ? rowStyles : {}}>
-              {items?.map((item, index) => (
-                <ProductCell
-                  key={index}
-                  item={item}
-                  isMobile={!!isMobile}
-                  allItems={items}
-                  showOnCellAtc={showOnCellAtc || false}
-                  selectedAsins={selectedAsins}
-                  setSelectedAsins={setSelectedAsins}
-                />
-              ))}
-            </Group>
-          </Group>
+          <HorizontalScrollRow
+            customWrapperStyles={rowStyles}
+            children={items?.map((item, index) => (
+              <ProductCell
+                key={index}
+                item={item}
+                items={items}
+                showOnCellAtc={showOnCellAtc || false}
+                selectedAsins={selectedAsins}
+                setSelectedAsins={setSelectedAsins}
+              />
+            ))}
+          />
         </Stack>
-
         {!disableLocalChat && (
           <ChatWithModal
             chatCategory={ChatCategoryEnum.PRODUCT}

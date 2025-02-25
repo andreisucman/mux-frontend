@@ -8,14 +8,14 @@ import classes from "./ProductCell.module.css";
 
 type Props = {
   item: SuggestionType;
+  items: SuggestionType[];
   showOnCellAtc: boolean;
   selectedAsins?: string[];
   setSelectedAsins?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const ProductCell = ({ item, selectedAsins, showOnCellAtc, setSelectedAsins }: Props) => {
+const ProductCell = ({ item, items, selectedAsins, showOnCellAtc, setSelectedAsins }: Props) => {
   const added = selectedAsins?.includes(item.asin);
-  const modalTitle = `Product preview`;
 
   const handleAddToCard = useCallback(
     (e: any) => {
@@ -34,15 +34,15 @@ const ProductCell = ({ item, selectedAsins, showOnCellAtc, setSelectedAsins }: P
       modal: "general",
       title: (
         <Title order={5} component={"p"} lineClamp={1}>
-          {modalTitle}
+          Product preview
         </Title>
       ),
       size: "md",
       classNames: { content: "scrollbars" },
-      innerProps: <ProductModalBody item={item} />,
+      innerProps: <ProductModalBody defaultItem={item} items={items} />,
       withinPortal: false,
     });
-  }, [modalTitle, item]);
+  }, [item]);
 
   return (
     <Stack className={classes.container} onClick={openProductModal}>

@@ -1,0 +1,13 @@
+.container {
+  overflow: auto;
+  flex-wrap: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.wrapper {
+  gap: rem(12);
+  flex-wrap: nowrap;
+}

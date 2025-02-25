@@ -8,3 +8,74 @@
 .contentWrapper {
   gap: rem(8);
 }
+
+.selectedItemStack {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectProductContainer {
+  cursor: pointer;
+
+  min-width: rem(100);
+  gap: rem(4);
+  align-items: center;
+
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  overflow: hidden;
+
+  border: rem(2) solid transparent;
+
+  &:hover {
+    background-color: var(--mantine-color-dark-5);
+  }
+}
+
+.selectProductImageWrapper {
+  position: relative;
+
+  min-width: rem(100);
+  min-height: rem(75);
+  width: 100%;
+}
+
+.selectProductImage {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.selectProductName {
+  font-size: var(--mantine-font-size-sm);
+  text-align: center;
+}
+
+.selected {
+  border: rem(2) solid var(--mantine-color-brand-6);
+}
+
+.featureRow {
+  gap: rem(16);
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.addedProductContainer {
+  position: relative;
+  width: rem(50);
+  height: rem(50);
+}
+
+.addedProductImage {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  border-radius: var(--mantine-radius-lg);
+}

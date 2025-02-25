@@ -295,7 +295,7 @@ export type RecipeType = {
 };
 
 export type SuggestionType = {
-  itemId: string;
+  _id: string;
   asin: string;
   name: string;
   url: string;
@@ -306,7 +306,7 @@ export type SuggestionType = {
   suggestion: string;
   variant: string;
   rank: number;
-  reasoning: string;
+  intro: string;
   priceAndUnit: string;
   productFeatures: string[];
 };

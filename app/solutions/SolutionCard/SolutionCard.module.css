@@ -9,6 +9,7 @@
   height: rem(36);
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
   font-weight: 500;
   gap: rem(8);
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
