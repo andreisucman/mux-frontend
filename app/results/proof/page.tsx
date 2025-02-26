@@ -4,9 +4,14 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import { FilterItemType } from "@/components/FilterDropdown/types";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
+import { proofSortItems } from "@/data/sortItems";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { individualResultTitles } from "../individualResultTitles";
 import ProofGallery from "./ProofGallery";
 import ProofHeader from "./ProofHeader";
@@ -24,6 +29,7 @@ export default function ResultsProof() {
   const { status } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
   const query = searchParams.get("query");
   const part = searchParams.get("part");
@@ -52,15 +58,34 @@ export default function ResultsProof() {
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
     handleFetchProof({ part, sort, concern, query });
   }, [status, part, sort, concern, query]);
+
+  useEffect(() => {
+    getFilters({ collection: "proof", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+  }, []);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
       <SkeletonWrapper>
-        <ProofHeader titles={individualResultTitles} showReturn />
+        <PageHeader
+          titles={individualResultTitles}
+          isDisabled={availableParts.length === 0}
+          filterNames={["part"]}
+          sortItems={proofSortItems}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+              },
+            })
+          }
+          showReturn
+        />
         {proof ? (
           <ProofGallery
             proof={proof}

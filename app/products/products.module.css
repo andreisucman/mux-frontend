@@ -13,8 +13,8 @@
 .addToCartGroup {
   padding: rem(16);
   position: sticky;
-  bottom: rem(16);
-  left: rem(16);
-  right: rem(16);
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: alpha(var(--mantine-color-dark-6), 0.75);
 }

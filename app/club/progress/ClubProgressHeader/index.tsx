@@ -1,18 +1,17 @@
 import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { ActionIcon, Group, Title } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { ActionIcon, Group } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
 import FilterDropdown from "@/components/FilterDropdown";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
 import SortButton from "@/components/SortButton";
 import { progressSortItems } from "@/data/sortItems";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
-import ClubProgressFilterCardContent from "./ClubProgressFilterCardContent";
 import classes from "./ProgressHeader.module.css";
 
 type Props = {
@@ -43,19 +42,6 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
     [userName, searchParams.toString()]
   );
 
-  const openFiltersCard = useCallback(() => {
-    modals.openContextModal({
-      modal: "general",
-      title: (
-        <Title order={5} component="p">
-          Filters
-        </Title>
-      ),
-      centered: true,
-      innerProps: <ClubProgressFilterCardContent userName={userName} />,
-    });
-  }, [userName]);
-
   return (
     <Group className={classes.container}>
       {showReturn && (
@@ -66,7 +52,12 @@ export default function ClubProgressHeader({ titles, userName, showReturn, isDis
       <TitleDropdown titles={titles} />
       <SortButton sortItems={progressSortItems} isDisabled={isDisabled} />
       <FilterButton
-        onFilterClick={openFiltersCard}
+        onFilterClick={() =>
+          openFiltersCard({
+            cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
+            childrenProps: { userName },
+          })
+        }
         activeFiltersCount={paramsCount}
         isDisabled={isDisabled}
       />

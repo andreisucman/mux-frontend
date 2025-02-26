@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { ActionIcon, Group, Title } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { ActionIcon, Group } from "@mantine/core";
 import { createSpotlight } from "@mantine/spotlight";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import FilterButton from "@/components/FilterButton";
@@ -11,9 +10,9 @@ import { clubPageTypeItems } from "@/components/PageHeader/data";
 import SearchButton from "@/components/SearchButton";
 import SortButton from "@/components/SortButton";
 import { proofSortItems } from "@/data/sortItems";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
-import ClubProofFilterCardContent from "./ClubProofFilterCardContent";
 import classes from "./ProofHeader.module.css";
 
 type Props = {
@@ -46,19 +45,6 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
     [userName, searchParams.toString()]
   );
 
-  const openFiltersCard = useCallback(() => {
-    modals.openContextModal({
-      modal: "general",
-      title: (
-        <Title order={5} component="p">
-          Filters
-        </Title>
-      ),
-      centered: true,
-      innerProps: <ClubProofFilterCardContent userName={userName} />,
-    });
-  }, [userName]);
-
   return (
     <Group className={classes.container}>
       {showReturn && (
@@ -70,7 +56,12 @@ export default function ClubProofHeader({ userName, showReturn, isDisabled, titl
       <SortButton sortItems={proofSortItems} isDisabled={isDisabled} />
       <FilterButton
         activeFiltersCount={paramsCount}
-        onFilterClick={openFiltersCard}
+        onFilterClick={() =>
+          openFiltersCard({
+            cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
+            childrenProps: { userName },
+          })
+        }
         isDisabled={isDisabled}
       />
       <SearchButton

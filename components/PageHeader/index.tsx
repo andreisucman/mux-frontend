@@ -1,19 +1,22 @@
 import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
+import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
+import TitleDropdown from "@/app/results/TitleDropdown";
 import { useRouter } from "@/helpers/custom-router";
-import { partIcons } from "@/helpers/icons";
 import FilterButton from "../FilterButton";
-import FilterDropdown from "../FilterDropdown";
-import { partItems } from "./data";
+import SortButton from "../SortButton";
 import classes from "./PageHeader.module.css";
 
 type Props = {
-  title: string;
+  nowrap?: boolean;
+  title?: string;
+  titles?: { label: string; value: string }[];
   isDisabled?: boolean;
   showReturn?: boolean;
   hidePartDropdown?: boolean;
+  sortItems?: { value: string; label: string }[];
   filterNames?: string[];
   children?: React.ReactNode;
   onSelect?: (value?: string | null) => void;
@@ -22,24 +25,35 @@ type Props = {
 
 export default function PageHeader({
   title,
+  titles,
+  nowrap,
   showReturn,
-  hidePartDropdown,
   isDisabled,
+  sortItems,
   filterNames = [],
   children,
-  onSelect,
   onFilterClick,
 }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const part = searchParams.get("part");
 
   const activeFiltersCount = useMemo(() => {
     const allQueryParams = Array.from(searchParams.keys());
     const included = allQueryParams.filter((k) => filterNames?.includes(k));
     return included.length;
   }, [searchParams.toString()]);
+
+  const finalTitle = useMemo(() => {
+    if (titles) {
+      return <TitleDropdown titles={titles} />;
+    } else {
+      return (
+        <Title order={1} lineClamp={3} className={cn(classes.title, { [classes.nowrap]: nowrap })}>
+          {title}
+        </Title>
+      );
+    }
+  }, [titles, title]);
 
   return (
     <Group className={classes.container}>
@@ -48,24 +62,14 @@ export default function PageHeader({
           <IconChevronLeft className="icon" />
         </ActionIcon>
       )}
-      <Title order={1} lineClamp={2} mr="auto">
-        {title}
-      </Title>
+      {finalTitle}
       {children}
+      {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
       {onFilterClick && (
-        <FilterButton onFilterClick={onFilterClick} activeFiltersCount={activeFiltersCount} />
-      )}
-      {!hidePartDropdown && (
-        <FilterDropdown
-          data={partItems}
-          icons={partIcons}
-          filterType="part"
-          placeholder="Filter by part"
-          selectedValue={part}
-          onSelect={onSelect}
+        <FilterButton
           isDisabled={isDisabled}
-          allowDeselect
-          addToQuery
+          onFilterClick={onFilterClick}
+          activeFiltersCount={activeFiltersCount}
         />
       )}
     </Group>

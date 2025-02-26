@@ -3,13 +3,17 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import { createSpotlight } from "@mantine/spotlight";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
+import SearchButton from "@/components/SearchButton";
 import { UserContext } from "@/context/UserContext";
 import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
 import GeneralResultsHeader from "../GeneralResultsHeader";
 
 export const runtime = "edge";
+
+const [spotlightStore, proofSpotlight] = createSpotlight();
 
 interface HandleFetchProofProps extends FetchProofProps {
   currentArray?: SimpleProofType[];
@@ -22,9 +26,9 @@ export default function AllProof() {
   const [hasMore, setHasMore] = useState(false);
 
   const query = searchParams.get("query");
+  const sort = searchParams.get("sort");
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
-  const sort = searchParams.get("sort");
   const ageInterval = searchParams.get("ageInterval");
   const ethnicity = searchParams.get("ethnicity");
   const concern = searchParams.get("concern");
@@ -78,7 +82,18 @@ export default function AllProof() {
 
   return (
     <Stack className={"mediumPage"} flex={1}>
-      <GeneralResultsHeader showFilter showSearch />
+      <GeneralResultsHeader
+        filterNames={["part", "sex", "ageInterval", "ethnicity", "concern"]}
+        children={
+          <SearchButton
+            collection="proof"
+            searchPlaceholder="Search proof"
+            spotlight={proofSpotlight}
+            spotlightStore={spotlightStore}
+            showActivityIndicator
+          />
+        }
+      />
       {proof ? (
         <ProofGallery
           proof={proof}

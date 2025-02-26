@@ -105,7 +105,9 @@ export default function BeforeAftersPage() {
 
   return (
     <Stack className={`${classes.container} mediumPage`} ref={ref}>
-      <GeneralResultsHeader showFilter />
+      <GeneralResultsHeader
+        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType", "concern"]}
+      />
       {beforeAfters ? (
         <>
           {beforeAfters.length > 0 ? (

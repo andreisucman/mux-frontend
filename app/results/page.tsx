@@ -5,14 +5,18 @@ import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Loader, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
+import { progressSortItems } from "@/data/sortItems";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import SkeletonWrapper from "../SkeletonWrapper";
 import { individualResultTitles } from "./individualResultTitles";
 import ProgressGallery from "./ProgressGallery";
-import ProgressHeader from "./ProgressHeader";
 import { SimpleProgressType } from "./types";
 import classes from "./results.module.css";
 
@@ -27,6 +31,7 @@ export default function ResultsProgress() {
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -69,15 +74,34 @@ export default function ResultsProgress() {
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
     handleFetchProgress({ part, sort });
   }, [status, sort, part]);
+
+  useEffect(() => {
+    getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+  }, []);
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
       <SkeletonWrapper>
-        <ProgressHeader titles={individualResultTitles} showReturn />
+        <PageHeader
+          titles={individualResultTitles}
+          isDisabled={availableParts.length === 0}
+          filterNames={["part"]}
+          sortItems={progressSortItems}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+              },
+            })
+          }
+          showReturn
+        />
         {progress ? (
           <>
             {progress.length > 0 ? (

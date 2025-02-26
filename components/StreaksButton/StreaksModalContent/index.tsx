@@ -42,5 +42,12 @@ export default function StreaksModalContent({ streaksSections }: Props) {
       </Group>
     );
   });
-  return <Stack>{rows}</Stack>;
+  return (
+    <Stack>
+      <Text ta="center" c="dimmed" size="sm" maw={300} m="auto">
+        Streaks enable you to claim rewards. Visit the Rewards page to see what you can claim.
+      </Text>
+      {rows}
+    </Stack>
+  );
 }

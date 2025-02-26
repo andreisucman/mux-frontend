@@ -6,12 +6,15 @@ import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import fetchRoutines from "@/functions/fetchRoutines";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
@@ -42,11 +45,13 @@ export default function ClubRoutines() {
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
   const { userDetails } = useContext(UserContext);
   const { timeZone, specialConsiderations } = userDetails || {};
 
   const sort = searchParams.get("sort");
+  const part = searchParams.get("part");
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, routinesLength }: GetRoutinesProps) => {
@@ -119,6 +124,11 @@ export default function ClubRoutines() {
   }, [isAnalysisGoing, routines, pageLoaded]);
 
   useEffect(() => {
+    getFilters({ collection: "routine", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+
     getFromIndexedDb("openRoutinesRow").then((part) => {
       setOpenValue(part);
     });
@@ -126,17 +136,23 @@ export default function ClubRoutines() {
 
   useEffect(() => setPageLoaded(true), []);
 
-  const noResults = !routines || routines.length === 0;
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn
+        <PageHeader
           title="My routines"
+          isDisabled={availableParts.length === 0}
+          filterNames={["part"]}
           sortItems={routineSortItems}
-          isDisabled={noResults}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+              },
+            })
+          }
           showReturn
-          nowrap
         />
         <ConsiderationsInput
           placeholder={"Special considerations"}

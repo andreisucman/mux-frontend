@@ -18,12 +18,15 @@ import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import ChatWithModal from "@/components/ChatWithModal";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import TaskInfoContainer from "@/components/TaskInfoContainer";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import fetchRoutines from "@/functions/fetchRoutines";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -56,6 +59,7 @@ export default function ClubRoutines(props: Props) {
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
   const { name, routines: currentUserRoutines, club } = userDetails || {};
   const { followingUserName } = club || {};
@@ -268,7 +272,12 @@ export default function ClubRoutines(props: Props) {
     handleFetchRoutines(payload);
   }, [sort, userName, followingUserName]);
 
-  const noResults = !routines || routines.length === 0;
+  useEffect(() => {
+    getFilters({ userName, collection: "routine", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+  }, []);
 
   return (
     <ClubModerationLayout
@@ -277,7 +286,16 @@ export default function ClubRoutines(props: Props) {
           title={"Club"}
           pageType={"routines"}
           sortItems={routineSortItems}
-          isDisabled={noResults}
+          isDisabled={availableParts.length === 0}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+                userName,
+              },
+            })
+          }
           showReturn
         />
       }

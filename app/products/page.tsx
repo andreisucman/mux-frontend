@@ -6,9 +6,12 @@ import { IconCircleOff, IconTrash } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { addToAmazonCart } from "@/helpers/addToAmazonCart";
 import { TaskType } from "@/types/global";
 import ProductsRow from "./ProductsRow";
@@ -22,6 +25,7 @@ export default function Products() {
 
   const part = searchParams.get("part");
 
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
   const [uniqueTasks, setUniqueTasks] = useState<TaskType[]>();
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
@@ -47,13 +51,33 @@ export default function Products() {
   }, []);
 
   useEffect(() => {
+    getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+  }, []);
+
+  useEffect(() => {
     fetchProducts(part);
   }, [part]);
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
       <SkeletonWrapper>
-        <PageHeader title="Products for tasks" showReturn />
+        <PageHeader
+          title="Products for tasks"
+          isDisabled={availableParts.length === 0}
+          filterNames={["part"]}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.ProductsFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+              },
+            })
+          }
+          showReturn
+        />
         {uniqueTasks ? (
           <>
             {uniqueTasks.length > 0 ? (

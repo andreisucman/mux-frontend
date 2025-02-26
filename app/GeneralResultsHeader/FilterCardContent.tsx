@@ -10,7 +10,7 @@ import { ExistingFiltersType } from "./types";
 import classes from "./FilterCardContent.module.css";
 
 type Props = {
-  filters: ExistingFiltersType | null;
+  filters?: ExistingFiltersType | null;
 };
 
 export default function FilterCardContent({ filters }: Props) {
