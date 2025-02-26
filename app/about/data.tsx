@@ -16,51 +16,55 @@ export const data = [
         <Text>First, you scan yourself to get feedback on your appearance from our AI.</Text>
         <Text>
           After you get your feedback and a list of potential concerns you can start creating your
-          routines. You can create routines manually by adding individual tasks or using our
-          'Improvement Coach' to create a routine for the whole week based on your condition.
+          routines. You can create routines manually by adding individual tasks or use our
+          'Improvement Coach' to create a routine for the whole week.
         </Text>
         <Text>After you have your routines you can start completing the tasks in them.</Text>
         <Text>
           When you complete a task you can upload a video or image as proof. Uploading proofs is not
-          required, but it is important, especially if you plan to monetize your routines later when
-          you have visible results.
+          required, but is important, especially if you plan to monetize your routines.
         </Text>
         <Text>
-          Each week you rescan yourself to record your improvement and identify new concerns (if
-          any). All of your scans are privately stored on your results page.
+          Each week you rescan yourself to record your improvement and identify new concerns. All of
+          your scans are privately stored on your results page.
         </Text>
         <Text>
           After you make visible progress you may choose to turn your profile public to inspire
-          others who would also like to get your transformation. When you make your profile public
-          other people can see your before-afters, which can motivate them to see your routines.
+          others. When you make your profile public other people can see your before-afters, which
+          can motivate them to see your routines.
         </Text>
         <Text>
-          Seeing other people's routines is available as a paid subscription service called the
-          'Peek License'. When someone buys the Peek License and follows you you get a comission
-          from their payment on a daily basis for as long as they follow you.
+          Seeing other people's routines requires a paid subscription called the 'Peek License'. The
+          Peek License allows your followers to copy your tasks and routines for attaining similar
+          results.
         </Text>
         <Text>
-          Having the Peek License allows your followers to copy your tasks and routines for
-          attaining similar results.
+          When someone buys the Peek License and follows you you get a comission from their payment
+          on a daily basis for as long as they follow you.
         </Text>
         <Text>
-          If you consistently complete your tasks you may also get achievements ('Streaks') that
-          allow you to claim rewards. You can see the description and the amounts of the rewards on
-          the Rewards page.
+          Lastly, if you consistently complete your tasks you may also get achievements ('Streaks')
+          that allow you to claim rewards.
         </Text>
+        <Text>To see the description and amounts of the rewards check out the Rewards page.</Text>
       </Stack>
     ),
   },
   {
     question: "Is Muxout free?",
     answer: (
-      <Text>
-        Muxout is a free-to-use platform. It has optional paid addons such as the 'Improvement
-        Coach' - the AI that creates personal routines for you, and the 'Advisor Coach' - the AI
-        that answers your questions about the tasks, products, activities, and the person you
-        follow. There is also the 'Peek License' that allows you to follow public users to see and
-        steal their routines.
-      </Text>
+      <Stack>
+        <Text>Muxout is a free-to-use platform.</Text>
+        <Text>
+          It has optional paid addons such as the 'Improvement Coach' - the AI that creates personal
+          routines for you, and the 'Advisor Coach' - the AI that answers your questions about the
+          tasks, products, activities, and the person you follow.
+        </Text>
+        <Text>
+          There is also the 'Peek License' that allows you to follow public users with significant
+          improvements to see and steal their routines for faster results.
+        </Text>
+      </Stack>
     ),
   },
   {
@@ -87,11 +91,11 @@ export const data = [
       <Stack>
         <Text>
           To withdraw your earnings you have to join the 'Club'. Joining the Club is free and it
-          doesn't make your data public (unless you turn on data sharing in the settings).
+          doesn't make your data public (unless you turn on data sharing explicitly).
         </Text>
         <Text>
           During the onboarding process you provide the legally required information about you and
-          connect your bank account.
+          add your bank account.
         </Text>
         <Text>
           After your information is verified you can withdraw your balance at any time on your Club
@@ -107,10 +111,10 @@ export const data = [
         <Text>
           Muxout is available globally. However, our payment processing partners may have their own
           restrictions with respect to jurisdictions. Therefore, if your country is not supported by
-          our payment processing partners you won't be able to earn and withdraw your rewards.
+          our payment processor you won't be able to earn and withdraw your rewards.
         </Text>
         <Text>
-          You will learn if your country is not supported for payments when you add your bank during
+          You can learn if your country is not supported for payments when you add your bank during
           the Club onboarding.
         </Text>
       </Stack>
@@ -121,9 +125,9 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          Our platform is for people over 18 years old. We determine the age of our users from the
-          uploaded images and block those who we believe are under 18. We also verify age when you
-          join the Club.
+          Our platform is for people over 18 years old. We determine the age from the uploaded
+          images and block the users who we believe are under 18. We also verify age when you join
+          the Club.
         </Text>
         <Text>
           If you are mistakenly blocked by our software as underage, please contact us at
@@ -136,8 +140,18 @@ export const data = [
     question: "Can I delete my data?",
     answer: (
       <Text>
-        Yes, you can delete your content at any time by clicking the trash button near your progress
-        or proof records. You can also delete your account.
+        Yes, you can delete your content at any time by clicking the trash button near your uploaded
+        data. You can also delete your account in the settings.
+      </Text>
+    ),
+  },
+  {
+    question: "What is food scan for?",
+    answer: (
+      <Text>
+        Food scan lets you easily control the amount of calories you consume. This is handy for the
+        tasks related to food intake. Just scan your plate and our AI will tell you how much of the
+        food in it you can eat to stay within your calorie goal.
       </Text>
     ),
   },

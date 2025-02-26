@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Accordion, Stack, Text, Title } from "@mantine/core";
+import { Accordion, Stack, Title } from "@mantine/core";
+import PageHeader from "@/components/PageHeader";
 import { data } from "./data";
 import classes from "./about.module.css";
-import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
