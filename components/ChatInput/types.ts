@@ -1,10 +1,3 @@
-export type CoachQuestionType = {
-  icon: string;
-  question: string;
-  color: string;
-  onClick?: () => void;
-};
-
 export type RecentMessageType = {
   user: MessageContent[];
   assistant: MessageContent[];
