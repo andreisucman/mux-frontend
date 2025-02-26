@@ -15,7 +15,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
       </Text>
       <Stack>
         <Text mt={0}>
-          This privacy policy explains Bettermax LLC, operating as muxout.com ("we," "us," or "our")
+          This privacy policy explains how Bettermax LLC, operating as muxout.com ("we," "us," or "our")
           uses and shares your data when you use our website ("Site") and services ("Services").
         </Text>
         <Text>

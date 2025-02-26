@@ -11,7 +11,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Club Terms</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: January 3, 2025
+        Last updated: February 26, 2025
       </Text>
       <Stack>
         <Text mt={0}>
@@ -19,7 +19,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
           revenue sharing program ("Club").
         </Text>
         <Text>
-          It complement and expand on our platform&apos;s{" "}
+          It complements and expands on our platform&apos;s{" "}
           <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
             General Terms of Service
           </Link>{" "}
@@ -64,19 +64,23 @@ export default function ClubLegalBody({ addTitle }: Props) {
             <ul>
               <li>
                 <strong>Task completion proof:</strong> The images or videos of you performing
-                certain activities, such as using products, eating, or working out and others, as
-                described in the relevant tasks of your routine.
+                activities outlined in your routines, such as using products, engaging in sport
+                activities and others as described in the relevant tasks of your routine.
               </li>
               <li>
-                <strong>Progress images:</strong> The weekly progress images of your head and body.
+                <strong>Progress images:</strong> The weekly progress scans of your body.
               </li>
               <li>
-                <strong>About description:</strong> The text describing your personality including
-                philosophy, style and style tips.
+                <strong>About description:</strong> The text describing your personality and
+                lifestyle.
               </li>
               <li>
                 <strong>Progress diary:</strong> The audio and text capturing your thoughts on the
                 tasks you've completed.
+              </li>
+              <li>
+                <strong>Answers to FAQ:</strong> The text representing the user's answers to
+                frequently asked questions.
               </li>
             </ul>
           </li>
@@ -112,6 +116,14 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>3. Content and Privacy</Title>
         <Title order={3}>1. Ownership of Content:</Title>
         <Text>
+          As a Club member, you are responsible for the content you upload, ensuring it adheres to
+          our{" "}
+          <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
+            General TOS
+          </Link>{" "}
+          and does not violate any laws, rights, or intellectual property.
+        </Text>
+        <Text>
           You retain ownership of the content you upload to the platform. However, by uploading
           content, you grant us a non-exclusive, worldwide, royalty-free license to use, distribute,
           display, and modify your content for the purpose of operating and promoting the platform.
@@ -126,44 +138,31 @@ export default function ClubLegalBody({ addTitle }: Props) {
           accept the risk of potential unauthorized access or misuse, though we strive to prevent
           this from happening.
         </Text>
-        <Title order={3}>3. User-Generated Content:</Title>
+        <Title order={3}>3. Privacy of Content:</Title>
         <ul>
           <li>
-            As a Club member, you are responsible for the content you upload, ensuring it adheres to
-            our{" "}
-            <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
-              General TOS
-            </Link>{" "}
-            and does not violate any laws, rights, or intellectual property.
+            <strong>Public Content:</strong> When you enable data sharing, different types of data
+            are made available to different types of users as follows:
+            <li>
+              The progress and proof data is displayed on the home page of the platform and is
+              viewable by anyone.
+            </li>
+            <li>The diary and answers are accessible by your followers only.</li>
+            <li>
+              The about info is accessible by your followers who have the 'Advisor coach' addon
+              enabled, through the chat.
+            </li>
           </li>
           <li>
-            <strong>Daily Task Completion Proof:</strong> This content, which involves you
-            performing daily tasks, will become public immediately upon joining the Club. Any
-            platform visitor can view this content.
-          </li>
-          <li>
-            <strong>Progress Images of Head and Body:</strong> These images remain private and are
-            only accessible to users who peek (follow) you. Unauthorized sharing or use of these
-            images by followers is strictly prohibited and may result in penalties or removal from
-            the Club.
+            <strong>Private Content:</strong> Any content you upload is private by default, unless
+            you choose to enable data sharing in the settings. You can adjust your data sharing
+            preferences at any time via the settings page. Private content is only accessible to you
+            and cannot be viewed by anyone else, including your followers. We implement strong
+            security measures to protect your private content, but please note that while we take
+            all necessary precautions, no system can guarantee absolute privacy.
           </li>
         </ul>
-        <Title order={3}>4. Privacy of Content:</Title>
-        <ul>
-          <li>
-            <strong>Public Content (Daily Task Completion Proof image and videos):</strong> is
-            visible to all platform users by default.
-          </li>
-          <li>
-            <strong>Private Content (Images of Head and Body):</strong> is private by default, but
-            you can make it accessible to your followers. To manage your data sharing preferences,
-            click the club options button at the bottom of the club profile page and then switch the
-            corresponding selector. We take precautions to ensure content is secure and viewable
-            only by authorized followers, but we do not guarantee absolute privacy. Unauthorized
-            sharing of private content is a violation of these terms and may lead to penalties.
-          </li>
-        </ul>
-        <Title order={3}>5. Leaving the Club:</Title>
+        <Title order={3}>4. Leaving the Club:</Title>
         <Text>
           You can leave the Club at any time by visiting your Settings page at{" "}
           <Link href="/settings" style={{ display: "inline-block", textDecoration: "underline" }}>

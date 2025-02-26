@@ -11,7 +11,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Terms of Service</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: September 12, 2024
+        Last updated: February 26, 2025
       </Text>
       <Stack>
         <Text mt={0}>

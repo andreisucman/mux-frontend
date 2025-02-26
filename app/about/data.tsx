@@ -67,12 +67,12 @@ export const data = [
     question: "How can I earn on Muxout?",
     answer: (
       <Stack>
-        <Text>You can earn in 2 ways.</Text>
+        <Text>You can earn on Muxout in 2 ways.</Text>
         <Text>
-          1. You can create yourself an effective routine, and complete its tasks to improve your
-          appearance. You can then make your profile public to let other people see your results and
-          follow you to see your routines. When other people follow you will earn a comission from
-          their subscription payments.
+          1. You can create an effective routine, and complete its tasks to improve your appearance.
+          You can then make your profile public to let other people see your before-afters and
+          follow you to access your routines. You will earn a 50% comission from each follower's
+          subscription payment.
         </Text>
         <Text>
           2. You can complete your tasks and earn achievements ('Streaks'). When you have the

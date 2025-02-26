@@ -11,6 +11,8 @@ import {
 } from "@tabler/icons-react";
 import { Button, Group, rem, Text, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { defaultStreaks } from "@/app/rewards/RewardCard/defaultStreaks";
+import StreaksButton from "@/components/StreaksButton";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
@@ -60,51 +62,54 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
 
   return (
     <Group className={classes.container}>
-      <Button
-        className={classes.button}
-        variant="default"
-        size="xs"
-        onClick={() => router.push("/products")}
-      >
-        <IconShoppingBag style={{ width: rem(20) }} />
-      </Button>
-      <Button
-        className={classes.button}
-        variant="default"
-        size="xs"
-        onClick={() => router.push("/calendar")}
-      >
-        <IconCalendar style={{ width: rem(20) }} />
-      </Button>
-      {pathname === "/tasks" && (
+      <StreaksButton streaks={userDetails?.streaks || defaultStreaks} />
+      <Group className={classes.wrapper}>
         <Button
           className={classes.button}
           variant="default"
           size="xs"
-          onClick={() => router.push("/routines")}
+          onClick={() => router.push("/products")}
         >
-          <IconRoute style={{ width: rem(20) }} />
+          <IconShoppingBag style={{ width: rem(20) }} />
         </Button>
-      )}
-      {pathname === "/routines" && (
         <Button
           className={classes.button}
           variant="default"
           size="xs"
-          onClick={() => router.push("/tasks")}
+          onClick={() => router.push("/calendar")}
         >
-          <IconListDetails style={{ width: rem(20) }} />
+          <IconCalendar style={{ width: rem(20) }} />
         </Button>
-      )}
-      <Button
-        className={classes.button}
-        disabled={disableCreateTask}
-        variant="default"
-        size="xs"
-        onClick={onCreateManuallyClick}
-      >
-        <IconCirclePlus style={{ width: rem(20) }} />
-      </Button>
+        {pathname === "/tasks" && (
+          <Button
+            className={classes.button}
+            variant="default"
+            size="xs"
+            onClick={() => router.push("/routines")}
+          >
+            <IconRoute style={{ width: rem(20) }} />
+          </Button>
+        )}
+        {pathname === "/routines" && (
+          <Button
+            className={classes.button}
+            variant="default"
+            size="xs"
+            onClick={() => router.push("/tasks")}
+          >
+            <IconListDetails style={{ width: rem(20) }} />
+          </Button>
+        )}
+        <Button
+          className={classes.button}
+          disabled={disableCreateTask}
+          variant="default"
+          size="xs"
+          onClick={onCreateManuallyClick}
+        >
+          <IconCirclePlus style={{ width: rem(20) }} />
+        </Button>
+      </Group>
     </Group>
   );
 }

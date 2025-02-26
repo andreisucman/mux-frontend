@@ -1,0 +1,16 @@
+.label {
+  display: flex;
+  justify-content: center;
+}
+
+.text {
+  font-size: rem(28);
+}
+
+.row {
+  flex-wrap: nowrap;
+}
+
+.rowRight {
+  gap: 0;
+}
