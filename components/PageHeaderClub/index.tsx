@@ -1,29 +1,33 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import { useRouter } from "@/helpers/custom-router";
+import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
+import { pageTypeIcons } from "@/helpers/icons";
 import FilterButton from "../FilterButton";
+import FilterDropdown from "../FilterDropdown";
+import { clubPageTypeItems } from "../PageHeader/data";
 import SortButton from "../SortButton";
-import classes from "./PageHeader.module.css";
+import classes from "./PageHeaderClub.module.css";
 
 type Props = {
   nowrap?: boolean;
-  title?: string | React.ReactNode;
+  title?: string;
+  pageType: string;
+  userName: string;
   titles?: { label: string; value: string }[];
   isDisabled?: boolean;
   showReturn?: boolean;
-  hidePartDropdown?: boolean;
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
   children?: React.ReactNode;
-  onSelect?: (value?: string | null) => void;
   onFilterClick?: () => void;
 };
 
-export default function PageHeader({
+export default function PageHeaderClub({
   title,
   titles,
   nowrap,
@@ -32,6 +36,8 @@ export default function PageHeader({
   sortItems,
   filterNames = [],
   children,
+  userName,
+  pageType,
   onFilterClick,
 }: Props) {
   const router = useRouter();
@@ -39,7 +45,7 @@ export default function PageHeader({
 
   const activeFiltersCount = useMemo(() => {
     const allQueryParams = Array.from(searchParams.keys());
-    const included = allQueryParams.filter((k) => filterNames?.includes(k));
+    const included = allQueryParams.filter((k) => filterNames.includes(k));
     return included.length;
   }, [searchParams.toString()]);
 
@@ -47,21 +53,24 @@ export default function PageHeader({
     if (titles) {
       return <TitleDropdown titles={titles} />;
     } else {
-      if (typeof title === "string") {
-        return (
-          <Title
-            order={1}
-            lineClamp={3}
-            className={cn(classes.title, { [classes.nowrap]: nowrap })}
-          >
-            {title}
-          </Title>
-        );
-      } else {
-        return title;
-      }
+      return (
+        <Title order={1} lineClamp={3} className={cn(classes.title, { [classes.nowrap]: nowrap })}>
+          {title}
+        </Title>
+      );
     }
   }, [titles, title]);
+
+  const handleRedirect = useCallback(
+    (value?: string | null) => {
+      if (!value) return;
+
+      const path = getPageTypeRedirect(value, userName);
+
+      router.push(`${path}?${searchParams.toString()}`);
+    },
+    [userName, searchParams.toString()]
+  );
 
   return (
     <Group className={classes.container}>
@@ -80,6 +89,14 @@ export default function PageHeader({
           activeFiltersCount={activeFiltersCount}
         />
       )}
+      <FilterDropdown
+        icons={pageTypeIcons}
+        data={clubPageTypeItems}
+        selectedValue={pageType}
+        onSelect={handleRedirect}
+        placeholder="Select page"
+        filterType="page"
+      />
     </Group>
   );
 }

@@ -5,10 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import InstructionContainer from "@/components/InstructionContainer";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
 import { UserConcernType, UserDataType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import ConcernsSortCard from "./ConcernsSortCard";
@@ -76,7 +75,7 @@ export default function SortConcerns() {
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
       <SkeletonWrapper show={!selectedConcerns}>
-        <PageHeaderWithReturn title="Sort concerns" showReturn />
+        <PageHeader title="Sort concerns" showReturn />
         <InstructionContainer
           title="Instructions"
           instruction={`These are the potential concerns identified from your photos.`}

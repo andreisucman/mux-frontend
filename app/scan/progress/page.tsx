@@ -6,6 +6,7 @@ import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import InputWithCheckboxes from "@/components/InputWithCheckboxes";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
 import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
@@ -17,11 +18,15 @@ import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { ScanTypeEnum, UserDataType } from "@/types/global";
-import ScanHeader from "../ScanHeader";
 import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
+
+const titles = [
+  { label: "Scan progress", value: "/scan/progress" },
+  { label: "Scan food", value: "/scan/food" },
+];
 
 export default function ScanProgress() {
   const router = useRouter();
@@ -158,7 +163,8 @@ export default function ScanProgress() {
     <>
       {availableRequirements ? (
         <Stack className={`${classes.container} smallPage`}>
-          <ScanHeader
+          <PageHeader
+            titles={titles}
             children={
               <>
                 <SexSelector updateOnServer />

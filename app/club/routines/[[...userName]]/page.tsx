@@ -20,6 +20,7 @@ import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import ChatWithModal from "@/components/ChatWithModal";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeaderClub from "@/components/PageHeaderClub";
 import TaskInfoContainer from "@/components/TaskInfoContainer";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
@@ -32,7 +33,6 @@ import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
 import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
-import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 import classes from "./routines.module.css";
 
@@ -282,9 +282,11 @@ export default function ClubRoutines(props: Props) {
   return (
     <ClubModerationLayout
       header={
-        <ClubHeader
+        <PageHeaderClub
+          pageType="routines"
           title={"Club"}
-          pageType={"routines"}
+          userName={userName}
+          filterNames={["part"]}
           sortItems={routineSortItems}
           isDisabled={availableParts.length === 0}
           onFilterClick={() =>
@@ -299,7 +301,6 @@ export default function ClubRoutines(props: Props) {
           showReturn
         />
       }
-      pageType="routines"
       userName={userName}
       showChat
       showHeader

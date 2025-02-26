@@ -6,7 +6,7 @@ import { Button, Stack, Text } from "@mantine/core";
 import { useScrollIntoView } from "@mantine/hooks";
 import { nprogress } from "@mantine/nprogress";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -100,7 +100,7 @@ export default function AcceptIndexPage() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeaderWithReturn title="Review terms" showReturn />
+      <PageHeader title="Review terms" showReturn />
       <Stack className={`${classes.content} scrollbar`}>
         <TermsLegalBody />
       </Stack>

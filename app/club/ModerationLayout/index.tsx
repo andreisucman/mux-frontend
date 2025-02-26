@@ -21,10 +21,9 @@ type Props = {
   showChat?: boolean;
   showHeader?: boolean;
   userName?: string;
-  pageType: "about" | "routines" | "diary" | "progress" | "proof" | "answers";
 };
 
-export default function ClubModerationLayout({ children, header, pageType, userName }: Props) {
+export default function ClubModerationLayout({ children, header, userName }: Props) {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const { youData, youFollowData, youFollowDataFetched } = useContext(ClubContext);
@@ -38,8 +37,6 @@ export default function ClubModerationLayout({ children, header, pageType, userN
   const isSelf = name === userName;
 
   const { isSubscriptionActive } = checkSubscriptionActivity(["peek"], subscriptions);
-
-  const followText = `Follow ${userName} to see ${pageType === "routines" ? "their routines" : "their details"}.`;
 
   useEffect(() => {
     if (!youFollowDataFetched || code) return;
@@ -95,7 +92,10 @@ export default function ClubModerationLayout({ children, header, pageType, userN
             {showComponent === "children" && children}
             {showComponent === "subscriptionOverlay" && <PeekOverlay userName={userName} />}
             {showComponent === "followOverlay" && (
-              <FollowOverlay userName={userName as string} description={followText} />
+              <FollowOverlay
+                userName={userName as string}
+                description={`Follow ${userName} to see their info.`}
+              />
             )}
           </>
         )}

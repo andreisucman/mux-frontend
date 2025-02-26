@@ -6,11 +6,14 @@ import { Loader, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
+import { FilterItemType } from "@/components/FilterDropdown/types";
+import PageHeaderClub from "@/components/PageHeaderClub";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import ClubModerationLayout from "../../ModerationLayout";
-import ClubProgressHeader from "../ClubProgressHeader";
 
 export const runtime = "edge";
 
@@ -30,6 +33,7 @@ export default function ClubProgress(props: Props) {
   const { status, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -46,8 +50,6 @@ export default function ClubProgress(props: Props) {
     ],
     [userName]
   );
-
-  const noResults = !progress || progress.length === 0;
 
   const handleFetchProgress = useCallback(
     async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
@@ -84,23 +86,37 @@ export default function ClubProgress(props: Props) {
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
     handleFetchProgress({ part, sort, userName });
   }, [status, userName, sort, part, followingUserName]);
+
+  useEffect(() => {
+    getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+  }, []);
 
   return (
     <ClubModerationLayout
       header={
-        <ClubProgressHeader
-          isDisabled={noResults}
+        <PageHeaderClub
+          pageType="progress"
           titles={clubResultTitles}
           userName={userName}
+          filterNames={["part"]}
+          isDisabled={availableParts.length === 0}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+              },
+            })
+          }
           showReturn
         />
       }
       userName={userName}
-      pageType="progress"
     >
       {progress ? (
         <ProgressGallery

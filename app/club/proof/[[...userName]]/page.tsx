@@ -5,11 +5,14 @@ import { useSearchParams } from "next/navigation";
 import { Loader } from "@mantine/core";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
+import { FilterItemType } from "@/components/FilterDropdown/types";
+import PageHeaderClub from "@/components/PageHeaderClub";
 import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
+import getFilters from "@/functions/getFilters";
 import ClubModerationLayout from "../../ModerationLayout";
-import ClubProofHeader from "../ClubProofHeader";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 
 export const runtime = "edge";
 
@@ -28,8 +31,9 @@ export default function ClubProof(props: Props) {
   const { status, userDetails } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
-
   const searchParams = useSearchParams();
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -70,25 +74,37 @@ export default function ClubProof(props: Props) {
   );
 
   useEffect(() => {
-    if (status !== "authenticated") return;
-
     handleFetchProof({ userName, sort, part, concern, query });
   }, [status, userName, part, sort, concern, query, followingUserName]);
 
-  const noResults = !proof || proof.length === 0;
+  useEffect(() => {
+    getFilters({ collection: "proof", fields: ["part"] }).then((result) => {
+      const { availableParts } = result;
+      setAvaiableParts(availableParts);
+    });
+  }, []);
 
   return (
     <ClubModerationLayout
       header={
-        <ClubProofHeader
-          isDisabled={noResults}
+        <PageHeaderClub
+          pageType="progress"
           titles={clubResultTitles}
           userName={userName}
+          filterNames={["part"]}
+          isDisabled={availableParts.length === 0}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
+              childrenProps: {
+                filterItems: availableParts,
+              },
+            })
+          }
           showReturn
         />
       }
       userName={userName}
-      pageType="proof"
     >
       {proof ? (
         <ProofGallery

@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { Accordion, Stack, Text, Title } from "@mantine/core";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { data } from "./data";
 import classes from "./about.module.css";
+import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -22,7 +22,7 @@ export default function AnswersPage() {
 
   return (
     <Stack className={`${classes.container} mediumPage`}>
-      <PageHeaderWithReturn title="About" />
+      <PageHeader title="About" />
       <Accordion
         value={openValue}
         onChange={setOpenValue}

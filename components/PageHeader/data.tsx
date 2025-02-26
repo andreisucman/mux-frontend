@@ -11,17 +11,6 @@ export const taskStatuses = [
   { label: "Expired", value: "expired" },
 ];
 
-export const positionItems = [
-  {
-    label: "Front",
-    value: "front",
-    parts: ["face", "body", "scalp", "mouth"],
-  },
-  { label: "Right", value: "right", parts: ["face", "body"] },
-  { label: "Left", value: "left", parts: ["face", "body"] },
-  { label: "Back", value: "back", parts: ["body"] },
-];
-
 export const clubPageTypeItems: { label: string; value: string }[] = [
   { label: "About", value: "about" },
   { label: "Routines", value: "routines" },

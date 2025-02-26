@@ -10,7 +10,6 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
@@ -27,6 +26,7 @@ import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
 import SelectDateModalContent from "./SelectDateModalContent";
 import classes from "./explain.module.css";
+import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -294,7 +294,7 @@ export default function Explain(props: Props) {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper show={!name || !taskInfo}>
-        <PageHeaderWithReturn
+        <PageHeader
           title={
             <>
               <span style={{ marginRight: rem(8) }}>{recipe?.name || name}</span>

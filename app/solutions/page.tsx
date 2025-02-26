@@ -5,12 +5,14 @@ import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
+import { createSpotlight } from "@mantine/spotlight";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
+import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import SolutionCard from "./SolutionCard";
-import SolutionsHeader from "./SolutionsHeader";
 import { SolutionCardType } from "./types";
 import classes from "./solutions.module.css";
 
@@ -23,6 +25,8 @@ type FetchSolutionsProps = {
   query?: string | null;
   solutions?: SolutionCardType[];
 };
+
+const [spotlightStore, solutionsSpotlight] = createSpotlight();
 
 export default function Solutions() {
   const searchParams = useSearchParams();
@@ -80,7 +84,19 @@ export default function Solutions() {
   return (
     <>
       <Stack className={`${classes.container} largePage`}>
-        <SolutionsHeader />
+        <PageHeader
+          title="Solutions"
+          children={
+            <SearchButton
+              spotlightStore={spotlightStore}
+              spotlight={solutionsSpotlight}
+              collection={"solution"}
+              searchPlaceholder="Search solutions"
+              showActivityIndicator
+              forceEnabled
+            />
+          }
+        />
         {solutions ? (
           <>
             {solutions.length > 0 ? (

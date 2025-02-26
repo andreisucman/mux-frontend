@@ -14,7 +14,6 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { individualResultTitles } from "../individualResultTitles";
 import ProofGallery from "./ProofGallery";
-import ProofHeader from "./ProofHeader";
 import { SimpleProofType } from "./types";
 import classes from "./proof.module.css";
 

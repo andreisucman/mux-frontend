@@ -2,15 +2,15 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconActivity, IconCancel, IconClock, IconZzz } from "@tabler/icons-react";
+import { IconCancel, IconClock, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Group, Loader, Stack } from "@mantine/core";
+import { Button, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useShallowEffect } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import DateSelector from "@/components/DateSelector";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
@@ -336,7 +336,7 @@ export default function Calendar() {
 
   return (
     <Stack flex={1} className="smallPage">
-      <PageHeaderWithReturn
+      <PageHeader
         title="My calendar"
         isDisabled={mode === "individual"}
         children={<DateSelector />}

@@ -4,7 +4,8 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import ChatWithModal from "@/components/ChatWithModal";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
@@ -14,7 +15,6 @@ import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { UserDataType } from "@/types/global";
-import ChatWithModal from "../../components/ChatWithModal";
 import DiaryContent from "./DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
@@ -143,7 +143,7 @@ export default function DiaryPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn
+        <PageHeader
           isDisabled={noResults}
           title="Diary"
           sortItems={diarySortItems}

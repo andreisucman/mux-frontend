@@ -1,7 +1,7 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import ClubProgressFilterCardContent from "@/app/club/progress/ClubProgressHeader/ClubProgressFilterCardContent";
-import ClubProofFilterCardContent from "@/app/club/proof/ClubProofHeader/ClubProofFilterCardContent";
+import ClubProgressFilterCardContent from "@/components/PageHeaderClub/ClubProgressFilterCardContent";
+import ClubProofFilterCardContent from "@/components/PageHeaderClub/ClubProofFilterCardContent";
 import FilterCardContent from "@/app/GeneralResultsHeader/FilterCardContent";
 import ProductsFilterCardContent from "@/app/products/ProductsFilterCardContent";
 import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent";

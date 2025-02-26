@@ -3,12 +3,12 @@
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, Skeleton, Stack, Text } from "@mantine/core";
+import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import Link from "@/helpers/custom-router/patch-router/link";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import ClubHeader from "../ClubHeader";
 import ClubModerationLayout from "../ModerationLayout";
 import DisplayClubAbout from "./DisplayClubAbout";
 import EditClubAbout from "./EditClubAbout";
@@ -111,9 +111,8 @@ export default function ClubAbout(props: Props) {
 
   return (
     <ClubModerationLayout
-      header={<ClubHeader title={"Club"} pageType="about" showReturn />}
+      header={<PageHeaderClub pageType="about" title={"Club"} userName={userName} showReturn />}
       userName={userName}
-      pageType="about"
     >
       <Skeleton
         visible={showSkeleton || hasNewAboutQuestions === undefined}

@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Button, Stack, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import InstructionContainer from "@/components/InstructionContainer";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -18,6 +17,7 @@ import { daysFrom } from "@/helpers/utils";
 import { UserConcernType, UserSubscriptionsType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./start-date.module.css";
+import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -119,7 +119,7 @@ export default function StartDate() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn title="Choose start date" showReturn />
+        <PageHeader title="Choose start date" showReturn />
         <InstructionContainer
           title="Instructions"
           instruction={"Choose the start date of your routine."}

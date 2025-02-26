@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -12,6 +11,7 @@ import { useRouter } from "@/helpers/custom-router";
 import { UserDataType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./considerations.module.css";
+import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -70,7 +70,7 @@ export default function Considerations() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeaderWithReturn title="Special considerations" showReturn />
+        <PageHeader title="Special considerations" showReturn />
         <InstructionContainer
           title="Instructions"
           instruction={"Add any special considerations or preferences you have."}

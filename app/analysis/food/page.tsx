@@ -9,7 +9,6 @@ import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import FoodTaskSelectionModalContent from "@/components/FoodTaskSelectionModalContent";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
 import PieChartComponent from "@/components/PieChart";
 import { CalorieGoalContext } from "@/context/CalorieGoalContext";
 import { UserContext } from "@/context/UserContext";
@@ -19,6 +18,7 @@ import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import { FoodAnalysisResponseType } from "./types";
 import classes from "./food.module.css";
+import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -148,7 +148,7 @@ export default function FoodScanResult() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeaderWithReturn title={title} showReturn />
+      <PageHeader title={title} showReturn />
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={displayComponent === "loading"}>
         {displayComponent === "analysis" && (
           <Stack className={classes.container}>

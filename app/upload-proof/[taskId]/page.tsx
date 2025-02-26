@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Skeleton, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeaderWithReturn from "@/components/PageHeaderWithReturn";
+import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
@@ -165,7 +165,7 @@ export default function UploadProof(props: Props) {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeaderWithReturn title={`Proof - ${submissionName}`} showReturn />
+        <PageHeader title={`Proof - ${submissionName}`} showReturn />
         <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
           <Stack className={classes.content}>
             {componentToDisplay === "completed" && existingProofRecord && (

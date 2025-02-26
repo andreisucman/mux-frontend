@@ -1,7 +1,13 @@
 .container {
   align-items: center;
-  justify-content: space-between;
-
   min-height: rem(36);
   align-items: center;
+}
+
+.title {
+  margin-right: auto;
+}
+
+.nowrap {
+  white-space: nowrap;
 }

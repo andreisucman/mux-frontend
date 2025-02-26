@@ -6,11 +6,11 @@ import { Title } from "@mantine/core";
 import DiaryContent from "@/app/diary/DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
+import PageHeaderClub from "@/components/PageHeaderClub";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
-import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
@@ -65,16 +65,16 @@ export default function DiaryPage(props: Props) {
   return (
     <ClubModerationLayout
       header={
-        <ClubHeader
-          isDisabled={noResults}
-          title={"Club"}
+        <PageHeaderClub
           pageType="diary"
+          title={"Club"}
+          userName={userName}
           sortItems={diarySortItems}
+          isDisabled={noResults}
           showReturn
         />
       }
       userName={userName}
-      pageType="diary"
     >
       <DiaryContent
         diaryRecords={diaryRecords}

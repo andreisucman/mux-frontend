@@ -2,7 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter as useDefaultRouter, useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCheckbox, IconCircleOff, IconSearch } from "@tabler/icons-react";
+import { IconArrowDown, IconSearch } from "@tabler/icons-react";
 import {
   Accordion,
   ActionIcon,
@@ -15,8 +15,10 @@ import {
   Title,
 } from "@mantine/core";
 import { ChatCategoryEnum } from "@/app/diary/type";
+import ChatWithModal from "@/components/ChatWithModal";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeaderClub from "@/components/PageHeaderClub";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
@@ -24,8 +26,6 @@ import fetchQuestions from "@/functions/fetchQuestions";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import ChatWithModal from "@/components/ChatWithModal";
-import ClubHeader from "../../ClubHeader";
 import ClubModerationLayout from "../../ModerationLayout";
 import QuestionSlide from "../QuestionSlide";
 import { AboutQuestionType, SubmitAboutResponseType } from "../types";
@@ -186,16 +186,6 @@ export default function AnswersPage(props: Props) {
       : "Nothing found"
     : "Nothing found";
 
-  const overlayIcon = isSelf ? (
-    showType === "new" ? (
-      <IconCheckbox className="icon" />
-    ) : (
-      <IconCircleOff className="icon" />
-    )
-  ) : (
-    <IconCircleOff className="icon" />
-  );
-
   const overlayButton = isSelf ? (
     showType !== "new" ? undefined : (
       <Button mt={8} variant="default" onClick={() => router.push(`/club/${userName}`)}>
@@ -206,9 +196,8 @@ export default function AnswersPage(props: Props) {
 
   return (
     <ClubModerationLayout
-      header={<ClubHeader title={"Club"} pageType="answers" showReturn />}
+      header={<PageHeaderClub pageType="answers" title={"Club"} userName={userName} showReturn />}
       userName={userName}
-      pageType="answers"
     >
       <Stack className={classes.content}>
         <Group className={classes.controlWrapper}>

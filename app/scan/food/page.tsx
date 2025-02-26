@@ -5,6 +5,7 @@ import { useRouter as useDefaultRouter } from "next/navigation";
 import { Button, rem, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ImageDisplayContainer from "@/components/ImageDisplayContainer";
+import PageHeader from "@/components/PageHeader";
 import PhotoCapturer from "@/components/PhotoCapturer";
 import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
 import CalorieGoalProvider, { CalorieGoalContext } from "@/context/CalorieGoalContext";
@@ -14,7 +15,6 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import foodImage from "@/public/assets/placeholders/food.svg";
-import ScanHeader from "../ScanHeader";
 import CalorieGoalController from "./CalorieGoal";
 import classes from "./food.module.css";
 
@@ -80,7 +80,7 @@ export default function ScanFoodPage() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <ScanHeader />
+      <PageHeader title={"Scan food"} />
       <CalorieGoalProvider>
         <CalorieGoalController disabled={isLoading} />
       </CalorieGoalProvider>
