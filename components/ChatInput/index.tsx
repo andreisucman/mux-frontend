@@ -140,7 +140,7 @@ export default function ChatInput({
         : () =>
             startSubscriptionTrial({
               subscriptionName: "advisor",
-              router
+              router,
             });
 
     const payload = {
@@ -284,7 +284,6 @@ export default function ChatInput({
 
             const decoder = new TextDecoder();
             let done = false;
-            let text = "";
 
             // Read the stream as it's received
             while (!done) {
@@ -312,8 +311,6 @@ export default function ChatInput({
                     saveToIndexedDb(`conversationId-${key}`, conversationId);
                   }
                 }
-
-                text += data;
               }
             }
           }

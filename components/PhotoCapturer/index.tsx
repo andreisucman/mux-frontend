@@ -99,7 +99,7 @@ export default function PhotoCapturer({
 
   const startVideoPreview = useCallback(async () => {
     try {
-      let constraints: MediaStreamConstraints = {
+      const constraints: MediaStreamConstraints = {
         audio: false,
         video: {
           facingMode,

@@ -8,7 +8,6 @@ type Props = {
   total: number;
   completed: number;
   completionRate: number;
-  isChild?: boolean;
 };
 
 function StatsGroup({ total, completed, completionRate, isChild }: Props) {

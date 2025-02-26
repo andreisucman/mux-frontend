@@ -182,7 +182,6 @@ export default function ClubSettings() {
         if (response.status === 200) {
           if (response.error) {
             openErrorModal({ description: response.error });
-            return;
           }
         }
       } catch (err) {

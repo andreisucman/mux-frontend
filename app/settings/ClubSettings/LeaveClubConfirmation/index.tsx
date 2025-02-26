@@ -1,5 +1,5 @@
 import React from "react";
-import { IconCash, IconEye, IconLock, IconTargetOff } from "@tabler/icons-react";
+import { IconCash, IconEye, IconLock } from "@tabler/icons-react";
 import { Button, Stack, Table } from "@mantine/core";
 import classes from "./LeaveClubConfirmation.module.css";
 

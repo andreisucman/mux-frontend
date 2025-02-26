@@ -1,5 +1,5 @@
 "use client";
 
-export const GeneralContextModal = ({ context, id, innerProps }: any) => {
+export const GeneralContextModal = ({ innerProps }: any) => {
   return <>{innerProps}</>;
 };

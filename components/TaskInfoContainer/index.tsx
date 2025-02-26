@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { IconCircleCheck, IconCirclePlus } from "@tabler/icons-react";
 import { Button, rem, Stack, Text } from "@mantine/core";
 import EditATaskContent from "@/app/tasks/TasksList/CreateTaskOverlay/EditATaskContent";
 import { formatDate } from "@/helpers/formatDate";

@@ -65,7 +65,7 @@ export default function AnalysisCard({ title, currentRecord, latestScores }: Pro
         Object.entries((obj as ProgressType).scores)
           .filter(([_, value]) => typeof value === "number")
           .filter(([key, _]) => key === "overall")
-          .map(([key, value]) => [
+          .map(([_, value]) => [
             {
               label: partKeys[i],
               value,

@@ -4,7 +4,6 @@ import { ActionIcon, Group, NumberInput, Skeleton, Stack, Text, Title } from "@m
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { UserDataType } from "@/types/global";
 import classes from "./OtherSettings.module.css";
 
 export default function OtherSettings() {

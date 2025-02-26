@@ -26,7 +26,6 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import askConfirmation from "@/helpers/askConfirmation";
-import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import openSuccessModal from "@/helpers/openSuccessModal";
@@ -35,7 +34,6 @@ import { UserDataType } from "@/types/global";
 import classes from "./AccountSettings.module.css";
 
 export default function AccountSettings() {
-  const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
   const { userDetails, setUserDetails } = useContext(UserContext);

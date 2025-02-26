@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Group, SegmentedControl, Slider, Stack, Text, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import { CalorieGoalContext } from "@/context/CalorieGoalContext";

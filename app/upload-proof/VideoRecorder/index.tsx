@@ -1,10 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import {
-  IconCamera,
-  IconPlayerStopFilled,
-  IconCameraRotate,
-  IconVideo,
-} from "@tabler/icons-react";
+import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
 import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -88,6 +83,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     let constraints: MediaStreamConstraints = {
       video: {
         facingMode,
+        frameRate: { max: 30 },
       },
       audio: true,
     };
@@ -330,9 +326,10 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const startVideoPreview = useCallback(async () => {
     try {
-      let constraints: MediaStreamConstraints = {
+      const constraints: MediaStreamConstraints = {
         video: {
           facingMode,
+          frameRate: { max: 30 },
         },
         audio: true,
       };

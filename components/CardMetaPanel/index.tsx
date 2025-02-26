@@ -1,9 +1,7 @@
 import React from "react";
-import { IconMan, IconMoodSmile } from "@tabler/icons-react";
 import { Group, Text, UnstyledButton } from "@mantine/core";
 import Link from "@/helpers/custom-router/patch-router/link";
 import AvatarComponent from "../AvatarComponent";
-import ScoreCell from "../ScoreCell";
 import classes from "./CardMetaPanel.module.css";
 
 type Props = {

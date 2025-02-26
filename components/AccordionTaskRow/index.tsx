@@ -60,7 +60,6 @@ export default function AccordionTaskRow({
             completed={completed}
             completionRate={completionRate}
             total={total}
-            isChild={true}
           />
           {isSelf ? (
             <ActionIcon

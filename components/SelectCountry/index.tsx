@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { IconArrowRight } from "@tabler/icons-react";
-import { Button, rem, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Stack, Text, TextInput } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
 import classes from "./SelectCountry.module.css";
 

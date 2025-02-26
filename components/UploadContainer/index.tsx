@@ -43,7 +43,7 @@ export default function UploadContainer({
   ] as string[];
 
   const slides = requirements
-    .map((item, index) => {
+    .map((item) => {
       if (!userDetails) return;
       if (scanType === ScanTypeEnum.PROGRESS && !parts?.includes(item.part)) return;
 

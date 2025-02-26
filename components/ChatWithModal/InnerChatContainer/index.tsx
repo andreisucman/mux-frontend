@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Stack, Text } from "@mantine/core";
-import { useElementSize } from "@mantine/hooks";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatDisplay from "@/components/ChatDisplay";
 import ChatInput from "@/components/ChatInput";
@@ -37,7 +36,6 @@ export default function InnerChatContainer({
   const [isThinking, setIsThinking] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [conversation, setConversation] = useState<MessageType[]>([]);
-  const { height, ref } = useElementSize();
 
   useEffect(() => {
     const key = chatContentId || chatCategory;
@@ -61,7 +59,7 @@ export default function InnerChatContainer({
   );
 
   return (
-    <Stack className={classes.container} ref={ref}>
+    <Stack className={classes.container}>
       {disclaimer && (
         <Text className={classes.disclaimer} c="dimmed">
           {disclaimer}

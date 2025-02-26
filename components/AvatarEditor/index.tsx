@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { IconDeviceFloppy } from "@tabler/icons-react";
 import Avatar, { AvatarConfig, genConfig } from "react-nice-avatar";
 import { Button, ColorInput, Fieldset, rem, Stack } from "@mantine/core";
 import { UpdateClubInfoProps } from "@/app/settings/ClubSettings";
