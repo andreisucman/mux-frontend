@@ -4,10 +4,10 @@ import {
   IconCalendar,
   IconDoorEnter,
   IconDoorExit,
+  IconInfoSquareRounded,
   IconLicense,
   IconListDetails,
   IconNotebook,
-  IconInfoSquareRounded,
   IconRoute,
   IconScan,
   IconSettings,
@@ -16,7 +16,7 @@ import {
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";
-import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
+import { Alert, Divider, rem, Stack, Text, Title, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
@@ -52,7 +52,7 @@ const defaultNavigation = [
   {
     title: "About",
     path: "/about",
-    icon: <IconInfoSquareRounded stroke={1.35} style={{maxWidth: rem(19)}} />,
+    icon: <IconInfoSquareRounded stroke={1.35} style={{ maxWidth: rem(19) }} />,
   },
 ];
 

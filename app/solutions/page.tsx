@@ -31,10 +31,9 @@ const [spotlightStore, solutionsSpotlight] = createSpotlight();
 export default function Solutions() {
   const searchParams = useSearchParams();
   const [solutions, setSolutions] = useState<SolutionCardType[]>();
+  const [hasMore, setHasMore] = useState(false);
 
   const query = searchParams.get("query");
-
-  const [hasMore, setHasMore] = useState(false);
 
   const fetchSolutions = useCallback(
     async ({ hasMore, query, solutions }: FetchSolutionsProps) => {

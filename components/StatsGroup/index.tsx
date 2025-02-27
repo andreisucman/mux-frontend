@@ -10,7 +10,7 @@ type Props = {
   completionRate: number;
 };
 
-function StatsGroup({ total, completed, completionRate, isChild }: Props) {
+function StatsGroup({ total, completed, completionRate }: Props) {
   return (
     <Group className={classes.container}>
       <StatCell icon={<IconListDetails className="icon icon__small" />} value={total} />
