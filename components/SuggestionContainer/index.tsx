@@ -56,6 +56,9 @@ export default function SuggestionContainer({
               />
             ))}
           />
+          <Text className={classes.disclaimer}>
+            As an Amazon associate we may earn from qualified purchases
+          </Text>
         </Stack>
         {!disableLocalChat && (
           <ChatWithModal

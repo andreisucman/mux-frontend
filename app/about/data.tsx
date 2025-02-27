@@ -5,7 +5,8 @@ export const data = [
     question: "What is Muxout?",
     answer: (
       <Text>
-        Muxout is a platform where people maximize their outlook and help others do the same.
+        Muxout is a platform where people maximize their appearance with self-improvement routines
+        and help others do the same.
       </Text>
     ),
   },

@@ -168,6 +168,9 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
           Add to Amazon cart {selectedAsinsLength > 0 ? `(${selectedAsinsLength})` : undefined}
         </Button>
       )}
+      <Text className={classes.disclaimer}>
+        As an Amazon associate we may earn from qualified purchases
+      </Text>
     </Stack>
   );
 }
