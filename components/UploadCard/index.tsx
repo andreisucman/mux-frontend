@@ -12,11 +12,12 @@ import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { placeholders } from "@/data/placeholders";
+import { silhouettes } from "@/data/silhouettes";
 import { OnBlurClickProps } from "@/functions/blur";
+import getPlaceholderOrSilhouette from "@/helpers/getPlaceholderOrSilhouette";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
 import PhotoCapturer from "../PhotoCapturer";
 import classes from "./UploadCard.module.css";
-import getPlaceholderOrSilhouette from "@/helpers/getPlaceholderOrSilhouette";
 
 type Props = {
   sex: SexEnum;
@@ -67,6 +68,11 @@ export default function UploadCard({
   const relevantPlaceholder = useMemo(
     () => getPlaceholderOrSilhouette({ sex, part, position, scanType, data: placeholders }),
     [sex, part, position, scanType, placeholders]
+  );
+
+  const relevantSilhouette = useMemo(
+    () => getPlaceholderOrSilhouette({ sex, part, position, scanType, data: silhouettes }),
+    [sex, part, position, scanType]
   );
 
   const loadLocally = useCallback(
@@ -122,9 +128,11 @@ export default function UploadCard({
       size: "xl",
       fullScreen: isMobile,
       classNames: { body: classes.body, content: classes.content },
-      innerProps: <PhotoCapturer handleCapture={loadLocally} />,
+      innerProps: (
+        <PhotoCapturer handleCapture={loadLocally} silhouette={relevantSilhouette?.url || ""} />
+      ),
     });
-  }, [loadLocally, width, height]);
+  }, [loadLocally, relevantSilhouette, width, height]);
 
   return (
     <Stack className={classes.container}>
