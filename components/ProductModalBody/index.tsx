@@ -26,8 +26,6 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
     HTMLDivElement
   >({ axis: "x", duration: 500 });
 
-  console.log("defaultItem", defaultItem);
-
   const categoryButtons = [...new Set(items.map((i) => i.suggestion))].map((category) => (
     <Button
       size="compact-sm"
@@ -38,7 +36,6 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
         setSelectedCategory(category);
         if (category !== selectedCategory) {
           const selectedCategoryItems = items.filter((i) => i.suggestion === category);
-          console.log(selectedCategoryItems);
           setSelectedItem(selectedCategoryItems[0]);
         }
       }}
@@ -111,6 +108,7 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
 
   const isAddedToCart = selectedProducts.map((p) => p._id).includes(selectedItem._id);
   const selectedAsinsLength = selectedProducts.length;
+  const featuresExist = selectedItem.productFeatures && selectedItem.productFeatures.length > 0;
 
   return (
     <Stack>
@@ -136,12 +134,12 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
             onClick={() => handleAddToCard(selectedItem)}
           >
             <Checkbox checked={!!isAddedToCart} readOnly mr={8} />
-            {isAddedToCart ? "Select" : "Deselect"}
+            {isAddedToCart ? "Deselect" : "Select"}
           </Button>
         )}
       </Stack>
 
-      {selectedItem.productFeatures.length > 0 && (
+      {featuresExist && (
         <Stack className={classes.content}>
           <Text size="sm" c="dimmed">
             Features:

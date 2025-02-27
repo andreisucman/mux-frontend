@@ -105,7 +105,7 @@ export const data = [
     ),
   },
   {
-    question: "People from what countries can join?",
+    question: "People from which countries can join?",
     answer: (
       <Stack>
         <Text>

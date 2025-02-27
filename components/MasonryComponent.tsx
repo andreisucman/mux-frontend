@@ -27,7 +27,7 @@ export default function MasonryComponent({
 
   const positioner = usePositioner(
     { width, columnWidth, columnCount, maxColumnCount, columnGutter },
-    [items.length]
+    [typeof items]
   );
 
   const resizeObserver = useResizeObserver(positioner);
