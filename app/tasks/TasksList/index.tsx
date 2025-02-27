@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { upperFirst, useMediaQuery } from "@mantine/hooks";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
@@ -24,6 +24,7 @@ type Props = {
 
 export default function TasksList({ customStyles }: Props) {
   const { userDetails, setUserDetails } = useContext(UserContext);
+  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -110,7 +111,7 @@ export default function TasksList({ customStyles }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", "routine");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: isMobile ? "15%" : "20%" }}
               />
             )}
             {displayComponent === "content" && (
