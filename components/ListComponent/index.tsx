@@ -17,7 +17,7 @@ export default function ListComponent({ rowGutter, items, className, render }: P
   const { width: windowWidth, height: windowHeight } = useViewportSize();
   const { offset, width } = useContainerPosition(containerRef, [windowWidth, windowHeight]);
 
-  const positioner = usePositioner({ width, rowGutter, columnCount: 1 }, [items.length]);
+  const positioner = usePositioner({ width, rowGutter, columnCount: 1 }, [typeof items]);
 
   const resizeObserver = useResizeObserver(positioner);
 
