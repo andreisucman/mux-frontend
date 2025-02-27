@@ -92,7 +92,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
 
       openSubscriptionModal({
         title: "Add the improvement coach",
-        price: "4",
+        price: "5",
         isCentered: true,
         modalType: "improvement",
         buttonText,

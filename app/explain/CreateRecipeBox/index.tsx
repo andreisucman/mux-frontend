@@ -75,7 +75,7 @@ export default function CreateRecipeBox({
 
               openSubscriptionModal({
                 title: "Add the improvement coach",
-                price: "4",
+                price: "5",
                 isCentered: true,
                 modalType: "improvement",
                 underButtonText: isTrialUsed ? "" : "No credit card required",
