@@ -34,13 +34,12 @@ export const data = [
           can motivate them to see your routines.
         </Text>
         <Text>
-          Seeing other people's routines requires a paid subscription called the 'Peek License'. The
-          Peek License allows your followers to copy your tasks and routines for attaining similar
-          results.
+          If someone wants to see your routines they will have to buy the 'Peek License'. The Peek
+          License will let them see and copy your routines for attaining similar results.
         </Text>
         <Text>
-          When someone buys the Peek License and follows you you get a comission from their payment
-          on a daily basis for as long as they follow you.
+          When someone buys the Peek License and follows you you will get a comission from their
+          subscription payments on a daily basis for as long as they follow you.
         </Text>
         <Text>
           Lastly, if you consistently complete your tasks you may also get achievements ('Streaks')
@@ -54,15 +53,19 @@ export const data = [
     question: "Is Muxout free?",
     answer: (
       <Stack>
-        <Text>Muxout is a free-to-use platform.</Text>
+        <Text>Muxout is entirely free.</Text>
         <Text>
-          It has optional paid addons such as the 'Improvement Coach' - the AI that creates personal
-          routines for you, and the 'Advisor Coach' - the AI that answers your questions about the
-          tasks, products, activities, and the person you follow.
+          But it has optional paid addons such as the 'Improvement Coach' - the AI that creates
+          personal routines for you, and the 'Advisor Coach' - the AI that answers your questions
+          about the tasks, products, activities, and the person you follow.
         </Text>
         <Text>
-          There is also the 'Peek License' that allows you to follow public users with significant
-          improvements to see and steal their routines for faster results.
+          There is also the 'Peek License' that allows you to follow public users to see and steal
+          their routines.
+        </Text>
+        <Text>
+          These addons can speed up your results and save you time on research, but you don't have
+          to buy them to use the platform.
         </Text>
       </Stack>
     ),
@@ -91,7 +94,7 @@ export const data = [
       <Stack>
         <Text>
           To withdraw your earnings you have to join the 'Club'. Joining the Club is free and it
-          doesn't make your data public (unless you turn on data sharing explicitly).
+          doesn't make your data public.
         </Text>
         <Text>
           During the onboarding process you provide the legally required information about you and
@@ -125,9 +128,9 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          Our platform is for people over 18 years old. We determine the age from the uploaded
-          images and block the users who we believe are under 18. We also verify age when you join
-          the Club.
+          Our platform is for users over 18 years old. We determine the age from the uploaded images
+          and block the users who we believe are under 18. We also verify age when you join the
+          Club.
         </Text>
         <Text>
           If you are mistakenly blocked by our software as underage, please contact us at
@@ -149,9 +152,9 @@ export const data = [
     question: "What is food scan for?",
     answer: (
       <Text>
-        Food scan lets you easily control the amount of calories you consume. This is handy for the
-        tasks related to food intake. Just scan your plate and our AI will tell you how much of the
-        food in it you can eat to stay within your calorie goal.
+        Food scan lets you easily control the amount of calories you consume. This is useful for
+        users who need to lose or gain weight. Just take a picture of your plate and our AI will
+        tell you how much of it you can eat to stay within your calorie goal.
       </Text>
     ),
   },

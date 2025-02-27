@@ -111,7 +111,7 @@ export default function TasksList({ customStyles }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", "routine");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: isMobile ? "15%" : "20%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: isMobile ? "17.5%" : "20%" }}
               />
             )}
             {displayComponent === "content" && (

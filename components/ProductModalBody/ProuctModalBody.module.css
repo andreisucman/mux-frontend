@@ -14,7 +14,7 @@
 .selectedItemStack {
   display: flex;
   flex-direction: column;
-  gap: rem(12)
+  gap: rem(12);
 }
 
 .selectProductContainer {
