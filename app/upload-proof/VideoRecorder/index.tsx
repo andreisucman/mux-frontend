@@ -84,7 +84,9 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       video: {
         facingMode,
         frameRate: { max: 30 },
-        aspectRatio: { ideal: 9 / 16 },
+        aspectRatio: { min: 9 / 16 },
+        width: { ideal: 1080 },
+        height: { ideal: 1920 },
       },
       audio: true,
     };
@@ -331,7 +333,9 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         video: {
           facingMode,
           frameRate: { max: 30 },
-          aspectRatio: { ideal: 9 / 16 },
+          aspectRatio: { min: 9 / 16 },
+          width: { ideal: 1080 },
+          height: { ideal: 1920 },
         },
         audio: true,
       };

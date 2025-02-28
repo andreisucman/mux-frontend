@@ -165,7 +165,7 @@ export default function UploadProof(props: Props) {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeader title={`Proof - ${submissionName}`} showReturn />
+        <PageHeader title={`Proof - ${submissionName}`} showReturn nowrapContainer />
         <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
           <Stack className={classes.content}>
             {componentToDisplay === "completed" && existingProofRecord && (
