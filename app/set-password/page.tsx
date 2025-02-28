@@ -12,7 +12,7 @@ import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import PasswordInputWithStrength from "../auth/AuthForm/PasswordInputWithStrength";
 import classes from "./set-password.module.css";
 
@@ -70,7 +70,8 @@ export default function SetPassword() {
             return;
           }
 
-          openSuccessModal({
+          openInfoModal({
+            title: "✔️ Success!",
             description: response.message,
             onClose: handleSignOut,
           });

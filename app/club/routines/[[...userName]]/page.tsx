@@ -31,7 +31,7 @@ import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
 import classes from "./routines.module.css";
@@ -152,7 +152,8 @@ export default function ClubRoutines(props: Props) {
           return;
         }
 
-        openSuccessModal({
+        openInfoModal({
+          title: "✔️ Success!",
           description: (
             <Text>
               Routine added.{" "}

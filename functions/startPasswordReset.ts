@@ -1,5 +1,5 @@
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import callTheServer from "./callTheServer";
 
 type SendPasswordResetEmailProps = {
@@ -21,7 +21,7 @@ const sendPasswordResetEmail = async ({ email }: SendPasswordResetEmailProps) =>
         return;
       }
       status = true;
-      openSuccessModal({ title: "✔️ Check your email", description: response.message });
+      openInfoModal({ title: "✔️ Check your email", description: response.message });
     }
   } catch (err) {
   } finally {

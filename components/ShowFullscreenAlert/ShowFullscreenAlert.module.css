@@ -7,14 +7,8 @@
   animation: fadeIn 0.5s forwards;
   z-index: 999;
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: $mantine-breakpoint-sm) and (display-mode: fullscreen) {
     display: block;
-
-    @media all and (display-mode: fullscreen) {
-      .root:not(:fullscreen) {
-        display: none;
-      }
-    }
   }
 }
 

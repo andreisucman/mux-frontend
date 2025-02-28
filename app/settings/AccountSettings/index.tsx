@@ -28,7 +28,7 @@ import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import askConfirmation from "@/helpers/askConfirmation";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { UserDataType } from "@/types/global";
 import classes from "./AccountSettings.module.css";
@@ -133,7 +133,7 @@ export default function AccountSettings() {
         setUserDetails((prev: UserDataType) => ({ ...prev, email }));
 
         emailChangeModalsStack.close("confirmNewEmail");
-        openSuccessModal({ description: response.message });
+        openInfoModal({ title: "✔️ Success!", description: response.message });
       }
     } catch (err) {
       openErrorModal();

@@ -73,7 +73,7 @@ export default function StartDate() {
             const { improvement } = subscriptions || {};
             const { isTrialUsed } = improvement || {};
 
-            const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
+            const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
 
             const onClick = !!isTrialUsed
               ? async () =>

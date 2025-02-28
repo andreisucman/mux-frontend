@@ -9,7 +9,7 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import { UserDataType } from "@/types/global";
 import classes from "./verify-email.module.css";
 
@@ -84,7 +84,10 @@ export default function VerifyEmail() {
         const response = await callTheServer({ endpoint: "sendConfirmationCode", method: "POST" });
 
         if (response.status === 200) {
-          openSuccessModal({ description: `The email with the code has been resent to ${email}.` });
+          openInfoModal({
+            title: "✔️ Success!",
+            description: `The email with the code has been resent to ${email}.`,
+          });
 
           const iId = setInterval(() => {
             setCanResendOn((prev: Date) => {

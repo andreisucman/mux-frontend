@@ -1,6 +1,6 @@
+import React from "react";
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import React from "react";
 
 type Props = {
   title?: string;
@@ -8,7 +8,7 @@ type Props = {
   onClose?: () => void;
 };
 
-export default function openSuccessModal(props?: Props) {
+export default function openInfoModal(props?: Props) {
   const { title, description, onClose } = props || {};
 
   try {
@@ -16,13 +16,13 @@ export default function openSuccessModal(props?: Props) {
       centered: true,
       title: (
         <Title order={5} component={"p"}>
-          {title || "✔️ Success!"}
+          {title}
         </Title>
       ),
       children: description,
       onClose,
     });
   } catch (err) {
-    console.log("Error in openSuccessModal: ", err);
+    console.log("Error in openInfoModal: ", err);
   }
 }

@@ -56,7 +56,7 @@ export default function CreateRecipeBox({
               const { improvement } = subscriptions || {};
               const { isTrialUsed } = improvement || {};
 
-              const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
+              const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
 
               const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
               const onClick = !!isTrialUsed

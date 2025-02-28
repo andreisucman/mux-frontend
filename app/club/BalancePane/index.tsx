@@ -5,7 +5,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import { UserDataType } from "@/types/global";
 import RedirectToWalletButton from "./RedirectToWalletButton";
 import classes from "./BalancePane.module.css";
@@ -36,7 +36,7 @@ function BalancePane() {
           });
           return;
         }
-        openSuccessModal({ description: response.message });
+        openInfoModal({ title: "✔️ Success!", description: response.message });
 
         setUserDetails((prev: UserDataType) => ({
           ...prev,

@@ -152,11 +152,17 @@ export const data = [
   {
     question: "What is food scan for?",
     answer: (
-      <Text>
-        Food scan lets you easily control the amount of calories you consume. This is useful for
-        users who need to lose or gain weight. Just take a picture of your plate and our AI will
-        tell you how much of it you can eat to stay within your calorie goal.
-      </Text>
+      <Stack>
+        <Text>
+          Food scan lets you easily control the amount of calories you consume. This is useful for
+          users who need to lose or gain weight. Just take a picture of your plate and our AI will
+          tell you how much of it you can eat to stay within your calorie goal.
+        </Text>
+        <Text>
+          It will also tell you if this food contradicts your special considerations if you have
+          added this info on your tasks page.
+        </Text>
+      </Stack>
     ),
   },
   {

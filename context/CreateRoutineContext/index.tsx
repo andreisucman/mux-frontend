@@ -79,7 +79,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }
     } else {
-      const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 day";
+      const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
 
       const onClick = !!isTrialUsed
         ? handleCreateCheckoutSession

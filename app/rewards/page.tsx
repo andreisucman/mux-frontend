@@ -13,7 +13,7 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSuccessModal from "@/helpers/openSuccessModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import { UserDataType } from "@/types/global";
 import { ReferrerEnum } from "../auth/AuthForm/types";
 import RewardCard from "./RewardCard";
@@ -102,7 +102,8 @@ export default function Rewards() {
           const { rewards, rewardValue } = response.message;
 
           setRewards(rewards);
-          openSuccessModal({
+          openInfoModal({
+            title: "✔️ Success!",
             description: (
               <Group gap={8}>
                 Reward added to your Club balance.
