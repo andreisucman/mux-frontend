@@ -1,7 +1,7 @@
 .container {
-  align-items: center;
+  flex-wrap: nowrap;
   min-height: rem(36);
-  align-items: center;
+  align-items: flex-start;
 }
 
 .title {

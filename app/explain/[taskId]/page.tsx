@@ -10,6 +10,7 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
+import PageHeader from "@/components/PageHeader";
 import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
@@ -26,7 +27,6 @@ import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
 import SelectDateModalContent from "./SelectDateModalContent";
 import classes from "./explain.module.css";
-import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -297,19 +297,21 @@ export default function Explain(props: Props) {
         <PageHeader
           title={
             <>
-              <span style={{ marginRight: rem(8) }}>{recipe?.name || name}</span>
-              {showBanner && (
-                <Badge
-                  mt={-8}
-                  color={
-                    status === TaskStatusEnum.ACTIVE || status === TaskStatusEnum.COMPLETED
-                      ? "green.7"
-                      : "red.7"
-                  }
-                >
-                  {status === TaskStatusEnum.ACTIVE ? futureStartDate : statusNote}
-                </Badge>
-              )}
+              <Title order={1} lineClamp={3}>
+                <span style={{ marginRight: rem(8) }}>{recipe?.name || name}</span>
+                {showBanner && (
+                  <Badge
+                    style={{ transform: "translateY(-2px)" }}
+                    color={
+                      status === TaskStatusEnum.ACTIVE || status === TaskStatusEnum.COMPLETED
+                        ? "green.7"
+                        : "red.7"
+                    }
+                  >
+                    {status === TaskStatusEnum.ACTIVE ? futureStartDate : statusNote}
+                  </Badge>
+                )}
+              </Title>
             </>
           }
           showReturn
