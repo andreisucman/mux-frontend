@@ -106,7 +106,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   useEffect(() => {
     if (!status) return;
 
-    if (onProtectedPage) {
+    if (onProtectedPage && pathname !== "/") {
       if (status !== AuthStateEnum.AUTHENTICATED && status !== AuthStateEnum.UNKNOWN) {
         router.replace("/auth");
       }

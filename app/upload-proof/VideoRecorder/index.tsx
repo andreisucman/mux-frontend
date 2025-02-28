@@ -1,6 +1,7 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
 import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -64,6 +65,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [isRecording, setIsRecording] = useState(false);
   const [captureType, setCaptureType] = useState<string>();
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
+
+  const { width: viewportWidth, height: viewportHeight } = useViewportSize();
 
   const showStartRecording = !isRecording && !isVideoLoading && !originalUrl;
 
@@ -418,6 +421,10 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const startText = captureType === "image" ? "Take the photo" : "Start recording";
 
+  const aspectRatio = useMemo(() => {
+    const ratio = viewportWidth / viewportHeight;
+    return isNaN(ratio) ? 9 / 16 : ratio;
+  }, [viewportWidth, viewportHeight]);
   return (
     <Stack className={classes.container}>
       <InstructionContainer
@@ -432,7 +439,13 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}
           <div className={classes.videoWrapper}>
-            <video ref={videoRef} className={classes.video} autoPlay muted></video>
+            <video
+              ref={videoRef}
+              className={classes.video}
+              style={{ aspectRatio }}
+              autoPlay
+              muted
+            ></video>
           </div>
           <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
             {!isRecording && hasMultipleCameras && (
