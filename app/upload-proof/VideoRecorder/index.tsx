@@ -84,8 +84,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       video: {
         facingMode,
         frameRate: { max: 30 },
-        width: { ideal: 1080 },
-        height: { ideal: 1920 },
+        // width: { ideal: 1080 },
+        // height: { ideal: 1920 },
       },
       audio: true,
     };
@@ -332,8 +332,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         video: {
           facingMode,
           frameRate: { max: 30 },
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
+          // width: { ideal: 1080 },
+          // height: { ideal: 1920 },
         },
         audio: true,
       };
