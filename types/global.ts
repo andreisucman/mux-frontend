@@ -330,7 +330,6 @@ export type TaskType = {
   isRecipe: boolean;
   recipe: RecipeType;
   suggestions: SuggestionType[];
-  isSubmitted: boolean;
   productTypes: string[];
   proofId: string;
   example: { type: string; url: string };

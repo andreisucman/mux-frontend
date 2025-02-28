@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
-import { useMediaQuery, useViewportSize } from "@mantine/hooks";
+import { Button, Group, rem, SegmentedControl, Stack } from "@mantine/core";
+import { useDebouncedValue, useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -53,6 +53,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
+  const [isFlipping, setIsFlipping] = useState(false);
 
   const parts = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -66,7 +68,12 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [captureType, setCaptureType] = useState<string>();
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
 
-  const { width: viewportWidth, height: viewportHeight } = useViewportSize();
+  const { width, height } = useViewportSize();
+  const [{ width: viewportWidth, height: viewportHeight }] = useDebouncedValue(
+    { width, height },
+    500
+  );
+
   const isMobile = useMediaQuery("(max-width: 36em)");
 
   const showStartRecording = !isRecording && !isVideoLoading && !originalUrl;
@@ -89,8 +96,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         facingMode,
         frameRate: { max: 30 },
         aspectRatio: { ideal: aspectRatio },
-        // width: { ideal: 1080 },
-        // height: { ideal: 1920 },
       },
       audio: true,
     };
@@ -116,7 +121,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
         const options = {
           mimeType,
-          videoBitsPerSecond: 5000000,
+          videoBitsPerSecond: 2500000,
         };
 
         mediaRecorder.current = new MediaRecorder(stream, options);
@@ -180,9 +185,10 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [isVideoLoading, setIsVideoLoading, stopBothVideoAndAudio]);
 
   const capturePhoto = useCallback(async () => {
-    if (captureType === "video") return;
     if (!videoRef.current) return;
-    const canvas = document.createElement("canvas");
+
+    if (captureType === "video") return;
+    const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     if (!context) return;
 
@@ -303,8 +309,11 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [recordedBlob, uploadProof, captureType]);
 
   const flipCamera = useCallback(() => {
+    if (isFlipping) return;
+    setIsFlipping(true);
     handleResetRecording();
-    setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+    setTimeout(() => setIsFlipping(false), 500);
   }, [facingMode]);
 
   const handleChangeCaptureType = useCallback(
@@ -333,13 +342,17 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const startVideoPreview = useCallback(async () => {
     try {
+      if (streamRef.current) {
+        stopBothVideoAndAudio(streamRef.current);
+      }
+
       const constraints: MediaStreamConstraints = {
         video: {
           facingMode,
-          frameRate: { max: 30 },
+          width: { ideal: 720 },
+          height: { ideal: 1280 },
+          frameRate: { max: 24 },
           aspectRatio: { ideal: aspectRatio },
-          // width: { ideal: 1080 },
-          // height: { ideal: 1920 },
         },
         audio: true,
       };
@@ -425,7 +438,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const startText = captureType === "image" ? "Take the photo" : "Start recording";
 
   const aspectRatio = useMemo(() => {
-    const ratio = isMobile ? viewportHeight / viewportWidth : 1;
+    const ratio = isMobile ? viewportWidth / viewportWidth : 1;
     return isNaN(ratio) ? 20 / 9 : ratio;
   }, [viewportWidth, viewportHeight, isMobile]);
 
@@ -442,15 +455,11 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       {!originalUrl && (
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}
-          <div className={classes.videoWrapper}>
-            <video
-              ref={videoRef}
-              className={classes.video}
-              style={{ aspectRatio }}
-              autoPlay
-              muted
-            ></video>
-          </div>
+          {!originalUrl && (
+            <div className={classes.videoWrapper} style={{ aspectRatio }}>
+              <video ref={videoRef} className={classes.video} autoPlay muted playsInline></video>
+            </div>
+          )}
           <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
             {!isRecording && hasMultipleCameras && (
               <Button

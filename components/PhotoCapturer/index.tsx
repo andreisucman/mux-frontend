@@ -178,7 +178,8 @@ export default function PhotoCapturer({
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
           >
-            <Text mr={2}>5</Text><IconStopwatch className="icon" />
+            <Text mr={2}>5</Text>
+            <IconStopwatch className="icon" />
           </Button>
         )}
         {!hideTimerButton && (
@@ -190,7 +191,8 @@ export default function PhotoCapturer({
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
           >
-            <Text mr={2}>15</Text><IconStopwatch className="icon" />
+            <Text mr={2}>15</Text>
+            <IconStopwatch className="icon" />
           </Button>
         )}
         {hasMultipleCameras && (

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import BlurButtons from "@/components/BlurButtons";
@@ -31,7 +31,7 @@ type HandleBlurClickProps = {
   originalUrl: string;
 };
 
-export default function VideoRecorderResult({
+function VideoRecorderResult({
   captureType,
   isVideoLoading,
   originalUrl,
@@ -241,3 +241,5 @@ export default function VideoRecorderResult({
     </Stack>
   );
 }
+
+export default memo(VideoRecorderResult);
