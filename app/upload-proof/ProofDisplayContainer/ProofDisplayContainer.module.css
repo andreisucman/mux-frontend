@@ -3,6 +3,7 @@
   flex-direction: column;
   position: relative;
   width: 100%;
+  max-height: calc(100vh - rem(170));
   border-radius: var(--mantine-radius-lg);
   flex: 1;
   overflow: hidden;

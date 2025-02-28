@@ -6,7 +6,7 @@
   gap: 0;
   flex: 1;
   width: 100%;
-  min-width: rem(300);
+  min-width: rem(200);
   border: rem(1) solid var(--mantine-color-dark-5);
 }
 
@@ -27,7 +27,7 @@
 }
 
 .imageWrapper {
-  flex:1;
+  flex: 1;
   width: 100%;
-  background-color: alpha(var(--mantine-color-dark-5),0.5);
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }
