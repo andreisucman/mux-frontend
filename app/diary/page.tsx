@@ -147,7 +147,7 @@ export default function DiaryPage() {
           isDisabled={noResults}
           title="Diary"
           sortItems={diarySortItems}
-          nowrap
+          nowrapTitle
           showReturn
         />
         <Button

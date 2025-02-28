@@ -341,7 +341,7 @@ export default function Calendar() {
         isDisabled={mode === "individual"}
         children={<DateSelector />}
         showReturn
-        nowrap
+        nowrapTitle
       />
       <SkeletonWrapper show={!selectedTasks}>
         <DatePicker
