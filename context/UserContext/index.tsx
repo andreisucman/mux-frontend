@@ -109,7 +109,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
         router.replace("/auth");
       }
     }
-  }, [status]);
+  }, [status, typeof userDetailsState]);
 
   useEffect(() => {
     if (userId || !pageLoaded) return;
