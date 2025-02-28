@@ -314,6 +314,7 @@ export default function Explain(props: Props) {
               </Title>
             </>
           }
+          nowrapContainer
           showReturn
         />
         <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>

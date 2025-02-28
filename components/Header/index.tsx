@@ -1,12 +1,13 @@
 "use client";
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
-import { IconRocket, IconTargetArrow } from "@tabler/icons-react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { IconDoorEnter, IconRocket, IconTargetArrow } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Drawer, Group, rem, Title } from "@mantine/core";
+import { ActionIcon, Button, Drawer, Group, rem, Text, Title } from "@mantine/core";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { createSpotlight } from "@mantine/spotlight";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import GlowingButton from "@/components/GlowingButton";
 import DrawerNavigation from "@/components/Header/DrawerNavigation";
 import Logo from "@/components/Header/Logo";
@@ -14,6 +15,7 @@ import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
+import openAuthModal from "@/helpers/openAuthModal";
 import AvatarComponent from "../AvatarComponent";
 import SearchButton from "../SearchButton";
 import Burger from "./Burger";
@@ -31,6 +33,7 @@ const showStartButtonRoutes = [
   "/legal/privacy",
   "/legal/club",
 ];
+const showSignInButtonRoutes = ["/scan", "/accept", "/scan/progress", "/scan/food"];
 
 const [spotlightStore, userSpotlight] = createSpotlight();
 
@@ -38,26 +41,63 @@ function Header() {
   const pinned = useHeadroom({ fixedAt: 120 });
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [navigationDrawerOpen, { toggle, close }] = useDisclosure(false);
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
 
-  const { avatar, name } = userDetails || {};
+  const { avatar, name, _id: userId } = userDetails || {};
 
   const showStartButton = useMemo(
     () => showStartButtonRoutes.some((route) => pathname === route),
     [pathname]
   );
 
+  console.log("pathname", pathname);
+
+  const showSignInButton = useMemo(
+    () => showSignInButtonRoutes.some((route) => pathname === route),
+    [pathname]
+  );
+  console.log("showSignInButton", showSignInButton);
+
   const headerStyles = useMemo(() => {
     return status ? { visibility: "visible" } : { visibility: "hidden" };
   }, [status]);
 
-  const handleRedirect = () => {
+  const handleRedirect = (referrer: "signInButton" | "startButton") => {
     if (isLoading) return;
     setIsLoading(true);
-    router.push("/scan");
+
+    if (referrer === "signInButton") {
+      console.log("pathname");
+      if (["/scan/progress", "/scan/food", "/scan"].includes(pathname)) {
+        const referrer =
+          pathname === "/scan/progress"
+            ? ReferrerEnum.SCAN_PROGRESS
+            : pathname === "/scan/food"
+              ? ReferrerEnum.SCAN_FOOD
+              : ReferrerEnum.SCAN_INDEX;
+
+        openAuthModal({
+          title: "Sign in to continue",
+          stateObject: {
+            redirectPath: pathname,
+            localUserId: userId,
+            redirectQuery: searchParams.toString(),
+            referrer,
+          },
+        });
+        setIsLoading(false)
+        return;
+      }
+      router.push("/auth");
+    }
+
+    if (referrer === "startButton") {
+      router.push("/scan");
+    }
   };
 
   const handleSignOut = useCallback(async () => {
@@ -86,10 +126,12 @@ function Header() {
       setDisplayComponent("userButton");
     } else if (status === "unauthenticated" && showStartButton) {
       setDisplayComponent("startButton");
+    } else if (status === "unauthenticated" && showSignInButton) {
+      setDisplayComponent("signInButton");
     } else {
       setDisplayComponent("default");
     }
-  }, [status, showStartButton]);
+  }, [status, showStartButton, showSignInButton]);
 
   useEffect(() => {
     setIsLoading(false);
@@ -101,6 +143,37 @@ function Header() {
         <div className={classes.wrapper}>
           <Logo />
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>
+            {displayComponent === "startButton" && (
+              <GlowingButton
+                text="Start"
+                aria-label="start analysis button"
+                loading={isLoading}
+                disabled={isLoading}
+                icon={
+                  <IconRocket
+                    stroke={1.5}
+                    className="icon icon__large"
+                    style={{ marginRight: rem(6) }}
+                  />
+                }
+                onClick={() => handleRedirect("startButton")}
+              />
+            )}
+            {displayComponent === "signInButton" && (
+              <Button
+                aria-label="sign in button"
+                loading={isLoading}
+                disabled={isLoading}
+                onClick={() => handleRedirect("signInButton")}
+              >
+                <IconDoorEnter
+                  stroke={1.5}
+                  className="icon icon__large"
+                  style={{ marginRight: rem(6) }}
+                />
+                <Text fw={600}>Sign in</Text>
+              </Button>
+            )}
             {displayComponent !== "none" && (
               <>
                 <SearchButton
@@ -121,22 +194,7 @@ function Header() {
                 >
                   <IconTargetArrow stroke={1.25} className="icon icon__large" />
                 </ActionIcon>
-                {displayComponent === "startButton" && (
-                  <GlowingButton
-                    text="Start"
-                    aria-label="start analysis button"
-                    loading={isLoading}
-                    disabled={isLoading}
-                    icon={
-                      <IconRocket
-                        stroke={1.5}
-                        className="icon icon__large"
-                        style={{ marginRight: rem(6) }}
-                      />
-                    }
-                    onClick={handleRedirect}
-                  />
-                )}
+
                 {displayComponent === "userButton" && (
                   <UserButton avatar={avatar || null} name={name} handleSignOut={handleSignOut} />
                 )}

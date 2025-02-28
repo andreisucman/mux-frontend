@@ -10,7 +10,6 @@ import SortButton from "../SortButton";
 import classes from "./PageHeader.module.css";
 
 type Props = {
-  nowrap?: boolean;
   title?: string | React.ReactNode;
   titles?: { label: string; value: string }[];
   isDisabled?: boolean;
@@ -19,6 +18,8 @@ type Props = {
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
   children?: React.ReactNode;
+  nowrapTitle?: boolean;
+  nowrapContainer?: boolean;
   onSelect?: (value?: string | null) => void;
   onFilterClick?: () => void;
 };
@@ -26,7 +27,8 @@ type Props = {
 export default function PageHeader({
   title,
   titles,
-  nowrap,
+  nowrapTitle,
+  nowrapContainer,
   showReturn,
   isDisabled,
   sortItems,
@@ -52,7 +54,7 @@ export default function PageHeader({
           <Title
             order={1}
             lineClamp={3}
-            className={cn(classes.title, { [classes.nowrap]: nowrap })}
+            className={cn(classes.title, { [classes.nowrapTitle]: nowrapTitle })}
           >
             {title}
           </Title>
@@ -64,7 +66,7 @@ export default function PageHeader({
   }, [titles, title]);
 
   return (
-    <Group className={classes.container}>
+    <Group className={cn(classes.container, { [classes.nowrapContainer]: nowrapContainer })}>
       {showReturn && (
         <ActionIcon variant="default" onClick={() => router.back()}>
           <IconChevronLeft className="icon" />

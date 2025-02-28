@@ -1,5 +1,4 @@
 .container {
-  flex-wrap: nowrap;
   min-height: rem(36);
   align-items: flex-start;
 }
@@ -10,4 +9,8 @@
 
 .nowrap {
   white-space: nowrap;
+}
+
+.nowrapContainer {
+  flex-wrap: nowrap;
 }

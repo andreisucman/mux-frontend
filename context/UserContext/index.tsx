@@ -3,6 +3,7 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import useSWR from "swr";
+import { nprogress } from "@mantine/nprogress";
 import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
@@ -77,6 +78,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
     if (error) {
       window.history.go(-3); // when the user declines auth in google return to the page before the auth
+      nprogress.complete();
     }
   }, [error]);
 
