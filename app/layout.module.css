@@ -1,4 +1,5 @@
 .container {
+  position: relative;
   flex: 1;
   padding: rem(24) rem(16);
 

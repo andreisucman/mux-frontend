@@ -1,0 +1,28 @@
+.fullScreenAlert {
+  display: none;
+  position: fixed;
+  left: rem(32);
+  right: rem(32);
+  bottom: rem(32);
+  animation: fadeIn 0.5s forwards;
+  z-index: 999;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: block;
+
+    @media all and (display-mode: fullscreen) {
+      .root:not(:fullscreen) {
+        display: none;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
