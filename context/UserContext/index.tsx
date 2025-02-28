@@ -42,7 +42,9 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   const code = searchParams.get("code");
   const error = searchParams.get("error");
-  const onProtectedPage = protectedPaths.includes(pathname);
+  const onProtectedPage = protectedPaths.some(
+    (path) => path.includes(pathname) || pathname.includes(path)
+  );
   const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
 
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
@@ -109,7 +111,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
         router.replace("/auth");
       }
     }
-  }, [status, typeof userDetailsState]);
+  }, [status]);
 
   useEffect(() => {
     if (userId || !pageLoaded) return;

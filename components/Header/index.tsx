@@ -54,13 +54,10 @@ function Header() {
     [pathname]
   );
 
-  console.log("pathname", pathname);
-
   const showSignInButton = useMemo(
     () => showSignInButtonRoutes.some((route) => pathname === route),
     [pathname]
   );
-  console.log("showSignInButton", showSignInButton);
 
   const headerStyles = useMemo(() => {
     return status ? { visibility: "visible" } : { visibility: "hidden" };
@@ -71,7 +68,6 @@ function Header() {
     setIsLoading(true);
 
     if (referrer === "signInButton") {
-      console.log("pathname");
       if (["/scan/progress", "/scan/food", "/scan"].includes(pathname)) {
         const referrer =
           pathname === "/scan/progress"
@@ -89,7 +85,7 @@ function Header() {
             referrer,
           },
         });
-        setIsLoading(false)
+        setIsLoading(false);
         return;
       }
       router.push("/auth");
