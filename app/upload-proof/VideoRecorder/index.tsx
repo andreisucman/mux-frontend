@@ -59,6 +59,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [recordingTime, setRecordingTime] = useState(RECORDING_TIME);
@@ -68,6 +69,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 36em)");
+  const [isFlipping, setIsFlipping] = useState(false);
 
   const showStartRecording = !isRecording && !isVideoLoading && !originalUrl;
 
@@ -89,8 +91,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         facingMode,
         frameRate: { max: 30 },
         aspectRatio: { ideal: aspectRatio },
-        // width: { ideal: 1080 },
-        // height: { ideal: 1920 },
       },
       audio: true,
     };
@@ -116,7 +116,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
         const options = {
           mimeType,
-          videoBitsPerSecond: 5000000,
+          videoBitsPerSecond: 2500000,
         };
 
         mediaRecorder.current = new MediaRecorder(stream, options);
@@ -182,7 +182,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const capturePhoto = useCallback(async () => {
     if (captureType === "video") return;
     if (!videoRef.current) return;
-    const canvas = document.createElement("canvas");
+    const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     if (!context) return;
 
@@ -303,8 +303,11 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [recordedBlob, uploadProof, captureType]);
 
   const flipCamera = useCallback(() => {
+    if (isFlipping) return;
+    setIsFlipping(true);
     handleResetRecording();
-    setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+    setTimeout(() => setIsFlipping(false), 500);
   }, [facingMode]);
 
   const handleChangeCaptureType = useCallback(
@@ -332,14 +335,15 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   );
 
   const startVideoPreview = useCallback(async () => {
+    if (streamRef.current) {
+      stopBothVideoAndAudio(streamRef.current);
+    }
     try {
       const constraints: MediaStreamConstraints = {
         video: {
           facingMode,
           frameRate: { max: 30 },
           aspectRatio: { ideal: aspectRatio },
-          // width: { ideal: 1080 },
-          // height: { ideal: 1920 },
         },
         audio: true,
       };
