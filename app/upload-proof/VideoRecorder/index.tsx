@@ -452,8 +452,15 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}
           {!originalUrl && (
-            <div className={classes.videoWrapper} style={{ aspectRatio }}>
-              <video ref={videoRef} className={classes.video} autoPlay muted playsInline></video>
+            <div className={classes.videoWrapper}>
+              <video
+                ref={videoRef}
+                className={classes.video}
+                style={{ aspectRatio }}
+                autoPlay
+                muted
+                playsInline
+              ></video>
             </div>
           )}
           <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
