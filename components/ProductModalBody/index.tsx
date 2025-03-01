@@ -160,17 +160,19 @@ export default function ProductModalBody({ items, defaultItem, disableAtc }: Pro
       )}
       {addedProducts.length > 0 && <HorizontalScrollRow children={addedProducts} />}
       {!disableAtc && (
-        <Button
-          onClick={() => addToAmazonCart(selectedProducts.map((p) => p.asin))}
-          disabled={!selectedAsinsLength}
-        >
-          <IconLink className="icon icon__small" style={{ marginRight: rem(8) }} />
-          Add to Amazon cart {selectedAsinsLength > 0 ? `(${selectedAsinsLength})` : undefined}
-        </Button>
+        <>
+          <Button
+            onClick={() => addToAmazonCart(selectedProducts.map((p) => p.asin))}
+            disabled={!selectedAsinsLength}
+          >
+            <IconLink className="icon icon__small" style={{ marginRight: rem(8) }} />
+            Add to Amazon cart {selectedAsinsLength > 0 ? `(${selectedAsinsLength})` : undefined}
+          </Button>
+          <Text className={classes.disclaimer}>
+            As an Amazon associate we may earn from qualified purchases
+          </Text>
+        </>
       )}
-      <Text className={classes.disclaimer}>
-        As an Amazon associate we may earn from qualified purchases
-      </Text>
     </Stack>
   );
 }

@@ -10,9 +10,9 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NavigationProgress } from "@mantine/nprogress";
+import FullScreenAlert from "@/components/FullscreenAlert";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
-import ShowFullScreenAlert from "@/components/ShowFullscreenAlert";
 import UserContextProvider from "@/context/UserContext";
 import { HandleOnComplete } from "@/helpers/custom-router";
 import { theme } from "../theme";
@@ -63,7 +63,7 @@ export default function RootLayout({ children }: Props) {
 
                 <Header />
                 <Stack className={classes.container}>
-                  <ShowFullScreenAlert />
+                  <FullScreenAlert withCheckbox withCloseButton />
                   {children}
                 </Stack>
               </ModalsProvider>

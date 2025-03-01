@@ -1,11 +1,17 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, Checkbox, Stack, Text, Title } from "@mantine/core";
+import { Alert, Checkbox, Stack, Text } from "@mantine/core";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import classes from "./ShowFullscreenAlert.module.css";
+import classes from "./FullscreenAlert.module.css";
 
-export default function ShowFullScreenAlert() {
+type Props = {
+  withCheckbox?: boolean;
+  withCloseButton?: boolean;
+  customStyles?: { [key: string]: any };
+};
+
+export default function FullScreenAlert({ withCheckbox, withCloseButton, customStyles }: Props) {
   const [showFullscreenAlert, setShowFulscreenAlert] = useState(false);
   const [dontShowAlertAnymore, setDontShowAlertAnymore] = useState(false);
 
@@ -25,18 +31,22 @@ export default function ShowFullScreenAlert() {
   const fullScreenAlert = useMemo(() => {
     return (
       <Alert
-        className={classes.fullScreenAlert}
-        withCloseButton
+        className={classes.container}
+        style={customStyles || {}}
         onClose={() => handleCloseAlert(dontShowAlertAnymore)}
+        withCloseButton={withCloseButton}
       >
         <Stack>
-          <Title order={5}>To exit fullscreen mode</Title>
-          <Text size="sm">Swipe your finger down from the beginning of your screen.</Text>
-          <Checkbox
-            checked={dontShowAlertAnymore}
-            onChange={(e) => setDontShowAlertAnymore(e.currentTarget.checked)}
-            label="Don't show this anymore"
-          />
+          <Text size="sm">
+            To exit the full screen mode, swipe your from the top or bottom of your screen.
+          </Text>
+          {withCheckbox && (
+            <Checkbox
+              checked={dontShowAlertAnymore}
+              onChange={(e) => setDontShowAlertAnymore(e.currentTarget.checked)}
+              label="Don't show this anymore"
+            />
+          )}
         </Stack>
       </Alert>
     );

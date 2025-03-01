@@ -1,11 +1,11 @@
-.fullScreenAlert {
+.container {
   display: none;
   position: fixed;
   left: rem(32);
   right: rem(32);
   bottom: rem(32);
   animation: fadeIn 0.5s forwards;
-  z-index: 999;
+  z-index: 99;
 
   @media (max-width: $mantine-breakpoint-sm) and (display-mode: fullscreen) {
     display: block;

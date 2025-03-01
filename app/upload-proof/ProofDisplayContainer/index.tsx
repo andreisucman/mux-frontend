@@ -50,23 +50,25 @@ export default function ProofDisplayContainer({
         customStyles={{ top: rem(16), right: rem(16) }}
         onComplete={handleUpdateExistingRecord}
       />
-      {contentType === "image" ? (
-        <Image
-          src={mainUrl.url}
-          component={NextImage}
-          className={classes.item}
-          width={300}
-          height={300}
-          alt=""
-        />
-      ) : (
-        <VideoPlayer
-          url={mainUrl.url}
-          thumbnail={mainThumbnail.url}
-          createdAt={createdAt}
-          isRelative
-        />
-      )}
+      <Stack className={classes.wrapper}>
+        {contentType === "image" ? (
+          <Image
+            src={mainUrl.url}
+            component={NextImage}
+            className={classes.item}
+            width={300}
+            height={300}
+            alt=""
+          />
+        ) : (
+          <VideoPlayer
+            url={mainUrl.url}
+            thumbnail={mainThumbnail.url}
+            createdAt={createdAt}
+            isRelative
+          />
+        )}
+      </Stack>
       <ContentPublicityIndicator isPublic={isPublic} position="bottom-right" />
     </Stack>
   );

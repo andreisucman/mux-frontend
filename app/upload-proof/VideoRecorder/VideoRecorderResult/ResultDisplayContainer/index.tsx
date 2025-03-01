@@ -36,8 +36,6 @@ export default function ResultDisplayContainer({
     return isNaN(ratio) ? 20 / 9 : ratio;
   }, [viewportWidth, viewportHeight, isMobile]);
 
-  console.log("aspectRatio", aspectRatio, "isMobile", isMobile);
-
   return (
     <div className={classes.container} style={{ aspectRatio }}>
       <ProgressLoadingOverlay

@@ -164,7 +164,9 @@ export default function PhotoCapturer({
       )}
       {timerStarted && (
         <div className={classes.timerOverlay}>
-          <Text fz={40}>{secondsLeft}</Text>
+          <Text fz={40} c="red.7">
+            {secondsLeft}
+          </Text>
         </div>
       )}
       <Group className={classes.buttonGroup}>

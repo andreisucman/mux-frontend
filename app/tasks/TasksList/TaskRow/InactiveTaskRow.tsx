@@ -24,13 +24,13 @@ export default function InactiveTaskRow({
   icon,
   completedAt,
   description,
-  expiresAt,
+  startsAt,
   status,
   onClick,
 }: Props) {
   const text = useMemo(() => {
     const date = convertUTCToLocal({
-      utcDate: new Date(completedAt || expiresAt),
+      utcDate: new Date(completedAt || startsAt),
       timeZone,
     });
 

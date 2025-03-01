@@ -67,3 +67,13 @@
     opacity: 1;
   }
 }
+
+.timerOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  color: var(--mantine-color-red-7);
+}

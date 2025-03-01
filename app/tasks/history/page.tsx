@@ -6,15 +6,19 @@ import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import { FilterPartItemType } from "@/components/FilterDropdown/types";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
+import getFilters from "@/functions/getFilters";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
-import HistoryHeader from "./HistoryHeader";
 import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";
+import { historySortItems } from "@/data/sortItems";
 
 type FetchInactiveTasksProps = {
   status: string | null;
@@ -32,6 +36,21 @@ export default function RoutinesHistoryPage() {
   const part = searchParams.get("part");
   const status = searchParams.get("status");
   const sort = searchParams.get("sort");
+
+  const [availableParts, setAvaiableParts] = useState<FilterPartItemType[]>([]);
+  const [availableStatuses, setAvailableStatuses] = useState<FilterPartItemType[]>([]);
+
+  useEffect(() => {
+    getFilters({
+      collection: "task",
+      filter: ["status=canceled", "status=expired", "status=completed"],
+      fields: ["part", "status"],
+    }).then((result) => {
+      const { availableParts, availableStatuses } = result;
+      setAvaiableParts(availableParts);
+      setAvailableStatuses(availableStatuses);
+    });
+  }, []);
 
   const fetchInactiveTasks = useCallback(
     async ({ status, part, loadMore, sort }: FetchInactiveTasksProps) => {
@@ -86,10 +105,27 @@ export default function RoutinesHistoryPage() {
     fetchInactiveTasks({ status, part, sort });
   }, [status, part, sort]);
 
+  const isFilterDisabled = availableParts.length + availableStatuses.length === 0;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <HistoryHeader title="Tasks history" />
+        <PageHeader
+          title="Task history"
+          filterNames={["part", "status"]}
+          sortItems={historySortItems}
+          isDisabled={isFilterDisabled}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.HistoryFilterCardContent,
+              childrenProps: {
+                partItems: availableParts,
+                statusItems: availableStatuses,
+              },
+            })
+          }
+          showReturn
+        />
         <Stack className={classes.content}>
           {inactiveTasks ? (
             <>

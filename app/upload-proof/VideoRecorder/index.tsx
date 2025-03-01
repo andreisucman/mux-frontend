@@ -1,6 +1,12 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { IconCamera, IconCameraRotate, IconPlayerStopFilled, IconVideo } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Skeleton, Stack } from "@mantine/core";
+import {
+  IconCamera,
+  IconCameraRotate,
+  IconPlayerStopFilled,
+  IconStopwatch,
+  IconVideo,
+} from "@tabler/icons-react";
+import { Button, Group, rem, SegmentedControl, Skeleton, Stack, Text } from "@mantine/core";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -53,6 +59,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
   const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
+  const [timerStarted, setTimerStarted] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(5);
 
   const parts = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -182,6 +190,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const capturePhoto = useCallback(async () => {
     if (captureType === "video") return;
     if (!videoRef.current) return;
+
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     if (!context) return;
@@ -211,6 +220,27 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       console.log("Error in capturePhoto: ", err);
     }
   }, [videoRef.current, captureType]);
+
+  const startDelayedCapture = useCallback(
+    (seconds: number) => {
+      if (timerStarted) return;
+      setTimerStarted(true);
+      setSecondsLeft(seconds);
+      const tick = (remaining: number) => {
+        if (remaining <= 0) {
+          setTimerStarted(false);
+          if (captureType === "image") capturePhoto();
+          if (captureType === "video") startRecording();
+          setSecondsLeft(seconds);
+        } else {
+          setSecondsLeft(remaining);
+          setTimeout(() => tick(remaining - 1), 1000);
+        }
+      };
+      tick(seconds);
+    },
+    [captureType, capturePhoto, startRecording, timerStarted]
+  );
 
   const handleStop = useCallback(() => {
     if (isVideoLoading) return;
@@ -446,6 +476,11 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       {!originalUrl && (
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}
+          {timerStarted && (
+            <div className={classes.timerOverlay}>
+              <Text fz={40}>{secondsLeft}</Text>
+            </div>
+          )}
           <div className={classes.videoWrapper}>
             <video
               ref={videoRef}
@@ -468,12 +503,34 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
                 <IconCameraRotate className="icon" />
               </Button>
             )}
+            <Button
+              variant="default"
+              disabled={timerStarted}
+              onClick={() => startDelayedCapture(5)}
+              className={classes.button}
+              style={{ flexGrow: 0, padding: 0 }}
+              miw={rem(50)}
+            >
+              <Text mr={2}>5</Text>
+              <IconStopwatch className="icon" />
+            </Button>
+            <Button
+              variant="default"
+              disabled={timerStarted}
+              onClick={() => startDelayedCapture(15)}
+              className={classes.button}
+              style={{ flexGrow: 0, padding: 0 }}
+              miw={rem(50)}
+            >
+              <Text mr={2}>15</Text>
+              <IconStopwatch className="icon" />
+            </Button>
             {isRecording && (
               <Button
                 variant="default"
+                disabled={timerStarted || taskExpired}
                 onClick={handleStop}
                 className={classes.button}
-                disabled={taskExpired}
               >
                 <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
               </Button>
@@ -482,7 +539,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
               <Button
                 onClick={captureType === "image" ? capturePhoto : startRecording}
                 className={classes.button}
-                disabled={taskExpired}
+                disabled={taskExpired || timerStarted}
               >
                 {startText}
               </Button>

@@ -51,7 +51,6 @@ export default function ClubRoutines() {
   const { timeZone, specialConsiderations } = userDetails || {};
 
   const sort = searchParams.get("sort");
-  const part = searchParams.get("part");
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, routinesLength }: GetRoutinesProps) => {

@@ -97,7 +97,9 @@ export default function AddATaskContainer({
   );
 
   const scannedParts = nextScan?.filter((r) => r.date).map((r) => r.part);
-  const isCreateRoutineInCooldown = nextRoutine?.every((ro) => ro.date && new Date(ro.date || 0) > new Date());
+  const isCreateRoutineInCooldown = nextRoutine?.every(
+    (ro) => ro.date && new Date(ro.date || 0) > new Date()
+  );
   const earliestCreateRoutineDate =
     nextRoutine && nextRoutine.length
       ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
@@ -145,7 +147,7 @@ export default function AddATaskContainer({
             {step === 1 && !rawTask && (
               <>
                 <Button
-                  variant="default"
+                  variant={isSubscriptionActive ? "filled" : "default"}
                   loading={isLoading}
                   disabled={!selectedConcern || !selectedPart || !description}
                   onClick={() =>
@@ -161,6 +163,7 @@ export default function AddATaskContainer({
                   Create task
                 </Button>
                 <Button
+                  variant={isSubscriptionActive ? "default" : "filled"}
                   disabled={!!isCreateRoutineInCooldown}
                   onClick={() => {
                     onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });

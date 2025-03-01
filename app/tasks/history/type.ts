@@ -6,6 +6,6 @@ export type InactiveTaskType = {
   color: string;
   description: string;
   completedAt: string;
-  expiresAt: string;
+  startsAt: string;
   status: string;
 };

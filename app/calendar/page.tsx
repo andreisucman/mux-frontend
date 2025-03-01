@@ -206,7 +206,7 @@ export default function Calendar() {
         const response = await callTheServer({
           endpoint: "updateStatusOfTasks",
           method: "POST",
-          body: { taskIds: tasksToUpdate.map((t) => t._id), newStatus },
+          body: { taskIds: tasksToUpdate.map((t) => t._id), isVoid: true, newStatus },
         });
 
         if (response.status === 200) {
@@ -229,7 +229,7 @@ export default function Calendar() {
         setLoadingType(undefined);
       }
     },
-    [loadingType]
+    [loadingType, tasks]
   );
 
   const getTasksOfThisDate = useCallback(

@@ -16,7 +16,8 @@ import {
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";
-import { Alert, Divider, rem, Stack, Text, Title, UnstyledButton } from "@mantine/core";
+import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
+import FullScreenAlert from "@/components/FullscreenAlert";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
@@ -246,6 +247,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           </UnstyledButton>
         </>
       )}
+      <FullScreenAlert customStyles={{ position: "static" }} />
       <Stack className={classes.footer}>
         {legalNavigation}
         <Text className={classes.copyright}>&copy; {year} Muxout. All rights reserved</Text>

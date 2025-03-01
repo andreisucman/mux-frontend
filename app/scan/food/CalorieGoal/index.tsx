@@ -76,7 +76,7 @@ export default function CalorieGoalController({ disabled }: Props) {
       </Group>
       <Slider
         min={0}
-        max={5000}
+        max={2000}
         step={100}
         value={calorieGoal}
         onChange={handleChangeSlider}

@@ -120,7 +120,7 @@ export default function AccordionRoutineRow({
       const response = await callTheServer({
         endpoint: "updateStatusOfTasks",
         method: "POST",
-        body: { taskIds: [taskId], newStatus, routineStatus: status, returnOnlyRoutines: true },
+        body: { taskIds: [taskId], newStatus, routineStatus, returnOnlyRoutines: true },
       });
 
       if (response.status === 200) {
@@ -169,7 +169,7 @@ export default function AccordionRoutineRow({
         openErrorModal({ description: response.error });
         return;
       }
-      
+
       if (setRoutines) {
         setRoutines((prev) => {
           const newRoutines = prev?.map((r) =>

@@ -1,0 +1,67 @@
+import React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import FilterDropdown from "@/components/FilterDropdown";
+import { FilterItemType } from "@/components/FilterDropdown/types";
+import { partIcons } from "@/helpers/icons";
+import modifyQuery from "@/helpers/modifyQuery";
+import classes from "./HistoryFilterCardContent.module.css";
+
+type Props = {
+  partItems?: FilterItemType[];
+  statusItems?: FilterItemType[];
+};
+
+export default function HistoryFilterCardContent({ partItems = [], statusItems = [] }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const part = searchParams.get("part");
+  const status = searchParams.get("status");
+
+  const handleResetFilters = () => {
+    const query = modifyQuery({
+      params: [
+        { name: "part", value: null, action: "delete" },
+        { name: "status", value: null, action: "delete" },
+      ],
+    });
+    modals.closeAll();
+    router.replace(`${pathname}?${query}`);
+  };
+
+  const partsDisabled = partItems.length === 0;
+  const statusDisabled = statusItems.length === 0;
+
+  return (
+    <Stack className={classes.container}>
+      <FilterDropdown
+        data={partItems}
+        icons={partsDisabled ? undefined : partIcons}
+        filterType="part"
+        placeholder="Filter by part"
+        selectedValue={part}
+        isDisabled={partsDisabled}
+        customStyles={{ maxWidth: "unset" }}
+        allowDeselect
+        addToQuery
+      />
+      <FilterDropdown
+        data={statusItems}
+        icons={statusDisabled ? undefined : partIcons}
+        filterType="status"
+        placeholder="Filter by status"
+        selectedValue={status}
+        isDisabled={statusDisabled}
+        customStyles={{ maxWidth: "unset" }}
+        allowDeselect
+        addToQuery
+      />
+      <Button onClick={handleResetFilters} variant="default">
+        Reset
+      </Button>
+    </Stack>
+  );
+}
