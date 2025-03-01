@@ -68,11 +68,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [captureType, setCaptureType] = useState<string>();
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
 
-  const { width, height } = useViewportSize();
-  const [{ width: viewportWidth, height: viewportHeight }] = useDebouncedValue(
-    { width, height },
-    500
-  );
+  const { width: viewportWidth, height: viewportHeight } = useViewportSize();
 
   const isMobile = useMediaQuery("(max-width: 36em)");
 
@@ -438,7 +434,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const startText = captureType === "image" ? "Take the photo" : "Start recording";
 
   const aspectRatio = useMemo(() => {
-    const ratio = isMobile ? viewportWidth / viewportWidth : 1;
+    const ratio = isMobile ? viewportHeight / viewportWidth : 1;
     return isNaN(ratio) ? 20 / 9 : ratio;
   }, [viewportWidth, viewportHeight, isMobile]);
 
