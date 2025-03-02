@@ -74,10 +74,15 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [isRecording, setIsRecording] = useState(false);
   const [captureType, setCaptureType] = useState<string>();
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
+  const [isFlipping, setIsFlipping] = useState(false);
 
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const [isFlipping, setIsFlipping] = useState(false);
+
+  const aspectRatio = useMemo(() => {
+    const ratio = isMobile ? viewportHeight / viewportWidth : 1;
+    return isNaN(ratio) ? 20 / 9 : ratio;
+  }, [viewportWidth, viewportHeight, isMobile]);
 
   const showStartRecording = !isRecording && !isVideoLoading && !originalUrl;
 
@@ -185,7 +190,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
       setIsRecording(false);
     }
-  }, [isVideoLoading, setIsVideoLoading, stopBothVideoAndAudio]);
+  }, [aspectRatio, isVideoLoading, setIsVideoLoading, stopBothVideoAndAudio]);
 
   const capturePhoto = useCallback(async () => {
     if (captureType === "video") return;
@@ -458,11 +463,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const startText = captureType === "image" ? "Take the photo" : "Start recording";
 
-  const aspectRatio = useMemo(() => {
-    const ratio = isMobile ? viewportHeight / viewportWidth : 1;
-    return isNaN(ratio) ? 20 / 9 : ratio;
-  }, [viewportWidth, viewportHeight, isMobile]);
-
   return (
     <Stack className={classes.container}>
       <InstructionContainer
@@ -470,9 +470,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         instruction={instruction}
         customStyles={{ flex: 0 }}
       />
-
       <SegmentedControl value={captureType} onChange={handleChangeCaptureType} data={segments} />
-
       {!originalUrl && (
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}

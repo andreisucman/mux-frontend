@@ -24,7 +24,7 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/proof/${userName}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
   const handleRedirect = () => {
     router.push(redirectUrl);
@@ -45,6 +45,7 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
           date={formattedDate}
           image={mainUrl.url}
           datePosition="bottom-right"
+          customWrapperStyles={{ position: "absolute", aspectRatio: 3 / 4 }}
           showDate
           isRelative
         />

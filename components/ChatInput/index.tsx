@@ -376,12 +376,14 @@ export default function ChatInput({
   };
 
   useEffect(() => {
-    getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
-      if (openChatKey) {
+    if (openChatKey) {
+      getFromIndexedDb(`openInputChat-${openChatKey}`).then((verdict) => {
         if (verdict === undefined || verdict === null) verdict = defaultVisibility === "open";
         setShowChat(verdict);
-      }
-    });
+      });
+    } else {
+      setShowChat(true);
+    }
   }, [chatContentId]);
 
   useEffect(() => {

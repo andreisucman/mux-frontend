@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { IconChevronDown, IconScan } from "@tabler/icons-react";
 import {
   Button,
@@ -15,14 +15,15 @@ import { useDisclosure } from "@mantine/hooks";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
 import SuggestionContainer from "@/components/SuggestionContainer";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import Link from "@/helpers/custom-router/patch-router/link";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { SolutionCardType } from "../types";
 import classes from "./SolutionCard.module.css";
 
-type Props = { data: SolutionCardType };
+type Props = { data: SolutionCardType; status: AuthStateEnum };
 
-export default function SolutionCard({ data }: Props) {
+export default function SolutionCard({ data, status }: Props) {
   const [opened, { toggle: toggleCollapse }] = useDisclosure(true);
   const [selectedAsins, setSelectedAsins] = useState<string[]>([]);
 
@@ -38,7 +39,7 @@ export default function SolutionCard({ data }: Props) {
   const showSkeleton = useShowSkeleton();
 
   return (
-    <Skeleton visible={showSkeleton} className="skeleton">
+    <Skeleton visible={showSkeleton && status !== AuthStateEnum.AUTHENTICATED} className="skeleton">
       <Stack className={classes.container}>
         <Group className={classes.heading} style={{ backgroundColor: color }}>
           {icon}
@@ -75,13 +76,15 @@ export default function SolutionCard({ data }: Props) {
             />
           </Stack>
 
-          <Stack className={classes.ctaBox}>
-            <Text className={classes.ctaText}>Get your improvement routine</Text>
-            <Button component={Link} variant="default" href={"/scan"}>
-              <IconScan style={{ marginRight: rem(6) }} />
-              Scan now
-            </Button>
-          </Stack>
+          {status !== AuthStateEnum.AUTHENTICATED && (
+            <Stack className={classes.ctaBox}>
+              <Text className={classes.ctaText}>Get your improvement routine</Text>
+              <Button component={Link} variant="default" href={"/scan"}>
+                <IconScan style={{ marginRight: rem(6) }} />
+                Scan now
+              </Button>
+            </Stack>
+          )}
           {suggestions && suggestions.length > 0 && (
             <Stack gap={16}>
               <Group className={classes.showProductsHeading} onClick={toggleCollapse}>

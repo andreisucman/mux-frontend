@@ -33,7 +33,7 @@ export default function ProofCardFooter({
       {handleTrack && (
         <div className={classes.buttonWrapper}>
           <GlowingButton
-            text={"Peek proof"}
+            text={"Peek routine"}
             loading={isLoading}
             disabled={isLoading}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}

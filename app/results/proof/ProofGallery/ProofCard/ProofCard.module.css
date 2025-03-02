@@ -9,6 +9,12 @@
   width: 100%;
   height: fit-content;
   overflow: hidden;
+
+  aspect-ratio: 4/3;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    aspect-ratio: 3/4;
+  }
 }
 
 .content {
@@ -17,6 +23,7 @@
   flex: 1;
   border-radius: 0;
   gap: 0;
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 }
 
 .modalTitle {

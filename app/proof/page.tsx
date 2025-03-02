@@ -62,10 +62,13 @@ export default function AllProof() {
       } else {
         setProof(data.slice(0, 20));
       }
+      console.log("data.length", data.length);
       setHasMore(data.length === 21);
     },
     []
   );
+
+  console.log("hasMore", hasMore);
 
   useEffect(() => {
     handleFetchProof({
@@ -98,9 +101,9 @@ export default function AllProof() {
         <ProofGallery
           proof={proof}
           hasMore={hasMore}
-          handleFetchProof={fetchProof}
+          handleFetchProof={handleFetchProof}
           setProof={setProof}
-          isPublicPage={true}
+          isPublicPage
         />
       ) : (
         <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />

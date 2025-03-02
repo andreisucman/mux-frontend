@@ -89,7 +89,7 @@ export default function ResultsProof() {
           <ProofGallery
             proof={proof}
             hasMore={hasMore}
-            handleFetchProof={fetchProof}
+            handleFetchProof={handleFetchProof}
             setProof={setProof}
             columns={2}
             isSelf

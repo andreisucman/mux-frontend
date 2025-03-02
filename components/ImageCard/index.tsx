@@ -13,6 +13,7 @@ type Props = {
   datePosition?: "top-left" | "bottom-right";
   onClick?: () => void;
   customStyles?: { [key: string]: any };
+  customWrapperStyles?: { [key: string]: any };
 };
 
 export default function ImageCard({
@@ -22,6 +23,7 @@ export default function ImageCard({
   isRelative,
   showDate,
   datePosition = "bottom-right",
+  customWrapperStyles,
   customStyles,
   onClick,
 }: Props) {
@@ -31,7 +33,7 @@ export default function ImageCard({
       style={customStyles ? customStyles : {}}
       onClick={onClick}
     >
-      <div className={classes.imageWrapper}>
+      <div className={classes.imageWrapper} style={customWrapperStyles ? customWrapperStyles : {}}>
         <Image
           className={cn(classes.image, { [classes.relative]: isRelative })}
           src={image || ""}

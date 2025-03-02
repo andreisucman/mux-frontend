@@ -47,7 +47,12 @@ export default function FilterCardContent({ filters }: Props) {
     setAgeIntervalFilters(
       filters.ageInterval.map((key) => ({ label: upperFirst(key), value: key }))
     );
-    setConcernFilters(filters.concern.map((key) => ({ label: upperFirst(key), value: key })));
+    setConcernFilters(
+      filters.concern.map((key) => {
+        const label = key.split("_").join(" ");
+        return { label: upperFirst(label), value: key };
+      })
+    );
     setEthnicityFilters(filters.ethnicity.map((key) => ({ label: upperFirst(key), value: key })));
     setBodyTypeFilters(filters.bodyType.map((key) => ({ label: upperFirst(key), value: key })));
     setSexFilters(filters.sex.map((key) => ({ label: upperFirst(key), value: key })));

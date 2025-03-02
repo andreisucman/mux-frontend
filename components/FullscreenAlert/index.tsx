@@ -38,7 +38,8 @@ export default function FullScreenAlert({ withCheckbox, withCloseButton, customS
       >
         <Stack>
           <Text size="sm">
-            To exit the full screen mode, swipe your from the top or bottom of your screen.
+            To exit the full screen mode, swipe your finger up from the <u>bottom</u> of your
+            screen.
           </Text>
           {withCheckbox && (
             <Checkbox

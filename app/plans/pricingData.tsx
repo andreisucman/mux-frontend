@@ -63,7 +63,7 @@ export const peekLicenseContent = [
   },
   {
     icon: <IconEye className="icon icon__large" style={style} />,
-    description: "See the personality, style, tips and socials of the club members.",
+    description: "See the about info and socials of the club members.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,

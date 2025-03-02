@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -10,6 +10,8 @@ import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import SearchButton from "@/components/SearchButton";
+import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import SolutionCard from "./SolutionCard";
@@ -32,6 +34,7 @@ export default function Solutions() {
   const searchParams = useSearchParams();
   const [solutions, setSolutions] = useState<SolutionCardType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const { status } = useContext(UserContext);
 
   const query = searchParams.get("query");
 
@@ -72,8 +75,8 @@ export default function Solutions() {
   );
 
   const memoizedSolutionsCard = useCallback(
-    (props: any) => <SolutionCard data={props.data} key={props.index} />,
-    []
+    (props: any) => <SolutionCard data={props.data} key={props.index} status={status} />,
+    [status]
   );
 
   useEffect(() => {

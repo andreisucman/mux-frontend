@@ -111,7 +111,7 @@ export default function ChatDisplay({
         className={`${classes.scrollArea} scrollbar`}
         style={customScrollAreaStyles ? customScrollAreaStyles : {}}
         ref={scrollableRef}
-        h={height}
+        // h={height}
       >
         {conversationList}
         <span className={classes.bgText}>Ask advisor</span>
