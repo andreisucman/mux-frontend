@@ -25,7 +25,7 @@ export default function ComparisonCarousel({ data }: Props) {
   const handleClickCarousel = useCallback(() => {
     const modalTitle = getRedirectModalTitle({
       avatar,
-      redirectUrl: `/club/routines/${data.userId}`,
+      redirectUrl: `/club/routines/${userName}`,
       title: `${userName} - ${upperFirst(part)}`,
     });
 

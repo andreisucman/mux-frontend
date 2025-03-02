@@ -247,7 +247,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
           </UnstyledButton>
         </>
       )}
-      <FullScreenAlert customStyles={{ position: "static" }} />
+      <FullScreenAlert customStyles={{ position: "static" }} forceShowAlert />
       <Stack className={classes.footer}>
         {legalNavigation}
         <Text className={classes.copyright}>&copy; {year} Muxout. All rights reserved</Text>

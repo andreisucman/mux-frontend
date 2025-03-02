@@ -2,7 +2,7 @@
   align-items: center;
   font-size: var(--mantine-font-size-md);
   gap: rem(8);
-  padding: rem(16) rem(16) 0;
+  padding: rem(12) rem(16) 0;
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
@@ -16,12 +16,12 @@
 }
 
 .concernName {
-  height: rem(22);
-  font-size: var(--mantine-font-size-sm);
+  z-index: 1;
 }
 
 .absolute {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
 }

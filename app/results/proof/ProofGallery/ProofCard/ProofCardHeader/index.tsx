@@ -31,9 +31,7 @@ export default function ProofCardHeader({
           </Title>
         </>
       )}
-      <Text className={classes.concernName} c="dimmed">
-        {concernName}
-      </Text>
+      <Text className={classes.concernName}>{concernName}</Text>
     </Group>
   );
 }

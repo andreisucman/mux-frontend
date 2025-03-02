@@ -8,16 +8,22 @@ import classes from "./FullscreenAlert.module.css";
 type Props = {
   withCheckbox?: boolean;
   withCloseButton?: boolean;
+  forceShowAlert?: boolean;
   customStyles?: { [key: string]: any };
 };
 
-export default function FullScreenAlert({ withCheckbox, withCloseButton, customStyles }: Props) {
-  const [showFullscreenAlert, setShowFulscreenAlert] = useState(false);
+export default function FullScreenAlert({
+  withCheckbox,
+  withCloseButton,
+  forceShowAlert,
+  customStyles,
+}: Props) {
+  const [showFullscreenAlert, setShowFulscreenAlert] = useState(forceShowAlert);
   const [dontShowAlertAnymore, setDontShowAlertAnymore] = useState(false);
 
   const handleCloseAlert = useCallback((dontShowAlertAnymore: boolean) => {
     saveToLocalStorage("dontShowAlertAnymore", dontShowAlertAnymore);
-    setShowFulscreenAlert(false);
+    setShowFulscreenAlert(forceShowAlert || false);
   }, []);
 
   useEffect(() => {

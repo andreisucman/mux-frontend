@@ -55,9 +55,8 @@
 
 .date {
   position: absolute;
-  top: rem(16);
-  left: rem(16);
-  font-size: var(--mantine-font-size-sm);
+  bottom: rem(12);
+  right: rem(16);
 }
 
 .thumbnail {

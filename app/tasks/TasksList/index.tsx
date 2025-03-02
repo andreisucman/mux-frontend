@@ -40,12 +40,12 @@ export default function TasksList({ customStyles }: Props) {
   const isAnalysisGoing = runningAnalyses?.routine;
 
   const canAddDiaryRecord = useMemo(() => {
-    const activeTasks = tasks?.filter((task) => task.status === "active") || [];
+    const completedTasks = tasks?.filter((task) => task.status === "completed") || [];
     const datePassed =
       !nextDiaryRecordAfter ||
       (nextDiaryRecordAfter && new Date() > new Date(nextDiaryRecordAfter));
 
-    return datePassed && tasks && tasks.length > 0 && activeTasks.length === 0;
+    return datePassed && tasks && tasks.length > 0 && completedTasks.length > 0;
   }, [nextDiaryRecordAfter, tasks]);
 
   useSWR(userId, () => fetchUserData({ setUserDetails }));

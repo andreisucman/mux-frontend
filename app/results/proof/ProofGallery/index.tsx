@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { FetchProofProps } from "@/functions/fetchProof";
@@ -48,7 +47,7 @@ export default function ProofGallery({
   const modelObject = proof && proof[0];
   const appliedBlurType = modelObject?.mainUrl.name;
 
-  const memoizedStyleCard = useCallback(
+  const memoizedProofCard = useCallback(
     (props: any) => (
       <ProofCard
         data={props.data}
@@ -88,7 +87,7 @@ export default function ProofGallery({
           <MasonryComponent
             maxColumnCount={columns || 1}
             columnGutter={16}
-            render={memoizedStyleCard}
+            render={memoizedProofCard}
             items={proof}
           />
         </InfiniteScroll>

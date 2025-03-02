@@ -19,7 +19,6 @@ type OpenViewModalProps = {
 };
 
 export default function openResultModal({ record, title, type, isPublicPage }: OpenViewModalProps) {
-
   const content =
     type === "progress" ? (
       <ProgressModalContent record={record as SimpleBeforeAfterType} isPublicPage={isPublicPage} />

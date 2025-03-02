@@ -10,13 +10,13 @@ type Props = {
 
 function DiaryActivityRow({ activities }: Props) {
   return (
-    <Group className={`${classes.container} scrollbar`}>
-      <Group className={classes.wrapper}>
+    <div className={`${classes.container} scrollbar`}>
+      <div className={classes.wrapper}>
         {activities.map((activity, index) => (
           <DiaryTaskCard {...activity} key={index} />
         ))}
-      </Group>
-    </Group>
+      </div>
+    </div>
   );
 }
 

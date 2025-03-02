@@ -6,7 +6,7 @@ export const data = [
     answer: (
       <Text>
         Muxout is a platform where people maximize their appearance with self-improvement routines
-        and help others do the same.
+        and inspire others to do the same.
       </Text>
     ),
   },
@@ -26,7 +26,7 @@ export const data = [
           required, but is important, especially if you plan to monetize your routines.
         </Text>
         <Text>
-          Each week you rescan yourself to record your improvement and identify new concerns. All of
+          Each week you rescan yourself to record your progress and identify new concerns. All of
           your scans are privately stored on your results page.
         </Text>
         <Text>
@@ -39,14 +39,14 @@ export const data = [
           License will let them see and copy your routines for attaining similar results.
         </Text>
         <Text>
-          When someone buys the Peek License and follows you you will get a comission from their
+          When someone buys the Peek License and follows you you will earn a comission from their
           subscription payments on a daily basis for as long as they follow you.
         </Text>
         <Text>
           Lastly, if you consistently complete your tasks you may also get achievements ('Streaks')
           that allow you to claim rewards.
         </Text>
-        <Text>To see the description and amounts of the rewards check out the Rewards page.</Text>
+        <Text>To see the description of the rewards check out the Rewards page.</Text>
       </Stack>
     ),
   },
@@ -61,8 +61,8 @@ export const data = [
           about the tasks, products, activities, and the person you follow.
         </Text>
         <Text>
-          There is also the 'Peek License' that allows you to follow public users to see and steal
-          their routines.
+          There is also the 'Peek License' that lets you follow public users to see and steal their
+          routines.
         </Text>
         <Text>
           These addons can speed up your results and save you time on research, but you don't have
@@ -145,7 +145,7 @@ export const data = [
     answer: (
       <Text>
         Yes, you can delete your content at any time by clicking the trash button near your uploaded
-        data. You can also delete your account in the settings.
+        content. You can also delete your account in the settings.
       </Text>
     ),
   },
@@ -154,13 +154,13 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          Food scan lets you easily control the amount of calories you consume. This is useful for
-          users who need to lose or gain weight. Just take a picture of your plate and our AI will
-          tell you how much of it you can eat to stay within your calorie goal.
+          Food scan lets you easily control the amount of calories you consume. This is useful if
+          you need to lose or gain weight. Just take a picture of your plate and our AI will tell
+          you how much of it you can eat to stay within your calorie goal.
         </Text>
         <Text>
           It will also tell you if this food contradicts your special considerations if you have
-          added this info on your tasks page.
+          added this info to your account.
         </Text>
       </Stack>
     ),

@@ -8,7 +8,7 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { proofSortItems } from "@/data/sortItems";
-import fetchProof, { FetchProofProps } from "@/functions/fetchProof";
+import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
@@ -91,7 +91,7 @@ export default function ResultsProof() {
             hasMore={hasMore}
             handleFetchProof={handleFetchProof}
             setProof={setProof}
-            columns={2}
+            columns={3}
             isSelf
           />
         ) : (

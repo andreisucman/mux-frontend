@@ -72,7 +72,7 @@ export default function Explain(props: Props) {
     if (!status) return;
 
     if (status === TaskStatusEnum.EXPIRED || timeExpired) {
-      const statusString = `${upperFirst(status)} on ${formatDate({ date: expiresAt || new Date() })}`;
+      const statusString = `${upperFirst(status)} on ${formatDate({ date: startsAt || new Date() })}`;
       return statusString;
     } else if (status === TaskStatusEnum.CANCELED) {
       return "Canceled";
@@ -81,7 +81,7 @@ export default function Explain(props: Props) {
     } else if (status === TaskStatusEnum.COMPLETED) {
       return "Completed";
     }
-  }, [status, completedAt, expiresAt, timeExpired]);
+  }, [status, completedAt, startsAt, timeExpired]);
 
   const {
     recipe,

@@ -2,8 +2,9 @@
   padding: 0;
   overflow: auto;
 }
-
 .wrapper {
-  flex-wrap: nowrap;
-  gap: rem(8);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-flow: column;
+  gap: 8px;
 }

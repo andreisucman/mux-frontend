@@ -91,7 +91,7 @@ export default function StartDate() {
 
             openSubscriptionModal({
               title: `Add the improvement coach`,
-              price: "5",
+              price: "9",
               isCentered: true,
               modalType: "improvement",
               underButtonText: isTrialUsed ? "" : "No credit card required",

@@ -8,6 +8,7 @@ import { formatDate } from "@/helpers/formatDate";
 import DiaryRow from "../DiaryRow";
 import { DiaryRecordType } from "../type";
 import classes from "./DiaryContent.module.css";
+import ListComponent from "@/components/ListComponent";
 
 const List = dynamic(() => import("masonic").then((mod) => mod.List), {
   ssr: false,
@@ -85,7 +86,7 @@ export default function DiaryContent({
             }}
           >
             {diaryRecords.length > 0 ? (
-              <List
+              <ListComponent
                 items={diaryRecords}
                 rowGutter={16}
                 render={memoizedDiaryRow}

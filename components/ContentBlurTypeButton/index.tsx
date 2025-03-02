@@ -94,6 +94,7 @@ export default function ContentBlurTypeButton({
       clearInterval(intervalRef.current || undefined);
       saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
       openErrorModal({ description: error });
+      setProgress(0);
     },
     [intervalRef.current]
   );
@@ -216,10 +217,10 @@ export default function ContentBlurTypeButton({
           })}
           style={customStyles || {}}
         >
-          {progress > 0 && `${progress.toFixed(0)}%`}
           <ActionIcon variant="default" loading={isLoading} disabled={isDisabled}>
             <IconBlur className="icon" />
           </ActionIcon>
+          {progress > 0 && `${progress.toFixed(0)}%`}
         </Group>
       </Menu.Target>
       <Menu.Dropdown>
