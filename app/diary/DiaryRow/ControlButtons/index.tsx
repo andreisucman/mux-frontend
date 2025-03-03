@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { IconDeviceFloppy, IconRotate } from "@tabler/icons-react";
 import { Button, Group, LoadingOverlay, Stack } from "@mantine/core";
 import RecordingButton from "@/app/club/answers/RecordingButton";
 import classes from "./ControlButtons.module.css";

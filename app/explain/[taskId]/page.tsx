@@ -212,7 +212,14 @@ export default function Explain(props: Props) {
         <SelectDateModalContent
           buttonText="Clone task"
           onSubmit={async ({ startDate }) =>
-            cloneTask({ setTaskInfo, startDate, taskId, resetNewTask: true, returnTask: true })
+            cloneTask({
+              setTaskInfo,
+              startDate,
+              taskId,
+              resetNewTask: true,
+              returnTask: true,
+              timeZone
+            })
           }
         />
       ),

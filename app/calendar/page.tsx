@@ -334,6 +334,12 @@ export default function Calendar() {
     changeMode("individual", givenTaskKey as string);
   }, [givenTaskKey]);
 
+  const calendarMonth = useMemo(() => {
+    if (!dateFrom) return new Date();
+    const date = new Date().getDate() > 1 ? new Date() : new Date(dateFrom);
+    return date;
+  }, [dateFrom]);
+
   return (
     <Stack flex={1} className="smallPage">
       <PageHeader
@@ -348,7 +354,7 @@ export default function Calendar() {
           level="month"
           m="auto"
           w="100%"
-          date={new Date(dateFrom || new Date())}
+          defaultDate={calendarMonth}
           value={mode === "all" ? selectedDate : null}
           onChange={mode === "all" ? (date) => handleSelectDate(date) : undefined}
           renderDay={(date) => (

@@ -32,7 +32,11 @@
 }
 
 .calendarHeader {
-  display: none;
+  margin: auto;
+  width: calc(100%);
+  text-align: center;
+  max-width: unset;
+  margin-bottom: rem(12);
 }
 
 .calendarMonth {

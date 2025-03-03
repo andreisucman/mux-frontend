@@ -54,7 +54,7 @@ function ProofCard({
     const title = isPublicPage ? (
       getRedirectModalTitle({
         avatar,
-        redirectUrl: `/club/proof/${userName}`,
+        redirectUrl: `/club/routines/${userName}`,
         title: userName,
       })
     ) : (

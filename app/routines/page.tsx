@@ -89,11 +89,12 @@ export default function ClubRoutines() {
             key={routine._id}
             routine={routine}
             isSelf={true}
+            timeZone={timeZone}
             setRoutines={setRoutines}
           />
         );
       }),
-    [routines]
+    [routines, timeZone]
   );
 
   const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");

@@ -61,7 +61,7 @@ export default function ClubRoutines(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
 
-  const { name, routines: currentUserRoutines, club } = userDetails || {};
+  const { name, routines: currentUserRoutines, club, timeZone } = userDetails || {};
   const { followingUserName } = club || {};
 
   const sort = searchParams.get("sort");
@@ -255,13 +255,14 @@ export default function ClubRoutines(props: Props) {
             key={routine._id}
             routine={routine}
             isSelf={isSelf}
+            timeZone={timeZone}
             handleStealRoutine={() => handleStealRoutine(routine)}
             setRoutines={setRoutines}
             openTaskDetails={openTaskDetails}
           />
         );
       }),
-    [routines, isSelf]
+    [routines, isSelf, timeZone]
   );
 
   useEffect(() => {

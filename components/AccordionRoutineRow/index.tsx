@@ -22,6 +22,7 @@ import classes from "./AccordionRoutineRow.module.css";
 type Props = {
   routine: RoutineType;
   isSelf: boolean;
+  timeZone?: string;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   handleStealRoutine?: (routineId: string) => void;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
@@ -29,6 +30,7 @@ type Props = {
 
 export default function AccordionRoutineRow({
   routine,
+  timeZone,
   isSelf,
   setRoutines,
   openTaskDetails,
@@ -138,24 +140,30 @@ export default function AccordionRoutineRow({
     [setRoutines, status]
   );
 
-  const handleCloneTask = useCallback((taskId: string) => {
-    modals.openContextModal({
-      title: (
-        <Title order={5} component={"p"}>
-          Choose new date
-        </Title>
-      ),
-      size: "sm",
-      innerProps: (
-        <RecreateDateModalContent
-          buttonText="Clone task"
-          onSubmit={async ({ startDate }) => cloneTask({ setRoutines, startDate, taskId })}
-        />
-      ),
-      modal: "general",
-      centered: true,
-    });
-  }, []);
+  const handleCloneTask = useCallback(
+    (taskId: string) => {
+      if (!timeZone) return;
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <RecreateDateModalContent
+            buttonText="Clone task"
+            onSubmit={async ({ startDate }) =>
+              cloneTask({ setRoutines, startDate, taskId, timeZone })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [timeZone]
+  );
 
   const handleActivateRoutine = useCallback(async (routineId: string) => {
     const response = await callTheServer({

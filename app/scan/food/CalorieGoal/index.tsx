@@ -92,7 +92,7 @@ export default function CalorieGoalController({ disabled }: Props) {
           >
             {
               <Text fw={600} fz={14}>
-                {calorieGoal}
+                {calorieGoal || "0"}
               </Text>
             }
           </Tooltip>

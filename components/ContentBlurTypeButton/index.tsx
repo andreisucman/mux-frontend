@@ -1,4 +1,12 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  RefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IconBlur } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Checkbox, Group, Menu } from "@mantine/core";
@@ -121,8 +129,14 @@ export default function ContentBlurTypeButton({
     [contentId, intervalRef.current]
   );
 
+  type HandleSelectProps = {
+    blurType: BlurTypeEnum;
+    contentCategory: string;
+    contentId: string;
+    intervalRef: any;
+  };
   const handleSelect = useCallback(
-    async (blurType: BlurTypeEnum) => {
+    async ({ blurType, contentCategory, contentId, intervalRef }: HandleSelectProps) => {
       const relevantDisplayType = displayTypes.find((obj) => obj.value === blurType);
       if (!relevantDisplayType) return;
 
@@ -136,6 +150,8 @@ export default function ContentBlurTypeButton({
           method: "POST",
           body: { blurType, contentCategory, contentId },
         });
+
+        console.log("request sent", response.status)
 
         if (response.status === 200) {
           const { hash, mainUrl, images } = response.message;
@@ -158,7 +174,7 @@ export default function ContentBlurTypeButton({
         modals.closeAll();
       }
     },
-    [contentCategory, contentId, intervalRef.current]
+    []
   );
 
   const items = useMemo(
@@ -169,7 +185,15 @@ export default function ContentBlurTypeButton({
           checked={selectedDisplayType?.value === item.value}
           size="md"
           label={item.label}
-          onChange={() => handleSelect(item.value as BlurTypeEnum)}
+          onChange={(e) => {
+            e.stopPropagation();
+            handleSelect({
+              blurType: item.value as BlurTypeEnum,
+              contentCategory,
+              contentId,
+              intervalRef,
+            });
+          }}
           readOnly
         />
       )),

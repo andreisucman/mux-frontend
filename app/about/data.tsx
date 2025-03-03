@@ -72,6 +72,20 @@ export const data = [
     ),
   },
   {
+    question: "Will my images be listed in the gallery if I use Muxout?",
+    answer: (
+      <Stack>
+        <Text>
+          No, none of your data is listed by default when you register. It also remains private when
+          you join the Club.
+        </Text>
+        <Text>
+          To list your data you will have to manually enable data sharing in the settings.
+        </Text>
+      </Stack>
+    ),
+  },
+  {
     question: "How can I earn on Muxout?",
     answer: (
       <Stack>
