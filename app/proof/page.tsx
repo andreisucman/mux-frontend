@@ -62,13 +62,10 @@ export default function AllProof() {
       } else {
         setProof(data.slice(0, 20));
       }
-      console.log("data.length", data.length);
       setHasMore(data.length === 21);
     },
     []
   );
-
-  console.log("hasMore", hasMore);
 
   useEffect(() => {
     handleFetchProof({

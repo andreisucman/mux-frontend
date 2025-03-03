@@ -218,7 +218,7 @@ export default function Explain(props: Props) {
               taskId,
               resetNewTask: true,
               returnTask: true,
-              timeZone
+              timeZone,
             })
           }
         />
@@ -265,7 +265,7 @@ export default function Explain(props: Props) {
     const response = await callTheServer({
       endpoint: "updateStatusOfTasks",
       method: "POST",
-      body: { taskIds: [taskId], newStatus, isVoid: true },
+      body: { taskIds: [taskId], timeZone, newStatus, isVoid: true },
     });
 
     if (response.status === 200) {
@@ -274,7 +274,7 @@ export default function Explain(props: Props) {
         status: newStatus,
       }));
     }
-  }, [taskInfo]);
+  }, [taskInfo, timeZone]);
 
   useEffect(() => {
     if (!taskId) return;
