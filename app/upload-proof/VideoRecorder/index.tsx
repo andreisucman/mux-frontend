@@ -6,7 +6,7 @@ import {
   IconStopwatch,
   IconVideo,
 } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Skeleton, Stack, Text } from "@mantine/core";
+import { Button, Group, rem, SegmentedControl, Stack, Text } from "@mantine/core";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -55,9 +55,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const { blurType } = useContext(BlurChoicesContext);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
-  const [originalUrl, setOriginalUrl] = useState<string>("");
-  const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
-  const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(5);
@@ -84,7 +81,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     return isNaN(ratio) ? 20 / 9 : ratio;
   }, [viewportWidth, viewportHeight, isMobile]);
 
-  const showStartRecording = !isRecording && !isVideoLoading && !originalUrl;
+  const showStartRecording = !isRecording && !isVideoLoading && !localUrl;
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => {
@@ -168,7 +165,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
       const url = URL.createObjectURL(blob);
       setRecordedBlob(blob);
-      setOriginalUrl(url);
+      setLocalUrl(url);
       saveVideo(blob);
 
       const reader = new FileReader();
@@ -217,7 +214,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       const res = await fetch(imageData);
       const blob = await res.blob();
 
-      setOriginalUrl(imageData);
       setLocalUrl(imageData);
       setRecordedBlob(blob);
       saveToIndexedDb("proofImage", imageData);
@@ -272,7 +268,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     }
 
     setIsRecording(false);
-    setOriginalUrl("");
     setLocalUrl("");
     setRecordedBlob(null);
     parts.current = [];
@@ -292,10 +287,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     }
 
     setIsRecording(false);
-    setOriginalUrl("");
     setLocalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
     setRecordedBlob(null);
     setRecordingTime(RECORDING_TIME);
     deleteFromIndexedDb("proofVideo");
@@ -304,10 +296,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [isVideoLoading, stopBothVideoAndAudio]);
 
   const handleResetImage = useCallback(() => {
-    setOriginalUrl("");
     setLocalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
     setRecordedBlob(null);
     setIsRecording(false);
     deleteFromIndexedDb("proofImage");
@@ -330,9 +319,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       captureType,
       blurType,
     });
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
-    setOriginalUrl("");
     setLocalUrl("");
     setRecordedBlob(null);
   }, [recordedBlob, uploadProof, captureType]);
@@ -360,10 +346,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
         const newUrl = newTypeRecord ? newTypeRecord : "";
 
-        setOriginalUrl(newUrl);
         setLocalUrl(newUrl);
-        setEyesBlurredUrl("");
-        setFaceBlurredUrl("");
       }
     },
     [isRecording]
@@ -428,7 +411,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
       const savedUrl = typeRecord ? typeRecord : "";
 
-      setOriginalUrl(savedUrl);
       setLocalUrl(savedUrl);
       setRecordedBlob(blob);
     };
@@ -471,7 +453,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         customStyles={{ flex: 0 }}
       />
       <SegmentedControl value={captureType} onChange={handleChangeCaptureType} data={segments} />
-      {!originalUrl && (
+      {!localUrl && (
         <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
           {isRecording && <RecordingStatus recordingTime={recordingTime} />}
           {timerStarted && (
@@ -545,21 +527,15 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
           </Group>
         </Stack>
       )}
-      {originalUrl && (
+      {localUrl && (
         <Stack className={classes.content}>
           <VideoRecorderResult
             captureType={captureType}
             isVideoLoading={isVideoLoading}
             localUrl={localUrl}
-            originalUrl={originalUrl}
-            eyesBlurredUrl={eyesBlurredUrl}
-            faceBlurredUrl={faceBlurredUrl}
             handleResetImage={handleResetImage}
             handleResetRecording={handleResetRecording}
             handleSubmit={handleSubmit}
-            setEyesBlurredUrl={setEyesBlurredUrl}
-            setFaceBlurredUrl={setFaceBlurredUrl}
-            setLocalUrl={setLocalUrl}
           />
         </Stack>
       )}
