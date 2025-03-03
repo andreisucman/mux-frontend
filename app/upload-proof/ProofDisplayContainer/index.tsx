@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import NextImage from "next/image";
-import { Image, rem, Stack, Text } from "@mantine/core";
-import ContentBlurTypeButton from "@/components/ContentBlurTypeButton";
+import { Image, Stack, Text } from "@mantine/core";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
@@ -10,46 +9,16 @@ import classes from "./ProofDisplayContainer.module.css";
 
 type Props = {
   existingProofRecord: ExistingProofRecordType;
-  setExistingProofRecord: React.Dispatch<React.SetStateAction<ExistingProofRecordType | null>>;
 };
 
-export default function ProofDisplayContainer({
-  existingProofRecord,
-  setExistingProofRecord,
-}: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { contentType, createdAt, hash, _id, mainUrl, isPublic, mainThumbnail } =
-    existingProofRecord;
+export default function ProofDisplayContainer({ existingProofRecord }: Props) {
+  const { contentType, createdAt, mainUrl, isPublic, mainThumbnail } = existingProofRecord;
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
-
-  const handleUpdateExistingRecord = useCallback(
-    (input: { [key: string]: any }) => {
-      setExistingProofRecord((prev: any) => ({
-        ...(prev || {}),
-        mainUrl: input.mainUrl,
-        mainThumbnail: input.mainThumbnail,
-      }));
-    },
-    [existingProofRecord]
-  );
 
   return (
     <Stack className={classes.container}>
       {createdAt && <Text className={classes.date}>{formattedDate}</Text>}{" "}
-      <ContentBlurTypeButton
-        contentId={_id}
-        isDisabled={isLoading}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-        hash={hash}
-        contentCategory={"proof"}
-        currentMain={mainUrl}
-        position="top-right"
-        customStyles={{ top: rem(16), right: rem(16) }}
-        onComplete={handleUpdateExistingRecord}
-      />
       <Stack className={classes.wrapper}>
         {contentType === "image" ? (
           <Image

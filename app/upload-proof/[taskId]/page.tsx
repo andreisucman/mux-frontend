@@ -169,10 +169,7 @@ export default function UploadProof(props: Props) {
         <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
           <Stack className={classes.content}>
             {componentToDisplay === "completed" && existingProofRecord && (
-              <ProofDisplayContainer
-                existingProofRecord={existingProofRecord}
-                setExistingProofRecord={setExistingProofRecord}
-              />
+              <ProofDisplayContainer existingProofRecord={existingProofRecord} />
             )}
             {componentToDisplay === "waitComponent" && (
               <WaitComponent

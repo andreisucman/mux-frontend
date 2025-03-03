@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
-import ContentModerationButtons from "@/components/ContentModerationButtons";
-import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
@@ -24,27 +22,17 @@ type Props = {
   contentChildren?: React.ReactNode;
 };
 
-function ProofCard({
-  data,
-  isLite,
-  showFooter,
-  isPublicPage,
-  showContentModerationButtons,
-  contentChildren,
-  setProof,
-}: Props) {
+function ProofCard({ data, isLite, showFooter, isPublicPage, contentChildren, setProof }: Props) {
   const {
     mainUrl,
     concern,
     avatar,
     userName,
-    isPublic,
     icon,
     taskName,
     createdAt,
     mainThumbnail,
     contentType,
-    _id: proofId,
   } = data;
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
@@ -94,19 +82,6 @@ function ProofCard({
             onClick={handleClick}
             showDate={false}
           />
-        )}
-        {showContentModerationButtons && (
-          <>
-            <ContentModerationButtons
-              collectionKey="proof"
-              contentId={proofId}
-              currentMain={mainUrl}
-              setContent={setProof}
-              showBlur
-              showDelete
-            />
-            <ContentPublicityIndicator isPublic={isPublic} />
-          </>
         )}
       </Stack>
       {showFooter && (
