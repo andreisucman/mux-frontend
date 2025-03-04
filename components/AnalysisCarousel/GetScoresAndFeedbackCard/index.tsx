@@ -23,7 +23,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
   const [enableScanAnalysis, setEnableScanAnalysis] = useState(true);
   const [loadingButton, setLoadingButton] = useState<"analysis" | "return" | null>(null);
 
-  const { _id: userId, scanAnalysisQuota } = userDetails || {};
+  const { _id: userId, scanAnalysisQuota, latestScanImages } = userDetails || {};
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
@@ -81,36 +81,40 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
       <Text className={classes.title} c="dimmed">
         {title}
       </Text>
-      <UploadedImagesContent
-        title="Progress scan uploaded"
-        enableScanAnalysis={enableScanAnalysis}
-        setEnableScanAnalysis={setEnableScanAnalysis}
-        buttons={
-          <Stack>
-            <Button
-              loading={loadingButton === "analysis"}
-              disabled={loadingButton !== null}
-              onClick={() =>
-                createBuyScanSession({
-                  redirectUrl,
-                  setUserDetails,
-                  cb: handleStartAnalysis,
-                })
-              }
-            >
-              Get scores and feedback
-            </Button>
-            <Button
-              variant="default"
-              loading={loadingButton === "return"}
-              disabled={loadingButton !== null}
-              onClick={handleReturnToRoutines}
-            >
-              Return to routines
-            </Button>
-          </Stack>
-        }
-      />
+      <Stack className={classes.content}>
+        <UploadedImagesContent
+          title="Progress scan uploaded"
+          images={latestScanImages}
+          enableScanAnalysis={enableScanAnalysis}
+          setEnableScanAnalysis={setEnableScanAnalysis}
+          buttons={
+            <Stack>
+              <Button
+                loading={loadingButton === "analysis"}
+                disabled={loadingButton !== null}
+                onClick={() =>
+                  createBuyScanSession({
+                    redirectUrl,
+                    setUserDetails,
+                    cb: handleStartAnalysis,
+                  })
+                }
+              >
+                Get scores and feedback
+              </Button>
+              <Button
+                variant="default"
+                loading={loadingButton === "return"}
+                disabled={loadingButton !== null}
+                onClick={handleReturnToRoutines}
+              >
+                Return to routines
+              </Button>
+            </Stack>
+          }
+          hideCheckbox
+        />
+      </Stack>
     </Stack>
   );
 }

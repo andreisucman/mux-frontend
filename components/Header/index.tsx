@@ -162,11 +162,7 @@ function Header() {
                 disabled={isLoading}
                 onClick={() => handleRedirect("signInButton")}
               >
-                <IconDoorEnter
-                  stroke={1.5}
-                  className="icon icon__large"
-                  style={{ marginRight: rem(6) }}
-                />
+                <IconDoorEnter stroke={1.5} className="icon" style={{ marginRight: rem(6) }} />
                 <Text fw={600}>Sign in</Text>
               </Button>
             )}

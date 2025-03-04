@@ -213,6 +213,7 @@ export interface UserDataType extends DefaultUserType {
   subscriptions: UserSubscriptionsType;
   nextScan: NextActionType[];
   nextRoutine: NextActionType[];
+  latestScanImages?: string[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
   latestScores: LatestScoresType;

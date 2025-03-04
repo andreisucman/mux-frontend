@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -31,7 +31,7 @@ export default function StartPartialScanOverlay({
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [enableScanAnalysis, setEnableScanAnalysis] = useState(false);
 
-  const { scanAnalysisQuota } = userDetails || {};
+  const { scanAnalysisQuota, toAnalyze } = userDetails || {};
 
   const handleStartAnalysis = useCallback(async () => {
     try {
@@ -81,10 +81,21 @@ export default function StartPartialScanOverlay({
 
   const analysisString = getPartialScanUploadText(distinctUploadedParts);
 
+  const images = useMemo((): string[] => {
+    const contentUrlTypes = toAnalyze?.flatMap((part) => part.contentUrlTypes);
+    let toDisplay = contentUrlTypes?.filter((obj) => obj.name !== "original") || [];
+    if (toDisplay.length === 0) {
+      toDisplay = toAnalyze?.map((p) => p.mainUrl) || [];
+    }
+    const imgs = toDisplay.map((obj) => obj.url).filter((url): url is string => !!url);
+    return imgs;
+  }, [toAnalyze?.length]);
+
   return (
     <Stack className={classes.container} style={outerStyles ? outerStyles : {}}>
       <UploadedImagesContent
         title={analysisString}
+        images={images}
         enableScanAnalysis={enableScanAnalysis}
         setEnableScanAnalysis={setEnableScanAnalysis}
         buttons={

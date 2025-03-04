@@ -16,7 +16,7 @@ const ImageCardStack = ({ images }: Props) => {
           <Image
             className={classes.image}
             key={index}
-            src={image}
+            src={image || "/"}
             alt={`Uploaded ${index}`}
             width={250}
             height={250}

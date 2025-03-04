@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { IconPlayerPlay } from "@tabler/icons-react";
+import { IconPlayerPlayFilled } from "@tabler/icons-react";
 import cn from "classnames";
 import ReactPlayer from "react-player";
 import { Stack, Text } from "@mantine/core";
@@ -53,7 +53,7 @@ export default function VideoPlayer({
           setPlaying(true);
         }}
       >
-        <IconPlayerPlay />
+        <IconPlayerPlayFilled className={classes.playIcon} />
       </div>
     ),
     []
@@ -76,21 +76,6 @@ export default function VideoPlayer({
         }}
         light={thumbnail}
         onDuration={setIsBuffering ? () => setIsBuffering(false) : undefined}
-        playIcon={
-          <div
-            className={classes.playButton}
-            onClick={
-              onClick
-                ? (e: any) => {
-                    e.stopPropagation();
-                    onClick();
-                  }
-                : () => {}
-            }
-          >
-            <IconPlayerPlay className="icon" />
-          </div>
-        }
         playing={playing}
         width={"100%"}
         height={"100%"}

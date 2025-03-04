@@ -10,12 +10,16 @@ type Props = {
   title: string;
   buttons: React.ReactNode;
   enableScanAnalysis: boolean;
+  hideCheckbox?: boolean;
+  images?: string[];
   setEnableScanAnalysis: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function UploadedImagesContent({
   title,
+  images,
   buttons,
+  hideCheckbox,
   enableScanAnalysis,
   setEnableScanAnalysis,
 }: Props) {
@@ -23,7 +27,7 @@ export default function UploadedImagesContent({
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { scanAnalysisQuota, toAnalyze, latestProgress } = userDetails || {};
+  const { scanAnalysisQuota, latestProgress } = userDetails || {};
 
   const isFirstAnalysis = useMemo(() => {
     if (!latestProgress) return;
@@ -42,31 +46,21 @@ export default function UploadedImagesContent({
     setEnableScanAnalysis(enable);
   };
 
-  const toDisplay = useMemo(() => {
-    const contentUrlTypes = toAnalyze?.flatMap((part) => part.contentUrlTypes);
-    let toDisplay = contentUrlTypes?.filter((obj) => obj.name !== "original") || [];
-
-    if (toDisplay.length === 0) {
-      toDisplay = toAnalyze?.map((p) => p.mainUrl) || [];
-    }
-    return toDisplay;
-  }, [toAnalyze?.length]);
-
   return (
     <Stack className={classes.container} c="dimmed">
-      {toAnalyze && toAnalyze.length > 0 && (
-        <ImageCardStack images={toDisplay.map((part) => part.url || "")} />
-      )}
+      {images && images.length > 0 && <ImageCardStack images={images} />}
       <Title order={4} className={classes.title}>
         {title}
       </Title>
-      <Checkbox
-        disabled={!isFirstAnalysis}
-        checked={isFirstAnalysis || enableScanAnalysis}
-        label="Get scores and feedback"
-        onChange={(e) => handleEnableAnalysis(e.currentTarget.checked)}
-        className={classes.checkbox}
-      />
+      {!hideCheckbox && (
+        <Checkbox
+          disabled={!isFirstAnalysis}
+          checked={isFirstAnalysis || enableScanAnalysis}
+          label="Get scores and feedback"
+          onChange={(e) => handleEnableAnalysis(e.currentTarget.checked)}
+          className={classes.checkbox}
+        />
+      )}
       {buttons}
     </Stack>
   );
