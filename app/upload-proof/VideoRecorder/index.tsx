@@ -90,103 +90,123 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     });
   }, []);
 
-  const startRecording = useCallback(() => {
-    if (isVideoLoading) return;
-    setIsVideoLoading(true);
-    parts.current = [];
+  type StartRecordingProps = {
+    aspectRatio: number;
+    videoRef: any;
+    streamRef: any;
+    isVideoLoading: boolean;
+    setIsVideoLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    stopBothVideoAndAudio: (props: any) => void;
+  };
 
-    let constraints: MediaStreamConstraints = {
-      video: {
-        facingMode,
-        frameRate: { max: 30 },
-        aspectRatio: { ideal: aspectRatio },
-      },
-      audio: true,
-    };
+  const startRecording = useCallback(
+    ({
+      aspectRatio,
+      videoRef,
+      streamRef,
+      isVideoLoading,
+      setIsVideoLoading,
+      stopBothVideoAndAudio,
+    }: StartRecordingProps) => {
+      if (isVideoLoading) return;
+      setIsVideoLoading(true);
 
-    const mimeType = getSupportedMimeType();
+      parts.current = [];
 
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then((stream) => {
-        if (!videoRef.current) return;
-        const beep = new Audio(beepUrl);
-
-        beep.play();
-        videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-
-        videoRef.current.onloadedmetadata = () => {
-          if (!videoRef.current) return;
-          videoRef.current.play();
-          setIsRecording(true);
-          setIsVideoLoading(false);
-        };
-
-        const options = {
-          mimeType,
-          videoBitsPerSecond: 2500000,
-        };
-
-        mediaRecorder.current = new MediaRecorder(stream, options);
-
-        mediaRecorder.current.ondataavailable = (e) => {
-          parts.current.push(e.data);
-        };
-
-        mediaRecorder.current.onstop = async () => {
-          await finalize(parts.current);
-        };
-
-        mediaRecorder.current.start();
-
-        timeoutIdRef.current = setTimeout(() => {
-          if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
-            mediaRecorder.current.stop();
-          }
-
-          clearTimeout(timeoutIdRef.current as NodeJS.Timeout);
-          timeoutIdRef.current = null;
-        }, RECORDING_TIME);
-      })
-      .catch((err) => {
-        setIsVideoLoading(false);
-        openErrorModal({
-          description: "Failed to access camera and microphone",
-          onClose: () => modals.closeAll(),
-        });
-      });
-
-    async function finalize(parts: Blob[]) {
-      const blob = new Blob(parts, {
-        type: mimeType,
-      });
-
-      const url = URL.createObjectURL(blob);
-      setRecordedBlob(blob);
-      setLocalUrl(url);
-      saveVideo(blob);
-
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result as string;
-        setLocalUrl(base64data);
+      let constraints: MediaStreamConstraints = {
+        video: {
+          facingMode,
+          frameRate: { max: 30 },
+          aspectRatio: { ideal: aspectRatio },
+        },
+        audio: true,
       };
 
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.srcObject = null;
-      }
+      const mimeType = getSupportedMimeType();
 
-      if (streamRef.current) {
-        stopBothVideoAndAudio(streamRef.current);
-        streamRef.current = null;
-      }
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          if (!videoRef.current) return;
+          const beep = new Audio(beepUrl);
 
-      setIsRecording(false);
-    }
-  }, [aspectRatio, isVideoLoading, setIsVideoLoading, stopBothVideoAndAudio]);
+          beep.play();
+          videoRef.current.srcObject = stream;
+          streamRef.current = stream;
+
+          videoRef.current.onloadedmetadata = () => {
+            if (!videoRef.current) return;
+            videoRef.current.play();
+            setIsRecording(true);
+            setIsVideoLoading(false);
+          };
+
+          const options = {
+            mimeType,
+            videoBitsPerSecond: 2500000,
+          };
+
+          mediaRecorder.current = new MediaRecorder(stream, options);
+
+          mediaRecorder.current.ondataavailable = (e) => {
+            parts.current.push(e.data);
+          };
+
+          mediaRecorder.current.onstop = async () => {
+            await finalize(parts.current);
+          };
+
+          mediaRecorder.current.start();
+
+          timeoutIdRef.current = setTimeout(() => {
+            if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
+              mediaRecorder.current.stop();
+            }
+
+            clearTimeout(timeoutIdRef.current as NodeJS.Timeout);
+            timeoutIdRef.current = null;
+          }, RECORDING_TIME);
+        })
+        .catch((err) => {
+          setIsVideoLoading(false);
+          openErrorModal({
+            description: "Failed to access camera and microphone",
+            onClose: () => modals.closeAll(),
+          });
+        });
+
+      async function finalize(parts: Blob[]) {
+        const blob = new Blob(parts, {
+          type: mimeType,
+        });
+
+        const url = URL.createObjectURL(blob);
+        setRecordedBlob(blob);
+        setLocalUrl(url);
+        saveVideo(blob);
+
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          const base64data = reader.result as string;
+          setLocalUrl(base64data);
+        };
+
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.srcObject = null;
+        }
+
+        if (streamRef.current) {
+          stopBothVideoAndAudio(streamRef.current);
+          streamRef.current = null;
+        }
+
+        setIsRecording(false);
+      }
+    },
+    []
+  );
 
   const capturePhoto = useCallback(async () => {
     if (captureType === "video") return;
@@ -230,7 +250,15 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         if (remaining <= 0) {
           setTimerStarted(false);
           if (captureType === "image") capturePhoto();
-          if (captureType === "video") startRecording();
+          if (captureType === "video")
+            startRecording({
+              aspectRatio,
+              videoRef,
+              streamRef,
+              isVideoLoading,
+              setIsVideoLoading,
+              stopBothVideoAndAudio,
+            });
           setSecondsLeft(seconds);
         } else {
           setSecondsLeft(remaining);
@@ -513,7 +541,19 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             )}
             {showStartRecording && (
               <Button
-                onClick={captureType === "image" ? capturePhoto : startRecording}
+                onClick={
+                  captureType === "image"
+                    ? capturePhoto
+                    : () =>
+                        startRecording({
+                          aspectRatio,
+                          videoRef,
+                          streamRef,
+                          isVideoLoading,
+                          setIsVideoLoading,
+                          stopBothVideoAndAudio,
+                        })
+                }
                 className={classes.button}
                 disabled={taskExpired || timerStarted}
               >
