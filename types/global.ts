@@ -188,6 +188,7 @@ export interface UserDataType extends DefaultUserType {
   avatar: { [key: string]: any };
   country: string | null;
   club: ClubDataType | null;
+  scanAnalysisQuota: number;
   concerns: UserConcernType[];
   demographics: DemographicsType;
   requiredProgress: RequirementType[];

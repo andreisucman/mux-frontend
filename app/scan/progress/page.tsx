@@ -129,15 +129,6 @@ export default function ScanProgress() {
     [userDetails, setUserDetails]
   );
 
-  useShallowEffect(() => {
-    if (!userId || !requiredProgress || !availableRequirements) return;
-    if (requiredProgress.length > 0) return;
-
-    if (availableRequirements.length === 0) {
-      router.push(`/wait?operationKey=progress`);
-    }
-  }, [availableRequirements?.length, userId]);
-
   const uploadedParts = useMemo(() => {
     return [...new Set(toAnalyze?.map((obj) => obj.part))].filter((rec) => Boolean(rec));
   }, [toAnalyze]) as string[];

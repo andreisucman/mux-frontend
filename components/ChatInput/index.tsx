@@ -25,7 +25,7 @@ import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import modifyQuery from "@/helpers/modifyQuery";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSubscriptionModal from "@/helpers/openSubscriptionModal";
+import openPaymentModal from "@/helpers/openPaymentModal";
 import { SexEnum, UserDataType } from "@/types/global";
 import EnergyIndicator from "../EnergyIndicator";
 import ImageUploadButton from "./ImageUploadButton";
@@ -154,8 +154,8 @@ export default function ChatInput({
       underButtonText: userName ? "" : isTrialUsed ? "" : "No credit card required",
     };
 
-    openSubscriptionModal(payload);
-  }, [userDetails, openSubscriptionModal]);
+    openPaymentModal(payload);
+  }, [userDetails, openPaymentModal]);
 
   const appendMessage = useCallback((array: MessageType[]) => {
     if (setConversation)

@@ -25,6 +25,7 @@ import classes from "./upload-proof.module.css";
 export const runtime = "edge";
 
 type HandleUploadProps = {
+  taskId: string;
   blurType: BlurTypeEnum;
   captureType: "image" | "video";
   recordedBlob: Blob;
@@ -72,9 +73,8 @@ export default function UploadProof(props: Props) {
   }, []);
 
   const uploadProof = useCallback(
-    async ({ recordedBlob, captureType, blurType }: HandleUploadProps) => {
-      if (!captureType) return;
-      if (!recordedBlob) return;
+    async ({ taskId, recordedBlob, captureType, blurType }: HandleUploadProps) => {
+      if (!taskId || !captureType || !recordedBlob) return;
 
       try {
         setDisplayComponent("waitComponent");
@@ -96,14 +96,14 @@ export default function UploadProof(props: Props) {
             description: response.error,
           });
 
-          deleteFromLocalStorage("runningAnalyses", taskId || "");
+          deleteFromLocalStorage("runningAnalyses", taskId);
         }
       } catch (err) {
         setDisplayComponent("videoRecorder");
-        deleteFromLocalStorage("runningAnalyses", taskId || "");
+        deleteFromLocalStorage("runningAnalyses", taskId);
       }
     },
-    [taskId]
+    []
   );
 
   const handleFetchTaskInfo = useCallback(async (taskId: string) => {
@@ -189,7 +189,7 @@ export default function UploadProof(props: Props) {
                 sex={sex || SexEnum.FEMALE}
                 taskExpired={taskExpired}
                 instruction={requisite || ""}
-                uploadProof={uploadProof}
+                uploadProof={(otherArgs) => uploadProof({ taskId, ...otherArgs })}
               />
             )}
             {componentToDisplay === "expired" && (

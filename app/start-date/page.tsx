@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Stack, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import InstructionContainer from "@/components/InstructionContainer";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
@@ -12,12 +13,11 @@ import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
-import openSubscriptionModal from "@/helpers/openSubscriptionModal";
+import openPaymentModal from "@/helpers/openPaymentModal";
 import { daysFrom } from "@/helpers/utils";
 import { UserConcernType, UserSubscriptionsType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import classes from "./start-date.module.css";
-import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -34,20 +34,9 @@ export default function StartDate() {
   const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { specialConsiderations } = userDetails || {};
+  const { specialConsiderations, concerns, subscriptions } = userDetails || {};
 
   const part = searchParams.get("part");
-
-  const handleCreateRoutine = () => {
-    const { concerns, subscriptions } = userDetails || {};
-
-    createRoutine({
-      concerns,
-      startDate,
-      subscriptions,
-      specialConsiderations: specialConsiderations || "",
-    });
-  };
 
   const createRoutine = useCallback(
     async ({ concerns, startDate, subscriptions, specialConsiderations }: CreateRoutineProps) => {
@@ -89,7 +78,7 @@ export default function StartDate() {
                     router,
                   });
 
-            openSubscriptionModal({
+            openPaymentModal({
               title: `Add the improvement coach`,
               price: "9",
               isCentered: true,
@@ -109,7 +98,7 @@ export default function StartDate() {
         setIsLoading(false);
       }
     },
-    [part, startDate, isLoading, userDetails]
+    [isLoading, userDetails]
   );
 
   const text = startDate
@@ -141,7 +130,14 @@ export default function StartDate() {
           <Text className={classes.date}>{text}</Text>
           <Button
             loading={isLoading}
-            onClick={handleCreateRoutine}
+            onClick={() =>
+              createRoutine({
+                concerns,
+                startDate,
+                subscriptions,
+                specialConsiderations: specialConsiderations || "",
+              })
+            }
             disabled={isLoading || !startDate}
           >
             Create

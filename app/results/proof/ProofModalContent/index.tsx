@@ -1,5 +1,5 @@
-import React from "react";
-import { rem, Stack } from "@mantine/core";
+import React, { useState } from "react";
+import { LoadingOverlay, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -18,6 +18,7 @@ type Props = {
 
 export default function ProofModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
+  const [isBuffering, setIsBuffering] = useState(true);
 
   const { icon, createdAt, mainUrl, mainThumbnail, concern, taskName, userName } = record || {};
 
@@ -31,6 +32,8 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
     modals.closeAll();
   };
 
+  console.log("isBuffering", isBuffering);
+
   return (
     <Stack className={classes.container}>
       <ProofCardHeader
@@ -40,6 +43,7 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
         hideTitle={!isPublicPage}
         customStyles={{ paddingBottom: rem(16) }}
       />
+      <LoadingOverlay visible={isBuffering} />
       {record.contentType === "image" ? (
         <ImageCard
           date={formattedDate}
@@ -53,7 +57,7 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
         <VideoPlayer
           url={mainUrl.url}
           createdAt={createdAt}
-          thumbnail={mainThumbnail.url}
+          setIsBuffering={setIsBuffering}
           showDate
           isRelative
         />

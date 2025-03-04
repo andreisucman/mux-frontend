@@ -61,7 +61,7 @@ export default function ResultsProof() {
   }, [status, part, sort, concern, query]);
 
   useEffect(() => {
-    getFilters({ collection: "proof", fields: ["part"] }).then((result) => {
+    getFilters({ collection: "task", fields: ["part"] }).then((result) => {
       const { availableParts } = result;
       setAvaiableParts(availableParts);
     });

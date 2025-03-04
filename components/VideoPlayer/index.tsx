@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { IconPlayerPlay } from "@tabler/icons-react";
 import cn from "classnames";
 import ReactPlayer from "react-player";
-import { Skeleton, Text } from "@mantine/core";
+import { Loader, Stack, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import classes from "./VideoPlayer.module.css";
 
@@ -15,6 +15,7 @@ type Props = {
   createdAt: string;
   customStyles?: { [key: string]: any };
   onClick?: () => any;
+  setIsBuffering: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function VideoPlayer({
@@ -24,6 +25,7 @@ export default function VideoPlayer({
   thumbnail,
   createdAt,
   customStyles,
+  setIsBuffering,
   onClick,
 }: Props) {
   const [playing, setPlaying] = useState(false);
@@ -32,6 +34,7 @@ export default function VideoPlayer({
   const handlePlayerClick = useCallback(() => {
     if (onClick) {
       onClick();
+      setIsBuffering(true);
     } else {
       setPlaying((prev) => !prev);
     }
@@ -59,9 +62,8 @@ export default function VideoPlayer({
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
 
   return (
-    <Skeleton
+    <Stack
       className={cn("skeleton", classes.skeleton, { [classes.relative]: isRelative })}
-      visible={!url}
       style={customStyles ? customStyles : {}}
     >
       {!playing && playIcon}
@@ -73,6 +75,7 @@ export default function VideoPlayer({
           inset: 0,
         }}
         light={thumbnail}
+        onDuration={() => setIsBuffering(false)}
         playIcon={
           <div
             className={classes.playButton}
@@ -104,6 +107,6 @@ export default function VideoPlayer({
       />
 
       {showDate && <Text className={classes.date}>{formattedDate}</Text>}
-    </Skeleton>
+    </Stack>
   );
 }

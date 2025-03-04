@@ -1,5 +1,6 @@
 import {
   IconAdjustmentsHorizontal,
+  IconAnalyze,
   IconBooks,
   IconBrandYoutube,
   IconBubbleText,
@@ -8,13 +9,15 @@ import {
   IconCashBanknote,
   IconChecklist,
   IconEye,
+  IconGitCompare,
   IconHandGrab,
   IconMessages,
   IconMoodCheck,
   IconNotebook,
-  IconUser,
   IconScaleOutline,
+  IconScoreboard,
   IconToolsKitchen2,
+  IconUser,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
 
@@ -85,6 +88,22 @@ export const improvementCoachContent = [
     description:
       "Suggests personal recipes to match your calorie count based on your physical condition, products at hand and kitchenware.",
   },
+];
+
+export const scanAnalysisContent = [
+  {
+    icon: <IconAnalyze className="icon icon__large" style={style} />,
+    description: "Analyzes your appearance and provides a score for different body features.",
+  },
+  {
+    icon: <IconGitCompare className="icon icon__large" style={style} />,
+    description: "Compares your current condition with the previous and explains what changed.",
+  },
+  {
+    icon: <IconScoreboard className="icon icon__large" style={style} />,
+    description: "Displays your scores on your results card for future reference.",
+  },
+  ,
 ];
 
 export const advisorCoachContent = [

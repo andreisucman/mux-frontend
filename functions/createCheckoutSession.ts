@@ -8,15 +8,15 @@ type Props = {
   redirectUrl?: string;
   cancelUrl?: string;
   priceId: string;
-  cb?: (...args: any) => void;
+  mode?: "subscription" | "payment";
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
 };
 
 export default async function createCheckoutSession({
-  cb,
   priceId,
   redirectUrl,
   cancelUrl,
+  mode = "subscription",
   setUserDetails,
 }: Props) {
   if (!priceId) return;
@@ -29,11 +29,12 @@ export default async function createCheckoutSession({
         priceId,
         redirectUrl,
         cancelUrl,
+        mode,
       },
     });
 
     if (response.status === 200) {
-      const { redirectUrl, subscriptionId, subscriptions } = response.message;
+      const { redirectUrl, subscriptionId } = response.message;
 
       if (redirectUrl) {
         location.replace(redirectUrl);
@@ -44,8 +45,6 @@ export default async function createCheckoutSession({
         fetchUserData({ setUserDetails });
         modals.closeAll();
       }
-
-      if (cb) cb(subscriptions);
     }
   } catch (err) {}
 }

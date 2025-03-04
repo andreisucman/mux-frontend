@@ -7,13 +7,13 @@ import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
+import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSubscriptionModal from "@/helpers/openSubscriptionModal";
+import openPaymentModal from "@/helpers/openPaymentModal";
 import { RecipeType, UserDataType } from "@/types/global";
 import RecipeSettingsContent from "./RecipeSettingsContent";
 import classes from "./CreateRecipeBox.module.css";
-import { useRouter } from "@/helpers/custom-router";
 
 type Props = {
   taskId: string | null;
@@ -70,10 +70,10 @@ export default function CreateRecipeBox({
                 : () =>
                     startSubscriptionTrial({
                       subscriptionName: "improvement",
-                      router
+                      router,
                     });
 
-              openSubscriptionModal({
+              openPaymentModal({
                 title: "Add the improvement coach",
                 price: "9",
                 isCentered: true,

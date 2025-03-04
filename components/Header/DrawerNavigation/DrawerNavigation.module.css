@@ -4,6 +4,7 @@
 
 .footer {
   font-size: var(--mantine-font-size-sm);
+  margin-top: auto;
 }
 
 .copyright {

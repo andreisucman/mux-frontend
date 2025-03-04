@@ -71,7 +71,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [isRecording, setIsRecording] = useState(false);
   const [captureType, setCaptureType] = useState<string>();
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
-  const [isFlipping, setIsFlipping] = useState(false);
 
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 36em)");
@@ -324,12 +323,9 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [recordedBlob, uploadProof, captureType]);
 
   const flipCamera = useCallback(() => {
-    if (isFlipping) return;
-    setIsFlipping(true);
     handleResetRecording();
     setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
-    setTimeout(() => setIsFlipping(false), 500);
-  }, [facingMode]);
+  }, [facingMode, facingMode]);
 
   const handleChangeCaptureType = useCallback(
     async (captureType: string) => {

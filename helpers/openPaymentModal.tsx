@@ -7,11 +7,12 @@ import {
   advisorCoachContent,
   improvementCoachContent,
   peekLicenseContent,
+  scanAnalysisContent,
 } from "@/app/plans/pricingData";
 import SubscriptionModalContent from "./SubscriptionModalContent";
 
 type Props = {
-  modalType: "improvement" | "advisor" | "peek";
+  modalType: "improvement" | "advisor" | "peek" | "scan";
   title: string;
   name?: string;
   price?: string;
@@ -25,7 +26,7 @@ type Props = {
   onClose: (args?: any) => void;
 };
 
-export default function openSubscriptionModal({
+export default function openPaymentModal({
   title,
   modalType,
   price,
@@ -39,12 +40,22 @@ export default function openSubscriptionModal({
   onClick,
   onClose,
 }: Props) {
-  const content =
-    modalType === "improvement"
-      ? improvementCoachContent
-      : modalType === "advisor"
-        ? advisorCoachContent
-        : peekLicenseContent;
+  let content: any[] = improvementCoachContent;
+
+  switch (modalType) {
+    case "improvement":
+      content = improvementCoachContent;
+      break;
+    case "advisor":
+      content = advisorCoachContent;
+      break;
+    case "peek":
+      content = peekLicenseContent;
+      break;
+    case "scan":
+      content = scanAnalysisContent;
+      break;
+  }
 
   modals.openContextModal({
     modal: "general",

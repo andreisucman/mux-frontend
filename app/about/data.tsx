@@ -72,15 +72,13 @@ export const data = [
     ),
   },
   {
-    question: "Will my images be listed in the gallery if I use Muxout?",
+    question: "Will my images be listed in the gallery?",
     answer: (
       <Stack>
+        <Text>None of your images or videos get listed automatically when you start using Muxout.</Text>
         <Text>
-          No, none of your data is listed by default when you register. It also remains private when
-          you join the Club.
-        </Text>
-        <Text>
-          To list your data you will have to manually enable data sharing in the settings.
+          To list your images and videos you will have to manually enable data sharing in the
+          settings after you join the Club.
         </Text>
       </Stack>
     ),

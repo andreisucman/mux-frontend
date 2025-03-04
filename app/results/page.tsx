@@ -78,7 +78,7 @@ export default function ResultsProgress() {
   }, [status, sort, part]);
 
   useEffect(() => {
-    getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
+    getFilters({ collection: "task", fields: ["part"] }).then((result) => {
       const { availableParts } = result;
       setAvaiableParts(availableParts);
     });

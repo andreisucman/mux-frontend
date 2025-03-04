@@ -9,7 +9,7 @@ import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { useRouter } from "@/helpers/custom-router";
-import openSubscriptionModal from "@/helpers/openSubscriptionModal";
+import openPaymentModal from "@/helpers/openPaymentModal";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
 
@@ -90,7 +90,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
               router,
             });
 
-      openSubscriptionModal({
+      openPaymentModal({
         title: "Add the improvement coach",
         price: "9",
         isCentered: true,
