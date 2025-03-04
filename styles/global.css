@@ -116,3 +116,11 @@ body::-webkit-scrollbar-thumb {
     visibility: hidden;
   }
 }
+
+.priceGroup {
+  flex-wrap: nowrap;
+  gap: rem(4);
+  color: white;
+  width: 100%;
+  justify-content: center;
+}

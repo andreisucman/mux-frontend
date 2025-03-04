@@ -11,6 +11,22 @@ export default function AnalysisCarousel() {
   const { _id: userId, concerns, latestScores, latestProgress } = userDetails || {};
 
   const getSlides = useCallback(() => {
+    const noScoresAndFeedback =
+      latestScores && latestScores.overall === 0 && !latestScores?.explanations;
+
+    if (!noScoresAndFeedback)
+      return (
+        <Carousel.Slide key={"analysisCard"}>
+          {latestScores && latestProgress && (
+            <AnalysisCard
+              title="Progress scan uploaded"
+              currentRecord={latestProgress}
+              latestScores={latestScores}
+            />
+          )}
+        </Carousel.Slide>
+      );
+
     const analysisCard = (
       <Carousel.Slide key={"analysisCard"}>
         {latestScores && latestProgress && (
@@ -39,7 +55,7 @@ export default function AnalysisCarousel() {
     const slides = [analysisCard, concernsCard];
 
     return slides;
-  }, [concerns, userId, status]);
+  }, [latestScores, concerns, userId, status]);
 
   const slides = useMemo(() => getSlides(), []);
 

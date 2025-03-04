@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Stack, Text } from "@mantine/core";
+import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
@@ -80,7 +80,11 @@ export default function StartDate() {
 
             openPaymentModal({
               title: `Add the improvement coach`,
-              price: "9",
+              price: (
+                <Group className="priceGroup">
+                  <Title order={3}>$9</Title>/ <Text>month</Text>
+                </Group>
+              ),
               isCentered: true,
               modalType: "improvement",
               underButtonText: isTrialUsed ? "" : "No credit card required",

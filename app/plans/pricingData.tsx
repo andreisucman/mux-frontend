@@ -101,7 +101,7 @@ export const scanAnalysisContent = [
   },
   {
     icon: <IconScoreboard className="icon icon__large" style={style} />,
-    description: "Displays your scores on your results card for future reference.",
+    description: "Displays your scores under your images for future reference.",
   },
   ,
 ];

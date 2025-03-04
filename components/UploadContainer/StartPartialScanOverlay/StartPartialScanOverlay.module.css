@@ -7,9 +7,3 @@
   border-radius: var(--mantine-radius-lg);
   background-color: var(--mantine-color-dark-6);
 }
-
-.wrapper {
-  align-items: center;
-  gap: rem(4);
-  transform: translateY(-25%);
-}

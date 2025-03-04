@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useState } from "react";
-import { Group, Stack } from "@mantine/core";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
@@ -49,7 +49,11 @@ export default function PlansPage() {
         <PricingCard content={freePlanContent} name={"Free"} addGradient />
         <PricingCard
           content={peekLicenseContent}
-          price={"19"}
+          price={
+            <Group className="priceGroup">
+              <Title order={3}>$19</Title>/ <Text>month</Text>
+            </Group>
+          }
           name={"Peek license"}
           isLoading={isLoading}
           onClick={handleClickBuy}

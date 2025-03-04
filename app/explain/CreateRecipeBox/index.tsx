@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button, Group, Title } from "@mantine/core";
+import { Button, Group, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -75,7 +75,11 @@ export default function CreateRecipeBox({
 
               openPaymentModal({
                 title: "Add the improvement coach",
-                price: "9",
+                price: (
+                  <Group className="priceGroup">
+                    <Title order={3}>$9</Title>/ <Text>month</Text>
+                  </Group>
+                ),
                 isCentered: true,
                 modalType: "improvement",
                 underButtonText: isTrialUsed ? "" : "No credit card required",

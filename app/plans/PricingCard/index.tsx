@@ -6,7 +6,7 @@ import classes from "./PricingCard.module.css";
 
 type Props = {
   addGradient?: boolean;
-  price?: string;
+  price?: React.ReactNode;
   customHeadingStyles?: { [key: string]: any };
   customPriceGroupStyles?: { [key: string]: any };
   name?: string | React.ReactNode;
@@ -22,7 +22,6 @@ export default function PricingCard({
   content,
   addGradient = false,
   customHeadingStyles,
-  customPriceGroupStyles,
   icon,
   name,
   price,
@@ -42,16 +41,7 @@ export default function PricingCard({
         <Title order={4} className={classes.name}>
           {name}
         </Title>
-        <>
-          {price && (
-            <Group
-              className={cn(classes.priceGroup)}
-              style={customPriceGroupStyles ? customPriceGroupStyles : {}}
-            >
-              <Title order={3}>${price}</Title>/ <Text>month</Text>
-            </Group>
-          )}
-        </>
+        {price}
       </Stack>
       <Stack className={classes.content}>
         {content.map((item, index) => (

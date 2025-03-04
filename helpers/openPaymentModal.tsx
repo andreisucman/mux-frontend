@@ -15,7 +15,7 @@ type Props = {
   modalType: "improvement" | "advisor" | "peek" | "scan";
   title: string;
   name?: string;
-  price?: string;
+  price?: React.ReactNode;
   withCloseButton?: boolean;
   description?: string;
   buttonText: string;

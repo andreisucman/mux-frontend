@@ -11,6 +11,7 @@ import {
   Group,
   Skeleton,
   Stack,
+  Text,
   Title,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -147,7 +148,11 @@ export default function ChatInput({
       title: userName ? `Add the peek license` : `Add the advisor coach`,
       modalType: userName ? "peek" : ("advisor" as "peek"),
       isCentered: true,
-      price: userName ? "19" : "9",
+      price: (
+        <Group className="priceGroup">
+          <Title order={3}>{userName ? "$19" : "$9"}</Title>/ <Text>month</Text>
+        </Group>
+      ),
       buttonText,
       onClick,
       onClose: () => fetchUserData({ setUserDetails }),
@@ -454,7 +459,6 @@ export default function ChatInput({
                 }
                 autosize
               />
-
               <ActionIcon
                 type={"submit"}
                 variant="default"

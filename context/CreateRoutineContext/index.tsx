@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Title } from "@mantine/core";
+import { Group, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
@@ -92,7 +92,11 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
 
       openPaymentModal({
         title: "Add the improvement coach",
-        price: "9",
+        price: (
+          <Group className="priceGroup">
+            <Title order={3}>$9</Title>/ <Text>month</Text>
+          </Group>
+        ),
         isCentered: true,
         modalType: "improvement",
         buttonText,

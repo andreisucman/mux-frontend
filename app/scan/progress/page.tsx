@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Button, Loader, Stack } from "@mantine/core";
-import { useShallowEffect } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import InputWithCheckboxes from "@/components/InputWithCheckboxes";
 import OverlayWithText from "@/components/OverlayWithText";

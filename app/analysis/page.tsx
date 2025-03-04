@@ -23,10 +23,7 @@ export default function Analysis() {
   const { overall, ...rest } = latestProgress || {};
 
   const isEmpty = useMemo(
-    () =>
-      Object.values(rest)
-        .filter(Boolean)
-        .every((v) => !v),
+    () => Object.values(rest).every((v) => v === null || v === undefined),
     [rest]
   );
 

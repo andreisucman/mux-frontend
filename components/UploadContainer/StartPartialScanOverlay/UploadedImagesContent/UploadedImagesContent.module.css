@@ -1,0 +1,6 @@
+.container {
+    align-items: center;
+    gap: rem(4);
+    transform: translateY(-25%);
+  }
+  

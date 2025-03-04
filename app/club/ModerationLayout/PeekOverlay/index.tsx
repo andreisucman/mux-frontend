@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import PricingCard from "@/app/plans/PricingCard";
@@ -138,7 +138,11 @@ export default function PeekOverlay({ description, userName }: Props) {
     <Stack className={classes.container}>
       {description && <Text className={classes.text}>{description}</Text>}
       <PricingCard
-        price="19"
+        price={
+          <Group className="priceGroup">
+            <Title order={3}>$19</Title>/ <Text>month</Text>
+          </Group>
+        }
         name={"Peek License"}
         buttonText="Add peek license"
         content={peekLicenseContent}
