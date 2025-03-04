@@ -18,8 +18,8 @@ const ImageCardStack = ({ images }: Props) => {
             key={index}
             src={image}
             alt={`Uploaded ${index}`}
-            width={200}
-            height={200}
+            width={250}
+            height={250}
             style={{
               transform: `translate(-50%,-50%) rotate(${rotation}deg)`,
             }}

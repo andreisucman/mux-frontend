@@ -179,6 +179,22 @@ export enum AuthRedirectToEnum {
   routines = "routines",
 }
 
+export type LatestScoresType = {
+  overall: number;
+  face: FormattedRatingType;
+  mouth: FormattedRatingType;
+  scalp: FormattedRatingType;
+  body: FormattedRatingType;
+};
+
+export type LatestScoresDifferenceType = {
+  overall: number;
+  face: { [key: string]: number };
+  mouth: { [key: string]: number };
+  scalp: { [key: string]: number };
+  body: { [key: string]: number };
+};
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email?: string | null;
@@ -199,8 +215,8 @@ export interface UserDataType extends DefaultUserType {
   nextRoutine: NextActionType[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
-  latestScores: FormattedRatingType;
-  latestScoresDifference: { [key: string]: number };
+  latestScores: LatestScoresType;
+  latestScoresDifference: LatestScoresDifferenceType;
   tasks: TaskType[];
   routines: RoutineType[];
   coachEnergy: number;

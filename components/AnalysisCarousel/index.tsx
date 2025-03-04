@@ -4,6 +4,7 @@ import { Stack } from "@mantine/core";
 import ConcernsCard from "@/components/AnalysisCarousel//ConcernsCard";
 import AnalysisCard from "@/components/AnalysisCarousel/AnalysisCard";
 import { UserContext } from "@/context/UserContext";
+import GetScoresAndFeedbackCard from "./GetScoresAndFeedbackCard";
 import classes from "./AnalysisCarousel.module.css";
 
 export default function AnalysisCarousel() {
@@ -11,19 +12,10 @@ export default function AnalysisCarousel() {
   const { _id: userId, concerns, latestScores, latestProgress } = userDetails || {};
 
   const getSlides = useCallback(() => {
-    const noScoresAndFeedback =
-      latestScores && latestScores.overall === 0 && !latestScores?.explanations;
-
-    if (!noScoresAndFeedback)
+    if (latestScores && !latestScores.overall)
       return (
         <Carousel.Slide key={"analysisCard"}>
-          {latestScores && latestProgress && (
-            <AnalysisCard
-              title="Progress scan uploaded"
-              currentRecord={latestProgress}
-              latestScores={latestScores}
-            />
-          )}
+          <GetScoresAndFeedbackCard title="Scan uploaded" />
         </Carousel.Slide>
       );
 

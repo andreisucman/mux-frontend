@@ -57,7 +57,7 @@ export default function UploadedImagesContent({
       {toAnalyze && toAnalyze.length > 0 && (
         <ImageCardStack images={toDisplay.map((part) => part.url || "")} />
       )}
-      <Title order={5} mb={rem(12)}>
+      <Title order={4} className={classes.title}>
         {title}
       </Title>
       <Checkbox
@@ -65,7 +65,7 @@ export default function UploadedImagesContent({
         checked={isFirstAnalysis || enableScanAnalysis}
         label="Get scores and feedback"
         onChange={(e) => handleEnableAnalysis(e.currentTarget.checked)}
-        mb={20}
+        className={classes.checkbox}
       />
       {buttons}
     </Stack>

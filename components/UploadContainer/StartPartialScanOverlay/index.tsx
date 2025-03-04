@@ -36,14 +36,14 @@ export default function StartPartialScanOverlay({
   const handleStartAnalysis = useCallback(async () => {
     try {
       if (!userId) throw new Error("Missing user id");
-      const sessionRedirect = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
       setIsButtonLoading(true);
 
       if (scanAnalysisQuota === 0 && enableScanAnalysis) {
         setIsButtonLoading(false);
         createBuyScanSession({
-          redirectUrl: sessionRedirect,
+          redirectUrl,
           setUserDetails,
           cb: () => setEnableScanAnalysis(true),
         });
@@ -62,7 +62,7 @@ export default function StartPartialScanOverlay({
 
           if (response.error === "buy scan analysis") {
             createBuyScanSession({
-              redirectUrl: sessionRedirect,
+              redirectUrl,
               setUserDetails,
               cb: handleStartAnalysis,
             });
@@ -72,8 +72,7 @@ export default function StartPartialScanOverlay({
           openErrorModal({ description: response.error });
           return;
         }
-        const redirectUrl = encodeURIComponent(`/${pathname}?${searchParams.toString()}`);
-        router.push(`/wait?redirectUrl=${redirectUrl}`);
+        router.push(`/wait?redirectUrl=${encodeURIComponent(redirectUrl)}`);
       }
     } catch (err) {
       setIsButtonLoading(false);

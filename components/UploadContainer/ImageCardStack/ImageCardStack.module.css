@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  width: rem(300);
+  width: 100%;
   height: rem(300);
 }
 

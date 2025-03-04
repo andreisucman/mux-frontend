@@ -1,6 +1,17 @@
 .container {
-    align-items: center;
-    gap: rem(4);
-    transform: translateY(-25%);
-  }
-  
+  align-items: center;
+  gap: rem(4);
+  width: 100%;
+  transform: translateY(-15%);
+}
+
+.title {
+  margin-bottom: rem(12);
+  margin-top: rem(32);
+  color: var(--mantine-color-gray-2);
+}
+
+.checkbox {
+  color: var(--mantine-color-gray-2);
+  margin-bottom: rem(16);
+}
