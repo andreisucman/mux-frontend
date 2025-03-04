@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ImageCard from "@/components/ImageCard";
@@ -11,6 +11,8 @@ import { SimpleProofType } from "../../types";
 import ProofCardFooter from "./ProofCardFooter";
 import ProofCardHeader from "./ProofCardHeader";
 import classes from "./ProofCard.module.css";
+import DeleteContentButton from "@/components/DeleteContentButton";
+import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 
 type Props = {
   isLite?: boolean;
@@ -22,8 +24,17 @@ type Props = {
   contentChildren?: React.ReactNode;
 };
 
-function ProofCard({ data, isLite, showFooter, isPublicPage, contentChildren, setProof }: Props) {
+function ProofCard({
+  data,
+  isLite,
+  showFooter,
+  isPublicPage,
+  contentChildren,
+  showContentModerationButtons,
+  setProof,
+}: Props) {
   const {
+    _id: proofId,
     mainUrl,
     concern,
     avatar,
@@ -35,6 +46,7 @@ function ProofCard({ data, isLite, showFooter, isPublicPage, contentChildren, se
     contentType,
   } = data;
 
+  const [isLoading, setIsLoading] = useState(false);
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
   const concernName = useMemo(() => normalizeString(concern), [concern]);
 
@@ -82,6 +94,20 @@ function ProofCard({ data, isLite, showFooter, isPublicPage, contentChildren, se
             onClick={handleClick}
             showDate={false}
           />
+        )}
+        {showContentModerationButtons && (
+          <>
+            <DeleteContentButton
+              contentId={proofId}
+              collectionKey={"proof"}
+              setContent={setProof}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              isDisabled={isLoading}
+              position="top-left"
+            />
+            <ContentPublicityIndicator isPublic={!!isPublicPage} position="bottom-right" />
+          </>
         )}
       </Stack>
       {showFooter && (

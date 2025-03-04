@@ -77,6 +77,7 @@ export default function VideoPlayer({
         light={thumbnail}
         onDuration={setIsBuffering ? () => setIsBuffering(false) : undefined}
         playing={playing}
+        playIcon={<></>}
         width={"100%"}
         height={"100%"}
         onClick={handlePlayerClick}

@@ -6,6 +6,10 @@
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
+.content {
+  flex-wrap: nowrap;
+}
+
 .icon {
   transform: translateY(-7.5%);
 }

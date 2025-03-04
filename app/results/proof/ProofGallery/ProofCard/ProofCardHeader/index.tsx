@@ -24,12 +24,12 @@ export default function ProofCardHeader({
       style={customStyles ? customStyles : {}}
     >
       {!hideTitle && (
-        <>
+        <Group className={classes.content}>
           <span className={classes.icon}>{icon}</span>
           <Title order={5} className={classes.taskName} lineClamp={1}>
             {taskName}
           </Title>
-        </>
+        </Group>
       )}
       <Text className={classes.concernName}>{concernName}</Text>
     </Group>
