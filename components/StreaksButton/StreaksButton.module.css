@@ -12,6 +12,18 @@
   height: fit-content;
 }
 
+.labelContainer {
+  position: relative;
+}
+
+.labelValue {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  justify-self: center;
+  color: white;
+}
+
 .text {
   display: flex;
   gap: rem(8);

@@ -91,6 +91,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, []);
 
   type StartRecordingProps = {
+    facingMode: "user" | "environment";
     aspectRatio: number;
     videoRef: any;
     streamRef: any;
@@ -101,6 +102,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const startRecording = useCallback(
     ({
+      facingMode,
       aspectRatio,
       videoRef,
       streamRef,
@@ -252,6 +254,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
           if (captureType === "image") capturePhoto();
           if (captureType === "video")
             startRecording({
+              facingMode,
               aspectRatio,
               videoRef,
               streamRef,
@@ -417,6 +420,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   useEffect(() => {
     if (!captureType) return;
+
     const loadSaved = async () => {
       const savedImage = await getFromIndexedDb("proofImage");
       const savedVideo = await getFromIndexedDb("proofVideo");
@@ -546,6 +550,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
                     ? capturePhoto
                     : () =>
                         startRecording({
+                          facingMode,
                           aspectRatio,
                           videoRef,
                           streamRef,
