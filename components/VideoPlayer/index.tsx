@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { IconPlayerPlay } from "@tabler/icons-react";
 import cn from "classnames";
 import ReactPlayer from "react-player";
-import { Loader, Stack, Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import classes from "./VideoPlayer.module.css";
 
@@ -15,7 +15,7 @@ type Props = {
   createdAt: string;
   customStyles?: { [key: string]: any };
   onClick?: () => any;
-  setIsBuffering: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsBuffering?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function VideoPlayer({
@@ -34,7 +34,7 @@ export default function VideoPlayer({
   const handlePlayerClick = useCallback(() => {
     if (onClick) {
       onClick();
-      setIsBuffering(true);
+      if (setIsBuffering) setIsBuffering(true);
     } else {
       setPlaying((prev) => !prev);
     }
@@ -75,7 +75,7 @@ export default function VideoPlayer({
           inset: 0,
         }}
         light={thumbnail}
-        onDuration={() => setIsBuffering(false)}
+        onDuration={setIsBuffering ? () => setIsBuffering(false) : undefined}
         playIcon={
           <div
             className={classes.playButton}

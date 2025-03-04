@@ -11,10 +11,10 @@ import classes from "./DiaryTaskCard.module.css";
 
 export default function DiaryTaskCard({
   name,
-  contentType,
   url,
-  thumbnail,
   icon,
+  contentType,
+  thumbnail,
 }: DiaryActivityType) {
   const showSkeleton = useShowSkeleton();
 
