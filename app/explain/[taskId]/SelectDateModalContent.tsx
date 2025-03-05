@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function SelectDateModalContent({ buttonText, onSubmit }: Props) {
-  const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(null);
+  const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 

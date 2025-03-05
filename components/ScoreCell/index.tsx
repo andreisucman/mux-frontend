@@ -1,17 +1,17 @@
 import React from "react";
-import { IconTrendingUp } from "@tabler/icons-react";
 import { Group, Text } from "@mantine/core";
 import classes from "./ScoreCell.module.css";
 
 type Props = {
   score: number;
+  icon: React.ReactNode;
   customStyles?: { [key: string]: any };
 };
 
-export default function ScoreCell({ score, customStyles }: Props) {
+export default function ScoreCell({ score, icon, customStyles }: Props) {
   return (
     <Group className={classes.cell} style={customStyles ? customStyles : {}}>
-      <IconTrendingUp className="icon" />
+      {icon}
       <Text className={classes.text}>{score}</Text>
     </Group>
   );

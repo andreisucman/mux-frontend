@@ -1,6 +1,6 @@
 import {
   IconDoorExit,
-  IconRotateDot,
+  IconListDetails,
   IconScan,
   IconSettings,
   IconSocial,
@@ -45,7 +45,7 @@ function UserButton({ avatar, name, handleSignOut }: Props) {
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/tasks">
-          <IconRotateDot className="icon icon__small" style={{ marginRight: rem(6) }} /> My tasks
+          <IconListDetails className="icon icon__small" style={{ marginRight: rem(6) }} /> My tasks
         </Menu.Item>
         <Menu.Item component={Link} href="/scan">
           <IconScan className={`icon icon__small`} style={{ marginRight: rem(6) }} />

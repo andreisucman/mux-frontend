@@ -1,14 +1,16 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
 import { Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import { useRouter } from "@/helpers/custom-router";
+import { getPartIcon } from "@/helpers/icons";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
 import SocialsDisplayLine from "./SocialsDisplayLine";
 import classes from "./ClubProfilePreview.module.css";
+import ScoreCell from "@/components/ScoreCell";
 
 type Props = {
   type: "you" | "member";
@@ -28,9 +30,20 @@ function ClubProfilePreview({
   customStyles,
 }: Props) {
   const router = useRouter();
-  const { scores, bio, name, avatar } = data || {};
-  const { totalProgress } = scores || {};
+  const { latestScoresDifference, bio, name, avatar } = data || {};
+  const { overall } = latestScoresDifference || {};
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
+
+  const nonZeroParts = useMemo(
+    () =>
+      Object.entries(latestScoresDifference || {})
+        .filter(([key, value]) => typeof value === "number")
+        .map(([key, overall]) => {
+          const icon = getPartIcon(key, "icon__small");
+          return { icon, score: overall };
+        }),
+    [latestScoresDifference]
+  );
 
   const rowStyle: { [key: string]: any } = {};
 
@@ -101,11 +114,16 @@ function ClubProfilePreview({
               </Text>
             )}
             {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
-            {totalProgress !== undefined && (
-              <Group align="center" gap={8}>
-                <IconTrendingUp className="icon" />
-                {String(totalProgress)}
-              </Group>
+            {overall && overall > 0 && (
+              <>
+                <ScoreCell
+                  score={overall}
+                  icon={<IconTrendingUp className="icon icon__small" />}
+                />
+                {nonZeroParts.map((obj, i) => (
+                  <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
+                ))}
+              </>
             )}
           </Collapse>
         </Stack>

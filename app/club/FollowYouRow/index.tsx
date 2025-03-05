@@ -1,8 +1,10 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
+import { IconTrendingUp } from "@tabler/icons-react";
 import { Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
 import Link from "@/helpers/custom-router/patch-router/link";
+import { getPartIcon } from "@/helpers/icons";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { ClubUserType } from "@/types/global";
 import classes from "./FollowYouRow.module.css";
@@ -12,9 +14,20 @@ type Props = {
 };
 
 function FollowYouRow({ data }: Props) {
-  const { name, avatar, scores } = data;
+  const { name, avatar, latestScoresDifference } = data;
 
   const showSkeleton = useShowSkeleton();
+
+  const nonZeroParts = useMemo(
+    () =>
+      Object.entries(latestScoresDifference || {})
+        .filter(([key, value]) => typeof value === "number")
+        .map(([key, overall]) => {
+          const icon = getPartIcon(key, "icon__small");
+          return { icon, score: overall };
+        }),
+    [latestScoresDifference]
+  );
 
   return (
     <Skeleton className={`skeleton ${classes.skeleton}`} visible={showSkeleton}>
@@ -24,7 +37,17 @@ function FollowYouRow({ data }: Props) {
           {name}
         </Text>
 
-        {scores.totalProgress !== undefined && <ScoreCell score={scores.totalProgress} />}
+        {latestScoresDifference.overall > 0 && (
+          <>
+            <ScoreCell
+              score={latestScoresDifference.overall}
+              icon={<IconTrendingUp className="icon icon__small" />}
+            />
+            {nonZeroParts.map((obj, i) => (
+              <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
+            ))}
+          </>
+        )}
       </Link>
     </Skeleton>
   );

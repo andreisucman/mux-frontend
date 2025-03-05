@@ -66,18 +66,13 @@ export default function ClubDataContextProvider({ children }: Props) {
 
     if (!name) return;
 
-    const currentScore = latestScores?.currentScore || 0;
-    const totalProgress = latestScoresDifference?.overall || 0;
-
     const data: ClubUserType = {
       _id: userId as string,
       name,
       bio: bio!,
       avatar: avatar!,
-      scores: {
-        currentScore,
-        totalProgress,
-      },
+      latestScores: latestScores!,
+      latestScoresDifference: latestScoresDifference!,
     };
 
     setYouData(data);
