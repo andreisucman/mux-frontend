@@ -58,26 +58,24 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
     let label = "";
     let icon = undefined;
 
-    if (taskExpired) {
+    if (status === TaskStatusEnum.COMPLETED) {
+      if (proofId) {
+        label = "View";
+        icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
+      } else {
+        label = "Undo";
+        icon = <IconArrowBackUp className="icon" style={{ marginRight: rem(6) }} />;
+      }
+    } else if (taskExpired) {
       label = "Expired";
       icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
-      if (status === TaskStatusEnum.COMPLETED) {
-        if (proofId) {
-          label = "View";
-          icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
-        } else {
-          label = "Undo";
-          icon = <IconArrowBackUp className="icon" style={{ marginRight: rem(6) }} />;
-        }
+      if (proofEnabled) {
+        label = "Upload proof";
+        icon = <IconCamera className="icon" style={{ marginRight: rem(6) }} />;
       } else {
-        if (proofEnabled) {
-          label = "Upload proof";
-          icon = <IconCamera className="icon" style={{ marginRight: rem(6) }} />;
-        } else {
-          label = "Mark done";
-          icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />;
-        }
+        label = "Mark done";
+        icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />;
       }
     }
 
@@ -135,7 +133,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
       <Button
         variant={"default"}
         className={classes.ctaButton}
-        disabled={notStarted || taskExpired}
+        disabled={notStarted || taskExpired && status !== TaskStatusEnum.COMPLETED}
         onClick={updateSubmissionStatus}
       >
         {buttonData.label}

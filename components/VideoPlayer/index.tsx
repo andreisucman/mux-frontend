@@ -34,15 +34,18 @@ export default function VideoPlayer({
   const handlePlayerClick = useCallback(() => {
     if (onClick) {
       onClick();
-      if (setIsBuffering) setIsBuffering(true);
-    } else {
-      setPlaying((prev) => !prev);
     }
-  }, [typeof onClick]);
+    setPlaying((prev) => !prev);
+  }, [typeof onClick, playing]);
 
   const handleEnded = useCallback(() => {
     setPlaying(false);
   }, []);
+
+  const handleOnDuration = (playing: boolean) => {
+    if (setIsBuffering) setIsBuffering(false);
+    if (!playing) setPlaying(true);
+  };
 
   const playIcon = useMemo(
     () => (
@@ -75,9 +78,24 @@ export default function VideoPlayer({
           inset: 0,
         }}
         light={thumbnail}
-        onDuration={setIsBuffering ? () => setIsBuffering(false) : undefined}
+        onBuffer={setIsBuffering ? () => setIsBuffering(true) : undefined}
+        onDuration={() => handleOnDuration(playing)}
         playing={playing}
-        playIcon={<></>}
+        playIcon={
+          <div
+            className={classes.playButton}
+            onClick={
+              onClick
+                ? (e: any) => {
+                    e.stopPropagation();
+                    onClick();
+                  }
+                : () => {}
+            }
+          >
+            <IconPlayerPlayFilled className={classes.playIcon} />
+          </div>
+        }
         width={"100%"}
         height={"100%"}
         onClick={handlePlayerClick}

@@ -5,7 +5,7 @@ import PricingCard from "@/app/plans/PricingCard";
 type Props = {
   description?: string;
   name: React.ReactNode;
-  price?: string;
+  price?: React.ReactNode;
   content: { icon: React.ReactNode; description: string }[];
   buttonIcon?: React.ReactNode;
   buttonText?: string;

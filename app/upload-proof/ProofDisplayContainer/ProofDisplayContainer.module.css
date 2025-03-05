@@ -1,8 +1,9 @@
 .container {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   flex: 1;
   width: 100%;
   background-color: var(--mantine-color-dark-6);

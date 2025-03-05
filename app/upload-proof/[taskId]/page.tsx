@@ -16,11 +16,10 @@ import { useRouter } from "@/helpers/custom-router";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import { SexEnum, TaskType } from "@/types/global";
+import { SexEnum, TaskStatusEnum, TaskType } from "@/types/global";
 import ProofDisplayContainer from "../ProofDisplayContainer";
 import { ExistingProofRecordType } from "../types";
 import VideoRecorder from "../VideoRecorder";
-import classes from "./upload-proof.module.css";
 
 export const runtime = "edge";
 
@@ -77,8 +76,6 @@ export default function UploadProof(props: Props) {
       if (!taskId || !captureType || !recordedBlob) return;
 
       try {
-        setDisplayComponent("waitComponent");
-
         const urlArray = await uploadToSpaces({
           itemsArray: [recordedBlob],
           mime: captureType === "image" ? "image/jpeg" : "video/webm",
@@ -98,6 +95,8 @@ export default function UploadProof(props: Props) {
 
           deleteFromLocalStorage("runningAnalyses", taskId);
         }
+
+        setDisplayComponent("waitComponent");
       } catch (err) {
         setDisplayComponent("videoRecorder");
         deleteFromLocalStorage("runningAnalyses", taskId);
@@ -134,7 +133,7 @@ export default function UploadProof(props: Props) {
       return;
     }
 
-    if (taskInfo && taskExpired) {
+    if (taskInfo && taskExpired && taskInfo.status !== TaskStatusEnum.COMPLETED) {
       setDisplayComponent("expired");
       return;
     }
@@ -167,7 +166,7 @@ export default function UploadProof(props: Props) {
       <SkeletonWrapper>
         <PageHeader title={`Proof - ${submissionName}`} showReturn nowrapContainer />
         <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
-          <Stack className={classes.content}>
+          <Stack flex={1}>
             {componentToDisplay === "completed" && existingProofRecord && (
               <ProofDisplayContainer existingProofRecord={existingProofRecord} />
             )}

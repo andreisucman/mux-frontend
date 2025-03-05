@@ -15,6 +15,7 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import foodImage from "@/public/assets/placeholders/food.svg";
+import { titles } from "../pageTitles";
 import CalorieGoalController from "./CalorieGoal";
 import classes from "./food.module.css";
 
@@ -41,8 +42,7 @@ export default function ScanFoodPage() {
         endpoint: "analyzeFood",
         method: "POST",
         body: {
-          // url: fileUrls[0],
-          url: "https://mux-data.nyc3.cdn.digitaloceanspaces.com/pasta.webp",
+          url: fileUrls[0],
           calorieGoal,
         },
       });
@@ -80,7 +80,7 @@ export default function ScanFoodPage() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title={"Scan food"} />
+      <PageHeader titles={titles} />
       <CalorieGoalProvider>
         <CalorieGoalController disabled={isLoading} />
       </CalorieGoalProvider>

@@ -18,14 +18,11 @@ import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { ScanTypeEnum, UserDataType } from "@/types/global";
 import { UploadProgressProps } from "../types";
+import { titles } from "../pageTitles";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
 
-const titles = [
-  { label: "Scan progress", value: "/scan/progress" },
-  { label: "Scan food", value: "/scan/food" },
-];
 
 export default function ScanProgress() {
   const router = useRouter();

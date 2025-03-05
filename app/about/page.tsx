@@ -9,8 +9,6 @@ import classes from "./about.module.css";
 export const runtime = "edge";
 
 export default function AnswersPage() {
-  const [openValue, setOpenValue] = useState<string | null>(data[0].question);
-
   const accordionRows = data.map(({ question, answer }) => (
     <Accordion.Item value={question} key={question}>
       <Accordion.Control>
@@ -24,18 +22,15 @@ export default function AnswersPage() {
     <Stack className={`${classes.container} mediumPage`}>
       <PageHeader title="About" />
       <Accordion
-        value={openValue}
-        onChange={setOpenValue}
         className={classes.accordion}
-        chevron={false}
         variant="separated"
         classNames={{
           root: classes.root,
           item: classes.item,
-          chevron: classes.chevron,
           control: classes.control,
           content: classes.accordionContent,
         }}
+        multiple
       >
         {accordionRows}
       </Accordion>
