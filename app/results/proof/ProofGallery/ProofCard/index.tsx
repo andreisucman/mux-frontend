@@ -84,6 +84,7 @@ function ProofCard({
             createdAt={createdAt}
             thumbnail={mainThumbnail?.url}
             onClick={handleClick}
+            playOnBufferEnd
             disabled
           />
         ) : (

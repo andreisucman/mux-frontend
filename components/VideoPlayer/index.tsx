@@ -12,6 +12,7 @@ type Props = {
   url?: string;
   disabled?: boolean;
   thumbnail?: string;
+  playOnBufferEnd?: boolean;
   createdAt: string;
   customStyles?: { [key: string]: any };
   onClick?: () => any;
@@ -24,6 +25,7 @@ export default function VideoPlayer({
   isRelative,
   thumbnail,
   createdAt,
+  playOnBufferEnd,
   customStyles,
   setIsBuffering,
   onClick,
@@ -44,7 +46,7 @@ export default function VideoPlayer({
 
   const handleOnDuration = (playing: boolean) => {
     if (setIsBuffering) setIsBuffering(false);
-    if (!playing) setPlaying(true);
+    if (playOnBufferEnd && !playing) setPlaying(true);
   };
 
   const playIcon = useMemo(

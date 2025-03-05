@@ -58,6 +58,7 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
           url={mainUrl.url}
           createdAt={createdAt}
           setIsBuffering={setIsBuffering}
+          playOnBufferEnd
           showDate
           isRelative
         />

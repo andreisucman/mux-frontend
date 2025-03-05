@@ -216,6 +216,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
+
     if (!context) return;
 
     try {
@@ -370,9 +371,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
       if (savedRecords) {
         const newTypeRecord = savedRecords[captureType];
-
         const newUrl = newTypeRecord ? newTypeRecord : "";
-
         setLocalUrl(newUrl);
       }
     },

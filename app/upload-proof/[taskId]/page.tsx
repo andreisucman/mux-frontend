@@ -71,53 +71,55 @@ export default function UploadProof(props: Props) {
     } catch (err) {}
   }, []);
 
-  const uploadProof = useCallback(
-    async ({ taskId, recordedBlob, captureType, blurType }: HandleUploadProps) => {
-      if (!taskId || !captureType || !recordedBlob) return;
+  const uploadProof = async ({
+    taskId,
+    recordedBlob,
+    captureType,
+    blurType,
+  }: HandleUploadProps) => {
+    if (!taskId || !captureType || !recordedBlob) return;
 
-      try {
-        const urlArray = await uploadToSpaces({
-          itemsArray: [recordedBlob],
-          mime: captureType === "image" ? "image/jpeg" : "video/webm",
-        });
+    try {
+      const urlArray = await uploadToSpaces({
+        itemsArray: [recordedBlob],
+        mime: captureType === "image" ? "image/jpeg" : "video/webm",
+      });
 
-        const response = await callTheServer({
-          endpoint: "uploadProof",
-          method: "POST",
-          body: { taskId, url: urlArray[0], blurType },
-        });
+      const response = await callTheServer({
+        endpoint: "uploadProof",
+        method: "POST",
+        body: { taskId, url: urlArray[0], blurType },
+      });
 
-        if (response.status !== 200) {
-          setDisplayComponent("videoRecorder");
-          openErrorModal({
-            description: response.error,
-          });
-
-          deleteFromLocalStorage("runningAnalyses", taskId);
-        }
-
-        setDisplayComponent("waitComponent");
-      } catch (err) {
+      if (response.status !== 200) {
         setDisplayComponent("videoRecorder");
+        openErrorModal({
+          description: response.error,
+        });
+
         deleteFromLocalStorage("runningAnalyses", taskId);
       }
-    },
-    []
-  );
 
-  const handleFetchTaskInfo = useCallback(async (taskId: string) => {
+      setDisplayComponent("waitComponent");
+    } catch (err) {
+      setDisplayComponent("videoRecorder");
+      deleteFromLocalStorage("runningAnalyses", taskId);
+    }
+  };
+
+  const handleFetchTaskInfo = async (taskId: string) => {
     const taskInfo = await fetchTaskInfo(taskId);
     if (taskInfo) setTaskInfo(taskInfo);
-  }, []);
+  };
 
-  const handleCompleteUpload = useCallback(async (taskId: string | null) => {
+  const handleCompleteUpload = async (taskId: string | null) => {
     if (!taskId) return;
     await fetchProofInfo(taskId);
     handleFetchTaskInfo(taskId);
     setDisplayComponent("completed");
     deleteFromIndexedDb("proofVideo");
     deleteFromIndexedDb("proofImage");
-  }, []);
+  };
 
   useEffect(() => {
     if (!taskId) return;
