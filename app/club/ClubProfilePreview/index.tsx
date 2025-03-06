@@ -3,6 +3,7 @@ import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-re
 import { Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
+import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
 import { getPartIcon } from "@/helpers/icons";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
@@ -10,7 +11,6 @@ import { ClubUserType } from "@/types/global";
 import MenuButtons from "./MenuButtons";
 import SocialsDisplayLine from "./SocialsDisplayLine";
 import classes from "./ClubProfilePreview.module.css";
-import ScoreCell from "@/components/ScoreCell";
 
 type Props = {
   type: "you" | "member";
@@ -114,16 +114,15 @@ function ClubProfilePreview({
               </Text>
             )}
             {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
-            {overall && overall > 0 && (
+            {overall && overall > 0 ? (
               <>
-                <ScoreCell
-                  score={overall}
-                  icon={<IconTrendingUp className="icon icon__small" />}
-                />
+                <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />
                 {nonZeroParts.map((obj, i) => (
                   <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
                 ))}
               </>
+            ) : (
+              <></>
             )}
           </Collapse>
         </Stack>

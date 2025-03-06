@@ -55,6 +55,12 @@ export default function Explain(props: Props) {
     completedAt,
     expiresAt,
     status,
+    recipe,
+    status: taskStatus,
+    name: taskName,
+    instruction: taskInstruction,
+    description: taskDescription,
+    isCreated,
   } = taskInfo || {};
 
   const timeExpired = new Date() > new Date(expiresAt || 0);
@@ -83,13 +89,6 @@ export default function Explain(props: Props) {
     }
   }, [status, completedAt, startsAt, timeExpired]);
 
-  const {
-    recipe,
-    status: taskStatus,
-    name: taskName,
-    instruction: taskInstruction,
-    description: taskDescription,
-  } = taskInfo || {};
   const {
     name: recipeName,
     description: recipeDescription,
@@ -298,6 +297,16 @@ export default function Explain(props: Props) {
     setPageLoaded(true);
   }, []);
 
+  const showCloneButton = useMemo(
+    () =>
+      (taskStatus === TaskStatusEnum.COMPLETED ||
+        taskStatus === TaskStatusEnum.EXPIRED ||
+        taskStatus === TaskStatusEnum.INACTIVE ||
+        timeExpired) &&
+      isCreated,
+    []
+  );
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper show={!name || !taskInfo}>
@@ -367,13 +376,11 @@ export default function Explain(props: Props) {
                     </Button>
                   </>
                 )}
-                {(taskStatus === TaskStatusEnum.COMPLETED ||
-                  taskStatus === TaskStatusEnum.EXPIRED ||
-                  taskStatus === TaskStatusEnum.INACTIVE ||
-                  timeExpired) && (
+                {showCloneButton && (
                   <Button
                     size="compact-sm"
                     variant="default"
+                    disabled={!showCloneButton}
                     className={classes.actionButton}
                     onClick={handleCloneTask}
                   >

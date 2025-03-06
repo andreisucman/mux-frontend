@@ -19,7 +19,7 @@ import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTa
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import { RoutineType } from "@/types/global";
-import ChatWithModal from "../../components/ChatWithModal";
+import ChatWithModal from "@/components/ChatWithModal";
 import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";

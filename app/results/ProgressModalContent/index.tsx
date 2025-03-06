@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { SimpleBeforeAfterType } from "@/app/types";
+import { BeforeAfterType } from "@/app/types";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
@@ -12,7 +12,7 @@ import LineProgressIndicators from "../LineProgressIndicators";
 import classes from "./ProgressModalContent.module.css";
 
 type Props = {
-  record: SimpleBeforeAfterType;
+  record: BeforeAfterType;
   isPublicPage?: boolean;
 };
 

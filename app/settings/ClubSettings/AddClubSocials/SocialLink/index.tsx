@@ -5,7 +5,7 @@ import classes from "./SocialLink.module.css";
 
 type Props = {
   label: string;
-  value: string;
+  value: string | null;
   deleteSocial: (value: string) => void;
 };
 

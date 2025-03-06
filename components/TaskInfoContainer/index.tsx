@@ -66,7 +66,7 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
             });
           }}
         >
-          {isEdit ? "Edit task" : "Add to routine"}
+          {isEdit ? "Edit task" : "Steal task"}
         </Button>
         {disableAdd && !isEdit && (
           <Text c="green.7" className={classes.text}>

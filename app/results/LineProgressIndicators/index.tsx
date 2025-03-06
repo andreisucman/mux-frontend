@@ -1,13 +1,13 @@
 import React, { useMemo } from "react";
 import { Group, Progress, rem, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { SimpleBeforeAfterType } from "@/app/types";
+import { BeforeAfterType } from "@/app/types";
 import { getRingColor } from "@/helpers/utils";
 import classes from "./LineProgressIndicators.module.css";
 
 type Props = {
   customStyles?: { [key: string]: any };
-  record: SimpleBeforeAfterType;
+  record: BeforeAfterType;
   title?: string;
 };
 

@@ -34,6 +34,7 @@ import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
 import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
 import ClubModerationLayout from "../../ModerationLayout";
+import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -60,6 +61,7 @@ export default function ClubRoutines(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
 
   const { name, routines: currentUserRoutines, club, timeZone } = userDetails || {};
   const { followingUserName } = club || {};
@@ -127,52 +129,58 @@ export default function ClubRoutines(props: Props) {
         }
       } catch (err) {}
     },
-    [routines]
+    [routines, selectedRoutineIds]
   );
 
-  type StealRoutineProps = {
-    routineId: string;
+  type StealRoutinesProps = {
+    routineIds: string[];
     startDate: Date | null;
+    stealAll: boolean;
   };
 
-  const stealRoutine = useCallback(
-    async ({ routineId, startDate }: StealRoutineProps) => {
-      setIsLoading(true);
+  const stealRoutines = async ({ routineIds, startDate, stealAll }: StealRoutinesProps) => {
+    setIsLoading(true);
 
-      const response = await callTheServer({
-        endpoint: "stealRoutine",
-        method: "POST",
-        body: { routineId, userName, startDate },
-      });
+    const body: { [key: string]: any } = { routineIds, userName, startDate };
 
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({ description: response.error });
-          setIsLoading(false);
-          return;
-        }
+    if (stealAll) {
+      body.stealAll = stealAll;
+    } else {
+      body.routineIds = routineIds;
+    }
 
-        openInfoModal({
-          title: "✔️ Success!",
-          description: (
-            <Text>
-              Routine added.{" "}
-              <span
-                onClick={() => {
-                  router.push("/routines");
-                  modals.closeAll();
-                }}
-              >
-                Click to view.
-              </span>
-            </Text>
-          ),
-        });
+    const response = await callTheServer({
+      endpoint: "stealRoutine",
+      method: "POST",
+      body,
+    });
+
+    if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({ description: response.error });
         setIsLoading(false);
+        return;
       }
-    },
-    [userDetails, userName, modals]
-  );
+
+      openInfoModal({
+        title: "✔️ Success!",
+        description: (
+          <Text>
+            Routine added.{" "}
+            <span
+              onClick={() => {
+                router.push("/routines");
+                modals.closeAll();
+              }}
+            >
+              Click to view.
+            </span>
+          </Text>
+        ),
+      });
+      setIsLoading(false);
+    }
+  };
 
   type StealTaskProps = {
     taskKey: string;
@@ -212,39 +220,37 @@ export default function ClubRoutines(props: Props) {
     [userDetails]
   );
 
-  const handleStealRoutine = useCallback(
-    (routine: RoutineType) => {
-      const handleSubmit =
-        currentUserRoutines && currentUserRoutines.length > 0
-          ? ({ startDate }: { startDate: Date | null }) =>
-              askConfirmation({
-                title: "Steal routine",
-                body: "This will replace your current routine. Continue?",
-                onConfirm: () => {
-                  modals.closeAll();
+  const handleStealRoutines = (routineIds: string[], stealAll: boolean) => {
+    type HandleSubmitProps = { startDate: Date | null };
 
-                  stealRoutine({ routineId: routine._id, startDate });
-                },
-              })
-          : ({ startDate }: { startDate: Date | null }) => {
-              modals.closeAll();
-              stealRoutine({ routineId: routine._id, startDate });
-            };
+    const handleSubmit =
+      currentUserRoutines && currentUserRoutines.length
+        ? ({ startDate }: HandleSubmitProps) =>
+            askConfirmation({
+              title: "Steal routine",
+              body: "This will replace your current routine. Continue?",
+              onConfirm: () => {
+                modals.closeAll();
+                stealRoutines({ routineIds, startDate, stealAll });
+              },
+            })
+        : ({ startDate }: HandleSubmitProps) => {
+            modals.closeAll();
+            stealRoutines({ routineIds, startDate, stealAll });
+          };
 
-      modals.openContextModal({
-        title: (
-          <Title order={5} component={"p"}>
-            Choose start date
-          </Title>
-        ),
-        size: "sm",
-        innerProps: <SelectDateModalContent buttonText="Steal routine" onSubmit={handleSubmit} />,
-        modal: "general",
-        centered: true,
-      });
-    },
-    [currentUserRoutines, modals]
-  );
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Choose start date
+        </Title>
+      ),
+      size: "sm",
+      innerProps: <SelectDateModalContent buttonText="Steal routine" onSubmit={handleSubmit} />,
+      modal: "general",
+      centered: true,
+    });
+  };
 
   const accordionItems = useMemo(
     () =>
@@ -256,13 +262,14 @@ export default function ClubRoutines(props: Props) {
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
-            handleStealRoutine={() => handleStealRoutine(routine)}
+            selectedRoutineIds={selectedRoutineIds}
+            setSelectedRoutineIds={setSelectedRoutineIds}
             setRoutines={setRoutines}
             openTaskDetails={openTaskDetails}
           />
         );
       }),
-    [routines, isSelf, timeZone]
+    [routines, isSelf, timeZone, selectedRoutineIds]
   );
 
   useEffect(() => {
@@ -313,6 +320,12 @@ export default function ClubRoutines(props: Props) {
       />
 
       <Stack className={classes.container}>
+        <RoutineSelectionButtons
+          selectedRoutineIds={selectedRoutineIds}
+          disabled={!routines || !routines.length}
+          handleClick={handleStealRoutines}
+          isSelf={isSelf}
+        />
         {accordionItems ? (
           <>
             {accordionItems.length > 0 ? (

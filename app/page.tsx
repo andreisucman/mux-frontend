@@ -12,7 +12,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import GeneralResultsHeader from "./GeneralResultsHeader";
-import { SimpleBeforeAfterType } from "./types";
+import { BeforeAfterType } from "./types";
 import classes from "./page.module.css";
 
 type FetchBeforeAftersProps = {
@@ -23,7 +23,7 @@ type FetchBeforeAftersProps = {
 export default function BeforeAftersPage() {
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
-  const [beforeAfters, setBeforeAfters] = useState<SimpleBeforeAfterType[]>();
+  const [beforeAfters, setBeforeAfters] = useState<BeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
 
   const part = searchParams.get("part");

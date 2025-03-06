@@ -11,6 +11,7 @@ import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
+import adjustVideoQuality from "@/helpers/adjustVideoQuality";
 import base64ToBlob from "@/helpers/base64ToBlob";
 import { deleteFromIndexedDb, getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
@@ -118,7 +119,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       let constraints: MediaStreamConstraints = {
         video: {
           facingMode,
-          frameRate: { max: 30 },
+          frameRate: { max: 30, ideal: 30 },
           aspectRatio: { ideal: aspectRatio },
         },
         audio: true,
@@ -143,9 +144,20 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             setIsVideoLoading(false);
           };
 
-          const options = {
+          const videoTrack = stream.getVideoTracks()[0];
+          const settings = videoTrack.getSettings();
+
+          if (!settings.width || !settings.height) throw new Error("Width or height missing");
+
+          const bitrate = adjustVideoQuality({
+            width: settings.width,
+            height: settings.height,
+            frameRate: 30,
+          });
+
+          const options: MediaRecorderOptions = {
             mimeType,
-            videoBitsPerSecond: 2500000,
+            videoBitsPerSecond: bitrate,
           };
 
           mediaRecorder.current = new MediaRecorder(stream, options);

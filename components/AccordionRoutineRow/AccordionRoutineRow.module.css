@@ -26,29 +26,13 @@
 }
 
 .title {
-  gap: rem(8);
   font-size: var(--mantine-font-size-md);
-  gap: rem(8);
+  gap: rem(12);
   align-items: center;
 }
 
 .statsGroup {
   gap: rem(8);
-}
-
-.button {
-  margin-top: rem(12);
-  width: 100%;
-}
-
-.disabled {
-  pointer-events: none;
-}
-
-.buttonText {
-  cursor: pointer;
-  margin-left: rem(4);
-  font-size: var(--mantine-font-size-sm);
 }
 
 .skeleton {

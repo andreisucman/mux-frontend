@@ -8,20 +8,23 @@
   inset: 0;
   overflow: auto;
   flex-wrap: nowrap;
+  gap: rem(8);
 }
 
 .link {
   display: flex;
   align-items: center;
-  gap: rem(8);
+  gap: rem(4);
 
   &:hover {
     color: white;
   }
 }
 
-.label {
-  font-size: var(--mantine-font-size-sm);
-  overflow: hidden;
-  text-overflow: ellipsis;
+.disabledLink {
+  cursor: not-allowed;
+
+  &:hover {
+    color: unset;
+  }
 }

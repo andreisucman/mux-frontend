@@ -19,7 +19,7 @@ type Props = {
 export default function DiaryRow({ data, timeZone }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
   const [isUploading, setIsUploading] = useState(false);
-  const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
+  const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(true);
   const [tasksOpen, { toggle: toggleTasksCollapse }] = useDisclosure(true);
 
   const { audio, transcription, activity } = diaryRecord;
@@ -62,6 +62,7 @@ export default function DiaryRow({ data, timeZone }: Props) {
           }
           const { audio, transcription, createdAt } = response.message;
           setDiaryRecord({ ...data, audio, transcription, createdAt });
+          toggleTranscriptionCollapse();
         } else {
           setIsUploading(false);
           openErrorModal();

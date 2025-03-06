@@ -1,0 +1,13 @@
+.container {
+  
+}
+
+.button {
+  flex: 1;
+}
+
+.buttonText {
+  cursor: pointer;
+  margin-left: rem(4);
+  font-size: var(--mantine-font-size-sm);
+}

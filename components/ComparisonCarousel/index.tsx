@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Carousel } from "@mantine/carousel";
 import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { SimpleBeforeAfterType } from "@/app/types";
+import { BeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
@@ -12,7 +12,7 @@ import ImageCard from "../ImageCard";
 import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
-  data: SimpleBeforeAfterType;
+  data: BeforeAfterType;
 };
 
 export default function ComparisonCarousel({ data }: Props) {

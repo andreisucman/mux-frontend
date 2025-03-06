@@ -16,7 +16,7 @@ export type HeadValuePartsBoolean = {
 type ClubBioType = {
   intro: string;
   about: string;
-  socials: { value: string; label: string }[];
+  socials: { value: string | null; label: string }[];
   nextRegenerateBio: string | null;
 };
 
@@ -347,6 +347,7 @@ export type TaskType = {
   recipe: RecipeType;
   suggestions: SuggestionType[];
   productTypes: string[];
+  isCreated?: boolean;
   proofId: string;
   example: { type: string; url: string };
 };

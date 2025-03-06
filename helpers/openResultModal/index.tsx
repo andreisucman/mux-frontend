@@ -5,13 +5,13 @@ import ProgressModalContent from "@/app/results/ProgressModalContent";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { SimpleProgressType } from "@/app/results/types";
-import { SimpleBeforeAfterType } from "@/app/types";
+import { BeforeAfterType } from "@/app/types";
 import AvatarComponent from "@/components/AvatarComponent";
 import Link from "../custom-router/patch-router/link";
 import classes from "./openResultModal.module.css";
 
 type OpenViewModalProps = {
-  record: SimpleBeforeAfterType | SimpleProofType | SimpleProgressType;
+  record: BeforeAfterType | SimpleProofType | SimpleProgressType;
   title: React.ReactNode;
   type: "progress" | "proof";
   isPublicPage?: boolean;
@@ -21,7 +21,7 @@ type OpenViewModalProps = {
 export default function openResultModal({ record, title, type, isPublicPage }: OpenViewModalProps) {
   const content =
     type === "progress" ? (
-      <ProgressModalContent record={record as SimpleBeforeAfterType} isPublicPage={isPublicPage} />
+      <ProgressModalContent record={record as BeforeAfterType} isPublicPage={isPublicPage} />
     ) : (
       <ProofModalContent record={record as SimpleProofType} isPublicPage={isPublicPage} />
     );

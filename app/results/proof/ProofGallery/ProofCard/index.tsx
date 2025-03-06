@@ -1,6 +1,8 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
+import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
+import DeleteContentButton from "@/components/DeleteContentButton";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
@@ -11,8 +13,6 @@ import { SimpleProofType } from "../../types";
 import ProofCardFooter from "./ProofCardFooter";
 import ProofCardHeader from "./ProofCardHeader";
 import classes from "./ProofCard.module.css";
-import DeleteContentButton from "@/components/DeleteContentButton";
-import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 
 type Props = {
   isLite?: boolean;

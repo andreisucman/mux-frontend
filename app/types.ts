@@ -1,8 +1,7 @@
-
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { DemographicsType, ProgressImageType, UserConcernType } from "@/types/global";
 
-export type SimpleBeforeAfterType = {
+export type BeforeAfterType = {
   _id: string;
   userId: string;
   part: PartEnum;
@@ -18,4 +17,5 @@ export type SimpleBeforeAfterType = {
   concerns: UserConcernType[];
   avatar: { [key: string]: any } | null;
   userName: string | null;
+  progresses?: { progressId: string; createdAt: string }[];
 };

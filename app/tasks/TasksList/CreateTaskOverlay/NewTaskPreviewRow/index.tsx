@@ -15,9 +15,7 @@ function NewTaskPreviewRow({ name, date, icon, color }: Props) {
     <Group className={classes.container}>
       <Text className={classes.date}>{date}</Text>
       <IconWithColor icon={icon} color={color} />
-      <Text className={classes.name} lineClamp={2}>
-        {name}
-      </Text>
+      <Text lineClamp={2}>{name}</Text>
     </Group>
   );
 }

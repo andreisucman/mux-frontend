@@ -12,7 +12,7 @@ export default function ScoreCell({ score, icon, customStyles }: Props) {
   return (
     <Group className={classes.cell} style={customStyles ? customStyles : {}}>
       {icon}
-      <Text className={classes.text}>{score}</Text>
+      <Text className={classes.text}>{String(score)}</Text>
     </Group>
   );
 }

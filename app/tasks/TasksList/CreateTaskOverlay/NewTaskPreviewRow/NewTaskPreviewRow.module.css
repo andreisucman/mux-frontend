@@ -1,18 +1,9 @@
 .container {
+  cursor: default;
   align-items: center;
   border-radius: var(--mantine-radius-lg);
-  overflow: hidden;
-  flex-wrap: nowrap;
-  width: 100%;
-  min-height: rem(50);
-  justify-content: space-evenly;
-  border: 1px solid var(--mantine-color-dark-5);
   background-color: var(--mantine-color-dark-6);
   padding: 0 rem(16);
-}
-
-.name {
-  cursor: pointer;
 }
 
 .date {

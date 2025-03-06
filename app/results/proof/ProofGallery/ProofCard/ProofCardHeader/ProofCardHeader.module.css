@@ -21,6 +21,7 @@
 
 .concernName {
   z-index: 1;
+  font-size: var(--mantine-font-size-sm);
 }
 
 .absolute {

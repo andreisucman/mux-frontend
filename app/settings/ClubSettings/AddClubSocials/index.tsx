@@ -18,7 +18,8 @@ export default function AddClubSocials({ title }: Props) {
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const [openAddSocial, setOpenAddSocial] = useState(false);
-  const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [adressError, setAddressError] = useState("");
 
   const { club } = userDetails || {};
   const { bio } = club || {};
@@ -28,14 +29,19 @@ export default function AddClubSocials({ title }: Props) {
     async ({ label, value }: { label: string; value: string }) => {
       if (!bio) return;
       if (!value) {
-        setError("This field can't be empty");
+        setAddressError("Address can't be empty");
+        return;
+      }
+
+      if (!name) {
+        setNameError("Name can't be empty");
         return;
       }
 
       const isValidUrl = validateUrl(value);
 
       if (!isValidUrl) {
-        setError("Invalid URL");
+        setAddressError("Invalid URL");
         return;
       }
 
@@ -55,8 +61,8 @@ export default function AddClubSocials({ title }: Props) {
   );
 
   const deleteSocial = useCallback(
-    (value: string) => {
-      if (!bio) return;
+    (value: string | null) => {
+      if (!bio || !value) return;
 
       const newSocials = bio.socials
         .map((rec) => (rec.value === value ? null : rec))
@@ -114,16 +120,19 @@ export default function AddClubSocials({ title }: Props) {
         <TextInput
           value={name}
           placeholder="Title"
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
+          onChange={(e: React.FormEvent<HTMLInputElement>) => {
+            if (nameError) setNameError("");
+            setName(e.currentTarget.value);
+          }}
         />
         <Group className={classes.valueGroup}>
           <TextInput
             flex={1}
             value={value}
-            error={error}
+            error={adressError}
             placeholder="https://..."
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              if (error) setError("");
+              if (adressError) setAddressError("");
               setValue(e.currentTarget.value);
             }}
             onKeyDown={onKeyDown}

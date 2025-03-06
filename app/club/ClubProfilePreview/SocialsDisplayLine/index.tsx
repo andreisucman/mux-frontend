@@ -1,24 +1,42 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IconLink } from "@tabler/icons-react";
-import { Group } from "@mantine/core";
-import Link from "@/helpers/custom-router/patch-router/link";
+import cn from "classnames";
+import { Group, Text, UnstyledButton } from "@mantine/core";
+import { useRouter } from "@/helpers/custom-router";
 import classes from "./SocialsDisplayLine.module.css";
 
 type Props = {
-  socials: { value: string; label: string }[];
+  socials: { value: string | null; label: string }[];
 };
 
 export default function SocialsDisplayLine({ socials }: Props) {
+  const router = useRouter();
+
+  const handleRedirect = (path: string | null) => {
+    if (!path) return;
+    router.push(path);
+  };
+
+  const links = useMemo(
+    () =>
+      socials.map((item, index) => (
+        <UnstyledButton
+          onClick={() => handleRedirect(item.value)}
+          className={cn(classes.link, { [classes.disabledLink]: !item.value })}
+          key={`${item.value}-${index}`}
+        >
+          <IconLink className={`icon icon__small ${classes.icon}`} />
+          <Text size="xs" className={cn({ [classes.disabledLink]: !item.value })}>
+            {item.label || item.value}
+          </Text>
+        </UnstyledButton>
+      )),
+    []
+  );
+
   return (
     <Group className={classes.container}>
-      <Group className={classes.wrapper}>
-        {socials.map((item, index) => (
-          <Link href={item.value} className={classes.link} key={`${item.value}-${index}`}>
-            <IconLink className={`icon icon__small ${classes.icon}`} />
-            <span className={classes.label}>{item.label || item.value}</span>
-          </Link>
-        ))}
-      </Group>
+      <Group className={classes.wrapper}>{links}</Group>
     </Group>
   );
 }

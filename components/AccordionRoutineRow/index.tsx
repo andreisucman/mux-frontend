@@ -1,7 +1,16 @@
 import React, { useCallback, useMemo } from "react";
-import { IconCalendar, IconHandGrab, IconRefresh } from "@tabler/icons-react";
+import { IconCalendar, IconRefresh } from "@tabler/icons-react";
 import cn from "classnames";
-import { Accordion, ActionIcon, Button, Group, Skeleton, Text, Title } from "@mantine/core";
+import {
+  Accordion,
+  ActionIcon,
+  Button,
+  Checkbox,
+  Group,
+  Skeleton,
+  Text,
+  Title,
+} from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
@@ -23,8 +32,9 @@ type Props = {
   routine: RoutineType;
   isSelf: boolean;
   timeZone?: string;
+  selectedRoutineIds: string[];
+  setSelectedRoutineIds: React.Dispatch<React.SetStateAction<string[]>>;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
-  handleStealRoutine?: (routineId: string) => void;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 
@@ -32,12 +42,26 @@ export default function AccordionRoutineRow({
   routine,
   timeZone,
   isSelf,
+  selectedRoutineIds,
   setRoutines,
   openTaskDetails,
-  handleStealRoutine,
+  setSelectedRoutineIds,
 }: Props) {
-  const { part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
   const router = useRouter();
+  const { part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
+
+  const isSelected = useMemo(
+    () => selectedRoutineIds.includes(routine._id),
+    [selectedRoutineIds, routine]
+  );
+
+  const handleSelectRoutine = (isSelected: boolean) => {
+    if (isSelected) {
+      setSelectedRoutineIds((prev) => prev.filter((_id) => _id !== routine._id));
+    } else {
+      setSelectedRoutineIds((prev) => [...prev, routine._id]);
+    }
+  };
 
   const rowLabel = useMemo(() => {
     const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
@@ -200,6 +224,14 @@ export default function AccordionRoutineRow({
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>
+              <Checkbox
+                readOnly
+                checked={isSelected}
+                onClickCapture={(e) => {
+                  e.stopPropagation();
+                  handleSelectRoutine(isSelected);
+                }}
+              />
               <Indicator status={routine.status} />
               {partIcons[part]}
               {rowLabel}
@@ -224,22 +256,6 @@ export default function AccordionRoutineRow({
               )}
             </Group>
           </Group>
-          {!isSelf && (
-            <Button
-              variant="default"
-              size="compact-sm"
-              component="div"
-              disabled={isSelf}
-              className={cn(classes.button, { [classes.disabled]: isSelf })}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (handleStealRoutine) handleStealRoutine(routine._id);
-              }}
-            >
-              <IconHandGrab className="icon icon__small" />{" "}
-              <Text className={classes.buttonText}>Steal this routine</Text>
-            </Button>
-          )}
           {routineCanBeReactivated && (
             <Button
               variant="default"
