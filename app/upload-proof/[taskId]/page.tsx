@@ -80,15 +80,19 @@ export default function UploadProof(props: Props) {
     if (!taskId || !captureType || !recordedBlob) return;
 
     try {
+      const finalMime = captureType === "image" ? "image/jpeg" : "video/webm";
+
       const urlArray = await uploadToSpaces({
         itemsArray: [recordedBlob],
-        mime: captureType === "image" ? "image/jpeg" : "video/webm",
+        mime: finalMime,
       });
+
+      const finalBlurType = captureType === "image" ? blurType : BlurTypeEnum.ORIGINAL;
 
       const response = await callTheServer({
         endpoint: "uploadProof",
         method: "POST",
-        body: { taskId, url: urlArray[0], blurType },
+        body: { taskId, url: urlArray[0], blurType: finalBlurType },
       });
 
       if (response.status !== 200) {

@@ -56,6 +56,9 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const { blurType } = useContext(BlurChoicesContext);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
+  const [originalUrl, setOriginalUrl] = useState<string>("");
+  const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
+  const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(5);
@@ -585,9 +588,15 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             captureType={captureType}
             isVideoLoading={isVideoLoading}
             localUrl={localUrl}
+            originalUrl={originalUrl}
+            eyesBlurredUrl={eyesBlurredUrl}
+            faceBlurredUrl={faceBlurredUrl}
             handleResetImage={handleResetImage}
             handleResetRecording={handleResetRecording}
             handleSubmit={handleSubmit}
+            setEyesBlurredUrl={setEyesBlurredUrl}
+            setFaceBlurredUrl={setFaceBlurredUrl}
+            setLocalUrl={setLocalUrl}
           />
         </Stack>
       )}
