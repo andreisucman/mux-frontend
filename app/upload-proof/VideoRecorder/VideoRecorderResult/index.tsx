@@ -2,6 +2,7 @@ import React, { memo, useCallback, useContext, useEffect, useState } from "react
 import { IconX } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import BlurButtons from "@/components/BlurButtons";
+import ProgressLoadingOverlay from "@/components/ProgressLoadingOverlay";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { onBlurImageClick } from "@/functions/blur";
@@ -81,6 +82,7 @@ function VideoRecorderResult({
 
   return (
     <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
+      <ProgressLoadingOverlay isLoading={isBlurLoading} title="Blur in progress" />
       <Group className={classes.buttonGroup}>
         <ActionIcon
           variant="default"

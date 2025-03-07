@@ -197,9 +197,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
           type: mimeType,
         });
 
-        const url = URL.createObjectURL(blob);
         setRecordedBlob(blob);
-        setLocalUrl(url);
         saveVideo(blob);
 
         const reader = new FileReader();
@@ -207,6 +205,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         reader.onloadend = () => {
           const base64data = reader.result as string;
           setLocalUrl(base64data);
+          setOriginalUrl(base64data);
         };
 
         if (videoRef.current) {
@@ -252,6 +251,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       const blob = await res.blob();
 
       setLocalUrl(imageData);
+      setOriginalUrl(imageData);
       setRecordedBlob(blob);
       saveToIndexedDb("proofImage", imageData);
     } catch (err) {
@@ -315,6 +315,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
     setIsRecording(false);
     setLocalUrl("");
+    setOriginalUrl("");
     setRecordedBlob(null);
     parts.current = [];
   }, [isVideoLoading, stopBothVideoAndAudio]);
@@ -334,6 +335,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
     setIsRecording(false);
     setLocalUrl("");
+    setOriginalUrl("");
     setRecordedBlob(null);
     setRecordingTime(RECORDING_TIME);
     deleteFromIndexedDb("proofVideo");
@@ -343,6 +345,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const handleResetImage = useCallback(() => {
     setLocalUrl("");
+    setOriginalUrl("");
     setRecordedBlob(null);
     setIsRecording(false);
     deleteFromIndexedDb("proofImage");
@@ -366,6 +369,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       blurType,
     });
     setLocalUrl("");
+    setOriginalUrl("");
     setRecordedBlob(null);
   }, [recordedBlob, uploadProof, captureType]);
 
@@ -388,6 +392,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         const newTypeRecord = savedRecords[captureType];
         const newUrl = newTypeRecord ? newTypeRecord : "";
         setLocalUrl(newUrl);
+        setOriginalUrl(newUrl);
       }
     },
     [isRecording]
@@ -454,6 +459,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       const savedUrl = typeRecord ? typeRecord : "";
 
       setLocalUrl(savedUrl);
+      setOriginalUrl(savedUrl);
       setRecordedBlob(blob);
     };
     loadSaved();

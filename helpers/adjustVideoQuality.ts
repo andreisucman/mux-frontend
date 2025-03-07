@@ -12,5 +12,5 @@ export default function adjustVideoQuality({ width, height, frameRate }: Props) 
 
   const bitrate = baseBitrate * resolutionFactor * frameRateFactor;
 
-  return Math.min(10 * 1024 * 1024, bitrate);
+  return Math.round(Math.min(10 * 1024 * 1024, bitrate));
 }

@@ -32,8 +32,6 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
     modals.closeAll();
   };
 
-  console.log("isBuffering", isBuffering);
-
   return (
     <Stack className={classes.container}>
       <ProofCardHeader

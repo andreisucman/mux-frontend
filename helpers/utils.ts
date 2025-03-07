@@ -61,14 +61,9 @@ export function daysFrom({ date = new Date(), days = 0 }) {
 }
 
 export function getSupportedMimeType() {
-  const mimeTypes = [
-    "video/webm;codecs=h264,opus",
-    "video/mp4",
-    "video/webm;codecs=vp9",
-    "video/webm;codecs=vp8",
-  ];
+  const mimeTypes = ["video/webm;codecs=vp9", "video/webm;codecs=vp8"];
 
-  return mimeTypes.find(MediaRecorder.isTypeSupported) || "video/webm;codecs=vp8";
+  return mimeTypes.find(MediaRecorder.isTypeSupported);
 }
 
 export const validateEmail = (val: string) => {

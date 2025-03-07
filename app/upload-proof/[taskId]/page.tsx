@@ -41,6 +41,7 @@ export default function UploadProof(props: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
+  
   const [componentToDisplay, setDisplayComponent] = useState<
     "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed"
   >("loading");
