@@ -2,7 +2,7 @@
   align-items: center;
   gap: rem(4);
   width: 100%;
-  transform: translateY(-15%);
+  transform: translateY(-10%);
 }
 
 .title {
