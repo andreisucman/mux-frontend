@@ -54,7 +54,6 @@ export default function UploadedImagesContent({
       </Title>
       {!hideCheckbox && (
         <Checkbox
-          disabled={!isFirstAnalysis}
           checked={isFirstAnalysis || enableScanAnalysis}
           label="Get scores and feedback"
           onChange={(e) => handleEnableAnalysis(e.currentTarget.checked)}
