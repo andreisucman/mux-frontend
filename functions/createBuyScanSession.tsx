@@ -7,18 +7,17 @@ import fetchUserData from "./fetchUserData";
 type Props = {
   redirectUrl: string;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType | null>>>;
-  cb?: () => void;
 };
 
-const createBuyScanSession = ({ redirectUrl, setUserDetails, cb }: Props) => {
+const createBuyScanSession = ({ redirectUrl, setUserDetails }: Props) => {
   openPaymentModal({
     title: "Add scan analysis",
     price: (
       <Group className="priceGroup">
-        <Title order={3}>$1</Title>/<Text>scan</Text>
+        <Title order={3}>$1</Title>/<Text>analysis</Text>
       </Group>
     ),
-    description: "To get scores and feedback please buy a scan",
+    description: "To get scores and feedback you need to have a scan",
     isCentered: true,
     modalType: "scan",
     onClick: () =>
@@ -32,7 +31,6 @@ const createBuyScanSession = ({ redirectUrl, setUserDetails, cb }: Props) => {
     buttonText: "Buy scan analysis",
     onClose: () => {
       fetchUserData({ setUserDetails });
-      if (cb) cb();
     },
   });
 };

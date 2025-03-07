@@ -45,7 +45,6 @@ export default function StartPartialScanOverlay({
         createBuyScanSession({
           redirectUrl,
           setUserDetails,
-          cb: () => setEnableScanAnalysis(true),
         });
         return;
       }
@@ -64,7 +63,6 @@ export default function StartPartialScanOverlay({
             createBuyScanSession({
               redirectUrl,
               setUserDetails,
-              cb: handleStartAnalysis,
             });
             return;
           }

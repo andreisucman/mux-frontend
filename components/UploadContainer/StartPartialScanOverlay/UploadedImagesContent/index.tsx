@@ -40,7 +40,7 @@ export default function UploadedImagesContent({
     if (typeof scanAnalysisQuota !== "number") return;
     if (!isFirstAnalysis && scanAnalysisQuota === 0 && enable) {
       const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
-      createBuyScanSession({ redirectUrl, setUserDetails, cb: () => setEnableScanAnalysis(true) });
+      createBuyScanSession({ redirectUrl, setUserDetails });
       return;
     }
     setEnableScanAnalysis(enable);

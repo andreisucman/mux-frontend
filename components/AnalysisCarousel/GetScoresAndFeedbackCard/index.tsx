@@ -25,9 +25,11 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
 
   const { _id: userId, scanAnalysisQuota, latestScanImages } = userDetails || {};
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+  console.log("scanAnalysisQuota", scanAnalysisQuota, "enableScanAnalysis", enableScanAnalysis);
 
-  const handleStartAnalysis = async () => {
+  const handleStartAnalysis = useCallback(async () => {
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+
     try {
       if (!userId) throw new Error("Missing user id");
 
@@ -38,7 +40,6 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
         createBuyScanSession({
           redirectUrl,
           setUserDetails,
-          cb: () => setEnableScanAnalysis(true),
         });
         return;
       }
@@ -56,7 +57,6 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
             createBuyScanSession({
               redirectUrl,
               setUserDetails,
-              cb: handleStartAnalysis,
             });
             return;
           }
@@ -69,7 +69,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
     } catch (err) {
       setLoadingButton(null);
     }
-  };
+  }, [userDetails, enableScanAnalysis]);
 
   const handleReturnToRoutines = useCallback(() => {
     setLoadingButton("return");
@@ -92,13 +92,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
               <Button
                 loading={loadingButton === "analysis"}
                 disabled={loadingButton !== null}
-                onClick={() =>
-                  createBuyScanSession({
-                    redirectUrl,
-                    setUserDetails,
-                    cb: handleStartAnalysis,
-                  })
-                }
+                onClick={handleStartAnalysis}
               >
                 Get scores and feedback
               </Button>
