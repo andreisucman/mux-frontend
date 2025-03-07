@@ -10,6 +10,7 @@ import { FilterPartItemType } from "@/components/FilterDropdown/types";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
+import { historySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
@@ -18,7 +19,6 @@ import openErrorModal from "@/helpers/openErrorModal";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
 import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";
-import { historySortItems } from "@/data/sortItems";
 
 type FetchInactiveTasksProps = {
   status: string | null;
@@ -39,18 +39,6 @@ export default function RoutinesHistoryPage() {
 
   const [availableParts, setAvaiableParts] = useState<FilterPartItemType[]>([]);
   const [availableStatuses, setAvailableStatuses] = useState<FilterPartItemType[]>([]);
-
-  useEffect(() => {
-    getFilters({
-      collection: "task",
-      filter: ["status=canceled", "status=expired", "status=completed"],
-      fields: ["part", "status"],
-    }).then((result) => {
-      const { availableParts, availableStatuses } = result;
-      setAvaiableParts(availableParts);
-      setAvailableStatuses(availableStatuses);
-    });
-  }, []);
 
   const fetchInactiveTasks = useCallback(
     async ({ status, part, loadMore, sort }: FetchInactiveTasksProps) => {
@@ -76,10 +64,6 @@ export default function RoutinesHistoryPage() {
         });
 
         if (response.status === 200) {
-          if (response.message.length === 0) {
-            router.replace("/tasks/history");
-          }
-
           const newData = response.message.map((record: InactiveTaskType) => ({
             ...record,
             onClick: () => {
@@ -92,7 +76,7 @@ export default function RoutinesHistoryPage() {
           } else {
             setInactiveTasks(newData);
           }
-          setHasMore(newData.length === 9);
+          setHasMore(newData.length === 61);
         }
       } catch (err) {
         openErrorModal();
@@ -102,10 +86,24 @@ export default function RoutinesHistoryPage() {
   );
 
   useEffect(() => {
+    getFilters({
+      collection: "task",
+      filter: ["status=canceled", "status=expired", "status=completed"],
+      fields: ["part", "status"],
+    }).then((result) => {
+      const { availableParts, availableStatuses } = result;
+      setAvaiableParts(availableParts);
+      setAvailableStatuses(availableStatuses);
+    });
+  }, []);
+
+  useEffect(() => {
     fetchInactiveTasks({ status, part, sort });
   }, [status, part, sort]);
 
   const isFilterDisabled = availableParts.length + availableStatuses.length === 0;
+
+  // const items = inactiveTasks && inactiveTasks.map((rec,i)=><InactiveTaskRow {...rec} key={i} />)
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -153,7 +151,7 @@ export default function RoutinesHistoryPage() {
                   )}
                 </InfiniteScroll>
               ) : (
-                <OverlayWithText text={`Nothing found`} icon={<IconCircleOff className="icon" />} />
+                <OverlayWithText text={"Nothing found"} icon={<IconCircleOff className="icon" />} />
               )}
             </>
           ) : (

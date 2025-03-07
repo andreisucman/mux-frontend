@@ -10,6 +10,11 @@ import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import TasksList from "./TasksList";
 
+const titles = [
+  { label: "Closest tasks", value: "/tasks", method: "push" },
+  { label: "Task history", value: "/tasks/history", method: "push" },
+];
+
 export const runtime = "edge";
 
 export default function Tasks() {
@@ -19,7 +24,7 @@ export default function Tasks() {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeader title="Closest tasks" hidePartDropdown />
+        <PageHeader titles={titles} hidePartDropdown />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}

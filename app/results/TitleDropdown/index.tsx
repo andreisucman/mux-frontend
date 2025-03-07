@@ -8,8 +8,10 @@ import { useDisclosure, useElementSize } from "@mantine/hooks";
 import { useRouter } from "@/helpers/custom-router";
 import classes from "./TitleDropdown.module.css";
 
+export type TitleType = { label: string; value: string; method?: string };
+
 type Props = {
-  titles: { label: string; value: string }[];
+  titles: TitleType[];
   customDropdownStyles?: { [key: string]: any };
   customHeadStyles?: { [key: string]: any };
 };
@@ -29,7 +31,11 @@ export default function TitleDropdown({ titles, customDropdownStyles, customHead
   );
 
   const handleRedirect = useCallback(
-    (pathname: string) => {
+    (pathname: string, method = "replace") => {
+      if (method === "push") {
+        router.push(`${pathname}?${searchParams.toString()}`);
+        return;
+      }
       router.replace(`${pathname}?${searchParams.toString()}`);
     },
     [searchParams.toString(), pathname]
@@ -56,7 +62,7 @@ export default function TitleDropdown({ titles, customDropdownStyles, customHead
               order={2}
               key={index}
               className={classes.item}
-              onClick={() => handleRedirect(record.value)}
+              onClick={() => handleRedirect(record.value, record.method)}
             >
               {record.label}
             </Title>

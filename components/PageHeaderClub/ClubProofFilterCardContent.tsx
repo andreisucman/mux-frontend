@@ -14,25 +14,10 @@ type Props = {
 };
 
 export default function ClubProofFilterCardContent({ userName }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
 
   const part = searchParams.get("part");
-
-  const handleResetFilters = useCallback(() => {
-    const query = modifyQuery({
-      params: [
-        { name: "type", value: null, action: "delete" },
-        { name: "part", value: null, action: "delete" },
-        { name: "position", value: null, action: "delete" },
-      ],
-    });
-
-    router.replace(`${pathname}?${query}`);
-    modals.closeAll();
-  }, [pathname, modals]);
 
   useEffect(() => {
     getUsersFilters({
@@ -61,9 +46,6 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
         allowDeselect
         addToQuery
       />
-      <Button onClick={handleResetFilters} variant="default">
-        Reset
-      </Button>
     </Stack>
   );
 }

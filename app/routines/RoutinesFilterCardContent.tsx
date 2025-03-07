@@ -19,14 +19,6 @@ export default function RoutinesFilterCardContent({ filterItems = [] }: Props) {
 
   const part = searchParams.get("part");
 
-  const handleResetFilters = () => {
-    const query = modifyQuery({
-      params: [{ name: "part", value: null, action: "delete" }],
-    });
-    modals.closeAll();
-    router.replace(`${pathname}?${query}`);
-  };
-
   const partsDisabled = filterItems.length === 0;
 
   return (
@@ -42,9 +34,6 @@ export default function RoutinesFilterCardContent({ filterItems = [] }: Props) {
         allowDeselect
         addToQuery
       />
-      <Button onClick={handleResetFilters} variant="default">
-        Reset
-      </Button>
     </Stack>
   );
 }

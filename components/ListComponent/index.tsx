@@ -14,10 +14,10 @@ type Props = {
 
 export default function ListComponent({ rowGutter, items, className, render }: Props) {
   const containerRef = useRef(null);
-  const { width: windowWidth, height: windowHeight } = useViewportSize();
+  let { width: windowWidth, height: windowHeight } = useViewportSize();
   const { offset, width } = useContainerPosition(containerRef, [windowWidth, windowHeight]);
 
-  const positioner = usePositioner({ width, rowGutter, columnCount: 1 }, [items]);
+  const positioner = usePositioner({ width, rowGutter, columnCount: 1 }, [items, windowHeight]);
 
   const resizeObserver = useResizeObserver(positioner);
 

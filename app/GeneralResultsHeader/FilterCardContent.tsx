@@ -29,19 +29,6 @@ export default function FilterCardContent({ filters }: Props) {
   const bodyType = searchParams.get("bodyType");
   const sex = searchParams.get("sex");
 
-  const handleResetFilters = useCallback(() => {
-    const params = [
-      { name: "ageInterval", value: null, action: "delete" },
-      { name: "concern", value: null, action: "delete" },
-      { name: "ethnicity", value: null, action: "delete" },
-      { name: "bodyType", value: null, action: "delete" },
-      { name: "sex", value: null, action: "delete" },
-    ];
-    const newQuery = modifyQuery({ params });
-    router.replace(`${pathname}?${newQuery}`);
-    modals.closeAll();
-  }, [pathname]);
-
   useEffect(() => {
     if (!filters) return;
     setAgeIntervalFilters(
@@ -114,9 +101,6 @@ export default function FilterCardContent({ filters }: Props) {
               addToQuery
             />
           )}
-          <Button onClick={handleResetFilters} variant="default">
-            Reset
-          </Button>
         </>
       ) : (
         <Skeleton className="skeleton" flex={1}></Skeleton>

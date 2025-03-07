@@ -144,7 +144,7 @@ export default function PeekOverlay({ description, userName }: Props) {
           </Group>
         }
         name={"Peek License"}
-        buttonText="Add peek license"
+        buttonText="Get peek license"
         content={peekLicenseContent}
         onClick={handleAddSubscription}
         isLoading={isLoading}

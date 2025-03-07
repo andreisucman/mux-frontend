@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
-import TitleDropdown from "@/app/results/TitleDropdown";
+import TitleDropdown, { TitleType } from "@/app/results/TitleDropdown";
 import { useRouter } from "@/helpers/custom-router";
 import FilterButton from "../FilterButton";
 import SortButton from "../SortButton";
@@ -11,7 +11,7 @@ import classes from "./PageHeader.module.css";
 
 type Props = {
   title?: string | React.ReactNode;
-  titles?: { label: string; value: string }[];
+  titles?: TitleType[];
   isDisabled?: boolean;
   showReturn?: boolean;
   hidePartDropdown?: boolean;

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
+import ChatWithModal from "@/components/ChatWithModal";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -19,7 +20,6 @@ import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTa
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import { RoutineType } from "@/types/global";
-import ChatWithModal from "@/components/ChatWithModal";
 import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
@@ -46,6 +46,7 @@ export default function ClubRoutines() {
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
 
   const { userDetails } = useContext(UserContext);
   const { timeZone, specialConsiderations } = userDetails || {};
@@ -88,9 +89,11 @@ export default function ClubRoutines() {
           <AccordionRoutineRow
             key={routine._id}
             routine={routine}
-            isSelf={true}
             timeZone={timeZone}
+            selectedRoutineIds={selectedRoutineIds}
             setRoutines={setRoutines}
+            setSelectedRoutineIds={setSelectedRoutineIds}
+            isSelf
           />
         );
       }),

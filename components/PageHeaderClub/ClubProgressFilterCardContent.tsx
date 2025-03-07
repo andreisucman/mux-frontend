@@ -14,21 +14,11 @@ type Props = {
 };
 
 export default function ClubProgressFilterCardContent({ userName }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
 
   const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>([]);
-
-  const handleResetFilters = () => {
-    const query = modifyQuery({
-      params: [{ name: "part", value: null, action: "delete" }],
-    });
-    modals.closeAll();
-    router.replace(`${pathname}?${query}`);
-  };
 
   useEffect(() => {
     getUsersFilters({ userName, collection: "progress", fields: ["part"] }).then((result) => {
@@ -52,9 +42,6 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
         allowDeselect
         addToQuery
       />
-      <Button onClick={handleResetFilters} variant="default">
-        Reset
-      </Button>
     </Stack>
   );
 }
