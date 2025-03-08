@@ -67,6 +67,7 @@ export default function ClubRoutines(props: Props) {
   const { followingUserName } = club || {};
 
   const sort = searchParams.get("sort");
+  const part = searchParams.get("part");
   const isSelf = name === userName;
 
   const openTaskDetails = useCallback(
@@ -112,6 +113,7 @@ export default function ClubRoutines(props: Props) {
         const response = await fetchRoutines({
           skip,
           sort,
+          part,
           followingUserName,
           routinesLength: routinesLength || 0,
         });
