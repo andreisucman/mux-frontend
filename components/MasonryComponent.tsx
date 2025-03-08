@@ -24,11 +24,14 @@ export default function MasonryComponent({
   const containerRef = useRef(null);
   const { width: windowWidth, height: windowHeight } = useViewportSize();
   const { offset, width } = useContainerPosition(containerRef, [windowWidth, windowHeight]);
+  const itemCounter = useRef<number>(items.length);
 
   const positioner = usePositioner(
     { width, columnWidth, columnCount, maxColumnCount, columnGutter },
-    [typeof items]
+    [items.length < itemCounter.current]
   );
+
+  itemCounter.current = items.length;
 
   const resizeObserver = useResizeObserver(positioner);
 
