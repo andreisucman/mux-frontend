@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { BlurChoicesContext } from "@/context/BlurChoicesContext";
@@ -27,11 +27,11 @@ export default function StartPartialScanOverlay({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
+  const { scanAnalysisQuota, toAnalyze } = userDetails || {};
+
   const { blurType } = useContext(BlurChoicesContext);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [enableScanAnalysis, setEnableScanAnalysis] = useState(false);
-
-  const { scanAnalysisQuota, toAnalyze } = userDetails || {};
 
   const handleStartAnalysis = useCallback(async () => {
     try {
@@ -91,6 +91,13 @@ export default function StartPartialScanOverlay({
     const imgs = toDisplay.map((obj) => obj.url).filter((url): url is string => !!url);
     return imgs;
   }, [toAnalyze?.length]);
+
+  useEffect(() => {
+    console.log("line 96");
+    if (!userDetails) return;
+    if (!scanAnalysisQuota) return;
+    setEnableScanAnalysis(scanAnalysisQuota > 0);
+  }, [typeof userDetails]);
 
   return (
     <Stack className={classes.container} style={outerStyles ? outerStyles : {}}>

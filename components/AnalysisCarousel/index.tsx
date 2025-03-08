@@ -38,6 +38,7 @@ export default function AnalysisCarousel() {
             concerns={concerns}
             title="Areas of improvement"
             userId={userId || null}
+            latestScores={latestScores}
             status={status}
           />
         )}

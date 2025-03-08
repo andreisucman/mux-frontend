@@ -15,7 +15,7 @@ function useCheckScanAvailability({ parts, nextScan, requiredProgress }: Props) 
     checkBackDate: string | null;
   } = {
     availableRequirements: undefined,
-    checkBackDate: formatDate({ date: new Date() }),
+    checkBackDate: formatDate({ date: new Date(), addTime: true }),
   };
 
   if (!requiredProgress || !nextScan || !parts) return result;
@@ -40,7 +40,7 @@ function useCheckScanAvailability({ parts, nextScan, requiredProgress }: Props) 
   );
   const date = Math.min(...nextScan.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)));
 
-  result.checkBackDate = formatDate({ date: new Date(date || Infinity) });
+  result.checkBackDate = formatDate({ date: new Date(date || Infinity), addTime: true });
 
   return result;
 }

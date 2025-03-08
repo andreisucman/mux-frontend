@@ -38,5 +38,6 @@ export function formatDate({ date, hideYear, hideMonth, addTime }: FormatDatePro
   if (addTime) {
     dateString += `- ${hour}:${minute}`;
   }
+
   return dateString.trim();
 }

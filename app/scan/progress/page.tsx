@@ -17,12 +17,11 @@ import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { ScanTypeEnum, UserDataType } from "@/types/global";
-import { UploadProgressProps } from "../types";
 import { titles } from "../pageTitles";
+import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
-
 
 export default function ScanProgress() {
   const router = useRouter();
@@ -145,6 +144,8 @@ export default function ScanProgress() {
     const partsString = chunks?.join(", ").split(",,").join(" ");
     return `Your next ${partsString} scan is after ${checkBackDate}.`;
   }, [parts]);
+
+  console.log("availableRequirements", availableRequirements);
 
   return (
     <>
