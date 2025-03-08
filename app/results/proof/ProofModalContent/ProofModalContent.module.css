@@ -10,6 +10,11 @@
   min-height: 75vh;
 }
 
+.contentWrapper {
+  position: relative;
+  flex: 1;
+}
+
 .taskName {
   padding: rem(16);
   flex-wrap: nowrap;

@@ -50,27 +50,6 @@ function ProofCard({
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
   const concernName = useMemo(() => normalizeString(concern), [concern]);
 
-  const handleClick = useCallback(() => {
-    const title = isPublicPage ? (
-      getRedirectModalTitle({
-        avatar,
-        redirectUrl: `/club/routines/${userName}`,
-        title: userName,
-      })
-    ) : (
-      <Title order={5} component={"p"} lineClamp={1}>
-        {`${icon} ${taskName}`}
-      </Title>
-    );
-
-    openResultModal({
-      record: data,
-      type: "proof",
-      title,
-      isPublicPage,
-    });
-  }, [isPublicPage, data, userName]);
-
   const showSkeleton = useShowSkeleton();
 
   return (
@@ -83,7 +62,6 @@ function ProofCard({
             url={mainUrl?.url}
             createdAt={createdAt}
             thumbnail={mainThumbnail?.url}
-            onClick={handleClick}
             playOnBufferEnd
             disabled
           />
@@ -92,7 +70,6 @@ function ProofCard({
             image={mainUrl?.url}
             date={formattedDate}
             datePosition="bottom-right"
-            onClick={handleClick}
             showDate={false}
           />
         )}

@@ -33,19 +33,17 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
           {upperFirst(label)}
         </Text>
         <Progress.Root size={18} flex={1}>
-          <Progress.Section style={{ minWidth: rem(50) }} value={previousValue} color={color}>
-            <Progress.Label>{previousValue.toFixed(1)}</Progress.Label>
+          <Progress.Section value={previousValue} color={color}>
+            <Progress.Label style={{ overflow: "unset" }}>
+              {previousValue.toFixed(0)}
+            </Progress.Label>
           </Progress.Section>
           {scoreDifferenceValue !== 0 && (
-            <Progress.Section
-              value={Math.abs(scoreDifferenceValue)}
-              color={differenceColor}
-              style={{ minWidth: rem(50) }}
-            >
-              <Progress.Label>
+            <Progress.Section value={Math.abs(scoreDifferenceValue)} color={differenceColor}>
+              <Progress.Label style={{ overflow: "unset" }}>
                 {scoreDifferenceValue > 0
-                  ? `+${scoreDifferenceValue.toFixed(1)}`
-                  : scoreDifferenceValue.toFixed(1)}
+                  ? `+${scoreDifferenceValue.toFixed(0)}`
+                  : scoreDifferenceValue.toFixed(0)}
               </Progress.Label>
             </Progress.Section>
           )}

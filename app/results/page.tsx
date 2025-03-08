@@ -63,7 +63,6 @@ export default function ResultsProgress() {
     (data: SimpleProgressType) =>
       openResultModal({
         record: data,
-        type: "progress",
         title: (
           <Title order={5} component={"p"}>
             {upperFirst(data.part)} progress

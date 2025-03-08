@@ -10,7 +10,11 @@
   height: fit-content;
   overflow: hidden;
 
-  aspect-ratio: 9/16;
+  aspect-ratio: 4/3;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    aspect-ratio: 9/16;
+  }
 }
 
 .content {

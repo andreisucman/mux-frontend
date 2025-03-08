@@ -1,13 +1,14 @@
 .container {
   align-items: center;
   font-size: var(--mantine-font-size-md);
-  gap: rem(8);
+  gap: rem(12);
   padding: rem(12) rem(16) 0;
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 }
 
 .content {
   flex-wrap: nowrap;
+  gap: rem(12);
 }
 
 .icon {

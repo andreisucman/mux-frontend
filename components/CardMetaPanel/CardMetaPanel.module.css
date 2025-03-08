@@ -1,15 +1,16 @@
 .container {
-  gap: rem(8);
+  gap: rem(12);
   width: 100%;
   overflow: hidden;
   display: flex;
   padding: 0 rem(16) rem(16);
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
 }
 
 .nameWrapper {
-  gap: rem(8);
+  gap: rem(12);
   flex-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

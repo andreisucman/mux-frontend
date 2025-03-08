@@ -31,7 +31,6 @@ export default function ComparisonCarousel({ data }: Props) {
 
     openResultModal({
       record: data,
-      type: "progress",
       isPublicPage: true,
       title: modalTitle,
     });

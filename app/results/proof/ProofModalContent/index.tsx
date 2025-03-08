@@ -17,10 +17,10 @@ type Props = {
 };
 
 export default function ProofModalContent({ record, isPublicPage }: Props) {
-  const router = useRouter();
-  const [isBuffering, setIsBuffering] = useState(true);
+  const { icon, createdAt, mainUrl, contentType, concern, taskName, userName } = record || {};
 
-  const { icon, createdAt, mainUrl, mainThumbnail, concern, taskName, userName } = record || {};
+  const router = useRouter();
+  const [isBuffering, setIsBuffering] = useState(contentType === "video");
 
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
@@ -41,26 +41,29 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
         hideTitle={!isPublicPage}
         customStyles={{ paddingBottom: rem(16) }}
       />
-      <LoadingOverlay visible={isBuffering} />
-      {record.contentType === "image" ? (
-        <ImageCard
-          date={formattedDate}
-          image={mainUrl.url}
-          datePosition="bottom-right"
-          customWrapperStyles={{ position: "absolute", aspectRatio: 3 / 4 }}
-          showDate
-          isRelative
-        />
-      ) : (
-        <VideoPlayer
-          url={mainUrl.url}
-          createdAt={createdAt}
-          setIsBuffering={setIsBuffering}
-          playOnBufferEnd
-          showDate
-          isRelative
-        />
-      )}
+      <Stack className={classes.contentWrapper}>
+        <LoadingOverlay visible={isBuffering} />
+        {record.contentType === "image" ? (
+          <ImageCard
+            date={formattedDate}
+            image={mainUrl.url}
+            datePosition="bottom-right"
+            customWrapperStyles={{ position: "absolute", aspectRatio: 3 / 4 }}
+            showDate
+            isRelative
+          />
+        ) : (
+          <VideoPlayer
+            url={mainUrl.url}
+            createdAt={createdAt}
+            setIsBuffering={setIsBuffering}
+            playOnBufferEnd
+            showDate
+            isRelative
+          />
+        )}
+      </Stack>
+
       {isPublicPage && <ProofCardFooter handleTrack={handleRedirect} />}
     </Stack>
   );
