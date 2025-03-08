@@ -76,6 +76,8 @@ export default function StartDate() {
                   startSubscriptionTrial({
                     subscriptionName: "improvement",
                     router,
+                    onComplete: () =>
+                      createRoutine({ concerns, startDate, subscriptions, specialConsiderations }),
                   });
 
             openPaymentModal({

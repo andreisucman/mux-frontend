@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
-import { Group, Progress, rem, Stack, Text } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { Collapse, Divider, Group, Progress, rem, Stack, Text } from "@mantine/core";
+import { upperFirst, useDisclosure } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
 import { getRingColor } from "@/helpers/utils";
 import classes from "./LineProgressIndicators.module.css";
@@ -12,54 +13,88 @@ type Props = {
 };
 
 export default function LineProgressIndicators({ customStyles, record, title }: Props) {
-  const { scores, scoresDifference } = record || {};
+  const { scores, scoresDifference = {} } = record || {};
   const { overall = 0, explanations, ...rest } = scores || {};
+  const [indicatorsOpen, { toggle: toggleOpenIndicators }] = useDisclosure(false);
 
-  let restFeatures = Object.entries(rest);
+  const restFeatures = Object.entries(rest);
+  const showOverall = restFeatures.length > 1;
+  const allFeatures = showOverall ? [["overall", overall], ...restFeatures] : (restFeatures as any);
 
-  const indicators = useMemo(() => {
-    const records = restFeatures;
-    if (restFeatures.length > 1) records.unshift(["overall", overall]);
+  const renderIndicator = ([label, value]: [string, number], index: number) => {
+    const scoreDifferenceValue = scoresDifference[label] || 0;
+    const differenceColor = scoreDifferenceValue >= 0 ? "green.7" : "red.7";
+    const color = getRingColor(value);
+    const previousValue = Number(value) - scoreDifferenceValue;
 
-    return records.map(([label, value], index) => {
-      const scoreDifferenceValue = scoresDifference[label];
-      const differenceColor = scoreDifferenceValue > 0 ? "green.7" : "red.7";
-      const color = getRingColor(value as number);
-      return (
-        <Group key={index}>
+    return (
+      <Group key={`${label}-${index}`} gap="sm">
+        <Text size="sm" lineClamp={1}>
           {upperFirst(label)}
-          <Progress.Root size={18} flex={1} w="100%">
-            <Progress.Section value={Number(value)} color={color}>
-              <Progress.Label>{String(value)}</Progress.Label>
+        </Text>
+        <Progress.Root size={18} flex={1}>
+          <Progress.Section style={{ minWidth: rem(50) }} value={previousValue} color={color}>
+            <Progress.Label>{previousValue.toFixed(1)}</Progress.Label>
+          </Progress.Section>
+          {scoreDifferenceValue !== 0 && (
+            <Progress.Section
+              value={Math.abs(scoreDifferenceValue)}
+              color={differenceColor}
+              style={{ minWidth: rem(50) }}
+            >
+              <Progress.Label>
+                {scoreDifferenceValue > 0
+                  ? `+${scoreDifferenceValue.toFixed(1)}`
+                  : scoreDifferenceValue.toFixed(1)}
+              </Progress.Label>
             </Progress.Section>
-            {scoreDifferenceValue > 0 && (
-              <Progress.Section
-                value={Number(scoreDifferenceValue)}
-                color={differenceColor}
-                style={{ minWidth: rem(30) }}
-              >
-                <Progress.Label>
-                  {String(
-                    scoreDifferenceValue > 0 ? `+${scoreDifferenceValue}` : scoreDifferenceValue
-                  )}
-                </Progress.Label>
-              </Progress.Section>
-            )}
-          </Progress.Root>
-        </Group>
-      );
-    });
-  }, []);
+          )}
+        </Progress.Root>
+      </Group>
+    );
+  };
+
+  const firstThreeIndicators = useMemo(
+    () => allFeatures.slice(0, 3).map(renderIndicator),
+    [allFeatures, scoresDifference]
+  );
+
+  const restIndicators = useMemo(
+    () => allFeatures.slice(3).map(renderIndicator),
+    [allFeatures, scoresDifference]
+  );
+
+  const chevron = indicatorsOpen ? (
+    <IconChevronUp className="icon icon__small" />
+  ) : (
+    <IconChevronDown className="icon icon__small" />
+  );
 
   return (
-    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
+    <Stack className={classes.container} style={customStyles || {}}>
       <Stack className={classes.wrapper}>
         {title && (
           <Text c="dimmed" size="xs">
             {title}
           </Text>
         )}
-        <Stack className={`${classes.indicatorsWrapper} scrollbar`}>{indicators}</Stack>
+        <Stack className={`${classes.indicatorsWrapper} scrollbar`}>
+          {firstThreeIndicators}
+          {restIndicators.length > 0 && (
+            <>
+              <Divider
+                label={
+                  <Group c="dimmed" className={classes.labelGroup} onClick={toggleOpenIndicators}>
+                    {chevron}
+                  </Group>
+                }
+              />
+              <Collapse in={indicatorsOpen}>
+                <Stack gap={8}>{restIndicators}</Stack>
+              </Collapse>
+            </>
+          )}
+        </Stack>
       </Stack>
     </Stack>
   );

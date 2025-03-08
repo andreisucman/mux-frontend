@@ -3,6 +3,7 @@ import callTheServer from "./callTheServer";
 
 type FetchRoutinesProps = {
   skip?: boolean;
+  part: string | null;
   sort: string | null;
   followingUserName?: string | string[];
   routinesLength: number;
@@ -11,6 +12,7 @@ type FetchRoutinesProps = {
 const fetchRoutines = async ({
   skip,
   sort,
+  part,
   followingUserName,
   routinesLength,
 }: FetchRoutinesProps) => {
@@ -20,6 +22,10 @@ const fetchRoutines = async ({
     if (followingUserName) endpoint += `/${followingUserName}`;
 
     const parts = [];
+
+    if (part) {
+      parts.push(`part=${part}`);
+    }
 
     if (sort) {
       parts.push(`sort=${sort}`);

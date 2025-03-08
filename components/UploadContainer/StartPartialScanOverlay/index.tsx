@@ -36,9 +36,10 @@ export default function StartPartialScanOverlay({
   const handleStartAnalysis = useCallback(async () => {
     try {
       if (!userId) throw new Error("Missing user id");
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
       setIsButtonLoading(true);
+
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
       if (scanAnalysisQuota === 0 && enableScanAnalysis) {
         setIsButtonLoading(false);
@@ -70,7 +71,9 @@ export default function StartPartialScanOverlay({
           openErrorModal({ description: response.error });
           return;
         }
-        router.push(`/wait?redirectUrl=${encodeURIComponent(redirectUrl)}`);
+
+        const analysisRedirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/analysis?${searchParams.toString()}`;
+        router.push(`/wait?redirectUrl=${encodeURIComponent(analysisRedirectUrl)}`);
       }
     } catch (err) {
       setIsButtonLoading(false);

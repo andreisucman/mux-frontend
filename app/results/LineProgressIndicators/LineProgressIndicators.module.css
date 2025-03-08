@@ -12,6 +12,12 @@
 
 .indicatorsWrapper {
   gap: rem(8);
-  max-height: rem(175);
   overflow: auto;
+}
+
+.labelGroup {
+  cursor: pointer;
+  gap: rem(8);
+  align-items: center;
+  font-size: var(--mantine-font-size-sm);
 }

@@ -37,6 +37,8 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
     modals.closeAll();
   };
 
+  console.log("record",record)
+
   return (
     <Stack className={classes.container}>
       <SliderComparisonCarousel

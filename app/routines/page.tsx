@@ -33,6 +33,7 @@ type GetRoutinesProps = {
   followingUserName?: string | string[];
   type?: string;
   sort: string | null;
+  part: string | null;
   routinesLength?: number;
 };
 
@@ -51,13 +52,15 @@ export default function ClubRoutines() {
   const { userDetails } = useContext(UserContext);
   const { timeZone, specialConsiderations } = userDetails || {};
 
+  const part = searchParams.get("part");
   const sort = searchParams.get("sort");
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, routinesLength }: GetRoutinesProps) => {
+    async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {
       try {
         const response = await fetchRoutines({
           skip,
+          part,
           sort,
           routinesLength: routinesLength || 0,
         });
@@ -107,9 +110,10 @@ export default function ClubRoutines() {
     const payload: GetRoutinesProps = {
       routinesLength: (routines && routines.length) || 0,
       sort,
+      part
     };
     handleFetchRoutines(payload);
-  }, [sort]);
+  }, [sort, part]);
 
   useEffect(() => {
     if (!routines || !pageLoaded) return;
@@ -193,6 +197,7 @@ export default function ClubRoutines() {
                     skip: true,
                     routinesLength: (routines && routines.length) || 0,
                     sort,
+                    part
                   })
                 }
               >
@@ -218,6 +223,7 @@ export default function ClubRoutines() {
               handleFetchRoutines({
                 routinesLength: (routines && routines.length) || 0,
                 sort,
+                part
               });
               setDisplayComponent("content");
             }}

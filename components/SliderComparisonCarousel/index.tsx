@@ -32,7 +32,7 @@ export default function SliderComparisonCarousel({
     () =>
       currentImages.map((url, index) => (
         <Carousel.Slide key={index}>
-          <SliderComparisonCard srcOne={url} srcTwo={compareImages[index]} />
+          <SliderComparisonCard srcOne={compareImages[index]} srcTwo={url} />
         </Carousel.Slide>
       )),
     [currentImages.length]
@@ -58,7 +58,9 @@ export default function SliderComparisonCarousel({
       >
         {slides}
       </Carousel>
-      {!isPublicPage && isSelf && <ContentPublicityIndicator isPublic={isPublic} position="bottom-left" showText />}
+      {!isPublicPage && isSelf && (
+        <ContentPublicityIndicator isPublic={isPublic} position="bottom-left" showText />
+      )}
     </Stack>
   );
 }

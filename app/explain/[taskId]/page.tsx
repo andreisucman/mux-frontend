@@ -60,7 +60,6 @@ export default function Explain(props: Props) {
     name: taskName,
     instruction: taskInstruction,
     description: taskDescription,
-    isCreated,
   } = taskInfo || {};
 
   const timeExpired = new Date() > new Date(expiresAt || 0);
@@ -277,9 +276,7 @@ export default function Explain(props: Props) {
 
   useEffect(() => {
     if (!taskId) return;
-
     handleFetchTaskInfo(taskId);
-
     const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
 
     if (runningAnalyses) {
@@ -296,16 +293,6 @@ export default function Explain(props: Props) {
   useEffect(() => {
     setPageLoaded(true);
   }, []);
-
-  const showCloneButton = useMemo(
-    () =>
-      (taskStatus === TaskStatusEnum.COMPLETED ||
-        taskStatus === TaskStatusEnum.EXPIRED ||
-        taskStatus === TaskStatusEnum.INACTIVE ||
-        timeExpired) &&
-      isCreated,
-    []
-  );
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -348,7 +335,7 @@ export default function Explain(props: Props) {
             <>
               <Group className={classes.buttonsGroup}>
                 <Switch
-                  label={"Proof upload"}
+                  label={"Enable proof"}
                   disabled={taskStatus === TaskStatusEnum.COMPLETED}
                   checked={proofEnabled || false}
                   onChange={() => switchProofUpload(!proofEnabled, taskId)}
@@ -376,17 +363,14 @@ export default function Explain(props: Props) {
                     </Button>
                   </>
                 )}
-                {showCloneButton && (
-                  <Button
-                    size="compact-sm"
-                    variant="default"
-                    disabled={!showCloneButton}
-                    className={classes.actionButton}
-                    onClick={handleCloneTask}
-                  >
-                    Clone
-                  </Button>
-                )}
+                <Button
+                  size="compact-sm"
+                  variant="default"
+                  className={classes.actionButton}
+                  onClick={handleCloneTask}
+                >
+                  Clone
+                </Button>
               </Group>
               <ProofStatus
                 selectedTask={taskInfo}
