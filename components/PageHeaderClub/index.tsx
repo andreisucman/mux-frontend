@@ -21,6 +21,7 @@ type Props = {
   titles?: { label: string; value: string }[];
   isDisabled?: boolean;
   showReturn?: boolean;
+  childrenPosition?: "first" | "last";
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
   children?: React.ReactNode;
@@ -38,6 +39,7 @@ export default function PageHeaderClub({
   children,
   userName,
   pageType,
+  childrenPosition = "last",
   onFilterClick,
 }: Props) {
   const router = useRouter();
@@ -80,7 +82,7 @@ export default function PageHeaderClub({
         </ActionIcon>
       )}
       {finalTitle}
-      {children}
+      {childrenPosition === "first" && children}
       {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
       {onFilterClick && (
         <FilterButton
@@ -97,6 +99,7 @@ export default function PageHeaderClub({
         placeholder="Select page"
         filterType="page"
       />
+      {childrenPosition === "last" && children}
     </Group>
   );
 }

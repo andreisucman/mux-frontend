@@ -6,7 +6,11 @@ import modifyQuery from "@/helpers/modifyQuery";
 import { daysFrom } from "@/helpers/utils";
 import classes from "./DateSelector.module.css";
 
-function DateSelector() {
+type Props = {
+  customStyles?: { [key: string]: any };
+};
+
+function DateSelector({ customStyles }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -53,7 +57,7 @@ function DateSelector() {
   }, []);
 
   return (
-    <Group className={classes.container}>
+    <Group className={classes.container} style={customStyles ? customStyles : {}}>
       <DatePickerInput
         type="range"
         placeholder="Pick date range"

@@ -12,6 +12,7 @@ import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openErrorModal from "@/helpers/openErrorModal";
 import ClubModerationLayout from "../../ModerationLayout";
+import DateSelector from "@/components/DateSelector";
 
 export const runtime = "edge";
 
@@ -32,12 +33,16 @@ export default function DiaryPage(props: Props) {
   const { followingUserName } = club || {};
 
   const sort = searchParams.get("sort") || "-createdAt";
+  const dateFrom = searchParams.get("dateFrom");
+  const dateTo = searchParams.get("dateTo");
 
   const handleFetchDiaryRecords = useCallback(async () => {
     try {
       const response = await fetchDiaryRecords({
         userName,
         sort,
+        dateFrom,
+        dateTo,
         currentArrayLength: diaryRecords?.length,
         skip: hasMore,
       });
@@ -70,6 +75,7 @@ export default function DiaryPage(props: Props) {
           title={"Club"}
           userName={userName}
           sortItems={diarySortItems}
+          children={<DateSelector customStyles={{flex: 1}} />}
           isDisabled={noResults}
           showReturn
         />
