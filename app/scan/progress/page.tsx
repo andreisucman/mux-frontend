@@ -142,10 +142,8 @@ export default function ScanProgress() {
       chunks.splice(-1, 0, "and,");
     }
     const partsString = chunks?.join(", ").split(",,").join(" ");
-    return `Your next ${partsString} scan is after ${checkBackDate}.`;
-  }, [parts]);
-
-  console.log("availableRequirements", availableRequirements);
+    return `Your next ${partsString} scan is after ${checkBackDate}`;
+  }, [parts, checkBackDate]);
 
   return (
     <>

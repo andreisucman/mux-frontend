@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, Checkbox, Stack, Text } from "@mantine/core";
+import { Alert, Checkbox, Stack, Text, Title } from "@mantine/core";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import classes from "./FullscreenAlert.module.css";
 
@@ -41,10 +41,12 @@ export default function FullScreenAlert({
         style={customStyles || {}}
         onClose={() => handleCloseAlert(dontShowAlertAnymore)}
         withCloseButton={withCloseButton}
+        variant="filled"
       >
         <Stack>
+          <Title order={5}>To exit the full screen mode</Title>
           <Text size="sm">
-            To exit the full screen mode, swipe your finger up from the <u>bottom</u> of your
+            Swipe your finger up from the <u>bottom</u> of your
             screen.
           </Text>
           {withCheckbox && (

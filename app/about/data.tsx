@@ -146,8 +146,7 @@ export const data = [
           Club.
         </Text>
         <Text>
-          If you are mistakenly blocked by our software as underage, please contact us at
-          support@muxout.com
+          If you are blocked by our software as underage, you won't be able to use the platform.
         </Text>
       </Stack>
     ),

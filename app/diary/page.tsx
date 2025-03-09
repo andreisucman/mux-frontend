@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
+import DateSelector from "@/components/DateSelector";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
@@ -19,6 +20,11 @@ import DiaryContent from "./DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
+type HandleFetchDiaryProps = {
+  dateFrom: string | null;
+  dateTo: string | null;
+};
+
 export default function DiaryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -30,6 +36,9 @@ export default function DiaryPage() {
   const [disableAddNew, setDisableAddNew] = useState(true);
 
   const sort = searchParams.get("sort") || "-createdAt";
+  const dateFrom = searchParams.get("dateFrom");
+  const dateTo = searchParams.get("dateTo");
+
   const { tasks, timeZone } = userDetails || {};
 
   const createDiaryRecord = useCallback(async () => {
@@ -101,11 +110,13 @@ export default function DiaryPage() {
     }
   }, [createDiaryRecord, tasks]);
 
-  const handleFetchDiaryRecords = useCallback(async () => {
+  const handleFetchDiaryRecords = async ({ dateFrom, dateTo }: HandleFetchDiaryProps) => {
     const response = await fetchDiaryRecords({
       sort,
       currentArrayLength: diaryRecords?.length,
       skip: hasMore,
+      dateFrom,
+      dateTo,
     });
 
     if (response.status === 200) {
@@ -124,11 +135,11 @@ export default function DiaryPage() {
 
       setHasMore(response.message.length === 21);
     }
-  }, [diaryRecords, hasMore, sort]);
+  };
 
   useEffect(() => {
-    handleFetchDiaryRecords();
-  }, [sort]);
+    handleFetchDiaryRecords({ dateFrom, dateTo });
+  }, [sort, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!diaryRecords) return;
@@ -147,6 +158,7 @@ export default function DiaryPage() {
           isDisabled={noResults}
           title="Diary"
           sortItems={diarySortItems}
+          children={<DateSelector />}
           nowrapTitle
           showReturn
         />
@@ -164,7 +176,7 @@ export default function DiaryPage() {
           timeZone={timeZone}
           setDiaryRecords={setDiaryRecords}
           setOpenValue={setOpenValue}
-          handleFetchDiaryRecords={handleFetchDiaryRecords}
+          handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo })}
         />
         <ChatWithModal
           modalTitle={

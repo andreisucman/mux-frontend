@@ -2,7 +2,6 @@ import React from "react";
 import { IconBolt, IconCancel, IconDots, IconInfoCircle, IconTrash } from "@tabler/icons-react";
 import { ActionIcon, Menu, rem } from "@mantine/core";
 import { TaskStatusEnum } from "@/types/global";
-import classes from "./AccordionTaskRow.module.css";
 
 type Props = {
   taskId: string;
@@ -18,9 +17,18 @@ export default function AccordionTaskMenu({
   updateTaskStatus,
 }: Props) {
   return (
-    <Menu withArrow classNames={{ itemLabel: classes.menuItemLabel }}>
+    <Menu
+      withArrow
+      styles={{
+        itemLabel: {
+          display: "flex",
+          alignItems: "center",
+          gap: 0,
+        },
+      }}
+    >
       <Menu.Target>
-        <ActionIcon variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+        <ActionIcon component="div" variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
           <IconDots className="icon icon__small" />
         </ActionIcon>
       </Menu.Target>

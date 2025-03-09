@@ -93,7 +93,6 @@ export default function StartPartialScanOverlay({
   }, [toAnalyze?.length]);
 
   useEffect(() => {
-    console.log("line 96");
     if (!userDetails) return;
     if (!scanAnalysisQuota) return;
     setEnableScanAnalysis(scanAnalysisQuota > 0);

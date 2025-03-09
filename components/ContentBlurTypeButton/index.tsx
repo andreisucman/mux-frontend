@@ -151,8 +151,6 @@ export default function ContentBlurTypeButton({
           body: { blurType, contentCategory, contentId },
         });
 
-        console.log("request sent", response.status)
-
         if (response.status === 200) {
           const { hash, mainUrl, images } = response.message;
 

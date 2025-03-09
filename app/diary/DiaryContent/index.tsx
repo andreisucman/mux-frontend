@@ -3,17 +3,17 @@ import dynamic from "next/dynamic";
 import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Group, Loader, Skeleton, Stack, Title } from "@mantine/core";
 import DeleteContentButton from "@/components/DeleteContentButton";
+import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { formatDate } from "@/helpers/formatDate";
 import DiaryRow from "../DiaryRow";
 import { DiaryRecordType } from "../type";
 import classes from "./DiaryContent.module.css";
-import ListComponent from "@/components/ListComponent";
 
-const List = dynamic(() => import("masonic").then((mod) => mod.List), {
-  ssr: false,
-  loading: () => <Skeleton className="skeleton" visible></Skeleton>,
-});
+type HandleFetchDiaryProps = {
+  dateFrom: string | null;
+  dateTo: string | null;
+};
 
 type Props = {
   hasMore: boolean;
@@ -58,16 +58,12 @@ export default function DiaryContent({
             </Group>
           </Accordion.Control>
           <Accordion.Panel>
-            <DiaryRow
-              data={props.data}
-              index={props.index}
-              timeZone={timeZone}
-            />
+            <DiaryRow data={props.data} index={props.index} timeZone={timeZone} />
           </Accordion.Panel>
         </Accordion.Item>
       );
     },
-    [ diaryRecords]
+    [diaryRecords]
   );
 
   return (

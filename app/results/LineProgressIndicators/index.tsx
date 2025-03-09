@@ -22,19 +22,22 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
   const allFeatures = showOverall ? [["overall", overall], ...restFeatures] : (restFeatures as any);
 
   const renderIndicator = ([label, value]: [string, number], index: number) => {
-    const scoreDifferenceValue = scoresDifference[label] || 0;
+    const scoreDifferenceValue = scoresDifference[label];
     const differenceColor = scoreDifferenceValue >= 0 ? "green.7" : "red.7";
     const color = getRingColor(value);
-    const previousValue = Number(value) - scoreDifferenceValue;
+    let previousValue = Number(value) - scoreDifferenceValue;
+    let previousBarValue = Number(value);
 
     return (
       <Group key={`${label}-${index}`} gap="sm">
         <Text size="sm" lineClamp={1}>
           {upperFirst(label)}
         </Text>
-        <Progress.Root size={18} flex={1}>
-          <Progress.Section value={previousValue} color={color}>
-            <Progress.Label style={{ overflow: "unset" }}>
+
+        <Progress.Root className={classes.barRoot} size={18}>
+          <Progress.Section value={previousBarValue} color={color}>
+            <Progress.Label
+              >
               {previousValue.toFixed(0)}
             </Progress.Label>
           </Progress.Section>

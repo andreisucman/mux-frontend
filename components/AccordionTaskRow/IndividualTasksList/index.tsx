@@ -14,7 +14,6 @@ type Props = {
   isSelf: boolean;
   taskIdsObjects: { startsAt: string; status: string; _id: string }[];
   handleCloneTask: (taskId: string) => void;
-  redirectToCalendar: (taskKey: string) => void;
   redirectToTask: (taskId: string) => void;
   updateTaskStatus: (taskId: string, newStatus: string) => void;
 };

@@ -21,3 +21,13 @@
   align-items: center;
   font-size: var(--mantine-font-size-sm);
 }
+
+.barRoot {
+  position: relative;
+  flex: 1;
+  gap: 0;
+}
+
+.barTotalLabel {
+  overflow: auto;
+}

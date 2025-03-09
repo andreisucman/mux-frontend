@@ -4,6 +4,7 @@ import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import { AllTaskType, TaskStatusEnum } from "@/types/global";
+import { RedirectWithDateProps } from "../AccordionRoutineRow";
 import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
 import RoutineIndividualTasksList from "./IndividualTasksList";
@@ -15,7 +16,7 @@ type Props = {
   isSelf: boolean;
   handleCloneTask: (taskId: string) => void;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
-  redirectToCalendar: (taskKey: string) => void;
+  redirectWithDate: (props: RedirectWithDateProps) => void;
   redirectToTask: (taskId: string) => void;
   updateTaskStatus: (taskId: string, newStatus: string) => void;
 };
@@ -28,7 +29,7 @@ export default function AccordionTaskRow({
   openTaskDetails,
   redirectToTask,
   updateTaskStatus,
-  redirectToCalendar,
+  redirectWithDate,
 }: Props) {
   const [openedIndividualTasks, { open, close }] = useDisclosure(false);
   const { ids, icon, key, color, name, total, completed } = data;
@@ -56,11 +57,7 @@ export default function AccordionTaskRow({
           </Text>
         </Group>
         <Group className={classes.content}>
-          <StatsGroup
-            completed={completed}
-            completionRate={completionRate}
-            total={total}
-          />
+          <StatsGroup completed={completed} completionRate={completionRate} total={total} />
           {isSelf ? (
             <ActionIcon
               variant="default"
@@ -68,7 +65,7 @@ export default function AccordionTaskRow({
               component="div"
               onClick={(e) => {
                 e.stopPropagation();
-                if (redirectToCalendar) redirectToCalendar(key);
+                if (redirectWithDate) redirectWithDate({ taskKey: key, page: "calendar" });
               }}
             >
               <IconCalendar className={"icon icon__small"} />
@@ -96,7 +93,6 @@ export default function AccordionTaskRow({
           taskKey={key}
           taskIdsObjects={notDeletedIds}
           handleCloneTask={handleCloneTask}
-          redirectToCalendar={redirectToCalendar}
           redirectToTask={redirectToTask}
           updateTaskStatus={updateTaskStatus}
         />

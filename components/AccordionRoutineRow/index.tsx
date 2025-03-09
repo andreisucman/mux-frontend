@@ -24,6 +24,8 @@ import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AllTaskType, RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
+import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
+import AccordionTaskMenu from "../AccordionTaskRow/AccordionTaskMenu";
 import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
 import classes from "./AccordionRoutineRow.module.css";
@@ -36,6 +38,11 @@ type Props = {
   setSelectedRoutineIds: React.Dispatch<React.SetStateAction<string[]>>;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
+};
+
+export type RedirectWithDateProps = {
+  taskKey?: string;
+  page: "calendar" | "diary";
 };
 
 export default function AccordionRoutineRow({
@@ -110,17 +117,23 @@ export default function AccordionRoutineRow({
 
   const allActiveTasks = useMemo(() => {
     return allTasks.filter((at) =>
-      at.ids.some((idObj) => idObj.status === "active" || idObj.status === "canceled")
+      at.ids.some(
+        (idObj) =>
+          idObj.status === "active" ||
+          idObj.status === "canceled" ||
+          idObj.status === "inactive" ||
+          idObj.status === "expired"
+      )
     );
   }, [allTasks]);
 
-  const redirectToCalendar = useCallback(
-    (taskKey?: string) => {
+  const redirectWithDate = useCallback(
+    ({ taskKey, page = "calendar" }: RedirectWithDateProps) => {
       const dateFrom = new Date(routine.startsAt);
-      dateFrom.setUTCHours(0, 0, 0, 0);
+      dateFrom.setHours(0, 0, 0, 0);
       const dateTo = new Date(routine.lastDate);
       dateTo.setDate(dateTo.getDate() + 1);
-      dateTo.setUTCHours(0, 0, 0, 0);
+      dateTo.setHours(0, 0, 0, 0);
 
       const parts = [`dateFrom=${dateFrom.toISOString()}`, `dateTo=${dateTo.toISOString()}`];
 
@@ -130,7 +143,7 @@ export default function AccordionRoutineRow({
 
       const query = parts.join("&");
 
-      const url = `/calendar${query ? `?${query}` : ""}`;
+      const url = `/${page}${query ? `?${query}` : ""}`;
 
       router.push(url);
     },
@@ -242,18 +255,7 @@ export default function AccordionRoutineRow({
                 completionRate={completionRate}
                 total={totalTotal}
               />
-              {isSelf && (
-                <ActionIcon
-                  variant="default"
-                  component="div"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    redirectToCalendar();
-                  }}
-                >
-                  <IconCalendar className="icon icon__small" />
-                </ActionIcon>
-              )}
+              <AccordionRowMenu redirectWithDate={redirectWithDate} isSelf={isSelf} />
             </Group>
           </Group>
           {routineCanBeReactivated && (
@@ -286,7 +288,7 @@ export default function AccordionRoutineRow({
               routineId={routine._id}
               handleCloneTask={handleCloneTask}
               openTaskDetails={openTaskDetails}
-              redirectToCalendar={redirectToCalendar}
+              redirectWithDate={redirectWithDate}
               redirectToTask={redirectToTask}
               updateTaskStatus={updateTaskStatus}
             />

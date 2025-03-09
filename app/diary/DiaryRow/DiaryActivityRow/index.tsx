@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import { Group } from "@mantine/core";
 import DiaryTaskCard from "../../DiaryTaskCard";
 import { DiaryActivityType } from "../../type";
 import classes from "./DiaryActivityRow.module.css";

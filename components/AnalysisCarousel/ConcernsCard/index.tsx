@@ -52,15 +52,11 @@ function ConcernsCard({ status, userId, latestScores, concerns, title }: Props) 
     const parts = Object.entries(latestScores)
       .filter(([key, value]) => key !== "overall" && !!value)
       .map((gr) => gr[0]);
-    console.log("parts", parts);
-    console.log("concerns", concerns);
     const concernParts = concerns.map((c) => c.part);
     const partsWithoutConcerns = parts.filter((p: any) => !concernParts.includes(p));
-    console.log("partsWithoutConcerns", partsWithoutConcerns);
     const maintenanceConcernsToAdd = maintenanceConcerns.filter((c) =>
       partsWithoutConcerns.includes(c.part)
     );
-    console.log("maintenanceConcernsToAdd", maintenanceConcernsToAdd);
     return [...concerns, ...maintenanceConcernsToAdd];
   }, [concerns, latestScores]);
 

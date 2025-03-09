@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { IconLink } from "@tabler/icons-react";
 import cn from "classnames";
 import { Group, Text, UnstyledButton } from "@mantine/core";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import classes from "./SocialsDisplayLine.module.css";
 
 type Props = {

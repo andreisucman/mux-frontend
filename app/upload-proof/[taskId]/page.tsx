@@ -41,7 +41,7 @@ export default function UploadProof(props: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
-  
+
   const [componentToDisplay, setDisplayComponent] = useState<
     "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed"
   >("loading");
@@ -90,10 +90,17 @@ export default function UploadProof(props: Props) {
 
       const finalBlurType = captureType === "image" ? blurType : BlurTypeEnum.ORIGINAL;
 
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
       const response = await callTheServer({
         endpoint: "uploadProof",
         method: "POST",
-        body: { taskId, url: urlArray[0], blurType: finalBlurType },
+        body: {
+          taskId,
+          url: urlArray[0],
+          blurType: finalBlurType,
+          timeZone,
+        },
       });
 
       if (response.status !== 200) {

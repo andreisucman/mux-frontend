@@ -1,10 +1,12 @@
 .container {
   display: none;
   position: fixed;
-  left: rem(32);
-  right: rem(32);
-  bottom: rem(32);
+  left: 50%;
+  top: rem(50%);
+  transform: translate(-50%, -50%);
   animation: fadeIn 0.5s forwards;
+  width: 100%;
+  max-width: calc(100% - rem(64));
   z-index: 99;
   margin-top: auto;
 

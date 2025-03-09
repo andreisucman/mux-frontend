@@ -6,10 +6,12 @@ type FetchDiaryRecordsProps = {
   sort: string | null;
   currentArrayLength?: number;
   skip?: boolean;
+  dateFrom: string | null;
+  dateTo: string | null;
 };
 
 const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
-  const { skip, userName, sort, currentArrayLength } = props || {};
+  const { skip, userName, sort, dateFrom, dateTo, currentArrayLength } = props || {};
   try {
     let endpoint = "getDiaryRecords";
 
@@ -23,6 +25,10 @@ const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
 
     if (sort) {
       parts.push(`sort=${sort}`);
+    }
+
+    if (dateFrom && dateTo) {
+      parts.push(`dateFrom=${dateFrom}&dateTo=${dateTo}`);
     }
 
     const query = parts.join("&");
