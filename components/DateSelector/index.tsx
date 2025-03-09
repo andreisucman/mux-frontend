@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Group } from "@mantine/core";
+import { IconX } from "@tabler/icons-react";
+import { ActionIcon, Group } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import modifyQuery from "@/helpers/modifyQuery";
 import { daysFrom } from "@/helpers/utils";
@@ -52,6 +53,18 @@ function DateSelector({ customStyles }: Props) {
     [pathname, router]
   );
 
+  const resetDates = useCallback(() => {
+    setValue([null, null]);
+
+    const query = modifyQuery({
+      params: [
+        { name: "dateFrom", value: null, action: "delete" },
+        { name: "dateTo", value: null, action: "delete" },
+      ],
+    });
+    router.replace(`${pathname}?${query}`);
+  }, []);
+
   useEffect(() => {
     changeDates([dateFromParam, dateToParam]);
   }, []);
@@ -67,6 +80,11 @@ function DateSelector({ customStyles }: Props) {
         onChange={changeDates}
         className={classes.picker}
       />
+      {(dateToParam || dateToParam) && (
+        <ActionIcon variant="default" onClick={resetDates}>
+          <IconX className="icon" />
+        </ActionIcon>
+      )}
     </Group>
   );
 }

@@ -3,9 +3,10 @@ import { modals } from "@mantine/modals";
 import FilterCardContent from "@/app/GeneralResultsHeader/FilterCardContent";
 import ProductsFilterCardContent from "@/app/products/ProductsFilterCardContent";
 import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent";
+import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
 import ClubProgressFilterCardContent from "@/components/PageHeaderClub/ClubProgressFilterCardContent";
 import ClubProofFilterCardContent from "@/components/PageHeaderClub/ClubProofFilterCardContent";
-import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
+import DateSelector from "@/components/DateSelector";
 
 export enum FilterCardNamesEnum {
   "ClubProofFilterCardContent" = "ClubProofFilterCardContent",
@@ -14,6 +15,7 @@ export enum FilterCardNamesEnum {
   "ProductsFilterCardContent" = "ProductsFilterCardContent",
   "RoutinesFilterCardContent" = "RoutinesFilterCardContent",
   "HistoryFilterCardContent" = "HistoryFilterCardContent",
+  "DiaryFilterCardContent" = "DiaryFilterCardContent",
 }
 
 type Props = {
@@ -36,9 +38,8 @@ const openFiltersCard = ({ cardName, childrenProps }: Props) => {
     [FilterCardNamesEnum.RoutinesFilterCardContent]: (
       <RoutinesFilterCardContent {...childrenProps} />
     ),
-    [FilterCardNamesEnum.HistoryFilterCardContent]: (
-      <HistoryFilterCardContent {...childrenProps} />
-    ),
+    [FilterCardNamesEnum.HistoryFilterCardContent]: <HistoryFilterCardContent {...childrenProps} />,
+    [FilterCardNamesEnum.DiaryFilterCardContent]: <DateSelector />
   };
 
   modals.openContextModal({

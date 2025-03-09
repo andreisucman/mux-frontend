@@ -47,7 +47,7 @@ export default function DiaryTaskCard({
   }, [url]);
 
   return (
-    <Skeleton className="skeleton" visible={showSkeleton}>
+    <Skeleton className={`skeleton ${classes.skeleton}`} visible={showSkeleton}>
       <Stack className={classes.container}>
         <Group className={classes.head}>
           {icon}

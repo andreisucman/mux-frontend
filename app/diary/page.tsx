@@ -5,12 +5,12 @@ import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
-import DateSelector from "@/components/DateSelector";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -20,7 +20,7 @@ import DiaryContent from "./DiaryContent";
 import { ChatCategoryEnum, DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
-type HandleFetchDiaryProps = {
+export type HandleFetchDiaryProps = {
   dateFrom: string | null;
   dateTo: string | null;
 };
@@ -158,7 +158,12 @@ export default function DiaryPage() {
           isDisabled={noResults}
           title="Diary"
           sortItems={diarySortItems}
-          children={<DateSelector />}
+          filterNames={["dateFrom", "dateTo"]}
+          onFilterClick={() =>
+            openFiltersCard({
+              cardName: FilterCardNamesEnum.DiaryFilterCardContent,
+            })
+          }
           nowrapTitle
           showReturn
         />
