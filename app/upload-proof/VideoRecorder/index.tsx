@@ -122,7 +122,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       let constraints: MediaStreamConstraints = {
         video: {
           facingMode,
-          frameRate: { max: 30, ideal: 30 },
+          frameRate: { ideal: 30 },
           aspectRatio: { ideal: aspectRatio },
         },
         audio: true,
@@ -147,20 +147,20 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             setIsVideoLoading(false);
           };
 
-          // const videoTrack = stream.getVideoTracks()[0];
-          // const settings = videoTrack.getSettings();
+          const videoTrack = stream.getVideoTracks()[0];
+          const settings = videoTrack.getSettings();
 
-          // if (!settings.width || !settings.height) throw new Error("Width or height missing");
+          if (!settings.width || !settings.height) throw new Error("Width or height missing");
 
-          // const bitrate = adjustVideoQuality({
-          //   width: settings.width,
-          //   height: settings.height,
-          //   frameRate: settings.frameRate || 30,
-          // });
+          const bitrate = adjustVideoQuality({
+            width: settings.width,
+            height: settings.height,
+            frameRate: settings.frameRate || 30,
+          });
 
           const options: MediaRecorderOptions = {
             mimeType,
-            videoBitsPerSecond: 10 * 1024 * 1024,
+            videoBitsPerSecond: bitrate,
           };
 
           mediaRecorder.current = new MediaRecorder(stream, options);
