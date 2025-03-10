@@ -147,20 +147,20 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             setIsVideoLoading(false);
           };
 
-          const videoTrack = stream.getVideoTracks()[0];
-          const settings = videoTrack.getSettings();
+          // const videoTrack = stream.getVideoTracks()[0];
+          // const settings = videoTrack.getSettings();
 
-          if (!settings.width || !settings.height) throw new Error("Width or height missing");
+          // if (!settings.width || !settings.height) throw new Error("Width or height missing");
 
-          const bitrate = adjustVideoQuality({
-            width: settings.width,
-            height: settings.height,
-            frameRate: settings.frameRate || 30,
-          });
+          // const bitrate = adjustVideoQuality({
+          //   width: settings.width,
+          //   height: settings.height,
+          //   frameRate: settings.frameRate || 30,
+          // });
 
           const options: MediaRecorderOptions = {
             mimeType,
-            videoBitsPerSecond: bitrate,
+            videoBitsPerSecond: 10 * 1024 * 1024,
           };
 
           mediaRecorder.current = new MediaRecorder(stream, options);
@@ -259,35 +259,33 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     }
   }, [videoRef.current, captureType]);
 
-  const startDelayedCapture = useCallback(
-    (seconds: number) => {
-      if (timerStarted) return;
-      setTimerStarted(true);
-      setSecondsLeft(seconds);
-      const tick = (remaining: number) => {
-        if (remaining <= 0) {
-          setTimerStarted(false);
-          if (captureType === "image") capturePhoto();
-          if (captureType === "video")
-            startRecording({
-              facingMode,
-              aspectRatio,
-              videoRef,
-              streamRef,
-              isVideoLoading,
-              setIsVideoLoading,
-              stopBothVideoAndAudio,
-            });
-          setSecondsLeft(seconds);
-        } else {
-          setSecondsLeft(remaining);
-          setTimeout(() => tick(remaining - 1), 1000);
-        }
-      };
-      tick(seconds);
-    },
-    [captureType, capturePhoto, startRecording, timerStarted]
-  );
+  const startDelayedCapture = (seconds: number) => {
+    if (timerStarted) return;
+    setTimerStarted(true);
+    setSecondsLeft(seconds);
+
+    const tick = (remaining: number) => {
+      if (remaining <= 0) {
+        setTimerStarted(false);
+        if (captureType === "image") capturePhoto();
+        if (captureType === "video")
+          startRecording({
+            facingMode,
+            aspectRatio,
+            videoRef,
+            streamRef,
+            isVideoLoading,
+            setIsVideoLoading,
+            stopBothVideoAndAudio,
+          });
+        setSecondsLeft(seconds);
+      } else {
+        setSecondsLeft(remaining);
+        setTimeout(() => tick(remaining - 1), 1000);
+      }
+    };
+    tick(seconds);
+  };
 
   const handleStop = useCallback(() => {
     if (isVideoLoading) return;
