@@ -155,7 +155,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
           const bitrate = adjustVideoQuality({
             width: settings.width,
             height: settings.height,
-            frameRate: 30,
+            frameRate: settings.frameRate || 30,
           });
 
           const options: MediaRecorderOptions = {

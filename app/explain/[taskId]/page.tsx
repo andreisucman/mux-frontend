@@ -385,7 +385,7 @@ export default function Explain(props: Props) {
               {productsNeeded.length > 0 && (
                 <ExplanationContainer title="Products needed:" text={productsNeeded} />
               )}
-              {isRecipe && !recipe && (
+              {isRecipe && (
                 <CreateRecipeBox
                   taskId={taskId}
                   recipe={recipe}

@@ -124,10 +124,10 @@ export default function CreateRecipeBox({
     <Group className={classes.container}>
       <Button
         className={classes.button}
-        disabled={!canCreateRecipe || !!recipe || isDisabled}
+        disabled={!canCreateRecipe || isDisabled}
         onClick={openEditTaskModal}
       >
-        Create a recipe
+        Create a {canPersonalize ? "new" : ""} recipe
       </Button>
     </Group>
   );
