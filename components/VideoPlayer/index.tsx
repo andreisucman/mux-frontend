@@ -36,8 +36,9 @@ export default function VideoPlayer({
   const handlePlayerClick = useCallback(() => {
     if (onClick) {
       onClick();
+    } else {
+      setPlaying((prev) => !prev);  
     }
-    setPlaying((prev) => !prev);
   }, [typeof onClick, playing]);
 
   const handleEnded = useCallback(() => {

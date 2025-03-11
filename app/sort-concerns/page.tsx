@@ -11,7 +11,6 @@ import { useRouter } from "@/helpers/custom-router";
 import { UserConcernType, UserDataType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
 import ConcernsSortCard from "./ConcernsSortCard";
-import { maintenanceConcerns } from "./maintenanceConcerns";
 import classes from "./sort-concerns.module.css";
 
 export const runtime = "edge";
@@ -41,16 +40,6 @@ export default function SortConcerns() {
       remaining = remaining.filter((obj) => obj.part === part);
     }
 
-    if (remaining.length === 0) {
-      const maintenanceConcernsToAdd = [];
-
-      if (part) {
-        maintenanceConcernsToAdd.push(...maintenanceConcerns.filter((c) => c.part === part));
-      }
-
-      remaining.push(...maintenanceConcernsToAdd);
-    }
-
     return remaining;
   }, [userDetails, part]);
 
@@ -66,11 +55,14 @@ export default function SortConcerns() {
   }
 
   useEffect(() => {
+    console.log("selectedConcerns", selectedConcerns);
     setUserDetails((prev: UserDataType) => ({
       ...prev,
       concerns: selectedConcerns,
     }));
-  }, [typeof selectedConcerns]);
+  }, [selectedConcerns && selectedConcerns.length]);
+
+  console.log("userDetails", userDetails?.concerns);
 
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>

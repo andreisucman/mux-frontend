@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
+import Message from "@/components/Message";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
@@ -149,13 +150,11 @@ export default function DiaryPage() {
     setDisableAddNew(exists);
   }, [diaryRecords]);
 
-  const noResults = !diaryRecords || diaryRecords.length === 0;
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
         <PageHeader
-          isDisabled={noResults}
+          isDisabled={!diaryRecords}
           title="Diary"
           sortItems={diarySortItems}
           filterNames={["dateFrom", "dateTo"]}

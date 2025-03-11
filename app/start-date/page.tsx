@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
@@ -38,74 +38,76 @@ export default function StartDate() {
 
   const part = searchParams.get("part");
 
-  const createRoutine = useCallback(
-    async ({ concerns, startDate, subscriptions, specialConsiderations }: CreateRoutineProps) => {
-      if (isLoading || !startDate || !concerns || !subscriptions) return;
-      setIsLoading(true);
+  console.log("concerns", concerns);
 
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
+  const createRoutine = async ({
+    concerns,
+    startDate,
+    subscriptions,
+    specialConsiderations,
+  }: CreateRoutineProps) => {
+    if (isLoading || !startDate || !concerns || !subscriptions) return;
+    setIsLoading(true);
 
-      try {
-        const response = await callTheServer({
-          endpoint: "createRoutine",
-          method: "POST",
-          body: {
-            part,
-            concerns,
-            routineStartDate: startDate,
-            specialConsiderations,
-          },
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
+
+    const response = await callTheServer({
+      endpoint: "createRoutine",
+      method: "POST",
+      body: {
+        part,
+        concerns,
+        routineStartDate: startDate,
+        specialConsiderations,
+      },
+    });
+
+    if (response.status === 200) {
+      if (response.error === "subscription expired") {
+        const { improvement } = subscriptions || {};
+        const { isTrialUsed } = improvement || {};
+
+        const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
+
+        const onClick = !!isTrialUsed
+          ? async () =>
+              createCheckoutSession({
+                priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
+                redirectUrl,
+                cancelUrl: redirectUrl,
+                setUserDetails,
+              })
+          : () =>
+              startSubscriptionTrial({
+                subscriptionName: "improvement",
+                router,
+                onComplete: () =>
+                  createRoutine({ concerns, startDate, subscriptions, specialConsiderations }),
+              });
+
+        openPaymentModal({
+          title: `Add the improvement coach`,
+          price: (
+            <Group className="priceGroup">
+              <Title order={3}>$9</Title>/ <Text>month</Text>
+            </Group>
+          ),
+          isCentered: true,
+          modalType: "improvement",
+          underButtonText: isTrialUsed ? "" : "No credit card required",
+          buttonText,
+          onClick,
+          onClose: () => fetchUserData({ setUserDetails }),
         });
 
-        if (response.status === 200) {
-          if (response.error === "subscription expired") {
-            const { improvement } = subscriptions || {};
-            const { isTrialUsed } = improvement || {};
-
-            const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
-
-            const onClick = !!isTrialUsed
-              ? async () =>
-                  createCheckoutSession({
-                    priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-                    redirectUrl,
-                    cancelUrl: redirectUrl,
-                    setUserDetails,
-                  })
-              : () =>
-                  startSubscriptionTrial({
-                    subscriptionName: "improvement",
-                    router,
-                    onComplete: () =>
-                      createRoutine({ concerns, startDate, subscriptions, specialConsiderations }),
-                  });
-
-            openPaymentModal({
-              title: `Add the improvement coach`,
-              price: (
-                <Group className="priceGroup">
-                  <Title order={3}>$9</Title>/ <Text>month</Text>
-                </Group>
-              ),
-              isCentered: true,
-              modalType: "improvement",
-              underButtonText: isTrialUsed ? "" : "No credit card required",
-              buttonText,
-              onClick,
-              onClose: () => fetchUserData({ setUserDetails }),
-            });
-
-            return;
-          }
-          saveToLocalStorage("runningAnalyses", { routine: true }, "add");
-          router.replace(redirectUrl);
-        }
-      } catch (err) {
-        setIsLoading(false);
+        return;
       }
-    },
-    [isLoading, userDetails]
-  );
+      saveToLocalStorage("runningAnalyses", { routine: true }, "add");
+      router.replace(redirectUrl);
+    } else {
+      setIsLoading(false);
+    }
+  };
 
   const text = startDate
     ? startDate.toDateString()

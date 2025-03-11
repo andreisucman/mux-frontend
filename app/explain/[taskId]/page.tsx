@@ -46,7 +46,7 @@ export default function Explain(props: Props) {
 
   const { timeZone } = userDetails || {};
   const {
-    isRecipe,
+    isDish,
     startsAt,
     productTypes,
     example,
@@ -385,7 +385,7 @@ export default function Explain(props: Props) {
               {productsNeeded.length > 0 && (
                 <ExplanationContainer title="Products needed:" text={productsNeeded} />
               )}
-              {isRecipe && (
+              {isDish && (
                 <CreateRecipeBox
                   taskId={taskId}
                   recipe={recipe}

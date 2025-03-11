@@ -32,15 +32,22 @@ export default function AccordionTaskRow({
   redirectWithDate,
 }: Props) {
   const [openedIndividualTasks, { open, close }] = useDisclosure(false);
-  const { ids, icon, key, color, name, total, completed } = data;
+  const { ids, icon, key, color, name } = data;
 
   const notDeletedIds = useMemo(
     () => ids.filter((idObj) => idObj.status !== TaskStatusEnum.DELETED),
     [ids]
   );
 
+  const total = useMemo(() => ids.length, [ids]);
+
+  const completed = useMemo(
+    () => ids.filter((io) => io.status === TaskStatusEnum.COMPLETED).length,
+    [ids]
+  );
+
   const someTaskActive = useMemo(() => ids.some((obj) => obj.status === "active"), [ids]);
-  const completionRate = useMemo(() => Math.round((completed / total) * 100), [total, completed]);
+  const completionRate = useMemo(() => Math.round((completed / total) * 100), [completed, total]);
 
   const handleOpenList = () => {
     openedIndividualTasks ? close() : open();

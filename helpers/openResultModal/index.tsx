@@ -2,6 +2,7 @@ import React from "react";
 import { rem, Title, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ProgressModalContent from "@/app/results/ProgressModalContent";
+import ProofModalContent from "@/app/results/proof/ProofModalContent";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { SimpleProgressType } from "@/app/results/types";
 import { BeforeAfterType } from "@/app/types";
@@ -13,18 +14,24 @@ type OpenViewModalProps = {
   record: BeforeAfterType | SimpleProofType | SimpleProgressType;
   title: React.ReactNode;
   isPublicPage?: boolean;
+  type: "proof" | "progress";
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
-export default function openResultModal({ record, title, isPublicPage }: OpenViewModalProps) {
+export default function openResultModal({ record, type, title, isPublicPage }: OpenViewModalProps) {
+  const content =
+    type === "progress" ? (
+      <ProgressModalContent record={record as BeforeAfterType} isPublicPage={isPublicPage} />
+    ) : (
+      <ProofModalContent record={record as SimpleProofType} isPublicPage={isPublicPage} />
+    );
+
   modals.openContextModal({
     centered: true,
     modal: "general",
     title,
     size: rem(960),
-    innerProps: (
-      <ProgressModalContent record={record as BeforeAfterType} isPublicPage={isPublicPage} />
-    ),
+    innerProps: content,
     removeScrollProps: { allowPinchZoom: true },
     styles: {
       content: { display: "flex", flexDirection: "column" },

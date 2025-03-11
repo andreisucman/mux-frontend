@@ -334,6 +334,7 @@ export type TaskType = {
   icon: string;
   color: string;
   part: string;
+  concern: string;
   startsAt: string;
   completedAt: string;
   expiresAt: string;
@@ -343,7 +344,7 @@ export type TaskType = {
   instruction: string;
   proofEnabled: boolean;
   status: TaskStatusEnum;
-  isRecipe: boolean;
+  isDish: boolean;
   recipe: RecipeType;
   suggestions: SuggestionType[];
   productTypes: string[];

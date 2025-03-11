@@ -36,7 +36,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const { nextRoutine, nextScan, subscriptions } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } =
-    checkSubscriptionActivity(["improvement", "peek"], subscriptions) || {};
+    checkSubscriptionActivity(["improvement"], subscriptions) || {};
 
   const handleCreateCheckoutSession = async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns`;

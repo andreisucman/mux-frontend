@@ -20,6 +20,7 @@ import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTa
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import { RoutineType } from "@/types/global";
+import RoutineSelectionButtons from "../club/routines/[[...userName]]/RoutineSelectionButtons";
 import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
@@ -48,6 +49,7 @@ export default function ClubRoutines() {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
   const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
+  const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
 
   const { userDetails } = useContext(UserContext);
   const { timeZone, specialConsiderations } = userDetails || {};
@@ -74,6 +76,16 @@ export default function ClubRoutines() {
           } else {
             setRoutines(message.slice(0, 20));
           }
+
+          const newRoutineConcerns = message.reduce(
+            (a: { [key: string]: string[] }, c: RoutineType) => {
+              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+              return a;
+            },
+            {}
+          );
+
+          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
         }
       } catch (err) {}
     },
@@ -87,20 +99,21 @@ export default function ClubRoutines() {
 
   const accordionItems = useMemo(
     () =>
-      routines?.map((routine) => {
+      routines?.map((routine, i) => {
         return (
           <AccordionRoutineRow
+            zIndex={routines.length - i}
             key={routine._id}
             routine={routine}
             timeZone={timeZone}
-            selectedRoutineIds={selectedRoutineIds}
+            selectedConcerns={selectedConcerns}
+            setSelectedConcerns={setSelectedConcerns}
             setRoutines={setRoutines}
-            setSelectedRoutineIds={setSelectedRoutineIds}
             isSelf
           />
         );
       }),
-    [routines, timeZone]
+    [routines, timeZone, selectedConcerns]
   );
 
   const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
@@ -110,7 +123,7 @@ export default function ClubRoutines() {
     const payload: GetRoutinesProps = {
       routinesLength: (routines && routines.length) || 0,
       sort,
-      part
+      part,
     };
     handleFetchRoutines(payload);
   }, [sort, part]);
@@ -197,7 +210,7 @@ export default function ClubRoutines() {
                     skip: true,
                     routinesLength: (routines && routines.length) || 0,
                     sort,
-                    part
+                    part,
                   })
                 }
               >
@@ -223,7 +236,7 @@ export default function ClubRoutines() {
               handleFetchRoutines({
                 routinesLength: (routines && routines.length) || 0,
                 sort,
-                part
+                part,
               });
               setDisplayComponent("content");
             }}

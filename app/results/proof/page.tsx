@@ -91,7 +91,7 @@ export default function ResultsProof() {
             hasMore={hasMore}
             handleFetchProof={handleFetchProof}
             setProof={setProof}
-            columns={3}
+            columns={2}
             isSelf
           />
         ) : (

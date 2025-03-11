@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
 import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Group, Loader, Skeleton, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Group, Loader, Stack, Title } from "@mantine/core";
 import DeleteContentButton from "@/components/DeleteContentButton";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";

@@ -3,7 +3,6 @@
   inset: 0;
   border-radius: 0;
   width: 100%;
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
 
   & video {
     object-fit: contain;
@@ -36,6 +35,7 @@
 
 .playIcon {
   color: var(--mantine-color-brand-6);
+  pointer-events: none;
 }
 
 .small {

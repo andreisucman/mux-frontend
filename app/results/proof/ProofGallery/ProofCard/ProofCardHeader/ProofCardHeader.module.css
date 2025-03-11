@@ -11,10 +11,6 @@
   gap: rem(12);
 }
 
-.icon {
-  transform: translateY(-7.5%);
-}
-
 .taskName {
   font-weight: 600;
   font-size: var(--mantine-font-size-md);

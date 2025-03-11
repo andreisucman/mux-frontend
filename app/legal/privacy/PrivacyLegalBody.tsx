@@ -15,8 +15,9 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
       </Text>
       <Stack>
         <Text mt={0}>
-          This privacy policy explains how Bettermax LLC, operating as muxout.com ("we," "us," or "our")
-          uses and shares your data when you use our website ("Site") and services ("Services").
+          This privacy policy explains how Bettermax LLC, operating as muxout.com ("we," "us," or
+          "our") uses and shares your data when you use our website ("Site") and services
+          ("Services").
         </Text>
         <Text>
           By using our Site or Services, you agree to our privacy practices outlined here. If you
@@ -32,9 +33,9 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
 
         <Title order={4}>What personal information do we collect?</Title>
         <Text>
-          We may collect information such as your name, email, gender, age, location (city and
-          country), images and videos of your body, audio recordings of your voice, and any other
-          information you voluntarily provide when using our Services.
+          We may collect information such as your name, email, gender, age, country, images and
+          videos of your body, audio recordings of your voice, and any other information you
+          voluntarily provide when using our Services.
         </Text>
 
         <Title order={4}>Do we process any sensitive personal information?</Title>

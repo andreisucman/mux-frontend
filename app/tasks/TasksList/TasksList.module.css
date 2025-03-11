@@ -14,12 +14,25 @@
   font-weight: 600;
 }
 
-.scrollArea {
-  position: relative;
+.root,
+.viewport,
+.slide {
+  display: flex;
+  flex-direction: column;
   flex: 1;
+  height: 100%;
 }
 
-.listWrapper {
-  position: absolute;
-  width: 100%;
+.container {
+  flex: 1;
+  height: 100%;
+}
+
+.carouselControl {
+  background-color: alpha(var(--mantine-color-brand-5));
+  color: white;
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-brand-6), 1);
+  }
 }

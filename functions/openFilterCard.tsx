@@ -39,7 +39,7 @@ const openFiltersCard = ({ cardName, childrenProps }: Props) => {
       <RoutinesFilterCardContent {...childrenProps} />
     ),
     [FilterCardNamesEnum.HistoryFilterCardContent]: <HistoryFilterCardContent {...childrenProps} />,
-    [FilterCardNamesEnum.DiaryFilterCardContent]: <DateSelector />
+    [FilterCardNamesEnum.DiaryFilterCardContent]: <DateSelector showCancelButton />
   };
 
   modals.openContextModal({

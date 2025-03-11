@@ -1,6 +1,5 @@
 .container {
   display: flex;
-  gap: rem(8);
   align-items: center;
   flex-wrap: nowrap;
 

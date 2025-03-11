@@ -1,16 +1,7 @@
 import React, { useCallback, useMemo } from "react";
-import { IconCalendar, IconRefresh } from "@tabler/icons-react";
+import { IconRefresh } from "@tabler/icons-react";
 import cn from "classnames";
-import {
-  Accordion,
-  ActionIcon,
-  Button,
-  Checkbox,
-  Group,
-  Skeleton,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Accordion, Button, Checkbox, Group, Skeleton, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
@@ -25,17 +16,21 @@ import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AllTaskType, RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
-import AccordionTaskMenu from "../AccordionTaskRow/AccordionTaskMenu";
 import Indicator from "../Indicator";
+import InputWithCheckboxes from "../InputWithCheckboxes";
+import OverlayWithText from "../OverlayWithText";
 import StatsGroup from "../StatsGroup";
 import classes from "./AccordionRoutineRow.module.css";
 
 type Props = {
   routine: RoutineType;
   isSelf: boolean;
+  zIndex: number;
   timeZone?: string;
-  selectedRoutineIds: string[];
-  setSelectedRoutineIds: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedRoutineIds?: string[];
+  selectedConcerns: { [key: string]: string[] };
+  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
+  setSelectedRoutineIds?: React.Dispatch<React.SetStateAction<string[]>>;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
@@ -49,20 +44,29 @@ export default function AccordionRoutineRow({
   routine,
   timeZone,
   isSelf,
+  zIndex,
+  selectedConcerns,
   selectedRoutineIds,
   setRoutines,
   openTaskDetails,
+  setSelectedConcerns,
   setSelectedRoutineIds,
 }: Props) {
-  const router = useRouter();
-  const { part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
+  const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
 
-  const isSelected = useMemo(
-    () => selectedRoutineIds.includes(routine._id),
-    [selectedRoutineIds, routine]
-  );
+  const router = useRouter();
+
+  const isSelected = useMemo(() => {
+    if (!selectedRoutineIds) return false;
+    return selectedRoutineIds.includes(routine._id);
+  }, [selectedRoutineIds, routine]);
+
+  const handleSelectConcern = (chosenConcerns: string[]) => {
+    setSelectedConcerns((prev) => ({ ...prev, [routineId]: chosenConcerns }));
+  };
 
   const handleSelectRoutine = (isSelected: boolean) => {
+    if (!setSelectedRoutineIds) return;
     if (isSelected) {
       setSelectedRoutineIds((prev) => prev.filter((_id) => _id !== routine._id));
     } else {
@@ -91,12 +95,16 @@ export default function AccordionRoutineRow({
   }, [part, startsAt, lastDate]);
 
   const totalTotal = useMemo(
-    () => routine.allTasks.reduce((a, c) => a + c.total, 0),
+    () => routine.allTasks.reduce((a, c) => a + c.ids.length, 0),
     [routine.allTasks]
   );
 
   const totalCompleted = useMemo(
-    () => routine.allTasks.reduce((a, c) => a + c.completed, 0),
+    () =>
+      routine.allTasks.reduce(
+        (a, c) => a + c.ids.filter((io) => io.status === TaskStatusEnum.COMPLETED).length,
+        0
+      ),
     [routine.allTasks]
   );
 
@@ -116,7 +124,7 @@ export default function AccordionRoutineRow({
   }, [isSelf, routineStatus, allTasks]);
 
   const allActiveTasks = useMemo(() => {
-    return allTasks.filter((at) =>
+    const activeTasks = allTasks.filter((at) =>
       at.ids.some(
         (idObj) =>
           idObj.status === "active" ||
@@ -125,7 +133,13 @@ export default function AccordionRoutineRow({
           idObj.status === "expired"
       )
     );
-  }, [allTasks]);
+    return activeTasks;
+  }, [selectedConcerns]);
+
+  const selectedTasks = useMemo(() => {
+    const chosenConcerns = selectedConcerns[routineId].map((o) => o);
+    return allActiveTasks.filter((at) => chosenConcerns.includes(at.concern));
+  }, [allActiveTasks, selectedConcerns]);
 
   const redirectWithDate = useCallback(
     ({ taskKey, page = "calendar" }: RedirectWithDateProps) => {
@@ -231,29 +245,45 @@ export default function AccordionRoutineRow({
 
   const showSkeleton = useShowSkeleton();
 
+  const indicatorStyles = useMemo(
+    () => ({
+      borderRadius: "1rem 0.25rem 0.25rem 1rem",
+    }),
+    []
+  );
+
   return (
-    <Skeleton visible={showSkeleton} className={classes.skeleton}>
+    <Skeleton visible={showSkeleton} className={classes.skeleton} style={{ zIndex }}>
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>
-              <Checkbox
-                readOnly
-                checked={isSelected}
-                onClickCapture={(e) => {
-                  e.stopPropagation();
-                  handleSelectRoutine(isSelected);
-                }}
-              />
-              <Indicator status={routine.status} />
+              {selectedRoutineIds && (
+                <Checkbox
+                  readOnly
+                  checked={isSelected}
+                  onClickCapture={(e) => {
+                    e.stopPropagation();
+                    if (handleSelectRoutine) handleSelectRoutine(isSelected);
+                  }}
+                />
+              )}
+              <Indicator status={routine.status} customStyles={indicatorStyles} />
               {partIcons[part]}
               {rowLabel}
-            </Group>
-            <Group wrap="nowrap">
               <StatsGroup
                 completed={totalCompleted}
                 completionRate={completionRate}
                 total={totalTotal}
+              />
+            </Group>
+
+            <Group onClick={(e) => e.stopPropagation()} className={classes.selectWrapper}>
+              <InputWithCheckboxes
+                data={selectedConcerns[routineId]}
+                placeholder={`Filter tasks by concerns (${selectedConcerns[routineId].length})`}
+                defaultData={[...new Set(allActiveTasks.map((t) => t.concern))]}
+                setData={handleSelectConcern}
               />
               <AccordionRowMenu redirectWithDate={redirectWithDate} isSelf={isSelf} />
             </Group>
@@ -280,19 +310,25 @@ export default function AccordionRoutineRow({
           )}
         </Accordion.Control>
         <Accordion.Panel>
-          {allActiveTasks.map((task, i) => (
-            <AccordionTaskRow
-              key={i}
-              data={task}
-              isSelf={isSelf}
-              routineId={routine._id}
-              handleCloneTask={handleCloneTask}
-              openTaskDetails={openTaskDetails}
-              redirectWithDate={redirectWithDate}
-              redirectToTask={redirectToTask}
-              updateTaskStatus={updateTaskStatus}
-            />
-          ))}
+          {selectedTasks.length > 0 ? (
+            <>
+              {selectedTasks.map((task, i) => (
+                <AccordionTaskRow
+                  key={i}
+                  data={task}
+                  isSelf={isSelf}
+                  routineId={routine._id}
+                  handleCloneTask={handleCloneTask}
+                  openTaskDetails={openTaskDetails}
+                  redirectWithDate={redirectWithDate}
+                  redirectToTask={redirectToTask}
+                  updateTaskStatus={updateTaskStatus}
+                />
+              ))}
+            </>
+          ) : (
+            <OverlayWithText text="Nothing found" />
+          )}
         </Accordion.Panel>
       </Accordion.Item>
     </Skeleton>

@@ -9,9 +9,10 @@ import classes from "./DateSelector.module.css";
 
 type Props = {
   customStyles?: { [key: string]: any };
+  showCancelButton?: boolean;
 };
 
-function DateSelector({ customStyles }: Props) {
+function DateSelector({ customStyles, showCancelButton }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -80,7 +81,7 @@ function DateSelector({ customStyles }: Props) {
         onChange={changeDates}
         className={classes.picker}
       />
-      {(dateToParam || dateToParam) && (
+      {showCancelButton && (dateToParam || dateToParam) && (
         <ActionIcon variant="default" onClick={resetDates}>
           <IconX className="icon" />
         </ActionIcon>

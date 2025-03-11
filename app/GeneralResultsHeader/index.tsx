@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Group } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 import { createSpotlight } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -62,7 +62,7 @@ export default function GeneralResultsHeader({ children, filterNames = [] }: Pro
   return (
     <Group className={classes.container}>
       <Group className={classes.wrapper}>
-        <TitleDropdown titles={titles} />
+        <Title order={1}>Results</Title>
         {children}
         <FilterButton
           activeFiltersCount={paramsCount}

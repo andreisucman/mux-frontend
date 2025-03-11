@@ -2,20 +2,22 @@
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { IconCircleOff } from "@tabler/icons-react";
 import useSWR from "swr";
-import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
-import { upperFirst, useMediaQuery } from "@mantine/hooks";
+import { Carousel } from "@mantine/carousel";
+import { Loader, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import OverlayWithText from "@/components/OverlayWithText";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import fetchUserData from "@/functions/fetchUserData";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import CreateTaskOverlay from "./CreateTaskOverlay";
-import TaskRow from "./TaskRow";
 import TasksButtons from "./TasksButtons";
+import TasksSlide from "./TasksSlide";
 import classes from "./TasksList.module.css";
 
 type Props = {
@@ -48,20 +50,52 @@ export default function TasksList({ customStyles }: Props) {
     return datePassed && tasks && tasks.length > 0 && completedTasks.length > 0;
   }, [nextDiaryRecordAfter, tasks]);
 
-  useSWR(userId, () => fetchUserData({ setUserDetails }));
-
-  const taskGroups = useMemo(() => {
+  const todaysTasks = useMemo(() => {
     if (!tasks) return;
 
-    const tasksWithOnClick = tasks.map((fTask) => ({
-      ...fTask,
-      onClick: () => {
-        router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
-      },
-    }));
-    const parts = [...new Set(tasks.map((t) => t.part))];
+    const nextDay = new Date();
+    nextDay.setHours(23, 59, 59, 0);
 
-    return parts.map((part) => tasksWithOnClick.filter((t) => t.part === part));
+    const tasksWithOnClick = tasks
+      .filter((t) => new Date(t.startsAt) < nextDay)
+      .map((fTask) => ({
+        ...fTask,
+        onClick: () => {
+          router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
+        },
+      }));
+
+    const concerns = [...new Set(tasks.map((t) => t.concern))];
+
+    const data = concerns
+      .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
+      .filter((gr) => gr.length);
+
+    return data;
+  }, [tasks, canAddDiaryRecord]);
+
+  const tomorrowsTasks = useMemo(() => {
+    if (!tasks) return;
+
+    const nextDay = new Date();
+    nextDay.setHours(23, 59, 59, 0);
+
+    const tasksWithOnClick = tasks
+      .filter((t) => new Date(t.startsAt) > nextDay)
+      .map((fTask) => ({
+        ...fTask,
+        onClick: () => {
+          router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
+        },
+      }));
+
+    const concerns = [...new Set(tasks.map((t) => t.concern))];
+
+    const data = concerns
+      .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
+      .filter((gr) => gr.length);
+
+    return data;
   }, [tasks]);
 
   useEffect(() => {
@@ -70,16 +104,17 @@ export default function TasksList({ customStyles }: Props) {
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (taskGroups && taskGroups.length === 0) {
+    } else if (todaysTasks && todaysTasks.length === 0) {
       setDisplayComponent("createTaskOverlay");
-    } else if (taskGroups && taskGroups.length > 0) {
+    } else if (todaysTasks && todaysTasks.length > 0) {
       setDisplayComponent("content");
-    } else if (taskGroups === undefined) {
+    } else if (todaysTasks === undefined) {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, taskGroups, pageLoaded]);
+  }, [isAnalysisGoing, todaysTasks, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
+  useSWR(userId, () => fetchUserData({ setUserDetails }));
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
@@ -111,48 +146,35 @@ export default function TasksList({ customStyles }: Props) {
                   setDisplayComponent("loading");
                   deleteFromLocalStorage("runningAnalyses", "routine");
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: isMobile ? "17.5%" : "20%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: isMobile ? "15%" : "20%" }}
               />
             )}
             {displayComponent === "content" && (
-              <Stack className={classes.scrollArea}>
-                {taskGroups && (
-                  <Stack className={classes.listWrapper}>
-                    {canAddDiaryRecord && (
-                      <Button size="compact-sm" component={Link} href="/diary" c="white">
-                        Add a diary note for today
-                      </Button>
-                    )}
-                    {taskGroups.map((group, index) => {
-                      const name = group[0].part;
-                      return (
-                        <Stack key={index}>
-                          <Divider
-                            label={
-                              <Text c="dimmed" size="sm">
-                                {upperFirst(name)}
-                              </Text>
-                            }
-                          />
-                          {group.map((t, i) => (
-                            <TaskRow
-                              key={i}
-                              icon={t.icon}
-                              onClick={t.onClick}
-                              description={t.description}
-                              color={t.color}
-                              name={t.name}
-                              startsAt={t.startsAt}
-                              expiresAt={t.expiresAt}
-                              status={t.status}
-                            />
-                          ))}
-                        </Stack>
-                      );
-                    })}
-                  </Stack>
+              <Carousel
+                align="start"
+                slideGap={16}
+                slidesToScroll={1}
+                classNames={{
+                  root: classes.root,
+                  controls: classes.controls,
+                  control: `carouselControl ${classes.carouselControl}`,
+                  viewport: classes.viewport,
+                  container: classes.container,
+                }}
+              >
+                {todaysTasks && (
+                  <Carousel.Slide>
+                    <TasksSlide taskGroups={todaysTasks} canAddDiaryRecord={!!canAddDiaryRecord} />
+                  </Carousel.Slide>
                 )}
-              </Stack>
+                <Carousel.Slide>
+                  {tomorrowsTasks && tomorrowsTasks.length > 0 ? (
+                    <TasksSlide taskGroups={tomorrowsTasks} />
+                  ) : (
+                    <OverlayWithText text="No tasks for tomorrow" icon={<IconCircleOff className="icon" />} />
+                  )}
+                </Carousel.Slide>
+              </Carousel>
             )}
           </Stack>
         </CreateRoutineProvider>

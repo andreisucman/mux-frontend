@@ -1078,7 +1078,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             for the purpose of operating, maintaining, and improving the
             Services, as well as data related to your use of the Services. This
             includes, but is not limited to, personal information (such as your
-            age, sex, city, and country of residence), image, video, audio and text you
+            age, sex, and country of residence), image, video, audio and text you
             upload, and interactions within the "Club" (e.g., following or being
             followed by other users). We also collect data for analytical
             purposes.`}

@@ -9,6 +9,7 @@ import { ChatCategoryEnum } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import FoodTaskSelectionModalContent from "@/components/FoodTaskSelectionModalContent";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import PieChartComponent from "@/components/PieChart";
 import { CalorieGoalContext } from "@/context/CalorieGoalContext";
 import { UserContext } from "@/context/UserContext";
@@ -18,7 +19,6 @@ import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import { FoodAnalysisResponseType } from "./types";
 import classes from "./food.module.css";
-import PageHeader from "@/components/PageHeader";
 
 export const runtime = "edge";
 
@@ -95,7 +95,7 @@ export default function FoodScanResult() {
 
       if (!tasks) throw new Error("Tasks not found");
 
-      const foodTasks = tasks.filter((task) => task.isRecipe && task.status === "active");
+      const foodTasks = tasks.filter((task) => task.isDish && task.status === "active");
 
       if (foodTasks.length === 0) {
         openErrorModal({ description: "You don't have any active food tasks for today." });

@@ -156,9 +156,11 @@ export default function ScanProgress() {
                 <SexSelector updateOnServer />
                 {parts && (
                   <InputWithCheckboxes
-                    uploadedParts={uploadedParts}
+                    dataToIgnore={uploadedParts}
                     data={parts}
-                    setParts={setParts}
+                    setData={setParts}
+                    placeholder="Select part to upload"
+                    defaultData={["face", "mouth", "scalp", "body"]}
                   />
                 )}
               </>

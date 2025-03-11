@@ -3,10 +3,12 @@
 }
 
 .wrapper {
+  position: relative;
+  overflow: hidden;
   gap: rem(8);
   padding: 0 rem(16) 0 rem(12);
   background-color: var(--mantine-color-dark-6);
-  border-radius: var(--mantine-radius-lg);
+  border-radius: rem(4) var(--mantine-radius-lg) var(--mantine-radius-lg) rem(4);
   border-bottom: none;
   flex-wrap: nowrap;
   justify-content: space-between;

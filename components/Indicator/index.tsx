@@ -4,9 +4,10 @@ import classes from "./Indicator.module.css";
 
 type Props = {
   status: string;
+  customStyles?: { [key: string]: any };
 };
 
-export default function Indicator({ status }: Props) {
+export default function Indicator({ status, customStyles }: Props) {
   return (
     <div
       className={cn(classes.container, {
@@ -14,6 +15,7 @@ export default function Indicator({ status }: Props) {
         [classes.completed]: status === "completed",
         [classes.inactive]: status === "inactive",
       })}
+      style={customStyles || {}}
     />
   );
 }

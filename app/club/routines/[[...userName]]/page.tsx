@@ -62,6 +62,7 @@ export default function ClubRoutines(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
   const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
+  const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
 
   const { name, routines: currentUserRoutines, club, timeZone } = userDetails || {};
   const { followingUserName } = club || {};
@@ -256,18 +257,20 @@ export default function ClubRoutines(props: Props) {
 
   const accordionItems = useMemo(
     () =>
-      routines &&
-      routines.map((routine) => {
+      routines?.map((routine, i) => {
         return (
           <AccordionRoutineRow
             key={routine._id}
+            zIndex={routines.length - i}
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
+            selectedConcerns={selectedConcerns}
             selectedRoutineIds={selectedRoutineIds}
-            setSelectedRoutineIds={setSelectedRoutineIds}
             setRoutines={setRoutines}
             openTaskDetails={openTaskDetails}
+            setSelectedConcerns={setSelectedConcerns}
+            setSelectedRoutineIds={setSelectedRoutineIds}
           />
         );
       }),
@@ -336,6 +339,7 @@ export default function ClubRoutines(props: Props) {
                   value={openValue}
                   onChange={setOpenValue}
                   chevron={false}
+                  variant="separated"
                   className={`${classes.accordion} scrollbar`}
                   classNames={{
                     content: classes.content,

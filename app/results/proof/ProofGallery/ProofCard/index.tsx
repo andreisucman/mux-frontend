@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
-import { Skeleton, Stack, Title } from "@mantine/core";
+import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import DeleteContentButton from "@/components/DeleteContentButton";
@@ -50,6 +50,30 @@ function ProofCard({
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
   const concernName = useMemo(() => normalizeString(concern), [concern]);
 
+  const handleClick = useCallback(() => {
+    const title = isPublicPage ? (
+      getRedirectModalTitle({
+        avatar,
+        redirectUrl: `/club/routines/${userName}`,
+        title: userName,
+      })
+    ) : (
+      <Group gap={12}>
+        {icon}
+        <Title order={5} component={"p"} lineClamp={1}>
+          {taskName}
+        </Title>
+      </Group>
+    );
+
+    openResultModal({
+      record: data,
+      type: "proof",
+      title,
+      isPublicPage,
+    });
+  }, [isPublicPage, data, userName]);
+
   const showSkeleton = useShowSkeleton();
 
   return (
@@ -62,6 +86,7 @@ function ProofCard({
             url={mainUrl?.url}
             createdAt={createdAt}
             thumbnail={mainThumbnail?.url}
+            onClick={handleClick}
             playOnBufferEnd
             disabled
           />
@@ -70,6 +95,7 @@ function ProofCard({
             image={mainUrl?.url}
             date={formattedDate}
             datePosition="bottom-right"
+            onClick={handleClick}
             showDate={false}
           />
         )}

@@ -24,6 +24,7 @@
 .root {
   border: none;
   overflow: auto;
+  flex: 1;
 }
 
 .control {

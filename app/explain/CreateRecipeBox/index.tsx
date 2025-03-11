@@ -127,7 +127,7 @@ export default function CreateRecipeBox({
         disabled={!canCreateRecipe || isDisabled}
         onClick={openEditTaskModal}
       >
-        Create a {canPersonalize ? "new" : ""} recipe
+        Create another recipe
       </Button>
     </Group>
   );

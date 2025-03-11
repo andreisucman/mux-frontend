@@ -348,6 +348,7 @@ export default function Calendar() {
         children={<DateSelector />}
         showReturn
         nowrapTitle
+        nowrapContainer
       />
       <SkeletonWrapper show={!selectedTasks}>
         <DatePicker
