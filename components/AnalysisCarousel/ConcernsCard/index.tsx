@@ -5,7 +5,6 @@ import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
-import { maintenanceConcerns } from "@/app/sort-concerns/maintenanceConcerns";
 import GlowingButton from "@/components/GlowingButton";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router";
@@ -21,7 +20,7 @@ type Props = {
   latestScores?: LatestScoresType;
 };
 
-function ConcernsCard({ status, userId, latestScores, concerns, title }: Props) {
+function ConcernsCard({ status, userId, concerns, title }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { height: containerHeight, ref } = useElementSize();
@@ -47,26 +46,11 @@ function ConcernsCard({ status, userId, latestScores, concerns, title }: Props) 
     }
   }, [status, userId, isLoading]);
 
-  const finalConcerns = useMemo(() => {
-    if (!latestScores) return concerns;
-    const parts = Object.entries(latestScores)
-      .filter(([key, value]) => key !== "overall" && !!value)
-      .map((gr) => gr[0]);
-    const concernParts = concerns.map((c) => c.part);
-    const partsWithoutConcerns = parts.filter((p: any) => !concernParts.includes(p));
-    const maintenanceConcernsToAdd = maintenanceConcerns.filter((c) =>
-      partsWithoutConcerns.includes(c.part)
-    );
-    return [...concerns, ...maintenanceConcernsToAdd];
-  }, [concerns, latestScores]);
-
   const maxHeight = useMemo(() => {
-    const elementsMaxHeight = finalConcerns.length * 100 + (finalConcerns.length - 1) * 16;
+    const elementsMaxHeight = concerns.length * 100 + (concerns.length - 1) * 16;
     const containerMaxHeight = containerHeight - 16 - 38;
     return Math.min(elementsMaxHeight, containerMaxHeight);
-  }, [finalConcerns.length, containerHeight > 0]);
-
-  console.log("finalConcerns", finalConcerns);
+  }, [concerns.length, containerHeight > 0]);
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
@@ -78,7 +62,7 @@ function ConcernsCard({ status, userId, latestScores, concerns, title }: Props) 
           Start your change
         </Title>
         <Stack className={classes.wrapper}>
-          <ConcernsSortCard concerns={finalConcerns} maxHeight={maxHeight} disabled />
+          <ConcernsSortCard concerns={concerns} maxHeight={maxHeight} disabled />
           <GlowingButton
             loading={isLoading}
             disabled={isLoading}

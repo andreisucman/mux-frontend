@@ -33,6 +33,7 @@ export default function ComparisonCarousel({ data }: Props) {
       record: data,
       isPublicPage: true,
       title: modalTitle,
+      type: "progress",
     });
   }, [userName, part, formattedDate]);
 

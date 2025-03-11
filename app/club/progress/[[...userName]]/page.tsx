@@ -75,6 +75,7 @@ export default function ClubProgress(props: Props) {
     (data: SimpleProgressType) =>
       openResultModal({
         record: data,
+        type: "progress",
         title: (
           <Title order={5} component={"p"}>
             {upperFirst(data.part)} progress

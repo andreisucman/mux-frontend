@@ -21,7 +21,6 @@ import { AuthStateEnum } from "@/context/UserContext/types";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
-import uploadToSpaces from "@/functions/uploadToSpaces";
 import CoachIsTiredModalContent from "@/helpers/CoachIsTiredModalContent";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import modifyQuery from "@/helpers/modifyQuery";
@@ -29,8 +28,6 @@ import openErrorModal from "@/helpers/openErrorModal";
 import openPaymentModal from "@/helpers/openPaymentModal";
 import { SexEnum, UserDataType } from "@/types/global";
 import EnergyIndicator from "../EnergyIndicator";
-import ImageUploadButton from "./ImageUploadButton";
-import InputImagePreview from "./InputImagePreview";
 import { MessageContent, MessageType } from "./types";
 import classes from "./ChatInput.module.css";
 
@@ -91,7 +88,6 @@ export default function ChatInput({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [currentMessage, setCurrentMessage] = useState("");
-  const [images, setImages] = useState<File[]>([]);
   const [showStarterQuestions, setShowStarterQuestions] = useState(false);
   const [showChat, setShowChat] = useState(false);
 
@@ -207,24 +203,6 @@ export default function ChatInput({
       try {
         const newMessages = [];
 
-        if (images.length > 0) {
-          const imageUrls = await uploadToSpaces({
-            itemsArray: images,
-          });
-
-          const imageMessages = imageUrls.map((imageUrl: string) => ({
-            role: "user",
-            content: [
-              {
-                type: "image_url",
-                image_url: { url: imageUrl },
-              },
-            ],
-          }));
-
-          newMessages.push(...imageMessages);
-        }
-
         newMessages.push({
           role: "user",
           content: messages,
@@ -232,7 +210,6 @@ export default function ChatInput({
 
         setCurrentMessage("");
         appendMessage(newMessages);
-        setImages([]);
 
         if (setIsThinking) setIsThinking(true);
 
@@ -329,7 +306,6 @@ export default function ChatInput({
     },
     [
       currentMessage,
-      images,
       additionalData,
       chatContentId,
       conversationId,
@@ -353,14 +329,6 @@ export default function ChatInput({
       }
     },
     [handleSubmit]
-  );
-
-  const previewImages = useMemo(
-    () =>
-      images.map((image, index) => (
-        <InputImagePreview key={index} image={image} setImages={setImages} />
-      )),
-    [images.length]
   );
 
   const finalDividerLabel = useMemo(
@@ -428,7 +396,7 @@ export default function ChatInput({
   return (
     <Stack className={classes.container}>
       {!hideDivider && <Divider label={finalDividerLabel} onClick={handleToggleChat} />}
-      {showStarterQuestions && images.length === 0 && (
+      {showStarterQuestions && (
         <Group className={classes.starterQuestions}>
           <Group className={classes.starterQuestionsWrapper}>{starterButtons}</Group>
         </Group>
@@ -438,7 +406,6 @@ export default function ChatInput({
           {heading}
           <form className={classes.enter} onSubmit={handleSubmit}>
             <Group className={classes.inputGroup} onClick={onClick}>
-              <Group className={classes.uploadRow}>{previewImages}</Group>
               <Textarea
                 value={currentMessage}
                 className={cn(classes.input, { [classes.disableInput]: disableFocus })}
@@ -450,13 +417,6 @@ export default function ChatInput({
                 tabIndex={disableFocus ? -1 : 0}
                 placeholder="Type your message"
                 data-autofocus={!disableFocus && autoFocus}
-                rightSection={
-                  <ImageUploadButton
-                    disabled={(images && images?.length >= 2) || false}
-                    setImages={setImages}
-                    uploadButtonId={`${chatCategory}-${chatContentId}`}
-                  />
-                }
                 autosize
               />
               <ActionIcon
