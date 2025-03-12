@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect } from "react";
-import { Stack, Table, Text, Title } from "@mantine/core";
+import { rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
@@ -16,17 +16,10 @@ import classes from "./join.module.css";
 
 export const runtime = "edge";
 
-const tableData = {
-  caption: "From their monthly subscription payment",
-  head: ["Event", "Reward"],
-  body: [["Follower", "50%"]],
-};
-
 export default function ClubJoin() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { club, canRejoinClubAfter } = userDetails || {};
-  const { payouts } = club || {};
 
   const cantJoinClubNow = new Date(canRejoinClubAfter || 0) > new Date();
 
@@ -40,7 +33,7 @@ export default function ClubJoin() {
     joinClub({
       router,
       setUserDetails,
-      redirectPath: "/club/admission",
+      redirectPath: "/club",
       closeModal: true,
     });
   }, [userDetails]);
@@ -60,12 +53,7 @@ export default function ClubJoin() {
 
   useEffect(() => {
     if (!club) return;
-
-    if (payouts?.detailsSubmitted) {
-      router.replace("/club");
-    } else {
-      router.replace("/club/admission");
-    }
+    router.replace("/club");
   }, [club]);
 
   return (
@@ -76,15 +64,15 @@ export default function ClubJoin() {
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>
             <Text ta="center">
-              When you join the Club you let other people see your progress to get inspired.
+              Club is a place where people share their routines, progress and feedback. Here you can
+              see what worked for others and monetize your achievements to help people like you get
+              a similar transformation.
             </Text>
-            <Text ta="center">You are rewarded for every user who follows you.</Text>
           </Stack>
-          <Table data={tableData} ta={"center"} classNames={{ th: classes.th, td: classes.td }} />
           <GlowingButton
             text="Join the Club"
             disabled={!!club}
-            containerStyles={{ margin: "auto" }}
+            containerStyles={{ margin: "auto", width: "100%", maxWidth: rem(300) }}
             onClick={onStart}
           />
         </Stack>

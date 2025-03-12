@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
-import { Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
@@ -8,7 +8,6 @@ import { useRouter } from "@/helpers/custom-router";
 import { getPartIcon } from "@/helpers/icons";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
-import MenuButtons from "./MenuButtons";
 import SocialsDisplayLine from "./SocialsDisplayLine";
 import classes from "./ClubProfilePreview.module.css";
 
@@ -16,7 +15,7 @@ type Props = {
   type: "you" | "member";
   isMini?: boolean;
   data?: ClubUserType | null;
-  showButtons?: boolean;
+  showButton?: boolean;
   showCollapseKey: string;
   customStyles?: { [key: string]: any };
 };
@@ -26,7 +25,7 @@ function ClubProfilePreview({
   data,
   isMini,
   showCollapseKey,
-  showButtons,
+  showButton,
   customStyles,
 }: Props) {
   const router = useRouter();
@@ -47,18 +46,12 @@ function ClubProfilePreview({
 
   const rowStyle: { [key: string]: any } = {};
 
-  const redirectToProgress = useCallback(() => {
+  const redirectToAbout = useCallback(() => {
     if (!data) return;
 
-    let url = `/club/progress/${name}`;
+    let url = `/club/${name}`;
 
     router.push(url);
-  }, [name]);
-
-  const redirectToRoutines = useCallback(() => {
-    if (!data) return;
-
-    router.push(`/club/routines/${name}`);
   }, [name]);
 
   const handleToggleCollapse = () => {
@@ -82,58 +75,61 @@ function ClubProfilePreview({
   );
 
   return (
-    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
-      <Group className={classes.row} style={rowStyle}>
-        {showCollapsedInfo && (
-          <Stack gap={rem(4)}>
-            <AvatarComponent avatar={avatar} />
-            {!isMini && (
-              <Text size="xs" c="dimmed" ta="center">
-                {upperFirst(type)}
-              </Text>
-            )}
-          </Stack>
-        )}
-
-        <Stack className={classes.content}>
-          <Group align="center" gap={8}>
-            <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
-              {chevron} {name}{" "}
-            </Title>
-            {!showCollapsedInfo && type === "you" && (
-              <Text size="xs" fw={"normal"} c="dimmed">
-                (You)
-              </Text>
-            )}
-          </Group>
-
-          <Collapse in={showCollapsedInfo}>
-            {!isMini && (
-              <Text size="sm" lineClamp={5} mb={2}>
-                {bio?.intro}
-              </Text>
-            )}
-            {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
-            {overall && overall > 0 ? (
-              <>
-                <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />
-                {nonZeroParts.map((obj, i) => (
-                  <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
-                ))}
-              </>
-            ) : (
-              <></>
-            )}
-          </Collapse>
+    <Group className={classes.container} style={customStyles ? customStyles : {}}>
+      {showCollapsedInfo && (
+        <Stack gap={rem(4)}>
+          <AvatarComponent avatar={avatar} />
+          {!isMini && (
+            <Text size="xs" c="dimmed" ta="center">
+              {upperFirst(type)}
+            </Text>
+          )}
         </Stack>
-      </Group>
-      {showButtons && (
-        <MenuButtons
-          redirectToProgress={redirectToProgress}
-          redirectToRoutines={redirectToRoutines}
-        />
       )}
-    </Stack>
+
+      <Stack className={classes.content}>
+        <Group align="center" gap={8}>
+          <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
+            {chevron} {name}{" "}
+          </Title>
+          {!showCollapsedInfo && type === "you" && (
+            <Text size="xs" fw={"normal"} c="dimmed">
+              (You)
+            </Text>
+          )}
+        </Group>
+
+        <Collapse in={showCollapsedInfo}>
+          {!isMini && (
+            <Text size="sm" lineClamp={5} mb={2}>
+              {bio?.intro}
+            </Text>
+          )}
+          {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
+          {overall && overall > 0 ? (
+            <>
+              <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />
+              {nonZeroParts.map((obj, i) => (
+                <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
+        </Collapse>
+      </Stack>
+
+      {showButton && (
+        <Button
+          variant={"default"}
+          size={showCollapsedInfo ? "sm" : "compact-sm"}
+          className={classes.button}
+          onClick={redirectToAbout}
+        >
+          Manage routines
+        </Button>
+      )}
+    </Group>
   );
 }
 

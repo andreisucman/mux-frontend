@@ -67,7 +67,6 @@ export default function ClubDataContextProvider({ children }: Props) {
     if (!name) return;
 
     const data: ClubUserType = {
-      _id: userId as string,
       name,
       bio: bio!,
       avatar: avatar!,

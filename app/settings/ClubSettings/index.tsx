@@ -12,7 +12,6 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import DataSharingSwitches from "@/app/club/admission/DataSharingSwitches";
 import AvatarComponent from "@/components/AvatarComponent";
 import AvatarEditor from "@/components/AvatarEditor";
 import SelectCountry from "@/components/SelectCountry";
@@ -284,7 +283,6 @@ export default function ClubSettings() {
             }
           />
         </Stack>
-        <DataSharingSwitches title="Data sharing" />
         <AddClubSocials title="Socials" />
         {country && (
           <Stack gap={8}>

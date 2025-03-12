@@ -1,0 +1,33 @@
+.container {
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+  gap: rem(12);
+}
+
+.inputWrapper {
+  flex-wrap: nowrap;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: rem(12);
+}
+
+.footer {
+  align-items: flex-end;
+}
+
+.label {
+  margin-left: rem(12);
+  font-size: rem(14);
+  font-weight: rem(600);
+  color: var(--mantine-color-dark-2);
+}
+
+.button {
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin-left: auto;
+  }
+}

@@ -1,0 +1,7 @@
+.container {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+}

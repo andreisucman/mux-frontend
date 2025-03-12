@@ -15,9 +15,7 @@ export type HeadValuePartsBoolean = {
 
 type ClubBioType = {
   intro: string;
-  about: string;
   socials: { value: string | null; label: string }[];
-  nextRegenerateBio: string | null;
 };
 
 export type ClubDataType = {
@@ -34,17 +32,15 @@ export type ClubDataType = {
   privacy: HeadValuePartsBoolean;
   nextAvatarUpdateAt: Date | null;
   nextNameUpdateAt: Date | null;
-  totalFollowers: number;
 };
 
 export type ClubUserType = {
   // if the user joined the club all of these fields must be populated with default empty values else the whole field is null
-  _id: string;
-  name: string;
-  bio: ClubBioType;
-  avatar: { [key: string]: any };
-  latestScores: LatestScoresType;
-  latestScoresDifference: LatestScoresDifferenceType;
+  name?: string;
+  bio?: ClubBioType;
+  avatar?: { [key: string]: any };
+  latestScores?: LatestScoresType;
+  latestScoresDifference?: LatestScoresDifferenceType;
 };
 
 export type DemographicsType = {
@@ -193,6 +189,40 @@ export type LatestScoresDifferenceType = {
   body: { [key: string]: number };
 };
 
+export type PurchaseType = {
+  _id: string;
+  name: string;
+  part: string;
+  paid: number;
+  isSubscribed: boolean;
+  transactionId: string;
+  createdAt: Date;
+  sellerId: string;
+  sellerName: string;
+  sellerAvatar: { [key: string]: any };
+  buyerId: string;
+  buyerName: string;
+  buyerAvatar: { [key: string]: any };
+};
+
+export type BuyerType = {
+  _id: string;
+  name: string;
+  part: string;
+  paid: number;
+  isSubscribed: boolean;
+  createdAt: Date;
+  buyerId: string;
+  buyerName: string;
+  buyerAvatar: { [key: string]: any };
+};
+
+type UserPurchaseType = {
+  sellerId: string;
+  part: string;
+  isSubscribed: boolean;
+};
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email?: string | null;
@@ -219,6 +249,7 @@ export interface UserDataType extends DefaultUserType {
   tasks: TaskType[];
   routines: RoutineType[];
   coachEnergy: number;
+  purchases: UserPurchaseType[];
   nutrition: {
     dailyCalorieGoal: number | null;
     recommendedDailyCalorieGoal: number | null;

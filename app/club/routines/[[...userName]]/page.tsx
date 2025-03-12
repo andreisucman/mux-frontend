@@ -110,27 +110,35 @@ export default function ClubRoutines(props: Props) {
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, followingUserName, routinesLength }: GetRoutinesProps) => {
-      try {
-        const response = await fetchRoutines({
-          skip,
-          sort,
-          part,
-          followingUserName,
-          routinesLength: routinesLength || 0,
-        });
+      const response = await fetchRoutines({
+        skip,
+        sort,
+        part,
+        followingUserName,
+        routinesLength: routinesLength || 0,
+      });
 
-        const { message } = response;
+      const { message } = response;
 
-        if (message) {
-          if (skip) {
-            setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
-            setHasMore(message.length === 21);
-          } else {
-            setRoutines(message.slice(0, 20));
-            if (!openValue) setOpenValue(message[0]?._id);
-          }
+      if (message) {
+        if (skip) {
+          setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
+          setHasMore(message.length === 21);
+        } else {
+          setRoutines(message.slice(0, 20));
+          if (!openValue) setOpenValue(message[0]?._id);
         }
-      } catch (err) {}
+
+        const newRoutineConcerns = message.reduce(
+          (a: { [key: string]: string[] }, c: RoutineType) => {
+            a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+            return a;
+          },
+          {}
+        );
+
+        setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+      }
     },
     [routines, selectedRoutineIds]
   );
@@ -265,16 +273,16 @@ export default function ClubRoutines(props: Props) {
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
-            selectedConcerns={selectedConcerns}
             selectedRoutineIds={selectedRoutineIds}
+            selectedConcerns={selectedConcerns}
+            setSelectedConcerns={setSelectedConcerns}
             setRoutines={setRoutines}
             openTaskDetails={openTaskDetails}
-            setSelectedConcerns={setSelectedConcerns}
             setSelectedRoutineIds={setSelectedRoutineIds}
           />
         );
       }),
-    [routines, isSelf, timeZone, selectedRoutineIds]
+    [routines, isSelf, timeZone, selectedConcerns, selectedRoutineIds]
   );
 
   useEffect(() => {

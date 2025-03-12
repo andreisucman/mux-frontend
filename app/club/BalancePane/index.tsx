@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { Alert, Button, Group, Stack, Text, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import Link from "@/helpers/custom-router/patch-router/link";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
 import { UserDataType } from "@/types/global";
@@ -11,43 +13,107 @@ import RedirectToWalletButton from "./RedirectToWalletButton";
 import classes from "./BalancePane.module.css";
 
 function BalancePane() {
+  const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState<string | null>(null);
 
-  const { club } = userDetails || {};
+  const { club, country } = userDetails || {};
   const { payouts } = club || {};
   const { balance, payoutsEnabled, disabledReason, detailsSubmitted } = payouts || {};
   const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
 
-  const onWithdraw = useCallback(async () => {
-    if (isLoading || balance === 0 || !payoutsEnabled) return;
-
-    setIsLoading(true);
-    try {
-      const response = await callTheServer({
-        endpoint: "withdrawReward",
-        method: "POST",
+  const openCountrySelectModal = useCallback(() => {
+    setLoadingButton("add");
+    if (!country) {
+      modals.openContextModal({
+        modal: "general",
+        centered: true,
+        innerProps: (
+          <SelectCountry
+            onClick={(newCountry: string) => handleSetCountryAndCreateAccount(newCountry)}
+          />
+        ),
+        title: (
+          <Title component={"p"} order={5}>
+            Enter your country
+          </Title>
+        ),
       });
-
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({
-            description: response.error,
-          });
-          return;
-        }
-        openInfoModal({ title: "✔️ Success!", description: response.message });
-
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          club: { ...prev.club, payouts: { ...prev.club?.payouts, balance: 0 } },
-        }));
-      }
-    } catch (err) {
-    } finally {
-      setIsLoading(false);
+      setLoadingButton(null);
+      return;
     }
-  }, [isLoading, balance, payoutsEnabled]);
+
+    handleCreateConnectAccount();
+  }, [country]);
+
+  const handleSetCountryAndCreateAccount = async (newCountry: string) => {
+    setLoadingButton("add");
+    const response = await callTheServer({
+      endpoint: "changeCountry",
+      method: "POST",
+      body: { newCountry },
+    });
+
+    if (response.status === 200) {
+      const { defaultClubPayoutData } = response.message;
+      setUserDetails((prev: UserDataType) => ({
+        ...prev,
+        country: newCountry,
+        club: { ...prev.club, payouts: defaultClubPayoutData },
+      }));
+
+      handleCreateConnectAccount();
+      modals.closeAll();
+    }
+
+    setLoadingButton(null);
+  };
+
+  const handleCreateConnectAccount = async () => {
+    setLoadingButton("bank");
+    const response = await callTheServer({
+      endpoint: "createConnectAccount",
+      method: "POST",
+    });
+
+    if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({ description: response.error });
+        setUserDetails((prev: UserDataType) => ({ ...prev, country: null }));
+        return;
+      }
+      router.push(response.message);
+    } else {
+      openErrorModal({ description: response.error });
+    }
+
+    setLoadingButton(null);
+  };
+
+  const onWithdraw = async () => {
+    if (loadingButton || balance === 0 || !payoutsEnabled) return;
+
+    setLoadingButton("withdraw");
+    const response = await callTheServer({
+      endpoint: "withdrawReward",
+      method: "POST",
+    });
+
+    if (response.status === 200) {
+      if (response.error) {
+        openErrorModal({
+          description: response.error,
+        });
+        return;
+      }
+      openInfoModal({ title: "✔️ Success!", description: response.message });
+
+      setUserDetails((prev: UserDataType) => ({
+        ...prev,
+        club: { ...prev.club, payouts: { ...prev.club?.payouts, balance: 0 } },
+      }));
+    }
+  };
 
   const displayBalance = useMemo(() => (balance ? balance?.toFixed(2) : 0), [balance]);
 
@@ -60,8 +126,8 @@ function BalancePane() {
           icon={<IconInfoCircle className="icon" />}
         >
           <Group gap={8}>
-            To enable withdrawals add your bank account.
-            <Button component={Link} href="/club/admission" ml="auto" size="compact-sm">
+            To activate your seller's profile add your bank account.
+            <Button ml="auto" size="compact-sm" onClick={openCountrySelectModal}>
               Add
             </Button>
           </Group>
@@ -106,8 +172,8 @@ function BalancePane() {
           ${displayBalance}
         </Title>
         <Button
-          disabled={!balance || !payoutsEnabled || isLoading}
-          loading={isLoading}
+          disabled={!balance || !payoutsEnabled || loadingButton === "withdraw"}
+          loading={loadingButton === "withdraw"}
           onClick={onWithdraw}
           size="compact-sm"
         >

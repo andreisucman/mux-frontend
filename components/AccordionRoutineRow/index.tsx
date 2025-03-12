@@ -145,6 +145,7 @@ export default function AccordionRoutineRow({
     ({ taskKey, page = "calendar" }: RedirectWithDateProps) => {
       const dateFrom = new Date(routine.startsAt);
       dateFrom.setHours(0, 0, 0, 0);
+
       const dateTo = new Date(routine.lastDate);
       dateTo.setDate(dateTo.getDate() + 1);
       dateTo.setHours(0, 0, 0, 0);

@@ -9,7 +9,6 @@ import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import ClubProfilePreview from "../ClubProfilePreview";
-import FollowOverlay from "./FollowOverlay";
 import PeekOverlay from "./PeekOverlay";
 import classes from "./ClubModerationLayout.module.css";
 
@@ -49,16 +48,7 @@ export default function ClubModerationLayout({ children, header, userName }: Pro
     if (isSelf) {
       setShowComponent("children");
     } else {
-      if (isSubscriptionActive) {
-        const follows = followingUserName === userName;
-        if (follows) {
-          setShowComponent("children");
-        } else {
-          setShowComponent("followOverlay");
-        }
-      } else {
-        setShowComponent("subscriptionOverlay");
-      }
+      setShowComponent("subscriptionOverlay");
     }
   }, [
     code,
@@ -91,12 +81,6 @@ export default function ClubModerationLayout({ children, header, userName }: Pro
             />
             {showComponent === "children" && children}
             {showComponent === "subscriptionOverlay" && <PeekOverlay userName={userName} />}
-            {showComponent === "followOverlay" && (
-              <FollowOverlay
-                userName={userName as string}
-                description={`Follow ${userName} to see their info.`}
-              />
-            )}
           </>
         )}
       </Skeleton>

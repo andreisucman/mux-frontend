@@ -1,8 +1,6 @@
 import {
-  IconBubbleText,
   IconCancel,
   IconCheckbox,
-  IconClipboardText,
   IconClock,
   IconDental,
   IconGenderFemale,
@@ -10,8 +8,8 @@ import {
   IconMan,
   IconMoodNeutral,
   IconNotebook,
+  IconRoute,
   IconTargetArrow,
-  IconUserCircle,
   IconVideo,
   IconWhirl,
 } from "@tabler/icons-react";
@@ -24,12 +22,10 @@ export const partIcons: { [key: string]: React.ReactNode } = {
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
-  about: <IconUserCircle className="icon" />,
-  routines: <IconClipboardText className="icon" />,
+  routines: <IconRoute className="icon" />,
   progress: <IconTargetArrow className="icon" />,
-  proof: <IconTargetArrow className="icon" />,
+  proof: <IconVideo className="icon" />,
   diary: <IconNotebook className="icon" />,
-  answers: <IconBubbleText className="icon" />,
 };
 
 export const sexIcons = {
@@ -43,7 +39,7 @@ export const statusIcons = {
   canceled: <IconCancel className="icon" style={{ display: "flex" }} />,
 };
 
-const getPartIcon = (key: string, className: string) => {
+const getPartIcon = (key: string, className = "") => {
   switch (key) {
     case "face":
       return <IconMoodNeutral className={`icon ${className}`} />;
@@ -58,16 +54,14 @@ const getPartIcon = (key: string, className: string) => {
 
 const getCategoryIcon = (key: string, className: string) => {
   switch (key) {
-    case "about":
-      return <IconUserCircle className={`icon ${className}`} />;
+    case "routines":
+      return <IconTargetArrow className={`icon ${className}`} />;
     case "progress":
       return <IconTargetArrow className={`icon ${className}`} />;
     case "proof":
       return <IconVideo className={`icon ${className}`} />;
     case "diary":
       return <IconNotebook className={`icon ${className}`} />;
-    case "answer":
-      return <IconBubbleText className={`icon ${className}`} />;
   }
 };
 

@@ -3,16 +3,7 @@
 }
 
 .wrapper {
-  margin-top: rem(32);
   gap: rem(24);
-}
-
-.th {
-  text-align: center;
-}
-
-.td {
-  font-size: rem(16);
 }
 
 .announcement {

@@ -177,15 +177,6 @@ function Header() {
                   spotlightStore={spotlightStore}
                   customConstructAction={constructUserActions}
                 />
-                <ActionIcon
-                  variant="default"
-                  size="lg"
-                  visibleFrom={status === "authenticated" ? undefined : "xs"}
-                  onClick={() => router.push("/")}
-                  aria-label="go to results page button"
-                >
-                  <IconTargetArrow stroke={1.25} className="icon icon__large" />
-                </ActionIcon>
 
                 {displayComponent === "userButton" && (
                   <UserButton avatar={avatar || null} name={name} handleSignOut={handleSignOut} />

@@ -9,7 +9,7 @@
   position: relative;
   flex-wrap: nowrap;
   background-color: var(--mantine-color-dark-6);
-  padding: 0 rem(16);
+  padding: 0 rem(16) 0 rem(4);
   border-radius: rem(4) var(--mantine-radius-lg) var(--mantine-radius-lg) rem(4);
   overflow: hidden;
 

@@ -2,7 +2,6 @@
   padding: rem(12) rem(16);
   gap: rem(8);
   width: 100%;
-  flex: 1;
 
   border-radius: var(--mantine-radius-lg);
   background-color: var(--mantine-color-dark-6);
@@ -19,6 +18,7 @@
   flex: 1;
   gap: rem(6);
   margin: auto;
+  flex-basis: 60%;
 }
 
 .name {
@@ -33,4 +33,10 @@
 
 .relative {
   position: relative;
+}
+
+.button {
+  flex: 1;
+  flex-basis: 25%;
+  min-width: rem(200);
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Stack, Text } from "@mantine/core";
-import PricingCard from "@/app/plans/PricingCard";
+import PricingCard from "@/components/PricingCard";
 
 type Props = {
   description?: string;

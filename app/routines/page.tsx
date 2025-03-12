@@ -20,7 +20,6 @@ import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTa
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import { RoutineType } from "@/types/global";
-import RoutineSelectionButtons from "../club/routines/[[...userName]]/RoutineSelectionButtons";
 import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
@@ -48,7 +47,6 @@ export default function ClubRoutines() {
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
-  const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
 
   const { userDetails } = useContext(UserContext);

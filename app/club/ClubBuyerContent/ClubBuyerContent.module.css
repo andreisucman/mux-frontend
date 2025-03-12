@@ -1,0 +1,10 @@
+.container {
+  flex: 1;
+  gap: rem(12);
+}
+
+.list {
+  flex: 1;
+  background-color: var(--mantine-color-dark-6);
+  border-radius: var(--mantine-radius-lg);
+}

@@ -1,74 +1,41 @@
 "use client";
 
-import React, { useCallback, useContext } from "react";
-import { Button, Group, rem, Stack, Text, Title } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import React, { useEffect, useState } from "react";
+import { SegmentedControl, Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
-import { ClubContext } from "@/context/ClubDataContext";
-import { UserContext } from "@/context/UserContext";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import SkeletonWrapper from "../SkeletonWrapper";
-import BalancePane from "./BalancePane";
-import ClubProfilePreview from "./ClubProfilePreview";
-import FollowersList from "./FollowersList";
-import FollowHistoryModalContent from "./FollowHistoryModalContent";
+import ClubBuyerContent from "./ClubBuyerContent";
+import ClubSellerContent from "./ClubSellerContent";
 import classes from "./club.module.css";
 
 export const runtime = "edge";
 
+const segments = [
+  { label: "Buyer", value: "buyer" },
+  { label: "Seller", value: "seller" },
+];
+
 export default function Club() {
-  const { userDetails } = useContext(UserContext);
-  const { youFollowData, youData, youFollowDataFetched } = useContext(ClubContext);
+  const [selectedSegment, setSelectedSegment] = useState<string>();
+  const savedSegment = getFromLocalStorage("clubSegment");
 
-  const { club, name } = userDetails || {};
-  const { followingUserName, totalFollowers } = club || {};
+  useEffect(() => {
+    if (savedSegment && typeof savedSegment === "string") setSelectedSegment(savedSegment);
+  }, [savedSegment]);
 
-  const openFollowHistory = useCallback(() => {
-    modals.openContextModal({
-      modal: "general",
-      title: (
-        <Title order={5} component={"p"}>
-          Follow history
-        </Title>
-      ),
-      centered: true,
-      size: "sm",
-      styles: { body: { minHeight: rem(80) } },
-      innerProps: <FollowHistoryModalContent />,
-    });
-  }, []);
+  const handleChangeSegment = (segment: string) => {
+    setSelectedSegment(segment);
+    saveToLocalStorage("clubSegment", segment);
+  };
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper show={!youFollowDataFetched}>
-        <PageHeader
-          title="Club"
-          children={
-            <Button onClick={openFollowHistory} size="compact-sm" variant="default">
-              Follow history
-            </Button>
-          }
-          showReturn
-        />
-        <Group className={classes.top}>
-          {name && (
-            <ClubProfilePreview data={youData} type="you" showCollapseKey={name} showButtons />
-          )}
-          {followingUserName && (
-            <ClubProfilePreview
-              data={youFollowData}
-              type="member"
-              showCollapseKey={followingUserName}
-              showButtons
-            />
-          )}
-        </Group>
-        <BalancePane />
-        <Stack className={classes.followYou}>
-          <Text c="dimmed" size="sm">
-            Follow you ({totalFollowers || 0})
-          </Text>
-          <FollowersList />
-        </Stack>
+      <PageHeader title="Club profile" showReturn />
+      <SkeletonWrapper>
+        <SegmentedControl value={selectedSegment} data={segments} onChange={handleChangeSegment} />
+        {selectedSegment === "buyer" && <ClubBuyerContent />}
+        {selectedSegment === "seller" && <ClubSellerContent />}
       </SkeletonWrapper>
     </Stack>
   );

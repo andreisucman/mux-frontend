@@ -12,9 +12,8 @@ export const taskStatuses = [
 ];
 
 export const clubPageTypeItems: { label: string; value: string }[] = [
-  { label: "About", value: "about" },
   { label: "Routines", value: "routines" },
-  { label: "Results", value: "progress" },
+  { label: "Progress", value: "progress" },
   { label: "Diary", value: "diary" },
-  { label: "Answers", value: "answers" },
+  { label: "Proof", value: "proof" },
 ];

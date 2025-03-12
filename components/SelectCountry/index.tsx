@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Button, Stack, Text, TextInput } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
 import classes from "./SelectCountry.module.css";
@@ -16,7 +16,7 @@ export default function SelectCountry({ onClick }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState<string>("");
 
-  const handleClick = useCallback(async () => {
+  const handleClick = async () => {
     if (isLoading) return;
     if (!country?.trim()) return;
 
@@ -41,7 +41,7 @@ export default function SelectCountry({ onClick }: Props) {
     } catch (err) {
       setIsLoading(false);
     }
-  }, [country, isLoading]);
+  };
 
   return (
     <Stack className={classes.container}>

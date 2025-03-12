@@ -18,6 +18,7 @@ type Props = {
   dataToIgnore?: string[];
   withPills?: boolean;
   placeholder: string;
+  readOnly?: boolean;
   setData: (items: string[]) => void;
 };
 
@@ -27,6 +28,7 @@ export default function InputWithCheckboxes({
   withPills,
   placeholder,
   defaultData,
+  readOnly,
   setData,
 }: Props) {
   const combobox = useCombobox({
@@ -76,7 +78,12 @@ export default function InputWithCheckboxes({
   });
 
   return (
-    <Combobox store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+    <Combobox
+      readOnly={readOnly}
+      store={combobox}
+      onOptionSubmit={handleValueSelect}
+      withinPortal={false}
+    >
       <Combobox.DropdownTarget>
         <PillsInput pointer onClick={() => combobox.toggleDropdown()} flex={1}>
           <Pill.Group className={classes.pillGroup}>
@@ -89,6 +96,7 @@ export default function InputWithCheckboxes({
             )}
             <Combobox.EventsTarget>
               <PillsInput.Field
+                readOnly={readOnly}
                 type="hidden"
                 onBlur={() => combobox.closeDropdown()}
                 onKeyDown={(event) => {

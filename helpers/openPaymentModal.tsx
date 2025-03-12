@@ -6,9 +6,8 @@ import { modals } from "@mantine/modals";
 import {
   advisorCoachContent,
   improvementCoachContent,
-  peekLicenseContent,
   scanAnalysisContent,
-} from "@/app/plans/pricingData";
+} from "@/data/pricingData";
 import SubscriptionModalContent from "./SubscriptionModalContent";
 
 type Props = {
@@ -48,9 +47,6 @@ export default function openPaymentModal({
       break;
     case "advisor":
       content = advisorCoachContent;
-      break;
-    case "peek":
-      content = peekLicenseContent;
       break;
     case "scan":
       content = scanAnalysisContent;

@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import {
-  IconCamera,
-  IconCash,
-  IconEye,
-  IconLock,
-  IconRating18Plus,
-  IconTargetOff,
-} from "@tabler/icons-react";
+import { IconCamera, IconCash, IconEye, IconLock, IconTargetOff } from "@tabler/icons-react";
 import { rem, Stack, Table, Text } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import TosCheckbox from "@/components/TosCheckbox";
@@ -18,34 +11,24 @@ import classes from "./JoinClubConfirmation.module.css";
 const confirmData = {
   body: [
     [
-      <IconEye className="icon icon__title" />,
-      "Joining the Club lets you buy the Peek license to see the public data of other Club members.",
+      <IconEye className="icon icon__big" style={{display: "flex"}} />,
+      "Joining the Club lets you access other Club members.",
     ],
-    [
-      <IconLock className="icon icon__title" />,
-      "Your data is private when you join the Club. You can turn on data sharing in the settings.",
-    ],
+    [<IconLock className="icon icon__big" style={{display: "flex"}} />, "Your data is private when you join the Club."],
   ],
 };
 
 const startData = {
   body: [
     [
-      <IconCamera className="icon icon__title" />,
-      "All of your uploaded data is private by default. You can make it public in the settings.",
+      <IconCamera className="icon icon__big" style={{display: "flex"}} />,
+      "All of your data remains private.",
     ],
     [
-      <IconCash className="icon icon__title" />,
-      "You will earn a share of the subscription fee from each follower. The payments will be deposited to your bank account.",
+      <IconCash className="icon icon__big" style={{display: "flex"}} />,
+      "You can buy other members' routines or sell yours.",
     ],
-    [
-      <IconTargetOff className="icon icon__title" />,
-      "If you leave the Club the data you've made public (if you made it public) will become private immediately.",
-    ],
-    [
-      <IconRating18Plus className="icon icon__title" />,
-      "You must be over 18 years old to join the Club. Your age will be verified during the registration.",
-    ],
+    [<IconTargetOff className="icon icon__big" style={{display: "flex"}} />, "You can leave at any time."],
   ],
 };
 

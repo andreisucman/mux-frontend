@@ -1,6 +1,6 @@
 .td {
+  font-size: rem(16);
   &:first-child {
-    font-size: rem(32);
     text-align: center;
   }
 }

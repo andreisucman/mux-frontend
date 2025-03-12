@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Group, Stack, Text, Title } from "@mantine/core";
+import { IconBubbleText, IconHandGrab, IconNotebook } from "@tabler/icons-react";
+import { Group, Overlay, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import PricingCard from "@/app/plans/PricingCard";
-import { peekLicenseContent } from "@/app/plans/pricingData";
+import PricingCard from "@/components/PricingCard";
 import { UserContext } from "@/context/UserContext";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import joinClub from "@/functions/joinClub";
@@ -94,7 +94,7 @@ export default function PeekOverlay({ description, userName }: Props) {
         innerProps: (
           <JoinClubConfirmation
             handleJoinClub={handleJoinClub}
-            description="To get the Peek license you have to join the Club first."
+            description="To buy a routine you have to join the Club first."
             type="confirm"
           />
         ),
@@ -134,9 +134,25 @@ export default function PeekOverlay({ description, userName }: Props) {
     }
   }, [userDetails, redirectUrl]);
 
+  const peekLicenseContent = [
+    {
+      icon: <IconHandGrab className="icon icon__large" />,
+      description: "See and copy the routines.",
+    },
+    {
+      icon: <IconNotebook className="icon icon__large" />,
+      description: "Read the progress diary.",
+    },
+    {
+      icon: <IconBubbleText className="icon icon__large" />,
+      description: "See the proofs of each completed task of the routine.",
+    },
+  ];
+
   return (
     <Stack className={classes.container}>
       {description && <Text className={classes.text}>{description}</Text>}
+      <Overlay opacity={0.1} radius={16} />
       <PricingCard
         price={
           <Group className="priceGroup">

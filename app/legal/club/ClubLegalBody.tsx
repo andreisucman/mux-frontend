@@ -143,15 +143,17 @@ export default function ClubLegalBody({ addTitle }: Props) {
           <li>
             <strong>Public Content:</strong> When you enable data sharing, different types of data
             are made available to different types of users as follows:
-            <li>
-              The progress and proof data is displayed on the home page of the platform and is
-              viewable by anyone.
-            </li>
-            <li>The diary and answers are accessible by your followers only.</li>
-            <li>
-              The about info is accessible by your followers who have the 'Advisor coach' addon
-              enabled, through the chat.
-            </li>
+            <ul>
+              <li>
+                The progress and proof data is displayed on the home page of the platform and is
+                viewable by anyone.
+              </li>
+              <li>The diary and answers are accessible by your followers only.</li>
+              <li>
+                The about info is accessible by your followers who have the 'Advisor coach' addon
+                enabled, through the chat.
+              </li>
+            </ul>
           </li>
           <li>
             <strong>Private Content:</strong> Any content you upload is private by default, unless

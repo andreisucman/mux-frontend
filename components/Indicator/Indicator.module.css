@@ -8,6 +8,16 @@
   background-color: var(--mantine-color-red-6);
 }
 
+.round {
+  min-width: rem(10);
+  min-height: rem(10);
+  border-radius: rem(100);
+}
+
+.static {
+  position: static;
+}
+
 .active {
   background-color: var(--mantine-color-green-6);
 }
