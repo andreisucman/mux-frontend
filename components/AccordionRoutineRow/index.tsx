@@ -285,6 +285,7 @@ export default function AccordionRoutineRow({
                 placeholder={`Filter tasks by concerns (${selectedConcerns[routineId].length})`}
                 defaultData={[...new Set(allActiveTasks.map((t) => t.concern))]}
                 setData={handleSelectConcern}
+                readOnly
               />
               <AccordionRowMenu redirectWithDate={redirectWithDate} isSelf={isSelf} />
             </Group>

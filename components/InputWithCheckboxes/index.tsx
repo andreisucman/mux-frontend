@@ -85,7 +85,12 @@ export default function InputWithCheckboxes({
       withinPortal={false}
     >
       <Combobox.DropdownTarget>
-        <PillsInput pointer onClick={() => combobox.toggleDropdown()} flex={1}>
+        <PillsInput
+          itemType={readOnly ? "button" : "text"}
+          pointer
+          onClick={() => combobox.toggleDropdown()}
+          flex={1}
+        >
           <Pill.Group className={classes.pillGroup}>
             {withPills ? (
               <>
