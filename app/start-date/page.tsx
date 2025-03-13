@@ -116,7 +116,7 @@ export default function StartDate() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title="Choose start date" showReturn />
+        <PageHeader title="Choose start date" />
         <InstructionContainer
           title="Instructions"
           instruction={"Choose the start date of your routine."}

@@ -318,7 +318,6 @@ export default function Explain(props: Props) {
             </>
           }
           nowrapContainer
-          showReturn
         />
         <Stack flex={1} style={pageLoaded ? {} : { visibility: "hidden" }}>
           {showWaitComponent ? (

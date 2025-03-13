@@ -20,7 +20,6 @@ type Props = {
   userName: string;
   titles?: { label: string; value: string }[];
   isDisabled?: boolean;
-  showReturn?: boolean;
   childrenPosition?: "first" | "last";
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
@@ -32,7 +31,6 @@ export default function PageHeaderClub({
   title,
   titles,
   nowrap,
-  showReturn,
   isDisabled,
   sortItems,
   filterNames = [],
@@ -76,11 +74,9 @@ export default function PageHeaderClub({
 
   return (
     <Group className={classes.container}>
-      {showReturn && (
-        <ActionIcon variant="default" onClick={() => router.back()}>
-          <IconChevronLeft className="icon" />
-        </ActionIcon>
-      )}
+      <ActionIcon variant="default" onClick={() => router.back()}>
+        <IconChevronLeft className="icon" />
+      </ActionIcon>
       {finalTitle}
       {childrenPosition === "first" && children}
       {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}

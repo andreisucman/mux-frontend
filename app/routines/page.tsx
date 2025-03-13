@@ -100,7 +100,6 @@ export default function ClubRoutines() {
       routines?.map((routine, i) => {
         return (
           <AccordionRoutineRow
-            zIndex={routines.length - i}
             key={routine._id}
             routine={routine}
             timeZone={timeZone}
@@ -170,7 +169,6 @@ export default function ClubRoutines() {
               },
             })
           }
-          showReturn
         />
         <ConsiderationsInput
           placeholder={"Special considerations"}

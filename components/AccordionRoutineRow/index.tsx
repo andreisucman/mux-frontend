@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { IconRefresh } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, Button, Checkbox, Group, Skeleton, Text, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { upperFirst, useFocusWithin } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
@@ -25,7 +25,6 @@ import classes from "./AccordionRoutineRow.module.css";
 type Props = {
   routine: RoutineType;
   isSelf: boolean;
-  zIndex: number;
   timeZone?: string;
   selectedRoutineIds?: string[];
   selectedConcerns: { [key: string]: string[] };
@@ -44,7 +43,6 @@ export default function AccordionRoutineRow({
   routine,
   timeZone,
   isSelf,
-  zIndex,
   selectedConcerns,
   selectedRoutineIds,
   setRoutines,
@@ -52,6 +50,7 @@ export default function AccordionRoutineRow({
   setSelectedConcerns,
   setSelectedRoutineIds,
 }: Props) {
+  const { ref, focused } = useFocusWithin();
   const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
 
   const router = useRouter();
@@ -254,7 +253,12 @@ export default function AccordionRoutineRow({
   );
 
   return (
-    <Skeleton visible={showSkeleton} className={classes.skeleton} style={{ zIndex }}>
+    <Skeleton
+      visible={showSkeleton}
+      className={classes.skeleton}
+      style={focused ? { zIndex: 100 } : {}}
+      ref={ref}
+    >
       <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>

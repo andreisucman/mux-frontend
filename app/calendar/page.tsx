@@ -346,7 +346,6 @@ export default function Calendar() {
         title="My calendar"
         isDisabled={mode === "individual"}
         children={<DateSelector />}
-        showReturn
         nowrapTitle
         nowrapContainer
       />

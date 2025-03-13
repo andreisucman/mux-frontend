@@ -122,7 +122,6 @@ export default function RoutinesHistoryPage() {
               },
             })
           }
-          showReturn
         />
         <Stack className={classes.content}>
           {inactiveTasks ? (

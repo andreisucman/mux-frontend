@@ -113,7 +113,6 @@ export default function ClubProgress(props: Props) {
               },
             })
           }
-          showReturn
         />
       }
       userName={userName}

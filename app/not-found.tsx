@@ -1,13 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import { Button, Stack } from "@mantine/core";
+import { nprogress } from "@mantine/nprogress";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import notFoundImage from "@/public/assets/not-found.svg";
 import classes from "./not-found.module.css";
 
 export default function NotFoundPage() {
   const router = useRouter();
+
+  useEffect(() => {
+    nprogress.cleanup();
+  }, []);
 
   const handleNavigation = () => {
     const previousURL = document.referrer;

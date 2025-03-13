@@ -11,8 +11,8 @@ import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
-import ClubModerationLayout from "../../ModerationLayout";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
 
@@ -101,7 +101,6 @@ export default function ClubProof(props: Props) {
               },
             })
           }
-          showReturn
         />
       }
       userName={userName}

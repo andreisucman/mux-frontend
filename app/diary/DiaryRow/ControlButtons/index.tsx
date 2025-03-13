@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Group, LoadingOverlay, Stack } from "@mantine/core";
-import RecordingButton from "@/app/club/answers/RecordingButton";
+import RecordingButton from "@/app/club/RecordingButton";
 import classes from "./ControlButtons.module.css";
 
 type Props = {

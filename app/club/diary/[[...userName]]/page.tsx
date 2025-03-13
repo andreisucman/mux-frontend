@@ -86,7 +86,6 @@ export default function DiaryPage(props: Props) {
             })
           }
           isDisabled={noResults}
-          showReturn
         />
       }
       userName={userName}

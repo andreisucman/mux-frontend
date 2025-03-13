@@ -1,6 +1,5 @@
 .pillGroup {
   flex-wrap: nowrap;
-  justify-content: center;
 }
 
 .dropdown {
@@ -11,4 +10,5 @@
 .placeholderText {
   text-align: center;
   font-size: var(--mantine-font-size-sm);
+  margin: auto;
 }

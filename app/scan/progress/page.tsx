@@ -161,7 +161,7 @@ export default function ScanProgress() {
                     setData={setParts}
                     placeholder="Select part to upload"
                     defaultData={["face", "mouth", "scalp", "body"]}
-                    readOnly
+                    withPills
                   />
                 )}
               </>

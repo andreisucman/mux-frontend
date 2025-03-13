@@ -31,7 +31,7 @@ export default function Club() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Club profile" showReturn />
+      <PageHeader title="Club profile" />
       <SkeletonWrapper>
         <SegmentedControl value={selectedSegment} data={segments} onChange={handleChangeSegment} />
         {selectedSegment === "buyer" && <ClubBuyerContent />}

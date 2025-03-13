@@ -17,7 +17,7 @@ const fakeCards = [
 export default function ManageRoutines() {
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Manage routines" showReturn />
+      <PageHeader title="Manage routines" />
       <SkeletonWrapper>
         <Stack className={classes.content}>
           {fakeCards.map((c, i) => (

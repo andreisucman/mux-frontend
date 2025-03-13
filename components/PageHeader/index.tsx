@@ -13,7 +13,6 @@ type Props = {
   title?: string | React.ReactNode;
   titles?: TitleType[];
   isDisabled?: boolean;
-  showReturn?: boolean;
   hidePartDropdown?: boolean;
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
@@ -29,7 +28,6 @@ export default function PageHeader({
   titles,
   nowrapTitle,
   nowrapContainer,
-  showReturn,
   isDisabled,
   sortItems,
   filterNames = [],
@@ -67,11 +65,9 @@ export default function PageHeader({
 
   return (
     <Group className={cn(classes.container, { [classes.nowrapContainer]: nowrapContainer })}>
-      {showReturn && (
-        <ActionIcon variant="default" onClick={() => router.back()}>
-          <IconChevronLeft className="icon" />
-        </ActionIcon>
-      )}
+      <ActionIcon variant="default" onClick={() => router.back()}>
+        <IconChevronLeft className="icon" />
+      </ActionIcon>
       {finalTitle}
       {children}
       {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}

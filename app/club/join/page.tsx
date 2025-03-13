@@ -59,7 +59,7 @@ export default function ClubJoin() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title="Join the Club" hidePartDropdown showReturn />
+        <PageHeader title="Join the Club" hidePartDropdown />
         <Stack className={classes.wrapper}>
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>

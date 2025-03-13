@@ -269,7 +269,6 @@ export default function ClubRoutines(props: Props) {
         return (
           <AccordionRoutineRow
             key={routine._id}
-            zIndex={routines.length - i}
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
@@ -320,7 +319,6 @@ export default function ClubRoutines(props: Props) {
               },
             })
           }
-          showReturn
         />
       }
       userName={userName}

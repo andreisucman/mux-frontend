@@ -16,23 +16,20 @@ const categories = [
 ];
 
 type Props = {
-  showReturn?: boolean;
   title: string;
   type?: string | null;
   onTypeChange?: (newType?: null | string) => void;
 };
 
-export default function AnalysisHeader({ title, showReturn }: Props) {
+export default function AnalysisHeader({ title }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
   return (
     <Group>
-      {showReturn && (
-        <ActionIcon variant="default" onClick={() => router.back()}>
-          <IconChevronLeft className="icon" />
-        </ActionIcon>
-      )}
+      <ActionIcon variant="default" onClick={() => router.back()}>
+        <IconChevronLeft className="icon" />
+      </ActionIcon>
       <Title order={1} mr="auto">
         {title}
       </Title>

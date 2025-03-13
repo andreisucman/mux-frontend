@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -44,16 +44,6 @@ function ClubProfilePreview({
     [latestScoresDifference]
   );
 
-  const rowStyle: { [key: string]: any } = {};
-
-  const redirectToAbout = useCallback(() => {
-    if (!data) return;
-
-    let url = `/club/${name}`;
-
-    router.push(url);
-  }, [name]);
-
   const handleToggleCollapse = () => {
     setShowCollapsedInfo((prev) => {
       saveToIndexedDb(`showUserProfileInfo-${showCollapseKey}`, !prev);
@@ -76,23 +66,14 @@ function ClubProfilePreview({
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
-      {showCollapsedInfo && (
-        <Stack gap={rem(4)}>
-          <AvatarComponent avatar={avatar} />
-          {!isMini && (
-            <Text size="xs" c="dimmed" ta="center">
-              {upperFirst(type)}
-            </Text>
-          )}
-        </Stack>
-      )}
+      {showCollapsedInfo && <AvatarComponent avatar={avatar} />}
 
       <Stack className={classes.content}>
         <Group align="center" gap={8}>
           <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
             {chevron} {name}{" "}
           </Title>
-          {!showCollapsedInfo && type === "you" && (
+          {type === "you" && (
             <Text size="xs" fw={"normal"} c="dimmed">
               (You)
             </Text>
@@ -124,7 +105,7 @@ function ClubProfilePreview({
           variant={"default"}
           size={showCollapsedInfo ? "sm" : "compact-sm"}
           className={classes.button}
-          onClick={redirectToAbout}
+          onClick={() => router.push("/club/manage-routines")}
         >
           Manage routines
         </Button>

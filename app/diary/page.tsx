@@ -164,7 +164,6 @@ export default function DiaryPage() {
             })
           }
           nowrapTitle
-          showReturn
         />
         <Button
           onClick={handleClickCreateRecord}

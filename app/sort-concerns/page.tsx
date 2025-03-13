@@ -62,12 +62,10 @@ export default function SortConcerns() {
     }));
   }, [selectedConcerns && selectedConcerns.length]);
 
-  console.log("userDetails", userDetails?.concerns);
-
   return (
     <Stack className={`${classes.container} smallPage`} ref={ref}>
       <SkeletonWrapper show={!selectedConcerns}>
-        <PageHeader title="Sort concerns" showReturn />
+        <PageHeader title="Sort concerns" />
         <InstructionContainer
           title="Instructions"
           instruction={`These are the potential concerns identified from your photos.`}

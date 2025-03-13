@@ -148,7 +148,7 @@ export default function FoodScanResult() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title={title} showReturn />
+      <PageHeader title={title} />
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={displayComponent === "loading"}>
         {displayComponent === "analysis" && (
           <Stack className={classes.container}>

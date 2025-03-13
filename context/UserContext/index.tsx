@@ -125,7 +125,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     if (!userDetailsState) return;
     if (code) return;
 
-    if (onProtectedPage) {
+    if (onProtectedPage && status === AuthStateEnum.AUTHENTICATED) {
       if (!userDetailsState.emailVerified) {
         if (pathname !== "/settings" && pathname !== "/verify-email") {
           router.push("/verify-email");
