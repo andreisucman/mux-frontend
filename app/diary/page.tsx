@@ -16,7 +16,7 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
-import { UserDataType } from "@/types/global";
+import { TaskStatusEnum, UserDataType } from "@/types/global";
 import DiaryContent from "./DiaryContent";
 import SelectPartModalContent from "./SelectPartModalContent";
 import { ChatCategoryEnum, DiaryRecordType } from "./type";
@@ -26,6 +26,7 @@ export type HandleFetchDiaryProps = {
   dateFrom: string | null;
   dateTo: string | null;
   part: string | null;
+  sort: string | null;
 };
 
 export default function DiaryPage() {
@@ -83,13 +84,16 @@ export default function DiaryPage() {
 
           const defaultTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-          const nextDiaryRecordAfter = setUtcMidnight({
+          const nextDate = setUtcMidnight({
             date: new Date(),
             isNextDay: true,
             timeZone: timeZone || defaultTimeZone,
           });
 
-          setUserDetails((prev: UserDataType) => ({ ...prev, nextDiaryRecordAfter }));
+          setUserDetails((prev: UserDataType) => ({
+            ...prev,
+            nextDiaryRecordAfter: { ...prev.nextDiaryRecordAfter, [part]: nextDate },
+          }));
         }
       } catch (err) {
         setIsLoading(false);
@@ -102,24 +106,39 @@ export default function DiaryPage() {
     (part: string) => {
       if (!tasks) return;
 
-      const activeTasks = tasks.filter((task) => task.status === "active") || [];
+      const completedPartTasks = tasks.filter(
+        (t) => t.part === part && t.status === TaskStatusEnum.COMPLETED
+      );
+
+      if (completedPartTasks.length === 0) {
+        openErrorModal({
+          description: `You haven't completed any ${part} tasks today.`,
+        });
+        return;
+      }
+
+      const activeTasks =
+        tasks.filter((task) => task.status === "active").filter((t) => t.part === part) || [];
 
       if (activeTasks.length > 0) {
-        const activeParts = [...new Set(activeTasks.map((t) => t.part).filter((p) => p === part))];
+        const activeParts = [...new Set(activeTasks.map((t) => t.part))];
         if (activeParts.length > 1) activeParts.splice(activeParts.length - 1, 0, "and,");
         const activePartsString = activeParts.join(", ").split(",,").join(" ");
 
         askConfirmation({
           title: "Confirm action",
           body: `You still have active ${activePartsString} tasks. Would you like to complete them first?`,
-          onConfirm: () => router.push("/tasks"),
+          onConfirm: () => {
+            router.push("/tasks");
+            modals.closeAll();
+          },
           onCancel: () => createDiaryRecord(part),
         });
       } else {
         createDiaryRecord(part);
       }
     },
-    [createDiaryRecord, tasks]
+    [createDiaryRecord, tasks, userDetails]
   );
 
   const openSelectPartModal = useCallback(() => {
@@ -141,7 +160,7 @@ export default function DiaryPage() {
   }, [userId]);
 
   const handleFetchDiaryRecords = useCallback(
-    async ({ dateFrom, dateTo, part }: HandleFetchDiaryProps) => {
+    async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
       const response = await fetchDiaryRecords({
         sort,
         currentArrayLength: diaryRecords?.length,
@@ -172,7 +191,7 @@ export default function DiaryPage() {
   );
 
   useEffect(() => {
-    handleFetchDiaryRecords({ dateFrom, dateTo, part });
+    handleFetchDiaryRecords({ dateFrom, dateTo, part, sort });
   }, [part, sort, dateFrom, dateTo]);
 
   useEffect(() => {
@@ -190,7 +209,7 @@ export default function DiaryPage() {
           isDisabled={!diaryRecords}
           title="Diary"
           sortItems={diarySortItems}
-          filterNames={["dateFrom", "dateTo"]}
+          filterNames={["dateFrom", "dateTo", "part"]}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
@@ -213,7 +232,7 @@ export default function DiaryPage() {
           timeZone={timeZone}
           setDiaryRecords={setDiaryRecords}
           setOpenValue={setOpenValue}
-          handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo, part })}
+          handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo, part, sort })}
         />
         <ChatWithModal
           modalTitle={

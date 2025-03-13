@@ -44,7 +44,7 @@ export default function DiaryFilterCardContent({ userId }: Props) {
         allowDeselect
         addToQuery
       />
-      <DateSelector customStyles={{ width: "100%" }} showCancelButton preventDefaultDate />
+      <DateSelector customStyles={{ width: "100%" }} showCancelButton />
     </Stack>
   );
 }

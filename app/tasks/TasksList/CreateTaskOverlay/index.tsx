@@ -23,8 +23,6 @@ export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTa
   const { userDetails } = useContext(UserContext);
   const { nextScan } = userDetails || {};
 
-  console.log("isTrialUsed", userDetails);
-
   const onCreateManuallyClick = () => {
     const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
     if (!partsScanned || partsScanned.length === 0) {

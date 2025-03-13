@@ -55,7 +55,6 @@ export default function SortConcerns() {
   }
 
   useEffect(() => {
-    console.log("selectedConcerns", selectedConcerns);
     setUserDetails((prev: UserDataType) => ({
       ...prev,
       concerns: selectedConcerns,

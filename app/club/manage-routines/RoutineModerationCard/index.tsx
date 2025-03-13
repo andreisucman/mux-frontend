@@ -1,32 +1,120 @@
-import React, { useState } from "react";
-import { Button, Group, NumberInput, Stack, Text, TextInput, Title } from "@mantine/core";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import {
+  Button,
+  Group,
+  NumberInput,
+  rem,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import TextareaComponent from "@/components/TextAreaComponent";
+import { UserContext } from "@/context/UserContext";
+import askConfirmation from "@/helpers/askConfirmation";
+import { useRouter } from "@/helpers/custom-router";
 import { getPartIcon } from "@/helpers/icons";
+import { RoutineDataType } from "../page";
 import classes from "./RoutineModerationCard.module.css";
 
 type Props = {
   part: string;
-  defaultName: string;
-  defaultDescription: string;
-  defaultOneTimePrice: number;
-  defaultSubscriptionPrice: number;
+  defaultStatus?: string;
+  defaultName?: string;
+  defaultDescription?: string;
+  defaultOneTimePrice?: number;
+  defaultSubscriptionPrice?: number;
+  saveRoutineData: (
+    obj: RoutineDataType,
+    setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
+  ) => Promise<void>;
 };
+
+const statuses = [
+  { value: "public", label: "Public" },
+  { value: "hidden", label: "Hidden" },
+];
 
 export default function RoutineModerationCard({
   part,
-  defaultName,
-  defaultDescription,
-  defaultOneTimePrice,
-  defaultSubscriptionPrice,
+  defaultStatus = "hidden",
+  saveRoutineData,
+  defaultName = "",
+  defaultDescription = "",
+  defaultOneTimePrice = 1,
+  defaultSubscriptionPrice = 1,
 }: Props) {
-  const [name, setName] = useState<string>(defaultName || "");
-  const [description, setDescription] = useState<string>(defaultDescription || "");
-  const [oneTimePrice, setOneTimePrice] = useState<number>(defaultOneTimePrice || 0);
-  const [subscriptionPrice, setSubscriptionPrice] = useState<number>(defaultSubscriptionPrice || 0);
+  const { userDetails } = useContext(UserContext);
+  const router = useRouter();
+
+  const [error, setError] = useState<{ [key: string]: any }>();
+  const [name, setName] = useState<string>(defaultName);
+  const [status, setStatus] = useState<string | null>(defaultStatus);
+  const [description, setDescription] = useState<string>(defaultDescription);
+  const [oneTimePrice, setOneTimePrice] = useState<number>(defaultOneTimePrice);
+  const [subscriptionPrice, setSubscriptionPrice] = useState<number>(defaultSubscriptionPrice);
 
   const icon = getPartIcon(part);
   const label = upperFirst(part);
+
+  const handleDo = (setter: React.Dispatch<React.SetStateAction<any>>, value: any) => {
+    setter(value);
+    setError(undefined);
+  };
+
+  const handleRedirect = useCallback(() => {
+    const { name } = userDetails || {};
+    router.push(`/club/routines/${name}?part=${part}`);
+  }, [userDetails, part]);
+
+  const isSaved = useMemo(() => {
+    return (
+      status === defaultStatus &&
+      name === defaultName &&
+      description === defaultDescription &&
+      oneTimePrice === defaultOneTimePrice &&
+      subscriptionPrice === defaultSubscriptionPrice
+    );
+  }, [
+    name,
+    status,
+    description,
+    oneTimePrice,
+    subscriptionPrice,
+    defaultStatus,
+    defaultName,
+    defaultDescription,
+    defaultOneTimePrice,
+    defaultSubscriptionPrice,
+  ]);
+
+  const handleSave = () => {
+    const save = () =>
+      saveRoutineData(
+        {
+          part,
+          name,
+          description,
+          status: status || "hidden",
+          oneTimePrice,
+          subscriptionPrice,
+        },
+        setError
+      );
+
+    if (defaultStatus !== "public" && status === "public") {
+      askConfirmation({
+        title: "Confirm activation",
+        body: `This will make your ${part} progress, routines, diary, and proof public. Continue?`,
+        onConfirm: () => save(),
+      });
+
+      return;
+    }
+    save();
+  };
 
   return (
     <Stack className={classes.container}>
@@ -36,46 +124,59 @@ export default function RoutineModerationCard({
       <TextInput
         placeholder="The name of your routine"
         value={name}
-        label={
-          <Text className={classes.label}>
-            Name
-          </Text>
-        }
-        onChange={(e) => setName(e.currentTarget.value)}
+        label={<Text className={classes.label}>Name</Text>}
+        onChange={(e) => handleDo(setName, e.currentTarget.value)}
+        error={error?.name}
       />
       <TextareaComponent
-        setText={setDescription}
+        setText={(value) => handleDo(setDescription, value)}
         text={description}
-        heading={
-          <Text className={classes.label}>
-            Description
-          </Text>
-        }
+        customStyles={{ gap: rem(4) }}
+        heading={<Text className={classes.label}>Description</Text>}
         placeholder="What is unique about your routine"
+        error={error?.description}
         editable
       />
       <Group className={classes.footer}>
-        <Group className={classes.inputWrapper}>
-          <NumberInput
-            label={
-              <Text className={classes.label}>
-                One-time price
-              </Text>
-            }
-            value={oneTimePrice}
-            onChange={(value) => setOneTimePrice(Number(value))}
-          />
-          <NumberInput
-            value={subscriptionPrice}
-            label={
-              <Text className={classes.label}>
-                Subscription price
-              </Text>
-            }
-            onChange={(value) => setSubscriptionPrice(Number(value))}
-          />
-        </Group>
-        <Button className={classes.button}>Publish</Button>
+        <NumberInput
+          label={<Text className={classes.label}>One-time price</Text>}
+          value={oneTimePrice}
+          onChange={(value) => handleDo(setOneTimePrice, Number(value))}
+          clampBehavior="strict"
+          min={1}
+          max={1000}
+          maw={175}
+          error={error?.oneTimePrice}
+        />
+        <NumberInput
+          value={subscriptionPrice}
+          label={<Text className={classes.label}>Subscription price</Text>}
+          onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
+          clampBehavior="strict"
+          min={1}
+          max={1000}
+          maw={175}
+          error={error?.subscriptionPrice}
+        />
+        <Select
+          label={<Text className={classes.label}>Status</Text>}
+          flex={1}
+          data={statuses}
+          value={status}
+          onChange={(value) => handleDo(setStatus, value)}
+          allowDeselect={false}
+        />
+        <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
+          Save
+        </Button>
+        <Button
+          variant="default"
+          className={classes.button}
+          onClick={handleRedirect}
+          disabled={defaultStatus === "hidden"}
+        >
+          View
+        </Button>
       </Group>
     </Stack>
   );

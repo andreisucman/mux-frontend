@@ -25,8 +25,6 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
 
   const { _id: userId, scanAnalysisQuota, latestScanImages } = userDetails || {};
 
-  console.log("scanAnalysisQuota", scanAnalysisQuota, "enableScanAnalysis", enableScanAnalysis);
-
   const handleStartAnalysis = useCallback(async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 

@@ -41,13 +41,11 @@ export default function TasksList({ customStyles }: Props) {
   const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
   const isAnalysisGoing = runningAnalyses?.routine;
 
-  const canAddDiaryRecord = useMemo(() => {
-    const completedTasks = tasks?.filter((task) => task.status === "completed") || [];
-    const datePassed =
-      !nextDiaryRecordAfter ||
-      (nextDiaryRecordAfter && new Date() > new Date(nextDiaryRecordAfter));
+  const canAddDiary = useMemo(() => {
+    const completedTasks =
+      tasks?.filter((task) => task.status === "completed").map((r) => r.part) || [];
 
-    return datePassed && tasks && tasks.length > 0 && completedTasks.length > 0;
+    return tasks && tasks.length > 0 && completedTasks.length > 0;
   }, [nextDiaryRecordAfter, tasks]);
 
   const todaysTasks = useMemo(() => {
@@ -72,7 +70,7 @@ export default function TasksList({ customStyles }: Props) {
       .filter((gr) => gr.length);
 
     return data;
-  }, [tasks, canAddDiaryRecord]);
+  }, [tasks]);
 
   const tomorrowsTasks = useMemo(() => {
     if (!tasks) return;
@@ -164,14 +162,17 @@ export default function TasksList({ customStyles }: Props) {
               >
                 {todaysTasks && (
                   <Carousel.Slide>
-                    <TasksSlide taskGroups={todaysTasks} canAddDiaryRecord={!!canAddDiaryRecord} />
+                    <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
                   </Carousel.Slide>
                 )}
                 <Carousel.Slide>
                   {tomorrowsTasks && tomorrowsTasks.length > 0 ? (
                     <TasksSlide taskGroups={tomorrowsTasks} />
                   ) : (
-                    <OverlayWithText text="No tasks for tomorrow" icon={<IconCircleOff className="icon" />} />
+                    <OverlayWithText
+                      text="No tasks for tomorrow"
+                      icon={<IconCircleOff className="icon" />}
+                    />
                   )}
                 </Carousel.Slide>
               </Carousel>

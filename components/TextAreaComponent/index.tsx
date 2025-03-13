@@ -5,12 +5,14 @@ import classes from "./TextAreaComponent.module.css";
 
 type Props = {
   text?: string;
+  error?: string;
   heading?: React.ReactNode;
   isUnbounded?: boolean;
   readOnly?: boolean;
   editable?: boolean;
   isLoading?: boolean;
   placeholder: string;
+  customStyles?: { [key: string]: any };
   setText: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -21,16 +23,18 @@ const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textare
 
 export default function TextareaComponent({
   text,
+  error,
   heading,
   isLoading,
   readOnly,
   isUnbounded,
+  customStyles,
   editable = true,
   placeholder,
   setText,
 }: Props) {
   return (
-    <Stack className={classes.container}>
+    <Stack className={classes.container} style={customStyles || {}}>
       {heading}
       <Stack className={`${classes.wrapper} scrollbar`}>
         <LoadingOverlay visible={isLoading} className={classes.loadingOverlay} />
@@ -42,6 +46,7 @@ export default function TextareaComponent({
           h={isUnbounded ? undefined : rem(150)}
           value={text}
           disabled={!editable}
+          error={error}
           onChange={(e) => setText(e.target.value)}
           classNames={{
             wrapper: classes.areaWrapper,

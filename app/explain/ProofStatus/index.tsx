@@ -77,41 +77,6 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
     return { label, icon };
   }, [proofId, proofEnabled, status, taskExpired]);
 
-  // const updateSubmissionStatus = useCallback(async () => {
-  //   if (!taskId) return;
-
-  //   try {
-  //     if (proofEnabled) {
-  //       const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
-
-  //       const query = modifyQuery({
-  //         params: queryPayload,
-  //       });
-
-  //       router.push(`/upload-proof/${taskId}?${query}`);
-  //     } else {
-  //       const response = await callTheServer({
-  //         endpoint: "updateSubmissionStatus",
-  //         method: "POST",
-  //         body: {
-  //           taskId,
-  //           status,
-  //         },
-  //       });
-
-  //       if (response.status === 200) {
-  //         const updatedTask = {
-  //           ...selectedTask,
-  //           ...response.message,
-  //         };
-  //         setTaskInfo(updatedTask);
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log("Error in updateSubmissionStatus: ", err);
-  //   }
-  // }, [taskId, status, proofEnabled]);
-
   return (
     <Group className={classes.container}>
       <RingProgress

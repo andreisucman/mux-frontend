@@ -12,17 +12,17 @@ interface TaskTypeWithOnClick extends TaskType {
 
 type Props = {
   taskGroups: TaskTypeWithOnClick[][];
-  canAddDiaryRecord?: boolean;
+  canAddDiary?: boolean;
 };
 
-function TasksSlide({ taskGroups, canAddDiaryRecord }: Props) {
+function TasksSlide({ taskGroups, canAddDiary }: Props) {
   return (
     <Stack className={classes.container}>
       {taskGroups && (
         <Stack className={classes.wrapper}>
-          {canAddDiaryRecord && (
-            <Button size="compact-sm" component={Link} href="/diary" c="white">
-              Add a diary note for today
+          {canAddDiary && (
+            <Button size="compact-sm" variant="default" component={Link} href={"/diary"} c="white">
+              Add a diary note
             </Button>
           )}
           {taskGroups.map((group, index) => {

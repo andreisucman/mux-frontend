@@ -257,7 +257,7 @@ export interface UserDataType extends DefaultUserType {
   };
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;
-  nextDiaryRecordAfter: Date | null;
+  nextDiaryRecordAfter: { [key: string]: Date | null } | null;
 }
 
 export type SubscriptionType = {

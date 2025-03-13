@@ -31,3 +31,11 @@
     margin-left: auto;
   }
 }
+
+.error {
+  text-align: center;
+  font-size: rem(14);
+  padding: rem(8) rem(16);
+  border: rem(1) solid var(--mantine-color-red-7);
+  border-radius: rem(16);
+}

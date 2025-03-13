@@ -72,8 +72,6 @@ function DateSelector({ customStyles, showCancelButton, preventDefaultDate }: Pr
     changeDates([dateFromParam, dateToParam]);
   }, []);
 
-  console.log("dateToParam", dateToParam);
-
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
       <DatePickerInput

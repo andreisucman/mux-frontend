@@ -38,8 +38,6 @@ export default function StartDate() {
 
   const part = searchParams.get("part");
 
-  console.log("concerns", concerns);
-
   const createRoutine = async ({
     concerns,
     startDate,
