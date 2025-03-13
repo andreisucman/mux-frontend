@@ -1,18 +1,12 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { IconArrowDown, IconCircleOff, IconNote } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Group, Loader, Stack, Title } from "@mantine/core";
-import DeleteContentButton from "@/components/DeleteContentButton";
+import React, { useCallback, useMemo } from "react";
+import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
+import { Accordion, ActionIcon, Loader, Stack } from "@mantine/core";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { formatDate } from "@/helpers/formatDate";
-import DiaryRow from "../DiaryRow";
+import DiaryAccordionItem from "../DiaryAccordionItem";
 import { DiaryRecordType } from "../type";
 import classes from "./DiaryContent.module.css";
-
-type HandleFetchDiaryProps = {
-  dateFrom: string | null;
-  dateTo: string | null;
-};
 
 type Props = {
   hasMore: boolean;
@@ -29,37 +23,21 @@ export default function DiaryContent({
   diaryRecords,
   openValue,
   timeZone,
+  setDiaryRecords,
   setOpenValue,
   handleFetchDiaryRecords,
-  setDiaryRecords,
 }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-
   const memoizedDiaryRow = useCallback(
     (props: any) => {
       const formattedDate = useMemo(() => formatDate({ date: props.data.createdAt }), []);
       return (
-        <Accordion.Item value={props.data._id || null}>
-          <Accordion.Control component={"div"}>
-            <Group>
-              <DeleteContentButton
-                collectionKey="diary"
-                contentId={props.data._id}
-                isLoading={isLoading}
-                isDisabled={isLoading}
-                setContent={setDiaryRecords}
-                setIsLoading={setIsLoading}
-                isRelative
-              />
-              <Title order={5} className={classes.title}>
-                <IconNote className={`${classes.icon} icon`} /> {formattedDate} note
-              </Title>
-            </Group>
-          </Accordion.Control>
-          <Accordion.Panel>
-            <DiaryRow data={props.data} index={props.index} timeZone={timeZone} />
-          </Accordion.Panel>
-        </Accordion.Item>
+        <DiaryAccordionItem
+          data={props.data}
+          index={props.index}
+          timeZone={timeZone || ""}
+          setDiaryRecords={setDiaryRecords}
+          formattedDate={formattedDate}
+        />
       );
     },
     [diaryRecords]
@@ -78,6 +56,7 @@ export default function DiaryContent({
               item: classes.item,
               control: classes.control,
               content: classes.accordionContent,
+              chevron: classes.chevron,
             }}
           >
             {diaryRecords.length > 0 ? (

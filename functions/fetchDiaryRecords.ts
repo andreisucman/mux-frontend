@@ -4,6 +4,7 @@ import callTheServer from "./callTheServer";
 type FetchDiaryRecordsProps = {
   userName?: string;
   sort: string | null;
+  part: string | null;
   currentArrayLength?: number;
   skip?: boolean;
   dateFrom: string | null;
@@ -11,7 +12,7 @@ type FetchDiaryRecordsProps = {
 };
 
 const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
-  const { skip, userName, sort, dateFrom, dateTo, currentArrayLength } = props || {};
+  const { skip, userName, sort, part, dateFrom, dateTo, currentArrayLength } = props || {};
   try {
     let endpoint = "getDiaryRecords";
 
@@ -19,17 +20,10 @@ const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
 
     const parts = [];
 
-    if (skip && currentArrayLength) {
-      parts.push(`skip=${currentArrayLength}`);
-    }
-
-    if (sort) {
-      parts.push(`sort=${sort}`);
-    }
-
-    if (dateFrom && dateTo) {
-      parts.push(`dateFrom=${dateFrom}&dateTo=${dateTo}`);
-    }
+    if (skip && currentArrayLength) parts.push(`skip=${currentArrayLength}`);
+    if (part) parts.push(`part=${part}`);
+    if (sort) parts.push(`sort=${sort}`);
+    if (dateFrom && dateTo) parts.push(`dateFrom=${dateFrom}&dateTo=${dateTo}`);
 
     const query = parts.join("&");
     endpoint += `?${query}`;

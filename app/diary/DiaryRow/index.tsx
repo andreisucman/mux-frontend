@@ -19,7 +19,7 @@ type Props = {
 export default function DiaryRow({ data, timeZone }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
   const [isUploading, setIsUploading] = useState(false);
-  const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(true);
+  const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
   const [tasksOpen, { toggle: toggleTasksCollapse }] = useDisclosure(true);
 
   const { audio, transcription, activity } = diaryRecord;
@@ -52,7 +52,7 @@ export default function DiaryRow({ data, timeZone }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls[0], timeZone, activity: data.activity },
+          body: { audio: audioUrls[0], timeZone, part: data.part, activity: data.activity },
         });
 
         if (response.status === 200) {
@@ -60,8 +60,8 @@ export default function DiaryRow({ data, timeZone }: Props) {
             openErrorModal({ description: response.error });
             return;
           }
-          const { audio, transcription, createdAt } = response.message;
-          setDiaryRecord({ ...data, audio, transcription, createdAt });
+          const { audio, transcription, part, createdAt } = response.message;
+          setDiaryRecord({ ...data, audio, transcription, part, createdAt });
           toggleTranscriptionCollapse();
         } else {
           setIsUploading(false);
@@ -72,7 +72,7 @@ export default function DiaryRow({ data, timeZone }: Props) {
         openErrorModal();
       }
     },
-    [isUploading, timeZone]
+    [isUploading, timeZone, data]
   );
 
   return (

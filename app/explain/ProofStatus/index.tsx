@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import {
   IconArrowBackUp,
   IconCamera,
@@ -8,9 +8,6 @@ import {
 } from "@tabler/icons-react";
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
-import modifyQuery from "@/helpers/modifyQuery";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
 
@@ -19,13 +16,11 @@ type Props = {
   selectedTask: TaskType | null;
   notStarted: boolean;
   proofEnabled?: boolean;
-  setTaskInfo: React.Dispatch<React.SetStateAction<TaskType | null>>;
+  updateTaskStatus: (newTaskStatus: TaskStatusEnum) => void;
 };
 
-function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props) {
-  const router = useRouter();
-
-  const { proofEnabled, status, proofId, name, _id: taskId } = selectedTask || {};
+function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: Props) {
+  const { proofEnabled, status, proofId, name } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>
@@ -82,40 +77,40 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
     return { label, icon };
   }, [proofId, proofEnabled, status, taskExpired]);
 
-  const updateSubmissionStatus = useCallback(async () => {
-    if (!taskId) return;
+  // const updateSubmissionStatus = useCallback(async () => {
+  //   if (!taskId) return;
 
-    try {
-      if (proofEnabled) {
-        const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
+  //   try {
+  //     if (proofEnabled) {
+  //       const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
 
-        const query = modifyQuery({
-          params: queryPayload,
-        });
+  //       const query = modifyQuery({
+  //         params: queryPayload,
+  //       });
 
-        router.push(`/upload-proof/${taskId}?${query}`);
-      } else {
-        const response = await callTheServer({
-          endpoint: "updateSubmissionStatus",
-          method: "POST",
-          body: {
-            taskId,
-            status,
-          },
-        });
+  //       router.push(`/upload-proof/${taskId}?${query}`);
+  //     } else {
+  //       const response = await callTheServer({
+  //         endpoint: "updateSubmissionStatus",
+  //         method: "POST",
+  //         body: {
+  //           taskId,
+  //           status,
+  //         },
+  //       });
 
-        if (response.status === 200) {
-          const updatedTask = {
-            ...selectedTask,
-            ...response.message,
-          };
-          setTaskInfo(updatedTask);
-        }
-      }
-    } catch (err) {
-      console.log("Error in updateSubmissionStatus: ", err);
-    }
-  }, [taskId, status, proofEnabled]);
+  //       if (response.status === 200) {
+  //         const updatedTask = {
+  //           ...selectedTask,
+  //           ...response.message,
+  //         };
+  //         setTaskInfo(updatedTask);
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log("Error in updateSubmissionStatus: ", err);
+  //   }
+  // }, [taskId, status, proofEnabled]);
 
   return (
     <Group className={classes.container}>
@@ -133,8 +128,12 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, setTaskInfo }: Props
       <Button
         variant={"default"}
         className={classes.ctaButton}
-        disabled={notStarted || taskExpired && status !== TaskStatusEnum.COMPLETED}
-        onClick={updateSubmissionStatus}
+        disabled={notStarted || (taskExpired && status !== TaskStatusEnum.COMPLETED)}
+        onClick={() =>
+          updateTaskStatus(
+            status === TaskStatusEnum.COMPLETED ? TaskStatusEnum.ACTIVE : TaskStatusEnum.COMPLETED
+          )
+        }
       >
         {buttonData.label}
       </Button>

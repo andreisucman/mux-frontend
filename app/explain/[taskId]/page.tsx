@@ -33,6 +33,11 @@ export const runtime = "edge";
 type Props = {
   params: Promise<{ taskId: string }>;
 };
+const allowedTaskStatuses = [
+  TaskStatusEnum.ACTIVE,
+  TaskStatusEnum.CANCELED,
+  TaskStatusEnum.COMPLETED,
+];
 
 export default function Explain(props: Props) {
   const { taskId } = use(props.params);
@@ -251,14 +256,8 @@ export default function Explain(props: Props) {
     });
   }, [taskName, taskId, taskDescription, taskInstruction, startsAt]);
 
-  const updateTaskStatus = useCallback(async () => {
-    const allowedTaskStatuses = [TaskStatusEnum.ACTIVE, TaskStatusEnum.CANCELED];
-    if (taskInfo && taskInfo.status && !allowedTaskStatuses.includes(taskInfo.status)) return;
-
-    const newStatus =
-      taskInfo && taskInfo.status === TaskStatusEnum.ACTIVE
-        ? TaskStatusEnum.CANCELED
-        : TaskStatusEnum.ACTIVE;
+  const updateTaskStatus = async (newStatus: TaskStatusEnum) => {
+    if (!allowedTaskStatuses.includes(newStatus)) return;
 
     const response = await callTheServer({
       endpoint: "updateStatusOfTasks",
@@ -272,7 +271,7 @@ export default function Explain(props: Props) {
         status: newStatus,
       }));
     }
-  }, [taskInfo, timeZone]);
+  };
 
   useEffect(() => {
     if (!taskId) return;
@@ -356,7 +355,13 @@ export default function Explain(props: Props) {
                       variant="default"
                       disabled={timeExpired}
                       className={classes.actionButton}
-                      onClick={updateTaskStatus}
+                      onClick={() =>
+                        updateTaskStatus(
+                          taskStatus === TaskStatusEnum.ACTIVE
+                            ? TaskStatusEnum.CANCELED
+                            : TaskStatusEnum.ACTIVE
+                        )
+                      }
                     >
                       {taskStatus === TaskStatusEnum.ACTIVE ? "Cancel" : "Activate"}
                     </Button>
@@ -373,7 +378,7 @@ export default function Explain(props: Props) {
               </Group>
               <ProofStatus
                 selectedTask={taskInfo}
-                setTaskInfo={setTaskInfo}
+                updateTaskStatus={updateTaskStatus}
                 notStarted={!!futureStartDate}
                 expiresAt={taskInfo && taskInfo.expiresAt}
               />

@@ -3,9 +3,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
-import Message from "@/components/Message";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
@@ -18,12 +18,14 @@ import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { UserDataType } from "@/types/global";
 import DiaryContent from "./DiaryContent";
+import SelectPartModalContent from "./SelectPartModalContent";
 import { ChatCategoryEnum, DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
 export type HandleFetchDiaryProps = {
   dateFrom: string | null;
   dateTo: string | null;
+  part: string | null;
 };
 
 export default function DiaryPage() {
@@ -39,21 +41,115 @@ export default function DiaryPage() {
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
   const dateTo = searchParams.get("dateTo");
+  const part = searchParams.get("part");
 
-  const { tasks, timeZone } = userDetails || {};
+  const { _id: userId, tasks, timeZone } = userDetails || {};
 
-  const createDiaryRecord = useCallback(async () => {
-    if (isLoading) return;
-    setIsLoading(true);
+  const createDiaryRecord = useCallback(
+    async (part: string) => {
+      if (isLoading) return;
+      setIsLoading(true);
+      modals.closeAll();
 
-    try {
-      const response = await callTheServer({
-        endpoint: "createDiaryRecord",
-        method: "POST",
-        body: { timeZone },
+      try {
+        const response = await callTheServer({
+          endpoint: "createDiaryRecord",
+          method: "POST",
+          body: { timeZone, part },
+        });
+
+        setIsLoading(false);
+
+        if (response.status === 200) {
+          if (response.error) {
+            openErrorModal({ description: response.error });
+            return;
+          }
+
+          const emptyDiaryRecord = {
+            _id: "temp",
+            part,
+            audio: null,
+            transcription: null,
+            createdAt: new Date(),
+            activity: response.message,
+          };
+
+          setDiaryRecords((prev: DiaryRecordType[] | undefined) => [
+            emptyDiaryRecord,
+            ...(prev || []),
+          ]);
+          setOpenValue(emptyDiaryRecord._id);
+
+          const defaultTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          const nextDiaryRecordAfter = setUtcMidnight({
+            date: new Date(),
+            isNextDay: true,
+            timeZone: timeZone || defaultTimeZone,
+          });
+
+          setUserDetails((prev: UserDataType) => ({ ...prev, nextDiaryRecordAfter }));
+        }
+      } catch (err) {
+        setIsLoading(false);
+      }
+    },
+    [isLoading, timeZone]
+  );
+
+  const handleClickCreateRecord = useCallback(
+    (part: string) => {
+      if (!tasks) return;
+
+      const activeTasks = tasks.filter((task) => task.status === "active") || [];
+
+      if (activeTasks.length > 0) {
+        const activeParts = [...new Set(activeTasks.map((t) => t.part).filter((p) => p === part))];
+        if (activeParts.length > 1) activeParts.splice(activeParts.length - 1, 0, "and,");
+        const activePartsString = activeParts.join(", ").split(",,").join(" ");
+
+        askConfirmation({
+          title: "Confirm action",
+          body: `You still have active ${activePartsString} tasks. Would you like to complete them first?`,
+          onConfirm: () => router.push("/tasks"),
+          onCancel: () => createDiaryRecord(part),
+        });
+      } else {
+        createDiaryRecord(part);
+      }
+    },
+    [createDiaryRecord, tasks]
+  );
+
+  const openSelectPartModal = useCallback(() => {
+    modals.openContextModal({
+      modal: "general",
+      centered: true,
+      innerProps: (
+        <SelectPartModalContent
+          userId={userId}
+          onClick={(part: string) => handleClickCreateRecord(part)}
+        />
+      ),
+      title: (
+        <Title component={"p"} order={5}>
+          Select part
+        </Title>
+      ),
+    });
+  }, [userId]);
+
+  const handleFetchDiaryRecords = useCallback(
+    async ({ dateFrom, dateTo, part }: HandleFetchDiaryProps) => {
+      const response = await fetchDiaryRecords({
+        sort,
+        currentArrayLength: diaryRecords?.length,
+        skip: hasMore,
+        dateFrom,
+        dateTo,
+        part,
       });
-
-      setIsLoading(false);
 
       if (response.status === 200) {
         if (response.error) {
@@ -61,86 +157,23 @@ export default function DiaryPage() {
           return;
         }
 
-        const emptyDiaryRecord = {
-          _id: "temp",
-          audio: null,
-          transcription: null,
-          createdAt: new Date(),
-          activity: response.message,
-        };
-
-        setDiaryRecords((prev: DiaryRecordType[] | undefined) => [
-          emptyDiaryRecord,
-          ...(prev || []),
-        ]);
-        setOpenValue(emptyDiaryRecord._id);
-
-        const defaultTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        const nextDiaryRecordAfter = setUtcMidnight({
-          date: new Date(),
-          isNextDay: true,
-          timeZone: timeZone || defaultTimeZone,
+        setDiaryRecords((prev) => {
+          return hasMore ? [...(prev || []), ...response.message.slice(0, 20)] : response.message;
         });
 
-        setUserDetails((prev: UserDataType) => ({ ...prev, nextDiaryRecordAfter }));
+        if (response.message.length > 0) {
+          setOpenValue(response.message[0]._id);
+        }
+
+        setHasMore(response.message.length === 21);
       }
-    } catch (err) {
-      setIsLoading(false);
-    }
-  }, [isLoading, timeZone]);
-
-  const handleClickCreateRecord = useCallback(() => {
-    if (!tasks) return;
-
-    const activeTasks = tasks.filter((task) => task.status === "active") || [];
-
-    if (activeTasks.length > 0) {
-      const activeParts = [...new Set(activeTasks.map((t) => t.part))];
-      if (activeParts.length > 1) activeParts.splice(activeParts.length - 1, 0, "and,");
-      const activePartsString = activeParts.join(", ").split(",,").join(" ");
-
-      askConfirmation({
-        title: "Confirm action",
-        body: `You still have active ${activePartsString} tasks. Would you like to complete them first?`,
-        onConfirm: () => router.push("/tasks"),
-        onCancel: createDiaryRecord,
-      });
-    } else {
-      createDiaryRecord();
-    }
-  }, [createDiaryRecord, tasks]);
-
-  const handleFetchDiaryRecords = async ({ dateFrom, dateTo }: HandleFetchDiaryProps) => {
-    const response = await fetchDiaryRecords({
-      sort,
-      currentArrayLength: diaryRecords?.length,
-      skip: hasMore,
-      dateFrom,
-      dateTo,
-    });
-
-    if (response.status === 200) {
-      if (response.error) {
-        openErrorModal({ description: response.error });
-        return;
-      }
-
-      setDiaryRecords((prev) => {
-        return hasMore ? [...(prev || []), ...response.message.slice(0, 20)] : response.message;
-      });
-
-      if (response.message.length > 0) {
-        setOpenValue(response.message[0]._id);
-      }
-
-      setHasMore(response.message.length === 21);
-    }
-  };
+    },
+    [diaryRecords, hasMore]
+  );
 
   useEffect(() => {
-    handleFetchDiaryRecords({ dateFrom, dateTo });
-  }, [sort, dateFrom, dateTo]);
+    handleFetchDiaryRecords({ dateFrom, dateTo, part });
+  }, [part, sort, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!diaryRecords) return;
@@ -161,12 +194,13 @@ export default function DiaryPage() {
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
+              childrenProps: { userId: userDetails?._id },
             })
           }
           nowrapTitle
         />
         <Button
-          onClick={handleClickCreateRecord}
+          onClick={openSelectPartModal}
           disabled={disableAddNew || isLoading}
           loading={isLoading}
         >
@@ -179,7 +213,7 @@ export default function DiaryPage() {
           timeZone={timeZone}
           setDiaryRecords={setDiaryRecords}
           setOpenValue={setOpenValue}
-          handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo })}
+          handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo, part })}
         />
         <ChatWithModal
           modalTitle={

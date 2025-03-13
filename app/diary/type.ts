@@ -1,6 +1,7 @@
 export type DiaryRecordType = {
   _id: string | null;
   audio: string | null;
+  part: string | null;
   transcription: string | null;
   createdAt: string | Date;
   activity: DiaryActivityType[];

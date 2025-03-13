@@ -1,12 +1,13 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import DiaryFilterCardContent from "@/app/diary/DiaryFilterCardContent";
 import FilterCardContent from "@/app/GeneralResultsHeader/FilterCardContent";
 import ProductsFilterCardContent from "@/app/products/ProductsFilterCardContent";
 import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent";
 import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
+import DateSelector from "@/components/DateSelector";
 import ClubProgressFilterCardContent from "@/components/PageHeaderClub/ClubProgressFilterCardContent";
 import ClubProofFilterCardContent from "@/components/PageHeaderClub/ClubProofFilterCardContent";
-import DateSelector from "@/components/DateSelector";
 
 export enum FilterCardNamesEnum {
   "ClubProofFilterCardContent" = "ClubProofFilterCardContent",
@@ -39,7 +40,7 @@ const openFiltersCard = ({ cardName, childrenProps }: Props) => {
       <RoutinesFilterCardContent {...childrenProps} />
     ),
     [FilterCardNamesEnum.HistoryFilterCardContent]: <HistoryFilterCardContent {...childrenProps} />,
-    [FilterCardNamesEnum.DiaryFilterCardContent]: <DateSelector showCancelButton />
+    [FilterCardNamesEnum.DiaryFilterCardContent]: <DiaryFilterCardContent {...childrenProps} />,
   };
 
   modals.openContextModal({

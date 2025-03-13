@@ -10,9 +10,10 @@ import classes from "./DateSelector.module.css";
 type Props = {
   customStyles?: { [key: string]: any };
   showCancelButton?: boolean;
+  preventDefaultDate?: boolean;
 };
 
-function DateSelector({ customStyles, showCancelButton }: Props) {
+function DateSelector({ customStyles, showCancelButton, preventDefaultDate }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -67,8 +68,11 @@ function DateSelector({ customStyles, showCancelButton }: Props) {
   }, []);
 
   useEffect(() => {
+    if (preventDefaultDate) return;
     changeDates([dateFromParam, dateToParam]);
   }, []);
+
+  console.log("dateToParam", dateToParam);
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
@@ -81,7 +85,7 @@ function DateSelector({ customStyles, showCancelButton }: Props) {
         onChange={changeDates}
         className={classes.picker}
       />
-      {showCancelButton && (dateToParam || dateToParam) && (
+      {showCancelButton && (value[0] || value[1]) && (
         <ActionIcon variant="default" onClick={resetDates}>
           <IconX className="icon" />
         </ActionIcon>

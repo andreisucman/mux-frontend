@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
 import { Group, Select, SelectProps } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
-import { upperFirst } from "@mantine/hooks";
 
 type Props = {
   icons?: { [key: string]: React.ReactNode };

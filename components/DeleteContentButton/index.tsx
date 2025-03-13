@@ -69,7 +69,7 @@ export default function DeleteContentButton({
         [classes[position]]: true,
       })}
     >
-      <IconTrash className="icon" />
+      <IconTrash className={"icon icon__small"} />
     </ActionIcon>
   );
 }
