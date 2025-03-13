@@ -25,24 +25,27 @@ export default function DiaryPage(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
 
-  const searchParams = useSearchParams();
-  const [openValue, setOpenValue] = useState<string | null>(null);
-  const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
-  const [hasMore, setHasMore] = useState(false);
   const { userDetails } = useContext(UserContext);
   const { club } = userDetails || {};
   const { followingUserName } = club || {};
 
+  const searchParams = useSearchParams();
+  const [openValue, setOpenValue] = useState<string | null>(null);
+  const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
+  const [hasMore, setHasMore] = useState(false);
+
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
   const dateTo = searchParams.get("dateTo");
+  const part = searchParams.get("part");
 
   const handleFetchDiaryRecords = useCallback(
-    async ({ dateFrom, dateTo }: HandleFetchDiaryProps) => {
+    async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
       try {
         const response = await fetchDiaryRecords({
           userName,
           sort,
+          part,
           dateFrom,
           dateTo,
           currentArrayLength: diaryRecords?.length,
@@ -60,13 +63,13 @@ export default function DiaryPage(props: Props) {
         openErrorModal();
       }
     },
-    [diaryRecords, sort, hasMore, userName]
+    [diaryRecords, hasMore, userName]
   );
 
   useEffect(() => {
     if (!userName) return;
 
-    handleFetchDiaryRecords({ dateTo, dateFrom });
+    handleFetchDiaryRecords({ dateTo, dateFrom, sort, part });
   }, [sort, userName, followingUserName, dateFrom, dateTo]);
 
   const noResults = !diaryRecords || diaryRecords.length === 0;
@@ -95,7 +98,7 @@ export default function DiaryPage(props: Props) {
         openValue={openValue}
         setOpenValue={setOpenValue}
         hasMore={hasMore}
-        handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo })}
+        handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo, sort, part })}
       />
       <ChatWithModal
         modalTitle={
