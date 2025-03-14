@@ -150,11 +150,12 @@ export default function RoutineModerationCard({
           />
           <NumberInput
             value={subscriptionPrice}
-            label={<Text className={classes.label}>Subscription price</Text>}
+            label={<Text className={classes.label}>Price of update</Text>}
             onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
             clampBehavior="strict"
             min={1}
             max={10000}
+            rightSection={<Text c="dimmed" size="sm">/ month</Text>}
             error={error?.subscriptionPrice}
           />
         </Group>

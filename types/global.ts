@@ -146,15 +146,19 @@ export type RoutineType = {
 export type AllTaskType = {
   ids: { _id: string; startsAt: string; status: string }[];
   name: string;
-  description: string;
-  instruction: string;
   key: string;
   icon: string;
   color: string;
   total: number;
   completed: number;
-  unknown: number;
   concern: string;
+};
+
+export type PurchaseOverlayDataType = {
+  name: string;
+  description: string;
+  oneTimePrice: number;
+  part: string;
 };
 
 export enum RoutineStatusEnum {

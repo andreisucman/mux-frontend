@@ -21,8 +21,8 @@ export default function ClubModerationLayout({ children, header }: Props) {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
+      {header}
       <Skeleton className={`skeleton ${classes.skeleton}`} visible={!publicUserData || !!code}>
-        {header}
         {children}
       </Skeleton>
     </Stack>

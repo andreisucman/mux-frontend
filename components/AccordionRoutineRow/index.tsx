@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { IconRefresh } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, Button, Checkbox, Group, Skeleton, Text, Title } from "@mantine/core";
-import { upperFirst, useFocusWithin } from "@mantine/hooks";
+import { useFocusWithin } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
@@ -164,7 +164,8 @@ export default function AccordionRoutineRow({
     [routine]
   );
 
-  const redirectToTask = useCallback((taskId: string) => {
+  const redirectToTask = useCallback((taskId: string | null) => {
+    if (!taskId) return;
     router.push(`/explain/${taskId}`);
   }, []);
 

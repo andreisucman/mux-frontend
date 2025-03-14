@@ -4,6 +4,11 @@
   flex: 1;
 }
 
+.wrapper {
+  position: relative;
+  flex: 1;
+}
+
 .content {
   position: relative;
   flex: 1;
@@ -11,6 +16,8 @@
   flex-direction: column;
   gap: rem(16);
   padding: 0 rem(16) rem(16);
+  border-radius: rem(16);
+  overflow: hidden;
 }
 
 .active {

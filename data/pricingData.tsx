@@ -1,11 +1,14 @@
 import {
   IconAnalyze,
+  IconCamera,
   IconChecklist,
   IconGitCompare,
+  IconHandGrab,
   IconMessages,
   IconMoodCheck,
   IconNotebook,
   IconScoreboard,
+  IconTargetArrow,
   IconToolsKitchen2,
   IconUser,
 } from "@tabler/icons-react";
@@ -58,5 +61,24 @@ export const advisorCoachContent = [
   {
     icon: <IconUser className="icon icon__large" style={style} />,
     description: "Answers your questions about the person you follow.",
+  },
+];
+
+export const peekLicenseContent = [
+  {
+    icon: <IconHandGrab className="icon icon__large" />,
+    description: "See and steal the proven tasks and routines.",
+  },
+  {
+    icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(20) }} />,
+    description: "Learn the feedback and insights from the progress diary.",
+  },
+  {
+    icon: <IconCamera className="icon icon__large" />,
+    description: "See how to complete each task from proofs.",
+  },
+  {
+    icon: <IconTargetArrow className="icon icon__large" />,
+    description: "Get similar transformation.",
   },
 ];

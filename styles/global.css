@@ -60,8 +60,8 @@ body::-webkit-scrollbar-thumb {
   height: rem(20);
 
   &__small {
-    width: rem(16);
-    height: rem(16);
+    min-width: rem(16);
+    min-height: rem(16);
   }
 
   &__large {
@@ -124,4 +124,3 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   justify-content: center;
 }
-

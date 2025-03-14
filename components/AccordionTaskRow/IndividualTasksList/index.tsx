@@ -30,10 +30,10 @@ export default function RoutineIndividualTasksList({
   const lastTaskObject = taskIdsObjects[taskIdsObjects.length - 1];
   return (
     <Stack className={classes.container}>
-      {taskIdsObjects.map((idObj) => {
+      {taskIdsObjects.map((idObj, i) => {
         const date = formatDate({ date: idObj.startsAt });
         return (
-          <Group key={idObj._id} className={classes.row} onClick={() => redirectToTask(idObj._id)}>
+          <Group key={i} className={classes.row} onClick={() => redirectToTask(idObj._id)}>
             <Indicator status={idObj.status} />
             <IconWithColor icon={icon} color={color} />
             <Text className={classes.taskDate} mr="auto">

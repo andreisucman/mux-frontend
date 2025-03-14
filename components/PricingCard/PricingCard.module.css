@@ -6,6 +6,7 @@
   background-color: var(--mantine-color-dark-6);
   box-shadow: 0 0 rem(8) rem(4) rgba(20, 20, 20, 0.1);
   overflow: hidden;
+  z-index: 300;
 }
 
 .name {
@@ -24,11 +25,8 @@
   border-radius: rem(15) 0 0;
   overflow-x: hidden;
   overflow-y: visible;
-  padding: rem(12) 0;
-  gap: rem(4);
-}
-
-.premium {
+  padding: rem(12);
+  gap: rem(12);
   background-image: linear-gradient(
     45deg,
     var(--mantine-color-dark-8) 0%,
@@ -41,4 +39,9 @@
 
 .content {
   padding: rem(16);
+}
+
+.description {
+  font-size: var(--mantine-font-size-sm);
+  padding: 0 rem(16);
 }

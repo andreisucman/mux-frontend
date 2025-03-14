@@ -109,7 +109,7 @@ function Header() {
       id: item.name as string,
       label: item.name,
       leftSection: <AvatarComponent avatar={item.avatar} size="sm" />,
-      onClick: () => router.push(`/club/${item.name}`),
+      onClick: () => router.push(`/club/routines/${item.name}`),
     }));
 
     return actions;

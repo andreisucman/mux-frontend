@@ -14,6 +14,8 @@ import {
   Title,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import ClubProfilePreview from "@/app/club/ClubProfilePreview";
+import ClubModerationLayout from "@/app/club/ModerationLayout";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
@@ -33,9 +35,8 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
-import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
-import ClubProfilePreview from "../../ClubProfilePreview";
-import ClubModerationLayout from "../../ModerationLayout";
+import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
+import PeekOverlay from "../../ModerationLayout/PeekOverlay";
 import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
 
@@ -45,6 +46,7 @@ type GetRoutinesProps = {
   skip?: boolean;
   followingUserName?: string | string[];
   sort: string | null;
+  part: string | null;
   routinesLength?: number;
 };
 
@@ -76,12 +78,15 @@ export default function ClubRoutines(props: Props) {
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
   const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
+  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
+    PurchaseOverlayDataType[] | null
+  >();
+  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
 
-  const { name, routines: currentUserRoutines, club, timeZone } = userDetails || {};
-  const { followingUserName } = club || {};
+  const { name, routines: currentUserRoutines, timeZone } = userDetails || {};
 
   const sort = searchParams.get("sort");
   const part = searchParams.get("part");
@@ -125,7 +130,7 @@ export default function ClubRoutines(props: Props) {
   );
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, followingUserName, routinesLength }: GetRoutinesProps) => {
+    async ({ skip, sort, part, followingUserName, routinesLength }: GetRoutinesProps) => {
       const response = await fetchRoutines({
         skip,
         sort,
@@ -137,21 +142,23 @@ export default function ClubRoutines(props: Props) {
       const { message } = response;
 
       if (message) {
+        const { priceData, data } = message;
+
+        setPurchaseOverlayData(priceData ? priceData : null);
+        setShowPurchaseOverlay(!!priceData);
+
         if (skip) {
-          setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
-          setHasMore(message.length === 21);
+          setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+          setHasMore(data.length === 21);
         } else {
-          setRoutines(message.slice(0, 20));
-          if (!openValue) setOpenValue(message[0]?._id);
+          setRoutines(data.slice(0, 20));
+          if (!openValue) setOpenValue(data[0]?._id);
         }
 
-        const newRoutineConcerns = message.reduce(
-          (a: { [key: string]: string[] }, c: RoutineType) => {
-            a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-            return a;
-          },
-          {}
-        );
+        const newRoutineConcerns = data.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
+          a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+          return a;
+        }, {});
 
         setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
       }
@@ -289,12 +296,18 @@ export default function ClubRoutines(props: Props) {
       followingUserName: userName,
       routinesLength: (routines && routines.length) || 0,
       sort,
+      part,
     };
     handleFetchRoutines(payload);
-  }, [sort, userName, followingUserName]);
+  }, [sort, part, userName]);
 
   useEffect(() => {
-    getFilters({ userName, collection: "routine", fields: ["part"] }).then((result) => {
+    getFilters({
+      userName,
+      collection: "routine",
+      fields: ["part"],
+      filter: [`userName=${userName}`, "isPublic=true"],
+    }).then((result) => {
       const { availableParts } = result;
       setAvaiableParts(availableParts);
     });
@@ -309,7 +322,7 @@ export default function ClubRoutines(props: Props) {
           userName={userName}
           filterNames={["part"]}
           sortItems={routineSortItems}
-          isDisabled={availableParts.length === 0}
+          isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
@@ -331,14 +344,18 @@ export default function ClubRoutines(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      <RoutineSelectionButtons
-        selectedRoutineIds={selectedRoutineIds}
-        disabled={!routines || !routines.length}
-        handleClick={handleStealRoutines}
-        isSelf={isSelf}
-      />
+
       {accordionItems ? (
-        <>
+        <Stack className={classes.wrapper}>
+          {showPurchaseOverlay && purchaseOverlayData && (
+            <PeekOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+          )}
+          <RoutineSelectionButtons
+            selectedRoutineIds={selectedRoutineIds}
+            disabled={!routines || !routines.length}
+            handleClick={handleStealRoutines}
+            isSelf={isSelf}
+          />
           {accordionItems.length > 0 ? (
             <Stack className={classes.content}>
               <Accordion
@@ -365,6 +382,7 @@ export default function ClubRoutines(props: Props) {
                       skip: true,
                       followingUserName: userName,
                       routinesLength: (routines && routines.length) || 0,
+                      part,
                       sort,
                     })
                   }
@@ -385,7 +403,7 @@ export default function ClubRoutines(props: Props) {
               }
             />
           )}
-        </>
+        </Stack>
       ) : (
         <Loader style={{ margin: "auto" }} />
       )}

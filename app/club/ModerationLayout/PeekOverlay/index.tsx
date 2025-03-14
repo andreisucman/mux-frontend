@@ -1,31 +1,39 @@
-import React, { useCallback, useContext, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { IconBubbleText, IconHandGrab, IconNotebook } from "@tabler/icons-react";
-import { Group, Overlay, Stack, Text, Title } from "@mantine/core";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useRouter as useDefaultRouter, usePathname, useSearchParams } from "next/navigation";
+import { Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
+import JoinClubConfirmation from "@/app/club/join/JoinClubConfirmation";
 import PricingCard from "@/components/PricingCard";
 import { UserContext } from "@/context/UserContext";
+import { peekLicenseContent } from "@/data/pricingData";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import joinClub from "@/functions/joinClub";
 import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
-import JoinClubConfirmation from "../../join/JoinClubConfirmation";
+import { PurchaseOverlayDataType } from "@/types/global";
 import classes from "./PeekOverlay.module.css";
 
 type Props = {
-  description?: string;
-  userName?: string;
+  purchaseOverlayData: PurchaseOverlayDataType[];
+  userName: string;
 };
 
-export default function PeekOverlay({ description, userName }: Props) {
+export default function PeekOverlay({ purchaseOverlayData, userName }: Props) {
   const router = useRouter();
+  const defaultRouter = useDefaultRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
+  const [selectedCardData, setSelectedCardData] = useState<PurchaseOverlayDataType>(
+    purchaseOverlayData[0]
+  );
   const { _id: userId, club } = userDetails || {};
+
+  const part = searchParams.get("part");
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
@@ -134,38 +142,56 @@ export default function PeekOverlay({ description, userName }: Props) {
     }
   }, [userDetails, redirectUrl]);
 
-  const peekLicenseContent = [
-    {
-      icon: <IconHandGrab className="icon icon__large" />,
-      description: "See and copy the routines.",
-    },
-    {
-      icon: <IconNotebook className="icon icon__large" />,
-      description: "Read the progress diary.",
-    },
-    {
-      icon: <IconBubbleText className="icon icon__large" />,
-      description: "See the proofs of each completed task of the routine.",
-    },
-  ];
+  const handleChangeCard = (part: string) => {
+    const query = modifyQuery({ params: [{ name: "part", value: part, action: "replace" }] });
+    defaultRouter.replace(`${pathname}?${query}`);
+    const relevantData = purchaseOverlayData.find((o) => o.part === part);
+    if (!relevantData) return;
+    setSelectedCardData(relevantData);
+  };
+
+  const segments = useMemo(() => {
+    return purchaseOverlayData.map((obj, i) => {
+      const label = upperFirst(obj.part);
+      return {
+        label,
+        value: obj.part,
+      };
+    });
+  }, [purchaseOverlayData]);
 
   return (
     <Stack className={classes.container}>
-      {description && <Text className={classes.text}>{description}</Text>}
-      <Overlay opacity={0.1} radius={16} />
-      <PricingCard
-        price={
-          <Group className="priceGroup">
-            <Title order={3}>$19</Title>/ <Text>month</Text>
-          </Group>
-        }
-        name={"Peek License"}
-        buttonText="Get peek license"
-        content={peekLicenseContent}
-        onClick={handleAddSubscription}
-        isLoading={isLoading}
-        addGradient
-      />
+      <Stack className={classes.wrapper}>
+        <PricingCard
+          price={
+            <Group className="priceGroup">
+              <Title order={3}>${selectedCardData.oneTimePrice}</Title>
+            </Group>
+          }
+          headerChildren={
+            segments.length > 1 ? (
+              <SegmentedControl
+                data={segments}
+                value={part || selectedCardData.part}
+                className={classes.segmentedControl}
+                onChange={handleChangeCard}
+              />
+            ) : (
+              <></>
+            )
+          }
+          name={selectedCardData.name}
+          description={selectedCardData.description}
+          buttonText="Buy routine"
+          content={peekLicenseContent}
+          onClick={handleAddSubscription}
+          isLoading={isLoading}
+          addGradient
+        />
+      </Stack>
+
+      <Overlay color="#000" backgroundOpacity={0.1} blur={7} radius={16} />
     </Stack>
   );
 }
