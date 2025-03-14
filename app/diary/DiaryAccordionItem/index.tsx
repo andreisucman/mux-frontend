@@ -31,7 +31,7 @@ export default function DiaryAccordionItem({
   return (
     <Accordion.Item value={recordId || ""}>
       <Accordion.Control component={"div"}>
-        <Group className={classes.container} onClick={(e) => e.stopPropagation()}>
+        <Group className={classes.container}>
           <DeleteContentButton
             collectionKey="diary"
             contentId={recordId || ""}

@@ -27,6 +27,7 @@
 }
 
 .button {
+  flex: 1 0;
   @media (max-width: $mantine-breakpoint-xs) {
     margin-left: auto;
   }

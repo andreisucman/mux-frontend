@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchPurchases from "@/functions/fetchPurchases";
@@ -12,19 +12,8 @@ export default function ClubSellerContent() {
   const [hasMore, setHasMore] = useState(false);
   const [buyers, setBuyers] = useState<PurchaseType[]>();
   const { userDetails } = useContext(UserContext);
-
-  const youData = useMemo(() => {
-    const {
-      name = "",
-      avatar,
-      club = null,
-      latestScores,
-      latestScoresDifference,
-    } = userDetails || {};
-    const { bio } = club || {};
-    const data = { name, bio, avatar, latestScores, latestScoresDifference };
-    return data;
-  }, [userDetails]);
+  const { name, avatar, club, latestScoresDifference } = userDetails || {};
+  const { intro, socials } = club || { socials: [] };
 
   const handleFetchPurchases = useCallback(
     async (skip: boolean, existingCount?: number) => {
@@ -46,7 +35,11 @@ export default function ClubSellerContent() {
 
   return (
     <Stack className={classes.container}>
-      <ClubProfilePreview data={youData} type="you" showCollapseKey={youData.name} showButton />
+      <ClubProfilePreview
+        data={{ name, avatar, intro, socials, latestScoresDifference }}
+        type="you"
+        showButton
+      />
       <BalancePane />
       <Stack className={classes.list}>
         <Text c="dimmed" size="sm">
@@ -55,7 +48,7 @@ export default function ClubSellerContent() {
         <PurchasesList
           hasMore={hasMore}
           data={buyers}
-          handleFetchPurchases={() => handleFetchPurchases(hasMore, buyers && buyers.length)}
+          handleFetchPurchases={() => handleFetchPurchases(hasMore, buyers?.length)}
         />
       </Stack>
     </Stack>

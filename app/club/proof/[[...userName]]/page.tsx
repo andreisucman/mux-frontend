@@ -12,7 +12,9 @@ import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import ClubProfilePreview from "../../ClubProfilePreview";
 import ClubModerationLayout from "../../ModerationLayout";
+import { ClubContext } from "@/context/ClubDataContext";
 
 export const runtime = "edge";
 
@@ -29,6 +31,7 @@ export default function ClubProof(props: Props) {
   const userName = params?.userName?.[0];
 
   const { status, userDetails } = useContext(UserContext);
+  const { publicUserData } = useContext(ClubContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
   const searchParams = useSearchParams();
@@ -42,14 +45,6 @@ export default function ClubProof(props: Props) {
   const { name, club } = userDetails || {};
   const { followingUserName } = club || {};
   const isSelf = name === userName;
-
-  const clubResultTitles = useMemo(
-    () => [
-      { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
-      { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
-    ],
-    [userName]
-  );
 
   const handleFetchProof = useCallback(
     async ({ part, userName, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
@@ -88,8 +83,8 @@ export default function ClubProof(props: Props) {
     <ClubModerationLayout
       header={
         <PageHeaderClub
-          pageType="progress"
-          titles={clubResultTitles}
+          pageType="proof"
+          title={"Club"}
           userName={userName}
           filterNames={["part"]}
           isDisabled={availableParts.length === 0}
@@ -103,8 +98,12 @@ export default function ClubProof(props: Props) {
           }
         />
       }
-      userName={userName}
     >
+      <ClubProfilePreview
+        type={isSelf ? "you" : "member"}
+        data={publicUserData}
+        customStyles={{ flex: 0 }}
+      />
       {proof ? (
         <ProofGallery
           proof={proof}

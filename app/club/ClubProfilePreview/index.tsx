@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
 import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
@@ -16,20 +15,12 @@ type Props = {
   isMini?: boolean;
   data?: ClubUserType | null;
   showButton?: boolean;
-  showCollapseKey: string;
   customStyles?: { [key: string]: any };
 };
 
-function ClubProfilePreview({
-  type,
-  data,
-  isMini,
-  showCollapseKey,
-  showButton,
-  customStyles,
-}: Props) {
+function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Props) {
   const router = useRouter();
-  const { latestScoresDifference, bio, name, avatar } = data || {};
+  const { name, intro, avatar, socials, latestScoresDifference } = data || { socials: [] };
   const { overall } = latestScoresDifference || {};
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
 
@@ -46,17 +37,17 @@ function ClubProfilePreview({
 
   const handleToggleCollapse = () => {
     setShowCollapsedInfo((prev) => {
-      saveToIndexedDb(`showUserProfileInfo-${showCollapseKey}`, !prev);
+      saveToIndexedDb(`showUserProfileInfo`, !prev);
       return !prev;
     });
   };
 
   useEffect(() => {
-    getFromIndexedDb(`showUserProfileInfo-${showCollapseKey}`).then((verdict) => {
+    getFromIndexedDb(`showUserProfileInfo`).then((verdict) => {
       if (verdict !== false) verdict = true;
       setShowCollapsedInfo(verdict);
     });
-  }, [showCollapseKey]);
+  }, []);
 
   const chevron = showCollapsedInfo ? (
     <IconChevronUp className="icon" style={{ marginLeft: rem(4) }} />
@@ -83,10 +74,10 @@ function ClubProfilePreview({
         <Collapse in={showCollapsedInfo}>
           {!isMini && (
             <Text size="sm" lineClamp={5} mb={2}>
-              {bio?.intro}
+              {intro}
             </Text>
           )}
-          {bio && bio.socials.length > 0 && <SocialsDisplayLine socials={bio.socials} />}
+          {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
           {overall && overall > 0 ? (
             <>
               <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />

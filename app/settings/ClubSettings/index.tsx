@@ -39,8 +39,7 @@ export default function ClubSettings() {
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const { club, avatar, name, country } = userDetails || {};
-  const { bio, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
-  const { intro } = bio || {};
+  const { intro, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
 
   const [userName, setUserName] = useState<string>(name || "");
   const [userIntro, setUserIntro] = useState<string>(intro || "");
@@ -151,7 +150,7 @@ export default function ClubSettings() {
     (text: string) =>
       setUserDetails((prev: UserDataType) => ({
         ...(prev || {}),
-        club: { ...(prev.club || {}), bio: { ...(prev?.club?.bio || {}), intro: text } },
+        club: { ...(prev.club || {}), intro: text },
       })),
     [userDetails]
   );

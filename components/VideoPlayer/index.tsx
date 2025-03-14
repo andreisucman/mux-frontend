@@ -37,7 +37,7 @@ export default function VideoPlayer({
     if (onClick) {
       onClick();
     } else {
-      setPlaying((prev) => !prev);  
+      setPlaying((prev) => !prev);
     }
   }, [typeof onClick, playing]);
 
@@ -72,6 +72,7 @@ export default function VideoPlayer({
       className={cn("skeleton", classes.skeleton, { [classes.relative]: isRelative })}
       style={customStyles ? customStyles : {}}
     >
+      <div className={classes.overlay} onClick={handlePlayerClick} />
       {!playing && playIcon}
       <ReactPlayer
         url={url}
@@ -101,7 +102,10 @@ export default function VideoPlayer({
         }
         width={"100%"}
         height={"100%"}
-        onClick={handlePlayerClick}
+        onClickPreview={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
         onEnded={handleEnded}
         config={{
           file: {

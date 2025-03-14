@@ -8,11 +8,13 @@ import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
+import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
+import ClubProfilePreview from "../../ClubProfilePreview";
 import ClubModerationLayout from "../../ModerationLayout";
 
 export const runtime = "edge";
@@ -29,6 +31,7 @@ export default function ClubProgress(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
 
+  const { publicUserData } = useContext(ClubContext);
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
@@ -42,14 +45,6 @@ export default function ClubProgress(props: Props) {
   const { followingUserName } = club || {};
 
   const isSelf = userName === name;
-
-  const clubResultTitles = useMemo(
-    () => [
-      { label: "Progress", value: `/club/progress${userName ? `/${userName}` : ""}` },
-      { label: "Proof", value: `/club/proof${userName ? `/${userName}` : ""}` },
-    ],
-    [userName]
-  );
 
   const handleFetchProgress = useCallback(
     async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
@@ -101,7 +96,7 @@ export default function ClubProgress(props: Props) {
       header={
         <PageHeaderClub
           pageType="progress"
-          titles={clubResultTitles}
+          title={"Club"}
           userName={userName}
           filterNames={["part"]}
           isDisabled={availableParts.length === 0}
@@ -115,8 +110,12 @@ export default function ClubProgress(props: Props) {
           }
         />
       }
-      userName={userName}
     >
+      <ClubProfilePreview
+        type={isSelf ? "you" : "member"}
+        data={publicUserData}
+        customStyles={{ flex: 0 }}
+      />
       {progress ? (
         <ProgressGallery
           progress={progress}

@@ -22,12 +22,10 @@ export default function AddClubSocials({ title }: Props) {
   const [adressError, setAddressError] = useState("");
 
   const { club } = userDetails || {};
-  const { bio } = club || {};
-  const { socials } = bio || { socials: [] };
+  const { socials } = club || { socials: [] };
 
   const addSocial = useCallback(
     async ({ label, value }: { label: string; value: string }) => {
-      if (!bio) return;
       if (!value) {
         setAddressError("Address can't be empty");
         return;
@@ -45,11 +43,11 @@ export default function AddClubSocials({ title }: Props) {
         return;
       }
 
-      const newSocials = [...bio.socials, { label, value }];
+      const newSocials = [socials, { label, value }];
 
       setUserDetails((prev: UserDataType) => ({
         ...(prev || {}),
-        club: { ...(prev.club || {}), bio: { ...(prev?.club?.bio || {}), socials: newSocials } },
+        club: { ...(prev.club || {}), socials: newSocials },
       }));
 
       setName("");
@@ -57,25 +55,23 @@ export default function AddClubSocials({ title }: Props) {
 
       updateSocials(newSocials);
     },
-    [bio]
+    [socials]
   );
 
   const deleteSocial = useCallback(
     (value: string | null) => {
-      if (!bio || !value) return;
+      if (!value || !socials) return;
 
-      const newSocials = bio.socials
-        .map((rec) => (rec.value === value ? null : rec))
-        .filter(Boolean);
+      const newSocials = socials.map((rec) => (rec.value === value ? null : rec)).filter(Boolean);
 
       setUserDetails((prev: UserDataType) => ({
         ...(prev || {}),
-        club: { ...(prev.club || {}), bio: { ...(prev?.club?.bio || {}), socials: newSocials } },
+        club: { ...(prev.club || {}), socials: newSocials },
       }));
 
       updateSocials(newSocials);
     },
-    [bio]
+    [socials]
   );
 
   const updateSocials = useCallback(async (newSocials: { [key: string]: any }) => {

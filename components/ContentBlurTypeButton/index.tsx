@@ -240,7 +240,7 @@ export default function ContentBlurTypeButton({
           style={customStyles || {}}
         >
           <ActionIcon variant="default" loading={isLoading} disabled={isDisabled}>
-            <IconBlur className="icon" />
+            <IconBlur className="icon icon__small" />
           </ActionIcon>
           {progress > 0 && `${progress.toFixed(0)}%`}
         </Group>

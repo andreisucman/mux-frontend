@@ -21,7 +21,11 @@ export default function Club() {
   const savedSegment = getFromLocalStorage("clubSegment");
 
   useEffect(() => {
-    if (savedSegment && typeof savedSegment === "string") setSelectedSegment(savedSegment);
+    if (savedSegment && typeof savedSegment === "string") {
+      setSelectedSegment(savedSegment);
+    } else {
+      setSelectedSegment("buyer");
+    }
   }, [savedSegment]);
 
   const handleChangeSegment = (segment: string) => {

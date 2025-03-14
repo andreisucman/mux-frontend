@@ -13,15 +13,11 @@ export type HeadValuePartsBoolean = {
   parts: { name: string; value: boolean }[];
 }[];
 
-type ClubBioType = {
-  intro: string;
-  socials: { value: string | null; label: string }[];
-};
-
 export type ClubDataType = {
   followingUserId: string;
   followingUserName: string;
-  bio: ClubBioType;
+  intro: string;
+  socials: { value: string | null; label: string }[];
   payouts: {
     connectId: string;
     balance: number;
@@ -35,11 +31,10 @@ export type ClubDataType = {
 };
 
 export type ClubUserType = {
-  // if the user joined the club all of these fields must be populated with default empty values else the whole field is null
   name?: string;
-  bio?: ClubBioType;
+  intro?: string;
+  socials: { value: string | null; label: string }[];
   avatar?: { [key: string]: any };
-  latestScores?: LatestScoresType;
   latestScoresDifference?: LatestScoresDifferenceType;
 };
 

@@ -40,11 +40,11 @@ export default function ComparisonCarousel({ data }: Props) {
   useEffect(() => {
     const objects = images?.flatMap((obj, i) => [
       {
-        image: initialImages?.[i].mainUrl.url || "",
+        image: obj.mainUrl.url || "",
         date: formatDate({ date: initialDate }),
       },
       {
-        image: obj.mainUrl.url || "",
+        image: initialImages?.[i].mainUrl.url || "",
         date: formatDate({ date: updatedAt || null }),
       },
     ]);

@@ -9,11 +9,13 @@ import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import PageHeaderClub from "@/components/PageHeaderClub";
+import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openErrorModal from "@/helpers/openErrorModal";
+import ClubProfilePreview from "../../ClubProfilePreview";
 
 export const runtime = "edge";
 
@@ -26,10 +28,12 @@ export default function DiaryPage(props: Props) {
   const userName = params?.userName?.[0];
 
   const { userDetails } = useContext(UserContext);
-  const { club } = userDetails || {};
+  const { club, name } = userDetails || {};
   const { followingUserName } = club || {};
+  const isSelf = userName === name;
 
   const searchParams = useSearchParams();
+  const { publicUserData } = useContext(ClubContext);
   const [openValue, setOpenValue] = useState<string | null>(null);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -91,8 +95,12 @@ export default function DiaryPage(props: Props) {
           isDisabled={noResults}
         />
       }
-      userName={userName}
     >
+      <ClubProfilePreview
+        type={isSelf ? "you" : "member"}
+        data={publicUserData}
+        customStyles={{ flex: 0 }}
+      />
       <DiaryContent
         diaryRecords={diaryRecords}
         openValue={openValue}

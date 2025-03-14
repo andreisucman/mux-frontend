@@ -6,6 +6,7 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import openErrorModal from "@/helpers/openErrorModal";
 import RoutineModerationCard from "./RoutineModerationCard";
 import classes from "./manage-routines.module.css";
 
@@ -59,13 +60,22 @@ export default function ManageRoutines() {
       });
 
       if (response.status === 200) {
-        if (routineData && routineData.length) {
-          const newRoutineData = routineData.map((obj) =>
-            obj.part === updatedRoutine.part ? updatedRoutine : obj
-          );
-          setRoutineData(newRoutineData);
-        } else {
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          return;
+        }
+
+        if (routineData?.length === 0) {
           setRoutineData([updatedRoutine]);
+        } else {
+          const partData = routineData?.find((r) => r.part === updatedRoutine.part);
+          if (partData) {
+            setRoutineData((prev) =>
+              prev?.map((r) => (r.part === updatedRoutine.part ? updatedRoutine : r))
+            );
+          } else {
+            setRoutineData((prev) => [...(prev || []), updatedRoutine]);
+          }
         }
       }
     },

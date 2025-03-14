@@ -77,14 +77,14 @@ export default function AccordionRoutineRow({
     const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
     const dateFrom = formatDate({ date: startsAt, hideYear: true, hideMonth: sameMonth });
     const dateTo = formatDate({ date: lastDate, hideYear: true });
-    let label = `${upperFirst(part)}`;
+    let label = ``;
 
     if (dateFrom) {
       const areSame = dateTo.slice(0, 2) === dateFrom.slice(0, 2);
       const parts = [` - ${dateTo}`];
 
       if (!areSame) {
-        parts.unshift(` - ${dateFrom}`);
+        parts.unshift(dateFrom);
       }
 
       label += parts.join("");

@@ -138,26 +138,26 @@ export default function RoutineModerationCard({
         editable
       />
       <Group className={classes.footer}>
-        <NumberInput
-          label={<Text className={classes.label}>One-time price</Text>}
-          value={oneTimePrice}
-          onChange={(value) => handleDo(setOneTimePrice, Number(value))}
-          clampBehavior="strict"
-          min={1}
-          max={1000}
-          maw={175}
-          error={error?.oneTimePrice}
-        />
-        <NumberInput
-          value={subscriptionPrice}
-          label={<Text className={classes.label}>Subscription price</Text>}
-          onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
-          clampBehavior="strict"
-          min={1}
-          max={1000}
-          maw={175}
-          error={error?.subscriptionPrice}
-        />
+        <Group wrap="nowrap">
+          <NumberInput
+            label={<Text className={classes.label}>One-time price</Text>}
+            value={oneTimePrice}
+            onChange={(value) => handleDo(setOneTimePrice, Number(value))}
+            clampBehavior="strict"
+            min={1}
+            max={10000}
+            error={error?.oneTimePrice}
+          />
+          <NumberInput
+            value={subscriptionPrice}
+            label={<Text className={classes.label}>Subscription price</Text>}
+            onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
+            clampBehavior="strict"
+            min={1}
+            max={10000}
+            error={error?.subscriptionPrice}
+          />
+        </Group>
         <Select
           label={<Text className={classes.label}>Status</Text>}
           flex={1}
@@ -165,6 +165,7 @@ export default function RoutineModerationCard({
           value={status}
           onChange={(value) => handleDo(setStatus, value)}
           allowDeselect={false}
+          miw={100}
         />
         <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
           Save

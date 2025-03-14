@@ -85,7 +85,7 @@ export default function ProofGallery({
           pageStart={0}
         >
           <MasonryComponent
-            maxColumnCount={columns || 1}
+            columnCount={columns || 1}
             columnGutter={16}
             render={memoizedProofCard}
             items={proof}

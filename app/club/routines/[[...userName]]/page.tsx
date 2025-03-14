@@ -22,6 +22,7 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import TaskInfoContainer from "@/components/TaskInfoContainer";
+import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
@@ -33,6 +34,7 @@ import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
 import { AllTaskType, RoutineType, UserDataType } from "@/types/global";
+import ClubProfilePreview from "../../ClubProfilePreview";
 import ClubModerationLayout from "../../ModerationLayout";
 import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
@@ -46,6 +48,19 @@ type GetRoutinesProps = {
   routinesLength?: number;
 };
 
+type StealRoutinesProps = {
+  routineIds: string[];
+  startDate: Date | null;
+  stealAll: boolean;
+};
+
+type StealTaskProps = {
+  taskKey: string;
+  routineId: string;
+  total: number;
+  startDate: Date | null;
+};
+
 type Props = {
   params: Promise<{ userName: string }>;
 };
@@ -55,6 +70,7 @@ export default function ClubRoutines(props: Props) {
   const userName = params?.userName?.[0];
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { publicUserData } = useContext(ClubContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -143,12 +159,6 @@ export default function ClubRoutines(props: Props) {
     [routines, selectedRoutineIds]
   );
 
-  type StealRoutinesProps = {
-    routineIds: string[];
-    startDate: Date | null;
-    stealAll: boolean;
-  };
-
   const stealRoutines = async ({ routineIds, startDate, stealAll }: StealRoutinesProps) => {
     setIsLoading(true);
 
@@ -193,40 +203,30 @@ export default function ClubRoutines(props: Props) {
     }
   };
 
-  type StealTaskProps = {
-    taskKey: string;
-    routineId: string;
-    total: number;
-    startDate: Date | null;
-  };
-
   const handleStealTask = useCallback(
     async ({ taskKey, routineId, total, startDate }: StealTaskProps) => {
       if (!taskKey || !routineId || !startDate) return false;
 
       let isSuccess = false;
-      try {
-        const response = await callTheServer({
-          endpoint: "stealTask",
-          method: "POST",
-          body: { taskKey, routineId, startDate, total, followingUserName: userName },
-        });
 
-        if (response.status === 200) {
-          const { routine, tasks } = response.message;
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            routines: [...(prev.routines || []), routine],
-            tasks: [...(prev.tasks || []), ...tasks],
-          }));
-          isSuccess = true;
-        } else {
-          openErrorModal();
-        }
-      } catch (err) {
-      } finally {
-        return isSuccess;
+      const response = await callTheServer({
+        endpoint: "stealTask",
+        method: "POST",
+        body: { taskKey, routineId, startDate, total, followingUserName: userName },
+      });
+
+      if (response.status === 200) {
+        const { routine, tasks } = response.message;
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          routines: [...(prev.routines || []), routine],
+          tasks: [...(prev.tasks || []), ...tasks],
+        }));
+        isSuccess = true;
+      } else {
+        openErrorModal();
       }
+      return isSuccess;
     },
     [userDetails]
   );
@@ -321,88 +321,87 @@ export default function ClubRoutines(props: Props) {
           }
         />
       }
-      userName={userName}
-      showChat
-      showHeader
     >
       <LoadingOverlay
         visible={isLoading}
         style={{ position: "fixed", inset: 0, borderRadius: "1rem" }}
       />
-
-      <Stack className={classes.container}>
-        <RoutineSelectionButtons
-          selectedRoutineIds={selectedRoutineIds}
-          disabled={!routines || !routines.length}
-          handleClick={handleStealRoutines}
-          isSelf={isSelf}
-        />
-        {accordionItems ? (
-          <>
-            {accordionItems.length > 0 ? (
-              <Stack className={classes.wrapper}>
-                <Accordion
-                  value={openValue}
-                  onChange={setOpenValue}
-                  chevron={false}
-                  variant="separated"
-                  className={`${classes.accordion} scrollbar`}
-                  classNames={{
-                    content: classes.content,
-                    chevron: classes.chevron,
-                    label: classes.label,
-                    control: classes.control,
-                  }}
+      <ClubProfilePreview
+        type={isSelf ? "you" : "member"}
+        data={publicUserData}
+        customStyles={{ flex: 0 }}
+      />
+      <RoutineSelectionButtons
+        selectedRoutineIds={selectedRoutineIds}
+        disabled={!routines || !routines.length}
+        handleClick={handleStealRoutines}
+        isSelf={isSelf}
+      />
+      {accordionItems ? (
+        <>
+          {accordionItems.length > 0 ? (
+            <Stack className={classes.content}>
+              <Accordion
+                value={openValue}
+                onChange={setOpenValue}
+                chevron={false}
+                variant="separated"
+                className={`${classes.accordion} scrollbar`}
+                classNames={{
+                  content: classes.content,
+                  chevron: classes.chevron,
+                  label: classes.label,
+                  control: classes.control,
+                }}
+              >
+                {accordionItems}
+              </Accordion>
+              {hasMore && (
+                <ActionIcon
+                  variant="default"
+                  className={classes.getMoreButton}
+                  onClick={() =>
+                    handleFetchRoutines({
+                      skip: true,
+                      followingUserName: userName,
+                      routinesLength: (routines && routines.length) || 0,
+                      sort,
+                    })
+                  }
                 >
-                  {accordionItems}
-                </Accordion>
-                {hasMore && (
-                  <ActionIcon
-                    variant="default"
-                    className={classes.getMoreButton}
-                    onClick={() =>
-                      handleFetchRoutines({
-                        skip: true,
-                        followingUserName: userName,
-                        routinesLength: (routines && routines.length) || 0,
-                        sort,
-                      })
-                    }
-                  >
-                    <IconArrowDown />
-                  </ActionIcon>
-                )}
-              </Stack>
-            ) : (
-              <OverlayWithText
-                text={"Nothing found"}
-                button={
-                  isSelf && (
-                    <Button variant="default" mt={8} onClick={() => router.push("/routines")}>
-                      Create task
-                    </Button>
-                  )
-                }
-              />
-            )}
-          </>
-        ) : (
-          <Loader style={{ margin: "auto" }} />
-        )}
-        {routines && (
-          <ChatWithModal
-            chatCategory={ChatCategoryEnum.ROUTINE}
-            openChatKey={ChatCategoryEnum.ROUTINE}
-            dividerLabel={"Chat about routines and tasks"}
-            modalTitle={
-              <Title order={5} component={"p"}>
-                Chat about routines and tasks
-              </Title>
-            }
-            isClub={!isSelf}
-          />
-        )}
-      </Stack>
+                  <IconArrowDown />
+                </ActionIcon>
+              )}
+            </Stack>
+          ) : (
+            <OverlayWithText
+              text={"Nothing found"}
+              button={
+                isSelf && (
+                  <Button variant="default" mt={8} onClick={() => router.push("/routines")}>
+                    Create task
+                  </Button>
+                )
+              }
+            />
+          )}
+        </>
+      ) : (
+        <Loader style={{ margin: "auto" }} />
+      )}
+      {routines && (
+        <ChatWithModal
+          chatCategory={ChatCategoryEnum.ROUTINE}
+          openChatKey={ChatCategoryEnum.ROUTINE}
+          dividerLabel={"Chat about routines and tasks"}
+          modalTitle={
+            <Title order={5} component={"p"}>
+              Chat about routines and tasks
+            </Title>
+          }
+          isClub={!isSelf}
+        />
+      )}
     </ClubModerationLayout>
   );
 }
