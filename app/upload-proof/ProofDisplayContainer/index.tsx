@@ -13,14 +13,12 @@ type Props = {
 
 export default function ProofDisplayContainer({ existingProofRecord }: Props) {
   const { contentType, createdAt, mainUrl, isPublic, mainThumbnail } = existingProofRecord;
-  const [isVideoBuffering, setIsVideoBuffering] = useState(false);
 
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
 
   return (
     <Stack className={classes.container}>
       {createdAt && <Text className={classes.date}>{formattedDate}</Text>}{" "}
-      <LoadingOverlay visible={isVideoBuffering} />
       <Stack className={classes.wrapper}>
         {contentType === "image" ? (
           <Image
@@ -36,7 +34,6 @@ export default function ProofDisplayContainer({ existingProofRecord }: Props) {
             url={mainUrl.url}
             thumbnail={mainThumbnail.url}
             createdAt={createdAt}
-            setIsBuffering={setIsVideoBuffering}
             isRelative
           />
         )}

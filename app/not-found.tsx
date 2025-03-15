@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { Button, Stack } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { useRouter } from "next/navigation";
 import notFoundImage from "@/public/assets/not-found.svg";
 import classes from "./not-found.module.css";
 

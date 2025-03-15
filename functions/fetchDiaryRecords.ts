@@ -33,7 +33,7 @@ const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
       method: "GET",
     });
 
-    return response;
+    return response.message;
   } catch (err) {
     openErrorModal();
   }

@@ -17,10 +17,9 @@ type Props = {
 };
 
 export default function ProofModalContent({ record, isPublicPage }: Props) {
-  const { icon, createdAt, mainUrl, contentType, concern, taskName, userName } = record || {};
+  const { icon, createdAt, mainUrl, concern, taskName, userName } = record || {};
 
   const router = useRouter();
-  const [isBuffering, setIsBuffering] = useState(contentType === "video");
 
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
@@ -42,7 +41,6 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
         customStyles={{ paddingBottom: rem(16) }}
       />
       <Stack className={classes.contentWrapper}>
-        <LoadingOverlay visible={isBuffering} />
         {record.contentType === "image" ? (
           <ImageCard
             date={formattedDate}
@@ -56,7 +54,6 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
           <VideoPlayer
             url={mainUrl.url}
             createdAt={createdAt}
-            setIsBuffering={setIsBuffering}
             playOnBufferEnd
             showDate
             isRelative

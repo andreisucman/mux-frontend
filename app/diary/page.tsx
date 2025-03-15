@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Stack, Title } from "@mantine/core";
+import { Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import ChatWithModal from "@/components/ChatWithModal";
@@ -17,8 +17,8 @@ import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { TaskStatusEnum, UserDataType } from "@/types/global";
-import DiaryContent from "./DiaryContent";
-import SelectPartModalContent from "./SelectPartModalContent";
+import DiaryContent from "../../components/DiaryContent";
+import SelectPartModalContent from "../../components/SelectPartModalContent";
 import { ChatCategoryEnum, DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
@@ -161,30 +161,27 @@ export default function DiaryPage() {
 
   const handleFetchDiaryRecords = useCallback(
     async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
-      const response = await fetchDiaryRecords({
-        sort,
-        currentArrayLength: diaryRecords?.length,
-        skip: hasMore,
-        dateFrom,
-        dateTo,
-        part,
-      });
-
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({ description: response.error });
-          return;
-        }
-
-        setDiaryRecords((prev) => {
-          return hasMore ? [...(prev || []), ...response.message.slice(0, 20)] : response.message;
+      try {
+        const message = await fetchDiaryRecords({
+          sort,
+          part,
+          dateFrom,
+          dateTo,
+          currentArrayLength: diaryRecords?.length,
+          skip: hasMore,
         });
 
-        if (response.message.length > 0) {
-          setOpenValue(response.message[0]._id);
-        }
+        const { data } = message;
 
-        setHasMore(response.message.length === 21);
+        if (hasMore) {
+          setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
+        } else {
+          setDiaryRecords(data.slice(0, 20));
+        }
+        setOpenValue(data[0]._id);
+        setHasMore(data.length === 9);
+      } catch (err) {
+        openErrorModal();
       }
     },
     [diaryRecords, hasMore]
@@ -225,15 +222,23 @@ export default function DiaryPage() {
         >
           Add a note for today
         </Button>
-        <DiaryContent
-          hasMore={hasMore}
-          diaryRecords={diaryRecords}
-          openValue={openValue}
-          timeZone={timeZone}
-          setDiaryRecords={setDiaryRecords}
-          setOpenValue={setOpenValue}
-          handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo, part, sort })}
-        />
+        <Stack className={classes.content}>
+          {diaryRecords ? (
+            <DiaryContent
+              hasMore={hasMore}
+              diaryRecords={diaryRecords}
+              openValue={openValue}
+              timeZone={timeZone}
+              setDiaryRecords={setDiaryRecords}
+              setOpenValue={setOpenValue}
+              handleFetchDiaryRecords={() =>
+                handleFetchDiaryRecords({ dateFrom, dateTo, part, sort })
+              }
+            />
+          ) : (
+            <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+          )}
+        </Stack>
         <ChatWithModal
           modalTitle={
             <Title order={5} component={"p"}>

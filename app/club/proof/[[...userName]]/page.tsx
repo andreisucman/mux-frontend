@@ -1,20 +1,23 @@
 "use client";
 
-import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
+import ClubProfilePreview from "@/app/club/ClubProfilePreview";
+import ClubModerationLayout from "@/app/club/ModerationLayout";
+import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
+import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import ClubProfilePreview from "../../ClubProfilePreview";
-import ClubModerationLayout from "../../ModerationLayout";
-import { ClubContext } from "@/context/ClubDataContext";
+import { PurchaseOverlayDataType } from "@/types/global";
+import classes from "./proof.module.css";
 
 export const runtime = "edge";
 
@@ -36,6 +39,10 @@ export default function ClubProof(props: Props) {
   const [hasMore, setHasMore] = useState(false);
   const searchParams = useSearchParams();
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
+    PurchaseOverlayDataType[] | null
+  >();
+  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
 
   const query = searchParams.get("query");
   const part = searchParams.get("part");
@@ -48,7 +55,7 @@ export default function ClubProof(props: Props) {
 
   const handleFetchProof = useCallback(
     async ({ part, userName, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
-      const data = await fetchUsersProof({
+      const message = await fetchUsersProof({
         concern,
         part,
         query,
@@ -57,6 +64,11 @@ export default function ClubProof(props: Props) {
         userName,
         skip,
       });
+
+      const { priceData, data } = message;
+
+      setPurchaseOverlayData(priceData ? priceData : null);
+      setShowPurchaseOverlay(!!priceData);
 
       if (skip) {
         setProof([...(proof || []), ...data.slice(0, 20)]);
@@ -104,20 +116,25 @@ export default function ClubProof(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      {proof ? (
-        <ProofGallery
-          proof={proof}
-          hasMore={hasMore}
-          userName={userName}
-          handleFetchProof={handleFetchProof}
-          setProof={setProof}
-          isSelf={isSelf}
-          isPublicPage
-          columns={2}
-        />
-      ) : (
-        <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
-      )}
+      <Stack className={classes.content}>
+        {showPurchaseOverlay && purchaseOverlayData && (
+          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+        )}
+        {proof ? (
+          <ProofGallery
+            proof={proof}
+            hasMore={hasMore}
+            userName={userName}
+            handleFetchProof={handleFetchProof}
+            setProof={setProof}
+            isSelf={isSelf}
+            isPublicPage
+            columns={2}
+          />
+        ) : (
+          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+        )}
+      </Stack>
     </ClubModerationLayout>
   );
 }

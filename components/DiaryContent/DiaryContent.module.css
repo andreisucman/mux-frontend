@@ -1,13 +1,10 @@
-.accordion {
-  background-color: none !important;
+.container {
+  position: absolute !important;
+  inset: 0;
 }
 
-.content {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: rem(16);
+.accordion {
+  background-color: none !important;
 }
 
 .item {

@@ -6,13 +6,7 @@
   background-color: var(--mantine-color-dark-6);
   box-shadow: 0 0 rem(8) rem(4) rgba(20, 20, 20, 0.1);
   overflow: hidden;
-  z-index: 300;
-}
-
-.name {
-  display: flex;
-  align-items: center;
-  font-size: var(--mantine-font-size-sm);
+  z-index: 900;
 }
 
 .heading {
@@ -41,7 +35,19 @@
   padding: rem(16);
 }
 
+.name {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: var(--mantine-font-size-sm);
+}
 .description {
   font-size: var(--mantine-font-size-sm);
   padding: 0 rem(16);
+  text-align: center;
+}
+
+.list {
+  padding: 0 1rem;
+  font-size: rem(14);
 }

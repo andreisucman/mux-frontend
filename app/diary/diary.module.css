@@ -2,15 +2,19 @@
   flex: 1;
 }
 
+.content {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+  overflow: auto;
+}
+
 .title {
   display: flex;
   align-items: center;
   gap: rem(8);
-}
-
-.content {
-  flex: 1;
-  position: relative;
 }
 
 .icon {

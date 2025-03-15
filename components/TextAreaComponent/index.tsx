@@ -7,6 +7,8 @@ type Props = {
   text?: string;
   error?: string;
   heading?: React.ReactNode;
+  rightSection?: any;
+  rightSectionWidth?: number;
   isUnbounded?: boolean;
   readOnly?: boolean;
   editable?: boolean;
@@ -27,6 +29,8 @@ export default function TextareaComponent({
   heading,
   isLoading,
   readOnly,
+  rightSection,
+  rightSectionWidth,
   isUnbounded,
   customStyles,
   editable = true,
@@ -53,6 +57,8 @@ export default function TextareaComponent({
             root: classes.areaRoot,
             input: classes.areaInput,
           }}
+          rightSection={rightSection}
+          rightSectionWidth={rightSectionWidth}
         />
       </Stack>
     </Stack>

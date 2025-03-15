@@ -48,12 +48,15 @@ export default function PricingCard({
         <Text className={classes.description}>{description}</Text>
       </Stack>
       <Stack className={classes.content} style={customContentStyles || {}}>
-        {content.map((item, index) => (
-          <Group wrap="nowrap" key={index} gap={12}>
-            {item.icon}
-            {item.description}
-          </Group>
-        ))}
+        <Stack className={classes.list}>
+          {content.map((item, index) => (
+            <Group wrap="nowrap" key={index} gap={12}>
+              {item.icon}
+              {item.description}
+            </Group>
+          ))}
+        </Stack>
+
         {buttonText && (
           <>
             <GlowingButton

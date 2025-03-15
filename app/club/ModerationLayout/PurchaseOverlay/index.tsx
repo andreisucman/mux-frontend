@@ -14,14 +14,14 @@ import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
 import { PurchaseOverlayDataType } from "@/types/global";
-import classes from "./PeekOverlay.module.css";
+import classes from "./PurchaseOverlay.module.css";
 
 type Props = {
   purchaseOverlayData: PurchaseOverlayDataType[];
   userName: string;
 };
 
-export default function PeekOverlay({ purchaseOverlayData, userName }: Props) {
+export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props) {
   const router = useRouter();
   const defaultRouter = useDefaultRouter();
   const pathname = usePathname();
@@ -190,7 +190,6 @@ export default function PeekOverlay({ purchaseOverlayData, userName }: Props) {
           addGradient
         />
       </Stack>
-
       <Overlay color="#000" backgroundOpacity={0.1} blur={7} radius={16} />
     </Stack>
   );

@@ -5,7 +5,7 @@ import { useDisclosure } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
-import { DiaryRecordType } from "../type";
+import { DiaryRecordType } from "../../app/diary/type";
 import ControlButtons from "./ControlButtons";
 import DiaryActivityRow from "./DiaryActivityRow";
 import classes from "./DiaryRow.module.css";

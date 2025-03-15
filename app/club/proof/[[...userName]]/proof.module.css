@@ -1,0 +1,9 @@
+.content {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+
+  overflow: auto;
+}

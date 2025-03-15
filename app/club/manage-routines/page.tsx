@@ -18,7 +18,7 @@ export type RoutineDataType = {
   status: string;
   description: string;
   oneTimePrice: number;
-  subscriptionPrice: number;
+  updatePrice: number;
 };
 
 export default function ManageRoutines() {
@@ -31,7 +31,7 @@ export default function ManageRoutines() {
       updatedRoutine: RoutineDataType,
       setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
     ) => {
-      const { name, description, oneTimePrice, subscriptionPrice } = updatedRoutine;
+      const { name, description, oneTimePrice, updatePrice } = updatedRoutine;
 
       if (!name.trim().length) {
         setError({ name: "Name can't be empty." });
@@ -48,8 +48,8 @@ export default function ManageRoutines() {
         return;
       }
 
-      if (!subscriptionPrice || subscriptionPrice < 1) {
-        setError({ subscriptionPrice: "Set a subscription price." });
+      if (!updatePrice || updatePrice < 1) {
+        setError({ updatePrice: "Set a subscription price." });
         return;
       }
 
@@ -58,6 +58,8 @@ export default function ManageRoutines() {
         method: "POST",
         body: updatedRoutine,
       });
+
+      console.log("response", response);
 
       if (response.status === 200) {
         if (response.error) {
@@ -88,8 +90,7 @@ export default function ManageRoutines() {
       .sort((a, b) => a.part.localeCompare(b.part))
       .map((r, i) => {
         const relevantRoutineData = routineData.find((doItem) => doItem.part === r.part);
-        const { name, status, description, oneTimePrice, subscriptionPrice } =
-          relevantRoutineData || {};
+        const { name, status, description, oneTimePrice, updatePrice } = relevantRoutineData || {};
 
         return (
           <RoutineModerationCard
@@ -99,7 +100,7 @@ export default function ManageRoutines() {
             defaultStatus={status}
             defaultDescription={description}
             defaultOneTimePrice={oneTimePrice}
-            defaultSubscriptionPrice={subscriptionPrice}
+            defaultUpdatePrice={updatePrice}
             saveRoutineData={saveRoutineData}
           />
         );

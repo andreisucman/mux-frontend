@@ -38,6 +38,12 @@ export default withBundleAnalyzer({
         protocol: "https",
         port: "",
       },
+      {
+        hostname: "placehold.co",
+        pathname: "**",
+        protocol: "https",
+        port: "",
+      },
     ],
   },
 });

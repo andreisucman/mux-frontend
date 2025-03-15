@@ -25,7 +25,7 @@ type Props = {
   defaultName?: string;
   defaultDescription?: string;
   defaultOneTimePrice?: number;
-  defaultSubscriptionPrice?: number;
+  defaultUpdatePrice?: number;
   saveRoutineData: (
     obj: RoutineDataType,
     setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
@@ -44,7 +44,7 @@ export default function RoutineModerationCard({
   defaultName = "",
   defaultDescription = "",
   defaultOneTimePrice = 1,
-  defaultSubscriptionPrice = 1,
+  defaultUpdatePrice = 1,
 }: Props) {
   const { userDetails } = useContext(UserContext);
   const router = useRouter();
@@ -54,13 +54,23 @@ export default function RoutineModerationCard({
   const [status, setStatus] = useState<string | null>(defaultStatus);
   const [description, setDescription] = useState<string>(defaultDescription);
   const [oneTimePrice, setOneTimePrice] = useState<number>(defaultOneTimePrice);
-  const [subscriptionPrice, setSubscriptionPrice] = useState<number>(defaultSubscriptionPrice);
+  const [updatePrice, setSubscriptionPrice] = useState<number>(defaultUpdatePrice);
 
   const icon = getPartIcon(part);
   const label = upperFirst(part);
 
-  const handleDo = (setter: React.Dispatch<React.SetStateAction<any>>, value: any) => {
-    setter(value);
+  const handleDo = (
+    setter: React.Dispatch<React.SetStateAction<any>>,
+    value: any,
+    maxLength?: number
+  ) => {
+    if (maxLength) {
+      if (value.length <= maxLength) {
+        setter(value);
+      }
+    } else {
+      setter(value);
+    }
     setError(undefined);
   };
 
@@ -75,19 +85,19 @@ export default function RoutineModerationCard({
       name === defaultName &&
       description === defaultDescription &&
       oneTimePrice === defaultOneTimePrice &&
-      subscriptionPrice === defaultSubscriptionPrice
+      updatePrice === defaultUpdatePrice
     );
   }, [
     name,
     status,
     description,
     oneTimePrice,
-    subscriptionPrice,
+    updatePrice,
     defaultStatus,
     defaultName,
     defaultDescription,
     defaultOneTimePrice,
-    defaultSubscriptionPrice,
+    defaultUpdatePrice,
   ]);
 
   const handleSave = () => {
@@ -99,7 +109,7 @@ export default function RoutineModerationCard({
           description,
           status: status || "hidden",
           oneTimePrice,
-          subscriptionPrice,
+          updatePrice,
         },
         setError
       );
@@ -124,15 +134,30 @@ export default function RoutineModerationCard({
       <TextInput
         placeholder="The name of your routine"
         value={name}
-        label={<Text className={classes.label}>Name</Text>}
-        onChange={(e) => handleDo(setName, e.currentTarget.value)}
+        label={
+          <Group justify="space-between" align="center">
+            <Text className={classes.label}>Name</Text>
+            <Text size="sm" c="dimmed" mr={16}>
+              {50 - name.length}
+            </Text>
+          </Group>
+        }
+        styles={{ label: { width: "100%" } }}
+        onChange={(e) => handleDo(setName, e.currentTarget.value, 50)}
         error={error?.name}
       />
       <TextareaComponent
-        setText={(value) => handleDo(setDescription, value)}
+        setText={(value) => handleDo(setDescription, value, 150)}
         text={description}
         customStyles={{ gap: rem(4) }}
-        heading={<Text className={classes.label}>Description</Text>}
+        heading={
+          <Group justify="space-between" align="center">
+            <Text className={classes.label}>Description</Text>
+            <Text size="sm" c="dimmed" mr={16}>
+              {150 - description.length}
+            </Text>
+          </Group>
+        }
         placeholder="What is unique about your routine"
         error={error?.description}
         editable
@@ -149,14 +174,19 @@ export default function RoutineModerationCard({
             error={error?.oneTimePrice}
           />
           <NumberInput
-            value={subscriptionPrice}
+            value={updatePrice}
             label={<Text className={classes.label}>Price of update</Text>}
             onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
             clampBehavior="strict"
             min={1}
             max={10000}
-            rightSection={<Text c="dimmed" size="sm">/ month</Text>}
-            error={error?.subscriptionPrice}
+            rightSection={
+              <Text c="dimmed" size="sm">
+                / month
+              </Text>
+            }
+            rightSectionWidth={75}
+            error={error?.updatePrice}
           />
         </Group>
         <Select
@@ -168,17 +198,19 @@ export default function RoutineModerationCard({
           allowDeselect={false}
           miw={100}
         />
-        <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
-          Save
-        </Button>
-        <Button
-          variant="default"
-          className={classes.button}
-          onClick={handleRedirect}
-          disabled={defaultStatus === "hidden"}
-        >
-          View
-        </Button>
+        <Group flex={"1 0"} wrap="nowrap">
+          <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
+            Save
+          </Button>
+          <Button
+            variant="default"
+            className={classes.button}
+            onClick={handleRedirect}
+            disabled={defaultStatus === "hidden"}
+          >
+            View
+          </Button>
+        </Group>
       </Group>
     </Stack>
   );

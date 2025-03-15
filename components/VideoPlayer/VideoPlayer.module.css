@@ -33,6 +33,13 @@
   }
 }
 
+.left {
+  left: rem(16);
+  bottom: rem(12);
+  top: unset;
+  transform: unset;
+}
+
 .playIcon {
   color: var(--mantine-color-brand-6);
   pointer-events: none;

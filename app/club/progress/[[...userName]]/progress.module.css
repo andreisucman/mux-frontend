@@ -1,0 +1,11 @@
+.wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  border-radius: rem(16);
+}

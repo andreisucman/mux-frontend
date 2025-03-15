@@ -1,5 +1,4 @@
 .target {
-  z-index: 2;
   gap: rem(8);
   pointer-events: all;
   color: var(--mantine-color-gray-3);

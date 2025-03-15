@@ -2,20 +2,22 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Title } from "@mantine/core";
+import { Loader, Stack, Title } from "@mantine/core";
+import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import DiaryContent from "@/app/diary/DiaryContent";
+import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
 import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
+import DiaryContent from "@/components/DiaryContent";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import openErrorModal from "@/helpers/openErrorModal";
-import ClubProfilePreview from "../../ClubProfilePreview";
+import { PurchaseOverlayDataType } from "@/types/global";
+import classes from "./diary.module.css";
 
 export const runtime = "edge";
 
@@ -37,6 +39,10 @@ export default function DiaryPage(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>(null);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
+    PurchaseOverlayDataType[] | null
+  >();
+  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
 
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
@@ -45,27 +51,28 @@ export default function DiaryPage(props: Props) {
 
   const handleFetchDiaryRecords = useCallback(
     async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
-      try {
-        const response = await fetchDiaryRecords({
-          userName,
-          sort,
-          part,
-          dateFrom,
-          dateTo,
-          currentArrayLength: diaryRecords?.length,
-          skip: hasMore,
-        });
+      const message = await fetchDiaryRecords({
+        userName,
+        sort,
+        part,
+        dateFrom,
+        dateTo,
+        currentArrayLength: diaryRecords?.length,
+        skip: hasMore,
+      });
 
-        if (response.status === 200) {
-          setDiaryRecords(response.message);
-          if (response.message.length > 0) {
-            setOpenValue(response.message[0]._id);
-          }
-          setHasMore(response.message.length === 9);
-        }
-      } catch (err) {
-        openErrorModal();
+      const { priceData, data } = message;
+
+      setPurchaseOverlayData(priceData ? priceData : null);
+      setShowPurchaseOverlay(!!priceData);
+
+      if (hasMore) {
+        setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
+      } else {
+        setDiaryRecords(data.slice(0, 20));
       }
+      setOpenValue(data[0]._id);
+      setHasMore(data.length === 9);
     },
     [diaryRecords, hasMore, userName]
   );
@@ -101,13 +108,25 @@ export default function DiaryPage(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      <DiaryContent
-        diaryRecords={diaryRecords}
-        openValue={openValue}
-        setOpenValue={setOpenValue}
-        hasMore={hasMore}
-        handleFetchDiaryRecords={() => handleFetchDiaryRecords({ dateFrom, dateTo, sort, part })}
-      />
+      <Stack className={classes.content}>
+        {showPurchaseOverlay && purchaseOverlayData && (
+          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+        )}
+        {diaryRecords ? (
+          <DiaryContent
+            diaryRecords={diaryRecords}
+            openValue={openValue}
+            setOpenValue={setOpenValue}
+            hasMore={hasMore}
+            handleFetchDiaryRecords={() =>
+              handleFetchDiaryRecords({ dateFrom, dateTo, sort, part })
+            }
+          />
+        ) : (
+          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+        )}
+      </Stack>
+
       <ChatWithModal
         modalTitle={
           <Title order={5} component={"p"}>

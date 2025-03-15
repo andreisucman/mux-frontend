@@ -6,7 +6,7 @@ import { Group, Image, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import VideoPlayer from "@/components/VideoPlayer";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { DiaryActivityType } from "../type";
+import { DiaryActivityType } from "../../app/diary/type";
 import classes from "./DiaryTaskCard.module.css";
 
 export default function DiaryTaskCard({

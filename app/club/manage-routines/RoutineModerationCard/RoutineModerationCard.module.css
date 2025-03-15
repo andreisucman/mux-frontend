@@ -28,6 +28,7 @@
 
 .button {
   flex: 1 0;
+  min-width: rem(100);
   @media (max-width: $mantine-breakpoint-xs) {
     margin-left: auto;
   }

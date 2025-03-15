@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from "react";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, Stack } from "@mantine/core";
+import { Accordion, ActionIcon, Stack } from "@mantine/core";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { formatDate } from "@/helpers/formatDate";
+import { DiaryRecordType } from "../../app/diary/type";
 import DiaryAccordionItem from "../DiaryAccordionItem";
-import { DiaryRecordType } from "../type";
 import classes from "./DiaryContent.module.css";
 
 type Props = {
@@ -44,44 +44,38 @@ export default function DiaryContent({
   );
 
   return (
-    <Stack className={classes.content}>
-      {diaryRecords ? (
-        <>
-          <Accordion
-            value={openValue}
-            onChange={setOpenValue}
-            className={classes.accordion}
-            classNames={{
-              root: `${classes.root} scrollbar`,
-              item: classes.item,
-              control: classes.control,
-              content: classes.accordionContent,
-              chevron: classes.chevron,
-            }}
-          >
-            {diaryRecords.length > 0 ? (
-              <ListComponent
-                items={diaryRecords}
-                rowGutter={16}
-                render={memoizedDiaryRow}
-                className={classes.list}
-              />
-            ) : (
-              <OverlayWithText text={`Nothing found`} icon={<IconCircleOff className="icon" />} />
-            )}
-          </Accordion>
-          {hasMore && (
-            <ActionIcon
-              variant="default"
-              className={classes.getMoreButton}
-              onClick={handleFetchDiaryRecords}
-            >
-              <IconArrowDown />
-            </ActionIcon>
-          )}
-        </>
-      ) : (
-        <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+    <Stack className={classes.container}>
+      <Accordion
+        value={openValue}
+        onChange={setOpenValue}
+        className={classes.accordion}
+        classNames={{
+          root: `${classes.root} scrollbar`,
+          item: classes.item,
+          control: classes.control,
+          content: classes.accordionContent,
+          chevron: classes.chevron,
+        }}
+      >
+        {diaryRecords && diaryRecords.length > 0 ? (
+          <ListComponent
+            items={diaryRecords}
+            rowGutter={16}
+            render={memoizedDiaryRow}
+            className={classes.list}
+          />
+        ) : (
+          <OverlayWithText text={`Nothing found`} icon={<IconCircleOff className="icon" />} />
+        )}
+      </Accordion>
+      {hasMore && (
+        <ActionIcon
+          variant="default"
+          className={classes.getMoreButton}
+          onClick={handleFetchDiaryRecords}
+        >
+          <IconArrowDown />
+        </ActionIcon>
       )}
     </Stack>
   );

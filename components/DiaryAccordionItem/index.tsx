@@ -4,7 +4,7 @@ import { upperFirst } from "@mantine/hooks";
 import DeleteContentButton from "@/components/DeleteContentButton";
 import { getPartIcon } from "@/helpers/icons";
 import DiaryRow from "../DiaryRow";
-import { DiaryRecordType } from "../type";
+import { DiaryRecordType } from "../../app/diary/type";
 import classes from "./DiaryAccordionItem.module.css";
 
 type Props = {
@@ -32,6 +32,9 @@ export default function DiaryAccordionItem({
     <Accordion.Item value={recordId || ""}>
       <Accordion.Control component={"div"}>
         <Group className={classes.container}>
+          <Title order={5} className={classes.title}>
+            {icon} {label} note - {formattedDate}
+          </Title>
           <DeleteContentButton
             collectionKey="diary"
             contentId={recordId || ""}
@@ -41,9 +44,6 @@ export default function DiaryAccordionItem({
             setIsLoading={setIsLoading}
             isRelative
           />
-          <Title order={5} className={classes.title}>
-            {icon} {label} note - {formattedDate}
-          </Title>
         </Group>
       </Accordion.Control>
       <Accordion.Panel>

@@ -16,6 +16,7 @@ import {
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
+import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
@@ -36,7 +37,6 @@ import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
 import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
-import PeekOverlay from "../../ModerationLayout/PeekOverlay";
 import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
 
@@ -152,7 +152,6 @@ export default function ClubRoutines(props: Props) {
           setHasMore(data.length === 21);
         } else {
           setRoutines(data.slice(0, 20));
-          if (!openValue) setOpenValue(data[0]?._id);
         }
 
         const newRoutineConcerns = data.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
@@ -348,7 +347,7 @@ export default function ClubRoutines(props: Props) {
       {accordionItems ? (
         <Stack className={classes.wrapper}>
           {showPurchaseOverlay && purchaseOverlayData && (
-            <PeekOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+            <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
           )}
           <RoutineSelectionButtons
             selectedRoutineIds={selectedRoutineIds}

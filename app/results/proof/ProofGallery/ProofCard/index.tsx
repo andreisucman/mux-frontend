@@ -70,7 +70,6 @@ function ProofCard({
       record: data,
       type: "proof",
       title,
-      isPublicPage,
     });
   }, [isPublicPage, data, userName]);
 

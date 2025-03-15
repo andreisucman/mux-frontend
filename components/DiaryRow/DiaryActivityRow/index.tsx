@@ -1,6 +1,6 @@
 import React, { memo } from "react";
+import { DiaryActivityType } from "../../../app/diary/type";
 import DiaryTaskCard from "../../DiaryTaskCard";
-import { DiaryActivityType } from "../../type";
 import classes from "./DiaryActivityRow.module.css";
 
 type Props = {

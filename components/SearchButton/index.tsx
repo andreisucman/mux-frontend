@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";

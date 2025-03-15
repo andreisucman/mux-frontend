@@ -2,8 +2,11 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Title } from "@mantine/core";
+import { Loader, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import ClubProfilePreview from "@/app/club/ClubProfilePreview";
+import ClubModerationLayout from "@/app/club/ModerationLayout";
+import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -14,8 +17,8 @@ import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
-import ClubProfilePreview from "../../ClubProfilePreview";
-import ClubModerationLayout from "../../ModerationLayout";
+import { PurchaseOverlayDataType } from "@/types/global";
+import classes from "./progress.module.css";
 
 export const runtime = "edge";
 
@@ -37,6 +40,10 @@ export default function ClubProgress(props: Props) {
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
+    PurchaseOverlayDataType[] | null
+  >();
+  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -48,13 +55,18 @@ export default function ClubProgress(props: Props) {
 
   const handleFetchProgress = useCallback(
     async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
-      const data = await fetchProgress({
+      const message = await fetchProgress({
         part,
         sort,
         currentArrayLength: (currentArray && currentArray.length) || 0,
         userName,
         skip,
       });
+
+      const { priceData, data } = message;
+
+      setPurchaseOverlayData(priceData ? priceData : null);
+      setShowPurchaseOverlay(!!priceData);
 
       if (skip) {
         setProgress([...(currentArray || []), ...data.slice(0, 20)]);
@@ -117,15 +129,22 @@ export default function ClubProgress(props: Props) {
         customStyles={{ flex: 0 }}
       />
       {progress ? (
-        <ProgressGallery
-          progress={progress}
-          hasMore={hasMore}
-          isPublicPage={false}
-          isSelf={isSelf}
-          handleContainerClick={handleContainerClick}
-          handleFetchProgress={handleFetchProgress}
-          setProgress={setProgress}
-        />
+        <Stack className={classes.wrapper}>
+          {showPurchaseOverlay && purchaseOverlayData && (
+            <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+          )}
+          <Stack className={`${classes.content} scrollbar`}>
+            <ProgressGallery
+              progress={progress}
+              hasMore={hasMore}
+              isPublicPage={false}
+              isSelf={isSelf}
+              handleContainerClick={handleContainerClick}
+              handleFetchProgress={handleFetchProgress}
+              setProgress={setProgress}
+            />
+          </Stack>
+        </Stack>
       ) : (
         <Loader m="0 auto" pt="15%" />
       )}

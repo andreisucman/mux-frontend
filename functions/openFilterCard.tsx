@@ -1,11 +1,11 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import DiaryFilterCardContent from "@/app/diary/DiaryFilterCardContent";
 import FilterCardContent from "@/app/GeneralResultsHeader/FilterCardContent";
 import ProductsFilterCardContent from "@/app/products/ProductsFilterCardContent";
 import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent";
 import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
 import DateSelector from "@/components/DateSelector";
+import DiaryFilterCardContent from "@/components/DiaryFilterCardContent";
 import ClubProgressFilterCardContent from "@/components/PageHeaderClub/ClubProgressFilterCardContent";
 import ClubProofFilterCardContent from "@/components/PageHeaderClub/ClubProofFilterCardContent";
 
