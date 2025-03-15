@@ -59,8 +59,6 @@ export default function ManageRoutines() {
         body: updatedRoutine,
       });
 
-      console.log("response", response);
-
       if (response.status === 200) {
         if (response.error) {
           openErrorModal({ description: response.error });

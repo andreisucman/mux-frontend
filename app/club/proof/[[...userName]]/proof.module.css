@@ -1,9 +1,15 @@
 .content {
   flex: 1;
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
   gap: rem(16);
 
-  overflow: auto;
+  inset: 0;
+
+  overflow: hidden;
+}
+
+.relative {
+  position: relative;
 }

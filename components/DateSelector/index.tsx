@@ -42,17 +42,18 @@ function DateSelector({ customStyles, showCancelButton, preventDefaultDate }: Pr
         dateTo = defaultDateTo;
       }
 
+      setValue([dateFrom, dateTo]);
+      if (preventDefaultDate) return;
+
       if (dateFrom)
         params.push({ name: "dateFrom", value: dateFrom.toISOString(), action: "replace" });
 
       if (dateTo) params.push({ name: "dateTo", value: dateTo.toISOString(), action: "replace" });
 
-      setValue([dateFrom, dateTo]);
-
       const query = modifyQuery({ params });
       router.replace(`${pathname}?${query}`);
     },
-    [pathname, router]
+    [pathname, router, preventDefaultDate]
   );
 
   const resetDates = useCallback(() => {
@@ -68,7 +69,6 @@ function DateSelector({ customStyles, showCancelButton, preventDefaultDate }: Pr
   }, []);
 
   useEffect(() => {
-    if (preventDefaultDate) return;
     changeDates([dateFromParam, dateToParam]);
   }, []);
 

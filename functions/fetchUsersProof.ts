@@ -12,7 +12,7 @@ export default async function fetchUsersProof({
   currentArrayLength,
 }: FetchProofProps) {
   try {
-    let finalEndpoint = `getUsersProofRecords${userName ? `/${userName}` : ""}`;
+    let finalEndpoint = `getProofRecords${userName ? `/${userName}` : ""}`;
 
     const queryParams = [];
 

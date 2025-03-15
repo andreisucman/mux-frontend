@@ -17,7 +17,7 @@ export default async function fetchProgress({
   currentArrayLength,
 }: FetchProgressProps) {
   try {
-    let finalEndpoint = `getUsersProgressRecords${userName ? `/${userName}` : ""}`;
+    let finalEndpoint = `getProgress${userName ? `/${userName}` : ""}`;
 
     const queryParams = [];
 

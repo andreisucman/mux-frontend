@@ -1,7 +1,8 @@
 "use client";
 
-import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Loader, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
@@ -19,6 +20,7 @@ import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard
 import openResultModal from "@/helpers/openResultModal";
 import { PurchaseOverlayDataType } from "@/types/global";
 import classes from "./progress.module.css";
+import { progressSortItems } from "@/data/sortItems";
 
 export const runtime = "edge";
 
@@ -34,8 +36,8 @@ export default function ClubProgress(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
 
-  const { publicUserData } = useContext(ClubContext);
   const searchParams = useSearchParams();
+  const { publicUserData } = useContext(ClubContext);
   const { status, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -111,7 +113,8 @@ export default function ClubProgress(props: Props) {
           title={"Club"}
           userName={userName}
           filterNames={["part"]}
-          isDisabled={availableParts.length === 0}
+          sortItems={progressSortItems}
+          isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
@@ -128,12 +131,16 @@ export default function ClubProgress(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      {progress ? (
-        <Stack className={classes.wrapper}>
-          {showPurchaseOverlay && purchaseOverlayData && (
-            <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
-          )}
-          <Stack className={`${classes.content} scrollbar`}>
+      <Stack className={classes.wrapper}>
+        {progress ? (
+          <Stack
+            className={cn(classes.content, "scrollbar", {
+              [classes.relative]: !showPurchaseOverlay,
+            })}
+          >
+            {showPurchaseOverlay && purchaseOverlayData && (
+              <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+            )}
             <ProgressGallery
               progress={progress}
               hasMore={hasMore}
@@ -144,10 +151,10 @@ export default function ClubProgress(props: Props) {
               setProgress={setProgress}
             />
           </Stack>
-        </Stack>
-      ) : (
-        <Loader m="0 auto" pt="15%" />
-      )}
+        ) : (
+          <Loader m="0 auto" pt="15%" />
+        )}
+      </Stack>
     </ClubModerationLayout>
   );
 }

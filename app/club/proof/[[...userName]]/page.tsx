@@ -2,6 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
@@ -18,6 +19,7 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
 import classes from "./proof.module.css";
+import { proofSortItems } from "@/data/sortItems";
 
 export const runtime = "edge";
 
@@ -99,7 +101,8 @@ export default function ClubProof(props: Props) {
           title={"Club"}
           userName={userName}
           filterNames={["part"]}
-          isDisabled={availableParts.length === 0}
+          sortItems={proofSortItems}
+          isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
@@ -116,7 +119,11 @@ export default function ClubProof(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      <Stack className={classes.content}>
+      <Stack
+        className={cn(classes.content, "scrollbar", {
+          [classes.relative]: !showPurchaseOverlay,
+        })}
+      >
         {showPurchaseOverlay && purchaseOverlayData && (
           <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
         )}

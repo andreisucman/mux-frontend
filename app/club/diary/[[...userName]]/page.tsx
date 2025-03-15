@@ -10,11 +10,13 @@ import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";
 import DiaryContent from "@/components/DiaryContent";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
+import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
 import classes from "./diary.module.css";
@@ -30,7 +32,7 @@ export default function DiaryPage(props: Props) {
   const userName = params?.userName?.[0];
 
   const { userDetails } = useContext(UserContext);
-  const { club, name } = userDetails || {};
+  const { club, name, _id: userId } = userDetails || {};
   const { followingUserName } = club || {};
   const isSelf = userName === name;
 
@@ -42,6 +44,7 @@ export default function DiaryPage(props: Props) {
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
+  const [partFilters, setPartFilters] = useState<FilterItemType[]>([]);
   const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
 
   const sort = searchParams.get("sort") || "-createdAt";
@@ -71,7 +74,7 @@ export default function DiaryPage(props: Props) {
       } else {
         setDiaryRecords(data.slice(0, 20));
       }
-      setOpenValue(data[0]._id);
+      setOpenValue(data[0]?._id);
       setHasMore(data.length === 9);
     },
     [diaryRecords, hasMore, userName]
@@ -81,9 +84,20 @@ export default function DiaryPage(props: Props) {
     if (!userName) return;
 
     handleFetchDiaryRecords({ dateTo, dateFrom, sort, part });
-  }, [sort, userName, followingUserName, dateFrom, dateTo]);
+  }, [sort, part, userName, followingUserName, dateFrom, dateTo]);
 
-  const noResults = !diaryRecords || diaryRecords.length === 0;
+  useEffect(() => {
+    if (!userId) return;
+
+    getFilters({
+      collection: "task",
+      fields: ["part"],
+      filter: [`userId=${userId}`],
+    }).then((result) => {
+      const { availableParts } = result;
+      setPartFilters(availableParts);
+    });
+  }, [userId]);
 
   return (
     <ClubModerationLayout
@@ -93,13 +107,14 @@ export default function DiaryPage(props: Props) {
           title={"Club"}
           userName={userName}
           sortItems={diarySortItems}
-          filterNames={["dateFrom", "dateTo"]}
+          filterNames={["dateFrom", "dateTo", "part"]}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
+              childrenProps: { partFilters },
             })
           }
-          isDisabled={noResults}
+          isDisabled={!diaryRecords}
         />
       }
     >

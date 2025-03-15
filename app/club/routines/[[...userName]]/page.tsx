@@ -391,16 +391,7 @@ export default function ClubRoutines(props: Props) {
               )}
             </Stack>
           ) : (
-            <OverlayWithText
-              text={"Nothing found"}
-              button={
-                isSelf && (
-                  <Button variant="default" mt={8} onClick={() => router.push("/routines")}>
-                    Create task
-                  </Button>
-                )
-              }
-            />
+            <OverlayWithText text={"Nothing found"} />
           )}
         </Stack>
       ) : (

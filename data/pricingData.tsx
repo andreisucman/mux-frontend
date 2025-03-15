@@ -67,7 +67,7 @@ export const advisorCoachContent = [
 export const peekLicenseContent = [
   {
     icon: <IconHandGrab className="icon icon__large" />,
-    description: "See and steal the proven tasks and routines.",
+    description: "See and copy the proven tasks from the routine.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(20) }} />,

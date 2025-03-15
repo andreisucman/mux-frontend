@@ -57,35 +57,33 @@ export default function ClubRoutines() {
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {
-      try {
-        const response = await fetchRoutines({
-          skip,
-          part,
-          sort,
-          routinesLength: routinesLength || 0,
-        });
+      const response = await fetchRoutines({
+        skip,
+        part,
+        sort,
+        routinesLength: routinesLength || 0,
+      });
 
-        const { message } = response;
+      const { message } = response;
 
-        if (message) {
-          if (skip) {
-            setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
-            setHasMore(message.length === 21);
-          } else {
-            setRoutines(message.slice(0, 20));
-          }
-
-          const newRoutineConcerns = message.reduce(
-            (a: { [key: string]: string[] }, c: RoutineType) => {
-              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-              return a;
-            },
-            {}
-          );
-
-          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+      if (message) {
+        if (skip) {
+          setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
+          setHasMore(message.length === 21);
+        } else {
+          setRoutines(message.slice(0, 20));
         }
-      } catch (err) {}
+
+        const newRoutineConcerns = message.reduce(
+          (a: { [key: string]: string[] }, c: RoutineType) => {
+            a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+            return a;
+          },
+          {}
+        );
+
+        setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+      }
     },
     [routines]
   );

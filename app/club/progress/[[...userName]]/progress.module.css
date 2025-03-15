@@ -4,8 +4,17 @@
 }
 
 .content {
+  flex: 1;
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+
   inset: 0;
-  overflow: auto;
-  border-radius: rem(16);
+
+  overflow: hidden;
+}
+
+.relative {
+  position: relative;
 }

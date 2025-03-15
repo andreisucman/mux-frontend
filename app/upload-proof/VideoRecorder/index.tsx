@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   IconCamera,
   IconCameraRotate,
@@ -10,7 +10,6 @@ import { Button, Group, rem, SegmentedControl, Stack, Text } from "@mantine/core
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
-import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import adjustVideoQuality from "@/helpers/adjustVideoQuality";
 import base64ToBlob from "@/helpers/base64ToBlob";
 import { deleteFromIndexedDb, getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
@@ -53,12 +52,8 @@ const segments = [
 ];
 
 export default function VideoRecorder({ taskExpired, instruction, uploadProof }: Props) {
-  const { blurType } = useContext(BlurChoicesContext);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
-  const [originalUrl, setOriginalUrl] = useState<string>("");
-  const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
-  const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(5);
@@ -205,7 +200,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         reader.onloadend = () => {
           const base64data = reader.result as string;
           setLocalUrl(base64data);
-          setOriginalUrl(base64data);
         };
 
         if (videoRef.current) {
@@ -251,7 +245,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       const blob = await res.blob();
 
       setLocalUrl(imageData);
-      setOriginalUrl(imageData);
       setRecordedBlob(blob);
       saveToIndexedDb("proofImage", imageData);
     } catch (err) {
@@ -313,7 +306,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
     setIsRecording(false);
     setLocalUrl("");
-    setOriginalUrl("");
     setRecordedBlob(null);
     parts.current = [];
   }, [isVideoLoading, stopBothVideoAndAudio]);
@@ -333,7 +325,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
     setIsRecording(false);
     setLocalUrl("");
-    setOriginalUrl("");
     setRecordedBlob(null);
     setRecordingTime(RECORDING_TIME);
     deleteFromIndexedDb("proofVideo");
@@ -343,7 +334,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const handleResetImage = useCallback(() => {
     setLocalUrl("");
-    setOriginalUrl("");
     setRecordedBlob(null);
     setIsRecording(false);
     deleteFromIndexedDb("proofImage");
@@ -364,10 +354,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     await uploadProof({
       recordedBlob,
       captureType,
-      blurType,
     });
     setLocalUrl("");
-    setOriginalUrl("");
     setRecordedBlob(null);
   }, [recordedBlob, uploadProof, captureType]);
 
@@ -390,7 +378,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         const newTypeRecord = savedRecords[captureType];
         const newUrl = newTypeRecord ? newTypeRecord : "";
         setLocalUrl(newUrl);
-        setOriginalUrl(newUrl);
       }
     },
     [isRecording]
@@ -457,7 +444,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       const savedUrl = typeRecord ? typeRecord : "";
 
       setLocalUrl(savedUrl);
-      setOriginalUrl(savedUrl);
       setRecordedBlob(blob);
     };
     loadSaved();
@@ -592,14 +578,9 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             captureType={captureType}
             isVideoLoading={isVideoLoading}
             localUrl={localUrl}
-            originalUrl={originalUrl}
-            eyesBlurredUrl={eyesBlurredUrl}
-            faceBlurredUrl={faceBlurredUrl}
             handleResetImage={handleResetImage}
             handleResetRecording={handleResetRecording}
             handleSubmit={handleSubmit}
-            setEyesBlurredUrl={setEyesBlurredUrl}
-            setFaceBlurredUrl={setFaceBlurredUrl}
             setLocalUrl={setLocalUrl}
           />
         </Stack>
