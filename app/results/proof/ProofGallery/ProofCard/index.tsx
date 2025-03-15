@@ -1,16 +1,14 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { Group, Skeleton, Stack, Title } from "@mantine/core";
-import CardMetaPanel from "@/components/CardMetaPanel";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import DeleteContentButton from "@/components/DeleteContentButton";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";
-import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
+import openResultModal from "@/helpers/openResultModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { normalizeString } from "@/helpers/utils";
 import { SimpleProofType } from "../../types";
-import ProofCardFooter from "./ProofCardFooter";
 import ProofCardHeader from "./ProofCardHeader";
 import classes from "./ProofCard.module.css";
 
@@ -26,8 +24,6 @@ type Props = {
 
 function ProofCard({
   data,
-  isLite,
-  showFooter,
   isPublicPage,
   contentChildren,
   showContentModerationButtons,
@@ -37,7 +33,6 @@ function ProofCard({
     _id: proofId,
     mainUrl,
     concern,
-    avatar,
     userName,
     icon,
     taskName,
@@ -51,13 +46,7 @@ function ProofCard({
   const concernName = useMemo(() => normalizeString(concern), [concern]);
 
   const handleClick = useCallback(() => {
-    const title = isPublicPage ? (
-      getRedirectModalTitle({
-        avatar,
-        redirectUrl: `/club/routines/${userName}`,
-        title: userName,
-      })
-    ) : (
+    const title = (
       <Group gap={12}>
         {icon}
         <Title order={5} component={"p"} lineClamp={1}>
@@ -113,17 +102,6 @@ function ProofCard({
           </>
         )}
       </Stack>
-      {showFooter && (
-        <ProofCardFooter
-          metaPanel={
-            isLite ? (
-              <></>
-            ) : (
-              <CardMetaPanel avatar={avatar} name={userName} formattedDate={formattedDate} />
-            )
-          }
-        />
-      )}
     </Skeleton>
   );
 }

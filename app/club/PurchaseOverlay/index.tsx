@@ -42,9 +42,6 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
       if (pathname.includes("/club/routines")) {
         return ReferrerEnum.CLUB_ROUTINES;
       }
-      if (pathname.includes("/club/about")) {
-        return ReferrerEnum.CLUB_ABOUT;
-      }
       if (pathname.includes("/club/diary")) {
         return ReferrerEnum.CLUB_DIARY;
       }
@@ -54,13 +51,32 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
       if (pathname.includes("/club/proof")) {
         return ReferrerEnum.CLUB_PROOF;
       }
-      if (pathname.includes("/club/answers")) {
-        return ReferrerEnum.CLUB_ANSWERS;
-      }
       return ReferrerEnum.CLUB_ROUTINES;
     },
     [pathname]
   );
+
+  const handleJoinClub = useCallback(async () => {
+    const isSuccess = await joinClub({
+      router,
+      setUserDetails,
+      redirectPath: null,
+      closeModal: true,
+    });
+
+    if (isSuccess) {
+      createCheckoutSession({
+        type: "connect",
+        body: {
+          dataId: selectedCardData._id,
+          redirectUrl,
+          cancelUrl: redirectUrl,
+          mode: "payment",
+        },
+        setUserDetails,
+      });
+    }
+  }, [userDetails, redirectUrl]);
 
   const handleAddSubscription = useCallback(async () => {
     if (isLoading) return;
@@ -102,7 +118,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
         innerProps: (
           <JoinClubConfirmation
             handleJoinClub={handleJoinClub}
-            description="To buy a routine you have to join the Club first."
+            description="To buy a routine you need to join the Club."
             type="confirm"
           />
         ),
@@ -117,30 +133,16 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
     }
 
     createCheckoutSession({
-      priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-      redirectUrl,
-      cancelUrl: redirectUrl,
-      setUserDetails,
-    });
-  }, [userId, isLoading, redirectUrl, status]);
-
-  const handleJoinClub = useCallback(async () => {
-    const isSuccess = await joinClub({
-      router,
-      setUserDetails,
-      redirectPath: null,
-      closeModal: true,
-    });
-
-    if (isSuccess) {
-      createCheckoutSession({
+      type: "connect",
+      body: {
         priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
         redirectUrl,
         cancelUrl: redirectUrl,
-        setUserDetails,
-      });
-    }
-  }, [userDetails, redirectUrl]);
+        mode: "payment",
+      },
+      setUserDetails,
+    });
+  }, [userId, isLoading, redirectUrl, status]);
 
   const handleChangeCard = (part: string) => {
     const query = modifyQuery({ params: [{ name: "part", value: part, action: "replace" }] });
@@ -166,7 +168,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
         <PricingCard
           price={
             <Group className="priceGroup">
-              <Title order={3}>${selectedCardData.oneTimePrice}</Title>
+              <Title order={3}>${selectedCardData.price}</Title>
             </Group>
           }
           headerChildren={

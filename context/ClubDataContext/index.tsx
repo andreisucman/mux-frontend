@@ -21,8 +21,6 @@ export default function ClubDataContextProvider({ children }: Props) {
   const userName = Array.isArray(params?.userName) ? params.userName?.[0] : params.userName;
   const [publicUserData, setPublicUserData] = useState<ClubUserType>();
 
-  console.log("publicUserData", publicUserData);
-
   const fetchPublicUserData = useCallback(
     async (userName?: string) => {
       if (!userName) return;

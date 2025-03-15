@@ -6,20 +6,20 @@ import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
+import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
+import { proofSortItems } from "@/data/sortItems";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
 import classes from "./proof.module.css";
-import { proofSortItems } from "@/data/sortItems";
 
 export const runtime = "edge";
 

@@ -53,7 +53,7 @@ export default function RoutineModerationCard({
   const [name, setName] = useState<string>(defaultName);
   const [status, setStatus] = useState<string | null>(defaultStatus);
   const [description, setDescription] = useState<string>(defaultDescription);
-  const [oneTimePrice, setOneTimePrice] = useState<number>(defaultOneTimePrice);
+  const [price, setOneTimePrice] = useState<number>(defaultOneTimePrice);
   const [updatePrice, setSubscriptionPrice] = useState<number>(defaultUpdatePrice);
 
   const icon = getPartIcon(part);
@@ -84,14 +84,14 @@ export default function RoutineModerationCard({
       status === defaultStatus &&
       name === defaultName &&
       description === defaultDescription &&
-      oneTimePrice === defaultOneTimePrice &&
+      price === defaultOneTimePrice &&
       updatePrice === defaultUpdatePrice
     );
   }, [
     name,
     status,
     description,
-    oneTimePrice,
+    price,
     updatePrice,
     defaultStatus,
     defaultName,
@@ -108,7 +108,7 @@ export default function RoutineModerationCard({
           name,
           description,
           status: status || "hidden",
-          oneTimePrice,
+          price,
           updatePrice,
         },
         setError
@@ -166,12 +166,12 @@ export default function RoutineModerationCard({
         <Group wrap="nowrap">
           <NumberInput
             label={<Text className={classes.label}>One-time price</Text>}
-            value={oneTimePrice}
+            value={price}
             onChange={(value) => handleDo(setOneTimePrice, Number(value))}
             clampBehavior="strict"
             min={1}
             max={10000}
-            error={error?.oneTimePrice}
+            error={error?.price}
           />
           <NumberInput
             value={updatePrice}

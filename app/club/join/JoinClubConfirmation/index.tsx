@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { IconCamera, IconCash, IconEye, IconLock, IconTargetOff } from "@tabler/icons-react";
+import { IconDoorExit, IconLock, IconRoute } from "@tabler/icons-react";
 import { rem, Stack, Table, Text } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import TosCheckbox from "@/components/TosCheckbox";
@@ -11,24 +11,17 @@ import classes from "./JoinClubConfirmation.module.css";
 const confirmData = {
   body: [
     [
-      <IconEye className="icon icon__big" style={{display: "flex"}} />,
-      "Joining the Club lets you access other Club members.",
-    ],
-    [<IconLock className="icon icon__big" style={{display: "flex"}} />, "Your data is private when you join the Club."],
-  ],
-};
-
-const startData = {
-  body: [
-    [
-      <IconCamera className="icon icon__big" style={{display: "flex"}} />,
+      <IconLock className="icon icon__big" style={{ display: "flex" }} />,
       "All of your data remains private.",
     ],
     [
-      <IconCash className="icon icon__big" style={{display: "flex"}} />,
-      "You can buy other members' routines or sell yours.",
+      <IconRoute className="icon icon__big" style={{ display: "flex" }} />,
+      "You can buy other members' routines or sell yours",
     ],
-    [<IconTargetOff className="icon icon__big" style={{display: "flex"}} />, "You can leave at any time."],
+    [
+      <IconDoorExit className="icon icon__big" style={{ display: "flex" }} />,
+      "You can leave at any time.",
+    ],
   ],
 };
 
@@ -74,15 +67,12 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
     []
   );
 
-  const buttonText = type === "start" ? "Join the Club" : "Join and proceed to checkout";
+  const buttonText = type === "start" ? "Join the Club" : "Join and go to checkout";
 
   return (
     <Stack flex={1}>
       {description && <Text className={classes.description}>{description}</Text>}
-      <Table
-        data={type === "start" ? startData : confirmData}
-        classNames={{ td: classes.td, th: classes.th }}
-      />
+      <Table data={confirmData} classNames={{ td: classes.td, th: classes.th }} />
       <Stack className={classes.actionWrapper}>
         <TosCheckbox
           label={checkboxLabel}

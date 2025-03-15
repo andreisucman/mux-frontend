@@ -126,7 +126,7 @@ function BalancePane() {
           icon={<IconInfoCircle className="icon" />}
         >
           <Group gap={8}>
-            To activate your seller's profile add your bank account.
+            Your seller's profile is inactive. To activate it add your bank account.
             <Button ml="auto" size="compact-sm" onClick={openCountrySelectModal}>
               Add
             </Button>

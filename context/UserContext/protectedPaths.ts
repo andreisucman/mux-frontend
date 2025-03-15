@@ -12,7 +12,6 @@ export const protectedPaths = [
   "/considerations",
   "/club",
   "/club/join",
-  "/club/admission",
   "/waitroom",
   "/routines",
   "/diary",

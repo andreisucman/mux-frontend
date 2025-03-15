@@ -152,12 +152,15 @@ export type AllTaskType = {
   total: number;
   completed: number;
   concern: string;
+  description: string;
+  instruction: string;
 };
 
 export type PurchaseOverlayDataType = {
+  _id: string;
   name: string;
   description: string;
-  oneTimePrice: number;
+  price: number;
   part: string;
 };
 

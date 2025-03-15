@@ -75,7 +75,6 @@ export default function InnerChatContainer({
         customContainerStyles={{ flex: 1 }}
       />
       <ChatInput
-        // defaultVisibility={"open"}
         conversation={conversation}
         disabled={disabled}
         userName={userName}

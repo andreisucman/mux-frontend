@@ -16,7 +16,7 @@ import {
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
+import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
@@ -94,37 +94,33 @@ export default function ClubRoutines(props: Props) {
 
   const openTaskDetails = useCallback(
     (task: AllTaskType, routineId: string) => {
-      try {
-        const relevantRoutine = currentUserRoutines?.find((r) => r._id === routineId);
-        const existingTasksKeys = relevantRoutine?.allTasks.map((t) => t.key);
-        const existsInRoutines = existingTasksKeys?.includes(task.key) || false;
+      const relevantRoutine = currentUserRoutines?.find((r) => r._id === routineId);
+      const existingTasksKeys = relevantRoutine?.allTasks.map((t) => t.key);
+      const existsInRoutines = existingTasksKeys?.includes(task.key) || false;
 
-        modals.openContextModal({
-          modal: "general",
-          title: (
-            <Title order={5} component="p">
-              {task.name}
-            </Title>
-          ),
-          centered: true,
-          innerProps: (
-            <TaskInfoContainer
-              rawTask={task}
-              onSubmit={async (total: number, startsAt: Date | null) =>
-                handleStealTask({
-                  taskKey: task.key,
-                  routineId,
-                  total,
-                  startDate: startsAt,
-                })
-              }
-              alreadyExists={existsInRoutines}
-            />
-          ),
-        });
-      } catch (err) {
-        console.log("Error: ", err);
-      }
+      modals.openContextModal({
+        modal: "general",
+        title: (
+          <Title order={5} component="p">
+            {task.name}
+          </Title>
+        ),
+        centered: true,
+        innerProps: (
+          <TaskInfoContainer
+            rawTask={task}
+            onSubmit={async (total: number, startsAt: Date | null) =>
+              handleStealTask({
+                taskKey: task.key,
+                routineId,
+                total,
+                startDate: startsAt,
+              })
+            }
+            alreadyExists={existsInRoutines}
+          />
+        ),
+      });
     },
     [currentUserRoutines]
   );

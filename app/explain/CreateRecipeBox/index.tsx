@@ -62,9 +62,12 @@ export default function CreateRecipeBox({
               const onClick = !!isTrialUsed
                 ? async () =>
                     createCheckoutSession({
-                      priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-                      redirectUrl,
-                      cancelUrl: redirectUrl,
+                      type: "platform",
+                      body: {
+                        priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
+                        redirectUrl,
+                        cancelUrl: redirectUrl,
+                      },
                       setUserDetails,
                     })
                 : () =>

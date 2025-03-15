@@ -70,9 +70,12 @@ export default function StartDate() {
         const onClick = !!isTrialUsed
           ? async () =>
               createCheckoutSession({
-                priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-                redirectUrl,
-                cancelUrl: redirectUrl,
+                body: {
+                  priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
+                  redirectUrl,
+                  cancelUrl: redirectUrl,
+                },
+                type: "platform",
                 setUserDetails,
               })
           : () =>

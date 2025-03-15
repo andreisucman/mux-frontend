@@ -5,46 +5,30 @@ import { UserDataType } from "@/types/global";
 import fetchUserData from "./fetchUserData";
 
 type Props = {
-  redirectUrl?: string;
-  cancelUrl?: string;
-  priceId: string;
-  mode?: "subscription" | "payment";
+  body: { [key: string]: any };
+  type: "platform" | "connect";
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
 };
 
-export default async function createCheckoutSession({
-  priceId,
-  redirectUrl,
-  cancelUrl,
-  mode = "subscription",
-  setUserDetails,
-}: Props) {
-  if (!priceId) return;
+export default async function createCheckoutSession({ type, body, setUserDetails }: Props) {
+  const endpoint = type === "platform" ? "createCheckoutSession" : "createConnectCheckoutSession";
+  const response = await callTheServer({
+    endpoint,
+    method: "POST",
+    body,
+  });
 
-  try {
-    const response = await callTheServer({
-      endpoint: "createCheckoutSession",
-      method: "POST",
-      body: {
-        priceId,
-        redirectUrl,
-        cancelUrl,
-        mode,
-      },
-    });
+  if (response.status === 200) {
+    const { redirectUrl, subscriptionId } = response.message;
 
-    if (response.status === 200) {
-      const { redirectUrl, subscriptionId } = response.message;
-
-      if (redirectUrl) {
-        location.replace(redirectUrl);
-        return;
-      }
-
-      if (subscriptionId) {
-        fetchUserData({ setUserDetails });
-        modals.closeAll();
-      }
+    if (redirectUrl) {
+      location.replace(redirectUrl);
+      return;
     }
-  } catch (err) {}
+
+    if (subscriptionId) {
+      fetchUserData({ setUserDetails });
+      modals.closeAll();
+    }
+  }
 }

@@ -22,10 +22,13 @@ const createBuyScanSession = ({ redirectUrl, setUserDetails }: Props) => {
     modalType: "scan",
     onClick: () =>
       createCheckoutSession({
-        priceId: process.env.NEXT_PUBLIC_SCAN_PRICE_ID!,
-        redirectUrl,
-        cancelUrl: redirectUrl,
-        mode: "payment",
+        type: "platform",
+        body: {
+          priceId: process.env.NEXT_PUBLIC_SCAN_PRICE_ID!,
+          redirectUrl,
+          cancelUrl: redirectUrl,
+          mode: "payment",
+        },
         setUserDetails,
       }),
     buttonText: "Buy scan analysis",

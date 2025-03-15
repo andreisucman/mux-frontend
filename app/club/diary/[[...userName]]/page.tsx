@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Loader, Stack, Title } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/ModerationLayout/PurchaseOverlay";
+import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
 import ChatWithModal from "@/components/ChatWithModal";

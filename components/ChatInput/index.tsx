@@ -100,11 +100,14 @@ export default function ChatInput({
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
     createCheckoutSession({
-      priceId: isClub
-        ? process.env.NEXT_PUBLIC_PEEK_PRICE_ID!
-        : process.env.NEXT_PUBLIC_ADVISOR_PRICE_ID!,
-      redirectUrl,
-      cancelUrl: redirectUrl,
+      type: "platform",
+      body: {
+        priceId: isClub
+          ? process.env.NEXT_PUBLIC_PEEK_PRICE_ID!
+          : process.env.NEXT_PUBLIC_ADVISOR_PRICE_ID!,
+        redirectUrl,
+        cancelUrl: redirectUrl,
+      },
       setUserDetails,
     });
   }, [isClub, pathname, searchParams.toString()]);

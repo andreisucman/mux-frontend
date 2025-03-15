@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import { LoadingOverlay, rem, Stack } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import React from "react";
+import { rem, Stack } from "@mantine/core";
 import ImageCard from "@/components/ImageCard";
 import VideoPlayer from "@/components/VideoPlayer";
-import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { normalizeString } from "@/helpers/utils";
-import ProofCardFooter from "../ProofGallery/ProofCard/ProofCardFooter";
 import ProofCardHeader from "../ProofGallery/ProofCard/ProofCardHeader";
 import { SimpleProofType } from "../types";
 import classes from "./ProofModalContent.module.css";
@@ -17,19 +14,10 @@ type Props = {
 };
 
 export default function ProofModalContent({ record, isPublicPage }: Props) {
-  const { icon, createdAt, mainUrl, concern, taskName, userName } = record || {};
-
-  const router = useRouter();
+  const { icon, createdAt, mainUrl, concern, taskName } = record || {};
 
   const formattedDate = formatDate({ date: createdAt });
   const concernName = normalizeString(concern);
-
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
-
-  const handleRedirect = () => {
-    router.push(redirectUrl);
-    modals.closeAll();
-  };
 
   return (
     <Stack className={classes.container}>
@@ -60,8 +48,6 @@ export default function ProofModalContent({ record, isPublicPage }: Props) {
           />
         )}
       </Stack>
-
-      {isPublicPage && <ProofCardFooter handleTrack={handleRedirect} />}
     </Stack>
   );
 }

@@ -17,7 +17,7 @@ export type RoutineDataType = {
   name: string;
   status: string;
   description: string;
-  oneTimePrice: number;
+  price: number;
   updatePrice: number;
 };
 
@@ -31,7 +31,7 @@ export default function ManageRoutines() {
       updatedRoutine: RoutineDataType,
       setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
     ) => {
-      const { name, description, oneTimePrice, updatePrice } = updatedRoutine;
+      const { name, description, price, updatePrice } = updatedRoutine;
 
       if (!name.trim().length) {
         setError({ name: "Name can't be empty." });
@@ -43,8 +43,8 @@ export default function ManageRoutines() {
         return;
       }
 
-      if (!oneTimePrice || oneTimePrice < 1) {
-        setError({ oneTimePrice: "Set a one-time price." });
+      if (!price || price < 1) {
+        setError({ price: "Set a one-time price." });
         return;
       }
 
@@ -88,7 +88,7 @@ export default function ManageRoutines() {
       .sort((a, b) => a.part.localeCompare(b.part))
       .map((r, i) => {
         const relevantRoutineData = routineData.find((doItem) => doItem.part === r.part);
-        const { name, status, description, oneTimePrice, updatePrice } = relevantRoutineData || {};
+        const { name, status, description, price, updatePrice } = relevantRoutineData || {};
 
         return (
           <RoutineModerationCard
@@ -97,7 +97,7 @@ export default function ManageRoutines() {
             defaultName={name}
             defaultStatus={status}
             defaultDescription={description}
-            defaultOneTimePrice={oneTimePrice}
+            defaultOneTimePrice={price}
             defaultUpdatePrice={updatePrice}
             saveRoutineData={saveRoutineData}
           />

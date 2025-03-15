@@ -43,9 +43,8 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
 
     createCheckoutSession({
-      priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-      redirectUrl,
-      cancelUrl,
+      type: "platform",
+      body: { priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!, redirectUrl, cancelUrl },
       setUserDetails,
     });
   };

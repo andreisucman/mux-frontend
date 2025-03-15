@@ -103,8 +103,6 @@ export default function RoutinesHistoryPage() {
 
   const isFilterDisabled = availableParts.length + availableStatuses.length === 0;
 
-  // const items = inactiveTasks && inactiveTasks.map((rec,i)=><InactiveTaskRow {...rec} key={i} />)
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
