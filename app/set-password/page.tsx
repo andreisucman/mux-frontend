@@ -28,13 +28,14 @@ export default function SetPassword() {
   const { score, requirement } = getPasswordStrength(password);
 
   const handleSignOut = useCallback(async () => {
-    clearCookies();
-    deleteFromLocalStorage("userDetails");
-    setStatus("unauthenticated");
-    setUserDetails(null);
+    clearCookies(() => {
+      deleteFromLocalStorage("userDetails");
+      setStatus("unauthenticated");
+      setUserDetails(null);
 
-    router.replace("/auth");
-    modals.closeAll();
+      router.replace("/auth");
+      modals.closeAll();
+    });
   }, [protectedPaths, pathname]);
 
   const handleEnterPassword = (e: React.FormEvent<HTMLInputElement>) => {

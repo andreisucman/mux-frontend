@@ -183,6 +183,8 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
               <></>
             )
           }
+          customContainerStyles={{transform: "translateY(-15%)"}}
+          customHeadingStyles={{ padding: "0.75rem 0" }}
           name={selectedCardData.name}
           description={selectedCardData.description}
           buttonText="Buy routine"

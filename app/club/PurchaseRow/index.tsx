@@ -10,12 +10,13 @@ import { PurchaseType } from "@/types/global";
 import classes from "./PurchaseRow.module.css";
 
 type Props = {
+  pageType: "buyer" | "seller";
   data: PurchaseType;
   onRowClick?: (userName?: string) => void;
   onSubscribeClick?: (sellerId: string, part: string) => void;
 };
 
-function PurchaseRow({ data, onRowClick, onSubscribeClick }: Props) {
+function PurchaseRow({ pageType, data, onRowClick, onSubscribeClick }: Props) {
   const {
     buyerAvatar,
     sellerAvatar,
@@ -33,12 +34,13 @@ function PurchaseRow({ data, onRowClick, onSubscribeClick }: Props) {
 
     const dateFrom = formatDate({ date: contentStartDate, hideYear: true, hideMonth: sameMonth });
     const dateTo = formatDate({ date: contentEndDate, hideYear: true });
+    const year = new Date(contentEndDate).getFullYear();
 
     let label = ``;
 
     if (dateFrom) {
       const areSame = dateTo.slice(0, 2) === dateFrom.slice(0, 2);
-      const parts = [` - ${dateTo}`];
+      const parts = [` - ${dateTo} ${year}`];
 
       if (!areSame) {
         parts.unshift(dateFrom);
@@ -53,7 +55,14 @@ function PurchaseRow({ data, onRowClick, onSubscribeClick }: Props) {
   const showSkeleton = useShowSkeleton();
 
   const icon = getPartIcon(part, "icon");
-  const status = subscribedUntil && new Date(subscribedUntil) > new Date() ? "active" : "inactive";
+  const status = useMemo(
+    () => (subscribedUntil && new Date(subscribedUntil) > new Date() ? "active" : "inactive"),
+    [subscribedUntil]
+  );
+  const disableButton = useMemo(
+    () => status === "active" || pageType === "seller",
+    [status, pageType]
+  );
 
   return (
     <Stack
@@ -71,23 +80,24 @@ function PurchaseRow({ data, onRowClick, onSubscribeClick }: Props) {
         </Text>
         <Text className={classes.name}>
           {icon}
-          {upperFirst(part)}
+          <Text component="span">{upperFirst(part)}</Text>
           <Text component="span">{dateLabel}</Text>
         </Text>
-        {onSubscribeClick && (
-          <Button
-            disabled={status === "active"}
-            variant="default"
-            size="compact-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onSubscribeClick) onSubscribeClick(sellerId, part);
-            }}
-          >
-            <Indicator status={status} shape="round" isStatic />{" "}
-            <span className={classes.subscribe}>{status === "active" ? "Live" : "Subscribe"}</span>
-          </Button>
-        )}
+        <Button
+          disabled={disableButton}
+          variant="default"
+          ml="auto"
+          component="div"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onSubscribeClick) onSubscribeClick(sellerId, part);
+          }}
+        >
+          <Indicator status={status} shape="round" isStatic />{" "}
+          <span className={classes.subscribe}>
+            {status === "active" ? "Subscribed" : "Subscribe"}
+          </span>
+        </Button>
       </Skeleton>
     </Stack>
   );

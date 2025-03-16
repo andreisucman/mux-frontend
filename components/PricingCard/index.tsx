@@ -1,5 +1,5 @@
 import React from "react";
-import { Group, rem, Stack, Text, Title } from "@mantine/core";
+import { Group, Loader, rem, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import classes from "./PricingCard.module.css";
 
@@ -44,7 +44,7 @@ export default function PricingCard({
         <Title order={4} className={classes.name}>
           {name}
         </Title>
-        {price}
+        {price ? price : <Loader color="white" size="sm" m="auto" />}
         <Text className={classes.description}>{description}</Text>
       </Stack>
       <Stack className={classes.content} style={customContentStyles || {}}>

@@ -33,7 +33,7 @@ export default function DiaryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [openValue, setOpenValue] = useState<string | null>(null);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails} = useContext(UserContext);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);

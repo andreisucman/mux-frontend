@@ -9,6 +9,7 @@ import PurchaseRow from "../PurchaseRow";
 import classes from "./PurchasesList.module.css";
 
 type Props = {
+  pageType: "buyer" | "seller";
   hasMore: boolean;
   data?: PurchaseType[];
   handleFetchPurchases: () => void;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export default function PurchasesList({
+  pageType,
   hasMore,
   data,
   onRowClick,
@@ -25,9 +27,9 @@ export default function PurchasesList({
 }: Props) {
   const memoizedPurchaseRow = useCallback(
     (props: any) => (
-      <PurchaseRow data={props.data} onRowClick={onRowClick} onSubscribeClick={onSubscribeClick} />
+      <PurchaseRow data={props.data} pageType={pageType} onRowClick={onRowClick} onSubscribeClick={onSubscribeClick} />
     ),
-    [onRowClick, data]
+    [onRowClick, data?.length]
   );
   return (
     <Stack className={classes.container}>
@@ -47,7 +49,7 @@ export default function PurchasesList({
             >
               <Masonry
                 items={data}
-                maxColumnCount={2}
+                maxColumnCount={1}
                 rowGutter={16}
                 render={memoizedPurchaseRow}
               />

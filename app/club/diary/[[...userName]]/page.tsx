@@ -31,7 +31,7 @@ export default function DiaryPage(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
 
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, status: authStatus } = useContext(UserContext);
   const { club, name, _id: userId } = userDetails || {};
   const { followingUserName } = club || {};
   const isSelf = userName === name;
@@ -84,7 +84,7 @@ export default function DiaryPage(props: Props) {
     if (!userName) return;
 
     handleFetchDiaryRecords({ dateTo, dateFrom, sort, part });
-  }, [sort, part, userName, followingUserName, dateFrom, dateTo]);
+  }, [sort, part, userName, followingUserName, dateFrom, dateTo, authStatus]);
 
   useEffect(() => {
     if (!userId) return;

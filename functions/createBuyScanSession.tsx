@@ -14,7 +14,7 @@ const createBuyScanSession = ({ redirectUrl, setUserDetails }: Props) => {
     title: "Add scan analysis",
     price: (
       <Group className="priceGroup">
-        <Title order={3}>$1</Title>/<Text>analysis</Text>
+        <Title order={4}>$1</Title>/<Text>analysis</Text>
       </Group>
     ),
     description: "To get scores and feedback you need to have a scan",

@@ -97,11 +97,12 @@ function Header() {
   };
 
   const handleSignOut = useCallback(async () => {
-    clearCookies();
-    deleteFromLocalStorage("userDetails");
-    setStatus("unauthenticated");
-    setUserDetails(null);
-    close();
+    clearCookies(() => {
+      deleteFromLocalStorage("userDetails");
+      setStatus("unauthenticated");
+      setUserDetails(null);
+      close();
+    });
   }, []);
 
   const constructUserActions = (list: { avatar: any; name: string }[]) => {

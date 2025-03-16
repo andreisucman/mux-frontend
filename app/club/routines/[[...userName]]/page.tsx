@@ -3,16 +3,7 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import {
-  Accordion,
-  ActionIcon,
-  Button,
-  Loader,
-  LoadingOverlay,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
@@ -73,7 +64,7 @@ export default function ClubRoutines(props: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails, status: authStatus } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
@@ -294,7 +285,7 @@ export default function ClubRoutines(props: Props) {
       part,
     };
     handleFetchRoutines(payload);
-  }, [sort, part, userName]);
+  }, [sort, part, userName, authStatus]);
 
   useEffect(() => {
     getFilters({

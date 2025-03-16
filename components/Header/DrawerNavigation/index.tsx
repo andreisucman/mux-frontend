@@ -166,7 +166,6 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
   const finalAuthenticatedNavigation = useMemo(() => {
     const { club } = userDetails || {};
     const finalNavigation: NavigationLinkType[] = [...defaultAuthenticatedNavigation];
-
     if (club?.isActive) {
       finalNavigation.push({
         title: "My club",

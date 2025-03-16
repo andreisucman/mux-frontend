@@ -93,7 +93,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         title: "Add the improvement coach",
         price: (
           <Group className="priceGroup">
-            <Title order={3}>$9</Title>/ <Text>month</Text>
+            <Title order={4}>$9</Title>/ <Text>month</Text>
           </Group>
         ),
         isCentered: true,

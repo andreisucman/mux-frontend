@@ -1,6 +1,6 @@
 import callTheServer from "@/functions/callTheServer";
 
-export async function clearCookies() {
+export async function clearCookies(cb?: () => any) {
   const cookies = document.cookie.split(";");
 
   for (const cookie of cookies) {
@@ -12,6 +12,7 @@ export async function clearCookies() {
   }
 
   await callTheServer({ endpoint: "signOut", method: "POST" });
+  if (cb) cb();
 }
 
 export function getCookieValue(name: string): string | null {

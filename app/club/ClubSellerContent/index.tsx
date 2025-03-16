@@ -46,6 +46,7 @@ export default function ClubSellerContent() {
           Your buyers
         </Text>
         <PurchasesList
+          pageType="seller"
           hasMore={hasMore}
           data={buyers}
           handleFetchPurchases={() => handleFetchPurchases(hasMore, buyers?.length)}

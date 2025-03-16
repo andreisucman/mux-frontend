@@ -38,7 +38,7 @@ export default function ClubProgress(props: Props) {
 
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
-  const { status, userDetails } = useContext(UserContext);
+  const { status: authStatus, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
@@ -96,7 +96,7 @@ export default function ClubProgress(props: Props) {
 
   useEffect(() => {
     handleFetchProgress({ part, sort, userName });
-  }, [status, userName, sort, part, followingUserName]);
+  }, [authStatus, userName, sort, part, followingUserName]);
 
   useEffect(() => {
     getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
