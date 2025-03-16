@@ -30,17 +30,9 @@ export const data = [
           your scans are privately stored on your results page.
         </Text>
         <Text>
-          After you make visible progress you may choose to turn your profile public to inspire
-          others. When you make your profile public other people can see your before-afters, which
-          can motivate them to see your routines.
-        </Text>
-        <Text>
-          If someone wants to see your routines they will have to buy the 'Peek License'. The Peek
-          License will let them see and copy your routines for attaining similar results.
-        </Text>
-        <Text>
-          When someone buys the Peek License and follows you you will earn a comission from their
-          subscription payments on a daily basis for as long as they follow you.
+          After you make visible progress you may choose to sell your routine to reward yourself for
+          hard work and help others achieve a similar transformation. When you list a routine your
+          before-afters appear on the home page where they can be discovered by others.
         </Text>
         <Text>
           Lastly, if you consistently complete your tasks you may also get achievements ('Streaks')
@@ -58,27 +50,27 @@ export const data = [
         <Text>
           But it has optional paid addons such as the 'Improvement Coach' - the AI that creates
           personal routines for you, and the 'Advisor Coach' - the AI that answers your questions
-          about the tasks, products, activities, and the person you follow.
+          about the tasks, products, activities, and the person you follow. We also offer weekly
+          progress score calculations for a small fee to cover the expenses.
         </Text>
         <Text>
-          There is also the 'Peek License' that lets you follow public users to see and steal their
-          routines.
-        </Text>
-        <Text>
-          These addons can speed up your results and save you time on research, but you don't have
-          to buy them to use the platform.
+          These addons can speed up your results, improve experience, and save you time on research,
+          but you don't have to buy them to use the platform.
         </Text>
       </Stack>
     ),
   },
   {
-    question: "Will my images be listed in the gallery?",
+    question: "Will my images be listed on the home page?",
     answer: (
       <Stack>
-        <Text>None of your images or videos get listed automatically when you start using Muxout.</Text>
         <Text>
-          To list your images and videos you will have to manually enable data sharing in the
-          settings after you join the Club.
+          All of your data is private when you start using Muxout. This means that none of your
+          images are listed automatically.
+        </Text>
+        <Text>
+          To display your before-after images on the home page you will have to join 'the Club' and
+          list your routine for sale.
         </Text>
       </Stack>
     ),
@@ -90,9 +82,8 @@ export const data = [
         <Text>You can earn on Muxout in 2 ways.</Text>
         <Text>
           1. You can create an effective routine, and complete its tasks to improve your appearance.
-          You can then make your profile public to let other people see your before-afters and
-          follow you to access your routines. You will earn a 50% comission from each follower's
-          subscription payment.
+          You can then list it for sale to let other people see your before-afters and purchase your
+          routines.
         </Text>
         <Text>
           2. You can complete your tasks and earn achievements ('Streaks'). When you have the
@@ -130,8 +121,8 @@ export const data = [
           our payment processor you won't be able to earn and withdraw your rewards.
         </Text>
         <Text>
-          You can learn if your country is not supported for payments when you add your bank during
-          the Club onboarding.
+          You will learn if your country is not supported when you add your bank account on your club's
+          profile page.
         </Text>
       </Stack>
     ),

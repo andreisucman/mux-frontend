@@ -111,7 +111,7 @@ export default function ClubSettings() {
             club: { ...prev.club, payouts: defaultClubPayoutData, privacy: defaultClubPrivacy },
           }));
 
-          router.push("/club/admission");
+          router.push("/club");
 
           modals.closeAll();
         } else {

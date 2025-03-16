@@ -17,7 +17,7 @@ export default function CardMetaPanel({ avatar, name, formattedDate, customStyle
       className={classes.container}
       style={customStyles ? customStyles : {}}
       component={Link}
-      href={`/club/${name}`}
+      href={`/club/routines/${name}`}
     >
       <Group className={classes.nameWrapper}>
         <AvatarComponent avatar={avatar} size="xs" />

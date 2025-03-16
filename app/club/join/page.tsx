@@ -52,7 +52,7 @@ export default function ClubJoin() {
   }, [userDetails, handleJoinClub]);
 
   useEffect(() => {
-    if (!club) return;
+    if (!club || !club.isActive) return;
     router.replace("/club");
   }, [club]);
 
@@ -71,7 +71,7 @@ export default function ClubJoin() {
           </Stack>
           <GlowingButton
             text="Join the Club"
-            disabled={!!club}
+            disabled={club?.isActive}
             containerStyles={{ margin: "auto", width: "100%", maxWidth: rem(300) }}
             onClick={onStart}
           />

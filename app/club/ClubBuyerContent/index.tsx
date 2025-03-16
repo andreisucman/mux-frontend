@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Stack, Text } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
+import { UserContext } from "@/context/UserContext";
 import fetchPurchases from "@/functions/fetchPurchases";
 import { useRouter } from "@/helpers/custom-router";
 import { PurchaseType } from "@/types/global";
 import PurchasesList from "../PurchasesList";
+import SubscribeToUpdatesModalContent from "./SubscribeToUpdatesModalContent";
 import classes from "./ClubBuyerContent.module.css";
 
 export default function ClubBuyerContent() {
+  const { setUserDetails } = useContext(UserContext);
   const router = useRouter();
   const [hasMore, setHasMore] = useState(false);
   const [purchases, setPurchases] = useState<PurchaseType[]>();
@@ -31,6 +35,24 @@ export default function ClubBuyerContent() {
     router.push(`/club/routines/${userName}`);
   };
 
+  const handleOpenModal = useCallback(
+    async (sellerId: string, part: string) => {
+      modals.openContextModal({
+        modal: "general",
+        centered: true,
+        withCloseButton: true,
+        title: (
+          <Title order={5} component={"p"}>
+            {"Subscribe to updates"}
+          </Title>
+        ),
+        innerProps: <SubscribeToUpdatesModalContent sellerId={sellerId} part={part} />,
+        onClose: () => handleFetchPurchases(hasMore, purchases?.length),
+      });
+    },
+    [hasMore, purchases]
+  );
+
   useEffect(() => {
     handleFetchPurchases(false, 0);
   }, []);
@@ -49,6 +71,7 @@ export default function ClubBuyerContent() {
               handleFetchPurchases(hasMore, purchases && purchases.length)
             }
             onRowClick={onRowClick}
+            onSubscribeClick={handleOpenModal}
           />
         ) : (
           <OverlayWithText text="Nothng found" icon={<IconCircleOff className="icon" />} />

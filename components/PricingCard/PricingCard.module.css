@@ -20,7 +20,7 @@
   overflow-x: hidden;
   overflow-y: visible;
   padding: rem(12);
-  gap: rem(12);
+  gap: rem(8);
   background-image: linear-gradient(
     45deg,
     var(--mantine-color-dark-8) 0%,
@@ -48,6 +48,4 @@
 }
 
 .list {
-  padding: 0 1rem;
-  font-size: rem(14);
 }

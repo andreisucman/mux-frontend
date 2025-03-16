@@ -14,6 +14,7 @@ export type HeadValuePartsBoolean = {
 }[];
 
 export type ClubDataType = {
+  isActive: boolean;
   followingUserId: string;
   followingUserName: string;
   intro: string;
@@ -196,8 +197,10 @@ export type PurchaseType = {
   name: string;
   part: string;
   paid: number;
-  isSubscribed: boolean;
   transactionId: string;
+  subscribedUntil: string;
+  contentStartDate: string;
+  contentEndDate: string;
   createdAt: Date;
   sellerId: string;
   sellerName: string;

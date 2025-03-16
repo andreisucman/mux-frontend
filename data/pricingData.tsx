@@ -7,6 +7,7 @@ import {
   IconMessages,
   IconMoodCheck,
   IconNotebook,
+  IconRotate,
   IconScoreboard,
   IconTargetArrow,
   IconToolsKitchen2,
@@ -64,7 +65,7 @@ export const advisorCoachContent = [
   },
 ];
 
-export const peekLicenseContent = [
+export const generalPlanContent = [
   {
     icon: <IconHandGrab className="icon icon__large" />,
     description: "See and copy the proven tasks from the routine.",
@@ -80,5 +81,12 @@ export const peekLicenseContent = [
   {
     icon: <IconTargetArrow className="icon icon__large" />,
     description: "Get similar transformation.",
+  },
+];
+
+export const updateContent = [
+  {
+    icon: <IconRotate className="icon icon__large" />,
+    description: "Lets you see the latest tasks, progress, diary, and proof uploads of the user.",
   },
 ];

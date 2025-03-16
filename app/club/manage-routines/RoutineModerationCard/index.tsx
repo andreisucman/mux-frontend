@@ -114,16 +114,19 @@ export default function RoutineModerationCard({
         setError
       );
 
-    if (defaultStatus !== "public" && status === "public") {
-      askConfirmation({
-        title: "Confirm activation",
-        body: `This will make your ${part} progress, routines, diary, and proof public. Continue?`,
-        onConfirm: () => save(),
-      });
+    let body = "";
 
-      return;
+    if (defaultStatus !== "public" && status === "public") {
+      body = `This will make your ${part} progress, routines, diary, and proof public. Continue?`;
+    } else {
+      body = `If you have any subscribers, they will be lost. Continue?`;
     }
-    save();
+
+    askConfirmation({
+      title: "Confirm action",
+      body,
+      onConfirm: () => save(),
+    });
   };
 
   return (

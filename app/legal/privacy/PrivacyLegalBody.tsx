@@ -11,7 +11,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Privacy Policy</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: January 3, 2025
+        Last updated: March 16, 2025
       </Text>
       <Stack>
         <Text mt={0}>
@@ -58,14 +58,14 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>Provide appearance analysis based on your images.</li>
           <li>Provide personalized recommendations based on your images and videos.</li>
           <li>
-            If you choose to participate in our revenue sharing program (the Club) we display your
+            If you choose to participate in our revenue sharing program (the "Club") we display your
             graphical, audio and textual information to other suitable users as outline in the{" "}
             <Link href="/legal/club" style={{ textDecoration: "underline" }}>
               Club&apos;s terms of service
             </Link>
             .
           </li>
-          <li>Process subscription, rewards, and revenue share payments (for the Club members).</li>
+          <li>Process subscription, rewards, and comission payments.</li>
           <li>Suggest relevant third-party products based on your data.</li>
           <li>Communicate with you and improve our Services.</li>
         </ul>
@@ -482,7 +482,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <Text>
           Retention of Club members: If you participate in our revenue sharing program (the Club) we
-          may retain certain information (such as reward withdrawal records and follower activity)
+          may retain certain information (such as reward withdrawal, purchases and sales records)
           for the duration of your club membership and for a reasonable time after to comply with
           legal obligations, including financial regulations.
         </Text>

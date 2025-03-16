@@ -11,14 +11,23 @@ import classes from "./PurchasesList.module.css";
 type Props = {
   hasMore: boolean;
   data?: PurchaseType[];
-  onRowClick?: (args: any) => void;
   handleFetchPurchases: () => void;
+  onRowClick?: (args: any) => void;
+  onSubscribeClick?: (sellerId: string, part: string) => void;
 };
 
-export default function PurchasesList({ hasMore, data, onRowClick, handleFetchPurchases }: Props) {
+export default function PurchasesList({
+  hasMore,
+  data,
+  onRowClick,
+  onSubscribeClick,
+  handleFetchPurchases,
+}: Props) {
   const memoizedPurchaseRow = useCallback(
-    (props: any) => <PurchaseRow data={props.data} onRowClick={onRowClick} />,
-    [onRowClick]
+    (props: any) => (
+      <PurchaseRow data={props.data} onRowClick={onRowClick} onSubscribeClick={onSubscribeClick} />
+    ),
+    [onRowClick, data]
   );
   return (
     <Stack className={classes.container}>

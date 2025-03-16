@@ -11,7 +11,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Club Terms</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: February 26, 2025
+        Last updated: Match 16, 2025
       </Text>
       <Stack>
         <Text mt={0}>
@@ -31,9 +31,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
           to be bound by these terms and all related policies.
         </Text>
         <Text>
-          The Club lets you share your progress and other content with other site users to inspire
-          them for improvement and get rewarded for doing that. The Club is free to join and you can
-          leave at any time.
+          The Club lets you see the content of other site users and share yours with them. The Club
+          is free to join and you can leave at any time.
         </Text>
       </Stack>
       <Stack>
@@ -47,7 +46,6 @@ export default function ClubLegalBody({ addTitle }: Props) {
             </Link>
             .
           </li>
-          <li>Be at least 18 years old.</li>
           <li>
             Agree to comply with all laws and regulations applicable in your country of residence,
             including those related to online income reporting.
@@ -63,48 +61,50 @@ export default function ClubLegalBody({ addTitle }: Props) {
             As a Club member you can share the following content:
             <ul>
               <li>
+                <strong>Routines:</strong> The list of activities you have created for improving
+                yourself.
+              </li>
+              <li>
                 <strong>Task completion proof:</strong> The images or videos of you performing
                 activities outlined in your routines, such as using products, engaging in sport
-                activities and others as described in the relevant tasks of your routine.
+                activities and others as described in each task.
               </li>
               <li>
                 <strong>Progress images:</strong> The weekly progress scans of your body.
               </li>
               <li>
-                <strong>About description:</strong> The text describing your personality and
-                lifestyle.
+                <strong>Progress diary:</strong> The audio, text, and images capturing your thoughts
+                on the tasks you've completed.
               </li>
               <li>
-                <strong>Progress diary:</strong> The audio and text capturing your thoughts on the
-                tasks you've completed.
-              </li>
-              <li>
-                <strong>Answers to FAQ:</strong> The text representing the user's answers to
-                frequently asked questions.
+                <strong>About info:</strong> Your demographic data such the approximate age
+                interval, ethnicity, skin type, body type, as well as potential concerns and special
+                considerations that have been identifed from your scans or added by you.
               </li>
             </ul>
           </li>
           <li>
-            By default when you join the club all of your existing content is private and not
-            accessible by others. You can enable data sharing on the admission page during or on the
-            settings page after the registration.
+            <Text>
+              By default when you join the Club all of your existing content is private and not
+              accessible by others. Your content becomes public when you list a routine for sale, of
+              which you are notified during the process of listing. Only the content associated with
+              the listed routine becomes public. All other content remains private.
+            </Text>
+            <Text>
+              For example: if you have face and body routines, but you only list the face routine,
+              your progress, proof and diary records related to the body will remain private.
+            </Text>
           </li>
         </ul>
-        <Title order={3}>2. Interaction with other Club members:</Title>
-        <ul>
-          <li>Other Club members can follow ("peek") and unfollow you without your consent.</li>
-          <li>You cannot block or reject followers.</li>
-          <li>You can enable or disable the sharing of any category of content at any time.</li>
-        </ul>
-        <Title order={3}>3. Income from Followers:</Title>
+        <Title order={3}>3. Income from sales:</Title>
         <ul>
           <li>
-            You earn 50% from the net Peek license subscription revenue amount for each user that
-            follows you in the Club, each month.
+            You earn 80% minus the applicable processing fees from the price that you list for your
+            routines.
           </li>
           <li>
-            Your rewards are deposited to your balance every day at midnight UTC according to the
-            number of users that follow you at that moment.
+            Your reward is deposited to your balance immedately and is available for withdrawal at
+            any time.
           </li>
           <li>
             Your withdrawals are subject to applicable processing fees and withholding taxes in
@@ -116,7 +116,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>3. Content and Privacy</Title>
         <Title order={3}>1. Ownership of Content:</Title>
         <Text>
-          As a Club member, you are responsible for the content you upload, ensuring it adheres to
+          As a Club member, you are responsible for the content you display, ensuring it adheres to
           our{" "}
           <Link href={"/legal/terms"} style={{ textDecoration: "underline" }}>
             General TOS
@@ -132,36 +132,42 @@ export default function ClubLegalBody({ addTitle }: Props) {
         </Text>
         <Title order={3}>2. Data Security:</Title>
         <Text>
-          We employ commercially reasonable security measures, such as encryption, to protect your
-          personal data and content. However, we cannot guarantee the complete security of
-          information transmitted through the platform. By uploading content, you acknowledge and
-          accept the risk of potential unauthorized access or misuse, though we strive to prevent
-          this from happening.
+          We employ commercially reasonable security measures, such as role based access and
+          encryption, to protect your personal data and content. However, we cannot guarantee the
+          complete security of information transmitted through the platform. By uploading content,
+          you acknowledge and accept the risk of potential unauthorized access or misuse, though we
+          strive to prevent this from happening.
         </Text>
         <Title order={3}>3. Privacy of Content:</Title>
         <ul>
           <li>
-            <strong>Public Content:</strong> When you enable data sharing, different types of data
-            are made available to different types of users as follows:
+            <strong>Public Content:</strong> When you list a routine for sale different types of
+            data are made available to different types of users as follows:
             <ul>
               <li>
-                The progress and proof data is displayed on the home page of the platform and is
+                The progress images become displayed on the home page of the platform and are
                 viewable by anyone.
               </li>
-              <li>The diary and answers are accessible by your followers only.</li>
+              <li>The routines, proof, and diary are accessible by your customers.</li>
               <li>
-                The about info is accessible by your followers who have the 'Advisor coach' addon
-                enabled, through the chat.
+                The about info is accessible by your customers who have the 'Advisor Coach' addon
+                enabled. It's also used in the filters menu on the home page of the site for the
+                purpose of filtering the before-after images.
               </li>
             </ul>
           </li>
           <li>
-            <strong>Private Content:</strong> Any content you upload is private by default, unless
-            you choose to enable data sharing in the settings. You can adjust your data sharing
-            preferences at any time via the settings page. Private content is only accessible to you
-            and cannot be viewed by anyone else, including your followers. We implement strong
-            security measures to protect your private content, but please note that while we take
-            all necessary precautions, no system can guarantee absolute privacy.
+            <strong>Private Content:</strong>
+            <Text>
+              Any content you upload is private by default, unless you choose to list your routine
+              for sale. You can revoke your decision for selling a routine on the Manage routine
+              page, that you can access by clicking a relevant button on your Club profile page.
+            </Text>
+            <Text>
+              We implement strong security measures to protect your private content, but please note
+              that while we take all necessary precautions, no system can guarantee absolute
+              privacy.
+            </Text>
           </li>
         </ul>
         <Title order={3}>4. Leaving the Club:</Title>
@@ -173,9 +179,9 @@ export default function ClubLegalBody({ addTitle }: Props) {
           and clicking the "Leave Club" button.
         </Text>
         <Text>
-          Once you leave the Club, all content you have uploaded will immediately become private.
-          Followers will lose access to your private content, and public content will no longer be
-          visible to general users.
+          Once you leave the Club, the data you've made public (if any) will become private, except
+          for the content that has already been purchased. The purchased content will continue to be
+          available for the users that have bought it even after you leave the Club.
         </Text>
       </Stack>
       <Stack>
@@ -187,19 +193,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
           and fee structure. We do not control Stripe&apos;s processing times, and payments may take
           several business days to reflect in your bank account after they are initiated.
         </Text>
-        <Title order={3}>2. Earnings from Followers:</Title>
-        <ul>
-          <li>
-            You will receive 50% of the net app&apos;s subscription revenue for each user who
-            follows you. The actual amount is calculated based on the Peek license plan cost minus
-            payment processing fee.
-          </li>
-          <li>
-            Payments deposited to your bank account are subject to Stripe&apos;s processing times,
-            fess, and terms.
-          </li>
-        </ul>
-        <Title order={3}>3. Payment Schedule:</Title>
+        <Title order={3}>2. Payment Schedule:</Title>
         <ul>
           <li>
             Payouts are processed on demand. This means you can initiate a payout of your balance to
@@ -209,7 +203,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
             You are responsible for ensuring your banking information remains current and accurate.
           </li>
         </ul>
-        <Title order={3}>4. Taxes and Withholdings:</Title>
+        <Title order={3}>3. Taxes and Withholdings:</Title>
         <ul>
           <li>
             You are responsible for reporting and paying any applicable taxes on earnings from the
@@ -223,11 +217,14 @@ export default function ClubLegalBody({ addTitle }: Props) {
       </Stack>
       <Stack>
         <Title order={2}>5. Termination of Membership</Title>
-        <Title order={3}>1. Content Backup and Retention:</Title>
         <Text>
           Upon the termination of your Club membership, any of your content that was previously
           public will be made private. This includes progress and proof images and videos, diary
-          audio and text, as well as your "About" description.
+          audio and text, as well as other information about you that you have provided.
+        </Text>
+        <Text>
+          The information that has already been purchased by any of your customers will still be available
+          for them after you have left the Club.
         </Text>
       </Stack>
       <Stack>
@@ -236,7 +233,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <ul>
           <li>Uploading misleading, false, or offensive content.</li>
           <li>Engaging in harassment or any form of abusive behavior.</li>
-          <li>Engaging in fraudulent activities to increase payouts.</li>
+          <li>Engaging in fraudulent activities.</li>
         </ul>
         <Title order={3}>2. Prohibited Content:</Title>
         <Text>
@@ -272,7 +269,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
             General TOS
           </Link>
           , we are not responsible for any unauthorized use or access to your content by third
-          parties, including followers who may violate these terms by sharing or misusing your
+          parties, including the purchasers of your content who may violate these terms by sharing or misusing your
           images, videos audio or textual content.
         </Text>
       </Stack>

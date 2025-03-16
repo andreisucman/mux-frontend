@@ -7,7 +7,7 @@ import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import JoinClubConfirmation from "@/app/club/join/JoinClubConfirmation";
 import PricingCard from "@/components/PricingCard";
 import { UserContext } from "@/context/UserContext";
-import { peekLicenseContent } from "@/data/pricingData";
+import { generalPlanContent } from "@/data/pricingData";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import joinClub from "@/functions/joinClub";
 import { useRouter } from "@/helpers/custom-router";
@@ -111,7 +111,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
       return;
     }
 
-    if (!club) {
+    if (club?.isActive) {
       modals.openContextModal({
         centered: true,
         modal: "general",
@@ -186,7 +186,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
           name={selectedCardData.name}
           description={selectedCardData.description}
           buttonText="Buy routine"
-          content={peekLicenseContent}
+          content={generalPlanContent}
           onClick={handleAddSubscription}
           isLoading={isLoading}
           addGradient

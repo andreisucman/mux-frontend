@@ -11,7 +11,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Terms of Service</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: February 26, 2025
+        Last updated: Match 16, 2025
       </Text>
       <Stack>
         <Text mt={0}>
@@ -229,7 +229,10 @@ export default function TermsLegalBody({ addTitle }: Props) {
         </Text>
         <ul>
           <li>The analysis of your appearance using AI technologies.</li>
-          <li>Making this information accessible by other users of the site</li>
+          <li>
+            Making this information accessible by other users of the site with your explicit
+            consent.
+          </li>
           <li>
             The processing of your data for suggesting third-party products and services that we
             believe may be of interest to you. No personal data will be shared with third-party
@@ -329,10 +332,10 @@ export default function TermsLegalBody({ addTitle }: Props) {
             discretion. This may include, but is not limited to, cases where we suspect fraudulent
             activity, incorrect account information, or violations of our terms.
           </Text>
-          <Title order={3}>Revenue Sharing ("Club")</Title>
+          <Title order={3}>Content monetization ("Club")</Title>
           <Text>
-            We offer our users the right to join the "Club" and receive a share of revenue from
-            making their image, video and audio data accessible to other users.
+            We offer our users the right to join the "Club" and earn from making their image, video
+            and audio data accessible to other users.
           </Text>
           <Text>
             If you choose to participate in the "Club", you will be required to complete an
@@ -584,11 +587,11 @@ export default function TermsLegalBody({ addTitle }: Props) {
           </ul>
           <Title order={3}>Financial Compensation and Rights</Title>
           <Text>
-            If you choose to participate in our revenue sharing program ("Club"), you may be
-            eligible to receive compensation based on the number of Followers who view your
-            Contributions. By uploading your Contributions, you grant us a limited, non-exclusive,
-            transferable, royalty-free license to display your Contributions to other users of the
-            site.
+            If you choose to participate in our content sharing program ("Club"), you may be
+            eligible to receive compensation from each sale of your Contributions. By uploading your
+            Contributions and making them publicly available through the "Club", you grant us a
+            limited, non-exclusive, transferable, royalty-free license to display your Contributions
+            to other users of the site.
           </Text>
           <Text>
             You understand and agree that this license continues for as long as your Contributions
@@ -599,13 +602,13 @@ export default function TermsLegalBody({ addTitle }: Props) {
           <Text>
             We reserve the right to monitor, edit and remove any Contributions at our sole
             discretion if they violate these Legal Terms or are otherwise deemed inappropriate by
-            us. We also reserve the right to block or terminate your participation in the Club if
+            us. We also reserve the right to block or terminate your participation in the "Club" if
             your Contributions violate these Legal Terms, applicable laws, or regulations.
           </Text>
           <Title order={3}>Consequences of Violations</Title>
           <Text>
             Violations of these conditions may result in the suspension or termination of your
-            rights to use the Services and/or participate in the Club. In such cases, you may lose
+            rights to use the Services and/or participate in the "Club". In such cases, you may lose
             access to any financial compensation or pending payments, and we may report any unlawful
             activity to the relevant authorities.
           </Text>
@@ -614,19 +617,19 @@ export default function TermsLegalBody({ addTitle }: Props) {
           <Title order={2}>10. CONTRIBUTION LICENSE</Title>
           <Text>
             By uploading or submitting any Contributions as part of the Services, including but not
-            limited to your participation in the Club, you acknowledge and agree that we may access,
-            store, process, and use any information and personal data you provide in accordance with
-            our Privacy Policy and your account&apos;s data sharing settings. This includes the
-            right to use your Contributions to provide the Services, display your content to
-            Followers, and facilitate any related payment or compensation.
+            limited to your participation in the "Club", you acknowledge and agree that we may
+            access, store, process, and use any information and personal data you provide in
+            accordance with our Privacy Policy and your account&apos;s data sharing settings. This
+            includes the right to use your Contributions to provide the Services, display your
+            content to Followers, and facilitate any related payment or compensation.
           </Text>
           <Text>
             While we do not claim ownership of your Contributions. By submitting your Contributions,
             you grant us a worldwide, non-exclusive, royalty-free, transferable, sublicensable
             license to use, reproduce, distribute, display, and perform your Contributions in
             connection with the Services. This license is necessary to operate, promote, and improve
-            the Services and to enable the functionality of the Club, including displaying your
-            content to your followers.
+            the Services and to enable the functionality of the "Club", including displaying your
+            public content to the site vistors.
           </Text>
           <Text>
             You retain full ownership of your Contributions and any intellectual property or
@@ -1079,8 +1082,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             Services, as well as data related to your use of the Services. This
             includes, but is not limited to, personal information (such as your
             age, sex, and country of residence), image, video, audio and text you
-            upload, and interactions within the "Club" (e.g., following or being
-            followed by other users). We also collect data for analytical
+            upload, and interactions within the "Club". We also collect data for analytical
             purposes.`}
           </Text>
           <Text>
