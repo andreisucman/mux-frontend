@@ -54,14 +54,7 @@ function EditATaskContent({
       })}
     </Stack>
   ) : (
-    <Group>
-      <Text size="sm">{previewData.slice(0, 3).join(", ")}</Text>
-      {tasksLeft && tasksLeft > 1 && (
-        <Text size="xs" c="dimmed" ta="center">
-          and {tasksLeft} more days...
-        </Text>
-      )}
-    </Group>
+    <Text size="sm">{previewData.join(", ")}</Text>
   );
 
   return (
@@ -77,9 +70,14 @@ function EditATaskContent({
           setRawTask(updated as RawTaskType);
         }}
         heading={
-          <Text size="xs" c="dimmed">
-            Description:
-          </Text>
+          <Group justify="space-between" align="center">
+            <Text className={classes.label}>Description</Text>
+            {description && (
+              <Text size="xs" c="dimmed" mr={16}>
+                {description.length}
+              </Text>
+            )}
+          </Group>
         }
         placeholder={"Task description"}
         readOnly={readOnly}
@@ -95,9 +93,14 @@ function EditATaskContent({
           setRawTask(updated as RawTaskType);
         }}
         heading={
-          <Text size="xs" c="dimmed">
-            Instruction:
-          </Text>
+          <Group justify="space-between" align="center">
+            <Text className={classes.label}>Instruction</Text>
+            {instruction && (
+              <Text size="xs" c="dimmed" mr={16}>
+                {instruction.length}
+              </Text>
+            )}
+          </Group>
         }
         placeholder={"Task instruction"}
         readOnly={readOnly}
@@ -132,7 +135,9 @@ function EditATaskContent({
         <DatePickerInput
           value={date}
           onChange={setDate}
-          excludeDate={(date) => new Date(date) < todayMidnight || new Date(date) > latestDateOfWeek}
+          excludeDate={(date) =>
+            new Date(date) < todayMidnight || new Date(date) > latestDateOfWeek
+          }
           placeholder="Pick date"
           size="sm"
           closeOnChange

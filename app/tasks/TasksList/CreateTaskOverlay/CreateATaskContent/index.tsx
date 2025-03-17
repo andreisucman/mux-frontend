@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Select, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import TextareaComponent from "@/components/TextAreaComponent";
 import { normalizeString } from "@/helpers/utils";
 import { UserConcernType } from "@/types/global";
 
@@ -10,8 +9,6 @@ type Props = {
   allParts: string[];
   selectedPart: string | null;
   selectedConcern: string | null;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
   setSelectedConcern: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPart: React.Dispatch<React.SetStateAction<string | null>>;
 };
@@ -30,8 +27,6 @@ export default function CreateATaskContent({
   setSelectedConcern,
   selectedPart,
   setSelectedPart,
-  description,
-  setDescription,
 }: Props) {
   const [formattedConcerns, setFormattedConcerns] = useState<FormattedItem[]>([]);
   const [formattedParts, setFormattedParts] = useState<FormattedItem[]>([]);
@@ -104,16 +99,6 @@ export default function CreateATaskContent({
 
   return (
     <Stack>
-      <TextareaComponent
-        text={description}
-        setText={setDescription}
-        heading={
-          <Text size="xs" c="dimmed">
-            Description
-          </Text>
-        }
-        placeholder={"Moisturizing face with coconut oil to combat dullness"}
-      />
       <Stack gap={8}>
         <Text size="xs" c="dimmed">
           Relevant concern

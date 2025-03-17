@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { Button, Loader, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import callTheServer from "@/functions/callTheServer";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
@@ -16,14 +15,6 @@ type Props = {
   handleSaveTask: (args: any) => Promise<void>;
 };
 
-type HandleCreateTaskProps = {
-  concern: string | null;
-  part: string | null;
-  timeZone?: string;
-  isLoading: boolean;
-  description: string;
-};
-
 export default function AddATaskContainer({
   timeZone,
   handleSaveTask,
@@ -31,7 +22,6 @@ export default function AddATaskContainer({
 }: Props) {
   const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [description, setDescription] = useState<string>("");
   const [error, setError] = useState("");
   const [rawTask, setRawTask] = useState<RawTaskType>();
   const [frequency, setFrequency] = useState<number>(1);
@@ -39,38 +29,6 @@ export default function AddATaskContainer({
   const [step, setStep] = useState(1);
   const [selectedConcern, setSelectedConcern] = useState<string | null>(null);
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
-
-  const handleCreateTask = useCallback(
-    async ({ concern, part, timeZone, isLoading, description }: HandleCreateTaskProps) => {
-      if (!timeZone) return;
-      if (isLoading) return;
-      if (!description) return;
-
-      try {
-        setError("");
-        setIsLoading(true);
-
-        const response = await callTheServer({
-          endpoint: "createTaskFromDescription",
-          method: "POST",
-          body: { concern, part, description, timeZone },
-        });
-
-        if (response.status === 200) {
-          if (response.error) {
-            setError(response.error);
-          } else {
-            setRawTask(response.message);
-            setStep(2);
-          }
-        }
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
 
   const datesPreview = useMemo(() => {
     const dates: string[] = [];
@@ -126,8 +84,6 @@ export default function AddATaskContainer({
                 selectedPart={selectedPart}
                 setSelectedConcern={setSelectedConcern}
                 setSelectedPart={setSelectedPart}
-                description={description}
-                setDescription={setDescription}
               />
             )}
             {step === 2 && (
@@ -149,18 +105,17 @@ export default function AddATaskContainer({
                 <Button
                   variant={isSubscriptionActive ? "filled" : "default"}
                   loading={isLoading}
-                  disabled={!selectedConcern || !selectedPart || !description}
-                  onClick={() =>
-                    handleCreateTask({
-                      concern: selectedConcern,
-                      part: selectedPart,
-                      isLoading,
-                      timeZone,
-                      description,
-                    })
-                  }
+                  disabled={!selectedConcern || !selectedPart}
+                  onClick={() => {
+                    setStep((prev) => prev + 1);
+                    setRawTask((prev) => ({
+                      ...prev,
+                      description: "",
+                      instruction: "",
+                    }));
+                  }}
                 >
-                  Create task
+                  Create task manually
                 </Button>
                 <Button
                   variant={isSubscriptionActive ? "default" : "filled"}

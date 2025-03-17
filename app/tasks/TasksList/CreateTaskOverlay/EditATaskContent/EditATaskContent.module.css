@@ -18,3 +18,10 @@
   max-height: rem(200);
   overflow: auto;
 }
+
+.label {
+  margin-left: rem(12);
+  font-size: rem(12);
+  font-weight: rem(600);
+  color: var(--mantine-color-dark-2);
+}
