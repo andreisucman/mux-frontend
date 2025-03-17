@@ -41,13 +41,12 @@ export default function FullScreenAlert({
         style={customStyles || {}}
         onClose={() => handleCloseAlert(dontShowAlertAnymore)}
         withCloseButton={withCloseButton}
-        variant="filled"
+        variant="default"
       >
         <Stack>
           <Title order={5}>To exit the full screen mode</Title>
           <Text size="sm">
-            Swipe your finger up from the <u>bottom</u> of your
-            screen.
+            Swipe your finger up from the <u>bottom</u> of your screen.
           </Text>
           {withCheckbox && (
             <Checkbox
