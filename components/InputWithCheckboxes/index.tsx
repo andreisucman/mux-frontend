@@ -89,6 +89,7 @@ export default function InputWithCheckboxes({
           itemType={readOnly ? "button" : "text"}
           onClick={() => combobox.toggleDropdown()}
           flex={1}
+          miw={150}
           pointer
         >
           <Pill.Group className={classes.pillGroup}>

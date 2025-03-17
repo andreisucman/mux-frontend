@@ -146,6 +146,7 @@ export default function UploadCard({
           handleDelete={handleDeleteImage}
           image={localUrl || latestStyleImage}
           isLoadingOverlay={isBlurLoading}
+          disableDelete={isLoading}
           placeholder={relevantPlaceholder && relevantPlaceholder.url}
         />
         <BlurButtons
@@ -174,7 +175,7 @@ export default function UploadCard({
             </Text>
           </Stack>
         )}
-        {!isLoading && (
+        {!isLoading && !isBlurLoading && (
           <Stack className={classes.checkboxAndButtons}>
             <Group
               className={classes.buttonGroup}

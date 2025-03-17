@@ -1,6 +1,6 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Checkbox, rem, Stack, Title } from "@mantine/core";
+import { Checkbox, Stack, Title } from "@mantine/core";
 import ImageCardStack from "@/components/UploadContainer/ImageCardStack";
 import { UserContext } from "@/context/UserContext";
 import createBuyScanSession from "@/functions/createBuyScanSession";
@@ -11,6 +11,7 @@ type Props = {
   buttons: React.ReactNode;
   enableScanAnalysis: boolean;
   hideCheckbox?: boolean;
+  isFirstAnalysis?: boolean;
   images?: string[];
   setEnableScanAnalysis: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -19,6 +20,7 @@ export default function UploadedImagesContent({
   title,
   images,
   buttons,
+  isFirstAnalysis,
   hideCheckbox,
   enableScanAnalysis,
   setEnableScanAnalysis,
@@ -27,14 +29,7 @@ export default function UploadedImagesContent({
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { scanAnalysisQuota, latestProgress } = userDetails || {};
-
-  const isFirstAnalysis = useMemo(() => {
-    if (!latestProgress) return;
-    const values = Object.values(latestProgress).filter((v) => typeof v !== "number");
-    const isNew = values.every((v) => !Boolean(v));
-    return isNew;
-  }, [latestProgress]);
+  const { scanAnalysisQuota } = userDetails || {};
 
   const handleEnableAnalysis = (enable: boolean) => {
     if (typeof scanAnalysisQuota !== "number") return;

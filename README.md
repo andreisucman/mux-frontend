@@ -18,3 +18,5 @@
 ### Other scripts
 
 - `prettier:write` – formats all files with Prettier
+
+Use lip healing balm to counter dryness on your lips.

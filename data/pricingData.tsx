@@ -25,7 +25,7 @@ export const improvementCoachContent = [
   {
     icon: <IconToolsKitchen2 className="icon icon__large" style={style} />,
     description:
-      "Suggests personal recipes to match your calorie count based on your physical condition, products at hand and kitchenware.",
+      "Suggests personal recipes to match your calorie amount based on your physical condition, products at hand and kitchenware.",
   },
 ];
 
@@ -40,7 +40,7 @@ export const scanAnalysisContent = [
   },
   {
     icon: <IconScoreboard className="icon icon__large" style={style} />,
-    description: "Displays your scores under your images for future reference.",
+    description: "Displays your scores under your images to highlight your progress.",
   },
   ,
 ];
@@ -57,11 +57,7 @@ export const advisorCoachContent = [
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "Summarizes information and helps find feedback in the diary.",
-  },
-  {
-    icon: <IconUser className="icon icon__large" style={style} />,
-    description: "Answers your questions about the person you follow.",
+    description: "Summarizes information and helps find specific feedback in the diary.",
   },
 ];
 

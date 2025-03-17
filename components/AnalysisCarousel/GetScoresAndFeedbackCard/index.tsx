@@ -2,8 +2,8 @@
 
 import React, { useCallback, useContext, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button, Stack, Text } from "@mantine/core";
-import UploadedImagesContent from "@/components/UploadContainer/StartPartialScanOverlay/UploadedImagesContent";
+import { IconCheckbox } from "@tabler/icons-react";
+import { Button, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import createBuyScanSession from "@/functions/createBuyScanSession";
@@ -20,10 +20,9 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const [enableScanAnalysis, setEnableScanAnalysis] = useState(true);
   const [loadingButton, setLoadingButton] = useState<"analysis" | "return" | null>(null);
 
-  const { _id: userId, scanAnalysisQuota, latestScanImages } = userDetails || {};
+  const { _id: userId, scanAnalysisQuota } = userDetails || {};
 
   const handleStartAnalysis = useCallback(async () => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
@@ -33,7 +32,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
 
       setLoadingButton("analysis");
 
-      if (scanAnalysisQuota === 0 && enableScanAnalysis) {
+      if (scanAnalysisQuota === 0) {
         setLoadingButton(null);
         createBuyScanSession({
           redirectUrl,
@@ -67,7 +66,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
     } catch (err) {
       setLoadingButton(null);
     }
-  }, [userDetails, enableScanAnalysis]);
+  }, [userDetails]);
 
   const handleReturnToRoutines = useCallback(() => {
     setLoadingButton("return");
@@ -80,32 +79,27 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
         {title}
       </Text>
       <Stack className={classes.content}>
-        <UploadedImagesContent
-          title="Progress scan uploaded"
-          images={latestScanImages}
-          enableScanAnalysis={enableScanAnalysis}
-          setEnableScanAnalysis={setEnableScanAnalysis}
-          buttons={
-            <Stack>
-              <Button
-                loading={loadingButton === "analysis"}
-                disabled={loadingButton !== null}
-                onClick={handleStartAnalysis}
-              >
-                Get scores and feedback
-              </Button>
-              <Button
-                variant="default"
-                loading={loadingButton === "return"}
-                disabled={loadingButton !== null}
-                onClick={handleReturnToRoutines}
-              >
-                Return to routines
-              </Button>
-            </Stack>
-          }
-          hideCheckbox
-        />
+        <Stack className={classes.box}>
+          <IconCheckbox className={classes.icon} />
+          <Title order={3} ta="center">
+            Scan uploaded
+          </Title>
+          <Button
+            loading={loadingButton === "analysis"}
+            disabled={loadingButton !== null}
+            onClick={handleStartAnalysis}
+          >
+            Get scores and feedback
+          </Button>
+          <Button
+            variant="default"
+            loading={loadingButton === "return"}
+            disabled={loadingButton !== null}
+            onClick={handleReturnToRoutines}
+          >
+            Go to routines
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
   );

@@ -132,7 +132,9 @@ export default function AddATaskContainer({
             {step === 2 && rawTask && (
               <Button
                 loading={isLoading}
-                disabled={!selectedConcern || !selectedPart}
+                disabled={
+                  !selectedConcern || !selectedPart || !rawTask.description || !rawTask.instruction
+                }
                 onClick={() =>
                   handleSaveTask({
                     concern: selectedConcern,

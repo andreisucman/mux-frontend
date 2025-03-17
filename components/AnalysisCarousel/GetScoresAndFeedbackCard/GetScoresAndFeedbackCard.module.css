@@ -22,13 +22,18 @@
   align-items: center;
 }
 
+.box {
+  transform: translateY(-25%);
+}
+
 .title {
   text-align: left;
   width: 100%;
   font-size: var(--mantine-font-size-sm);
 }
 
-.row {
-  align-items: flex-start;
-  flex-wrap: nowrap;
+.icon {
+  width: rem(100);
+  height: rem(100);
+  margin: auto;
 }

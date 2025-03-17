@@ -67,14 +67,15 @@ export default function ClubRoutines() {
       const { message } = response;
 
       if (message) {
+        const { data } = message;
         if (skip) {
-          setRoutines((prev) => [...(prev || []), ...message.slice(0, 20)]);
-          setHasMore(message.length === 21);
+          setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+          setHasMore(data.length === 21);
         } else {
-          setRoutines(message.slice(0, 20));
+          setRoutines(data.slice(0, 20));
         }
 
-        const newRoutineConcerns = message.reduce(
+        const newRoutineConcerns = data.reduce(
           (a: { [key: string]: string[] }, c: RoutineType) => {
             a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
             return a;

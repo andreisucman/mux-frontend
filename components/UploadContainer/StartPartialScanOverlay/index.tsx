@@ -27,11 +27,30 @@ export default function StartPartialScanOverlay({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { scanAnalysisQuota, toAnalyze } = userDetails || {};
+  const { scanAnalysisQuota, toAnalyze, latestProgress } = userDetails || {};
 
   const { blurType } = useContext(BlurChoicesContext);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [enableScanAnalysis, setEnableScanAnalysis] = useState(false);
+
+  const analysisString = getPartialScanUploadText(distinctUploadedParts);
+
+  const isFirstAnalysis = useMemo(() => {
+    if (!latestProgress) return;
+    const values = Object.values(latestProgress).filter((v) => typeof v !== "number");
+    const isNew = values.every((v) => !Boolean(v));
+    return isNew;
+  }, [latestProgress]);
+
+  const images = useMemo((): string[] => {
+    const contentUrlTypes = toAnalyze?.flatMap((part) => part.contentUrlTypes);
+    let toDisplay = contentUrlTypes?.filter((obj) => obj.name !== "original") || [];
+    if (toDisplay.length === 0) {
+      toDisplay = toAnalyze?.map((p) => p.mainUrl) || [];
+    }
+    const imgs = toDisplay.map((obj) => obj.url).filter((url): url is string => !!url);
+    return imgs;
+  }, [toAnalyze?.length]);
 
   const handleStartAnalysis = useCallback(async () => {
     try {
@@ -41,7 +60,9 @@ export default function StartPartialScanOverlay({
 
       const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
 
-      if (scanAnalysisQuota === 0 && enableScanAnalysis) {
+      let enableAnalysis = isFirstAnalysis || enableScanAnalysis;
+
+      if (scanAnalysisQuota === 0 && enableAnalysis) {
         setIsButtonLoading(false);
         createBuyScanSession({
           redirectUrl,
@@ -53,7 +74,7 @@ export default function StartPartialScanOverlay({
       const response = await callTheServer({
         endpoint: "startProgressAnalysis",
         method: "POST",
-        body: { userId, blurType, enableScanAnalysis },
+        body: { userId, blurType, enableScanAnalysis: enableAnalysis },
       });
 
       if (response.status === 200) {
@@ -78,19 +99,7 @@ export default function StartPartialScanOverlay({
     } catch (err) {
       setIsButtonLoading(false);
     }
-  }, [userId, blurType, pathname, scanAnalysisQuota, enableScanAnalysis]);
-
-  const analysisString = getPartialScanUploadText(distinctUploadedParts);
-
-  const images = useMemo((): string[] => {
-    const contentUrlTypes = toAnalyze?.flatMap((part) => part.contentUrlTypes);
-    let toDisplay = contentUrlTypes?.filter((obj) => obj.name !== "original") || [];
-    if (toDisplay.length === 0) {
-      toDisplay = toAnalyze?.map((p) => p.mainUrl) || [];
-    }
-    const imgs = toDisplay.map((obj) => obj.url).filter((url): url is string => !!url);
-    return imgs;
-  }, [toAnalyze?.length]);
+  }, [userId, blurType, pathname, scanAnalysisQuota, enableScanAnalysis, isFirstAnalysis]);
 
   useEffect(() => {
     if (!userDetails) return;
@@ -103,6 +112,7 @@ export default function StartPartialScanOverlay({
       <UploadedImagesContent
         title={analysisString}
         images={images}
+        isFirstAnalysis={isFirstAnalysis}
         enableScanAnalysis={enableScanAnalysis}
         setEnableScanAnalysis={setEnableScanAnalysis}
         buttons={

@@ -7,6 +7,7 @@ type Props = {
   isLoadingOverlay?: boolean;
   image?: string | null;
   handleDelete?: () => void;
+  disableDelete?: boolean;
   placeholder?: any;
   customImageStyles?: { [key: string]: any };
   customStyles?: { [key: string]: any };
@@ -15,6 +16,7 @@ type Props = {
 export default function ImageDisplayContainer({
   image,
   isLoadingOverlay = false,
+  disableDelete,
   customImageStyles,
   customStyles,
   placeholder,
@@ -23,14 +25,23 @@ export default function ImageDisplayContainer({
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       {handleDelete && image && (
-        <ActionIcon className={classes.deleteIcon} variant="default" onClick={handleDelete}>
+        <ActionIcon
+          className={classes.deleteIcon}
+          disabled={!!disableDelete}
+          variant="default"
+          onClick={handleDelete}
+        >
           <IconTrash style={{ width: rem(16) }} />
         </ActionIcon>
       )}
       <Image
         width={100}
         height={100}
-        src={image || placeholder && placeholder.src || "https://placehold.co/169x300?text=Your+photo"}
+        src={
+          image ||
+          (placeholder && placeholder.src) ||
+          "https://placehold.co/169x300?text=Your+photo"
+        }
         className={classes.image}
         style={customImageStyles ? customImageStyles : {}}
         alt=""

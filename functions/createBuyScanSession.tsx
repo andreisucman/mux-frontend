@@ -17,7 +17,6 @@ const createBuyScanSession = ({ redirectUrl, setUserDetails }: Props) => {
         <Title order={4}>$1</Title>/<Text>analysis</Text>
       </Group>
     ),
-    description: "To get scores and feedback you need to have a scan",
     isCentered: true,
     modalType: "scan",
     onClick: () =>
