@@ -131,7 +131,7 @@ export default function ClubSettings() {
           onClick={(newCountry: string) =>
             askConfirmation({
               title: "Please confirm",
-              body: "Changing country requires creating a new wallet. You will have to fill in your details and add a bank account again. Continue?",
+              body: "Changing country requires creating a new wallet. You will have to fill in your details and add a new bank account. Continue?",
               onConfirm: () => handleChangeCountry(newCountry),
               onCancel: () => modals.closeAll(),
             })
@@ -146,15 +146,6 @@ export default function ClubSettings() {
     });
   }, [userDetails, handleLeaveClub]);
 
-  const updateIntro = useCallback(
-    (text: string) =>
-      setUserDetails((prev: UserDataType) => ({
-        ...(prev || {}),
-        club: { ...(prev.club || {}), intro: text },
-      })),
-    [userDetails]
-  );
-
   const updateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
       try {
@@ -162,14 +153,10 @@ export default function ClubSettings() {
 
         modals.closeAll();
 
-        if (type === "intro") {
-          updateIntro(data as string);
-        } else {
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            [type]: data,
-          }));
-        }
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          [type]: data,
+        }));
 
         const response = await callTheServer({
           endpoint: "updateUserData",
@@ -192,7 +179,7 @@ export default function ClubSettings() {
 
   const handleUpdateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
-      let children = `You can update your ${type} once a ${type === "name" ? "month" : "week"} only. Continue?`;
+      let children = `You can update your ${type} once a month only. Continue?`;
 
       modals.openConfirmModal({
         children,

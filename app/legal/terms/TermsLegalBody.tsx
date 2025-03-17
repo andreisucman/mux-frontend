@@ -214,8 +214,8 @@ export default function TermsLegalBody({ addTitle }: Props) {
           <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
             Privacy Policy
           </Link>
-          . This may include sensitive data, such as images and videos of your body and audio
-          recordings of your voice.
+          . This may include sensitive data, such as images and videos of your body, descriptions of
+          your appearance, and audio recordings of your voice.
         </Text>
         <Text>
           By using our services, you consent to the collection, storage, and processing of this
@@ -230,13 +230,13 @@ export default function TermsLegalBody({ addTitle }: Props) {
         <ul>
           <li>The analysis of your appearance using AI technologies.</li>
           <li>
-            Making this information accessible by other users of the site with your explicit
+            Making this information accessible to other users of the site with your explicit
             consent.
           </li>
           <li>
             The processing of your data for suggesting third-party products and services that we
             believe may be of interest to you. No personal data will be shared with third-party
-            product providers without your explicit consent.
+            product providers.
           </li>
         </ul>
         <Text>
@@ -332,10 +332,10 @@ export default function TermsLegalBody({ addTitle }: Props) {
             discretion. This may include, but is not limited to, cases where we suspect fraudulent
             activity, incorrect account information, or violations of our terms.
           </Text>
-          <Title order={3}>Content monetization ("Club")</Title>
+          <Title order={3}>Revenue sharing ("Club")</Title>
           <Text>
-            We offer our users the right to join the "Club" and earn from making their image, video
-            and audio data accessible to other users.
+            We offer you the right to join our revenue sharing program - the "Club" and earn from
+            making your image, video, description, and audio data accessible to other users.
           </Text>
           <Text>
             If you choose to participate in the "Club", you will be required to complete an
@@ -619,9 +619,9 @@ export default function TermsLegalBody({ addTitle }: Props) {
             By uploading or submitting any Contributions as part of the Services, including but not
             limited to your participation in the "Club", you acknowledge and agree that we may
             access, store, process, and use any information and personal data you provide in
-            accordance with our Privacy Policy and your account&apos;s data sharing settings. This
-            includes the right to use your Contributions to provide the Services, display your
-            content to Followers, and facilitate any related payment or compensation.
+            accordance with our Privacy Policy. This includes the right to use your Contributions to
+            provide the Services, display your content to other users with your explicit consent,
+            and facilitate any related payment or compensation.
           </Text>
           <Text>
             While we do not claim ownership of your Contributions. By submitting your Contributions,
@@ -843,16 +843,25 @@ export default function TermsLegalBody({ addTitle }: Props) {
             termination.
           </Text>
 
-          <Title order={3}>Account Deletion and Data Retention</Title>
+          <Title order={3}>Account Deletion & Data Retention</Title>
           <Text>
-            You have the right to request the deletion of your account and all associated personal
-            data at any time. You can do this by navigating to the settings page and clicking the
-            appropriate button under the Account section.
+            You can request account deletion and removal of all associated personal data anytime via
+            the settings page under the Account section.
           </Text>
           <Text>
-            Upon initiating the account deletion request, all of your data will become private
-            immediately (if it was public) and will be deleted permanently from our systems after 7
-            days from the request in accordance with our{" "}
+            Upon request, your data will be immediately hidden from public view, except for users
+            who have purchased it through our revenue-sharing program (Club).
+          </Text>
+          <Text>
+            If your data hasn't been sold, it will be permanently deleted within 7 days per our{" "}
+            <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
+              Privacy Policy
+            </Link>
+            .
+          </Text>
+          <Text>
+            If your data was sold, buyers will retain access for 365 days before deletion, ensuring
+            the minimum access period per our
             <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
               Privacy Policy
             </Link>
@@ -1114,7 +1123,7 @@ export default function TermsLegalBody({ addTitle }: Props) {
             ELECTRONIC RECORDS FOR ALL AGREEMENTS, CONTRACTS, ORDERS, AND
             TRANSACTIONS ENTERED INTO THROUGH THE SERVICES. This includes, but
             is not limited to, any documents related to your use of the
-            platform, membership in the "Club," financial transactions, and the delivery of related
+            platform, financial transactions, and the delivery of related
             notices and policies.`}
           </Text>
           <Text>

@@ -67,6 +67,7 @@ export default function CreateRecipeBox({
                         priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
                         redirectUrl,
                         cancelUrl: redirectUrl,
+                        mode: "subscription"
                       },
                       setUserDetails,
                     })
@@ -80,7 +81,7 @@ export default function CreateRecipeBox({
                 title: "Add the improvement coach",
                 price: (
                   <Group className="priceGroup">
-                    <Title order={4}>$9</Title>/ <Text>month</Text>
+                    <Title order={4}>$5</Title>/ <Text>month</Text>
                   </Group>
                 ),
                 isCentered: true,

@@ -148,11 +148,14 @@ export default function ClubLegalBody({ addTitle }: Props) {
                 The progress images become displayed on the home page of the platform and are
                 viewable by anyone.
               </li>
-              <li>The routines, proof, and diary are accessible by your customers.</li>
+              <li>
+                The routines, proof, and diary are accessible by users who have purchased your
+                routine.
+              </li>
               <li>
                 The about info is accessible by your customers who have the 'Advisor Coach' addon
                 enabled. It's also used in the filters menu on the home page of the site for the
-                purpose of filtering the before-after images.
+                purpose of filtering the progress images.
               </li>
             </ul>
           </li>
@@ -170,7 +173,12 @@ export default function ClubLegalBody({ addTitle }: Props) {
             </Text>
           </li>
         </ul>
-        <Title order={3}>4. Leaving the Club:</Title>
+        <Title order={3}>4. Purchasing Content</Title>
+        <Text>
+          When you purchase data from other Club users, you gain immediate access to it for at least
+          365 days. We do not guarantee availability beyond this period.
+        </Text>
+        <Title order={3}>5. Leaving the Club:</Title>
         <Text>
           You can leave the Club at any time by visiting your Settings page at{" "}
           <Link href="/settings" style={{ display: "inline-block", textDecoration: "underline" }}>
@@ -179,9 +187,9 @@ export default function ClubLegalBody({ addTitle }: Props) {
           and clicking the "Leave Club" button.
         </Text>
         <Text>
-          Once you leave the Club, the data you've made public (if any) will become private, except
-          for the content that has already been purchased. The purchased content will continue to be
-          available for the users that have bought it even after you leave the Club.
+          Once you leave the Club, the content you've made public (if any) will be hidden from other
+          users, except for the content that has already been purchased, which will be available for
+          the users that have bought it even after you have left the Club.
         </Text>
       </Stack>
       <Stack>
@@ -190,8 +198,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Text>
           All payments to Club members will be processed through our payment processor - Stripe.
           Stripe may deduct its processing fees from your earnings, in accordance with their terms
-          and fee structure. We do not control Stripe&apos;s processing times, and payments may take
-          several business days to reflect in your bank account after they are initiated.
+          and fee structure. We do not control Stripe&apos;s processing fees and times, and payments
+          may take several business days to reflect in your bank account after they are initiated.
         </Text>
         <Title order={3}>2. Payment Schedule:</Title>
         <ul>
@@ -223,8 +231,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
           audio and text, as well as other information about you that you have provided.
         </Text>
         <Text>
-          The information that has already been purchased by any of your customers will still be available
-          for them after you have left the Club.
+          The information that has already been purchased by any of your customers will still be
+          available for them after you have left the Club.
         </Text>
       </Stack>
       <Stack>
@@ -269,8 +277,8 @@ export default function ClubLegalBody({ addTitle }: Props) {
             General TOS
           </Link>
           , we are not responsible for any unauthorized use or access to your content by third
-          parties, including the purchasers of your content who may violate these terms by sharing or misusing your
-          images, videos audio or textual content.
+          parties, including the purchasers of your content who may violate these terms by sharing
+          or misusing your images, videos audio or textual content.
         </Text>
       </Stack>
       <Stack>

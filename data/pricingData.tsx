@@ -48,7 +48,7 @@ export const scanAnalysisContent = [
 export const advisorCoachContent = [
   {
     icon: <IconMessages className="icon icon__large" style={style} />,
-    description: "Answers your questions about routines, tasks. products and food.",
+    description: "Answers your questions about routines, tasks, and food.",
   },
   {
     icon: <IconMoodCheck className="icon icon__large" style={style} />,
@@ -57,7 +57,7 @@ export const advisorCoachContent = [
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "Helps you find and summarize your diary notes and FAQ answers.",
+    description: "Summarizes information and helps find feedback in the diary.",
   },
   {
     icon: <IconUser className="icon icon__large" style={style} />,

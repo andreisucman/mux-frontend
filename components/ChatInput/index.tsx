@@ -107,6 +107,7 @@ export default function ChatInput({
           : process.env.NEXT_PUBLIC_ADVISOR_PRICE_ID!,
         redirectUrl,
         cancelUrl: redirectUrl,
+        mode: "subscription",
       },
       setUserDetails,
     });
@@ -144,12 +145,12 @@ export default function ChatInput({
             });
 
     const payload = {
-      title: userName ? `Add the peek license` : `Add the advisor coach`,
-      modalType: userName ? "peek" : ("advisor" as "peek"),
+      title: "Add the advisor coach",
+      modalType: "advisor" as "advisor",
       isCentered: true,
       price: (
         <Group className="priceGroup">
-          <Title order={3}>{userName ? "$19" : "$9"}</Title>/ <Text>month</Text>
+          <Title order={4}>$9</Title>/ <Text>month</Text>
         </Group>
       ),
       buttonText,

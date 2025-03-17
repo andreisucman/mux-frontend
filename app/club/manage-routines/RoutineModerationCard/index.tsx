@@ -119,7 +119,7 @@ export default function RoutineModerationCard({
     if (defaultStatus !== "public" && status === "public") {
       body = `This will make your ${part} progress, routines, diary, and proof public. Continue?`;
     } else {
-      body = `If you have any subscribers, they will be lost. Continue?`;
+      body = `If you have any subscribers, their subscription renewals will be canceled. Continue?`;
     }
 
     askConfirmation({

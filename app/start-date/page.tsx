@@ -74,6 +74,7 @@ export default function StartDate() {
                   priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
                   redirectUrl,
                   cancelUrl: redirectUrl,
+                  mode: "subscription",
                 },
                 type: "platform",
                 setUserDetails,
@@ -90,7 +91,7 @@ export default function StartDate() {
           title: `Add the improvement coach`,
           price: (
             <Group className="priceGroup">
-              <Title order={4}>$9</Title>/ <Text>month</Text>
+              <Title order={4}>$5</Title>/ <Text>month</Text>
             </Group>
           ),
           isCentered: true,
