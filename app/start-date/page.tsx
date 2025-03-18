@@ -13,6 +13,7 @@ import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import { useRouter } from "@/helpers/custom-router";
 import { saveToLocalStorage } from "@/helpers/localStorage";
+import openErrorModal from "@/helpers/openErrorModal";
 import openPaymentModal from "@/helpers/openPaymentModal";
 import { daysFrom } from "@/helpers/utils";
 import { UserConcernType, UserSubscriptionsType } from "@/types/global";
@@ -48,6 +49,13 @@ export default function StartDate() {
     setIsLoading(true);
 
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
+
+    console.group("props", {
+      part,
+      concerns,
+      routineStartDate: startDate,
+      specialConsiderations,
+    });
 
     const response = await callTheServer({
       endpoint: "createRoutine",
@@ -104,7 +112,6 @@ export default function StartDate() {
 
         return;
       }
-      saveToLocalStorage("runningAnalyses", { routine: true }, "add");
       router.replace(redirectUrl);
     } else {
       setIsLoading(false);
