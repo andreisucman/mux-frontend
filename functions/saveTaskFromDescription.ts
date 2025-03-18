@@ -13,9 +13,7 @@ export type HandleSaveTaskProps = {
   rawTask?: RawTaskType;
   setError: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setDisplayComponent: React.Dispatch<
-    React.SetStateAction<"loading" | "empty" | "wait" | "createTaskOverlay" | "content">
-  >;
+  setIsAnalysisGoing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const saveTaskFromDescription = async ({
@@ -28,7 +26,7 @@ const saveTaskFromDescription = async ({
   frequency,
   setError,
   setIsLoading,
-  setDisplayComponent,
+  setIsAnalysisGoing,
 }: HandleSaveTaskProps) => {
   if (isLoading) return;
   if (!rawTask) return;
@@ -60,8 +58,7 @@ const saveTaskFromDescription = async ({
         return;
       }
 
-      saveToLocalStorage("runningAnalyses", { routine: true }, "add");
-      setDisplayComponent("wait");
+      setIsAnalysisGoing(true);
       modals.closeAll();
     }
   } catch (err) {

@@ -111,7 +111,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       {!showResetPassword && (
         <>
           <Button
-            onClick={() => signIn({ router, stateObject })}
+            onClick={() => signIn({ stateObject })}
             className={classes.button}
             variant="default"
           >

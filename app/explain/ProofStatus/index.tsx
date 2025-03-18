@@ -1,4 +1,5 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
+import { useRouter } from "@/helpers/custom-router";
 import {
   IconArrowBackUp,
   IconCamera,
@@ -8,6 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import modifyQuery from "@/helpers/modifyQuery";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
 
@@ -20,7 +22,8 @@ type Props = {
 };
 
 function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: Props) {
-  const { proofEnabled, status, proofId, name } = selectedTask || {};
+  const router = useRouter();
+  const { _id: taskId, proofEnabled, status, proofId, name } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>
@@ -77,6 +80,28 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
     return { label, icon };
   }, [proofId, proofEnabled, status, taskExpired]);
 
+  const updateSubmissionStatus = useCallback(async () => {
+    if (!taskId) return;
+
+    try {
+      if (proofEnabled) {
+        const queryPayload = [{ name: "submissionName", value: name, action: "replace" }];
+
+        const query = modifyQuery({
+          params: queryPayload,
+        });
+
+        router.push(`/upload-proof/${taskId}?${query}`);
+      } else {
+        updateTaskStatus(
+          status === TaskStatusEnum.COMPLETED ? TaskStatusEnum.ACTIVE : TaskStatusEnum.COMPLETED
+        );
+      }
+    } catch (err) {
+      console.log("Error in updateSubmissionStatus: ", err);
+    }
+  }, [taskId, status, proofEnabled, updateTaskStatus]);
+
   return (
     <Group className={classes.container}>
       <RingProgress
@@ -94,11 +119,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
         variant={"default"}
         className={classes.ctaButton}
         disabled={notStarted || (taskExpired && status !== TaskStatusEnum.COMPLETED)}
-        onClick={() =>
-          updateTaskStatus(
-            status === TaskStatusEnum.COMPLETED ? TaskStatusEnum.ACTIVE : TaskStatusEnum.COMPLETED
-          )
-        }
+        onClick={updateSubmissionStatus}
       >
         {buttonData.label}
       </Button>

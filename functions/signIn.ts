@@ -1,4 +1,3 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import callTheServer from "./callTheServer";
 
@@ -11,10 +10,9 @@ export type SignInStateType = {
 
 type Props = {
   stateObject?: SignInStateType;
-  router: AppRouterInstance;
 };
 
-export default async function signIn({ stateObject, router }: Props) {
+export default async function signIn({ stateObject }: Props) {
   try {
     let url = "authorize";
 
@@ -29,7 +27,7 @@ export default async function signIn({ stateObject, router }: Props) {
     });
 
     if (response.status === 200) {
-      router.push(response.message);
+      window.location.href = response.message;
     }
   } catch (err) {}
 }

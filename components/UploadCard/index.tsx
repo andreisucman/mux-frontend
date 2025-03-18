@@ -57,11 +57,6 @@ export default function UploadCard({
 
   const isMobile = useMediaQuery("(max-width: 36em)");
 
-  const disableUpload =
-    (blurType === "eyes" && !eyesBlurredUrl) ||
-    (blurType === "face" && !faceBlurredUrl) ||
-    !localUrl;
-
   const blurredImage =
     blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
 
@@ -187,11 +182,7 @@ export default function UploadCard({
                 </Button>
               )}
               {localUrl && (
-                <Button
-                  className={classes.button}
-                  disabled={disableUpload || isLoading}
-                  onClick={handleClickUpload}
-                >
+                <Button className={classes.button} disabled={isLoading || !localUrl} onClick={handleClickUpload}>
                   Upload
                 </Button>
               )}

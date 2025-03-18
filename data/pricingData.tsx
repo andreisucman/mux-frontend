@@ -53,7 +53,7 @@ export const advisorCoachContent = [
   {
     icon: <IconMoodCheck className="icon icon__large" style={style} />,
     description:
-      "Helps you choose the best products based on your preferences and special considerations.",
+      "Helps you choose the best products for your tasks based on your preferences and special considerations.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={style} />,

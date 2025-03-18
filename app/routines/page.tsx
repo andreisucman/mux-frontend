@@ -13,12 +13,12 @@ import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
+import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import { RoutineType } from "@/types/global";
 import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -37,7 +37,7 @@ type GetRoutinesProps = {
   routinesLength?: number;
 };
 
-export default function ClubRoutines() {
+export default function MyRoutines() {
   const searchParams = useSearchParams();
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -48,9 +48,10 @@ export default function ClubRoutines() {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
+  const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const { userDetails } = useContext(UserContext);
-  const { timeZone, specialConsiderations } = userDetails || {};
+  const { _id: userId, timeZone, specialConsiderations } = userDetails || {};
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -75,13 +76,10 @@ export default function ClubRoutines() {
           setRoutines(data.slice(0, 20));
         }
 
-        const newRoutineConcerns = data.reduce(
-          (a: { [key: string]: string[] }, c: RoutineType) => {
-            a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-            return a;
-          },
-          {}
-        );
+        const newRoutineConcerns = data.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
+          a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+          return a;
+        }, {});
 
         setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
       }
@@ -111,9 +109,6 @@ export default function ClubRoutines() {
       }),
     [routines, timeZone, selectedConcerns]
   );
-
-  const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
-  const isAnalysisGoing = runningAnalyses?.routine;
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
@@ -150,7 +145,17 @@ export default function ClubRoutines() {
     });
   }, []);
 
-  useEffect(() => setPageLoaded(true), []);
+  useEffect(() => {
+    if (!userId) return;
+
+    checkIfAnalysisRunning({
+      userId,
+      operationKey: `routine`,
+      setShowWaitComponent: setIsAnalysisGoing,
+    }).then((res) => {
+      setPageLoaded(true);
+    });
+  }, [userId]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -177,7 +182,7 @@ export default function ClubRoutines() {
         <TasksButtons
           disableCreateTask={displayComponent === "wait"}
           handleSaveTask={(props: HandleSaveTaskProps) =>
-            saveTaskFromDescription({ ...props, setDisplayComponent })
+            saveTaskFromDescription({ ...props, setIsAnalysisGoing })
           }
         />
         {displayComponent === "content" && (
@@ -219,7 +224,7 @@ export default function ClubRoutines() {
           <CreateTaskOverlay
             timeZone={timeZone}
             handleSaveTask={(props: HandleSaveTaskProps) =>
-              saveTaskFromDescription({ ...props, setDisplayComponent })
+              saveTaskFromDescription({ ...props, setIsAnalysisGoing })
             }
           />
         )}
@@ -233,11 +238,10 @@ export default function ClubRoutines() {
                 sort,
                 part,
               });
-              setDisplayComponent("content");
+              setIsAnalysisGoing(false);
             }}
             onError={() => {
-              setDisplayComponent("loading");
-              deleteFromLocalStorage("runningAnalyses", "routine");
+              setIsAnalysisGoing(false);
             }}
             customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
           />

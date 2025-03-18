@@ -15,6 +15,7 @@ import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import cloneTask from "@/functions/cloneTask";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
@@ -49,7 +50,7 @@ export default function Explain(props: Props) {
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
   const [showWaitComponent, setShowWaitComponent] = useState(false);
 
-  const { timeZone } = userDetails || {};
+  const { timeZone, _id: userId } = userDetails || {};
   const {
     isDish,
     startsAt,
@@ -274,24 +275,22 @@ export default function Explain(props: Props) {
   };
 
   useEffect(() => {
-    if (!taskId) return;
+    if (!taskId || !userId) return;
     handleFetchTaskInfo(taskId);
-    const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
 
-    if (runningAnalyses) {
-      const isAnlysisRunning = runningAnalyses[`createRecipe-${taskId}`];
-      setShowWaitComponent(isAnlysisRunning);
-    }
-  }, [taskId]);
+    checkIfAnalysisRunning({
+      userId,
+      operationKey: `createRecipe-${taskId}`,
+      setShowWaitComponent,
+    }).then((res) => {
+      setPageLoaded(true);
+    });
+  }, [taskId, userId]);
 
   useShallowEffect(() => {
     if (!pageLoaded) return;
     if (!taskId) router.push(`/tasks?${searchParams.toString()}`);
   }, [searchParams.toString(), pageLoaded]);
-
-  useEffect(() => {
-    setPageLoaded(true);
-  }, []);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

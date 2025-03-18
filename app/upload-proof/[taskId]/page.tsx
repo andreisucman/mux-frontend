@@ -10,6 +10,7 @@ import WaitComponent from "@/components/WaitComponent";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
@@ -49,27 +50,27 @@ export default function UploadProof(props: Props) {
   const [existingProofRecord, setExistingProofRecord] = useState<ExistingProofRecordType | null>(
     null
   );
+  const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const submissionName = searchParams.get("submissionName");
   const { status: taskStatus, expiresAt, requisite } = taskInfo || {};
 
-  const { demographics } = userDetails || {};
+  const { demographics, _id: userId } = userDetails || {};
   const { sex } = demographics || {};
 
   const taskExpired = new Date(expiresAt || 0) < new Date();
 
   const fetchProofInfo = useCallback(async (taskId: string | null) => {
     if (!taskId) return;
-    try {
-      const response = await callTheServer({
-        endpoint: `getProofRecord/${taskId}`,
-        method: "GET",
-      });
 
-      if (response.status === 200) {
-        setExistingProofRecord(response.message);
-      }
-    } catch (err) {}
+    const response = await callTheServer({
+      endpoint: `getProofRecord/${taskId}`,
+      method: "GET",
+    });
+
+    if (response.status === 200) {
+      setExistingProofRecord(response.message);
+    }
   }, []);
 
   const uploadProof = async ({
@@ -109,13 +110,13 @@ export default function UploadProof(props: Props) {
           description: response.error,
         });
 
-        deleteFromLocalStorage("runningAnalyses", taskId);
+        setIsAnalysisGoing(false);
       }
 
       setDisplayComponent("waitComponent");
     } catch (err) {
       setDisplayComponent("videoRecorder");
-      deleteFromLocalStorage("runningAnalyses", taskId);
+      setIsAnalysisGoing(false);
     }
   };
 
@@ -151,23 +152,24 @@ export default function UploadProof(props: Props) {
       setDisplayComponent("expired");
       return;
     }
-
-    const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
-
-    let analysisStatus;
-
-    if (runningAnalyses) {
-      analysisStatus = runningAnalyses[taskId];
-    }
-
-    if (analysisStatus) {
+    if (isAnalysisGoing) {
       setDisplayComponent("waitComponent");
     } else if (taskStatus === "completed") {
       setDisplayComponent("completed");
     } else {
       setDisplayComponent("videoRecorder");
     }
-  }, [taskId, taskInfo, taskExpired]);
+  }, [taskId, taskInfo, taskExpired, isAnalysisGoing]);
+
+  useEffect(() => {
+    if (!userId || !taskId) return;
+
+    checkIfAnalysisRunning({
+      userId,
+      operationKey: taskId,
+      setShowWaitComponent: setIsAnalysisGoing,
+    });
+  }, [userId, taskId]);
 
   const overlayButton = (
     <Button mt={8} variant="default" onClick={() => router.replace("/tasks")}>
@@ -188,11 +190,15 @@ export default function UploadProof(props: Props) {
               <WaitComponent
                 operationKey={taskId || ""}
                 description="Checking your upload"
-                onComplete={() => handleCompleteUpload(taskId)}
+                onComplete={() => {
+                  handleCompleteUpload(taskId);
+                  setDisplayComponent("videoRecorder");
+                  setIsAnalysisGoing(false);
+                }}
                 hideDisclaimer
                 onError={() => {
                   setDisplayComponent("videoRecorder");
-                  deleteFromLocalStorage("runningAnalyses", taskId || "");
+                  setIsAnalysisGoing(false);
                 }}
                 customWrapperStyles={{ transform: "translateY(-50%)" }}
               />

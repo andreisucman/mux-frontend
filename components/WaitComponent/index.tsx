@@ -5,7 +5,6 @@ import { Loader, Progress, rem, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
-import { deleteFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import Disclaimer from "./Disclaimer";
 import classes from "./WaitComponent.module.css";
@@ -68,7 +67,6 @@ function WaitComponent({
           } else if (jobProgress >= 100) {
             setProgress(100);
 
-            deleteFromLocalStorage("runningAnalyses", operationKey);
             clearInterval(intervalId);
 
             onComplete(otherData);
@@ -84,9 +82,7 @@ function WaitComponent({
 
   useEffect(() => {
     if (!userId) return;
-    const updateInterval = 3000;
-
-    saveToLocalStorage("runningAnalyses", { [operationKey]: true }, "add");
+    const updateInterval = 6000;
 
     const intervalId = setInterval(() => {
       checkAnalysisCompletion(intervalId);

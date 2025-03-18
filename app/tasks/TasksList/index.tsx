@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import useSWR from "swr";
 import { Carousel } from "@mantine/carousel";
@@ -11,10 +11,10 @@ import OverlayWithText from "@/components/OverlayWithText";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
+import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchUserData from "@/functions/fetchUserData";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
-import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import TasksButtons from "./TasksButtons";
 import TasksSlide from "./TasksSlide";
@@ -29,17 +29,16 @@ export default function TasksList({ customStyles }: Props) {
   const isMobile = useMediaQuery("(max-width: 36em)");
 
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
 
   const { nextDiaryRecordAfter, tasks, _id: userId, timeZone } = userDetails || {};
-
-  const runningAnalyses: { [key: string]: any } | null = getFromLocalStorage("runningAnalyses");
-  const isAnalysisGoing = runningAnalyses?.routine;
 
   const canAddDiary = useMemo(() => {
     const completedTasks =
@@ -111,7 +110,18 @@ export default function TasksList({ customStyles }: Props) {
     }
   }, [isAnalysisGoing, todaysTasks, pageLoaded]);
 
-  useEffect(() => setPageLoaded(true), []);
+  useEffect(() => {
+    if (!userId) return;
+
+    checkIfAnalysisRunning({
+      userId,
+      operationKey: "routine",
+      setShowWaitComponent: setIsAnalysisGoing,
+    }).then((res) => {
+      setPageLoaded(true);
+    });
+  }, [userId, pathname]);
+
   useSWR(userId, () => fetchUserData({ setUserDetails }));
 
   return (
@@ -119,7 +129,7 @@ export default function TasksList({ customStyles }: Props) {
       <TasksButtons
         disableCreateTask={displayComponent === "wait"}
         handleSaveTask={(props: HandleSaveTaskProps) =>
-          saveTaskFromDescription({ ...props, setDisplayComponent })
+          saveTaskFromDescription({ ...props, setIsAnalysisGoing })
         }
       />
       {displayComponent !== "loading" && (
@@ -129,7 +139,7 @@ export default function TasksList({ customStyles }: Props) {
               <CreateTaskOverlay
                 timeZone={timeZone}
                 handleSaveTask={(props: HandleSaveTaskProps) =>
-                  saveTaskFromDescription({ ...props, setDisplayComponent })
+                  saveTaskFromDescription({ ...props, setIsAnalysisGoing })
                 }
               />
             )}
@@ -139,12 +149,12 @@ export default function TasksList({ customStyles }: Props) {
                 description="Creating your task(s)"
                 onComplete={() => {
                   fetchUserData({ setUserDetails });
+                  setIsAnalysisGoing(false);
                 }}
                 onError={() => {
-                  setDisplayComponent("loading");
-                  deleteFromLocalStorage("runningAnalyses", "routine");
+                  setIsAnalysisGoing(false);
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: isMobile ? "20%" : "15%" }}
+                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
               />
             )}
             {displayComponent === "content" && (
