@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
-  IconBooks,
   IconCalendar,
   IconDoorEnter,
   IconDoorExit,
@@ -11,7 +10,6 @@ import {
   IconRoute,
   IconScan,
   IconSettings,
-  IconShoppingBag,
   IconSocial,
   IconTargetArrow,
   IconTrophy,
@@ -75,11 +73,6 @@ const defaultAuthenticatedNavigation = [
       { title: "Progress", path: "/results" },
       { title: "Analysis", path: "/analysis" },
     ],
-  },
-  {
-    title: "My products",
-    path: "/products",
-    icon: <IconShoppingBag stroke={1.25} className="icon" />,
   },
   {
     title: "My calendar",

@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useContext } from "react";
-import { Stack, Title } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
-import ChatWithModal from "../../components/ChatWithModal";
 import { ConsiderationsInput } from "../../components/ConsiderationsInput";
-import { ChatCategoryEnum } from "../diary/type";
 import SkeletonWrapper from "../SkeletonWrapper";
 import TasksList from "./TasksList";
 
@@ -31,21 +29,6 @@ export default function Tasks() {
           maxLength={300}
         />
         <TasksList />
-        <ChatWithModal
-          defaultVisibility="open"
-          chatCategory={ChatCategoryEnum.TASK}
-          openChatKey={ChatCategoryEnum.TASK}
-          dividerLabel={"Discuss tasks"}
-          starterQuestions={[
-            "which task should i start first",
-            "in what order should i complete my tasks to optimize for time",
-          ]}
-          modalTitle={
-            <Title order={5} component={"p"}>
-              Discuss tasks
-            </Title>
-          }
-        />
       </SkeletonWrapper>
     </Stack>
   );

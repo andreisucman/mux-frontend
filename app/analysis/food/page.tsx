@@ -6,7 +6,6 @@ import { Button, Overlay, Skeleton, Stack, Table, Text, Title } from "@mantine/c
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import { ChatCategoryEnum } from "@/app/diary/type";
-import ChatWithModal from "@/components/ChatWithModal";
 import FoodTaskSelectionModalContent from "@/components/FoodTaskSelectionModalContent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -164,21 +163,6 @@ export default function FoodScanResult() {
             <Stack className={classes.tableStack}>
               <Table data={tableData} />
             </Stack>
-
-            {data && (
-              <ChatWithModal
-                chatCategory={ChatCategoryEnum.FOOD}
-                defaultVisibility="open"
-                openChatKey={ChatCategoryEnum.FOOD}
-                chatContentId={data._id}
-                dividerLabel={"Chat about food and nutrition"}
-                modalTitle={
-                  <Title order={5} component={"p"}>
-                    Chat about food and nutrition
-                  </Title>
-                }
-              />
-            )}
           </Stack>
         )}
         {displayComponent === "empty" && (

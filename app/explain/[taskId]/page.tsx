@@ -5,13 +5,10 @@ import { useSearchParams } from "next/navigation";
 import { Badge, Button, Group, rem, Stack, Switch, Title } from "@mantine/core";
 import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import { ChatCategoryEnum } from "@/app/diary/type";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
-import ChatWithModal from "@/components/ChatWithModal";
 import ExampleContainer from "@/components/ExampleContainer";
 import ExplanationContainer from "@/components/ExplanationContainer";
 import PageHeader from "@/components/PageHeader";
-import SuggestionContainer from "@/components/SuggestionContainer";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -397,34 +394,15 @@ export default function Explain(props: Props) {
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {example && <ExampleContainer title="Example:" example={recipe?.example || example} />}
+                {example && (
+                  <ExampleContainer title="Example:" example={recipe?.example || example} />
+                )}
                 <ExplanationContainer
                   title="Steps:"
                   text={recipe?.instruction || instruction}
                   customStyles={{ borderRadius: "0 0 1rem 1rem" }}
                 />
               </Stack>
-
-              {suggestions && suggestions.length > 0 && (
-                <SuggestionContainer
-                  title="Products:"
-                  items={suggestions}
-                  chatContentId={taskId}
-                  disableLocalChat
-                />
-              )}
-              <ChatWithModal
-                chatCategory={ChatCategoryEnum.TASK}
-                openChatKey={ChatCategoryEnum.TASK}
-                chatContentId={taskId}
-                defaultVisibility="open"
-                modalTitle={
-                  <Title order={5} component={"p"} lineClamp={2}>
-                    {name}
-                  </Title>
-                }
-                dividerLabel={"Discuss the task"}
-              />
             </>
           )}
         </Stack>

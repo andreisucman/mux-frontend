@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
-import ChatWithModal from "@/components/ChatWithModal";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -247,20 +246,6 @@ export default function MyRoutines() {
           />
         )}
         {displayComponent === "loading" && <Loader style={{ margin: "auto" }} />}
-        {routines && (
-          <ChatWithModal
-            defaultVisibility="open"
-            chatCategory={ChatCategoryEnum.ROUTINE}
-            openChatKey={ChatCategoryEnum.ROUTINE}
-            dividerLabel={"Chat about routine and tasks"}
-            modalTitle={
-              <Title order={5} component={"p"}>
-                Chat about routines and tasks
-              </Title>
-            }
-            customStyles={{ marginTop: "auto" }}
-          />
-        )}
       </SkeletonWrapper>
     </Stack>
   );

@@ -8,7 +8,6 @@ import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
-import ChatWithModal from "@/components/ChatWithModal";
 import DiaryContent from "@/components/DiaryContent";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
@@ -141,17 +140,6 @@ export default function DiaryPage(props: Props) {
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}
       </Stack>
-
-      <ChatWithModal
-        modalTitle={
-          <Title order={5} component={"p"}>
-            Chat about diary
-          </Title>
-        }
-        chatCategory={ChatCategoryEnum.DIARY}
-        openChatKey={ChatCategoryEnum.DIARY}
-        dividerLabel="Chat about diary"
-      />
     </ClubModerationLayout>
   );
 }

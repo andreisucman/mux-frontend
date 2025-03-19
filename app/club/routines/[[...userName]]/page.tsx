@@ -11,7 +11,6 @@ import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
-import ChatWithModal from "@/components/ChatWithModal";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderClub from "@/components/PageHeaderClub";
@@ -386,19 +385,6 @@ export default function ClubRoutines(props: Props) {
         </Stack>
       ) : (
         <Loader style={{ margin: "auto" }} />
-      )}
-      {routines && (
-        <ChatWithModal
-          chatCategory={ChatCategoryEnum.ROUTINE}
-          openChatKey={ChatCategoryEnum.ROUTINE}
-          dividerLabel={"Chat about routines and tasks"}
-          modalTitle={
-            <Title order={5} component={"p"}>
-              Chat about routines and tasks
-            </Title>
-          }
-          isClub={!isSelf}
-        />
       )}
     </ClubModerationLayout>
   );

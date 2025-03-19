@@ -4,8 +4,6 @@ import {
   IconChecklist,
   IconGitCompare,
   IconHandGrab,
-  IconMessages,
-  IconMoodCheck,
   IconNotebook,
   IconPencil,
   IconRotate,
@@ -47,22 +45,6 @@ export const scanAnalysisContent = [
     description: "Displays your scores under your images to highlight your progress.",
   },
   ,
-];
-
-export const advisorCoachContent = [
-  {
-    icon: <IconMessages className="icon icon__large" style={style} />,
-    description: "Answers your questions about routines, tasks, and food.",
-  },
-  {
-    icon: <IconMoodCheck className="icon icon__large" style={style} />,
-    description:
-      "Helps you choose the best products for your tasks based on your preferences and special considerations.",
-  },
-  {
-    icon: <IconNotebook className="icon icon__large" style={style} />,
-    description: "Summarizes information and helps find specific feedback in the diary.",
-  },
 ];
 
 export const generalPlanContent = [

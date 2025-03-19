@@ -3,11 +3,7 @@
 import React from "react";
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import {
-  advisorCoachContent,
-  improvementCoachContent,
-  scanAnalysisContent,
-} from "@/data/pricingData";
+import { improvementCoachContent, scanAnalysisContent } from "@/data/pricingData";
 import SubscriptionModalContent from "./SubscriptionModalContent";
 
 type Props = {
@@ -44,9 +40,6 @@ export default function openPaymentModal({
   switch (modalType) {
     case "improvement":
       content = improvementCoachContent;
-      break;
-    case "advisor":
-      content = advisorCoachContent;
       break;
     case "scan":
       content = scanAnalysisContent;

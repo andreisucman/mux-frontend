@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
-import ChatWithModal from "@/components/ChatWithModal";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
@@ -33,7 +32,7 @@ export default function DiaryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [openValue, setOpenValue] = useState<string | null>(null);
-  const { userDetails, setUserDetails} = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
@@ -239,16 +238,6 @@ export default function DiaryPage() {
             <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
           )}
         </Stack>
-        <ChatWithModal
-          modalTitle={
-            <Title order={5} component={"p"}>
-              Chat about diary
-            </Title>
-          }
-          chatCategory={ChatCategoryEnum.DIARY}
-          openChatKey={ChatCategoryEnum.DIARY}
-          dividerLabel="Chat about diary"
-        />
       </SkeletonWrapper>
     </Stack>
   );

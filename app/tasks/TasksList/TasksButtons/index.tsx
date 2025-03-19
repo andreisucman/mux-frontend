@@ -7,7 +7,7 @@ import {
   IconCirclePlus,
   IconListDetails,
   IconRoute,
-  IconShoppingBag,
+  IconTrophy,
 } from "@tabler/icons-react";
 import { Button, Group, rem, Text, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -68,9 +68,9 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
           className={classes.button}
           variant="default"
           size="xs"
-          onClick={() => router.push("/products")}
+          onClick={() => router.push("/rewards")}
         >
-          <IconShoppingBag style={{ width: rem(20) }} />
+          <IconTrophy style={{ width: rem(20) }} />
         </Button>
         <Button
           className={classes.button}
