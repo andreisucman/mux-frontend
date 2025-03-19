@@ -349,6 +349,14 @@ export default function TermsLegalBody({ addTitle }: Props) {
             </Link>
             .
           </Text>
+          <Title order={3}>Purchases Access Duration</Title>
+          <Text>
+            By purchasing routines from the Club members, you are granted access to the information
+            purchased for a minimum period of 365 days from the date of purchase. We do not
+            guarantee the availability of the information you purchased beyond this period, and
+            access may be discontinued at our discretion or the discretion of the seller after 365
+            days without liability or obligation for refunds or continued service.
+          </Text>
         </Stack>
         <Stack>
           <Title order={2}>5. FREE TRIAL</Title>
