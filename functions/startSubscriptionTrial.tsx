@@ -1,20 +1,15 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Text, UnstyledButton } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
 import callTheServer from "./callTheServer";
 
 type Props = {
   subscriptionName: "improvement" | "advisor" | "peek";
   onComplete?: (args: any) => void;
-  router: AppRouterInstance;
 };
 
-export default async function startSubscriptionTrial({
-  subscriptionName,
-  router,
-  onComplete,
-}: Props) {
+export default async function startSubscriptionTrial({ subscriptionName, onComplete }: Props) {
   try {
     const response = await callTheServer({
       endpoint: "startSubscriptionTrial",
@@ -30,15 +25,9 @@ export default async function startSubscriptionTrial({
             description: (
               <Text>
                 You need to scan your face first. Click{" "}
-                <UnstyledButton
-                  onClick={() => {
-                    router.push("/scan/progress");
-                    modals.closeAll();
-                  }}
-                  style={{ textDecoration: "underline" }}
-                >
+                <Link href="/scan/progress" style={{ textDecoration: "underline" }}>
                   here
-                </UnstyledButton>{" "}
+                </Link>{" "}
                 to start.
               </Text>
             ),

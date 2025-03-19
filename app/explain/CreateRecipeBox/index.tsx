@@ -1,16 +1,12 @@
 import React, { useCallback, useContext } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button, Group, Text, Title } from "@mantine/core";
+import { Button, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import createCheckoutSession from "@/functions/createCheckoutSession";
-import fetchUserData from "@/functions/fetchUserData";
-import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
+import addImprovementCoach from "@/helpers/addImprovementCoach";
 import { useRouter } from "@/helpers/custom-router";
-import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import openPaymentModal from "@/helpers/openPaymentModal";
 import { RecipeType, UserDataType } from "@/types/global";
 import RecipeSettingsContent from "./RecipeSettingsContent";
 import classes from "./CreateRecipeBox.module.css";
@@ -54,53 +50,25 @@ export default function CreateRecipeBox({
             if (response.error === "subscription expired") {
               const { subscriptions } = userDetails || {};
               const { improvement } = subscriptions || {};
-              const { isTrialUsed } = improvement || {};
-
-              const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
-
               const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
-              const onClick = !!isTrialUsed
-                ? async () =>
-                    createCheckoutSession({
-                      type: "platform",
-                      body: {
-                        priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-                        redirectUrl,
-                        cancelUrl: redirectUrl,
-                        mode: "subscription"
-                      },
-                      setUserDetails,
-                    })
-                : () =>
-                    startSubscriptionTrial({
-                      subscriptionName: "improvement",
-                      router,
-                    });
 
-              openPaymentModal({
-                title: "Add the improvement coach",
-                price: (
-                  <Group className="priceGroup">
-                    <Title order={4}>$5</Title>/ <Text>month</Text>
-                  </Group>
-                ),
-                isCentered: true,
-                modalType: "improvement",
-                underButtonText: isTrialUsed ? "" : "No credit card required",
-                onClick,
-                buttonText,
-                onClose: () => fetchUserData({ setUserDetails }),
+              addImprovementCoach({
+                improvementSubscription: improvement,
+                onComplete: () => generateRecipe(constraints, productsImage),
+                redirectUrl,
+                cancelUrl: redirectUrl,
+                setUserDetails,
               });
+
               return;
-            } else {
-              openErrorModal({
-                description: response.error,
-                onClose: () => modals.closeAll(),
-              });
             }
-          }
 
-          saveToLocalStorage("runningAnalyses", { [`createRecipe-${taskId}`]: true }, "add");
+            openErrorModal({
+              description: response.error,
+            });
+
+            return;
+          }
 
           setShowWaitComponent(true);
           modals.closeAll();

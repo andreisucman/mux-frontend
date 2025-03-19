@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect } from "react";
-import { rem, Stack, Text, Title } from "@mantine/core";
+import { Overlay, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import GlowingButton from "@/components/GlowingButton";
@@ -61,6 +61,7 @@ export default function ClubJoin() {
       <SkeletonWrapper>
         <PageHeader title="Join the Club" hidePartDropdown />
         <Stack className={classes.wrapper}>
+          <Overlay zIndex={0} radius={16}/>
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>
             <Text ta="center">
@@ -68,13 +69,13 @@ export default function ClubJoin() {
               see what worked for others and monetize your achievements to help people like you get
               a similar transformation.
             </Text>
+            <GlowingButton
+              text="Join the Club"
+              disabled={club?.isActive}
+              containerStyles={{ margin: "1rem auto 0", width: "100%", maxWidth: rem(300) }}
+              onClick={onStart}
+            />
           </Stack>
-          <GlowingButton
-            text="Join the Club"
-            disabled={club?.isActive}
-            containerStyles={{ margin: "auto", width: "100%", maxWidth: rem(300) }}
-            onClick={onStart}
-          />
         </Stack>
       </SkeletonWrapper>
     </Stack>

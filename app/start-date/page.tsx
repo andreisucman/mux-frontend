@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Group, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Radio, Stack, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
@@ -11,9 +11,8 @@ import callTheServer from "@/functions/callTheServer";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
+import addImprovementCoach from "@/helpers/addImprovementCoach";
 import { useRouter } from "@/helpers/custom-router";
-import { saveToLocalStorage } from "@/helpers/localStorage";
-import openErrorModal from "@/helpers/openErrorModal";
 import openPaymentModal from "@/helpers/openPaymentModal";
 import { daysFrom } from "@/helpers/utils";
 import { UserConcernType, UserSubscriptionsType } from "@/types/global";
@@ -35,7 +34,8 @@ export default function StartDate() {
   const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { specialConsiderations, concerns, subscriptions } = userDetails || {};
+  const [creationMode, setCreationMode] = useState("continue");
+  const { specialConsiderations, concerns, subscriptions, nextRoutine } = userDetails || {};
 
   const part = searchParams.get("part");
 
@@ -49,13 +49,7 @@ export default function StartDate() {
     setIsLoading(true);
 
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
-
-    console.group("props", {
-      part,
-      concerns,
-      routineStartDate: startDate,
-      specialConsiderations,
-    });
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     const response = await callTheServer({
       endpoint: "createRoutine",
@@ -63,51 +57,24 @@ export default function StartDate() {
       body: {
         part,
         concerns,
+        creationMode,
         routineStartDate: startDate,
         specialConsiderations,
+        timeZone,
       },
     });
 
     if (response.status === 200) {
       if (response.error === "subscription expired") {
         const { improvement } = subscriptions || {};
-        const { isTrialUsed } = improvement || {};
 
-        const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
-
-        const onClick = !!isTrialUsed
-          ? async () =>
-              createCheckoutSession({
-                body: {
-                  priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-                  redirectUrl,
-                  cancelUrl: redirectUrl,
-                  mode: "subscription",
-                },
-                type: "platform",
-                setUserDetails,
-              })
-          : () =>
-              startSubscriptionTrial({
-                subscriptionName: "improvement",
-                router,
-                onComplete: () =>
-                  createRoutine({ concerns, startDate, subscriptions, specialConsiderations }),
-              });
-
-        openPaymentModal({
-          title: `Add the improvement coach`,
-          price: (
-            <Group className="priceGroup">
-              <Title order={4}>$5</Title>/ <Text>month</Text>
-            </Group>
-          ),
-          isCentered: true,
-          modalType: "improvement",
-          underButtonText: isTrialUsed ? "" : "No credit card required",
-          buttonText,
-          onClick,
-          onClose: () => fetchUserData({ setUserDetails }),
+        addImprovementCoach({
+          improvementSubscription: improvement,
+          onComplete: () =>
+            createRoutine({ concerns, startDate, subscriptions, specialConsiderations }),
+          redirectUrl,
+          cancelUrl: redirectUrl,
+          setUserDetails,
         });
 
         return;
@@ -118,9 +85,18 @@ export default function StartDate() {
     }
   };
 
-  const text = startDate
-    ? startDate.toDateString()
-    : "Click on the calendar to select the start date";
+  const text = startDate ? startDate.toDateString() : "Click on the calendar to select date";
+
+  const isNotFirstTime = useMemo(() => {
+    if (!part) {
+      return nextRoutine?.some((obj) => !!obj.date);
+    }
+    return nextRoutine?.some((obj) => obj.part === part && !!obj.date);
+  }, [part, nextRoutine]);
+
+  const description = isNotFirstTime
+    ? ""
+    : "Consider scheduling your routine 3-4 days into the future. This will give you time to adjust and get the necessary products.";
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -129,7 +105,7 @@ export default function StartDate() {
         <InstructionContainer
           title="Instructions"
           instruction={"Choose the start date of your routine."}
-          description="Consider scheduling your routine 3-4 days into the future. This will give you time to adjust and get the necessary products."
+          description={description}
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>
@@ -145,6 +121,32 @@ export default function StartDate() {
             classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
           />
           <Text className={classes.date}>{text}</Text>
+          {isNotFirstTime && (
+            <Radio.Group name="routineMode" value={creationMode} onChange={setCreationMode}>
+              <Group className={classes.radioButtonsGroup}>
+                <Radio
+                  value="continue"
+                  label="Review existing"
+                  classNames={{
+                    root: classes.radioButton,
+                    body: classes.radioBody,
+                    labelWrapper: classes.labelWrapper,
+                    label: classes.label,
+                  }}
+                />
+                <Radio
+                  value="scratch"
+                  label="From scratch"
+                  classNames={{
+                    root: classes.radioButton,
+                    body: classes.radioBody,
+                    labelWrapper: classes.labelWrapper,
+                    label: classes.label,
+                  }}
+                />
+              </Group>
+            </Radio.Group>
+          )}
           <Button
             loading={isLoading}
             onClick={() =>

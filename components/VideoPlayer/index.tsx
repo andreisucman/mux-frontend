@@ -13,9 +13,10 @@ type Props = {
   disabled?: boolean;
   thumbnail?: string;
   playOnBufferEnd?: boolean;
-  createdAt: string;
+  createdAt?: string;
   customStyles?: { [key: string]: any };
   onClick?: () => any;
+  onLoad?: () => any;
 };
 
 export default function VideoPlayer({
@@ -26,6 +27,7 @@ export default function VideoPlayer({
   createdAt,
   playOnBufferEnd,
   customStyles,
+  onLoad,
   onClick,
 }: Props) {
   const [playing, setPlaying] = useState(false);
@@ -45,6 +47,7 @@ export default function VideoPlayer({
 
   const handleOnDuration = (playing: boolean) => {
     if (playOnBufferEnd && !playing) setPlaying(true);
+    if (onLoad) onLoad();
   };
 
   const playIcon = useMemo(
@@ -63,7 +66,7 @@ export default function VideoPlayer({
     [playing]
   );
 
-  const formattedDate = useMemo(() => formatDate({ date: createdAt }), []);
+  const formattedDate = useMemo(() => (createdAt ? formatDate({ date: createdAt }) : null), []);
 
   return (
     <Stack
@@ -100,7 +103,7 @@ export default function VideoPlayer({
         ref={playerRef}
       />
 
-      {showDate && <Text className={classes.date}>{formattedDate}</Text>}
+      {showDate && formattedDate && <Text className={classes.date}>{formattedDate}</Text>}
     </Stack>
   );
 }

@@ -1,7 +1,13 @@
 import { IconSearch } from "@tabler/icons-react";
-import { SpotlightActionType } from "@/app/solutions/types";
 import { normalizeString } from "@/helpers/utils";
 import callTheServer from "./callTheServer";
+
+export type SpotlightActionType = {
+  id: string;
+  label: string;
+  leftSection: React.ReactNode;
+  onClick: () => void;
+};
 
 type Props = {
   endpoint: string;

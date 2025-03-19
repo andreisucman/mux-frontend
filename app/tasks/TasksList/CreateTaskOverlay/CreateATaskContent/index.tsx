@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Select, Stack, Text } from "@mantine/core";
+import { Select, Stack, Text, TextInput } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { normalizeString } from "@/helpers/utils";
 import { UserConcernType } from "@/types/global";
@@ -8,7 +8,9 @@ type Props = {
   allConcerns: UserConcernType[];
   allParts: string[];
   selectedPart: string | null;
+  taskName: string;
   selectedConcern: string | null;
+  setTaskName: React.Dispatch<React.SetStateAction<string>>;
   setSelectedConcern: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPart: React.Dispatch<React.SetStateAction<string | null>>;
 };
@@ -21,6 +23,8 @@ type FormattedItem = {
 };
 
 export default function CreateATaskContent({
+  taskName,
+  setTaskName,
   allConcerns,
   allParts,
   selectedConcern,
@@ -98,43 +102,57 @@ export default function CreateATaskContent({
   };
 
   return (
-    <Stack>
-      <Stack gap={8}>
-        <Text size="xs" c="dimmed">
-          Relevant concern
-        </Text>
-        <Select
-          data={relevantConcerns}
-          value={selectedConcern}
-          onChange={(concern) =>
-            handleSelect(
-              "concern",
-              concern,
-              relevantConcerns.find((c) => c.value === concern)
-            )
-          }
-          placeholder="Select relevant concern"
-          searchable
-        />
-      </Stack>
+    <Stack gap={8}>
+      <TextInput
+        label={
+          <Text size="xs" c="dimmed" component="span">
+            Task name
+          </Text>
+        }
+        value={taskName}
+        onChange={(e) => setTaskName(e.currentTarget.value)}
+        placeholder="Enter task name"
+        withAsterisk
+      />
 
-      <Stack gap={8}>
-        <Text size="xs" c="dimmed">
-          Relevant part
-        </Text>
-        <Select
-          data={relevantParts}
-          value={selectedPart}
-          onChange={(part) =>
-            handleSelect(
-              "part",
-              part,
-              relevantParts.find((c) => c.value === part)
-            )
-          }
-          placeholder="Select relevant part"
-        />
-      </Stack>
+      <Select
+        data={relevantConcerns}
+        value={selectedConcern}
+        label={
+          <Text size="xs" c="dimmed" component="span">
+            Relevant concern
+          </Text>
+        }
+        onChange={(concern) =>
+          handleSelect(
+            "concern",
+            concern,
+            relevantConcerns.find((c) => c.value === concern)
+          )
+        }
+        placeholder="Select relevant concern"
+        withAsterisk
+        searchable
+      />
+
+      <Select
+        data={relevantParts}
+        value={selectedPart}
+        label={
+          <Text size="xs" c="dimmed" component="span">
+            Relevant part
+          </Text>
+        }
+        onChange={(part) =>
+          handleSelect(
+            "part",
+            part,
+            relevantParts.find((c) => c.value === part)
+          )
+        }
+        withAsterisk
+        placeholder="Select relevant part"
+      />
     </Stack>
   );
 }

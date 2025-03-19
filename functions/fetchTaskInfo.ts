@@ -8,9 +8,11 @@ export default async function fetchTaskInfo(taskId: string | null) {
       endpoint: `getTaskInfo/${taskId}`,
       method: "GET",
     });
+    
 
-    if (response.status !== 200) {
-      throw new Error(response.error);
+    if (!response.message) {
+      window.location.replace("/tasks");
+      return;
     }
 
     return response.message;

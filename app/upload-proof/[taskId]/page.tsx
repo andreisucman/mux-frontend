@@ -1,8 +1,9 @@
 "use client";
 
-import React, { use, useCallback, useContext, useEffect, useState } from "react";
+import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Skeleton, Stack } from "@mantine/core";
+import { IconCheckbox, IconCirclePlus } from "@tabler/icons-react";
+import { Button, Group, Skeleton, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -15,9 +16,8 @@ import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
-import { deleteFromLocalStorage, getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
-import { SexEnum, TaskStatusEnum, TaskType } from "@/types/global";
+import { SexEnum, TaskExampleType, TaskStatusEnum, TaskType } from "@/types/global";
 import ProofDisplayContainer from "../ProofDisplayContainer";
 import { ExistingProofRecordType } from "../types";
 import VideoRecorder from "../VideoRecorder";
@@ -42,7 +42,6 @@ export default function UploadProof(props: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
-
   const [componentToDisplay, setDisplayComponent] = useState<
     "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed"
   >("loading");
@@ -51,6 +50,7 @@ export default function UploadProof(props: Props) {
     null
   );
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
+  const [isSetTaskExampleLoading, setIsSetTaskExampleLoading] = useState(false);
 
   const submissionName = searchParams.get("submissionName");
   const { status: taskStatus, expiresAt, requisite } = taskInfo || {};
@@ -177,6 +177,66 @@ export default function UploadProof(props: Props) {
     </Button>
   );
 
+  const handleUpdateExample = useCallback(
+    async (example?: TaskExampleType | null) => {
+      if (isSetTaskExampleLoading || !taskInfo) return;
+      setIsSetTaskExampleLoading(true);
+
+      const response = await callTheServer({
+        endpoint: "updateTaskExamples",
+        method: "POST",
+        body: { taskId: taskInfo?._id, example },
+      });
+
+      if (response.status === 200) {
+        setIsSetTaskExampleLoading(false);
+
+        setTaskInfo((prev: any) => {
+          return { ...(prev || {}), example };
+        });
+      }
+    },
+    [taskInfo, isSetTaskExampleLoading]
+  );
+
+  const setExampleButtonInfo = useMemo(() => {
+    if (!existingProofRecord || !taskInfo) return;
+    if (taskInfo.example && taskInfo.example.url !== existingProofRecord.mainUrl.url) return;
+
+    const response: { [key: string]: any } = {};
+    let text = null;
+    let color = "var(--mantine-color-gray-2)";
+
+    if (!taskInfo.example) {
+      text = (
+        <Group gap={6} color={color}>
+          <IconCirclePlus className="icon" /> Set as task example
+        </Group>
+      );
+    } else {
+      color = "var(--mantine-color-green-7)";
+      text = (
+        <Group gap={6} style={{ color }}>
+          <IconCheckbox className="icon" color={color} /> Set as task example
+        </Group>
+      );
+    }
+
+    response.text = text;
+    let payload: TaskExampleType | null = null;
+
+    if (taskInfo.example) {
+      payload = null;
+    } else {
+      payload = {
+        type: existingProofRecord.contentType,
+        url: existingProofRecord.mainUrl.url || "",
+      };
+    }
+    response.onClick = () => handleUpdateExample(payload);
+    return response;
+  }, [existingProofRecord, taskInfo]);
+
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
@@ -184,7 +244,19 @@ export default function UploadProof(props: Props) {
         <Skeleton className="skeleton" visible={componentToDisplay === "loading"}>
           <Stack flex={1}>
             {componentToDisplay === "completed" && existingProofRecord && (
-              <ProofDisplayContainer existingProofRecord={existingProofRecord} />
+              <>
+                {setExampleButtonInfo?.text && (
+                  <Button
+                    variant="default"
+                    onClick={setExampleButtonInfo?.onClick}
+                    loading={isSetTaskExampleLoading}
+                    disabled={isSetTaskExampleLoading}
+                  >
+                    {setExampleButtonInfo?.text}
+                  </Button>
+                )}
+                <ProofDisplayContainer existingProofRecord={existingProofRecord} />
+              </>
             )}
             {componentToDisplay === "waitComponent" && (
               <WaitComponent

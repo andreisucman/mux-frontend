@@ -99,11 +99,13 @@ export default function TasksList({ customStyles }: Props) {
     if (!pageLoaded) return;
     if (!tasks) return;
 
+    const nearestTasksCount = (todaysTasks?.length || 0) + (tomorrowsTasks?.length || 0);
+
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (todaysTasks && todaysTasks.length === 0) {
+    } else if (nearestTasksCount === 0) {
       setDisplayComponent("createTaskOverlay");
-    } else if (todaysTasks && todaysTasks.length > 0) {
+    } else if (nearestTasksCount > 0) {
       setDisplayComponent("content");
     } else if (todaysTasks === undefined) {
       setDisplayComponent("loading");
@@ -172,7 +174,14 @@ export default function TasksList({ customStyles }: Props) {
               >
                 {todaysTasks && (
                   <Carousel.Slide>
-                    <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
+                    {todaysTasks && todaysTasks.length > 0 ? (
+                      <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
+                    ) : (
+                      <OverlayWithText
+                        text="No tasks for today"
+                        icon={<IconCircleOff className="icon" />}
+                      />
+                    )}
                   </Carousel.Slide>
                 )}
                 <Carousel.Slide>

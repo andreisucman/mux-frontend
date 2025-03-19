@@ -485,95 +485,95 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         customStyles={{ flex: 0 }}
       />
       <SegmentedControl value={captureType} onChange={handleChangeCaptureType} data={segments} />
-      {!localUrl && (
-        <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
-          {isRecording && <RecordingStatus recordingTime={recordingTime} />}
-          {timerStarted && (
-            <div className={classes.timerOverlay}>
-              <Text fz={40}>{secondsLeft}</Text>
+      <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
+        {!localUrl && (
+          <>
+            {isRecording && <RecordingStatus recordingTime={recordingTime} />}
+            {timerStarted && (
+              <div className={classes.timerOverlay}>
+                <Text fz={40}>{secondsLeft}</Text>
+              </div>
+            )}
+            <div className={classes.videoWrapper}>
+              <video
+                ref={videoRef}
+                className={classes.video}
+                style={{ aspectRatio }}
+                autoPlay
+                muted
+              ></video>
             </div>
-          )}
-          <div className={classes.videoWrapper}>
-            <video
-              ref={videoRef}
-              className={classes.video}
-              style={{ aspectRatio }}
-              autoPlay
-              muted
-            ></video>
-          </div>
-          <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
-            {!isRecording && hasMultipleCameras && (
+            <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
+              {!isRecording && hasMultipleCameras && (
+                <Button
+                  variant="default"
+                  onClick={flipCamera}
+                  className={classes.button}
+                  style={{ flexGrow: 0, padding: 0 }}
+                  miw={rem(50)}
+                  disabled={taskExpired}
+                >
+                  <IconCameraRotate className="icon" />
+                </Button>
+              )}
               <Button
                 variant="default"
-                onClick={flipCamera}
+                disabled={timerStarted}
+                onClick={() => startDelayedCapture(5)}
                 className={classes.button}
                 style={{ flexGrow: 0, padding: 0 }}
                 miw={rem(50)}
-                disabled={taskExpired}
               >
-                <IconCameraRotate className="icon" />
+                <Text mr={2}>5</Text>
+                <IconStopwatch className="icon" />
               </Button>
-            )}
-            <Button
-              variant="default"
-              disabled={timerStarted}
-              onClick={() => startDelayedCapture(5)}
-              className={classes.button}
-              style={{ flexGrow: 0, padding: 0 }}
-              miw={rem(50)}
-            >
-              <Text mr={2}>5</Text>
-              <IconStopwatch className="icon" />
-            </Button>
-            <Button
-              variant="default"
-              disabled={timerStarted}
-              onClick={() => startDelayedCapture(15)}
-              className={classes.button}
-              style={{ flexGrow: 0, padding: 0 }}
-              miw={rem(50)}
-            >
-              <Text mr={2}>15</Text>
-              <IconStopwatch className="icon" />
-            </Button>
-            {isRecording && (
               <Button
                 variant="default"
-                disabled={timerStarted || taskExpired}
-                onClick={handleStop}
+                disabled={timerStarted}
+                onClick={() => startDelayedCapture(15)}
                 className={classes.button}
+                style={{ flexGrow: 0, padding: 0 }}
+                miw={rem(50)}
               >
-                <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
+                <Text mr={2}>15</Text>
+                <IconStopwatch className="icon" />
               </Button>
-            )}
-            {showStartRecording && (
-              <Button
-                onClick={
-                  captureType === "image"
-                    ? capturePhoto
-                    : () =>
-                        startRecording({
-                          facingMode,
-                          aspectRatio,
-                          videoRef,
-                          streamRef,
-                          isVideoLoading,
-                          setIsVideoLoading,
-                          stopBothVideoAndAudio,
-                        })
-                }
-                className={classes.button}
-                disabled={taskExpired || timerStarted}
-              >
-                {startText}
-              </Button>
-            )}
-          </Group>
-        </Stack>
-      )}
-      {localUrl && (
-        <Stack className={classes.content}>
+              {isRecording && (
+                <Button
+                  variant="default"
+                  disabled={timerStarted || taskExpired}
+                  onClick={handleStop}
+                  className={classes.button}
+                >
+                  <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
+                </Button>
+              )}
+              {showStartRecording && (
+                <Button
+                  onClick={
+                    captureType === "image"
+                      ? capturePhoto
+                      : () =>
+                          startRecording({
+                            facingMode,
+                            aspectRatio,
+                            videoRef,
+                            streamRef,
+                            isVideoLoading,
+                            setIsVideoLoading,
+                            stopBothVideoAndAudio,
+                          })
+                  }
+                  className={classes.button}
+                  disabled={taskExpired || timerStarted}
+                >
+                  {startText}
+                </Button>
+              )}
+            </Group>
+          </>
+        )}
+        {localUrl && (
           <VideoRecorderResult
             captureType={captureType}
             isVideoLoading={isVideoLoading}
@@ -583,8 +583,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             handleSubmit={handleSubmit}
             setLocalUrl={setLocalUrl}
           />
-        </Stack>
-      )}
+        )}
+      </Stack>
     </Stack>
   );
 }

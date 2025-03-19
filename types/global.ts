@@ -340,7 +340,7 @@ export enum TaskStatusEnum {
 
 export type RecipeType = {
   name: string;
-  image: string;
+  example: { type: string; url: string };
   description: string;
   instruction: string;
   canPersonalize: boolean;
@@ -362,6 +362,8 @@ export type SuggestionType = {
   priceAndUnit: string;
   productFeatures: string[];
 };
+
+export type TaskExampleType = { type: string; url: string };
 
 export type TaskType = {
   _id: string;
@@ -386,5 +388,5 @@ export type TaskType = {
   productTypes: string[];
   isCreated?: boolean;
   proofId: string;
-  example: { type: string; url: string };
+  example: TaskExampleType;
 };

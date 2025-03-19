@@ -155,7 +155,8 @@ export default function ClubRoutines(props: Props) {
   const stealRoutines = async ({ routineIds, startDate, stealAll }: StealRoutinesProps) => {
     setIsLoading(true);
 
-    const body: { [key: string]: any } = { routineIds, userName, startDate };
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const body: { [key: string]: any } = { routineIds, userName, startDate, timeZone };
 
     if (stealAll) {
       body.stealAll = stealAll;
@@ -202,10 +203,12 @@ export default function ClubRoutines(props: Props) {
 
       let isSuccess = false;
 
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
       const response = await callTheServer({
         endpoint: "stealTask",
         method: "POST",
-        body: { taskKey, routineId, startDate, total, followingUserName: userName },
+        body: { taskKey, routineId, startDate, total, userName, timeZone },
       });
 
       if (response.status === 200) {

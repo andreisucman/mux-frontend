@@ -7,17 +7,21 @@ import {
   IconMessages,
   IconMoodCheck,
   IconNotebook,
+  IconPencil,
   IconRotate,
   IconScoreboard,
   IconTargetArrow,
   IconToolsKitchen2,
-  IconUser,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
 
 const style = { minWidth: rem(24), minHeight: rem(24) };
 
 export const improvementCoachContent = [
+  {
+    icon: <IconPencil className="icon icon__large" style={style} />,
+    description: "Drafts your manual task description and instructions.",
+  },
   {
     icon: <IconChecklist className="icon icon__large" style={style} />,
     description: "Creates weekly routines based on your physical condition and concerns.",

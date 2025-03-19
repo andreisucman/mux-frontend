@@ -26,7 +26,6 @@ const showStartButtonRoutes = [
   "/",
   "/progress",
   "/proof",
-  "/solutions",
   "/rewards",
   "/reviews",
   "/legal/terms",

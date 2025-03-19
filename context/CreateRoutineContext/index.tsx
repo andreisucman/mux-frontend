@@ -7,6 +7,7 @@ import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
+import addImprovementCoach from "@/helpers/addImprovementCoach";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { useRouter } from "@/helpers/custom-router";
 import openPaymentModal from "@/helpers/openPaymentModal";
@@ -83,30 +84,15 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }
     } else {
-      const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns`;
+      const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
 
-      const onClick = !!isTrialUsed
-        ? handleCreateCheckoutSession
-        : () =>
-            startSubscriptionTrial({
-              subscriptionName: "improvement",
-              onComplete: onCreateRoutineClick,
-              router,
-            });
-
-      openPaymentModal({
-        title: "Add the improvement coach",
-        price: (
-          <Group className="priceGroup">
-            <Title order={4}>$5</Title>/ <Text>month</Text>
-          </Group>
-        ),
-        isCentered: true,
-        modalType: "improvement",
-        buttonText,
-        underButtonText: isTrialUsed ? "" : "No credit card required",
-        onClick,
-        onClose: () => fetchUserData({ setUserDetails }),
+      addImprovementCoach({
+        improvementSubscription: subscriptions?.improvement,
+        onComplete: () => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed }),
+        redirectUrl,
+        cancelUrl,
+        setUserDetails,
       });
     }
     setIsLoading(false);

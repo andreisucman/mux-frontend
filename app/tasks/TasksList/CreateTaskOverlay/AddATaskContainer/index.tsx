@@ -1,8 +1,12 @@
-import React, { useContext, useMemo, useState } from "react";
-import { Button, Loader, Stack, Text } from "@mantine/core";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Button, Checkbox, Loader, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
+import callTheServer from "@/functions/callTheServer";
+import addImprovementCoach from "@/helpers/addImprovementCoach";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { formatDate } from "@/helpers/formatDate";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { daysFrom } from "@/helpers/utils";
 import CreateATaskContent from "../CreateATaskContent";
 import EditATaskContent from "../EditATaskContent";
@@ -20,7 +24,9 @@ export default function AddATaskContainer({
   handleSaveTask,
   onCreateRoutineClick,
 }: Props) {
-  const { userDetails } = useContext(UserContext);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [rawTask, setRawTask] = useState<RawTaskType>();
@@ -29,6 +35,9 @@ export default function AddATaskContainer({
   const [step, setStep] = useState(1);
   const [selectedConcern, setSelectedConcern] = useState<string | null>(null);
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
+  const [taskName, setTaskName] = useState<string>("");
+  const [enableDrafting, setEnableDrafting] = useState(false);
+  const savedEnableDrafting = getFromLocalStorage("enableDrafting");
 
   const datesPreview = useMemo(() => {
     const dates: string[] = [];
@@ -65,6 +74,72 @@ export default function AddATaskContainer({
 
   const cooldownButtonText = `Next weekly routine after ${formatDate({ date: new Date(earliestCreateRoutineDate || new Date()), hideYear: true })}`;
 
+  const handleCreateTask = async () => {
+    if (!timeZone) return;
+    if (isLoading) return;
+
+    try {
+      setError("");
+      setIsLoading(true);
+
+      const response = await callTheServer({
+        endpoint: "createTaskFromDescription",
+        method: "POST",
+        body: { name: taskName, concern: selectedConcern, part: selectedPart, timeZone },
+      });
+
+      if (response.status === 200) {
+        if (response.error) {
+          setError(response.error);
+        } else {
+          setRawTask(response.message);
+          setStep(2);
+        }
+      }
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+    }
+  };
+
+  const onCreateManuallyClick = () => {
+    if (enableDrafting) {
+      handleCreateTask();
+    } else {
+      setStep((prev) => prev + 1);
+      setRawTask((prev) => ({
+        ...prev,
+        description: "",
+        instruction: "",
+      }));
+    }
+  };
+
+  const handleEnableDrafting = async (enable: boolean) => {
+    if (isSubscriptionActive) {
+      setEnableDrafting(enable);
+      saveToLocalStorage("enableDrafting", enable);
+    } else {
+      if (enable) {
+        const { subscriptions } = userDetails || {};
+        const { improvement } = subscriptions || {};
+        const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+
+        addImprovementCoach({
+          improvementSubscription: improvement,
+          onComplete: () => handleEnableDrafting(true),
+          redirectUrl,
+          cancelUrl: redirectUrl,
+          setUserDetails,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    setEnableDrafting(!!savedEnableDrafting);
+  }, [savedEnableDrafting]);
+
   return (
     <Stack className={classes.container}>
       {error && (
@@ -80,6 +155,8 @@ export default function AddATaskContainer({
               <CreateATaskContent
                 allConcerns={concerns || []}
                 allParts={scannedParts || []}
+                taskName={taskName}
+                setTaskName={setTaskName}
                 selectedConcern={selectedConcern}
                 selectedPart={selectedPart}
                 setSelectedConcern={setSelectedConcern}
@@ -99,21 +176,20 @@ export default function AddATaskContainer({
               />
             )}
           </Stack>
+
           <Stack className={classes.buttonsGroup}>
             {step === 1 && !rawTask && (
               <>
+                        <Checkbox
+            label="Let the coach draft it for me"
+            checked={enableDrafting}
+            onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
+          />
                 <Button
                   variant={isSubscriptionActive ? "filled" : "default"}
                   loading={isLoading}
                   disabled={!selectedConcern || !selectedPart}
-                  onClick={() => {
-                    setStep((prev) => prev + 1);
-                    setRawTask((prev) => ({
-                      ...prev,
-                      description: "",
-                      instruction: "",
-                    }));
-                  }}
+                  onClick={onCreateManuallyClick}
                 >
                   Create task manually
                 </Button>
@@ -128,7 +204,6 @@ export default function AddATaskContainer({
                 </Button>
               </>
             )}
-
             {step === 2 && rawTask && (
               <Button
                 loading={isLoading}

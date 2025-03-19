@@ -3,14 +3,24 @@
 }
 
 .wrapper {
+  position: relative;
+  flex: 1;
   gap: rem(24);
+  background-image: url("/assets/collage.png");
+  background-repeat: repeat;
+  background-size: cover;
+  padding: rem(16);
+  border-radius: var(--mantine-radius-lg);
 }
 
 .announcement {
+  z-index: 2;
   align-items: center;
   border: 1px solid var(--mantine-color-dark-5);
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
   background-color: var(--mantine-color-dark-6);
   padding-bottom: rem(24);
+  margin: 20% auto 0;
+  max-width: rem(600);
 }

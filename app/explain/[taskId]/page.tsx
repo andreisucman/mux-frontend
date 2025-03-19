@@ -20,7 +20,6 @@ import cloneTask from "@/functions/cloneTask";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
-import { getFromLocalStorage } from "@/helpers/localStorage";
 import { daysFrom } from "@/helpers/utils";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
@@ -109,8 +108,6 @@ export default function Explain(props: Props) {
     [productTypes]
   );
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
-  const exampleType = recipe ? "image" : example?.type;
-  const exampleUrl = recipe ? recipe.image : example?.url;
 
   const switchProofUpload = useCallback(
     async (proofEnabled: boolean, taskId?: string | null) => {
@@ -326,6 +323,9 @@ export default function Explain(props: Props) {
                 handleFetchTaskInfo(taskId || "");
                 setShowWaitComponent(false);
               }}
+              onError={() => {
+                setShowWaitComponent(false);
+              }}
               customContainerStyles={{ margin: "unset", paddingTop: "25%" }}
             />
           ) : (
@@ -397,9 +397,7 @@ export default function Explain(props: Props) {
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {exampleType && exampleUrl && (
-                  <ExampleContainer title="Example:" type={exampleType} url={exampleUrl} />
-                )}
+                {example && <ExampleContainer title="Example:" example={recipe?.example || example} />}
                 <ExplanationContainer
                   title="Steps:"
                   text={recipe?.instruction || instruction}

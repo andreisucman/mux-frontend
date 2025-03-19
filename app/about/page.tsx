@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Accordion, Stack, Title } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { data } from "./data";

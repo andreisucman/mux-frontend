@@ -22,13 +22,7 @@ export default function Considerations() {
   const [isLoading, setIsLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
 
-  const { demographics, specialConsiderations } = userDetails || {};
-  const { sex } = demographics || {};
-
-  const placeholder =
-    sex === "female"
-      ? "(Optional) Vegetarian, pregnancy, diabetes, allergy, etc..."
-      : "(Optional) Vegetarian, diabetes, allergy, surgery, etc...";
+  const { specialConsiderations } = userDetails || {};
 
   const updateSpecialConsiderations = useCallback(
     async (text: string) => {
@@ -78,7 +72,13 @@ export default function Considerations() {
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>
-          <TextareaComponent text={text} placeholder={placeholder} setText={setText} />
+          <TextareaComponent
+            text={text}
+            placeholder={
+              "I am vegetarian but I eat dairy and eggs. I have going to gym and I only have dumbbells and a barbell in my house. I try to avoid..."
+            }
+            setText={setText}
+          />
           <Button loading={isLoading} onClick={() => onButtonClick(text)} disabled={isLoading}>
             Next
           </Button>

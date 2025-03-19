@@ -19,8 +19,6 @@ export default async function checkIfAnalysisRunning({
     if (res.status === 200) {
       const { isRunning } = res.message || {};
 
-      console.log("res.message", res.message);
-
       if (isRunning) {
         setShowWaitComponent(true);
       }
