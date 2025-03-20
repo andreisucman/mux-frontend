@@ -40,7 +40,7 @@ export default function ResultsProgress() {
     async ({ part, skip, sort, userName, currentArray }: HandleFetchProgressProps) => {
       try {
         setProgress(undefined);
-        const items = await fetchProgress({
+        const message = await fetchProgress({
           part,
           sort,
           skip,
@@ -48,12 +48,14 @@ export default function ResultsProgress() {
           currentArrayLength: (currentArray && currentArray.length) || 0,
         });
 
+        const { data } = message;
+
         if (skip) {
-          setProgress([...(currentArray || []), ...items.slice(0, 20)]);
+          setProgress([...(currentArray || []), ...data.slice(0, 20)]);
         } else {
-          setProgress(items.slice(0, 20));
+          setProgress(data.slice(0, 20));
         }
-        setHasMore(items.length === 21);
+        setHasMore(data.length === 21);
       } catch (err) {}
     },
     []

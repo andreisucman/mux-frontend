@@ -37,7 +37,7 @@ export default function ResultsProof() {
 
   const handleFetchProof = useCallback(
     async ({ part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
-      const data = await fetchUsersProof({
+      const message = await fetchUsersProof({
         concern,
         part,
         query,
@@ -45,6 +45,8 @@ export default function ResultsProof() {
         currentArrayLength: currentArray?.length || 0,
         skip,
       });
+
+      const { data } = message;
 
       if (skip) {
         setProof([...(currentArray || []), ...data.slice(0, 20)]);

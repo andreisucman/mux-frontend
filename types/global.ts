@@ -167,7 +167,9 @@ export type PurchaseOverlayDataType = {
 
 export enum RoutineStatusEnum {
   ACTIVE = "active",
-  INACTIVE = "inactive",
+  EXPIRED = "expired",
+  CANCELED = "canceled",
+  DELETED = "deleted",
 }
 
 export enum AuthRedirectToEnum {

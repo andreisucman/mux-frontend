@@ -13,6 +13,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
+import { daysFrom } from "@/helpers/utils";
 import { AllTaskType, RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
@@ -28,6 +29,9 @@ type Props = {
   timeZone?: string;
   selectedRoutineIds?: string[];
   selectedConcerns: { [key: string]: string[] };
+  cloneOrRescheduleRoutines?: (routineIds: string[], isReschedule?: boolean) => void;
+  updateRoutineStatuses?: (routineIds: string[], newStatus: string) => void;
+  handleCancelRoutine?: (routineId: string, isDelete?: boolean) => void;
   setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
   setSelectedRoutineIds?: React.Dispatch<React.SetStateAction<string[]>>;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
@@ -47,8 +51,10 @@ export default function AccordionRoutineRow({
   selectedRoutineIds,
   setRoutines,
   openTaskDetails,
+  cloneOrRescheduleRoutines,
   setSelectedConcerns,
   setSelectedRoutineIds,
+  updateRoutineStatuses,
 }: Props) {
   const { ref, focused } = useFocusWithin();
   const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
@@ -112,30 +118,19 @@ export default function AccordionRoutineRow({
     [totalTotal, totalCompleted]
   );
 
-  const routineCanBeReactivated = useMemo(() => {
-    const lastDatePassed = new Date() > new Date(lastDate);
-    const hasExpiredTasks = allTasks.filter((at) =>
-      at.ids.some((idObj) => idObj.status === TaskStatusEnum.EXPIRED)
-    );
-    return (
-      isSelf && !lastDatePassed && routineStatus !== RoutineStatusEnum.ACTIVE && hasExpiredTasks
-    );
-  }, [isSelf, routineStatus, allTasks]);
-
   const allActiveTasks = useMemo(() => {
     const activeTasks = allTasks.filter((at) =>
       at.ids.some(
         (idObj) =>
-          idObj.status === "active" ||
-          idObj.status === "canceled" ||
-          idObj.status === "inactive" ||
-          idObj.status === "expired"
+          idObj.status === "active" || idObj.status === "canceled" || idObj.status === "expired"
       )
     );
     return activeTasks;
-  }, [selectedConcerns]);
+  }, [selectedConcerns, routine]);
 
   const selectedTasks = useMemo(() => {
+    if (!selectedConcerns[routineId]) return [];
+
     const chosenConcerns = selectedConcerns[routineId].map((o) => o);
     return allActiveTasks.filter((at) => chosenConcerns.includes(at.concern));
   }, [allActiveTasks, selectedConcerns]);
@@ -192,57 +187,29 @@ export default function AccordionRoutineRow({
     [setRoutines, status]
   );
 
-  const handleCloneTask = useCallback(
-    (taskId: string) => {
-      if (!timeZone) return;
-      modals.openContextModal({
-        title: (
-          <Title order={5} component={"p"}>
-            Choose new date
-          </Title>
-        ),
-        size: "sm",
-        innerProps: (
-          <RecreateDateModalContent
-            buttonText="Clone task"
-            onSubmit={async ({ startDate }) =>
-              cloneTask({ setRoutines, startDate, taskId, timeZone })
-            }
-          />
-        ),
-        modal: "general",
-        centered: true,
-      });
-    },
-    [timeZone]
-  );
+  const handleCloneTask = (taskId: string) => {
+    if (!timeZone) return;
 
-  const handleActivateRoutine = useCallback(async (routineId: string) => {
-    const response = await callTheServer({
-      endpoint: "activateRoutine",
-      method: "POST",
-      body: { routineId },
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Choose new date
+        </Title>
+      ),
+      size: "sm",
+      innerProps: (
+        <RecreateDateModalContent
+          buttonText="Clone task"
+          lastDate={daysFrom({ date: new Date(routine.lastDate), days: 7 })}
+          onSubmit={async ({ startDate }) =>
+            cloneTask({ setRoutines, startDate, taskId, timeZone })
+          }
+        />
+      ),
+      modal: "general",
+      centered: true,
     });
-
-    if (response.status === 200) {
-      if (response.error) {
-        openErrorModal({ description: response.error });
-        return;
-      }
-
-      if (setRoutines) {
-        setRoutines((prev) => {
-          const newRoutines = prev?.map((r) =>
-            r._id === routineId
-              ? { ...r, status: RoutineStatusEnum.ACTIVE }
-              : { ...r, status: RoutineStatusEnum.INACTIVE }
-          );
-
-          return newRoutines?.sort((a, b) => a.status.localeCompare(b.status));
-        });
-      }
-    }
-  }, []);
+  };
 
   const showSkeleton = useShowSkeleton();
 
@@ -285,36 +252,25 @@ export default function AccordionRoutineRow({
             </Group>
 
             <Group onClick={(e) => e.stopPropagation()} className={classes.selectWrapper}>
-              <InputWithCheckboxes
-                data={selectedConcerns[routineId]}
-                placeholder={`Filter tasks by concerns (${selectedConcerns[routineId].length})`}
-                defaultData={[...new Set(allActiveTasks.map((t) => t.concern))]}
-                setData={handleSelectConcern}
-                readOnly
+              {selectedConcerns[routineId] && (
+                <InputWithCheckboxes
+                  data={selectedConcerns[routineId]}
+                  placeholder={`Filter tasks by concerns (${selectedConcerns[routineId].length})`}
+                  defaultData={[...new Set(allActiveTasks.map((t) => t.concern))]}
+                  setData={handleSelectConcern}
+                  readOnly
+                />
+              )}
+              <AccordionRowMenu
+                routineId={routineId}
+                routineStatus={routine.status}
+                redirectWithDate={redirectWithDate}
+                updateRoutineStatuses={updateRoutineStatuses}
+                cloneOrRescheduleRoutines={cloneOrRescheduleRoutines}
+                isSelf={isSelf}
               />
-              <AccordionRowMenu redirectWithDate={redirectWithDate} isSelf={isSelf} />
             </Group>
           </Group>
-          {routineCanBeReactivated && (
-            <Button
-              variant="default"
-              size="compact-sm"
-              component="div"
-              disabled={!routineCanBeReactivated}
-              className={cn(classes.button, { [classes.disabled]: !routineCanBeReactivated })}
-              onClick={(e) => {
-                e.stopPropagation();
-                askConfirmation({
-                  title: "Confirm action",
-                  body: "This will deactivate your currently active routine. Continue?",
-                  onConfirm: () => handleActivateRoutine(routine._id),
-                });
-              }}
-            >
-              <IconRefresh className="icon icon__small" />{" "}
-              <Text className={classes.buttonText}>Reactivate</Text>
-            </Button>
-          )}
         </Accordion.Control>
         <Accordion.Panel>
           {selectedTasks.length > 0 ? (

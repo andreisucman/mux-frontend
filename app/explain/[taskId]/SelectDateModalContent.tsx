@@ -5,10 +5,11 @@ import { DatePickerInput } from "@mantine/dates";
 
 type Props = {
   buttonText: string;
-  onSubmit: ({ startDate }: { startDate: Date | null }) => Promise<string | undefined> | void;
+  lastDate?: Date;
+  onSubmit: ({ startDate }: { startDate: Date | null }) => any;
 };
 
-export default function SelectDateModalContent({ buttonText, onSubmit }: Props) {
+export default function SelectDateModalContent({ buttonText, lastDate, onSubmit }: Props) {
   const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function SelectDateModalContent({ buttonText, onSubmit }: Props) 
         onChange={setRecreateTaskOnDate}
         placeholder="Select starting date"
         minDate={new Date()}
+        maxDate={lastDate ? new Date(lastDate) : undefined}
       />
       <Button
         loading={isLoading}

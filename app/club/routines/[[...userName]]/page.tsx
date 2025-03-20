@@ -3,12 +3,11 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
-import { ChatCategoryEnum } from "@/app/diary/type";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -19,13 +18,13 @@ import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
+import cloneRoutines from "@/functions/cloneRoutines";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
-import openInfoModal from "@/helpers/openInfoModal";
 import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
 import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
@@ -38,12 +37,6 @@ type GetRoutinesProps = {
   sort: string | null;
   part: string | null;
   routinesLength?: number;
-};
-
-type StealRoutinesProps = {
-  routineIds: string[];
-  startDate: Date | null;
-  stealAll: boolean;
 };
 
 type StealTaskProps = {
@@ -151,51 +144,6 @@ export default function ClubRoutines(props: Props) {
     [routines, selectedRoutineIds]
   );
 
-  const stealRoutines = async ({ routineIds, startDate, stealAll }: StealRoutinesProps) => {
-    setIsLoading(true);
-
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const body: { [key: string]: any } = { routineIds, userName, startDate, timeZone };
-
-    if (stealAll) {
-      body.stealAll = stealAll;
-    } else {
-      body.routineIds = routineIds;
-    }
-
-    const response = await callTheServer({
-      endpoint: "stealRoutine",
-      method: "POST",
-      body,
-    });
-
-    if (response.status === 200) {
-      if (response.error) {
-        openErrorModal({ description: response.error });
-        setIsLoading(false);
-        return;
-      }
-
-      openInfoModal({
-        title: "✔️ Success!",
-        description: (
-          <Text>
-            Routine added.{" "}
-            <span
-              onClick={() => {
-                router.push("/routines");
-                modals.closeAll();
-              }}
-            >
-              Click to view.
-            </span>
-          </Text>
-        ),
-      });
-      setIsLoading(false);
-    }
-  };
-
   const handleStealTask = useCallback(
     async ({ taskKey, routineId, total, startDate }: StealTaskProps) => {
       if (!taskKey || !routineId || !startDate) return false;
@@ -237,12 +185,12 @@ export default function ClubRoutines(props: Props) {
               body: "This will replace your current routine. Continue?",
               onConfirm: () => {
                 modals.closeAll();
-                stealRoutines({ routineIds, startDate, stealAll });
+                cloneRoutines({ routineIds, startDate, stealAll, router, setIsLoading, userName });
               },
             })
         : ({ startDate }: HandleSubmitProps) => {
             modals.closeAll();
-            stealRoutines({ routineIds, startDate, stealAll });
+            cloneRoutines({ routineIds, startDate, stealAll, router, setIsLoading, userName });
           };
 
     modals.openContextModal({

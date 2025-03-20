@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   IconCamera,
   IconCameraRotate,
+  IconFlipHorizontal,
   IconPlayerStopFilled,
+  IconRotateRectangle,
   IconStopwatch,
   IconVideo,
 } from "@tabler/icons-react";
@@ -20,6 +22,16 @@ import { SexEnum } from "@/types/global";
 import RecordingStatus from "./RecordingStatus";
 import VideoRecorderResult from "./VideoRecorderResult";
 import classes from "./VideoRecorder.module.css";
+
+type StartRecordingProps = {
+  facingMode: "user" | "environment";
+  aspectRatio: number;
+  videoRef: any;
+  streamRef: any;
+  isVideoLoading: boolean;
+  setIsVideoLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  stopBothVideoAndAudio: (props: any) => void;
+};
 
 type Props = {
   sex: SexEnum;
@@ -68,18 +80,39 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [recordingTime, setRecordingTime] = useState(RECORDING_TIME);
   const [isRecording, setIsRecording] = useState(false);
-  const [captureType, setCaptureType] = useState<string>();
+  const [captureType, setCaptureType] = useState<string>("image");
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
+  const [orientation, setOrientation] = useState<"vertical" | "horizontal">("vertical");
 
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 36em)");
 
+  const savedCaptureType: string | null = getFromLocalStorage("captureType");
+
   const aspectRatio = useMemo(() => {
-    const ratio = isMobile ? viewportHeight / viewportWidth : 1;
+    let ratio = 0;
+    if (orientation === "vertical") {
+      ratio = isMobile ? viewportHeight / viewportWidth : 1;
+    } else {
+      ratio = 16 / 9;
+    }
     return isNaN(ratio) ? 20 / 9 : ratio;
-  }, [viewportWidth, viewportHeight, isMobile]);
+  }, [viewportWidth, viewportHeight, isMobile, orientation]);
 
   const showStartRecording = !isRecording && !isVideoLoading && !localUrl;
+
+  const handleChangeOrientation = useCallback(() => {
+    setOrientation((prev) => {
+      let newOrientation: "vertical" | "horizontal" = "vertical";
+
+      if (prev === "vertical") {
+        newOrientation = "horizontal";
+      }
+
+      saveToLocalStorage("orientation", newOrientation);
+      return newOrientation;
+    });
+  }, [orientation]);
 
   const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => {
@@ -88,16 +121,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       }
     });
   }, []);
-
-  type StartRecordingProps = {
-    facingMode: "user" | "environment";
-    aspectRatio: number;
-    videoRef: any;
-    streamRef: any;
-    isVideoLoading: boolean;
-    setIsVideoLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    stopBothVideoAndAudio: (props: any) => void;
-  };
 
   const startRecording = useCallback(
     ({
@@ -215,7 +238,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         setIsRecording(false);
       }
     },
-    []
+    [aspectRatio]
   );
 
   const capturePhoto = useCallback(async () => {
@@ -250,7 +273,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     } catch (err) {
       console.log("Error in capturePhoto: ", err);
     }
-  }, [videoRef.current, captureType]);
+  }, [videoRef.current, captureType, aspectRatio]);
 
   const startDelayedCapture = (seconds: number) => {
     if (timerStarted) return;
@@ -415,12 +438,11 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         onClose: () => modals.closeAll(),
       });
     }
-  }, [videoRef.current, streamRef.current, isRecording, isVideoLoading, facingMode]);
+  }, [videoRef.current, streamRef.current, isRecording, isVideoLoading, facingMode, aspectRatio]);
 
   useEffect(() => {
-    const savedCaptureType: string | null = getFromLocalStorage("captureType");
     setCaptureType(savedCaptureType ? savedCaptureType : "image");
-  }, []);
+  }, [savedCaptureType]);
 
   useEffect(() => {
     if (!captureType) return;
@@ -453,7 +475,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     if (!componentLoaded) return;
     if (!showStartRecording) return;
     startVideoPreview();
-  }, [facingMode, componentLoaded, showStartRecording]);
+  }, [facingMode, componentLoaded, showStartRecording, aspectRatio]);
 
   useEffect(() => {
     setComponentLoaded(true);
@@ -504,72 +526,87 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
               ></video>
             </div>
             <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
-              {!isRecording && hasMultipleCameras && (
+              <Group>
+                {!isRecording && hasMultipleCameras && (
+                  <Button
+                    variant="default"
+                    onClick={flipCamera}
+                    className={classes.button}
+                    style={{ flexGrow: 0, padding: 0 }}
+                    miw={rem(50)}
+                    disabled={taskExpired}
+                  >
+                    <IconCameraRotate className="icon" />
+                  </Button>
+                )}
                 <Button
                   variant="default"
-                  onClick={flipCamera}
+                  disabled={timerStarted}
+                  onClick={handleChangeOrientation}
                   className={classes.button}
                   style={{ flexGrow: 0, padding: 0 }}
                   miw={rem(50)}
-                  disabled={taskExpired}
                 >
-                  <IconCameraRotate className="icon" />
+                  <IconRotateRectangle className="icon" style={{ transform: "rotate(190deg)" }} />
                 </Button>
-              )}
-              <Button
-                variant="default"
-                disabled={timerStarted}
-                onClick={() => startDelayedCapture(5)}
-                className={classes.button}
-                style={{ flexGrow: 0, padding: 0 }}
-                miw={rem(50)}
-              >
-                <Text mr={2}>5</Text>
-                <IconStopwatch className="icon" />
-              </Button>
-              <Button
-                variant="default"
-                disabled={timerStarted}
-                onClick={() => startDelayedCapture(15)}
-                className={classes.button}
-                style={{ flexGrow: 0, padding: 0 }}
-                miw={rem(50)}
-              >
-                <Text mr={2}>15</Text>
-                <IconStopwatch className="icon" />
-              </Button>
-              {isRecording && (
+              </Group>
+
+              <Group>
                 <Button
                   variant="default"
-                  disabled={timerStarted || taskExpired}
-                  onClick={handleStop}
+                  disabled={timerStarted}
+                  onClick={() => startDelayedCapture(5)}
                   className={classes.button}
+                  style={{ flexGrow: 0, padding: 0 }}
+                  miw={rem(50)}
                 >
-                  <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
+                  <Text mr={2}>5</Text>
+                  <IconStopwatch className="icon" />
                 </Button>
-              )}
-              {showStartRecording && (
                 <Button
-                  onClick={
-                    captureType === "image"
-                      ? capturePhoto
-                      : () =>
-                          startRecording({
-                            facingMode,
-                            aspectRatio,
-                            videoRef,
-                            streamRef,
-                            isVideoLoading,
-                            setIsVideoLoading,
-                            stopBothVideoAndAudio,
-                          })
-                  }
+                  variant="default"
+                  disabled={timerStarted}
+                  onClick={() => startDelayedCapture(15)}
                   className={classes.button}
-                  disabled={taskExpired || timerStarted}
+                  style={{ flexGrow: 0, padding: 0 }}
+                  miw={rem(50)}
                 >
-                  {startText}
+                  <Text mr={2}>15</Text>
+                  <IconStopwatch className="icon" />
                 </Button>
-              )}
+                {isRecording && (
+                  <Button
+                    variant="default"
+                    disabled={timerStarted || taskExpired}
+                    onClick={handleStop}
+                    className={classes.button}
+                  >
+                    <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
+                  </Button>
+                )}
+                {showStartRecording && (
+                  <Button
+                    onClick={
+                      captureType === "image"
+                        ? capturePhoto
+                        : () =>
+                            startRecording({
+                              facingMode,
+                              aspectRatio,
+                              videoRef,
+                              streamRef,
+                              isVideoLoading,
+                              setIsVideoLoading,
+                              stopBothVideoAndAudio,
+                            })
+                    }
+                    className={classes.button}
+                    disabled={taskExpired || timerStarted}
+                  >
+                    {startText}
+                  </Button>
+                )}
+              </Group>
             </Group>
           </>
         )}

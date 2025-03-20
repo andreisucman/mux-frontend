@@ -17,7 +17,7 @@ type Props = {
 
 function TasksSlide({ taskGroups, canAddDiary }: Props) {
   return (
-    <Stack className={classes.container}>
+    <Stack className={`${classes.container} scrollbar`}>
       {taskGroups && (
         <Stack className={classes.wrapper}>
           {canAddDiary && (

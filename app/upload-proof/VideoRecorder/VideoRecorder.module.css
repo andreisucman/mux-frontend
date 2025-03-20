@@ -33,6 +33,7 @@
   opacity: 0;
   animation: fadeIn 0.3s forwards;
   animation-delay: 0.5s;
+  justify-content: space-between;
 }
 
 .button {

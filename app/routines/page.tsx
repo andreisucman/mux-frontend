@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -12,20 +13,29 @@ import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
+import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
+import openErrorModal from "@/helpers/openErrorModal";
 import { RoutineType } from "@/types/global";
-import { ChatCategoryEnum } from "../diary/type";
+import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
 import TasksButtons from "../tasks/TasksList/TasksButtons";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
+
+export type CloneOrRescheduleRoutinesProps = {
+  routineIds: string[];
+  startDate: Date | null;
+  isReschedule?: boolean;
+  sort?: string | null;
+};
 
 type GetRoutinesProps = {
   skip?: boolean;
@@ -91,22 +101,132 @@ export default function MyRoutines() {
     setOpenValue(part);
   }, []);
 
+  const cloneOrRescheduleRoutines = useCallback(
+    async ({ routineIds, startDate, isReschedule, sort }: CloneOrRescheduleRoutinesProps) => {
+      if (!startDate) return;
+
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const body: { [key: string]: any } = { routineIds, startDate, timeZone, sort };
+
+      const response = await callTheServer({
+        endpoint: isReschedule ? "rescheduleRoutines" : "cloneRoutines",
+        method: "POST",
+        body,
+      });
+
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
+          return;
+        }
+
+        if (isReschedule) {
+          setRoutines((prev) => {
+            const filtered = prev?.filter(Boolean) || [];
+            return filtered?.map((obj) =>
+              routineIds.includes(obj._id)
+                ? response.message.find((r: RoutineType) => r._id === obj._id)
+                : obj
+            );
+          });
+        } else {
+          const newRoutineConcerns = response.message.reduce(
+            (a: { [key: string]: string[] }, c: RoutineType) => {
+              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+              return a;
+            },
+            {}
+          );
+
+          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+          setRoutines((prev) => {
+            const updated = [...(prev || []), ...response.message];
+            if (sort === "startsAt") {
+              updated.sort(
+                (a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
+              );
+            } else {
+              updated.sort(
+                (a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime()
+              );
+            }
+            return updated;
+          });
+        }
+
+        modals.closeAll();
+      }
+    },
+    [sort]
+  );
+
+  const handleCloneOrRescheduleRoutines = useCallback(
+    (routineIds: string[], isReschedule?: boolean) => {
+      const buttonText = isReschedule ? "Reschedule" : "Clone";
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose start date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText={buttonText}
+            onSubmit={({ startDate }) =>
+              cloneOrRescheduleRoutines({ routineIds, startDate, isReschedule, sort })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [sort]
+  );
+
+  const updateRoutineStatuses = useCallback(
+    async (routineIds: string[], newStatus: string) => {
+      const response = await callTheServer({
+        endpoint: "updateRoutineStatuses",
+        method: "POST",
+        body: { timeZone, routineIds, newStatus },
+      });
+
+      if (response.status === 200) {
+        setRoutines((prev) =>
+          prev?.map((obj) =>
+            routineIds.includes(obj._id)
+              ? response.message.find((r: RoutineType) => r._id === obj._id)
+              : obj
+          )
+        );
+      }
+    },
+    [timeZone]
+  );
+
   const accordionItems = useMemo(
     () =>
-      routines?.map((routine, i) => {
-        return (
-          <AccordionRoutineRow
-            key={routine._id}
-            routine={routine}
-            timeZone={timeZone}
-            selectedConcerns={selectedConcerns}
-            setSelectedConcerns={setSelectedConcerns}
-            setRoutines={setRoutines}
-            isSelf
-          />
-        );
-      }),
-    [routines, timeZone, selectedConcerns]
+      routines
+        ?.map((routine, i) => {
+          if (!routine) return null;
+          return (
+            <AccordionRoutineRow
+              key={routine._id}
+              routine={routine}
+              timeZone={timeZone}
+              selectedConcerns={selectedConcerns}
+              updateRoutineStatuses={updateRoutineStatuses}
+              setSelectedConcerns={setSelectedConcerns}
+              cloneOrRescheduleRoutines={handleCloneOrRescheduleRoutines}
+              setRoutines={setRoutines}
+              isSelf
+            />
+          );
+        })
+        .filter(Boolean),
+    [routines, timeZone, selectedConcerns, handleCloneOrRescheduleRoutines]
   );
 
   useEffect(() => {

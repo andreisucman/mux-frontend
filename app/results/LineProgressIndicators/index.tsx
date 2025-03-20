@@ -13,8 +13,8 @@ type Props = {
 };
 
 export default function LineProgressIndicators({ customStyles, record, title }: Props) {
-  const { scores, scoresDifference = {} } = record || {};
-  const { overall = 0, explanations, ...rest } = scores || {};
+  const { scoresDifference = {} } = record || {};
+  const { overall = 0, explanations, ...rest } = scoresDifference || {};
   const [indicatorsOpen, { toggle: toggleOpenIndicators }] = useDisclosure(false);
 
   const restFeatures = Object.entries(rest);
@@ -22,11 +22,7 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
   const allFeatures = showOverall ? [["overall", overall], ...restFeatures] : (restFeatures as any);
 
   const renderIndicator = ([label, value]: [string, number], index: number) => {
-    const scoreDifferenceValue = scoresDifference[label];
-    const differenceColor = scoreDifferenceValue >= 0 ? "green.7" : "red.7";
     const color = getRingColor(value);
-    let previousValue = Number(value) - scoreDifferenceValue;
-    let previousBarValue = Number(value);
 
     return (
       <Group key={`${label}-${index}`} gap="sm">
@@ -35,21 +31,9 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
         </Text>
 
         <Progress.Root className={classes.barRoot} size={18}>
-          <Progress.Section value={previousBarValue} color={color}>
-            <Progress.Label
-              >
-              {previousValue.toFixed(0)}
-            </Progress.Label>
+          <Progress.Section value={value} color={color}>
+            <Progress.Label>{value.toFixed(0)}</Progress.Label>
           </Progress.Section>
-          {scoreDifferenceValue !== 0 && (
-            <Progress.Section value={Math.abs(scoreDifferenceValue)} color={differenceColor}>
-              <Progress.Label style={{ overflow: "unset" }}>
-                {scoreDifferenceValue > 0
-                  ? `+${scoreDifferenceValue.toFixed(0)}`
-                  : scoreDifferenceValue.toFixed(0)}
-              </Progress.Label>
-            </Progress.Section>
-          )}
         </Progress.Root>
       </Group>
     );

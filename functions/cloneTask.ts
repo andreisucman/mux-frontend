@@ -22,6 +22,7 @@ export default async function cloneTask({
   setTaskInfo,
   setRoutines,
 }: CloneTaskProps) {
+  
   const response = await callTheServer({
     endpoint: "cloneTask",
     method: "POST",
@@ -40,8 +41,7 @@ export default async function cloneTask({
 
     if (routine && setRoutines) {
       setRoutines((prev: RoutineType[] | undefined) => {
-        if (!prev) return prev;
-        return prev.map((r) => (String(r._id) === String(routine._id) ? routine : r));
+        return (prev || []).map((r) => (String(r._id) === String(routine._id) ? routine : r));
       });
     }
 
