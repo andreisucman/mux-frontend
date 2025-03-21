@@ -19,8 +19,9 @@ import { theme } from "../theme";
 import classes from "./layout.module.css";
 
 export const metadata = {
-  title: "Muxout - Max You Out!",
-  description: "Become five star all around!",
+  title: "Muxout - Max you out!",
+  description:
+    "Become five star all around! Maximize your appearance with self-improvement routines and inspire others to do the same.",
 };
 
 type Props = {

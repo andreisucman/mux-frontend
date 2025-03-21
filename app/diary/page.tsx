@@ -160,28 +160,24 @@ export default function DiaryPage() {
 
   const handleFetchDiaryRecords = useCallback(
     async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
-      try {
-        const message = await fetchDiaryRecords({
-          sort,
-          part,
-          dateFrom,
-          dateTo,
-          currentArrayLength: diaryRecords?.length,
-          skip: hasMore,
-        });
+      const message = await fetchDiaryRecords({
+        sort,
+        part,
+        dateFrom,
+        dateTo,
+        currentArrayLength: diaryRecords?.length,
+        skip: hasMore,
+      });
 
-        const { data } = message;
+      const { data } = message;
 
-        if (hasMore) {
-          setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
-        } else {
-          setDiaryRecords(data.slice(0, 20));
-        }
-        setOpenValue(data[0]._id);
-        setHasMore(data.length === 9);
-      } catch (err) {
-        openErrorModal();
+      if (hasMore) {
+        setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
+      } else {
+        setDiaryRecords(data.slice(0, 20));
       }
+      setOpenValue(data[0]?._id);
+      setHasMore(data.length === 9);
     },
     [diaryRecords, hasMore]
   );

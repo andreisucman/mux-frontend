@@ -3,6 +3,7 @@ import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
 import { UserDataType } from "@/types/global";
 import fetchUserData from "./fetchUserData";
+import openErrorModal from "@/helpers/openErrorModal";
 
 type Props = {
   body: { [key: string]: any };
@@ -19,6 +20,11 @@ export default async function createCheckoutSession({ type, body, setUserDetails
   });
 
   if (response.status === 200) {
+    if (response.error) {
+      openErrorModal({description: response.error});
+      return;
+    }
+    
     const { redirectUrl, subscriptionId } = response.message;
 
     if (redirectUrl) {

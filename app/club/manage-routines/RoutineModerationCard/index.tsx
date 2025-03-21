@@ -201,10 +201,7 @@ export default function RoutineModerationCard({
           allowDeselect={false}
           miw={100}
         />
-        <Group flex={"1 0"} wrap="nowrap">
-          <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
-            Save
-          </Button>
+        <Group className={classes.buttons}>
           <Button
             variant="default"
             className={classes.button}
@@ -212,6 +209,9 @@ export default function RoutineModerationCard({
             disabled={defaultStatus === "hidden"}
           >
             View
+          </Button>
+          <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
+            Save
           </Button>
         </Group>
       </Group>

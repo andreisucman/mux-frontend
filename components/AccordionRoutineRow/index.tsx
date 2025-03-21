@@ -59,6 +59,8 @@ export default function AccordionRoutineRow({
   const { ref, focused } = useFocusWithin();
   const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
 
+  console.log("AccordionRoutineRow isSelf", isSelf);
+
   const router = useRouter();
 
   const isSelected = useMemo(() => {

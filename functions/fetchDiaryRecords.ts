@@ -13,30 +13,26 @@ type FetchDiaryRecordsProps = {
 
 const fetchDiaryRecords = async (props: FetchDiaryRecordsProps | undefined) => {
   const { skip, userName, sort, part, dateFrom, dateTo, currentArrayLength } = props || {};
-  try {
-    let endpoint = "getDiaryRecords";
+  let endpoint = "getDiaryRecords";
 
-    if (userName) endpoint += `/${userName}`;
+  if (userName) endpoint += `/${userName}`;
 
-    const parts = [];
+  const parts = [];
 
-    if (skip && currentArrayLength) parts.push(`skip=${currentArrayLength}`);
-    if (part) parts.push(`part=${part}`);
-    if (sort) parts.push(`sort=${sort}`);
-    if (dateFrom && dateTo) parts.push(`dateFrom=${dateFrom}&dateTo=${dateTo}`);
+  if (skip && currentArrayLength) parts.push(`skip=${currentArrayLength}`);
+  if (part) parts.push(`part=${part}`);
+  if (sort) parts.push(`sort=${sort}`);
+  if (dateFrom && dateTo) parts.push(`dateFrom=${dateFrom}&dateTo=${dateTo}`);
 
-    const query = parts.join("&");
-    endpoint += `?${query}`;
+  const query = parts.join("&");
+  endpoint += `?${query}`;
 
-    const response = await callTheServer({
-      endpoint,
-      method: "GET",
-    });
+  const response = await callTheServer({
+    endpoint,
+    method: "GET",
+  });
 
-    return response.message;
-  } catch (err) {
-    openErrorModal();
-  }
+  return response.message;
 };
 
 export default fetchDiaryRecords;

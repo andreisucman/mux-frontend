@@ -55,7 +55,6 @@ export default function ProofGallery({
         setProof={setProof}
         isPublicPage={isPublicPage}
         showContentModerationButtons={!isPublicPage && isSelf}
-        showFooter={isPublicPage && !isSelf}
       />
     ),
     [part, concern, isSelf, appliedBlurType]

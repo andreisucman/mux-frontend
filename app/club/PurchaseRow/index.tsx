@@ -40,7 +40,7 @@ function PurchaseRow({ pageType, data, onRowClick, onSubscribeClick }: Props) {
 
     if (dateFrom) {
       const areSame = dateTo.slice(0, 2) === dateFrom.slice(0, 2);
-      const parts = [` - ${dateTo} ${year}`];
+      const parts = [`Up to ${dateTo} ${year}`];
 
       if (!areSame) {
         parts.unshift(dateFrom);
@@ -81,8 +81,9 @@ function PurchaseRow({ pageType, data, onRowClick, onSubscribeClick }: Props) {
         <Text className={classes.name}>
           {icon}
           <Text component="span">{upperFirst(part)}</Text>
-          <Text component="span">{dateLabel}</Text>
         </Text>
+        <Text component="span">{dateLabel}</Text>
+
         <Button
           disabled={disableButton}
           variant="default"
@@ -95,7 +96,7 @@ function PurchaseRow({ pageType, data, onRowClick, onSubscribeClick }: Props) {
         >
           <Indicator status={status} shape="round" isStatic />{" "}
           <span className={classes.subscribe}>
-            {status === "active" ? "Subscribed" : "Subscribe"}
+            {status === "active" ? "Subscribed" : pageType === "buyer" ? "Subscribe" : "Subscribed"}
           </span>
         </Button>
       </Skeleton>

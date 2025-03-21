@@ -148,31 +148,30 @@ export default function ClubSettings() {
 
   const updateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
-      try {
-        setIsLoading(true);
+      setIsLoading(true);
 
-        modals.closeAll();
+      const response = await callTheServer({
+        endpoint: "updateUserData",
+        method: "POST",
+        body: { [type]: data },
+      });
+
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({ description: response.error });
+          setIsLoading(false);
+          return;
+        }
 
         setUserDetails((prev: UserDataType) => ({
           ...prev,
           [type]: data,
         }));
 
-        const response = await callTheServer({
-          endpoint: "updateUserData",
-          method: "POST",
-          body: { [type]: data },
-        });
-
-        if (response.status === 200) {
-          if (response.error) {
-            openErrorModal({ description: response.error });
-          }
-        }
-      } catch (err) {
-      } finally {
-        setIsLoading(false);
+        modals.closeAll();
       }
+
+      setIsLoading(false);
     },
     [userDetails]
   );

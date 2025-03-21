@@ -27,6 +27,7 @@ export default function RoutineIndividualTasksList({
   redirectToTask,
   updateTaskStatus,
 }: Props) {
+  console.log("isSelf", isSelf);
   const lastTaskObject = taskIdsObjects[taskIdsObjects.length - 1];
   return (
     <Stack className={classes.container}>
@@ -50,14 +51,16 @@ export default function RoutineIndividualTasksList({
           </Group>
         );
       })}
-      <Button
-        variant="default"
-        size="compact-sm"
-        onClick={() => handleCloneTask(lastTaskObject._id)}
-        className={classes.button}
-      >
-        <IconCopy className={`${classes.icon} icon icon__small`} /> Add more
-      </Button>
+      {isSelf && (
+        <Button
+          variant="default"
+          size="compact-sm"
+          onClick={() => handleCloneTask(lastTaskObject._id)}
+          className={classes.button}
+        >
+          <IconCopy className={`${classes.icon} icon icon__small`} /> Add more
+        </Button>
+      )}
     </Stack>
   );
 }

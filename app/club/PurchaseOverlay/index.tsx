@@ -35,7 +35,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
 
   const part = searchParams.get("part");
 
-  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
   const getReferrer = useCallback(
     (pathname: string) => {
@@ -111,7 +111,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
       return;
     }
 
-    if (club?.isActive) {
+    if (!club?.isActive) {
       modals.openContextModal({
         centered: true,
         modal: "general",
@@ -135,6 +135,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
     createCheckoutSession({
       type: "connect",
       body: {
+        dataId: selectedCardData._id,
         priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
         redirectUrl,
         cancelUrl: redirectUrl,
@@ -142,7 +143,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
       },
       setUserDetails,
     });
-  }, [userId, isLoading, redirectUrl, status]);
+  }, [userId, isLoading, redirectUrl, status, selectedCardData]);
 
   const handleChangeCard = (part: string) => {
     const query = modifyQuery({ params: [{ name: "part", value: part, action: "replace" }] });
@@ -183,8 +184,8 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
               <></>
             )
           }
-          customContainerStyles={{transform: "translateY(-15%)"}}
-          customHeadingStyles={{ padding: "0.75rem 0" }}
+          customContainerStyles={{ transform: "translateY(-15%)" }}
+          customHeadingStyles={{ padding: "0.75rem 0 1rem" }}
           name={selectedCardData.name}
           description={selectedCardData.description}
           buttonText="Buy routine"

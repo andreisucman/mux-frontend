@@ -22,7 +22,6 @@ import cloneRoutines from "@/functions/cloneRoutines";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
@@ -69,7 +68,7 @@ export default function ClubRoutines(props: Props) {
   >();
   const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
 
-  const { name, routines: currentUserRoutines, timeZone } = userDetails || {};
+  const { name, tasks, timeZone } = userDetails || {};
 
   const sort = searchParams.get("sort");
   const part = searchParams.get("part");
@@ -77,9 +76,8 @@ export default function ClubRoutines(props: Props) {
 
   const openTaskDetails = useCallback(
     (task: AllTaskType, routineId: string) => {
-      const relevantRoutine = currentUserRoutines?.find((r) => r._id === routineId);
-      const existingTasksKeys = relevantRoutine?.allTasks.map((t) => t.key);
-      const existsInRoutines = existingTasksKeys?.includes(task.key) || false;
+      const existingTasksKeys = (tasks || []).map((t) => t.key);
+      const alreadyExist = existingTasksKeys.includes(task.key);
 
       modals.openContextModal({
         modal: "general",
@@ -100,12 +98,12 @@ export default function ClubRoutines(props: Props) {
                 startDate: startsAt,
               })
             }
-            alreadyExists={existsInRoutines}
+            alreadyExists={alreadyExist}
           />
         ),
       });
     },
-    [currentUserRoutines]
+    [tasks]
   );
 
   const handleFetchRoutines = useCallback(
@@ -159,11 +157,9 @@ export default function ClubRoutines(props: Props) {
       });
 
       if (response.status === 200) {
-        const { routine, tasks } = response.message;
         setUserDetails((prev: UserDataType) => ({
           ...prev,
-          routines: [...(prev.routines || []), routine],
-          tasks: [...(prev.tasks || []), ...tasks],
+          tasks: [...(prev.tasks || []), ...response.message],
         }));
         isSuccess = true;
       } else {
@@ -177,21 +173,10 @@ export default function ClubRoutines(props: Props) {
   const handleStealRoutines = (routineIds: string[], stealAll: boolean) => {
     type HandleSubmitProps = { startDate: Date | null };
 
-    const handleSubmit =
-      currentUserRoutines && currentUserRoutines.length
-        ? ({ startDate }: HandleSubmitProps) =>
-            askConfirmation({
-              title: "Steal routine",
-              body: "This will replace your current routine. Continue?",
-              onConfirm: () => {
-                modals.closeAll();
-                cloneRoutines({ routineIds, startDate, stealAll, router, setIsLoading, userName });
-              },
-            })
-        : ({ startDate }: HandleSubmitProps) => {
-            modals.closeAll();
-            cloneRoutines({ routineIds, startDate, stealAll, router, setIsLoading, userName });
-          };
+    const handleSubmit = ({ startDate }: HandleSubmitProps) => {
+      modals.closeAll();
+      cloneRoutines({ routineIds, startDate, stealAll, router, setIsLoading, userName });
+    };
 
     modals.openContextModal({
       title: (
@@ -238,6 +223,7 @@ export default function ClubRoutines(props: Props) {
   }, [sort, part, userName, authStatus]);
 
   useEffect(() => {
+    if (!userName) return;
     getFilters({
       userName,
       collection: "routine",
@@ -247,7 +233,7 @@ export default function ClubRoutines(props: Props) {
       const { availableParts } = result;
       setAvaiableParts(availableParts);
     });
-  }, []);
+  }, [userName]);
 
   return (
     <ClubModerationLayout

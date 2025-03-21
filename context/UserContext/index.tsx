@@ -104,14 +104,16 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, [isLoggedInCookie, code]);
 
   useEffect(() => {
-    if (!status) return;
+    if (!status || !pathname) return;
+    const exceptions = ["/club/routines", "/club/progress", "/club/proof"];
+    const isException = exceptions.some((path) => pathname.includes(path));
 
-    if (onProtectedPage && pathname !== "/") {
+    if (onProtectedPage && pathname !== "/" && !isException) {
       if (status !== AuthStateEnum.AUTHENTICATED && status !== AuthStateEnum.UNKNOWN) {
         router.replace("/auth");
       }
     }
-  }, [status]);
+  }, [status, pathname]);
 
   useEffect(() => {
     if (userId || !pageLoaded) return;

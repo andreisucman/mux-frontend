@@ -2,7 +2,7 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: rem(16);
+  gap: rem(12);
   background-color: var(--mantine-color-dark-6);
 
   border-radius: var(--mantine-radius-lg);

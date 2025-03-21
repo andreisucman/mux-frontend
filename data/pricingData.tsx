@@ -8,7 +8,6 @@ import {
   IconPencil,
   IconRotate,
   IconScoreboard,
-  IconTargetArrow,
   IconToolsKitchen2,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
@@ -50,19 +49,15 @@ export const scanAnalysisContent = [
 export const generalPlanContent = [
   {
     icon: <IconHandGrab className="icon icon__large" />,
-    description: "See and copy the proven tasks from the routine.",
+    description: "See and copy proven tasks from the routine.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(20) }} />,
-    description: "Learn the feedback and insights from the progress diary.",
+    description: "Read the feedback and insights from the diary.",
   },
   {
     icon: <IconCamera className="icon icon__large" />,
     description: "See how to complete each task from proofs.",
-  },
-  {
-    icon: <IconTargetArrow className="icon icon__large" />,
-    description: "Get similar transformation.",
   },
 ];
 

@@ -12,8 +12,8 @@ type Props = {
 };
 
 function ProgressIndicator({ customStyles, showTitle = false, ringSize, record }: Props) {
-  const { scores } = record || {};
-  const { overall = 0, explanations, ...rest } = scores || {};
+  const { scoresDifference } = record || {};
+  const { overall = 0, explanations, ...rest } = scoresDifference || {};
   let restFeatures = Object.entries(rest);
 
   if (restFeatures.length > 1) restFeatures.unshift(["Overall", overall]);

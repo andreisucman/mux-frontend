@@ -41,7 +41,7 @@ function UserButton({ avatar, name, handleSignOut }: Props) {
         {name && (
           <Menu.Item component={Link} href="/club" style={{ paddingBottom: rem(4) }}>
             <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-            Club
+            My club
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/tasks">

@@ -112,6 +112,9 @@ function BalancePane() {
         ...prev,
         club: { ...prev.club, payouts: { ...prev.club?.payouts, balance: 0 } },
       }));
+    } else {
+      setLoadingButton(null);
+      openErrorModal();
     }
   };
 

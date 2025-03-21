@@ -7,6 +7,8 @@ import FilterDropdown from "../FilterDropdown";
 import { options } from "./options";
 import classes from "./AvatarEditor.module.css";
 
+
+
 type Props = {
   canUpdateAvatar: boolean;
   currentConfig: AvatarConfig;
@@ -28,6 +30,7 @@ export default function AvatarEditor({
   }, [updatedAvatar]);
 
   const modifyConfig = (key: string, value: string | null | undefined) => {
+    console.log("key", key, "value", value);
     if (!value) return;
 
     setUpdatedAvatar((prev) =>
@@ -49,7 +52,7 @@ export default function AvatarEditor({
     if (!currentConfig.bgColor) return;
     const gradientColors = extractGradientColors(currentConfig.bgColor);
     setBgColorOne(gradientColors[0]);
-    setBgColorOne(gradientColors[1]);
+    setBgColorTwo(gradientColors[1]);
   }, [currentConfig.bgColor]);
 
   const dropdownStyles = useMemo(
@@ -72,7 +75,7 @@ export default function AvatarEditor({
         >
           Save
         </Button>
-        <Stack className={classes.content}>
+        <Stack className={`${classes.content} scrollbar`}>
           <Fieldset legend="Skin color" className={classes.filedset}>
             <ColorInput
               flex={1}
@@ -88,7 +91,7 @@ export default function AvatarEditor({
             <FilterDropdown
               data={options.hatStyle}
               placeholder="Hat"
-              selectedValue={currentConfig.hatStyle}
+              selectedValue={updatedAvatar.hatStyle}
               customStyles={dropdownStyles}
               onSelect={(value) => modifyConfig("hatStyle", value)}
             />
@@ -107,7 +110,7 @@ export default function AvatarEditor({
               data={options.hairStyle as { label: string; value: string }[]}
               placeholder="Hair"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.hairStyle}
+              selectedValue={updatedAvatar.hairStyle}
               onSelect={(value) => modifyConfig("hairStyle", value)}
             />
             <ColorInput
@@ -125,7 +128,7 @@ export default function AvatarEditor({
               data={options.earSize}
               placeholder="Ear"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.earSize}
+              selectedValue={updatedAvatar.earSize}
               onSelect={(value) => modifyConfig("earSize", value)}
             />
           </Fieldset>
@@ -134,7 +137,7 @@ export default function AvatarEditor({
               data={options.eyeStyle}
               placeholder="Eyes"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.eyeStyle}
+              selectedValue={updatedAvatar.eyeStyle}
               onSelect={(value) => modifyConfig("eyeStyle", value)}
             />
           </Fieldset>
@@ -143,7 +146,7 @@ export default function AvatarEditor({
               data={options.glassesStyle}
               placeholder="Glasses"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.glassesStyle}
+              selectedValue={updatedAvatar.glassesStyle}
               onSelect={(value) => modifyConfig("glassesStyle", value)}
             />
           </Fieldset>
@@ -152,7 +155,7 @@ export default function AvatarEditor({
               data={options.noseStyle}
               placeholder="Nose"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.noseStyle}
+              selectedValue={updatedAvatar.noseStyle}
               onSelect={(value) => modifyConfig("noseStyle", value)}
             />
           </Fieldset>
@@ -161,7 +164,7 @@ export default function AvatarEditor({
               data={options.mouthStyle}
               placeholder="Mouth"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.mouthStyle}
+              selectedValue={updatedAvatar.mouthStyle}
               onSelect={(value) => modifyConfig("mouthStyle", value)}
             />
           </Fieldset>
@@ -170,7 +173,7 @@ export default function AvatarEditor({
               data={options.shirtStyle as { label: string; value: string }[]}
               placeholder="Shirt"
               customStyles={dropdownStyles}
-              selectedValue={currentConfig.shirtStyle}
+              selectedValue={updatedAvatar.shirtStyle}
               onSelect={(value) => modifyConfig("shirtStyle", value)}
             />
             <ColorInput
@@ -179,7 +182,7 @@ export default function AvatarEditor({
               withEyeDropper={false}
               value={updatedAvatar.shirtColor}
               placeholder="Shirt color"
-              defaultValue={currentConfig.shirtColor}
+              defaultValue={updatedAvatar.shirtColor}
               onChange={(value) => modifyConfig("shirtColor", value)}
             />
           </Fieldset>

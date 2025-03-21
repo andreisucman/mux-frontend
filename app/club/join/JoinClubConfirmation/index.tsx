@@ -67,7 +67,7 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
     []
   );
 
-  const buttonText = type === "start" ? "Join the Club" : "Join and go to checkout";
+  const buttonText = type === "start" ? "Join the Club" : "Join and checkout";
 
   return (
     <Stack flex={1}>

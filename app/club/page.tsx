@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SegmentedControl, Stack } from "@mantine/core";
+import { rem, SegmentedControl, Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -37,7 +37,20 @@ export default function Club() {
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader title="Club profile" />
       <SkeletonWrapper>
-        <SegmentedControl value={selectedSegment} data={segments} onChange={handleChangeSegment} />
+        <SegmentedControl
+          styles={{
+            label: {
+              maxHeight: rem(26),
+              padding: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+          }}
+          value={selectedSegment}
+          data={segments}
+          onChange={handleChangeSegment}
+        />
         {selectedSegment === "buyer" && <ClubBuyerContent />}
         {selectedSegment === "seller" && <ClubSellerContent />}
       </SkeletonWrapper>

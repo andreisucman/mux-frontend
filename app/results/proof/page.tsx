@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
@@ -34,6 +35,7 @@ export default function ResultsProof() {
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const sort = searchParams.get("sort") || "-createdAt";
+  const isMobile = useMediaQuery("(max-width: 36em)");
 
   const handleFetchProof = useCallback(
     async ({ part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
@@ -92,7 +94,7 @@ export default function ResultsProof() {
             hasMore={hasMore}
             handleFetchProof={handleFetchProof}
             setProof={setProof}
-            columns={2}
+            columns={isMobile ? 2 : 3}
             isSelf
           />
         ) : (

@@ -34,6 +34,15 @@
   }
 }
 
+.buttons {
+  margin-left: auto;
+  flex-wrap: nowrap;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex: 1 0;
+  }
+}
+
 .error {
   text-align: center;
   font-size: rem(14);

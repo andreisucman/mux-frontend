@@ -71,6 +71,7 @@ const defaultAuthenticatedNavigation = [
     path: "/results",
     children: [
       { title: "Progress", path: "/results" },
+      { title: "Proof", path: "/results/proof" },
       { title: "Analysis", path: "/analysis" },
     ],
   },

@@ -13,8 +13,6 @@ import ProofCardHeader from "./ProofCardHeader";
 import classes from "./ProofCard.module.css";
 
 type Props = {
-  isLite?: boolean;
-  showFooter?: boolean;
   isPublicPage?: boolean;
   showContentModerationButtons?: boolean;
   data: SimpleProofType;
