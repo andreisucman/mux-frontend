@@ -2,15 +2,12 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Group, Text, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import createCheckoutSession from "@/functions/createCheckoutSession";
-import fetchUserData from "@/functions/fetchUserData";
-import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import addImprovementCoach from "@/helpers/addImprovementCoach";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
 import { useRouter } from "@/helpers/custom-router";
-import openPaymentModal from "@/helpers/openPaymentModal";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
 
@@ -34,7 +31,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { nextRoutine, nextScan, subscriptions } = userDetails || {};
+  const { nextRoutine, latestProgress, subscriptions } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } =
     checkSubscriptionActivity(["improvement"], subscriptions) || {};
@@ -75,11 +72,13 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     if (isLoading) return;
 
     if (isSubscriptionActive) {
-      const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
+      const partsScanned = Object.entries(latestProgress || {})
+        .filter((gr) => typeof gr[1] !== "number")
+        .filter((gr) => gr[1])
+        .map((gr) => gr[0]);
 
       if (partsScanned && partsScanned.length > 0) {
-        const scannedPartKeys = partsScanned.map((obj) => obj.part);
-        const relevantRoutines = nextRoutine?.filter((obj) => scannedPartKeys.includes(obj.part));
+        const relevantRoutines = nextRoutine?.filter((obj) => partsScanned.includes(obj.part));
 
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }

@@ -1,0 +1,25 @@
+.container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  flex: 1;
+  z-index: -1;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  left: -35%;
+  gap: rem(16);
+}
+
+.slider img {
+  height: 100%;
+  width: rem(240);
+  flex-shrink: 0;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: rem(16);
+  margin: 0;
+}

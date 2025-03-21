@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect } from "react";
+import Image from "next/image";
 import { Overlay, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -11,7 +12,9 @@ import joinClub from "@/functions/joinClub";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
+import stripe from "@/public/assets/stripe.webp";
 import JoinClubConfirmation from "./JoinClubConfirmation";
+import SlidingImages from "./SlidingImages";
 import classes from "./join.module.css";
 
 export const runtime = "edge";
@@ -61,7 +64,7 @@ export default function ClubJoin() {
       <SkeletonWrapper>
         <PageHeader title="Join the Club" hidePartDropdown />
         <Stack className={classes.wrapper}>
-          <Overlay zIndex={0} radius={16}/>
+          <Overlay zIndex={0} opacity={0.5} radius={16} />
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>
             <Text ta="center">
@@ -72,10 +75,11 @@ export default function ClubJoin() {
             <GlowingButton
               text="Join the Club"
               disabled={club?.isActive}
-              containerStyles={{ margin: "1rem auto 0", width: "100%", maxWidth: rem(300) }}
+              containerStyles={{ margin: "0.5rem auto 0", width: "100%", maxWidth: rem(300) }}
               onClick={onStart}
             />
           </Stack>
+          <SlidingImages />
         </Stack>
       </SkeletonWrapper>
     </Stack>

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Checkbox, Stack, Title } from "@mantine/core";
 import ImageCardStack from "@/components/UploadContainer/ImageCardStack";
 import { UserContext } from "@/context/UserContext";
@@ -26,7 +26,6 @@ export default function UploadedImagesContent({
   setEnableScanAnalysis,
 }: Props) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const { scanAnalysisQuota } = userDetails || {};
@@ -34,7 +33,7 @@ export default function UploadedImagesContent({
   const handleEnableAnalysis = (enable: boolean) => {
     if (typeof scanAnalysisQuota !== "number") return;
     if (!isFirstAnalysis && scanAnalysisQuota === 0 && enable) {
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
       createBuyScanSession({ redirectUrl, setUserDetails });
       return;
     }

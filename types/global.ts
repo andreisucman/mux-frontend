@@ -246,7 +246,6 @@ export interface UserDataType extends DefaultUserType {
   toAnalyze: ToAnalyzeType[];
   streaks: StreaksType;
   subscriptions: UserSubscriptionsType;
-  nextScan: NextActionType[];
   nextRoutine: NextActionType[];
   latestScanImages?: string[];
   potential: UserPotentialRecordType;

@@ -30,13 +30,12 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
   const router = useRouter();
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
-  const { timeZone, nextScan } = userDetails || {};
+  const { timeZone, latestProgress } = userDetails || {};
 
   const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
   const onCreateManuallyClick = () => {
-    const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
-    if (!partsScanned || partsScanned.length === 0) {
+    if (!latestProgress?.overall) {
       openErrorModal({
         title: "🚨 Please scan yourself",
         description: (

@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { Button, Loader, Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import InputWithCheckboxes from "@/components/InputWithCheckboxes";
-import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
@@ -12,10 +11,8 @@ import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
-import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { ScanTypeEnum, UserDataType } from "@/types/global";
 import { titles } from "../pageTitles";
 import { UploadProgressProps } from "../types";
@@ -24,20 +21,13 @@ import classes from "./progress.module.css";
 export const runtime = "edge";
 
 export default function ScanProgress() {
-  const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { parts, setParts } = useContext(ScanPartsChoicesContext);
 
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, requiredProgress, nextScan, toAnalyze } = userDetails || {};
-
-  const { availableRequirements, checkBackDate } = useCheckScanAvailability({
-    parts,
-    nextScan,
-    requiredProgress,
-  });
+  const { _id: userId, requiredProgress, toAnalyze } = userDetails || {};
 
   const handleUpload = useCallback(
     async ({ url, part, position, blurType, blurredImage }: UploadProgressProps) => {
@@ -128,26 +118,9 @@ export default function ScanProgress() {
     return [...new Set(toAnalyze?.map((obj) => obj.part))].filter((rec) => Boolean(rec));
   }, [toAnalyze]) as string[];
 
-  const showCarousel = useMemo(() => {
-    const partRequirements = availableRequirements?.filter((r) => parts?.includes(r.part));
-    const hide =
-      partRequirements && partRequirements?.length === 0 && toAnalyze && toAnalyze?.length === 0;
-    return !hide;
-  }, [requiredProgress, toAnalyze, availableRequirements]);
-
-  const nextScanText = useMemo(() => {
-    if (!parts) return "";
-    let chunks = [...parts];
-    if (chunks.length > 1) {
-      chunks.splice(-1, 0, "and,");
-    }
-    const partsString = chunks?.join(", ").split(",,").join(" ");
-    return `Your next ${partsString} scan is after ${checkBackDate}`;
-  }, [parts, checkBackDate]);
-
   return (
     <>
-      {availableRequirements ? (
+      {requiredProgress ? (
         <Stack className={`${classes.container} smallPage`}>
           <PageHeader
             titles={titles}
@@ -167,24 +140,13 @@ export default function ScanProgress() {
               </>
             }
           />
-          {showCarousel ? (
-            <UploadContainer
-              requirements={availableRequirements || []}
-              progress={progress}
-              isLoading={isLoading}
-              scanType={ScanTypeEnum.PROGRESS}
-              handleUpload={handleUpload}
-            />
-          ) : (
-            <OverlayWithText
-              text={nextScanText}
-              button={
-                <Button mt={8} variant="default" onClick={() => router.replace("/analysis")}>
-                  See the latest analysis
-                </Button>
-              }
-            />
-          )}
+          <UploadContainer
+            requirements={requiredProgress || []}
+            progress={progress}
+            isLoading={isLoading}
+            scanType={ScanTypeEnum.PROGRESS}
+            handleUpload={handleUpload}
+          />
         </Stack>
       ) : (
         <Loader m="0 auto" pt="15%" />

@@ -21,16 +21,15 @@ export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTa
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
     useContext(CreateRoutineContext);
   const { userDetails } = useContext(UserContext);
-  const { nextScan } = userDetails || {};
+  const { latestProgress } = userDetails || {};
 
   const onCreateManuallyClick = () => {
-    const partsScanned = nextScan?.filter((obj) => Boolean(obj.date));
-    if (!partsScanned || partsScanned.length === 0) {
+    if (!latestProgress?.overall) {
       openErrorModal({
         title: "🚨 Please scan yourself",
         description: (
           <Text>
-            You need to scan yourself to be able to create tasks. Click{" "}
+            You need to scan your appearance first. Click{" "}
             <UnstyledButton
               onClick={() => {
                 router.push("/scan/progress");
@@ -76,7 +75,7 @@ export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTa
             className={classes.button}
             onClick={() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed })}
           >
-            Create a routine for the week
+            Create weekly routine
           </Button>
         )}
       </Stack>

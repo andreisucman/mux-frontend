@@ -56,14 +56,18 @@ export default function AddATaskContainer({
 
   const tasksLeft = datesPreview.length - 3;
 
-  const { nextRoutine, nextScan, subscriptions, concerns } = userDetails || {};
+  const { nextRoutine, latestProgress, subscriptions, concerns } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } = checkSubscriptionActivity(
     ["improvement"],
     subscriptions
   );
 
-  const scannedParts = nextScan?.filter((r) => r.date).map((r) => r.part);
+  const partsScanned = Object.entries(latestProgress || {})
+    .filter((gr) => typeof gr[1] !== "number")
+    .filter((gr) => gr[1])
+    .map((gr) => gr[0]);
+
   const isCreateRoutineInCooldown = nextRoutine?.every(
     (ro) => ro.date && new Date(ro.date || 0) > new Date()
   );
@@ -154,7 +158,7 @@ export default function AddATaskContainer({
             {step === 1 && (
               <CreateATaskContent
                 allConcerns={concerns || []}
-                allParts={scannedParts || []}
+                allParts={partsScanned}
                 taskName={taskName}
                 setTaskName={setTaskName}
                 selectedConcern={selectedConcern}
@@ -180,11 +184,11 @@ export default function AddATaskContainer({
           <Stack className={classes.buttonsGroup}>
             {step === 1 && !rawTask && (
               <>
-                        <Checkbox
-            label="Let the coach draft it for me"
-            checked={enableDrafting}
-            onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
-          />
+                <Checkbox
+                  label="Let the coach draft it for me"
+                  checked={enableDrafting}
+                  onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
+                />
                 <Button
                   variant={isSubscriptionActive ? "filled" : "default"}
                   loading={isLoading}
