@@ -40,8 +40,8 @@ function UserButton({ avatar, name, handleSignOut }: Props) {
       <Menu.Dropdown>
         {name && (
           <Menu.Item component={Link} href="/club" style={{ paddingBottom: rem(4) }}>
-            <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />{" "}
-            <strong className={classes.name}>{name}</strong>
+            <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+            Club
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/tasks">

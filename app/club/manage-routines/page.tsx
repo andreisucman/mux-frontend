@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Loader, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import PageHeader from "@/components/PageHeader";
-import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
+import { RoutineType } from "@/types/global";
 import RoutineModerationCard from "./RoutineModerationCard";
 import classes from "./manage-routines.module.css";
 
@@ -22,8 +22,7 @@ export type RoutineDataType = {
 };
 
 export default function ManageRoutines() {
-  const { userDetails } = useContext(UserContext);
-  const { routines } = userDetails || {};
+  const [routines, setRoutines] = useState<RoutineType[]>();
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
 
   const saveRoutineData = useCallback(
@@ -108,7 +107,9 @@ export default function ManageRoutines() {
   useEffect(() => {
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
-        setRoutineData(res.message);
+        const { routines, routineData } = res.message;
+        setRoutines(routines);
+        setRoutineData(routineData);
       }
     });
   }, []);

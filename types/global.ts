@@ -253,7 +253,6 @@ export interface UserDataType extends DefaultUserType {
   latestScores: LatestScoresType;
   latestScoresDifference: LatestScoresDifferenceType;
   tasks: TaskType[];
-  routines: RoutineType[];
   coachEnergy: number;
   purchases: UserPurchaseType[];
   nutrition: {
