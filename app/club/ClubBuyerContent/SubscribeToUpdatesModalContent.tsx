@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Group, Stack, Text, Title } from "@mantine/core";
+import { usePathname, useSearchParams } from "next/navigation";
+import { IconRotate } from "@tabler/icons-react";
+import { Group, rem, Stack, Text, Title } from "@mantine/core";
 import PricingCard from "@/components/PricingCard";
-import { updateContent } from "@/data/pricingData";
 import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./SubscribeToUpdatesModalContent.module.css";
 
-type Props = { sellerId: string; part: string };
+type Props = { sellerId: string; sellerName: string; part: string };
 
-export default function SubscribeToUpdatesModalContent({ sellerId, part }: Props) {
+export default function SubscribeToUpdatesModalContent({ sellerId, sellerName, part }: Props) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [price, setPrice] = useState<React.ReactNode>();
   const [isLoading, setIsLoading] = useState(false);
+
+  const updateContent = [
+    {
+      icon: (
+        <IconRotate
+          className="icon icon__large"
+          style={{ minWidth: rem(20), minHeight: rem(20) }}
+        />
+      ),
+      description: `See the latest routines, progress, diary, and proofs as ${sellerName} uploads them.`,
+    },
+  ];
 
   useEffect(() => {
     callTheServer({
@@ -31,11 +46,12 @@ export default function SubscribeToUpdatesModalContent({ sellerId, part }: Props
   }, []);
 
   const onSubscribeClick = async (sellerId: string, part: string) => {
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
     setIsLoading(true);
     const response = await callTheServer({
       endpoint: "subscribeToUpdates",
       method: "POST",
-      body: { sellerId, part },
+      body: { sellerId, part, redirectUrl, cancelUrl: redirectUrl },
     });
 
     if (response.status === 200) {
@@ -44,8 +60,10 @@ export default function SubscribeToUpdatesModalContent({ sellerId, part }: Props
         openErrorModal({ description: response.error });
         return;
       }
-      const { redirectUrl } = response.message;
-      location.replace(redirectUrl);
+      location.replace(response.message.redirectUrl);
+    } else {
+      openErrorModal();
+      setIsLoading(false);
     }
   };
 

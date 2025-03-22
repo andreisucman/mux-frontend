@@ -28,6 +28,7 @@ type Props = {
   defaultUpdatePrice?: number;
   saveRoutineData: (
     obj: RoutineDataType,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
   ) => Promise<void>;
 };
@@ -49,6 +50,7 @@ export default function RoutineModerationCard({
   const { userDetails } = useContext(UserContext);
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<{ [key: string]: any }>();
   const [name, setName] = useState<string>(defaultName);
   const [status, setStatus] = useState<string | null>(defaultStatus);
@@ -101,7 +103,9 @@ export default function RoutineModerationCard({
   ]);
 
   const handleSave = () => {
-    const save = () =>
+    if (isLoading) return;
+
+    const save = async () =>
       saveRoutineData(
         {
           part,
@@ -111,6 +115,7 @@ export default function RoutineModerationCard({
           price,
           updatePrice,
         },
+        setIsLoading,
         setError
       );
 
@@ -206,11 +211,16 @@ export default function RoutineModerationCard({
             variant="default"
             className={classes.button}
             onClick={handleRedirect}
-            disabled={defaultStatus === "hidden"}
+            disabled={defaultStatus === "hidden" || isLoading}
           >
             View
           </Button>
-          <Button className={classes.button} disabled={isSaved} onClick={handleSave}>
+          <Button
+            className={classes.button}
+            loading={isLoading}
+            disabled={isSaved || isLoading}
+            onClick={handleSave}
+          >
             Save
           </Button>
         </Group>

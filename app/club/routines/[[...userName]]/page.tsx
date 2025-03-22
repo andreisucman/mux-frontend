@@ -273,6 +273,7 @@ export default function ClubRoutines(props: Props) {
             <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
           )}
           <RoutineSelectionButtons
+            allRoutineIds={routines?.map((r) => r._id) || []}
             selectedRoutineIds={selectedRoutineIds}
             disabled={!routines || !routines.length}
             handleClick={handleStealRoutines}

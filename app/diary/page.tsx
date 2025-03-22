@@ -214,6 +214,7 @@ export default function DiaryPage() {
           onClick={openSelectPartModal}
           disabled={disableAddNew || isLoading}
           loading={isLoading}
+          size="compact-sm"
         >
           Add a note for today
         </Button>

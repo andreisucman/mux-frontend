@@ -6,6 +6,7 @@ import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { PurchaseType } from "@/types/global";
 import PurchaseRow from "../PurchaseRow";
+import SellerRow from "../PurchaseRow";
 import classes from "./PurchasesList.module.css";
 
 type Props = {
@@ -13,8 +14,9 @@ type Props = {
   hasMore: boolean;
   data?: PurchaseType[];
   handleFetchPurchases: () => void;
-  onRowClick?: (args: any) => void;
-  onSubscribeClick?: (sellerId: string, part: string) => void;
+  onRowClick: (args: any) => void;
+  onSubscribeClick: (sellerId: string, sellerName: string, part: string) => void;
+  onUnsubscribeClick: () => void;
 };
 
 export default function PurchasesList({
@@ -23,13 +25,20 @@ export default function PurchasesList({
   data,
   onRowClick,
   onSubscribeClick,
+  onUnsubscribeClick,
   handleFetchPurchases,
 }: Props) {
   const memoizedPurchaseRow = useCallback(
     (props: any) => (
-      <PurchaseRow data={props.data} pageType={pageType} onRowClick={onRowClick} onSubscribeClick={onSubscribeClick} />
+      <PurchaseRow
+        variant={pageType}
+        data={props.data}
+        onRowClick={onRowClick}
+        onSubscribeClick={onSubscribeClick}
+        onUnsubscribeClick={onUnsubscribeClick}
+      />
     ),
-    [onRowClick, data?.length]
+    [onRowClick, pageType, data?.length]
   );
   return (
     <Stack className={classes.container}>

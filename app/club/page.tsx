@@ -40,7 +40,7 @@ export default function Club() {
         <SegmentedControl
           styles={{
             label: {
-              maxHeight: rem(26),
+              maxHeight: rem(28),
               padding: 0,
               display: "flex",
               alignItems: "center",

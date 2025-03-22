@@ -28,8 +28,10 @@ export default function ManageRoutines() {
   const saveRoutineData = useCallback(
     async (
       updatedRoutine: RoutineDataType,
+      setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
       setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
     ) => {
+      setIsLoading(true);
       const { name, description, price, updatePrice } = updatedRoutine;
 
       if (!name.trim().length) {
@@ -52,6 +54,8 @@ export default function ManageRoutines() {
         return;
       }
 
+      console.log("updatedRoutine",updatedRoutine)
+
       const response = await callTheServer({
         endpoint: "saveRoutineData",
         method: "POST",
@@ -61,6 +65,7 @@ export default function ManageRoutines() {
       if (response.status === 200) {
         if (response.error) {
           openErrorModal({ description: response.error });
+          setIsLoading(false);
           return;
         }
 
@@ -68,6 +73,8 @@ export default function ManageRoutines() {
           setRoutineData([updatedRoutine]);
         } else {
           const partData = routineData?.find((r) => r.part === updatedRoutine.part);
+          console.log("partData", partData);
+
           if (partData) {
             setRoutineData((prev) =>
               prev?.map((r) => (r.part === updatedRoutine.part ? updatedRoutine : r))
@@ -77,6 +84,7 @@ export default function ManageRoutines() {
           }
         }
       }
+      setIsLoading(false);
     },
     [routineData]
   );

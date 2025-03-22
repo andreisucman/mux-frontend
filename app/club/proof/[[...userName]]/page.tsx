@@ -67,7 +67,7 @@ export default function ClubProof(props: Props) {
         skip,
       });
 
-      const { priceData, data } = message;
+      const { priceData, data } = message || {};
 
       setPurchaseOverlayData(priceData ? priceData : null);
       setShowPurchaseOverlay(!!priceData);

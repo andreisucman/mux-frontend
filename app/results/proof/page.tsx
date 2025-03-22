@@ -48,7 +48,7 @@ export default function ResultsProof() {
         skip,
       });
 
-      const { data } = message;
+      const { data } = message || {};
 
       if (skip) {
         setProof([...(currentArray || []), ...data.slice(0, 20)]);

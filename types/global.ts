@@ -199,9 +199,8 @@ export type PurchaseType = {
   name: string;
   part: string;
   paid: number;
-  transactionId: string;
-  subscribedUntil: string;
-  contentStartDate: string;
+  paymentIntentId: string;
+  subscriptionId?: string;
   contentEndDate: string;
   createdAt: Date;
   sellerId: string;
@@ -210,6 +209,7 @@ export type PurchaseType = {
   buyerId: string;
   buyerName: string;
   buyerAvatar: { [key: string]: any };
+  isDeactivated?: boolean;
 };
 
 export type BuyerType = {
@@ -254,7 +254,6 @@ export interface UserDataType extends DefaultUserType {
   latestScoresDifference: LatestScoresDifferenceType;
   tasks: TaskType[];
   coachEnergy: number;
-  purchases: UserPurchaseType[];
   nutrition: {
     dailyCalorieGoal: number | null;
     recommendedDailyCalorieGoal: number | null;

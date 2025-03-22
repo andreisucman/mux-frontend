@@ -13,8 +13,12 @@
   height: unset;
 }
 
+.cursorDefault {
+  cursor: default;
+}
+
 .wrapper {
-  padding: rem(16);
+  padding: 0 rem(16);
 }
 
 .name {
@@ -25,5 +29,12 @@
 }
 
 .subscribe {
-  margin-left: rem(6);
+  margin-left: rem(8);
+}
+
+.button {
+  @media (max-width: $mantine-breakpoint-xs) {
+    min-width: rem(150);
+    flex: 1;
+  }
 }

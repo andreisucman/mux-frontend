@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default async function createCheckoutSession({ type, body, setUserDetails }: Props) {
-  const endpoint = type === "platform" ? "createCheckoutSession" : "createConnectCheckoutSession";
+  const endpoint = type === "platform" ? "createCheckoutSession" : "createRoutineCheckoutSession";
   const response = await callTheServer({
     endpoint,
     method: "POST",

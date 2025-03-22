@@ -1,5 +1,7 @@
 import React, { memo, useMemo } from "react";
-import { Button, Skeleton, Stack, Text } from "@mantine/core";
+import { IconCalendar } from "@tabler/icons-react";
+import cn from "classnames";
+import { Button, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import AvatarComponent from "@/components/AvatarComponent";
 import Indicator from "@/components/Indicator";
@@ -7,16 +9,29 @@ import { formatDate } from "@/helpers/formatDate";
 import { getPartIcon } from "@/helpers/icons";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { PurchaseType } from "@/types/global";
-import classes from "./PurchaseRow.module.css";
+import classes from "./PurchaseRow.module.css"; // Assume this CSS works for both variants
 
-type Props = {
-  pageType: "buyer" | "seller";
+type CommonProps = {
   data: PurchaseType;
-  onRowClick?: (userName?: string) => void;
-  onSubscribeClick?: (sellerId: string, part: string) => void;
+  onRowClick?: (userName: string) => void;
+  variant: "buyer" | "seller";
 };
 
-function PurchaseRow({ pageType, data, onRowClick, onSubscribeClick }: Props) {
+type BuyerProps = CommonProps & {
+  variant: "buyer";
+  onSubscribeClick: (sellerId: string, sellerName: string, part: string) => void;
+  onUnsubscribeClick: () => void;
+};
+
+type SellerProps = CommonProps & {
+  variant: "seller";
+};
+
+type Props = BuyerProps | SellerProps;
+
+function PurchaseRow(props: Props) {
+  const { data, onRowClick, variant, ...restProps } = props;
+
   const {
     buyerAvatar,
     sellerAvatar,
@@ -24,79 +39,74 @@ function PurchaseRow({ pageType, data, onRowClick, onSubscribeClick }: Props) {
     sellerId,
     buyerName,
     part,
-    subscribedUntil,
-    contentStartDate,
+    subscriptionId,
     contentEndDate,
+    isDeactivated,
   } = data;
 
-  const dateLabel = useMemo(() => {
-    const sameMonth = new Date(contentStartDate).getMonth() === new Date(contentEndDate).getMonth();
-
-    const dateFrom = formatDate({ date: contentStartDate, hideYear: true, hideMonth: sameMonth });
-    const dateTo = formatDate({ date: contentEndDate, hideYear: true });
-    const year = new Date(contentEndDate).getFullYear();
-
-    let label = ``;
-
-    if (dateFrom) {
-      const areSame = dateTo.slice(0, 2) === dateFrom.slice(0, 2);
-      const parts = [`Up to ${dateTo} ${year}`];
-
-      if (!areSame) {
-        parts.unshift(dateFrom);
-      }
-
-      label += parts.join("");
-    }
-
-    return label;
-  }, [contentStartDate, contentEndDate]);
-
   const showSkeleton = useShowSkeleton();
-
   const icon = getPartIcon(part, "icon");
   const status = useMemo(
-    () => (subscribedUntil && new Date(subscribedUntil) > new Date() ? "active" : "inactive"),
-    [subscribedUntil]
+    () => (isDeactivated ? "inactive" : subscriptionId ? "active" : "inactive"),
+    [subscriptionId, isDeactivated]
   );
-  const disableButton = useMemo(
-    () => status === "active" || pageType === "seller",
-    [status, pageType]
-  );
+
+  const dateLabel = useMemo(() => {
+    const dateTo = formatDate({ date: contentEndDate, hideYear: true });
+    const year = new Date(contentEndDate).getFullYear();
+    return `Up to ${dateTo} ${year}`;
+  }, [contentEndDate]);
+
+  const handleButtonClick = useMemo(() => {
+    if (variant === "buyer") {
+      const { onSubscribeClick, onUnsubscribeClick } = restProps as BuyerProps;
+      return status === "active"
+        ? () => onUnsubscribeClick()
+        : () => onSubscribeClick(sellerId, sellerName, part);
+    }
+    return undefined;
+  }, [variant, status, sellerId, sellerName, part, restProps]);
+
+  const name = buyerName || sellerName;
 
   return (
     <Stack
       className={classes.wrapper}
-      onClick={onRowClick ? () => onRowClick(buyerName || sellerName) : undefined}
+      onClick={onRowClick && name ? () => onRowClick(name) : undefined}
     >
       <Skeleton
-        className={classes.container}
-        style={onRowClick ? { cursor: "pointer" } : {}}
+        className={cn(classes.container, { [classes.cursorDefault]: variant === "seller" })}
         visible={showSkeleton}
       >
         <AvatarComponent avatar={buyerAvatar || sellerAvatar} size="sm" />
         <Text lineClamp={1} className={classes.name}>
-          {buyerName || sellerName}
+          {name}
         </Text>
-        <Text className={classes.name}>
-          {icon}
-          <Text component="span">{upperFirst(part)}</Text>
-        </Text>
-        <Text component="span">{dateLabel}</Text>
+        <Group wrap="nowrap">
+          <Text className={classes.name}>
+            {icon}
+            <Text component="span">{upperFirst(part)}</Text>
+          </Text>
+          <Text component="span" className={classes.name}>
+            <IconCalendar className="icon icon__small" />
+            <Text component="span">{dateLabel}</Text>
+          </Text>
+        </Group>
 
         <Button
-          disabled={disableButton}
           variant="default"
           ml="auto"
           component="div"
+          className={classes.button}
+          disabled={variant === "seller"}
           onClick={(e) => {
             e.stopPropagation();
-            if (onSubscribeClick) onSubscribeClick(sellerId, part);
+            handleButtonClick?.();
           }}
         >
           <Indicator status={status} shape="round" isStatic />{" "}
           <span className={classes.subscribe}>
-            {status === "active" ? "Subscribed" : pageType === "buyer" ? "Subscribe" : "Subscribed"}
+            {status === "active" ? "Subscribed" : "Not subscribed"}
           </span>
         </Button>
       </Skeleton>

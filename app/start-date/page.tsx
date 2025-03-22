@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Group, Radio, Stack, Text, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
@@ -13,6 +13,7 @@ import fetchUserData from "@/functions/fetchUserData";
 import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import addImprovementCoach from "@/helpers/addImprovementCoach";
 import { useRouter } from "@/helpers/custom-router";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import openPaymentModal from "@/helpers/openPaymentModal";
 import { daysFrom } from "@/helpers/utils";
 import { UserConcernType, UserSubscriptionsType } from "@/types/global";
@@ -34,10 +35,17 @@ export default function StartDate() {
   const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const [creationMode, setCreationMode] = useState("continue");
+  const [creationMode, setCreationMode] = useState("scratch");
   const { specialConsiderations, concerns, subscriptions, nextRoutine } = userDetails || {};
 
   const part = searchParams.get("part");
+
+  const savedCreationMode = getFromLocalStorage("creationMode");
+
+  const handleChangeCreationMode = useCallback((creationMode: string) => {
+    setCreationMode(creationMode);
+    saveToLocalStorage("creationMode", creationMode);
+  }, []);
 
   const createRoutine = async ({
     concerns,
@@ -98,6 +106,12 @@ export default function StartDate() {
     ? ""
     : "Consider scheduling your routine 3-4 days into the future. This will give you time to adjust and get the necessary products.";
 
+  useEffect(() => {
+    if (savedCreationMode) {
+      setCreationMode(savedCreationMode as string);
+    }
+  }, [savedCreationMode]);
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
@@ -122,7 +136,7 @@ export default function StartDate() {
           />
           <Text className={classes.date}>{text}</Text>
           {isNotFirstTime && (
-            <Radio.Group name="routineMode" value={creationMode} onChange={setCreationMode}>
+            <Radio.Group name="routineMode" value={creationMode} onChange={handleChangeCreationMode}>
               <Group className={classes.radioButtonsGroup}>
                 <Radio
                   value="continue"

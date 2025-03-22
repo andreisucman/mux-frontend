@@ -15,7 +15,7 @@ export default function openErrorModal(props?: Props) {
       centered: true,
       title: (
         <Title component="p" order={5}>
-          {title || "🚨 Ups, this didn't work!"}
+          🚨 {title || "Ups, this didn't work!"}
         </Title>
       ),
       children: description || "Please try again and inform us if the error persists.",

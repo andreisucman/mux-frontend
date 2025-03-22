@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Stack } from "@mantine/core";
+import { DiaryRecordType } from "@/app/diary/type";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
-import { DiaryRecordType } from "../../app/diary/type";
 import DiaryAccordionItem from "../DiaryAccordionItem";
 import classes from "./DiaryContent.module.css";
 
@@ -27,20 +28,25 @@ export default function DiaryContent({
   setOpenValue,
   handleFetchDiaryRecords,
 }: Props) {
+  const { userDetails } = useContext(UserContext);
+  const { _id: userId } = userDetails || {};
+
   const memoizedDiaryRow = useCallback(
     (props: any) => {
       const formattedDate = useMemo(() => formatDate({ date: props.data.createdAt }), []);
+      const isSelf = userId === props.data.userId;
       return (
         <DiaryAccordionItem
           data={props.data}
           index={props.index}
           timeZone={timeZone || ""}
+          isSelf={isSelf}
           setDiaryRecords={setDiaryRecords}
           formattedDate={formattedDate}
         />
       );
     },
-    [diaryRecords]
+    [diaryRecords, userId]
   );
 
   return (

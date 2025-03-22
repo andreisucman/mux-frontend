@@ -202,16 +202,7 @@ export default function AccountSettings() {
           >
             <IconAsterisk className={`${classes.icon} icon`} /> Reset password
           </UnstyledButton>
-          <UnstyledButton
-            className={classes.item}
-            onClick={() =>
-              askConfirmation({
-                title: "Confirm redirect",
-                body: "Go to the billing portal?",
-                onConfirm: () => redirectToBillingPortal(),
-              })
-            }
-          >
+          <UnstyledButton className={classes.item} onClick={redirectToBillingPortal}>
             <IconCreditCard className={`${classes.icon} icon`} /> Manage subscriptions
           </UnstyledButton>
           {!deleteOn && (

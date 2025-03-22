@@ -4,6 +4,7 @@ import { Button, Group, rem, Text } from "@mantine/core";
 import classes from "./RoutineSelectionButtons.module.css";
 
 type Props = {
+  allRoutineIds: string[];
   selectedRoutineIds: string[];
   disabled?: boolean;
   isSelf: boolean;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export default function RoutineSelectionButtons({
+  allRoutineIds,
   selectedRoutineIds,
   isSelf,
   disabled,
@@ -35,7 +37,7 @@ export default function RoutineSelectionButtons({
         size="compact-sm"
         component="div"
         className={classes.button}
-        onClick={() => handleClick(selectedRoutineIds, true)}
+        onClick={() => handleClick(allRoutineIds, true)}
       >
         {isSelf ? "Clone" : "Steal"} all
       </Button>

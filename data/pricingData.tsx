@@ -60,12 +60,3 @@ export const generalPlanContent = [
     description: "See how to complete each task from proofs.",
   },
 ];
-
-export const updateContent = [
-  {
-    icon: (
-      <IconRotate className="icon icon__large" style={{ minWidth: rem(20), minHeight: rem(20) }} />
-    ),
-    description: "See the latest task, progress, diary, and proofs as they get uploaded.",
-  },
-];

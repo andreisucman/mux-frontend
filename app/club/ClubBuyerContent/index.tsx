@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Stack, Text, Title } from "@mantine/core";
+import { Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import fetchPurchases from "@/functions/fetchPurchases";
 import { useRouter } from "@/helpers/custom-router";
+import Link from "@/helpers/custom-router/patch-router/link";
+import openErrorModal from "@/helpers/openErrorModal";
+import openInfoModal from "@/helpers/openInfoModal";
 import { PurchaseType } from "@/types/global";
 import PurchasesList from "../PurchasesList";
 import SubscribeToUpdatesModalContent from "./SubscribeToUpdatesModalContent";
@@ -33,8 +36,28 @@ export default function ClubBuyerContent() {
     router.push(`/club/routines/${userName}`);
   };
 
+  const onUnsubscribeClick = useCallback(
+    () =>
+      openErrorModal({
+        title: "Manage subscriptions",
+        description: (
+          <Text>
+            To manage subscriptions visit the{" "}
+            <Link
+              href="/settings"
+              style={{ textDecoration: "underline" }}
+              onClick={() => modals.closeAll()}
+            >
+              settings.
+            </Link>
+          </Text>
+        ),
+      }),
+    []
+  );
+
   const handleOpenModal = useCallback(
-    async (sellerId: string, part: string) => {
+    async (sellerId: string, sellerName: string, part: string) => {
       modals.openContextModal({
         modal: "general",
         centered: true,
@@ -44,7 +67,9 @@ export default function ClubBuyerContent() {
             {"Subscribe to updates"}
           </Title>
         ),
-        innerProps: <SubscribeToUpdatesModalContent sellerId={sellerId} part={part} />,
+        innerProps: (
+          <SubscribeToUpdatesModalContent sellerId={sellerId} sellerName={sellerName} part={part} />
+        ),
       });
     },
     [hasMore, purchases]
@@ -55,7 +80,7 @@ export default function ClubBuyerContent() {
   }, []);
 
   return (
-    <Stack className={classes.container}>
+    <Skeleton className={classes.container} visible={!purchases}>
       <Text c="dimmed" size="sm">
         Your purchases
       </Text>
@@ -70,11 +95,12 @@ export default function ClubBuyerContent() {
             }
             onRowClick={onRowClick}
             onSubscribeClick={handleOpenModal}
+            onUnsubscribeClick={onUnsubscribeClick}
           />
         ) : (
           <OverlayWithText text="Nothng found" icon={<IconCircleOff className="icon" />} />
         )}
       </Stack>
-    </Stack>
+    </Skeleton>
   );
 }

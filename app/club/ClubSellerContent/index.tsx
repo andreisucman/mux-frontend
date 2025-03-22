@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Stack, Text } from "@mantine/core";
+import { Skeleton, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import fetchPurchases from "@/functions/fetchPurchases";
 import { PurchaseType } from "@/types/global";
@@ -34,7 +34,7 @@ export default function ClubSellerContent() {
   }, []);
 
   return (
-    <Stack className={classes.container}>
+    <Skeleton className={classes.container} visible={!userDetails}>
       <ClubProfilePreview
         data={{ name, avatar, intro, socials, latestScoresDifference }}
         type="you"
@@ -49,9 +49,12 @@ export default function ClubSellerContent() {
           pageType="seller"
           hasMore={hasMore}
           data={buyers}
+          onRowClick={() => {}}
+          onSubscribeClick={() => {}}
+          onUnsubscribeClick={() => {}}
           handleFetchPurchases={() => handleFetchPurchases(hasMore, buyers?.length)}
         />
       </Stack>
-    </Stack>
+    </Skeleton>
   );
 }
