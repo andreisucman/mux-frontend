@@ -6,10 +6,11 @@ import fetchUserData from "./fetchUserData";
 
 type Props = {
   redirectUrl: string;
+  cancelUrl: string;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType | null>>>;
 };
 
-const createBuyScanSession = ({ redirectUrl, setUserDetails }: Props) => {
+const createBuyScanSession = ({ redirectUrl, cancelUrl, setUserDetails }: Props) => {
   openPaymentModal({
     title: "Add scan analysis",
     price: (
@@ -25,7 +26,7 @@ const createBuyScanSession = ({ redirectUrl, setUserDetails }: Props) => {
         body: {
           priceId: process.env.NEXT_PUBLIC_SCAN_PRICE_ID!,
           redirectUrl,
-          cancelUrl: redirectUrl,
+          cancelUrl,
           mode: "payment",
         },
         setUserDetails,

@@ -35,6 +35,8 @@ export default function StartPartialScanOverlay({
 
   const analysisString = getPartialScanUploadText(distinctUploadedParts);
 
+  const success = searchParams.get("success");
+
   const isFirstAnalysis = useMemo(() => {
     if (!latestProgress) return;
     const values = Object.values(latestProgress).filter((v) => typeof v !== "number");
@@ -58,14 +60,15 @@ export default function StartPartialScanOverlay({
 
       setIsButtonLoading(true);
 
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
 
       let enableAnalysis = isFirstAnalysis || enableScanAnalysis;
 
       if (scanAnalysisQuota === 0 && enableAnalysis) {
         setIsButtonLoading(false);
         createBuyScanSession({
-          redirectUrl,
+          redirectUrl: `${redirectUrl}?success=true`,
+          cancelUrl: redirectUrl,
           setUserDetails,
         });
         return;
@@ -83,7 +86,8 @@ export default function StartPartialScanOverlay({
 
           if (response.error === "buy scan analysis") {
             createBuyScanSession({
-              redirectUrl,
+              redirectUrl: `${redirectUrl}?success=true`,
+              cancelUrl: redirectUrl,
               setUserDetails,
             });
             return;
@@ -106,6 +110,16 @@ export default function StartPartialScanOverlay({
     if (!scanAnalysisQuota) return;
     setEnableScanAnalysis(scanAnalysisQuota > 0);
   }, [typeof userDetails]);
+
+  useEffect(() => {
+    if (!success) return;
+
+    callTheServer({ endpoint: "getUserData", method: "GET" }).then((res) => {
+      if (res.status === 200) {
+        setUserDetails(res.message);
+      }
+    });
+  }, [success]);
 
   return (
     <Stack className={classes.container} style={outerStyles ? outerStyles : {}}>

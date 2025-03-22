@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconCheckbox } from "@tabler/icons-react";
 import { Button, Stack, Text, Title } from "@mantine/core";
@@ -23,9 +23,10 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
   const [loadingButton, setLoadingButton] = useState<"analysis" | "return" | null>(null);
 
   const { _id: userId, scanAnalysisQuota } = userDetails || {};
+  const success = searchParams.get("success");
 
   const handleStartAnalysis = useCallback(async () => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
 
     try {
       if (!userId) throw new Error("Missing user id");
@@ -35,7 +36,8 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
       if (scanAnalysisQuota === 0) {
         setLoadingButton(null);
         createBuyScanSession({
-          redirectUrl,
+          redirectUrl: `${redirectUrl}?success=true`,
+          cancelUrl: redirectUrl,
           setUserDetails,
         });
         return;
@@ -52,7 +54,8 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
 
           if (response.error === "buy scan analysis") {
             createBuyScanSession({
-              redirectUrl,
+              redirectUrl: `${redirectUrl}?success=true`,
+              cancelUrl: redirectUrl,
               setUserDetails,
             });
             return;
@@ -72,6 +75,16 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
     setLoadingButton("return");
     router.push("/routines");
   }, []);
+
+  useEffect(() => {
+    if (!success) return;
+
+    callTheServer({ endpoint: "getUserData", method: "GET" }).then((res) => {
+      if (res.status === 200) {
+        setUserDetails(res.message);
+      }
+    });
+  }, [success]);
 
   return (
     <Stack className={`${classes.container} scrollbar`}>
