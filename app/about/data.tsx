@@ -30,15 +30,15 @@ export const data = [
           your scans are privately stored on your results page.
         </Text>
         <Text>
-          After you make visible progress you may choose to sell your routine to reward yourself for
-          hard work and help others achieve a similar transformation. When you list a routine your
-          before-afters appear on the home page where they can be discovered by others.
+          After you make visible progress you may choose to sell your routine to help others achieve
+          a similar transformation. When do that your before-after images will appear on the home
+          page.
         </Text>
         <Text>
-          Lastly, if you consistently complete your tasks you may also get achievements ('Streaks')
-          that allow you to claim rewards.
+          In addition to selling your routine, you can earn rewards for consistently working on
+          improving your appearance.
         </Text>
-        <Text>To see the description of the rewards check out the Rewards page.</Text>
+        <Text>Visit the rewards page for more information.</Text>
       </Stack>
     ),
   },
@@ -48,10 +48,9 @@ export const data = [
       <Stack>
         <Text>Muxout is entirely free.</Text>
         <Text>
-          But it has optional paid addons such as the 'Improvement Coach' - the AI that creates
-          personal routines for you, and the 'Advisor Coach' - the AI that answers your questions
-          about the tasks, products, activities, and the person you follow. We also offer weekly
-          progress score calculations for a small fee to cover the expenses.
+          But it has an optional paid addon - the 'Improvement Coach' an AI that creates personal
+          routines for you based on your body analysis and special considerations. We also offer an
+          optional weekly progress score calculations for a one time fee.
         </Text>
         <Text>
           These addons can speed up your results, improve experience, and save you time on research,
@@ -65,12 +64,12 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          All of your data is private when you start using Muxout. This means that none of your
-          images are listed automatically.
+          None of your images are listed automatically. All of your data is private when you start
+          using Muxout.
         </Text>
         <Text>
           To display your before-after images on the home page you will have to join 'the Club' and
-          list your routine for sale.
+          list a routine for sale.
         </Text>
       </Stack>
     ),
@@ -82,12 +81,11 @@ export const data = [
         <Text>You can earn on Muxout in 2 ways.</Text>
         <Text>
           1. You can create an effective routine, and complete its tasks to improve your appearance.
-          You can then list it for sale to let other people see your before-afters and purchase your
-          routines.
+          You can then list your routne for sale to let other people have a similar transformation.
         </Text>
         <Text>
           2. You can complete your tasks and earn achievements ('Streaks'). When you have the
-          necessary achievements you can claim the rewards on the Rewards page.
+          necessary achievements you can claim rewards on the Rewards page.
         </Text>
       </Stack>
     ),
@@ -97,12 +95,12 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To withdraw your earnings you have to join the 'Club'. Joining the Club is free and it
+          To be able to earn on Muxout you have to join the 'Club'. Joining the Club is free and it
           doesn't make your data public.
         </Text>
         <Text>
-          During the onboarding process you provide the legally required information about you and
-          add your bank account.
+          During the onboarding process you provide the legally required information and your bank
+          account.
         </Text>
         <Text>
           After your information is verified you can withdraw your balance at any time on your Club
@@ -121,8 +119,8 @@ export const data = [
           our payment processor you won't be able to earn and withdraw your rewards.
         </Text>
         <Text>
-          You will learn if your country is not supported when you add your bank account on your club's
-          profile page.
+          You will learn if your country is not supported when you add your bank account on your
+          club's profile page.
         </Text>
       </Stack>
     ),
