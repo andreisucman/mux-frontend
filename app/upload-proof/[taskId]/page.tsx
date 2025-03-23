@@ -201,39 +201,44 @@ export default function UploadProof(props: Props) {
 
   const setExampleButtonInfo = useMemo(() => {
     if (!existingProofRecord || !taskInfo) return;
-    if (taskInfo.example && taskInfo.example.url !== existingProofRecord.mainUrl.url) return;
 
     const response: { [key: string]: any } = {};
     let text = null;
     let color = "var(--mantine-color-gray-2)";
 
-    if (!taskInfo.example) {
-      text = (
-        <Group gap={6} color={color}>
-          <IconCirclePlus className="icon" /> Set as task example
-        </Group>
-      );
-    } else {
+    const alreadyExists = taskInfo.examples.some((e) => e.url === existingProofRecord.mainUrl.url);
+
+    if (alreadyExists) {
       color = "var(--mantine-color-green-7)";
       text = (
         <Group gap={6} style={{ color }}>
           <IconCheckbox className="icon" color={color} /> Set as task example
         </Group>
       );
+    } else {
+      text = (
+        <Group gap={6} color={color}>
+          <IconCirclePlus className="icon" /> Set as task example
+        </Group>
+      );
     }
 
     response.text = text;
-    let payload: TaskExampleType | null = null;
 
-    if (taskInfo.example) {
-      payload = null;
+    if (alreadyExists) {
+      setTaskInfo((prev: any) => {
+        const filtered = prev.examples.filter(
+          (e: TaskExampleType) => e.url !== existingProofRecord.mainUrl.url
+        );
+        return { ...(prev || {}), examples: filtered };
+      });
     } else {
-      payload = {
-        type: existingProofRecord.contentType,
-        url: existingProofRecord.mainUrl.url || "",
-      };
+      response.onClick = () =>
+        handleUpdateExample({
+          type: existingProofRecord.contentType,
+          url: existingProofRecord.mainUrl.url || "",
+        });
     }
-    response.onClick = () => handleUpdateExample(payload);
     return response;
   }, [existingProofRecord, taskInfo]);
 
@@ -264,7 +269,7 @@ export default function UploadProof(props: Props) {
                 description="Checking your upload"
                 onComplete={() => {
                   handleCompleteUpload(taskId);
-                  setDisplayComponent("videoRecorder");
+                  setDisplayComponent("loading");
                   setIsAnalysisGoing(false);
                 }}
                 hideDisclaimer

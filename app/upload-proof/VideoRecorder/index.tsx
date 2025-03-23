@@ -94,7 +94,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     if (orientation === "vertical") {
       ratio = isMobile ? viewportHeight / viewportWidth : 1;
     } else {
-      ratio = 16 / 9;
+      ratio = 9 / 20;
     }
     return isNaN(ratio) ? 20 / 9 : ratio;
   }, [viewportWidth, viewportHeight, isMobile, orientation]);
@@ -497,7 +497,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     };
   }, []);
 
-  const startText = captureType === "image" ? "Take the photo" : "Start recording";
+  const startText = captureType === "image" ? "Capture" : "Start";
 
   return (
     <Stack className={classes.container}>
@@ -525,7 +525,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
                 muted
               ></video>
             </div>
-            <Group className={classes.buttonGroup} style={isRecording ? { left: "unset" } : {}}>
+            <Group className={classes.buttonGroup}>
               <Group>
                 {!isRecording && hasMultipleCameras && (
                   <Button
@@ -552,28 +552,32 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
               </Group>
 
               <Group>
-                <Button
-                  variant="default"
-                  disabled={timerStarted}
-                  onClick={() => startDelayedCapture(5)}
-                  className={classes.button}
-                  style={{ flexGrow: 0, padding: 0 }}
-                  miw={rem(50)}
-                >
-                  <Text mr={2}>5</Text>
-                  <IconStopwatch className="icon" />
-                </Button>
-                <Button
-                  variant="default"
-                  disabled={timerStarted}
-                  onClick={() => startDelayedCapture(15)}
-                  className={classes.button}
-                  style={{ flexGrow: 0, padding: 0 }}
-                  miw={rem(50)}
-                >
-                  <Text mr={2}>15</Text>
-                  <IconStopwatch className="icon" />
-                </Button>
+                {showStartRecording && (
+                  <>
+                    <Button
+                      variant="default"
+                      disabled={timerStarted}
+                      onClick={() => startDelayedCapture(5)}
+                      className={classes.button}
+                      style={{ flexGrow: 0, padding: 0 }}
+                      miw={rem(50)}
+                    >
+                      <Text mr={2}>5</Text>
+                      <IconStopwatch className="icon" />
+                    </Button>
+                    <Button
+                      variant="default"
+                      disabled={timerStarted}
+                      onClick={() => startDelayedCapture(15)}
+                      className={classes.button}
+                      style={{ flexGrow: 0, padding: 0 }}
+                      miw={rem(50)}
+                    >
+                      <Text mr={2}>15</Text>
+                      <IconStopwatch className="icon" />
+                    </Button>
+                  </>
+                )}
                 {isRecording && (
                   <Button
                     variant="default"

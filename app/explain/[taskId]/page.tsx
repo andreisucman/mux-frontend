@@ -51,9 +51,8 @@ export default function Explain(props: Props) {
     isDish,
     startsAt,
     productTypes,
-    example,
+    examples,
     proofEnabled,
-    suggestions,
     completedAt,
     expiresAt,
     status,
@@ -92,6 +91,8 @@ export default function Explain(props: Props) {
 
   const {
     name: recipeName,
+    examples: recipeExamples,
+    productTypes: recipeProductTypes,
     description: recipeDescription,
     instruction: recipeInstruction,
   } = recipe || {};
@@ -99,10 +100,12 @@ export default function Explain(props: Props) {
   const name = taskName || recipeName;
   const instruction = taskInstruction || recipeInstruction;
   const description = taskDescription || recipeDescription;
+  const finalProductTypes = recipeProductTypes || productTypes;
+  const finalExamples = recipeExamples?.length ? recipeExamples : examples;
 
   const productsNeeded = useMemo(
-    () => (productTypes ? productTypes.map((name) => upperFirst(name)).join(", ") : ""),
-    [productTypes]
+    () => (finalProductTypes ? finalProductTypes.map((name) => upperFirst(name)).join(", ") : ""),
+    [finalProductTypes]
   );
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
 
@@ -394,8 +397,8 @@ export default function Explain(props: Props) {
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {example && (
-                  <ExampleContainer title="Example:" example={recipe?.example || example} />
+                {finalExamples?.length && (
+                  <ExampleContainer title="Example:" examples={finalExamples} />
                 )}
                 <ExplanationContainer
                   title="Steps:"

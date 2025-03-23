@@ -3,10 +3,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Group, Loader, rem, Stack, Title } from "@mantine/core";
+import { Group, Loader, rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
@@ -38,30 +39,28 @@ export default function Rewards() {
 
   const fetchRewards = useCallback(
     async (skip?: boolean) => {
-      try {
-        let finalEndpoint = "getRewards";
-        const queryParams = [];
+      let finalEndpoint = "getRewards";
+      const queryParams = [];
 
-        if (skip && rewards && rewards.length > 0) {
-          queryParams.push(`skip=${rewards.length}`);
-        }
+      if (skip && rewards && rewards.length > 0) {
+        queryParams.push(`skip=${rewards.length}`);
+      }
 
-        const response = await callTheServer({
-          endpoint: finalEndpoint,
-          method: "GET",
-        });
+      const response = await callTheServer({
+        endpoint: finalEndpoint,
+        method: "GET",
+      });
 
-        if (response.status === 200) {
-          if (skip) {
-            setRewards([...(rewards || []), ...response.message.slice(0, 20)]);
-          } else {
-            setRewards(response.message.slice(0, 20));
-          }
-          setHasMore(response.message.length === 21);
+      if (response.status === 200) {
+        if (skip) {
+          setRewards([...(rewards || []), ...response.message.slice(0, 20)]);
         } else {
-          openErrorModal();
+          setRewards(response.message.slice(0, 20));
         }
-      } catch (err) {}
+        setHasMore(response.message.length === 21);
+      } else {
+        openErrorModal();
+      }
     },
     [rewards && rewards.length]
   );
@@ -84,57 +83,53 @@ export default function Rewards() {
         return;
       }
 
-      try {
-        const response = await callTheServer({
-          endpoint: "claimReward",
-          method: "POST",
-          body: { rewardId },
+      const response = await callTheServer({
+        endpoint: "claimReward",
+        method: "POST",
+        body: { rewardId },
+      });
+
+      if (response.status === 200) {
+        if (response.error) {
+          openErrorModal({
+            description: response.error,
+          });
+          return;
+        }
+
+        const { rewards, rewardValue } = response.message;
+
+        setRewards(rewards);
+        openInfoModal({
+          title: "✔️ Success!",
+          description: (
+            <Group gap={8}>
+              Reward added to your Club balance.
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  router.push("/club");
+                  modals.closeAll();
+                }}
+              >
+                Click to see.
+              </span>
+            </Group>
+          ),
         });
 
-        if (response.status === 200) {
-          if (response.error) {
-            openErrorModal({
-              description: response.error,
-            });
-            return;
-          }
-
-          const { rewards, rewardValue } = response.message;
-
-          setRewards(rewards);
-          openInfoModal({
-            title: "✔️ Success!",
-            description: (
-              <Group gap={8}>
-                Reward added to your Club balance.
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    router.push("/club");
-                    modals.closeAll();
-                  }}
-                >
-                  Click to see.
-                </span>
-              </Group>
-            ),
-          });
-
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            club: {
-              ...prev.club,
-              payouts: {
-                ...prev?.club?.payouts,
-                balance: prev?.club?.payouts?.balance + rewardValue,
-              },
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          club: {
+            ...prev.club,
+            payouts: {
+              ...prev?.club?.payouts,
+              balance: prev?.club?.payouts?.balance + rewardValue,
             },
-          }));
-        }
-      } catch (err) {
-      } finally {
-        setIsLoading(false);
+          },
+        }));
       }
+      setIsLoading(false);
     },
     [status, userId, rewards]
   );
@@ -150,7 +145,7 @@ export default function Rewards() {
 
   return (
     <Stack className={`${classes.container} largePage`}>
-      <Title order={1}>Rewards</Title>
+      <PageHeader title="Rewards" />
       {rewards ? (
         <>
           {rewards.length > 0 ? (

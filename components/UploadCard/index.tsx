@@ -178,7 +178,7 @@ export default function UploadCard({
             >
               {!localUrl && (
                 <Button className={classes.button} onClick={openPhotoCapturer} disabled={isLoading}>
-                  Take the photo
+                  Capture
                 </Button>
               )}
               {localUrl && (

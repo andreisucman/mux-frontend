@@ -7,7 +7,7 @@ import { improvementCoachContent, scanAnalysisContent } from "@/data/pricingData
 import SubscriptionModalContent from "./SubscriptionModalContent";
 
 type Props = {
-  modalType: "improvement" | "advisor" | "peek" | "scan";
+  modalType: "improvement" | "scan";
   title: string;
   name?: string;
   price?: React.ReactNode;

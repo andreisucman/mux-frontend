@@ -27,8 +27,25 @@
   object-fit: contain;
 }
 
-.control {
-  position: absolute;
-  bottom: rem(16);
-  right: rem(16);
+.carouselRoot,
+.carouselViewport,
+.carouselSlide {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+
+.carouselContainer {
+  flex: 1;
+  height: 100%;
+}
+
+.carouselControl {
+  background-color: alpha(var(--mantine-color-brand-5));
+  color: white;
+
+  &:hover {
+    background-color: alpha(var(--mantine-color-brand-6), 1);
+  }
 }
