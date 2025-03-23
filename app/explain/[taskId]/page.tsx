@@ -397,7 +397,7 @@ export default function Explain(props: Props) {
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {finalExamples?.length && (
+                {finalExamples && finalExamples.length > 0 && (
                   <ExampleContainer title="Example:" examples={finalExamples} />
                 )}
                 <ExplanationContainer

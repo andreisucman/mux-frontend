@@ -94,7 +94,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     if (orientation === "vertical") {
       ratio = isMobile ? viewportHeight / viewportWidth : 1;
     } else {
-      ratio = 9 / 20;
+      ratio = 9 / 16;
     }
     return isNaN(ratio) ? 20 / 9 : ratio;
   }, [viewportWidth, viewportHeight, isMobile, orientation]);

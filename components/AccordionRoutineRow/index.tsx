@@ -82,23 +82,23 @@ export default function AccordionRoutineRow({
   };
 
   const rowLabel = useMemo(() => {
+    const areSame = new Date(startsAt).toDateString() === new Date(lastDate).toDateString();
+
     const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
-    const dateFrom = formatDate({ date: startsAt, hideYear: true, hideMonth: sameMonth });
+    const dateFrom = formatDate({
+      date: startsAt,
+      hideYear: true,
+      hideMonth: sameMonth && !areSame,
+    });
     const dateTo = formatDate({ date: lastDate, hideYear: true });
-    let label = ``;
 
-    if (dateFrom) {
-      const areSame = dateTo.slice(0, 2) === dateFrom.slice(0, 2);
-      const parts = [` - ${dateTo}`];
+    const parts = [dateFrom];
 
-      if (!areSame) {
-        parts.unshift(dateFrom);
-      }
-
-      label += parts.join("");
+    if (!areSame) {
+      parts.push(dateTo);
     }
 
-    return label;
+    return parts.join(" - ");
   }, [part, startsAt, lastDate]);
 
   const totalTotal = useMemo(
