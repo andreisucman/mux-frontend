@@ -27,6 +27,11 @@
   object-fit: contain;
 }
 
+.carouselRoot {
+  position: absolute;
+  inset: 0;
+}
+
 .carouselRoot,
 .carouselViewport,
 .carouselSlide {

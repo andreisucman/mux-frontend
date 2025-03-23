@@ -15,6 +15,7 @@ import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchUserData from "@/functions/fetchUserData";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
+import { daysFrom } from "@/helpers/utils";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import TasksButtons from "./TasksButtons";
 import TasksSlide from "./TasksSlide";
@@ -50,7 +51,9 @@ export default function TasksList({ customStyles }: Props) {
   const todaysTasks = useMemo(() => {
     if (!tasks) return;
 
-    const nextDay = new Date();
+    const earliestStartDate = tasks[0].startsAt;
+
+    const nextDay = new Date(earliestStartDate);
     nextDay.setHours(23, 59, 59, 0);
 
     const tasksWithOnClick = tasks
@@ -74,7 +77,9 @@ export default function TasksList({ customStyles }: Props) {
   const tomorrowsTasks = useMemo(() => {
     if (!tasks) return;
 
-    const nextDay = new Date();
+    const earliestStartDate = tasks[0].startsAt;
+
+    const nextDay = daysFrom({ date: new Date(earliestStartDate), days: 1 });
     nextDay.setHours(23, 59, 59, 0);
 
     const tasksWithOnClick = tasks
@@ -93,7 +98,7 @@ export default function TasksList({ customStyles }: Props) {
       .filter((gr) => gr.length);
 
     return data;
-  }, [tasks]);
+  }, [tasks, todaysTasks]);
 
   useEffect(() => {
     if (!pageLoaded) return;
