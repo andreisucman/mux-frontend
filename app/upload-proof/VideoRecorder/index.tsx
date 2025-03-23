@@ -165,20 +165,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             setIsVideoLoading(false);
           };
 
-          const videoTrack = stream.getVideoTracks()[0];
-          const settings = videoTrack.getSettings();
-
-          if (!settings.width || !settings.height) throw new Error("Width or height missing");
-
-          const bitrate = adjustVideoQuality({
-            width: settings.width,
-            height: settings.height,
-            frameRate: settings.frameRate || 30,
-          });
-
           const options: MediaRecorderOptions = {
             mimeType,
-            videoBitsPerSecond: bitrate,
           };
 
           mediaRecorder.current = new MediaRecorder(stream, options);

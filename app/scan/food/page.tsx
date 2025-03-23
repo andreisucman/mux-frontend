@@ -105,6 +105,7 @@ export default function ScanFoodPage() {
             silhouette={foodImage && foodImage.src}
             defaultFacingMode="environment"
             hideTimerButton
+            hideFlipCamera
           />
         )}
         {localUrl && !isLoading && (

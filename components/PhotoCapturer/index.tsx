@@ -10,6 +10,7 @@ import classes from "./PhotoCapturer.module.css";
 type Props = {
   defaultFacingMode?: "user" | "environment";
   hideTimerButton?: boolean;
+  hideFlipCamera?: boolean;
   silhouette?: string;
   handleCapture: (base64string: string) => void;
 };
@@ -20,6 +21,7 @@ export default function PhotoCapturer({
   handleCapture,
   defaultFacingMode = "user",
   hideTimerButton,
+  hideFlipCamera,
   silhouette,
 }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">(defaultFacingMode);
@@ -197,7 +199,7 @@ export default function PhotoCapturer({
             <IconStopwatch className="icon" />
           </Button>
         )}
-        {hasMultipleCameras && (
+        {!hideFlipCamera && hasMultipleCameras && (
           <Button
             variant="default"
             onClick={flipCamera}
