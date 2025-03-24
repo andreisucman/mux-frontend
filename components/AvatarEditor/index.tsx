@@ -30,7 +30,6 @@ export default function AvatarEditor({
   }, [updatedAvatar]);
 
   const modifyConfig = (key: string, value: string | null | undefined) => {
-    console.log("key", key, "value", value);
     if (!value) return;
 
     setUpdatedAvatar((prev) =>

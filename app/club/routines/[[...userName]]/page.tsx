@@ -196,7 +196,7 @@ export default function ClubRoutines(props: Props) {
       routines?.map((routine, i) => {
         return (
           <AccordionRoutineRow
-            key={routine._id}
+            key={routine._id || i}
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
@@ -270,12 +270,16 @@ export default function ClubRoutines(props: Props) {
       {accordionItems ? (
         <Stack className={classes.wrapper}>
           {showPurchaseOverlay && purchaseOverlayData && (
-            <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+            <PurchaseOverlay
+              purchaseOverlayData={purchaseOverlayData}
+              userName={userName}
+              setShowPurchaseOverlay={setShowPurchaseOverlay}
+            />
           )}
           <RoutineSelectionButtons
             allRoutineIds={routines?.map((r) => r._id) || []}
             selectedRoutineIds={selectedRoutineIds}
-            disabled={!routines || !routines.length}
+            disabled={!routines || !routines.length || !routines?.[0]?._id}
             handleClick={handleStealRoutines}
             isSelf={isSelf}
           />

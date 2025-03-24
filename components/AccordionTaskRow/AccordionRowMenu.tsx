@@ -50,32 +50,24 @@ export default function AccordionRowMenu({
           size="sm"
           onClick={(e) => e.stopPropagation()}
         >
-          <IconDots className="icon icon__small" />
+          <IconDots className="icon icon__small icon__gray" />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
         {isSelf && (
-          <Menu.Item onClick={() => redirectWithDate({ taskKey, page: "calendar" })}>
-            <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-            See in calendar
-          </Menu.Item>
-        )}
-        <Menu.Item onClick={() => redirectWithDate({ taskKey, page: "diary" })}>
-          <IconNotebook className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-          See in diary
-        </Menu.Item>
-        {isSelf && (
           <>
+            <Menu.Item onClick={() => redirectWithDate({ taskKey, page: "calendar" })}>
+              <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+              See in calendar
+            </Menu.Item>
+            <Menu.Item onClick={() => redirectWithDate({ taskKey, page: "diary" })}>
+              <IconNotebook className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+              See in diary
+            </Menu.Item>
             {routineStatus === RoutineStatusEnum.ACTIVE && cloneOrRescheduleRoutines && (
               <Menu.Item onClick={() => cloneOrRescheduleRoutines([routineId], true)}>
                 <IconCalendarClock className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Reschedule
-              </Menu.Item>
-            )}
-            {cloneOrRescheduleRoutines && (
-              <Menu.Item onClick={() => cloneOrRescheduleRoutines([routineId])}>
-                <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-                Clone
               </Menu.Item>
             )}
             {routineStatus === RoutineStatusEnum.CANCELED && updateRoutineStatuses && (
@@ -86,7 +78,6 @@ export default function AccordionRowMenu({
                 Activate
               </Menu.Item>
             )}
-
             {routineStatus === RoutineStatusEnum.ACTIVE && updateRoutineStatuses && (
               <Menu.Item
                 onClick={() => updateRoutineStatuses([routineId], RoutineStatusEnum.CANCELED)}
@@ -104,6 +95,12 @@ export default function AccordionRowMenu({
               </Menu.Item>
             )}
           </>
+        )}
+        {cloneOrRescheduleRoutines && (
+          <Menu.Item onClick={() => cloneOrRescheduleRoutines([routineId])}>
+            <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+            Clone
+          </Menu.Item>
         )}
       </Menu.Dropdown>
     </Menu>

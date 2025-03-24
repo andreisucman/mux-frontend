@@ -36,25 +36,27 @@ export default function ManageRoutines() {
 
       if (!name.trim().length) {
         setError({ name: "Name can't be empty." });
+        setIsLoading(false);
         return;
       }
 
       if (!description.trim().length) {
         setError({ description: "Description can't be empty." });
+        setIsLoading(false);
         return;
       }
 
       if (!price || price < 1) {
         setError({ price: "Set a one-time price." });
+        setIsLoading(false);
         return;
       }
 
       if (!updatePrice || updatePrice < 1) {
         setError({ updatePrice: "Set a subscription price." });
+        setIsLoading(false);
         return;
       }
-
-      console.log("updatedRoutine",updatedRoutine)
 
       const response = await callTheServer({
         endpoint: "saveRoutineData",
@@ -73,7 +75,6 @@ export default function ManageRoutines() {
           setRoutineData([updatedRoutine]);
         } else {
           const partData = routineData?.find((r) => r.part === updatedRoutine.part);
-          console.log("partData", partData);
 
           if (partData) {
             setRoutineData((prev) =>

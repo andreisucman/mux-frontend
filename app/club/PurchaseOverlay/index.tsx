@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter, usePathname, useSearchParams } from "next/navigation";
-import { Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
+import { CloseButton, Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -19,9 +19,14 @@ import classes from "./PurchaseOverlay.module.css";
 type Props = {
   purchaseOverlayData: PurchaseOverlayDataType[];
   userName: string;
+  setShowPurchaseOverlay: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props) {
+export default function PurchaseOverlay({
+  purchaseOverlayData,
+  userName,
+  setShowPurchaseOverlay,
+}: Props) {
   const router = useRouter();
   const defaultRouter = useDefaultRouter();
   const pathname = usePathname();
@@ -184,7 +189,7 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
               <></>
             )
           }
-          customContainerStyles={{ transform: "translateY(-15%)" }}
+          customContainerStyles={{ transform: "translateY(-5%)" }}
           customHeadingStyles={{ padding: "0.75rem 0 1rem" }}
           name={selectedCardData.name}
           description={selectedCardData.description}
@@ -195,7 +200,19 @@ export default function PurchaseOverlay({ purchaseOverlayData, userName }: Props
           addGradient
         />
       </Stack>
-      <Overlay color="#000" backgroundOpacity={0.1} blur={7} radius={16} />
+      <Overlay
+        children={
+          <CloseButton
+            variant="default"
+            onClick={() => setShowPurchaseOverlay(false)}
+            className={classes.closeButton}
+          />
+        }
+        color="#000"
+        backgroundOpacity={0.1}
+        blur={7}
+        radius={16}
+      />
     </Stack>
   );
 }

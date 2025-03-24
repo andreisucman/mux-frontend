@@ -41,11 +41,11 @@ export default function PricingCard({
     <Stack className={classes.container} style={customContainerStyles || {}}>
       <Stack className={classes.heading} style={customHeadingStyles ? customHeadingStyles : {}}>
         {headerChildren}
-        <Title order={4} className={classes.name}>
+        <Title order={4} className={classes.name} lineClamp={2}>
           {name}
         </Title>
         {price ? price : <Loader color="white" size="sm" m="auto" />}
-        <Text className={classes.description}>{description}</Text>
+        <Text className={classes.description} lineClamp={4}>{description}</Text>
       </Stack>
       <Stack className={classes.content} style={customContentStyles || {}}>
         <Stack className={classes.list}>

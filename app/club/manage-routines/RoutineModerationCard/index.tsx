@@ -174,20 +174,22 @@ export default function RoutineModerationCard({
         <Group wrap="nowrap">
           <NumberInput
             label={<Text className={classes.label}>One-time price</Text>}
-            value={price}
+            defaultValue={price}
             onChange={(value) => handleDo(setOneTimePrice, Number(value))}
             clampBehavior="strict"
             min={1}
             max={10000}
+            allowNegative={false}
             error={error?.price}
           />
           <NumberInput
-            value={updatePrice}
+            defaultValue={updatePrice}
             label={<Text className={classes.label}>Price of update</Text>}
             onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
             clampBehavior="strict"
             min={1}
             max={10000}
+            allowNegative={false}
             rightSection={
               <Text c="dimmed" size="sm">
                 / month

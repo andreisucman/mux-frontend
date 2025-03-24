@@ -27,7 +27,6 @@ export default function RoutineIndividualTasksList({
   redirectToTask,
   updateTaskStatus,
 }: Props) {
-  console.log("isSelf", isSelf);
   const lastTaskObject = taskIdsObjects[taskIdsObjects.length - 1];
   return (
     <Stack className={classes.container}>

@@ -5,10 +5,7 @@
 .wrapper {
   position: relative;
   flex: 1;
-  gap: rem(24);
-  /* background-image: url("/assets/collage.png"); */
-  /* background-repeat: repeat; */
-  /* background-size: cover; */
+  gap: rem(28);
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
 }
@@ -16,11 +13,8 @@
 .announcement {
   z-index: 2;
   align-items: center;
-  /* border: 1px solid var(--mantine-color-dark-5); */
-  padding: rem(16) rem(16) 0;
+  padding: rem(8) rem(16) 0;
   border-radius: var(--mantine-radius-lg);
-  /* background-color: var(--mantine-color-dark-6); */
-  /* padding-bottom: rem(24); */
   margin: 0 auto;
   max-width: rem(600);
 }
@@ -34,5 +28,4 @@
   height: 100%;
   object-fit: cover;
   object-position: 0 0;
-  /* max-height: rem(300); */
 }

@@ -59,8 +59,6 @@ export default function AccordionRoutineRow({
   const { ref, focused } = useFocusWithin();
   const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
 
-  console.log("AccordionRoutineRow isSelf", isSelf);
-
   const router = useRouter();
 
   const isSelected = useMemo(() => {
@@ -229,7 +227,7 @@ export default function AccordionRoutineRow({
       style={focused ? { zIndex: 100 } : {}}
       ref={ref}
     >
-      <Accordion.Item key={routine._id} value={routine._id} className={classes.item}>
+      <Accordion.Item key={routine._id} value={routine._id || "no_value"} className={classes.item}>
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>

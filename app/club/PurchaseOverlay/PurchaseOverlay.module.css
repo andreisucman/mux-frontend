@@ -36,6 +36,12 @@
   width: 100%;
   z-index: 301;
   background-color: transparent;
-  padding: 0;
+  padding: 0 rem(12);
   margin-bottom: rem(8);
+}
+
+.closeButton {
+  position: absolute;
+  right: rem(16);
+  top: rem(16);
 }

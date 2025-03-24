@@ -29,7 +29,7 @@ export default function AccordionTaskMenu({
     >
       <Menu.Target>
         <ActionIcon component="div" variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
-          <IconDots className="icon icon__small" />
+          <IconDots className="icon icon__small icon__gray" />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>

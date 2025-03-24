@@ -139,7 +139,7 @@ export default function ClubProgress(props: Props) {
             })}
           >
             {showPurchaseOverlay && purchaseOverlayData && (
-              <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+              <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} setShowPurchaseOverlay={setShowPurchaseOverlay} />
             )}
             <ProgressGallery
               progress={progress}

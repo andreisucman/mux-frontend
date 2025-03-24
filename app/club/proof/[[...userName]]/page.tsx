@@ -125,7 +125,7 @@ export default function ClubProof(props: Props) {
         })}
       >
         {showPurchaseOverlay && purchaseOverlayData && (
-          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} setShowPurchaseOverlay={setShowPurchaseOverlay} />
         )}
         {proof ? (
           <ProofGallery

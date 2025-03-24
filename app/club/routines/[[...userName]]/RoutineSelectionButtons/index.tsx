@@ -26,7 +26,7 @@ export default function RoutineSelectionButtons({
         variant="default"
         size="compact-sm"
         className={classes.button}
-        onClick={() => handleClick(selectedRoutineIds, false)}
+        onClick={disabled ? undefined : () => handleClick(selectedRoutineIds, false)}
       >
         {isSelf ? "Clone" : "Steal"} selected{" "}
         {selectedRoutineIds.length ? `(${selectedRoutineIds.length})` : ""}
@@ -37,7 +37,7 @@ export default function RoutineSelectionButtons({
         size="compact-sm"
         component="div"
         className={classes.button}
-        onClick={() => handleClick(allRoutineIds, true)}
+        onClick={disabled ? undefined : () => handleClick(allRoutineIds, true)}
       >
         {isSelf ? "Clone" : "Steal"} all
       </Button>

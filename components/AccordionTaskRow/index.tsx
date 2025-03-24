@@ -75,7 +75,7 @@ export default function AccordionTaskRow({
                 if (redirectWithDate) redirectWithDate({ taskKey: key, page: "calendar" });
               }}
             >
-              <IconCalendar className={"icon icon__small"} />
+              <IconCalendar className={"icon icon__small icon__gray"} />
             </ActionIcon>
           ) : (
             <ActionIcon
@@ -87,7 +87,7 @@ export default function AccordionTaskRow({
                 if (openTaskDetails) openTaskDetails(data, routineId);
               }}
             >
-              <IconBinoculars className={"icon icon__small"} />
+              <IconBinoculars className={"icon icon__small icon__gray"} />
             </ActionIcon>
           )}
         </Group>

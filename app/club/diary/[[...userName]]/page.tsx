@@ -124,7 +124,7 @@ export default function DiaryPage(props: Props) {
       />
       <Stack className={classes.content}>
         {showPurchaseOverlay && purchaseOverlayData && (
-          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} />
+          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} setShowPurchaseOverlay={setShowPurchaseOverlay} />
         )}
         {diaryRecords ? (
           <DiaryContent
