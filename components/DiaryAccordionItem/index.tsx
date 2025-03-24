@@ -31,7 +31,7 @@ export default function DiaryAccordionItem({
   const label = upperFirst(part || "");
 
   return (
-    <Accordion.Item value={recordId || ""}>
+    <Accordion.Item value={recordId || "no_value"}>
       <Accordion.Control component={"div"}>
         <Group className={classes.container}>
           <Title order={5} className={classes.title}>

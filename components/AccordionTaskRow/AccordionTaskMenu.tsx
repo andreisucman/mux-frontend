@@ -19,6 +19,7 @@ export default function AccordionTaskMenu({
   return (
     <Menu
       withArrow
+      disabled={!taskId}
       styles={{
         itemLabel: {
           display: "flex",
@@ -28,7 +29,13 @@ export default function AccordionTaskMenu({
       }}
     >
       <Menu.Target>
-        <ActionIcon component="div" variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+        <ActionIcon
+          component="div"
+          variant="default"
+          size="sm"
+          onClick={(e) => e.stopPropagation()}
+          disabled={!taskId}
+        >
           <IconDots className="icon icon__small icon__gray" />
         </ActionIcon>
       </Menu.Target>

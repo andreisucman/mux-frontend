@@ -167,6 +167,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
           const options: MediaRecorderOptions = {
             mimeType,
+            videoBitsPerSecond: 5000000,
           };
 
           mediaRecorder.current = new MediaRecorder(stream, options);

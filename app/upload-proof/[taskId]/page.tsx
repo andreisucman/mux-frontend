@@ -178,22 +178,18 @@ export default function UploadProof(props: Props) {
   );
 
   const handleUpdateExample = useCallback(
-    async (example?: TaskExampleType | null) => {
+    async (examples?: TaskExampleType[]) => {
       if (isSetTaskExampleLoading || !taskInfo) return;
       setIsSetTaskExampleLoading(true);
 
       const response = await callTheServer({
         endpoint: "updateTaskExamples",
         method: "POST",
-        body: { taskId: taskInfo?._id, example },
+        body: { taskId: taskInfo?._id, examples },
       });
 
       if (response.status === 200) {
         setIsSetTaskExampleLoading(false);
-
-        setTaskInfo((prev: any) => {
-          return { ...(prev || {}), example };
-        });
       }
     },
     [taskInfo, isSetTaskExampleLoading]
@@ -215,30 +211,35 @@ export default function UploadProof(props: Props) {
           <IconCheckbox className="icon" color={color} /> Set as task example
         </Group>
       );
+      response.onClick = () =>
+        setTaskInfo((prev: any) => {
+          const filtered = prev.examples.filter(
+            (e: TaskExampleType) => e.url !== existingProofRecord.mainUrl.url
+          );
+          handleUpdateExample(filtered);
+          return { ...(prev || {}), examples: filtered };
+        });
     } else {
       text = (
         <Group gap={6} color={color}>
           <IconCirclePlus className="icon" /> Set as task example
         </Group>
       );
+      response.onClick = () => {
+        setTaskInfo((prev: any) => {
+          const example = {
+            type: existingProofRecord.contentType,
+            url: existingProofRecord.mainUrl.url || "",
+          };
+          const newExamples = [example, ...prev.examples];
+          handleUpdateExample(newExamples);
+          return { ...(prev || {}), examples: newExamples };
+        });
+      };
     }
 
     response.text = text;
 
-    if (alreadyExists) {
-      setTaskInfo((prev: any) => {
-        const filtered = prev.examples.filter(
-          (e: TaskExampleType) => e.url !== existingProofRecord.mainUrl.url
-        );
-        return { ...(prev || {}), examples: filtered };
-      });
-    } else {
-      response.onClick = () =>
-        handleUpdateExample({
-          type: existingProofRecord.contentType,
-          url: existingProofRecord.mainUrl.url || "",
-        });
-    }
     return response;
   }, [existingProofRecord, taskInfo]);
 

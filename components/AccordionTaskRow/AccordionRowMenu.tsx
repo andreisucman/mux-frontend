@@ -35,6 +35,7 @@ export default function AccordionRowMenu({
   return (
     <Menu
       withArrow
+      disabled={!routineId}
       styles={{
         itemLabel: {
           display: "flex",
@@ -49,6 +50,7 @@ export default function AccordionRowMenu({
           variant="default"
           size="sm"
           onClick={(e) => e.stopPropagation()}
+          disabled={!routineId}
         >
           <IconDots className="icon icon__small icon__gray" />
         </ActionIcon>

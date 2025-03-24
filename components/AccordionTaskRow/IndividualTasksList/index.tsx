@@ -19,6 +19,7 @@ type Props = {
 };
 
 export default function RoutineIndividualTasksList({
+  taskKey,
   icon,
   color,
   isSelf,
@@ -27,6 +28,7 @@ export default function RoutineIndividualTasksList({
   redirectToTask,
   updateTaskStatus,
 }: Props) {
+  const isMasked = taskKey.includes("***");
   const lastTaskObject = taskIdsObjects[taskIdsObjects.length - 1];
   return (
     <Stack className={classes.container}>
@@ -50,7 +52,7 @@ export default function RoutineIndividualTasksList({
           </Group>
         );
       })}
-      {isSelf && (
+      {!isMasked && isSelf && (
         <Button
           variant="default"
           size="compact-sm"
