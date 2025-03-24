@@ -18,6 +18,7 @@ import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
+import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import classes from "./diary.module.css";
 
 export const runtime = "edge";
@@ -123,8 +124,18 @@ export default function DiaryPage(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.content}>
-        {showPurchaseOverlay && purchaseOverlayData && (
-          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} setShowPurchaseOverlay={setShowPurchaseOverlay} />
+        {purchaseOverlayData && (
+          <>
+            {showPurchaseOverlay ? (
+              <PurchaseOverlay
+                purchaseOverlayData={purchaseOverlayData}
+                userName={userName}
+                setShowPurchaseOverlay={setShowPurchaseOverlay}
+              />
+            ) : (
+              <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+            )}
+          </>
         )}
         {diaryRecords ? (
           <DiaryContent

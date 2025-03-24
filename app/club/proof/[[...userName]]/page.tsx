@@ -19,6 +19,7 @@ import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
+import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import classes from "./proof.module.css";
 
 export const runtime = "edge";
@@ -124,8 +125,18 @@ export default function ClubProof(props: Props) {
           [classes.relative]: !showPurchaseOverlay,
         })}
       >
-        {showPurchaseOverlay && purchaseOverlayData && (
-          <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} setShowPurchaseOverlay={setShowPurchaseOverlay} />
+        {purchaseOverlayData && (
+          <>
+            {showPurchaseOverlay ? (
+              <PurchaseOverlay
+                purchaseOverlayData={purchaseOverlayData}
+                userName={userName}
+                setShowPurchaseOverlay={setShowPurchaseOverlay}
+              />
+            ) : (
+              <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+            )}
+          </>
         )}
         {proof ? (
           <ProofGallery

@@ -189,8 +189,6 @@ export default function PurchaseOverlay({
               <></>
             )
           }
-          customContainerStyles={{ transform: "translateY(-5%)" }}
-          customHeadingStyles={{ padding: "0.75rem 0 1rem" }}
           name={selectedCardData.name}
           description={selectedCardData.description}
           buttonText="Buy routine"
@@ -198,6 +196,7 @@ export default function PurchaseOverlay({
           onClick={handleAddSubscription}
           isLoading={isLoading}
           addGradient
+          glow
         />
       </Stack>
       <Overlay

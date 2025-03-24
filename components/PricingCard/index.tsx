@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import { Group, Loader, rem, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import classes from "./PricingCard.module.css";
@@ -16,6 +17,7 @@ type Props = {
   icon?: React.ReactNode;
   buttonText?: string;
   isLoading?: boolean;
+  glow?: boolean;
   underButtonText?: string;
   content: { icon: React.ReactNode; description: string }[];
   onClick?: (props?: any) => void;
@@ -30,6 +32,7 @@ export default function PricingCard({
   description,
   icon,
   name,
+  glow,
   price,
   isLoading,
   headerChildren,
@@ -38,14 +41,19 @@ export default function PricingCard({
   onClick,
 }: Props) {
   return (
-    <Stack className={classes.container} style={customContainerStyles || {}}>
+    <Stack
+      className={cn(classes.container, { [classes.glow]: glow })}
+      style={customContainerStyles || {}}
+    >
       <Stack className={classes.heading} style={customHeadingStyles ? customHeadingStyles : {}}>
         {headerChildren}
         <Title order={4} className={classes.name} lineClamp={2}>
           {name}
         </Title>
         {price ? price : <Loader color="white" size="sm" m="auto" />}
-        <Text className={classes.description} lineClamp={4}>{description}</Text>
+        <Text className={classes.description} lineClamp={4}>
+          {description}
+        </Text>
       </Stack>
       <Stack className={classes.content} style={customContentStyles || {}}>
         <Stack className={classes.list}>

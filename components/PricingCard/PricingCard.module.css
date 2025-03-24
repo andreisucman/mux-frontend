@@ -47,5 +47,27 @@
   text-align: center;
 }
 
-.list {
+/* var(--mantine-color-yellow-6),
+var(--mantine-color-red-6),
+var(--mantine-color-yellow-6),
+var(--mantine-color-red-6),
+var(--mantine-color-orange-6) */
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(73, 73, 73, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(73, 73, 73, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(73, 73, 73, 0.4);
+  }
+}
+
+.glow {
+  background-color: #222;
+  color: #fff;
+  border-radius: rem(16);
+  animation: glow 2s infinite alternate ease-in-out;
 }

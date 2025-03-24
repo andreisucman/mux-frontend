@@ -20,6 +20,7 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import { PurchaseOverlayDataType } from "@/types/global";
+import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
@@ -138,8 +139,18 @@ export default function ClubProgress(props: Props) {
               [classes.relative]: !showPurchaseOverlay,
             })}
           >
-            {showPurchaseOverlay && purchaseOverlayData && (
-              <PurchaseOverlay purchaseOverlayData={purchaseOverlayData} userName={userName} setShowPurchaseOverlay={setShowPurchaseOverlay} />
+            {purchaseOverlayData && (
+              <>
+                {showPurchaseOverlay ? (
+                  <PurchaseOverlay
+                    purchaseOverlayData={purchaseOverlayData}
+                    userName={userName}
+                    setShowPurchaseOverlay={setShowPurchaseOverlay}
+                  />
+                ) : (
+                  <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+                )}
+              </>
             )}
             <ProgressGallery
               progress={progress}

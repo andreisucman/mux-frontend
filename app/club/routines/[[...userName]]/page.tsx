@@ -25,6 +25,7 @@ import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
+import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
 
@@ -269,12 +270,18 @@ export default function ClubRoutines(props: Props) {
 
       {accordionItems ? (
         <Stack className={classes.wrapper}>
-          {showPurchaseOverlay && purchaseOverlayData && (
-            <PurchaseOverlay
-              purchaseOverlayData={purchaseOverlayData}
-              userName={userName}
-              setShowPurchaseOverlay={setShowPurchaseOverlay}
-            />
+          {purchaseOverlayData && (
+            <>
+              {showPurchaseOverlay ? (
+                <PurchaseOverlay
+                  purchaseOverlayData={purchaseOverlayData}
+                  userName={userName}
+                  setShowPurchaseOverlay={setShowPurchaseOverlay}
+                />
+              ) : (
+                <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+              )}
+            </>
           )}
           <RoutineSelectionButtons
             allRoutineIds={routines?.map((r) => r._id) || []}
