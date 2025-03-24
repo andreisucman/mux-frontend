@@ -65,30 +65,34 @@ export default function AccordionTaskRow({
         </Group>
         <Group className={classes.content}>
           <StatsGroup completed={completed} completionRate={completionRate} total={total} />
-          {isSelf ? (
-            <ActionIcon
-              variant="default"
-              size="sm"
-              component="div"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (redirectWithDate) redirectWithDate({ taskKey: key, page: "calendar" });
-              }}
-            >
-              <IconCalendar className={"icon icon__small icon__gray"} />
-            </ActionIcon>
-          ) : (
-            <ActionIcon
-              variant="default"
-              size="sm"
-              component="div"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (openTaskDetails) openTaskDetails(data, routineId);
-              }}
-            >
-              <IconBinoculars className={"icon icon__small icon__gray"} />
-            </ActionIcon>
+          {routineId && (
+            <>
+              {isSelf ? (
+                <ActionIcon
+                  variant="default"
+                  size="sm"
+                  component="div"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (redirectWithDate) redirectWithDate({ taskKey: key, page: "calendar" });
+                  }}
+                >
+                  <IconCalendar className={"icon icon__small icon__gray"} />
+                </ActionIcon>
+              ) : (
+                <ActionIcon
+                  variant="default"
+                  size="sm"
+                  component="div"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (openTaskDetails) openTaskDetails(data, routineId);
+                  }}
+                >
+                  <IconBinoculars className={"icon icon__small icon__gray"} />
+                </ActionIcon>
+              )}
+            </>
           )}
         </Group>
       </Group>
