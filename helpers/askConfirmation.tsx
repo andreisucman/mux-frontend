@@ -4,11 +4,12 @@ import { modals } from "@mantine/modals";
 type AskConfirmationProps = {
   title: string;
   body: string;
+  labels?: { confirm: string; cancel: string };
   onConfirm: () => void;
   onCancel?: () => void;
 };
 
-const askConfirmation = ({ title, body, onConfirm, onCancel }: AskConfirmationProps) => {
+const askConfirmation = ({ title, body, labels, onConfirm, onCancel }: AskConfirmationProps) => {
   modals.openConfirmModal({
     title: (
       <Title order={5} component={"p"}>
@@ -17,7 +18,7 @@ const askConfirmation = ({ title, body, onConfirm, onCancel }: AskConfirmationPr
     ),
     centered: true,
     children: <Text>{body}</Text>,
-    labels: { confirm: "Yes", cancel: "No" },
+    labels: labels || { confirm: "Yes", cancel: "No" },
     onConfirm,
     onCancel,
   });

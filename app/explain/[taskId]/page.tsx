@@ -15,6 +15,7 @@ import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import cloneTask from "@/functions/cloneTask";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
+import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
@@ -30,11 +31,17 @@ export const runtime = "edge";
 type Props = {
   params: Promise<{ taskId: string }>;
 };
+
 const allowedTaskStatuses = [
   TaskStatusEnum.ACTIVE,
   TaskStatusEnum.CANCELED,
   TaskStatusEnum.COMPLETED,
 ];
+
+type UpdateTaskStatusProps = {
+  newStatus: TaskStatusEnum;
+  isAll: boolean;
+};
 
 export default function Explain(props: Props) {
   const { taskId } = use(props.params);
@@ -109,97 +116,85 @@ export default function Explain(props: Props) {
   );
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
 
-  const switchProofUpload = useCallback(
-    async (proofEnabled: boolean, taskId?: string | null) => {
-      if (!taskId) return;
+  const switchProofUpload = async (proofEnabled: boolean, taskId?: string | null) => {
+    if (!taskId) return;
 
-      try {
-        const response = await callTheServer({
-          endpoint: "updateProofUpload",
-          method: "POST",
-          body: {
-            taskId,
-            proofEnabled,
-          },
-        });
+    const response = await callTheServer({
+      endpoint: "updateProofUpload",
+      method: "POST",
+      body: {
+        taskId,
+        proofEnabled,
+      },
+    });
 
-        if (response.status === 200) {
-          const updatedTask = {
-            ...taskInfo,
-            proofEnabled,
-          } as TaskType;
+    if (response.status === 200) {
+      const updatedTask = {
+        ...taskInfo,
+        proofEnabled,
+      } as TaskType;
 
-          setTaskInfo(updatedTask);
-        }
-      } catch (err) {}
-    },
-    [taskInfo]
-  );
+      setTaskInfo(updatedTask);
+    }
+  };
 
-  const handleFetchTaskInfo = useCallback(async (taskId: string) => {
+  const handleFetchTaskInfo = async (taskId: string) => {
     const newTaskInfo = await fetchTaskInfo(taskId);
     if (newTaskInfo) setTaskInfo(newTaskInfo);
-  }, []);
+  };
 
-  const updateTask = useCallback(
-    async ({
-      date,
-      taskId,
-      description,
-      instruction,
-      isLoading,
-      applyToAll,
-      setIsLoading,
-      setError,
-      setStep,
-    }: UpdateTaskProps) => {
-      if (!taskId || !description || !instruction) return;
-      if (!timeZone) return;
-      if (isLoading) return;
+  const updateTask = async ({
+    date,
+    taskId,
+    description,
+    instruction,
+    isLoading,
+    applyToAll,
+    setIsLoading,
+    setError,
+    setStep,
+  }: UpdateTaskProps) => {
+    if (!taskId || !description || !instruction) return;
+    if (!timeZone) return;
+    if (isLoading) return;
 
-      try {
-        setIsLoading(true);
-        setError("");
+    setIsLoading(true);
+    setError("");
 
-        const response = await callTheServer({
-          endpoint: "editTask",
-          method: "POST",
-          body: {
-            taskId,
-            startDate: date,
-            updatedDescription: description,
-            updatedInstruction: instruction,
-            applyToAll,
-            timeZone,
-          },
-        });
+    const response = await callTheServer({
+      endpoint: "editTask",
+      method: "POST",
+      body: {
+        taskId,
+        startDate: date,
+        updatedDescription: description,
+        updatedInstruction: instruction,
+        applyToAll,
+        timeZone,
+      },
+    });
 
-        if (response.status === 200) {
-          if (response.error) {
-            setError(response.error);
-          } else {
-            const startsAt = new Date(date || new Date());
-            const expiresAt = daysFrom({ date: startsAt, days: 1 });
+    if (response.status === 200) {
+      if (response.error) {
+        setError(response.error);
+      } else {
+        const startsAt = new Date(date || new Date());
+        const expiresAt = daysFrom({ date: startsAt, days: 1 });
 
-            const updatedTask = {
-              ...taskInfo,
-              description,
-              instruction,
-              startsAt: startsAt.toISOString(),
-              expiresAt: expiresAt.toISOString(),
-            } as TaskType;
+        const updatedTask = {
+          ...taskInfo,
+          description,
+          instruction,
+          startsAt: startsAt.toISOString(),
+          expiresAt: expiresAt.toISOString(),
+        } as TaskType;
 
-            setTaskInfo(updatedTask);
-            setStep(2);
-          }
-        }
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
+        setTaskInfo(updatedTask);
+        setStep(2);
       }
-    },
-    [timeZone, taskInfo]
-  );
+    }
+    setIsLoading(false);
+  };
 
   const handleCloneTask = useCallback(() => {
     modals.openContextModal({
@@ -254,13 +249,13 @@ export default function Explain(props: Props) {
     });
   }, [taskName, taskId, taskDescription, taskInstruction, startsAt]);
 
-  const updateTaskStatus = async (newStatus: TaskStatusEnum) => {
+  const updateTaskStatus = async ({ newStatus, isAll }: UpdateTaskStatusProps) => {
     if (!allowedTaskStatuses.includes(newStatus)) return;
 
     const response = await callTheServer({
       endpoint: "updateStatusOfTasks",
       method: "POST",
-      body: { taskIds: [taskId], timeZone, newStatus, isVoid: true },
+      body: { taskIds: [taskId], isAll, timeZone, newStatus, isVoid: true },
     });
 
     if (response.status === 200) {
@@ -269,6 +264,28 @@ export default function Explain(props: Props) {
         status: newStatus,
       }));
     }
+  };
+
+  const handleUpdateTaskStatus = async (newStatus: TaskStatusEnum) => {
+    const label = newStatus === TaskStatusEnum.ACTIVE ? "Activate" : "Cancel";
+    askConfirmation({
+      body: `${upperFirst(newStatus)} all future tasks of this type?`,
+      title: "Please confirm",
+      labels: {
+        confirm: `${upperFirst(label)} this only`,
+        cancel: `${upperFirst(label)} all`,
+      },
+      onConfirm: () =>
+        updateTaskStatus({
+          newStatus,
+          isAll: false,
+        }),
+      onCancel: () =>
+        updateTaskStatus({
+          newStatus,
+          isAll: true,
+        }),
+    });
   };
 
   useEffect(() => {
@@ -355,7 +372,7 @@ export default function Explain(props: Props) {
                       disabled={timeExpired}
                       className={classes.actionButton}
                       onClick={() =>
-                        updateTaskStatus(
+                        handleUpdateTaskStatus(
                           taskStatus === TaskStatusEnum.ACTIVE
                             ? TaskStatusEnum.CANCELED
                             : TaskStatusEnum.ACTIVE
@@ -377,7 +394,7 @@ export default function Explain(props: Props) {
               </Group>
               <ProofStatus
                 selectedTask={taskInfo}
-                updateTaskStatus={updateTaskStatus}
+                updateTaskStatus={handleUpdateTaskStatus}
                 notStarted={!!futureStartDate}
                 expiresAt={taskInfo && taskInfo.expiresAt}
               />
