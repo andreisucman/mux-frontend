@@ -9,8 +9,7 @@
   justify-content: space-between;
   border-radius: var(--mantine-radius-lg);
   border: rem(1) solid var(--mantine-color-dark-5);
-  padding: rem(4) rem(16);
-  height: rem(100);
+  padding: rem(8) rem(16);
   background-color: var(--mantine-color-dark-6);
 }
 

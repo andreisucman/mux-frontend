@@ -162,11 +162,10 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         icon: <IconSocial stroke={1.25} className="icon" />,
         children: [
           { title: "Profile", path: "/club" },
-          { title: "About", path: `/club/${name}` },
           { title: "Routines", path: `/club/routines/${name}` },
-          { title: "Results", path: `/club/progress/${name}` },
+          { title: "Progress", path: `/club/progress/${name}` },
+          { title: "Proof", path: `/club/proof/${name}` },
           { title: "Diary", path: `/club/diary/${name}` },
-          { title: "Answers", path: `/club/answers/${name}` },
         ],
       });
     } else {

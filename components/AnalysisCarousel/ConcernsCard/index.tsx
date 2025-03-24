@@ -5,6 +5,7 @@ import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
+import DragAndDrop from "@/app/sort-concerns/ConcernsSortCard/DragAndDrop";
 import GlowingButton from "@/components/GlowingButton";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router";
@@ -54,23 +55,24 @@ function ConcernsCard({ status, userId, concerns, title }: Props) {
 
   return (
     <Skeleton className="skeleton" visible={containerHeight === 0}>
-      <Stack className={classes.container} ref={ref}>
+      <Stack className={`${classes.container} scrollbar`} ref={ref}>
         <Text className={classes.title} c="dimmed">
           {title}
         </Text>
-        <Title order={2} ta="center" mb={4} mt={4}>
-          Start your change
-        </Title>
-        <Stack className={classes.wrapper}>
-          <ConcernsSortCard concerns={concerns} maxHeight={maxHeight} disabled />
-          <GlowingButton
-            loading={isLoading}
-            disabled={isLoading}
-            text={"Create routine"}
-            containerStyles={{ flex: 0, margin: "0 auto", width: "100%", maxWidth: rem(300) }}
-            onClick={handleClick}
-          />
-        </Stack>
+
+        <DragAndDrop
+          disabled={true}
+          data={concerns}
+          onUpdate={() => {}}
+          handleUpdateConcern={() => {}}
+        />
+        <GlowingButton
+          loading={isLoading}
+          disabled={isLoading}
+          text={"Create routine"}
+          containerStyles={{ flex: 0, margin: "1rem auto", width: "100%", maxWidth: rem(300) }}
+          onClick={handleClick}
+        />
       </Stack>
     </Skeleton>
   );
