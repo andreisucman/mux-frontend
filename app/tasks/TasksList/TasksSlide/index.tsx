@@ -26,7 +26,7 @@ function TasksSlide({ taskGroups, canAddDiary }: Props) {
             </Button>
           )}
           {taskGroups.map((group, index) => {
-            const name = group[0].concern;
+            const name = group?.[0]?.concern;
             const label = name.split("_").join(" ");
             return (
               <Stack key={index}>

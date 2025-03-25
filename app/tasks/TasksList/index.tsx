@@ -49,7 +49,7 @@ export default function TasksList({ customStyles }: Props) {
   }, [nextDiaryRecordAfter, tasks]);
 
   const todaysTasks = useMemo(() => {
-    if (!tasks) return;
+    if (!tasks || !tasks.length) return;
 
     const earliestStartDate = tasks[0].startsAt;
 

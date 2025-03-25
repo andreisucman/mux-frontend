@@ -20,7 +20,7 @@ type Props = {
 function ProgressCard({ data, isPublicPage, isSelf, setProgress, handleContainerClick }: Props) {
   const { width: containerWidth, ref } = useElementSize();
   const { images, createdAt } = data;
-  const firstImage = images[0];
+  const firstImage = images?.[0];
 
   const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);

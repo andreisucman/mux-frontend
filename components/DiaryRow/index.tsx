@@ -52,7 +52,7 @@ export default function DiaryRow({ data, timeZone }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls[0], timeZone, part: data.part, activity: data.activity },
+          body: { audio: audioUrls?.[0], timeZone, part: data.part, activity: data.activity },
         });
 
         if (response.status === 200) {

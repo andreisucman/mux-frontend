@@ -69,13 +69,15 @@ export default function DiaryPage(props: Props) {
       setPurchaseOverlayData(priceData ? priceData : null);
       setShowPurchaseOverlay(!!priceData);
 
-      if (hasMore) {
-        setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
-      } else {
-        setDiaryRecords(data.slice(0, 20));
+      if (data && data.length) {
+        if (hasMore) {
+          setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
+        } else {
+          setDiaryRecords(data.slice(0, 20));
+        }
+        setOpenValue(data[0]?._id);
+        setHasMore(data.length === 9);
       }
-      setOpenValue(data[0]?._id);
-      setHasMore(data.length === 9);
     },
     [diaryRecords, hasMore, userName]
   );

@@ -34,7 +34,7 @@ export default function PurchaseOverlay({
   const [isLoading, setIsLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [selectedCardData, setSelectedCardData] = useState<PurchaseOverlayDataType>(
-    purchaseOverlayData[0]
+    purchaseOverlayData?.[0]
   );
   const { _id: userId, club } = userDetails || {};
 

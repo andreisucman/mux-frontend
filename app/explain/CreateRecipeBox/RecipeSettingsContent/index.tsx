@@ -22,7 +22,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
     try {
       setIsLoadingOverlay(true);
       const imageUrls = await uploadToSpaces({ itemsArray: [file] });
-      setImage(imageUrls[0]);
+      setImage(imageUrls?.[0]);
       setIsLoadingOverlay(false);
     } catch (err) {
       setIsLoadingOverlay(false);

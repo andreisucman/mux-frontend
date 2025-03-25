@@ -43,8 +43,7 @@ export default function ProgressGallery({
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
 
-  const modelObject = progress && progress[0];
-  const appliedBlurType = modelObject?.images[0].mainUrl.name;
+  const appliedBlurType = progress?.[0]?.images[0].mainUrl.name;
 
   const memoizedProgressCard = useCallback(
     (props: any) => (

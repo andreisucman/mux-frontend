@@ -66,7 +66,7 @@ function StreaksButton({ streaks, customRingStyles }: Props) {
   }, [streaksSections]);
 
   const label = useMemo(() => {
-    const [_, highestStreak] = sortedStreakEntries[0];
+    const [_, highestStreak] = sortedStreakEntries?.[0];
     return (
       <Stack className={classes.labelContainer}>
         {highestStreak > 0 && <span className={classes.labelValue}>{highestStreak}</span>}
