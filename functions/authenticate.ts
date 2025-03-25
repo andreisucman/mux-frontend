@@ -23,85 +23,80 @@ const authenticate = async ({
   setStatus,
   setUserDetails,
 }: AuthenticateProps) => {
-  try {
-    const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
-    const { redirectPath, redirectQuery } = parsedState;
+  const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
+  const { redirectPath, redirectQuery } = parsedState;
 
-    const response = await callTheServer({
-      endpoint: "authenticate",
-      method: "POST",
-      body: {
-        state,
-        code,
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        email,
-        password,
-      },
-    });
+  const response = await callTheServer({
+    endpoint: "authenticate",
+    method: "POST",
+    body: {
+      state,
+      code,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      email,
+      password,
+    },
+  });
 
-    if (response.status === 200) {
-      if (response.error) {
-        if (response.error === "blocked") {
-          openErrorModal({
-            title: `🚨 Account blocked`,
-            description: `We have temporarily blocked your account while we investigate a potential violation of our Terms of Service. Check your email for more details.`,
-          });
-          setUserDetails(null);
-          setStatus(AuthStateEnum.UNAUTHENTICATED);
-          return;
-        }
-
-        if (response.error === "suspended") {
-          openErrorModal({
-            title: `🚨 Account suspended`,
-            description: `This account is permanently suspended for violation of our Terms of Service.`,
-          });
-          setUserDetails(null);
-          setStatus(AuthStateEnum.UNAUTHENTICATED);
-          return;
-        }
-
+  if (response.status === 200) {
+    if (response.error) {
+      if (response.error === "blocked") {
         openErrorModal({
-          description: response.error,
+          title: `🚨 Account blocked`,
+          description: `We have temporarily blocked your account while we investigate a potential violation of our Terms of Service. Check your email for more details.`,
         });
+        setUserDetails(null);
         setStatus(AuthStateEnum.UNAUTHENTICATED);
         return;
       }
 
-      setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
-      setStatus(AuthStateEnum.AUTHENTICATED);
-
-      let redirectUrl = "/tasks";
-
-      if (redirectPath) redirectUrl = redirectPath;
-      if (redirectQuery) {
-        const query = new URLSearchParams(redirectQuery);
-
-        const userName = query.get("userName");
-
-        if (userName) {
-          redirectUrl += `/${userName}`;
-        } else {
-          redirectUrl += `?${redirectQuery}`;
-        }
-      }
-
-      const { emailVerified } = response.message;
-
-      if (!emailVerified) {
-        const url = `/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`;
-        router.push(url);
+      if (response.error === "suspended") {
+        openErrorModal({
+          title: `🚨 Account suspended`,
+          description: `This account is permanently suspended for violation of our Terms of Service.`,
+        });
+        setUserDetails(null);
+        setStatus(AuthStateEnum.UNAUTHENTICATED);
         return;
       }
 
-      router.push(redirectUrl);
-    } else {
-      const rejected = response.status === 401 || response.status === 403;
-      if (rejected) {
-        setStatus(AuthStateEnum.UNAUTHENTICATED);
+      openErrorModal({
+        description: response.error,
+      });
+      setStatus(AuthStateEnum.UNAUTHENTICATED);
+      return;
+    }
+
+    setUserDetails((prev) => ({ ...prev, ...response.message }) as UserDataType);
+    setStatus(AuthStateEnum.AUTHENTICATED);
+
+    let redirectUrl = "/tasks";
+
+    if (redirectPath) redirectUrl = redirectPath;
+    if (redirectQuery) {
+      const query = new URLSearchParams(redirectQuery);
+
+      const userName = query.get("userName");
+
+      if (userName) {
+        redirectUrl += `/${userName}`;
+      } else {
+        redirectUrl += `?${redirectQuery}`;
       }
     }
-  } catch (err) {}
+
+    const { emailVerified } = response.message;
+
+    if (!emailVerified) {
+      const url = `/verify-email?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+      router.push(url);
+      return;
+    }
+
+    router.push(redirectUrl);
+  } else {
+    setStatus(AuthStateEnum.UNAUTHENTICATED);
+  }
 };
 
 export default authenticate;

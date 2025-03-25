@@ -6,7 +6,6 @@ import "@mantine/spotlight/styles.layer.css";
 import "@mantine/carousel/styles.layer.css";
 
 import React, { Suspense } from "react";
-import Script from "next/script";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";

@@ -75,7 +75,7 @@ export default function TasksList({ customStyles }: Props) {
   }, [tasks]);
 
   const tomorrowsTasks = useMemo(() => {
-    if (!tasks) return;
+    if (!tasks || !tasks.length) return;
 
     const earliestStartDate = tasks[0].startsAt;
 
