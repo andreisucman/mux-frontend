@@ -32,7 +32,7 @@ export default function FilterDropdown({
   filterType,
   selectedValue,
   customStyles,
-  closeOnSelect = true,
+  closeOnSelect = false,
   onSelect,
 }: Props) {
   const router = useRouter();

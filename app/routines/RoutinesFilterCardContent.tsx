@@ -32,6 +32,7 @@ export default function RoutinesFilterCardContent({ filterItems = [] }: Props) {
         isDisabled={partsDisabled}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
+        closeOnSelect
         addToQuery
       />
     </Stack>

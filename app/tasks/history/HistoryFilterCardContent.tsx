@@ -31,6 +31,7 @@ export default function HistoryFilterCardContent({ partItems = [], statusItems =
         isDisabled={partsDisabled}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
+        closeOnSelect
         addToQuery
       />
       <FilterDropdown
@@ -42,6 +43,7 @@ export default function HistoryFilterCardContent({ partItems = [], statusItems =
         isDisabled={statusDisabled}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
+        closeOnSelect
         addToQuery
       />
     </Stack>

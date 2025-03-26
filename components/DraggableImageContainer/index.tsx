@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
@@ -13,6 +13,9 @@ type Props = {
   setBlurDots: React.Dispatch<React.SetStateAction<BlurDot[]>>;
   image?: string | null;
   handleDelete?: () => void;
+  setOffsets: React.Dispatch<
+    React.SetStateAction<{ horizontalOffset: number; verticalOffset: number; scale: number }>
+  >;
   disableDelete?: boolean;
   placeholder?: any;
   defaultShowBlur?: boolean;
@@ -28,14 +31,52 @@ export default function DraggableImageContainer({
   customStyles,
   defaultShowBlur,
   placeholder,
+  setOffsets,
   handleDelete,
   setBlurDots,
 }: Props) {
-  const { ref, width, height } = useElementSize();
   const nodeRef = useRef(null);
   const secondNodeRef = useRef(null);
+  const {
+    width: imageWrapperWidth,
+    height: imageWrapperHeight,
+    ref: imageWrapperRef,
+  } = useElementSize();
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const [showBlur, setShowBlur] = useState(!!defaultShowBlur);
   const [selectedDotId, setSelectedDotId] = useState<string>();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const calculateOffsets = () => {
+    let verticalOffset = 0;
+    let horizontalOffset = 0;
+    let scale = 0;
+
+    if (!imageRef.current) return { horizontalOffset, verticalOffset, scale };
+    const naturalWidth = imageRef.current.naturalWidth;
+    const naturalHeight = imageRef.current.naturalHeight;
+    if (naturalWidth === 0 || naturalHeight === 0)
+      return { horizontalOffset, verticalOffset, scale };
+
+    const renderedWidth = imageRef.current.clientWidth;
+    const renderedHeight = imageRef.current.clientHeight;
+
+    horizontalOffset = (renderedWidth - naturalWidth) / 2 / renderedWidth;
+    verticalOffset = (renderedHeight - naturalHeight) / 2 / renderedHeight;
+
+    return {
+      horizontalOffset,
+      verticalOffset,
+      scale,
+    };
+  };
+
+  useEffect(() => {
+    if (!imageLoaded) return;
+    const offsets = calculateOffsets();
+    console.log("offsets", offsets);
+    setOffsets(offsets);
+  }, [imageLoaded, image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
 
   const handleAddDot = () => {
     if (blurDots.length > 1) return;
@@ -90,7 +131,7 @@ export default function DraggableImageContainer({
   const selectedDot = blurDots.find((dot) => dot.id === selectedDotId);
 
   return (
-    <Stack className={classes.container} ref={ref} style={customStyles ? customStyles : {}}>
+    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       <Checkbox
         checked={!!showBlur}
         className={classes.checkbox}
@@ -119,8 +160,8 @@ export default function DraggableImageContainer({
                 onStop={() => setSelectedDotId(dot.id)}
                 onDrag={(e, data) => handleChangeCoordinates(data.x, data.y, dot.id)}
                 defaultPosition={{
-                  x: width / 2 - (dot.originalWidth * dot.scale) / 2,
-                  y: height / 3 - (dot.originalHeight * dot.scale) / 2,
+                  x: imageWrapperWidth / 2 - (dot.originalWidth * dot.scale) / 2,
+                  y: imageWrapperHeight / 3 - (dot.originalHeight * dot.scale) / 2,
                 }}
                 nodeRef={nodeRefs[i]}
                 key={dot.id}
@@ -166,18 +207,20 @@ export default function DraggableImageContainer({
           </Stack>
         </>
       )}
-      <Image
-        width={100}
-        height={100}
-        src={
-          image ||
-          (placeholder && placeholder.src) ||
-          "https://placehold.co/169x300?text=Your+photo"
-        }
-        className={classes.image}
-        style={customImageStyles ? customImageStyles : {}}
-        alt=""
-      />
+      <div className={classes.imageWrapper} ref={imageWrapperRef}>
+        <img
+          ref={imageRef}
+          src={
+            image ||
+            (placeholder && placeholder.src) ||
+            "https://placehold.co/169x300?text=Your+photo"
+          }
+          className={classes.image}
+          style={customImageStyles ? customImageStyles : {}}
+          alt=""
+          onLoad={() => setImageLoaded(true)}
+        />
+      </div>
     </Stack>
   );
 }

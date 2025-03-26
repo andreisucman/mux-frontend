@@ -5,7 +5,6 @@ import { Loader, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import InputWithCheckboxes from "@/components/InputWithCheckboxes";
 import PageHeader from "@/components/PageHeader";
-import SexSelector from "@/components/SexSelector";
 import UploadContainer from "@/components/UploadContainer";
 import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
 import { UserContext } from "@/context/UserContext";
@@ -30,7 +29,7 @@ export default function ScanProgress() {
   const { _id: userId, requiredProgress, toAnalyze } = userDetails || {};
 
   const handleUpload = useCallback(
-    async ({ url, part, position, blurDots }: UploadProgressProps) => {
+    async ({ url, part, position, blurDots, offsets }: UploadProgressProps) => {
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -59,6 +58,23 @@ export default function ScanProgress() {
 
       if (originalImageUrl) {
         try {
+          console.log("blur dots", blurDots);
+          const updatedBlurDots = blurDots.map((dot) => {
+            return {
+              ...dot,
+              originalHeight:
+                offsets.scale > 1
+                  ? dot.originalHeight * offsets.scale
+                  : dot.originalHeight / offsets.scale,
+              originalWidth:
+                offsets.scale > 1
+                  ? dot.originalWidth * offsets.scale
+                  : dot.originalWidth / offsets.scale,
+              x: dot.x - offsets.horizontalOffset,
+              y: dot.y - offsets.verticalOffset,
+            };
+          });
+          console.log("updatedBlurDots", updatedBlurDots);
           const response = await callTheServer({
             endpoint: "uploadProgress",
             method: "POST",
@@ -66,7 +82,7 @@ export default function ScanProgress() {
               userId,
               part,
               position,
-              blurDots,
+              blurDots: updatedBlurDots,
               image: originalImageUrl,
             },
           });

@@ -111,6 +111,7 @@ export default function AvatarEditor({
               customStyles={dropdownStyles}
               selectedValue={updatedAvatar.hairStyle}
               onSelect={(value) => modifyConfig("hairStyle", value)}
+              closeOnSelect={false}
             />
             <ColorInput
               flex={1}

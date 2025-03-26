@@ -13,10 +13,13 @@
   z-index: 1;
 }
 
-.image {
+.imageWrapper {
+  flex: 1;
   position: absolute;
   inset: 0;
+}
 
+.image {
   display: flex;
   flex: 1;
   width: 100%;

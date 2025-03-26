@@ -41,6 +41,7 @@ export default function ClubProgressFilterCardContent({ userName }: Props) {
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
+        closeOnSelect
       />
     </Stack>
   );

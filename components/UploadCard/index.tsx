@@ -41,6 +41,7 @@ export default function UploadCard({
   const { width, height } = useViewportSize();
 
   const [localUrl, setLocalUrl] = useState("");
+  const [offsets, setOffsets] = useState({ horizontalOffset: 0, verticalOffset: 0, scale: 0 });
   const [blurDots, setBlurDots] = useState<BlurDot[]>([]);
 
   const isMobile = useMediaQuery("(max-width: 36em)");
@@ -65,7 +66,7 @@ export default function UploadCard({
   }, []);
 
   const handleClickUpload = useCallback(async () => {
-    await handleUpload({ part, position, url: localUrl, blurDots });
+    await handleUpload({ part, position, url: localUrl, blurDots, offsets });
     handleDeleteImage();
   }, [part, position, blurDots]);
 
@@ -99,6 +100,7 @@ export default function UploadCard({
         <DraggableImageContainer
           blurDots={blurDots}
           image={localUrl}
+          setOffsets={setOffsets}
           disableDelete={isLoading}
           handleDelete={handleDeleteImage}
           setBlurDots={setBlurDots}

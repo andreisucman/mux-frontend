@@ -40,6 +40,7 @@ export default function SelectPartModalContent({ userId, onClick }: Props) {
         selectedValue={part}
         onSelect={setPart}
         placeholder="Choose part"
+        closeOnSelect
         customStyles={{ marginLeft: "auto", maxWidth: "unset", width: "100%" }}
       />
       <Button disabled={!part} onClick={() => onClick(part || "")}>

@@ -6,6 +6,7 @@ export type UploadProgressProps = {
   part: PartEnum;
   position: string;
   blurDots: BlurDot[];
+  offsets: { horizontalOffset: number; verticalOffset: number; scale: number };
 };
 
 export enum PositionEnum {
