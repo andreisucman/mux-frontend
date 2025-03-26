@@ -1,22 +1,19 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { Button, Group, Progress, Stack, Text, Title } from "@mantine/core";
+import { Button, Progress, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
-import BlurButtons from "@/components/BlurButtons";
-import ImageDisplayContainer from "@/components/ImageDisplayContainer";
 import InstructionContainer from "@/components/InstructionContainer";
-import { BlurChoicesContext } from "@/context/BlurChoicesContext";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { placeholders } from "@/data/placeholders";
 import { silhouettes } from "@/data/silhouettes";
-import { OnBlurClickProps } from "@/functions/blur";
 import getPlaceholderOrSilhouette from "@/helpers/getPlaceholderOrSilhouette";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
+import DraggableImageContainer from "../DraggableImageContainer";
 import PhotoCapturer from "../PhotoCapturer";
+import { BlurDot } from "./types";
 import classes from "./UploadCard.module.css";
 
 type Props = {
@@ -25,11 +22,9 @@ type Props = {
   scanType?: ScanTypeEnum;
   progress: number;
   position: string;
-  latestStyleImage?: string;
   isLoading?: boolean;
   instruction: string;
   customButtonStyles?: { [key: string]: any };
-  onBlurClick: (args: OnBlurClickProps) => Promise<void>;
   handleUpload: (args: UploadProgressProps) => Promise<void>;
 };
 
@@ -41,24 +36,14 @@ export default function UploadCard({
   position,
   isLoading,
   instruction,
-  latestStyleImage,
-  customButtonStyles,
-  onBlurClick,
   handleUpload,
 }: Props) {
-  const { blurType } = useContext(BlurChoicesContext);
-  const [isBlurLoading, setIsBlurLoading] = useState(false);
   const { width, height } = useViewportSize();
 
-  const [originalUrl, setOriginalUrl] = useState("");
-  const [faceBlurredUrl, setFaceBlurredUrl] = useState("");
-  const [eyesBlurredUrl, setEyesBlurredUrl] = useState("");
   const [localUrl, setLocalUrl] = useState("");
+  const [blurDots, setBlurDots] = useState<BlurDot[]>([]);
 
   const isMobile = useMediaQuery("(max-width: 36em)");
-
-  const blurredImage =
-    blurType === "face" ? faceBlurredUrl : blurType === "eyes" ? eyesBlurredUrl : originalUrl;
 
   const relevantPlaceholder = useMemo(
     () => getPlaceholderOrSilhouette({ sex, part, position, scanType, data: placeholders }),
@@ -70,45 +55,19 @@ export default function UploadCard({
     [sex, part, position, scanType]
   );
 
-  const loadLocally = useCallback(
-    async (base64string: string) => {
-      if (!base64string) return;
-
-      setLocalUrl(base64string);
-      setOriginalUrl(base64string);
-
-      modals.closeAll();
-
-      if (blurType === "original") return;
-
-      setIsBlurLoading(true);
-
-      await onBlurClick({
-        originalUrl: base64string,
-        blurType: blurType as BlurTypeEnum,
-        faceBlurredUrl,
-        eyesBlurredUrl,
-        setEyesBlurredUrl,
-        setFaceBlurredUrl,
-        setLocalUrl,
-      });
-
-      setIsBlurLoading(false);
-    },
-    [blurType]
-  );
-
   const handleDeleteImage = useCallback(() => {
     setLocalUrl("");
-    setOriginalUrl("");
-    setEyesBlurredUrl("");
-    setFaceBlurredUrl("");
+  }, []);
+
+  const handleCapture = useCallback((base64: string) => {
+    setLocalUrl(base64);
+    modals.closeAll();
   }, []);
 
   const handleClickUpload = useCallback(async () => {
-    await handleUpload({ blurType, part, position, url: originalUrl, blurredImage });
+    await handleUpload({ part, position, url: localUrl, blurDots });
     handleDeleteImage();
-  }, [blurType, part, position, originalUrl, blurredImage]);
+  }, [part, position, blurDots]);
 
   const openPhotoCapturer = useCallback(() => {
     modals.openContextModal({
@@ -124,10 +83,10 @@ export default function UploadCard({
       fullScreen: isMobile,
       classNames: { body: classes.body, content: classes.content },
       innerProps: (
-        <PhotoCapturer handleCapture={loadLocally} silhouette={relevantSilhouette?.url || ""} />
+        <PhotoCapturer handleCapture={handleCapture} silhouette={relevantSilhouette?.url || ""} />
       ),
     });
-  }, [loadLocally, relevantSilhouette, width, height]);
+  }, [relevantSilhouette, width, height]);
 
   return (
     <Stack className={classes.container}>
@@ -137,31 +96,15 @@ export default function UploadCard({
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.imageCell}>
-        <ImageDisplayContainer
-          handleDelete={handleDeleteImage}
-          image={localUrl || latestStyleImage}
-          isLoadingOverlay={isBlurLoading}
+        <DraggableImageContainer
+          blurDots={blurDots}
+          image={localUrl}
           disableDelete={isLoading}
+          handleDelete={handleDeleteImage}
+          setBlurDots={setBlurDots}
           placeholder={relevantPlaceholder && relevantPlaceholder.url}
         />
-        <BlurButtons
-          disabled={isBlurLoading || !!isLoading}
-          originalUrl={originalUrl}
-          onBlurClick={async ({ originalUrl, blurType }) => {
-            setIsBlurLoading(true);
-            await onBlurClick({
-              originalUrl,
-              blurType,
-              faceBlurredUrl,
-              eyesBlurredUrl,
-              setEyesBlurredUrl,
-              setFaceBlurredUrl,
-              setLocalUrl,
-            });
-            setIsBlurLoading(false);
-          }}
-          customStyles={{ position: "absolute", top: "1rem", left: "1rem", zIndex: 1 }}
-        />
+
         {isLoading && (
           <Stack className={classes.progressCell}>
             <Progress value={progress} w="100%" size={12} mt={4} />
@@ -170,24 +113,23 @@ export default function UploadCard({
             </Text>
           </Stack>
         )}
-        {!isLoading && !isBlurLoading && (
-          <Stack className={classes.checkboxAndButtons}>
-            <Group
-              className={classes.buttonGroup}
-              style={customButtonStyles ? customButtonStyles : {}}
-            >
-              {!localUrl && (
-                <Button className={classes.button} onClick={openPhotoCapturer} disabled={isLoading}>
-                  Capture
-                </Button>
-              )}
-              {localUrl && (
-                <Button className={classes.button} disabled={isLoading || !localUrl} onClick={handleClickUpload}>
-                  Upload
-                </Button>
-              )}
-            </Group>
-          </Stack>
+        {!isLoading && (
+          <div className={classes.buttonWrapper}>
+            {!localUrl && (
+              <Button className={classes.button} onClick={openPhotoCapturer} disabled={isLoading}>
+                Capture
+              </Button>
+            )}
+            {localUrl && (
+              <Button
+                className={classes.button}
+                disabled={isLoading || !localUrl}
+                onClick={handleClickUpload}
+              >
+                Upload
+              </Button>
+            )}
+          </div>
         )}
       </Stack>
     </Stack>

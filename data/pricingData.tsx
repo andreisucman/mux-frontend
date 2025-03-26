@@ -52,7 +52,7 @@ export const generalPlanContent = [
     description: "See and copy proven tasks from the routine.",
   },
   {
-    icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(20) }} />,
+    icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(24) }} />,
     description: "Read the feedback and insights from the diary.",
   },
   {

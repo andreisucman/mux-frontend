@@ -18,14 +18,20 @@ import classes from "./PurchaseOverlay.module.css";
 
 type Props = {
   purchaseOverlayData: PurchaseOverlayDataType[];
+  notPurchasedParts: string[];
   userName: string;
-  setShowPurchaseOverlay: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCloseOverlay: () => void;
+  setShowOverlayComponent: React.Dispatch<
+    React.SetStateAction<"none" | "maximizeButton" | "purchaseOverlay" | "showOtherRoutinesButton">
+  >;
 };
 
 export default function PurchaseOverlay({
   purchaseOverlayData,
   userName,
-  setShowPurchaseOverlay,
+  notPurchasedParts,
+  handleCloseOverlay,
+  setShowOverlayComponent,
 }: Props) {
   const router = useRouter();
   const defaultRouter = useDefaultRouter();
@@ -140,7 +146,7 @@ export default function PurchaseOverlay({
     createCheckoutSession({
       type: "connect",
       body: {
-        dataId: selectedCardData._id,
+        dataId: selectedCardData?._id,
         priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
         redirectUrl,
         cancelUrl: redirectUrl,
@@ -174,14 +180,14 @@ export default function PurchaseOverlay({
         <PricingCard
           price={
             <Group className="priceGroup">
-              <Title order={3}>${selectedCardData.price}</Title>
+              <Title order={3}>${selectedCardData?.price}</Title>
             </Group>
           }
           headerChildren={
             segments.length > 1 ? (
               <SegmentedControl
                 data={segments}
-                value={part || selectedCardData.part}
+                value={part || notPurchasedParts[0] || selectedCardData?.part}
                 className={classes.segmentedControl}
                 onChange={handleChangeCard}
               />
@@ -189,8 +195,9 @@ export default function PurchaseOverlay({
               <></>
             )
           }
-          name={selectedCardData.name}
-          description={selectedCardData.description}
+          customHeadingStyles={{ padding: "1rem 0" }}
+          name={selectedCardData?.name}
+          description={selectedCardData?.description}
           buttonText="Buy routine"
           content={generalPlanContent}
           onClick={handleAddSubscription}
@@ -203,7 +210,7 @@ export default function PurchaseOverlay({
         children={
           <CloseButton
             variant="default"
-            onClick={() => setShowPurchaseOverlay(false)}
+            onClick={handleCloseOverlay}
             className={classes.closeButton}
           />
         }

@@ -1,5 +1,4 @@
 export enum BlurTypeEnum {
-  FACE = "face",
-  EYES = "eyes",
+  BLURRED = "blurred",
   ORIGINAL = "original",
 }

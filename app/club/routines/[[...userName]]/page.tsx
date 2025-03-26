@@ -3,6 +3,7 @@
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
+import cn from "classnames";
 import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
@@ -61,13 +62,16 @@ export default function ClubRoutines(props: Props) {
   const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
   const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
-  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
+  const [showOverlayComponent, setShowOverlayComponent] = useState<
+    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
+  >("none");
+  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
   const { name, tasks, timeZone } = userDetails || {};
 
@@ -117,13 +121,13 @@ export default function ClubRoutines(props: Props) {
         routinesLength: routinesLength || 0,
       });
 
-      const { message } = response;
+      const { message } = response || {};
 
       if (message) {
-        const { priceData, data } = message;
+        const { priceData, data, notPurchased } = message;
 
         setPurchaseOverlayData(priceData ? priceData : null);
-        setShowPurchaseOverlay(!!priceData);
+        setNotPurchased(notPurchased);
 
         if (skip) {
           setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
@@ -171,12 +175,12 @@ export default function ClubRoutines(props: Props) {
     [userDetails]
   );
 
-  const handleStealRoutines = (routineIds: string[], stealAll: boolean) => {
+  const handleStealRoutines = (routineIds: string[], copyAll: boolean) => {
     type HandleSubmitProps = { startDate: Date | null };
 
     const handleSubmit = ({ startDate }: HandleSubmitProps) => {
       modals.closeAll();
-      cloneRoutines({ routineIds, startDate, stealAll, router, setIsLoading, userName });
+      cloneRoutines({ routineIds, startDate, copyAll, router, setIsLoading, userName });
     };
 
     modals.openContextModal({
@@ -192,12 +196,40 @@ export default function ClubRoutines(props: Props) {
     });
   };
 
+  const manageOverlays = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+
+    if (isCurrentPartPurchased) {
+      if (notPurchased.length > 0) {
+        setShowOverlayComponent("showOtherRoutinesButton");
+      } else {
+        setShowOverlayComponent("none");
+      }
+    } else if (notPurchased.length > 0) {
+      setShowOverlayComponent("purchaseOverlay");
+    }
+  }, [part, notPurchased]);
+
+  const handleCloseOverlay = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    if (isCurrentPartPurchased) {
+      setShowOverlayComponent("showOtherRoutinesButton");
+    } else {
+      setShowOverlayComponent("maximizeButton");
+    }
+  }, [part, notPurchased]);
+
+  useEffect(() => {
+    manageOverlays();
+  }, [part, notPurchased]);
+
   const accordionItems = useMemo(
     () =>
       routines?.map((routine, i) => {
         return (
           <AccordionRoutineRow
             key={routine._id || i}
+            index={i}
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
@@ -229,7 +261,7 @@ export default function ClubRoutines(props: Props) {
       userName,
       collection: "routine",
       fields: ["part"],
-      filter: [`userName=${userName}`, "isPublic=true"],
+      filter: [`userName=${userName}`],
     }).then((result) => {
       const { availableParts } = result;
       setAvaiableParts(availableParts);
@@ -267,67 +299,79 @@ export default function ClubRoutines(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-
       {accordionItems ? (
         <Stack className={classes.wrapper}>
-          {purchaseOverlayData && (
-            <>
-              {showPurchaseOverlay ? (
-                <PurchaseOverlay
-                  purchaseOverlayData={purchaseOverlayData}
-                  userName={userName}
-                  setShowPurchaseOverlay={setShowPurchaseOverlay}
-                />
-              ) : (
-                <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
-              )}
-            </>
-          )}
-          <RoutineSelectionButtons
-            allRoutineIds={routines?.map((r) => r._id) || []}
-            selectedRoutineIds={selectedRoutineIds}
-            disabled={!routines || !routines.length || !routines?.[0]?._id}
-            handleClick={handleStealRoutines}
-            isSelf={isSelf}
-          />
-          {accordionItems.length > 0 ? (
-            <Stack className={classes.content}>
-              <Accordion
-                value={openValue}
-                onChange={setOpenValue}
-                chevron={false}
-                variant="separated"
-                className={`${classes.accordion} scrollbar`}
-                classNames={{
-                  content: classes.content,
-                  chevron: classes.chevron,
-                  label: classes.label,
-                  control: classes.control,
-                }}
-              >
-                {accordionItems}
-              </Accordion>
-              {hasMore && (
-                <ActionIcon
-                  variant="default"
-                  className={classes.getMoreButton}
-                  onClick={() =>
-                    handleFetchRoutines({
-                      skip: true,
-                      followingUserName: userName,
-                      routinesLength: (routines && routines.length) || 0,
-                      part,
-                      sort,
-                    })
-                  }
+          <Stack
+            className={cn(classes.content, "scrollbar", {
+              [classes.relative]: showOverlayComponent !== "purchaseOverlay",
+            })}
+          >
+            {purchaseOverlayData && (
+              <>
+                {showOverlayComponent === "purchaseOverlay" && (
+                  <PurchaseOverlay
+                    userName={userName}
+                    notPurchasedParts={notPurchased}
+                    purchaseOverlayData={purchaseOverlayData}
+                    handleCloseOverlay={handleCloseOverlay}
+                    setShowOverlayComponent={setShowOverlayComponent}
+                  />
+                )}
+                {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
+                  <MaximizeOverlayButton
+                    showOverlayComponent={showOverlayComponent}
+                    notPurchased={notPurchased}
+                    setShowOverlayComponent={setShowOverlayComponent}
+                  />
+                )}
+              </>
+            )}
+            <RoutineSelectionButtons
+              allRoutineIds={routines?.map((r) => r._id) || []}
+              selectedRoutineIds={selectedRoutineIds}
+              disabled={!routines || !routines.length || !routines?.[0]?._id}
+              handleClick={handleStealRoutines}
+              isSelf={isSelf}
+            />
+            {accordionItems.length > 0 ? (
+              <Stack className={classes.content}>
+                <Accordion
+                  value={openValue}
+                  onChange={setOpenValue}
+                  chevron={false}
+                  variant="separated"
+                  className={`${classes.accordion} scrollbar`}
+                  classNames={{
+                    content: classes.content,
+                    chevron: classes.chevron,
+                    label: classes.label,
+                    control: classes.control,
+                  }}
                 >
-                  <IconArrowDown />
-                </ActionIcon>
-              )}
-            </Stack>
-          ) : (
-            <OverlayWithText text={"Nothing found"} />
-          )}
+                  {accordionItems}
+                </Accordion>
+                {hasMore && (
+                  <ActionIcon
+                    variant="default"
+                    className={classes.getMoreButton}
+                    onClick={() =>
+                      handleFetchRoutines({
+                        skip: true,
+                        followingUserName: userName,
+                        routinesLength: (routines && routines.length) || 0,
+                        part,
+                        sort,
+                      })
+                    }
+                  >
+                    <IconArrowDown />
+                  </ActionIcon>
+                )}
+              </Stack>
+            ) : (
+              <OverlayWithText text={"Nothing found"} />
+            )}
+          </Stack>
         </Stack>
       ) : (
         <Loader style={{ margin: "auto" }} />

@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import TitleDropdown, { TitleType } from "@/app/results/TitleDropdown";
-import { useRouter } from "@/helpers/custom-router";
 import FilterButton from "../FilterButton";
 import SortButton from "../SortButton";
 import classes from "./PageHeader.module.css";

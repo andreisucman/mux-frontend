@@ -8,7 +8,7 @@ type Props = {
   selectedRoutineIds: string[];
   disabled?: boolean;
   isSelf: boolean;
-  handleClick: (routineIds: string[], stealAll: boolean) => void;
+  handleClick: (routineIds: string[], copyAll: boolean) => void;
 };
 
 export default function RoutineSelectionButtons({
@@ -28,7 +28,7 @@ export default function RoutineSelectionButtons({
         className={classes.button}
         onClick={disabled ? undefined : () => handleClick(selectedRoutineIds, false)}
       >
-        {isSelf ? "Clone" : "Steal"} selected{" "}
+        {isSelf ? "Clone" : "Copy"} selected{" "}
         {selectedRoutineIds.length ? `(${selectedRoutineIds.length})` : ""}
       </Button>
       <Button
@@ -39,7 +39,7 @@ export default function RoutineSelectionButtons({
         className={classes.button}
         onClick={disabled ? undefined : () => handleClick(allRoutineIds, true)}
       >
-        {isSelf ? "Clone" : "Steal"} all
+        {isSelf ? "Clone" : "Copy"} all
       </Button>
     </Group>
   );

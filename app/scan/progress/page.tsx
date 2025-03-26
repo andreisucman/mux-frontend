@@ -30,7 +30,7 @@ export default function ScanProgress() {
   const { _id: userId, requiredProgress, toAnalyze } = userDetails || {};
 
   const handleUpload = useCallback(
-    async ({ url, part, position, blurType, blurredImage }: UploadProgressProps) => {
+    async ({ url, part, position, blurDots }: UploadProgressProps) => {
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -66,9 +66,8 @@ export default function ScanProgress() {
               userId,
               part,
               position,
-              blurType,
+              blurDots,
               image: originalImageUrl,
-              blurredImage,
             },
           });
 
@@ -126,7 +125,6 @@ export default function ScanProgress() {
             titles={titles}
             children={
               <>
-                <SexSelector updateOnServer />
                 {parts && (
                   <InputWithCheckboxes
                     dataToIgnore={uploadedParts}

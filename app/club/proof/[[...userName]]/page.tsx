@@ -45,7 +45,10 @@ export default function ClubProof(props: Props) {
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
-  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
+  const [showOverlayComponent, setShowOverlayComponent] = useState<
+    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
+  >("none");
+  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
   const query = searchParams.get("query");
   const part = searchParams.get("part");
@@ -68,12 +71,12 @@ export default function ClubProof(props: Props) {
         skip,
       });
 
-      const { priceData, data } = message || {};
+      const { priceData, data, notPurchased } = message || {};
 
       setPurchaseOverlayData(priceData ? priceData : null);
-      setShowPurchaseOverlay(!!priceData);
 
       if (skip) {
+        setNotPurchased(notPurchased);
         setProof([...(proof || []), ...data.slice(0, 20)]);
       } else {
         setProof(data.slice(0, 20));
@@ -83,15 +86,44 @@ export default function ClubProof(props: Props) {
     []
   );
 
+  const manageOverlays = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+
+    if (isCurrentPartPurchased) {
+      if (notPurchased.length > 0) {
+        setShowOverlayComponent("showOtherRoutinesButton");
+      } else {
+        setShowOverlayComponent("none");
+      }
+    } else if (notPurchased.length > 0) {
+      setShowOverlayComponent("purchaseOverlay");
+    }
+  }, [part, notPurchased]);
+
+  const handleCloseOverlay = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    if (isCurrentPartPurchased) {
+      setShowOverlayComponent("showOtherRoutinesButton");
+    } else {
+      setShowOverlayComponent("maximizeButton");
+    }
+  }, [part, notPurchased]);
+
+  useEffect(() => {
+    manageOverlays();
+  }, [part, notPurchased]);
+
   useEffect(() => {
     handleFetchProof({ userName, sort, part, concern, query });
   }, [authStatus, userName, part, sort, concern, query, followingUserName]);
 
   useEffect(() => {
-    getFilters({ collection: "proof", fields: ["part"] }).then((result) => {
-      const { availableParts } = result;
-      setAvaiableParts(availableParts);
-    });
+    getFilters({ collection: "proof", fields: ["part"], filter: [`userName=${userName}`] }).then(
+      (result) => {
+        const { availableParts } = result;
+        setAvaiableParts(availableParts);
+      }
+    );
   }, []);
 
   return (
@@ -122,19 +154,26 @@ export default function ClubProof(props: Props) {
       />
       <Stack
         className={cn(classes.content, "scrollbar", {
-          [classes.relative]: !showPurchaseOverlay,
+          [classes.relative]: showOverlayComponent !== "purchaseOverlay",
         })}
       >
         {purchaseOverlayData && (
           <>
-            {showPurchaseOverlay ? (
+            {showOverlayComponent === "purchaseOverlay" && (
               <PurchaseOverlay
-                purchaseOverlayData={purchaseOverlayData}
                 userName={userName}
-                setShowPurchaseOverlay={setShowPurchaseOverlay}
+                notPurchasedParts={notPurchased}
+                purchaseOverlayData={purchaseOverlayData}
+                handleCloseOverlay={handleCloseOverlay}
+                setShowOverlayComponent={setShowOverlayComponent}
               />
-            ) : (
-              <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+            )}
+            {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
+              <MaximizeOverlayButton
+                showOverlayComponent={showOverlayComponent}
+                notPurchased={notPurchased}
+                setShowOverlayComponent={setShowOverlayComponent}
+              />
             )}
           </>
         )}

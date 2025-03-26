@@ -3,6 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
 import { Group, Select, SelectProps } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import modifyQuery from "@/helpers/modifyQuery";
 import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
@@ -15,6 +16,7 @@ type Props = {
   addToQuery?: boolean;
   allowDeselect?: boolean;
   data: FilterItemType[];
+  closeOnSelect?: boolean;
   selectedValue?: string | null;
   onSelect?: (key?: string | null) => void;
   customStyles?: { [key: string]: any };
@@ -30,6 +32,7 @@ export default function FilterDropdown({
   filterType,
   selectedValue,
   customStyles,
+  closeOnSelect = true,
   onSelect,
 }: Props) {
   const router = useRouter();
@@ -74,8 +77,9 @@ export default function FilterDropdown({
       }
 
       if (onSelect) onSelect(newValue);
+      if (closeOnSelect) modals.closeAll();
     },
-    [pathname, addToQuery, allowDeselect, onSelect]
+    [pathname, closeOnSelect, addToQuery, allowDeselect, onSelect]
   );
 
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {

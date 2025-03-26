@@ -8,7 +8,6 @@ import { UploadProgressProps } from "@/app/scan/types";
 import UploadCard from "@/components/UploadCard";
 import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
 import { UserContext } from "@/context/UserContext";
-import { onBlurImageClick } from "@/functions/blur";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
 import OverlayWithText from "../OverlayWithText";
 import StartPartialScanOverlay from "./StartPartialScanOverlay";
@@ -60,7 +59,6 @@ export default function UploadContainer({
           instruction={item.instruction}
           position={item.position}
           handleUpload={handleUpload}
-          onBlurClick={onBlurImageClick}
         />
       );
     })

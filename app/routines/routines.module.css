@@ -24,6 +24,7 @@
   flex-direction: column;
   gap: rem(16);
   padding: 0 rem(12) rem(16) rem(16);
+  border-radius: rem(8);
 }
 
 .chevron {

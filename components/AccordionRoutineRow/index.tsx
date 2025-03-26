@@ -27,6 +27,7 @@ type Props = {
   routine: RoutineType;
   isSelf: boolean;
   timeZone?: string;
+  index: number;
   selectedRoutineIds?: string[];
   selectedConcerns: { [key: string]: string[] };
   cloneOrRescheduleRoutines?: (routineIds: string[], isReschedule?: boolean) => void;
@@ -45,6 +46,7 @@ export type RedirectWithDateProps = {
 
 export default function AccordionRoutineRow({
   routine,
+  index,
   timeZone,
   isSelf,
   selectedConcerns,
@@ -227,7 +229,7 @@ export default function AccordionRoutineRow({
       style={focused ? { zIndex: 100 } : {}}
       ref={ref}
     >
-      <Accordion.Item key={routine._id} value={routine._id || "no_value"} className={classes.item}>
+      <Accordion.Item key={routine._id} value={routine._id || `no_value-${index}`} className={classes.item}>
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>

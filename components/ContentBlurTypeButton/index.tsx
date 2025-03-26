@@ -1,21 +1,16 @@
 import React, {
-  RefObject,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { IconBlur } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Checkbox, Group, Menu } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { BlurChoicesContext } from "@/context/BlurChoicesContext";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import callTheServer from "@/functions/callTheServer";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import openErrorModal from "@/helpers/openErrorModal";
+import { saveToLocalStorage } from "@/helpers/localStorage";
 import { BlurredUrlType } from "@/types/global";
 import classes from "./ContentBlurTypeButton.module.css";
 
@@ -41,8 +36,7 @@ type Props = {
 
 const displayTypes = [
   { label: "Original", value: "original" },
-  { label: "Blur eyes", value: "eyes" },
-  { label: "Blur face", value: "face" },
+  { label: "Blurred", value: "blurred" },
 ];
 
 export default function ContentBlurTypeButton({
@@ -59,53 +53,10 @@ export default function ContentBlurTypeButton({
   onComplete,
   customStyles,
 }: Props) {
-  const { blurType, setBlurType } = useContext(BlurChoicesContext);
   const [selectedDisplayType, setSelectedDisplayType] = useState<{
     label: string;
     value: string;
   }>();
-  const [progress, setProgress] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const pollBlurProgressStatus = useCallback(async (hash: string, blurType: BlurTypeEnum) => {
-    try {
-      setIsLoading(true);
-      const response = await callTheServer({
-        endpoint: "checkVideoBlurStatus",
-        method: "POST",
-        body: { hash, blurType },
-      });
-
-      if (response.status === 200) {
-        if (response.error) {
-          handleBlurError(hash, response.error);
-          return;
-        }
-
-        const { isRunning, progress: jobProgress } = response.message;
-
-        if (isRunning) {
-          setProgress(jobProgress);
-        } else {
-          handleBlurComplete(response.message);
-          setProgress(0);
-        }
-      }
-    } catch (err) {
-      handleBlurError(hash, "Error during polling.");
-    }
-  }, []);
-
-  const handleBlurError = useCallback(
-    (hash: string, error: string) => {
-      setIsLoading(false);
-      clearInterval(intervalRef.current || undefined);
-      saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
-      openErrorModal({ description: error });
-      setProgress(0);
-    },
-    [intervalRef.current]
-  );
 
   const handleUpdateRecord = useCallback(({ contentId, updateObject }: HandleUpdateRecordType) => {
     try {
@@ -119,30 +70,18 @@ export default function ContentBlurTypeButton({
     }
   }, []);
 
-  const handleBlurComplete = useCallback(
-    (message: { [key: string]: any }) => {
-      setIsLoading(false);
-      clearInterval(intervalRef.current || undefined);
-      saveToLocalStorage("blurAnalyses", { [message.hash]: false }, "add");
-      handleUpdateRecord({ contentId, updateObject: message });
-    },
-    [contentId, intervalRef.current]
-  );
-
   type HandleSelectProps = {
     blurType: BlurTypeEnum;
     contentCategory: string;
     contentId: string;
-    intervalRef: any;
   };
   const handleSelect = useCallback(
-    async ({ blurType, contentCategory, contentId, intervalRef }: HandleSelectProps) => {
+    async ({ blurType, contentCategory, contentId }: HandleSelectProps) => {
       const relevantDisplayType = displayTypes.find((obj) => obj.value === blurType);
       if (!relevantDisplayType) return;
 
       setIsLoading(true);
       setSelectedDisplayType(relevantDisplayType);
-      setBlurType(blurType);
 
       try {
         const response = await callTheServer({
@@ -162,7 +101,6 @@ export default function ContentBlurTypeButton({
             setIsLoading(false);
           } else if (hash) {
             saveToLocalStorage("blurAnalyses", { [hash]: false }, "add");
-            intervalRef.current = setInterval(() => pollBlurProgressStatus(hash, blurType), 3000);
           }
         }
       } catch (err) {
@@ -189,7 +127,6 @@ export default function ContentBlurTypeButton({
               blurType: item.value as BlurTypeEnum,
               contentCategory,
               contentId,
-              intervalRef,
             });
           }}
           readOnly
@@ -202,27 +139,6 @@ export default function ContentBlurTypeButton({
     const relevantDisplayType = displayTypes.find((obj) => obj.value === currentMain?.name);
     relevantDisplayType && setSelectedDisplayType(relevantDisplayType);
   }, [currentMain]);
-
-  useEffect(() => {
-    if (!hash) return;
-    if (!blurType) return;
-
-    const blurAnalyses: { [key: string]: any } | null = getFromLocalStorage("blurAnalyses");
-
-    if (blurAnalyses) {
-      const isLoading = blurAnalyses[hash];
-
-      if (isLoading) {
-        intervalRef.current = setInterval(() => pollBlurProgressStatus(hash, blurType), 3000);
-
-        setIsLoading(isLoading);
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [hash, blurType]);
 
   return (
     <Menu
@@ -242,7 +158,6 @@ export default function ContentBlurTypeButton({
           <ActionIcon variant="default" loading={isLoading} disabled={isDisabled}>
             <IconBlur className="icon icon__small" />
           </ActionIcon>
-          {progress > 0 && `${progress.toFixed(0)}%`}
         </Group>
       </Menu.Target>
       <Menu.Dropdown>

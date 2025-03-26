@@ -1,12 +1,11 @@
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
+import { BlurDot } from "@/components/UploadCard/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 
 export type UploadProgressProps = {
   url: string;
   part: PartEnum;
   position: string;
-  blurType: BlurTypeEnum;
-  blurredImage: string;
+  blurDots: BlurDot[];
 };
 
 export enum PositionEnum {

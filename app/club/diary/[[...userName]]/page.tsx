@@ -2,12 +2,12 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Stack, Title } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { HandleFetchDiaryProps } from "@/app/diary/page";
-import { ChatCategoryEnum, DiaryRecordType } from "@/app/diary/type";
+import { DiaryRecordType } from "@/app/diary/type";
 import DiaryContent from "@/components/DiaryContent";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
@@ -44,8 +44,11 @@ export default function DiaryPage(props: Props) {
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
-  const [partFilters, setPartFilters] = useState<FilterItemType[]>([]);
-  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
+  const [showOverlayComponent, setShowOverlayComponent] = useState<
+    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
+  >("none");
+  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
@@ -64,12 +67,13 @@ export default function DiaryPage(props: Props) {
         skip: hasMore,
       });
 
-      const { priceData, data } = message;
+      const { priceData, data, notPurchased } = message || {};
 
       setPurchaseOverlayData(priceData ? priceData : null);
-      setShowPurchaseOverlay(!!priceData);
 
-      if (data && data.length) {
+      if (message) {
+        setNotPurchased(notPurchased);
+
         if (hasMore) {
           setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
         } else {
@@ -81,6 +85,33 @@ export default function DiaryPage(props: Props) {
     },
     [diaryRecords, hasMore, userName]
   );
+
+  const manageOverlays = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+
+    if (isCurrentPartPurchased) {
+      if (notPurchased.length > 0) {
+        setShowOverlayComponent("showOtherRoutinesButton");
+      } else {
+        setShowOverlayComponent("none");
+      }
+    } else if (notPurchased.length > 0) {
+      setShowOverlayComponent("purchaseOverlay");
+    }
+  }, [part, notPurchased]);
+
+  const handleCloseOverlay = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    if (isCurrentPartPurchased) {
+      setShowOverlayComponent("showOtherRoutinesButton");
+    } else {
+      setShowOverlayComponent("maximizeButton");
+    }
+  }, [part, notPurchased]);
+
+  useEffect(() => {
+    manageOverlays();
+  }, [part, notPurchased]);
 
   useEffect(() => {
     if (!userName) return;
@@ -94,10 +125,10 @@ export default function DiaryPage(props: Props) {
     getFilters({
       collection: "task",
       fields: ["part"],
-      filter: [`userId=${userId}`],
+      filter: [`userName=${userName}`],
     }).then((result) => {
       const { availableParts } = result;
-      setPartFilters(availableParts);
+      setAvailableParts(availableParts);
     });
   }, [userId]);
 
@@ -113,7 +144,7 @@ export default function DiaryPage(props: Props) {
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
-              childrenProps: { partFilters },
+              childrenProps: { availableParts },
             })
           }
           isDisabled={!diaryRecords}
@@ -128,14 +159,21 @@ export default function DiaryPage(props: Props) {
       <Stack className={classes.content}>
         {purchaseOverlayData && (
           <>
-            {showPurchaseOverlay ? (
+            {showOverlayComponent === "purchaseOverlay" && (
               <PurchaseOverlay
-                purchaseOverlayData={purchaseOverlayData}
                 userName={userName}
-                setShowPurchaseOverlay={setShowPurchaseOverlay}
+                notPurchasedParts={notPurchased}
+                purchaseOverlayData={purchaseOverlayData}
+                handleCloseOverlay={handleCloseOverlay}
+                setShowOverlayComponent={setShowOverlayComponent}
               />
-            ) : (
-              <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+            )}
+            {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
+              <MaximizeOverlayButton
+                showOverlayComponent={showOverlayComponent}
+                notPurchased={notPurchased}
+                setShowOverlayComponent={setShowOverlayComponent}
+              />
             )}
           </>
         )}

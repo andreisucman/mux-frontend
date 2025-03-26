@@ -5,13 +5,12 @@
 
 .content {
   flex: 1;
-  position: absolute;
   display: flex;
   flex-direction: column;
   gap: rem(16);
 
+  position: absolute;
   inset: 0;
-
   overflow: hidden;
 }
 

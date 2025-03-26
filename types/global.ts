@@ -84,7 +84,7 @@ export enum AgeIntervalEnum {
 }
 
 export type BlurredUrlType = {
-  name: "original" | "eyes" | "face";
+  name: "original" | "blurred";
   url?: string;
 };
 

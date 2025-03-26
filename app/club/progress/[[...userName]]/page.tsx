@@ -46,7 +46,10 @@ export default function ClubProgress(props: Props) {
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
-  const [showPurchaseOverlay, setShowPurchaseOverlay] = useState(false);
+  const [showOverlayComponent, setShowOverlayComponent] = useState<
+    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
+  >("none");
+  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -66,17 +69,20 @@ export default function ClubProgress(props: Props) {
         skip,
       });
 
-      const { priceData, data } = message;
+      const { priceData, data, notPurchased } = message || {};
 
       setPurchaseOverlayData(priceData ? priceData : null);
-      setShowPurchaseOverlay(!!priceData);
 
-      if (skip) {
-        setProgress([...(currentArray || []), ...data.slice(0, 20)]);
-      } else {
-        setProgress(data.slice(0, 20));
+      if (message) {
+        setNotPurchased(notPurchased);
+
+        if (skip) {
+          setProgress([...(currentArray || []), ...data.slice(0, 20)]);
+        } else {
+          setProgress(data.slice(0, 20));
+        }
+        setHasMore(data.length === 21);
       }
-      setHasMore(data.length === 21);
     },
     []
   );
@@ -95,15 +101,44 @@ export default function ClubProgress(props: Props) {
     []
   );
 
+  const manageOverlays = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+
+    if (isCurrentPartPurchased) {
+      if (notPurchased.length > 0) {
+        setShowOverlayComponent("showOtherRoutinesButton");
+      } else {
+        setShowOverlayComponent("none");
+      }
+    } else if (notPurchased.length > 0) {
+      setShowOverlayComponent("purchaseOverlay");
+    }
+  }, [part, notPurchased]);
+
+  const handleCloseOverlay = useCallback(() => {
+    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    if (isCurrentPartPurchased) {
+      setShowOverlayComponent("showOtherRoutinesButton");
+    } else {
+      setShowOverlayComponent("maximizeButton");
+    }
+  }, [part, notPurchased]);
+
+  useEffect(() => {
+    manageOverlays();
+  }, [part, notPurchased]);
+
   useEffect(() => {
     handleFetchProgress({ part, sort, userName });
   }, [authStatus, userName, sort, part, followingUserName]);
 
   useEffect(() => {
-    getFilters({ collection: "progress", fields: ["part"] }).then((result) => {
-      const { availableParts } = result;
-      setAvaiableParts(availableParts);
-    });
+    getFilters({ collection: "progress", fields: ["part"], filter: [`userName=${userName}`] }).then(
+      (result) => {
+        const { availableParts } = result;
+        setAvaiableParts(availableParts);
+      }
+    );
   }, []);
 
   return (
@@ -136,19 +171,26 @@ export default function ClubProgress(props: Props) {
         {progress ? (
           <Stack
             className={cn(classes.content, "scrollbar", {
-              [classes.relative]: !showPurchaseOverlay,
+              [classes.relative]: showOverlayComponent !== "purchaseOverlay",
             })}
           >
             {purchaseOverlayData && (
               <>
-                {showPurchaseOverlay ? (
+                {showOverlayComponent === "purchaseOverlay" && (
                   <PurchaseOverlay
-                    purchaseOverlayData={purchaseOverlayData}
                     userName={userName}
-                    setShowPurchaseOverlay={setShowPurchaseOverlay}
+                    notPurchasedParts={notPurchased}
+                    purchaseOverlayData={purchaseOverlayData}
+                    handleCloseOverlay={handleCloseOverlay}
+                    setShowOverlayComponent={setShowOverlayComponent}
                   />
-                ) : (
-                  <MaximizeOverlayButton setShowPurchaseOverlay={setShowPurchaseOverlay} />
+                )}
+                {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
+                  <MaximizeOverlayButton
+                    showOverlayComponent={showOverlayComponent}
+                    notPurchased={notPurchased}
+                    setShowOverlayComponent={setShowOverlayComponent}
+                  />
                 )}
               </>
             )}

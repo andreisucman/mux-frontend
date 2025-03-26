@@ -2,9 +2,9 @@
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconDoorEnter, IconRocket, IconTargetArrow } from "@tabler/icons-react";
+import { IconDoorEnter, IconRocket } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Button, Drawer, Group, rem, Text, Title } from "@mantine/core";
+import { Button, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { createSpotlight } from "@mantine/spotlight";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -32,7 +32,16 @@ const showStartButtonRoutes = [
   "/legal/privacy",
   "/legal/club",
 ];
-const showSignInButtonRoutes = ["/scan", "/accept", "/scan/progress", "/scan/food"];
+const showSignInButtonRoutes = [
+  "/scan",
+  "/accept",
+  "/scan/progress",
+  "/scan/food",
+  "/club/routines",
+  "/club/progress",
+  "/club/diary",
+  "/club/proof",
+];
 
 const [spotlightStore, userSpotlight] = createSpotlight();
 
@@ -54,7 +63,7 @@ function Header() {
   );
 
   const showSignInButton = useMemo(
-    () => showSignInButtonRoutes.some((route) => pathname === route),
+    () => showSignInButtonRoutes.some((route) => pathname.includes(route)),
     [pathname]
   );
 
@@ -67,27 +76,38 @@ function Header() {
     setIsLoading(true);
 
     if (referrer === "signInButton") {
-      if (["/scan/progress", "/scan/food", "/scan"].includes(pathname)) {
-        const referrer =
-          pathname === "/scan/progress"
-            ? ReferrerEnum.SCAN_PROGRESS
-            : pathname === "/scan/food"
-              ? ReferrerEnum.SCAN_FOOD
-              : ReferrerEnum.SCAN_INDEX;
+      let routeReferrer = ReferrerEnum.SCAN_INDEX;
 
-        openAuthModal({
-          title: "Sign in to continue",
-          stateObject: {
-            redirectPath: pathname,
-            localUserId: userId,
-            redirectQuery: searchParams.toString(),
-            referrer,
-          },
-        });
-        setIsLoading(false);
+      if (pathname.includes("/scan/progress")) {
+        routeReferrer = ReferrerEnum.SCAN_PROGRESS;
+      } else if (pathname.includes("/scan/food")) {
+        routeReferrer = ReferrerEnum.SCAN_FOOD;
+      } else if (pathname.includes("/scan")) {
+        routeReferrer = ReferrerEnum.SCAN_FOOD;
+      } else if (pathname.includes("/club/routines")) {
+        routeReferrer = ReferrerEnum.CLUB_ROUTINES;
+      } else if (pathname.includes("/club/progress")) {
+        routeReferrer = ReferrerEnum.CLUB_PROGRESS;
+      } else if (pathname.includes("/club/diary")) {
+        routeReferrer = ReferrerEnum.CLUB_DIARY;
+      } else if (pathname.includes("/club/proof")) {
+        routeReferrer = ReferrerEnum.CLUB_PROOF;
+      } else {
+        router.push("/auth");
         return;
       }
-      router.push("/auth");
+
+      openAuthModal({
+        title: "Sign in to continue",
+        stateObject: {
+          redirectPath: pathname,
+          localUserId: userId,
+          redirectQuery: searchParams.toString(),
+          referrer: routeReferrer,
+        },
+      });
+
+      setIsLoading(false);
     }
 
     if (referrer === "startButton") {

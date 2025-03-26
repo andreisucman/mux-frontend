@@ -68,6 +68,7 @@ export default function DiaryPage() {
 
           const emptyDiaryRecord = {
             _id: "temp",
+            userId,
             part,
             audio: null,
             transcription: null,

@@ -9,7 +9,7 @@ import callTheServer from "./callTheServer";
 type StealRoutinesProps = {
   routineIds: string[];
   startDate: Date | null;
-  stealAll: boolean;
+  copyAll: boolean;
   userName?: string;
   router: AppRouterInstance;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ type StealRoutinesProps = {
 const cloneRoutines = async ({
   routineIds,
   startDate,
-  stealAll,
+  copyAll,
   userName,
   router,
   setIsLoading,
@@ -28,8 +28,8 @@ const cloneRoutines = async ({
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const body: { [key: string]: any } = { routineIds, userName, startDate, timeZone };
 
-  if (stealAll) {
-    body.stealAll = stealAll;
+  if (copyAll) {
+    body.copyAll = copyAll;
   } else {
     body.routineIds = routineIds;
   }
@@ -51,12 +51,13 @@ const cloneRoutines = async ({
       title: "✔️ Success!",
       description: (
         <Text>
-          Routine added.{" "}
+          Routine(s) added.{" "}
           <span
             onClick={() => {
               router.push("/routines");
               modals.closeAll();
             }}
+            style={{ cursor: "pointer" }}
           >
             Click to view.
           </span>

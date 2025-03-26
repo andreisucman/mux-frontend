@@ -105,7 +105,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     if (!status || !pathname) return;
-    const exceptions = ["/club/routines", "/club/progress", "/club/proof"];
+    const exceptions = ["/club/routines", "/club/progress", "/club/proof", "/club/diary"];
     const isException = exceptions.some((path) => pathname.includes(path));
 
     if (onProtectedPage && pathname !== "/" && !isException) {

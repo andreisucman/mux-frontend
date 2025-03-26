@@ -74,7 +74,7 @@ export default function MyRoutines() {
         routinesLength: routinesLength || 0,
       });
 
-      const { message } = response;
+      const { message } = response || {};
 
       if (message) {
         const { data } = message;
@@ -195,11 +195,13 @@ export default function MyRoutines() {
 
       if (response.status === 200) {
         setRoutines((prev) =>
-          prev?.map((obj) =>
-            routineIds.includes(obj._id)
-              ? response.message.find((r: RoutineType) => r._id === obj._id)
-              : obj
-          )
+          prev
+            ?.filter(Boolean)
+            .map((obj) =>
+              routineIds.includes(obj._id)
+                ? response.message.find((r: RoutineType) => r._id === obj._id)
+                : obj
+            )
         );
       }
     },
@@ -214,6 +216,7 @@ export default function MyRoutines() {
           return (
             <AccordionRoutineRow
               key={routine._id}
+              index={i}
               routine={routine}
               timeZone={timeZone}
               selectedConcerns={selectedConcerns}
@@ -240,7 +243,7 @@ export default function MyRoutines() {
 
   useEffect(() => {
     if (!routines || !pageLoaded) return;
-    const routinesExist = routines && routines.length > 0;
+    const routinesExist = routines && routines.filter(Boolean).length > 0;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");

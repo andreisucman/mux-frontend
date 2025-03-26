@@ -1,11 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button, Skeleton, Stack } from "@mantine/core";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Skeleton, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import modifyQuery from "@/helpers/modifyQuery";
 import { ExistingFiltersType } from "./types";
 import classes from "./FilterCardContent.module.css";
 
@@ -14,8 +12,6 @@ type Props = {
 };
 
 export default function FilterCardContent({ filters }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [ageIntervalFilters, setAgeIntervalFilters] = useState<FilterItemType[]>([]);
   const [concernFilters, setConcernFilters] = useState<FilterItemType[]>([]);
