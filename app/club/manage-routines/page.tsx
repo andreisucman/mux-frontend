@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Loader, Stack } from "@mantine/core";
+import { Button, Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
+import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
 import { RoutineType } from "@/types/global";
 import RoutineModerationCard from "./RoutineModerationCard";
@@ -92,6 +94,17 @@ export default function ManageRoutines() {
 
   const content = useMemo(() => {
     if (!routineData || !routines) return <Loader m="0 auto" mt="20%" />;
+    if (routines.length === 0)
+      return (
+        <OverlayWithText
+          text="You don't have any routines"
+          button={
+            <Button variant="default" mt={rem(8)} c="gray.2" component={Link} href="/routines">
+              Add a routine
+            </Button>
+          }
+        />
+      );
     return routines
       .sort((a, b) => a.part.localeCompare(b.part))
       .map((r, i) => {

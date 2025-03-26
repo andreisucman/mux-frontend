@@ -123,7 +123,7 @@ export default function PhotoCapturer({
       setHasMultipleCameras(videoDevices.length > 1);
     } catch (err) {
       openErrorModal({
-        title: "🚨 An error occurred",
+        title: "An error occurred",
         description: "Failed to access camera",
         onClose: () => modals.closeAll(),
       });

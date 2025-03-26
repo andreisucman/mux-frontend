@@ -21,7 +21,7 @@ export default async function startSubscriptionTrial({ subscriptionName, onCompl
       if (response.error) {
         if (response.error === "scan") {
           openErrorModal({
-            title: "🚨 Please scan yourself",
+            title: "Please scan yourself",
             description: (
               <Text>
                 You need to scan your face first. Click{" "}

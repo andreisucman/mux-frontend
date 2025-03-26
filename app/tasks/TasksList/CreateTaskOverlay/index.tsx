@@ -26,7 +26,7 @@ export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTa
   const onCreateManuallyClick = () => {
     if (!latestProgress?.overall) {
       openErrorModal({
-        title: "🚨 Please scan yourself",
+        title: "Please scan yourself",
         description: (
           <Text>
             You need to scan your appearance first. Click{" "}

@@ -42,7 +42,7 @@ const authenticate = async ({
     if (response.error) {
       if (response.error === "blocked") {
         openErrorModal({
-          title: `🚨 Account blocked`,
+          title: `Account blocked`,
           description: `We have temporarily blocked your account while we investigate a potential violation of our Terms of Service. Check your email for more details.`,
         });
         setUserDetails(null);
@@ -52,7 +52,7 @@ const authenticate = async ({
 
       if (response.error === "suspended") {
         openErrorModal({
-          title: `🚨 Account suspended`,
+          title: `Account suspended`,
           description: `This account is permanently suspended for violation of our Terms of Service.`,
         });
         setUserDetails(null);

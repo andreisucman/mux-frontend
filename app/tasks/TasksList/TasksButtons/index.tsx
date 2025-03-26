@@ -37,7 +37,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
   const onCreateManuallyClick = () => {
     if (!latestProgress?.overall) {
       openErrorModal({
-        title: "🚨 Please scan yourself",
+        title: "Please scan yourself",
         description: (
           <Text>
             You need to scan yourself to be able to create tasks. Click{" "}
