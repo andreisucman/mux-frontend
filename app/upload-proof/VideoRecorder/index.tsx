@@ -167,7 +167,6 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
           const options: MediaRecorderOptions = {
             mimeType,
-            // videoBitsPerSecond: 2500000,
           };
 
           mediaRecorder.current = new MediaRecorder(stream, options);
@@ -516,28 +515,35 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
             </div>
             <Group className={classes.buttonGroup}>
               <Group>
-                {!isRecording && hasMultipleCameras && (
-                  <Button
-                    variant="default"
-                    onClick={flipCamera}
-                    className={classes.button}
-                    style={{ flexGrow: 0, padding: 0 }}
-                    miw={rem(50)}
-                    disabled={taskExpired}
-                  >
-                    <IconCameraRotate className="icon" />
-                  </Button>
+                {!isRecording && (
+                  <>
+                    {hasMultipleCameras && (
+                      <Button
+                        variant="default"
+                        onClick={flipCamera}
+                        className={classes.button}
+                        style={{ flexGrow: 0, padding: 0 }}
+                        miw={rem(50)}
+                        disabled={taskExpired}
+                      >
+                        <IconCameraRotate className="icon" />
+                      </Button>
+                    )}
+                    <Button
+                      variant="default"
+                      disabled={timerStarted}
+                      onClick={handleChangeOrientation}
+                      className={classes.button}
+                      style={{ flexGrow: 0, padding: 0 }}
+                      miw={rem(50)}
+                    >
+                      <IconRotateRectangle
+                        className="icon"
+                        style={{ transform: "rotate(190deg)" }}
+                      />
+                    </Button>
+                  </>
                 )}
-                <Button
-                  variant="default"
-                  disabled={timerStarted}
-                  onClick={handleChangeOrientation}
-                  className={classes.button}
-                  style={{ flexGrow: 0, padding: 0 }}
-                  miw={rem(50)}
-                >
-                  <IconRotateRectangle className="icon" style={{ transform: "rotate(190deg)" }} />
-                </Button>
               </Group>
 
               <Group>
