@@ -129,7 +129,7 @@ export default function TasksList({ customStyles }: Props) {
     });
   }, [userId, pathname]);
 
-  useSWR(userId, () => fetchUserData({ setUserDetails }));
+  // useSWR(userId, () => fetchUserData({ setUserDetails }));
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>

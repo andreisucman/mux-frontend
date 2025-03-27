@@ -58,23 +58,22 @@ export default function ScanProgress() {
 
       if (originalImageUrl) {
         try {
-          console.log("blur dots", blurDots);
           const updatedBlurDots = blurDots.map((dot) => {
             return {
               ...dot,
               originalHeight:
-                offsets.scale > 1
-                  ? dot.originalHeight * offsets.scale
-                  : dot.originalHeight / offsets.scale,
+                offsets.scaleHeight > 1
+                  ? dot.originalHeight / offsets.scaleHeight
+                  : dot.originalHeight * offsets.scaleHeight,
               originalWidth:
-                offsets.scale > 1
-                  ? dot.originalWidth * offsets.scale
-                  : dot.originalWidth / offsets.scale,
-              x: dot.x - offsets.horizontalOffset,
-              y: dot.y - offsets.verticalOffset,
+                offsets.scaleWidth > 1
+                  ? dot.originalWidth / offsets.scaleWidth
+                  : dot.originalWidth * offsets.scaleWidth,
+              x: offsets.scaleWidth > 1 ? dot.x / offsets.scaleWidth : dot.x * offsets.scaleWidth,
+              y:
+                offsets.scaleHeight > 1 ? dot.y / offsets.scaleHeight : dot.y * offsets.scaleHeight,
             };
           });
-          console.log("updatedBlurDots", updatedBlurDots);
           const response = await callTheServer({
             endpoint: "uploadProgress",
             method: "POST",

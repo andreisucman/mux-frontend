@@ -1,3 +1,4 @@
+import { BlurDotType } from "@/components/UploadCard/types";
 import { RequirementType } from "@/components/UploadContainer/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 
@@ -13,6 +14,11 @@ export type HeadValuePartsBoolean = {
   parts: { name: string; value: boolean }[];
 }[];
 
+type BalanceRecordType = {
+  amount: number;
+  currency: string;
+};
+
 export type ClubDataType = {
   isActive: boolean;
   followingUserId: string;
@@ -21,7 +27,7 @@ export type ClubDataType = {
   socials: { value: string | null; label: string }[];
   payouts: {
     connectId: string;
-    balance: number;
+    balance: { pending: BalanceRecordType; available: BalanceRecordType };
     payoutsEnabled: boolean;
     detailsSubmitted: boolean;
     disabledReason: string;
@@ -85,7 +91,7 @@ export enum AgeIntervalEnum {
 
 export type BlurredUrlType = {
   name: "original" | "blurred";
-  url?: string;
+  url: string;
 };
 
 export type ToAnalyzeType = {

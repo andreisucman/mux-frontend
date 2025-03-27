@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { Button, Progress, Stack, Text, Title } from "@mantine/core";
+import { Button, Checkbox, Progress, Stack, Text, Title } from "@mantine/core";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { UploadProgressProps } from "@/app/scan/types";
@@ -13,7 +13,7 @@ import getPlaceholderOrSilhouette from "@/helpers/getPlaceholderOrSilhouette";
 import { ScanTypeEnum, SexEnum } from "@/types/global";
 import DraggableImageContainer from "../DraggableImageContainer";
 import PhotoCapturer from "../PhotoCapturer";
-import { BlurDot } from "./types";
+import { BlurDotType } from "./types";
 import classes from "./UploadCard.module.css";
 
 type Props = {
@@ -39,10 +39,13 @@ export default function UploadCard({
   handleUpload,
 }: Props) {
   const { width, height } = useViewportSize();
-
   const [localUrl, setLocalUrl] = useState("");
-  const [offsets, setOffsets] = useState({ horizontalOffset: 0, verticalOffset: 0, scale: 0 });
-  const [blurDots, setBlurDots] = useState<BlurDot[]>([]);
+  const [offsets, setOffsets] = useState({
+    scaleHeight: 0,
+    scaleWidth: 0,
+  });
+  const [showBlur, setShowBlur] = useState(false);
+  const [blurDots, setBlurDots] = useState<BlurDotType[]>([]);
 
   const isMobile = useMediaQuery("(max-width: 36em)");
 
@@ -55,6 +58,15 @@ export default function UploadCard({
     () => getPlaceholderOrSilhouette({ sex, part, position, scanType, data: silhouettes }),
     [sex, part, position, scanType]
   );
+
+  const handleToggleBlur = () => {
+    setShowBlur((prev: boolean) => {
+      if (prev) {
+        setBlurDots([]);
+      }
+      return !prev;
+    });
+  };
 
   const handleDeleteImage = useCallback(() => {
     setLocalUrl("");
@@ -97,13 +109,21 @@ export default function UploadCard({
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.imageCell}>
+        <Checkbox
+          checked={showBlur}
+          className={classes.checkbox}
+          onChange={() => setShowBlur((prev) => !prev)}
+          label="Blur features"
+        />
         <DraggableImageContainer
+          showBlur={showBlur}
           blurDots={blurDots}
           image={localUrl}
-          setOffsets={setOffsets}
           disableDelete={isLoading}
           handleDelete={handleDeleteImage}
           setBlurDots={setBlurDots}
+          setOffsets={setOffsets}
+          setShowBlur={setShowBlur}
           placeholder={relevantPlaceholder && relevantPlaceholder.url}
         />
 

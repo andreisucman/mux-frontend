@@ -1,21 +1,22 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Alert, Button, Group, Stack, Text, Title } from "@mantine/core";
+import { Alert, Button, Group, rem, Stack, Text, ThemeIcon, Title, Tooltip } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
-import openInfoModal from "@/helpers/openInfoModal";
 import { UserDataType } from "@/types/global";
-import RedirectToWalletButton from "./RedirectToWalletButton";
 import classes from "./BalancePane.module.css";
 
 function BalancePane() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [loadingButton, setLoadingButton] = useState<string | null>(null);
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
@@ -46,8 +47,9 @@ function BalancePane() {
     handleCreateConnectAccount();
   }, [country]);
 
-  const handleSetCountryAndCreateAccount = async (newCountry: string) => {
+  const handleSetCountryAndCreateAccount = useCallback(async (newCountry: string) => {
     setLoadingButton("add");
+
     const response = await callTheServer({
       endpoint: "changeCountry",
       method: "POST",
@@ -67,9 +69,9 @@ function BalancePane() {
     }
 
     setLoadingButton(null);
-  };
+  }, []);
 
-  const handleCreateConnectAccount = async () => {
+  const handleCreateConnectAccount = useCallback(async () => {
     setLoadingButton("bank");
     const response = await callTheServer({
       endpoint: "createConnectAccount",
@@ -88,37 +90,37 @@ function BalancePane() {
     }
 
     setLoadingButton(null);
-  };
+  }, []);
 
-  const onWithdraw = async () => {
-    if (loadingButton || balance === 0 || !payoutsEnabled) return;
-
-    setLoadingButton("withdraw");
-    const response = await callTheServer({
-      endpoint: "withdrawReward",
-      method: "POST",
-    });
-
-    if (response.status === 200) {
-      if (response.error) {
-        openErrorModal({
-          description: response.error,
-        });
-        return;
-      }
-      openInfoModal({ title: "✔️ Success!", description: response.message });
-
-      setUserDetails((prev: UserDataType) => ({
-        ...prev,
-        club: { ...prev.club, payouts: { ...prev.club?.payouts, balance: 0 } },
-      }));
-    } else {
-      setLoadingButton(null);
-      openErrorModal();
-    }
-  };
-
-  const displayBalance = useMemo(() => (balance ? balance?.toFixed(2) : 0), [balance]);
+  const displayBalance = useMemo(() => {
+    const { pending, available } = balance || {};
+    return (
+      <Group className={classes.balance}>
+        <Group className={classes.section}>
+          <Text className={classes.annotation} c="dimmed">
+            Pending
+          </Text>
+          <Title order={2} className={classes.pending}>
+            {pending?.amount}
+            <Text c="dimmed" className={classes.currency}>
+              {pending?.currency.toUpperCase()}
+            </Text>
+          </Title>
+        </Group>
+        <Group className={classes.section}>
+          <Text className={classes.annotation} c="dimmed" style={{ right: 0, left: "unset" }}>
+            Available
+          </Text>
+          <Title order={2} className={classes.available}>
+            {available?.amount}
+            <Text c="dimmed" className={classes.currency}>
+              {available?.currency.toUpperCase()}
+            </Text>
+          </Title>
+        </Group>
+      </Group>
+    );
+  }, [balance]);
 
   const alert = useMemo(() => {
     if (!detailsSubmitted)
@@ -130,7 +132,12 @@ function BalancePane() {
         >
           <Group gap={8}>
             Your seller's profile is inactive. To activate it add your bank account.
-            <Button ml="auto" size="compact-sm" onClick={openCountrySelectModal}>
+            <Button
+              loading={loadingButton === "add"}
+              ml="auto"
+              size="compact-sm"
+              onClick={openCountrySelectModal}
+            >
               Add
             </Button>
           </Group>
@@ -161,28 +168,48 @@ function BalancePane() {
       );
   }, [detailsSubmitted, payoutsEnabled, disabledReason]);
 
+  const redirectToWallet = useCallback(async () => {
+    const response = await callTheServer({
+      endpoint: "redirectToWallet",
+      method: "POST",
+      body: { redirectUrl: window.location.href },
+    });
+
+    if (response.status === 200) {
+      location.href = response.message;
+    }
+  }, []);
+
   return (
     <Stack className={classes.container}>
-      <Group className={classes.row}>
+      <Group className={classes.header}>
         <Text c="dimmed" size="sm">
-          Your earnings
+          Your balance
         </Text>
-        {detailsSubmitted && <RedirectToWalletButton variant="default" />}
+        <Group gap={8}>
+          <Tooltip
+            opened={openTooltip}
+            label="Manage your bank accounts, payout schedule and see the status of your payouts in the wallet."
+            ref={clickOutsideRef}
+            onClick={() => setOpenTooltip((prev) => !prev)}
+            multiline
+          >
+            <ThemeIcon variant="default">
+              <IconInfoCircle className="icon icon__small" />
+            </ThemeIcon>
+          </Tooltip>
+          <Button
+            variant={"default"}
+            size="compact-sm"
+            style={{ position: "relative", zIndex: 1 }}
+            onClick={redirectToWallet}
+          >
+            Go to wallet
+          </Button>
+        </Group>
       </Group>
       {alert && <Stack>{alert}</Stack>}
-      <Stack className={classes.stack}>
-        <Title order={2} className={classes.amount}>
-          ${displayBalance}
-        </Title>
-        <Button
-          disabled={!balance || !payoutsEnabled || loadingButton === "withdraw"}
-          loading={loadingButton === "withdraw"}
-          onClick={onWithdraw}
-          size="compact-sm"
-        >
-          Withdraw
-        </Button>
-      </Stack>
+      <Stack className={classes.stack}>{displayBalance}</Stack>
     </Stack>
   );
 }

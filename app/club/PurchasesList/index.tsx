@@ -6,7 +6,6 @@ import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { PurchaseType } from "@/types/global";
 import PurchaseRow from "../PurchaseRow";
-import SellerRow from "../PurchaseRow";
 import classes from "./PurchasesList.module.css";
 
 type Props = {
@@ -38,7 +37,7 @@ export default function PurchasesList({
         onUnsubscribeClick={onUnsubscribeClick}
       />
     ),
-    [onRowClick, pageType, data?.length]
+    [typeof onRowClick, pageType, data?.length]
   );
   return (
     <Stack className={classes.container}>

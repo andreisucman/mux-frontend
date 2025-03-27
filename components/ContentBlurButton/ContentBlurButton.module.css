@@ -1,0 +1,11 @@
+.container {
+  position: absolute;
+  top: rem(16);
+  right: rem(16);
+}
+
+.relative {
+  position: relative;
+  top: unset;
+  right: unset;
+}

@@ -36,7 +36,7 @@ function ProgressCard({ data, isPublicPage, isSelf, setProgress, handleContainer
               collectionKey="progress"
               contentId={data._id}
               setContent={setProgress}
-              currentMain={firstImage.mainUrl}
+              images={images}
               showBlur
               showDelete
             />

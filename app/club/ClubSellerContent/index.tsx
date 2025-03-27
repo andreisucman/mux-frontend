@@ -45,6 +45,7 @@ export default function ClubSellerContent() {
         <Text c="dimmed" size="sm">
           Your buyers
         </Text>
+
         <PurchasesList
           pageType="seller"
           hasMore={hasMore}

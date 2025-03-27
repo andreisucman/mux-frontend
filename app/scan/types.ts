@@ -1,12 +1,17 @@
-import { BlurDot } from "@/components/UploadCard/types";
+import { BlurDotType } from "@/components/UploadCard/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
+
+export type OffsetType = {
+  scaleHeight: number;
+  scaleWidth: number;
+};
 
 export type UploadProgressProps = {
   url: string;
   part: PartEnum;
   position: string;
-  blurDots: BlurDot[];
-  offsets: { horizontalOffset: number; verticalOffset: number; scale: number };
+  blurDots: BlurDotType[];
+  offsets: OffsetType;
 };
 
 export enum PositionEnum {

@@ -1,4 +1,4 @@
-export type BlurDot = {
+export type BlurDotType = {
   id: string;
   originalWidth: number;
   originalHeight: number;

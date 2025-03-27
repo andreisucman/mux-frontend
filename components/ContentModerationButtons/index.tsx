@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import cn from "classnames";
 import { Group } from "@mantine/core";
-import { BlurredUrlType } from "@/types/global";
-import ContentBlurTypeButton from "../ContentBlurTypeButton";
+import { ProgressImageType } from "@/types/global";
+import ContentBlurButton from "../ContentBlurButton";
 import DeleteContentButton from "../DeleteContentButton";
 import classes from "./ContentModerationButtons.module.css";
 
@@ -11,7 +11,7 @@ type Props = {
   showDelete?: boolean;
   isRelative?: boolean;
   contentId: string;
-  currentMain?: BlurredUrlType;
+  images: ProgressImageType[];
   collectionKey: "progress" | "proof" | "diary" | "about";
   setContent?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
@@ -21,7 +21,7 @@ export default function ContentModerationButtons({
   showDelete,
   showBlur,
   isRelative,
-  currentMain,
+  images,
   collectionKey,
   setContent,
 }: Props) {
@@ -41,15 +41,13 @@ export default function ContentModerationButtons({
           isRelative
         />
       )}
-      {showBlur && currentMain && (
-        <ContentBlurTypeButton
+      {showBlur && (
+        <ContentBlurButton
           contentId={contentId}
-          currentMain={currentMain}
-          contentCategory={collectionKey as "progress"}
+          images={images}
           setRecords={setContent}
           setIsLoading={setIsBlurLoading}
-          isDisabled={isBlurLoading || isDeleteLoading}
-          isLoading={isBlurLoading}
+          isDisabled={isDeleteLoading}
           isRelative
         />
       )}
