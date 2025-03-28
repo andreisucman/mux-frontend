@@ -10,8 +10,8 @@ export default function checkRewardCompletion(
 
   function processObject(reqObj: { [key: string]: number }, payloadObj: { [key: string]: number }) {
     for (const [key, reqValue] of Object.entries(reqObj)) {
-      if (payloadObj.hasOwnProperty(key)) {
-        const payloadVal = payloadObj[key];
+      if (payloadObj && payloadObj.hasOwnProperty(key)) {
+        const payloadVal = payloadObj[key] || 0;
 
         if (isPrimitive(reqValue) && isPrimitive(payloadVal)) {
           result.push((payloadVal / reqValue) * 100);

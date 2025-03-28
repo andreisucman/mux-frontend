@@ -165,7 +165,6 @@ export default function ClubProof(props: Props) {
                 notPurchasedParts={notPurchased}
                 purchaseOverlayData={purchaseOverlayData}
                 handleCloseOverlay={handleCloseOverlay}
-                setShowOverlayComponent={setShowOverlayComponent}
               />
             )}
             {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (

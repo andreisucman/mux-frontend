@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Group, Loader, rem, Stack } from "@mantine/core";
+import { Group, Loader, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
+import Link from "@/helpers/custom-router/patch-router/link";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
@@ -37,6 +38,11 @@ export default function Rewards() {
 
   const { _id: userId } = userDetails || {};
 
+  const handleRedirect = (url: string) => {
+    modals.closeAll();
+    router.push(url);
+  };
+
   const fetchRewards = useCallback(
     async (skip?: boolean) => {
       let finalEndpoint = "getRewards";
@@ -58,8 +64,6 @@ export default function Rewards() {
           setRewards(response.message.slice(0, 20));
         }
         setHasMore(response.message.length === 21);
-      } else {
-        openErrorModal();
       }
     },
     [rewards && rewards.length]
@@ -91,43 +95,60 @@ export default function Rewards() {
 
       if (response.status === 200) {
         if (response.error) {
+          const style = {
+            textDecoration: "underline",
+            cursor: "pointer",
+          };
+          let description = <Text>{response.error}</Text>;
+          if (response.error === "no club") {
+            description = (
+              <Text>
+                You have to{" "}
+                <span style={style} onClick={() => handleRedirect("/club/join")}>
+                  join the Club
+                </span>{" "}
+                to claim rewards.
+              </Text>
+            );
+          }
+          if (response.error === "no bank") {
+            description = (
+              <Text>
+                You have to add a bank account on your{" "}
+                <span style={style} onClick={() => handleRedirect("/club")}>
+                  Club profile page
+                </span>{" "}
+                to claim rewards.
+              </Text>
+            );
+          }
+
           openErrorModal({
-            description: response.error,
+            description,
           });
+          setIsLoading(false);
           return;
         }
 
-        const { rewards, rewardValue } = response.message;
-
-        setRewards(rewards);
+        setRewards(response.message);
         openInfoModal({
           title: "✔️ Success!",
           description: (
             <Group gap={8}>
-              Reward added to your Club balance.
+              Reward transfer initiated. It should be added to your{" "}
               <span
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", textDecoration: "underline" }}
                 onClick={() => {
                   router.push("/club");
                   modals.closeAll();
                 }}
               >
-                Click to see.
-              </span>
+                Club balance
+              </span>{" "}
+              within minutes.
             </Group>
           ),
         });
-
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          club: {
-            ...prev.club,
-            payouts: {
-              ...prev?.club?.payouts,
-              balance: prev?.club?.payouts?.balance + rewardValue,
-            },
-          },
-        }));
       }
       setIsLoading(false);
     },

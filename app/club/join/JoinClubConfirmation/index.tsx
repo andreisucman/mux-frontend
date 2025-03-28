@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { IconDoorExit, IconLock, IconRoute } from "@tabler/icons-react";
+import { IconDoorExit, IconLock, IconRoute, IconTrophy } from "@tabler/icons-react";
 import { rem, Stack, Table, Text } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import TosCheckbox from "@/components/TosCheckbox";
@@ -16,7 +16,11 @@ const confirmData = {
     ],
     [
       <IconRoute className="icon icon__big" style={{ display: "flex" }} />,
-      "You can buy other members' routines or sell yours",
+      "You can buy other members' routines or sell yours.",
+    ],
+    [
+      <IconTrophy className="icon icon__big" style={{ display: "flex" }} />,
+      "You can claim activity rewards.",
     ],
     [
       <IconDoorExit className="icon icon__big" style={{ display: "flex" }} />,
@@ -70,7 +74,7 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
   const buttonText = type === "start" ? "Join the Club" : "Join and checkout";
 
   return (
-    <Stack flex={1}>
+    <Stack flex={1} gap={12}>
       {description && <Text className={classes.description}>{description}</Text>}
       <Table data={confirmData} classNames={{ td: classes.td, th: classes.th }} />
       <Stack className={classes.actionWrapper}>

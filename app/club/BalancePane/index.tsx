@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Alert, Button, Group, rem, Stack, Text, ThemeIcon, Title, Tooltip } from "@mantine/core";
+import { ActionIcon, Alert, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
@@ -96,6 +96,8 @@ function BalancePane() {
     const { pending, available } = balance || {};
     const pendingAmount = (pending?.amount || 0) / 100;
     const availableAmount = (available?.amount || 0) / 100;
+    const pendingCurrency = pending?.currency.toUpperCase() || "USD";
+    const availableCurrency = available?.currency.toUpperCase() || "USD";
 
     return (
       <Group className={classes.balance}>
@@ -106,7 +108,7 @@ function BalancePane() {
           <Title c="dimmed" order={2} className={classes.pending}>
             {pendingAmount}
             <Text c="dimmed" className={classes.currency}>
-              {pending?.currency.toUpperCase()}
+              {pendingCurrency}
             </Text>
           </Title>
         </Group>
@@ -116,7 +118,7 @@ function BalancePane() {
           </Text>
           <Title order={2} className={classes.available}>
             {availableAmount}
-            <Text className={classes.currency}>{available?.currency.toUpperCase()}</Text>
+            <Text className={classes.currency}>{availableCurrency}</Text>
           </Title>
         </Group>
       </Group>
@@ -132,7 +134,7 @@ function BalancePane() {
           icon={<IconInfoCircle className="icon" />}
         >
           <Group gap={8}>
-            Your seller's profile is inactive. To activate it add your bank account.
+            Your withdrawals are inactive. To activate them add a bank account.
             <Button
               loading={loadingButton === "add"}
               ml="auto"
@@ -195,9 +197,9 @@ function BalancePane() {
             onClick={() => setOpenTooltip((prev) => !prev)}
             multiline
           >
-            <ThemeIcon variant="default">
+            <ActionIcon variant="default">
               <IconInfoCircle className="icon icon__small" />
-            </ThemeIcon>
+            </ActionIcon>
           </Tooltip>
           <Button
             variant={"default"}
