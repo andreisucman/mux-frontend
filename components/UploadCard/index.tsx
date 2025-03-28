@@ -112,7 +112,7 @@ export default function UploadCard({
         <Checkbox
           checked={showBlur}
           className={classes.checkbox}
-          onChange={() => setShowBlur((prev) => !prev)}
+          onChange={handleToggleBlur}
           label="Blur features"
         />
         <DraggableImageContainer
@@ -123,7 +123,6 @@ export default function UploadCard({
           handleDelete={handleDeleteImage}
           setBlurDots={setBlurDots}
           setOffsets={setOffsets}
-          setShowBlur={setShowBlur}
           placeholder={relevantPlaceholder && relevantPlaceholder.url}
         />
 

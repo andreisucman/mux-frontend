@@ -16,38 +16,34 @@ export default async function fetchProgress({
   sort,
   currentArrayLength,
 }: FetchProgressProps) {
-  try {
-    let finalEndpoint = `getProgress${userName ? `/${userName}` : ""}`;
+  let finalEndpoint = `getProgress${userName ? `/${userName}` : ""}`;
 
-    const queryParams = [];
+  const queryParams = [];
 
-    if (sort) {
-      queryParams.push(`sort=${sort}`);
-    }
-
-    if (part) {
-      queryParams.push(`part=${part}`);
-    }
-
-    if (skip && currentArrayLength) {
-      queryParams.push(`skip=${currentArrayLength}`);
-    }
-
-    const query = queryParams.join("&");
-
-    if (query) finalEndpoint += `?${query}`;
-
-    const response = await callTheServer({
-      endpoint: finalEndpoint,
-      method: "GET",
-    });
-
-    if (response.status !== 200) {
-      throw new Error(response.error);
-    }
-
-    return response.message;
-  } catch (err) {
-    openErrorModal();
+  if (sort) {
+    queryParams.push(`sort=${sort}`);
   }
+
+  if (part) {
+    queryParams.push(`part=${part}`);
+  }
+
+  if (skip && currentArrayLength) {
+    queryParams.push(`skip=${currentArrayLength}`);
+  }
+
+  const query = queryParams.join("&");
+
+  if (query) finalEndpoint += `?${query}`;
+
+  const response = await callTheServer({
+    endpoint: finalEndpoint,
+    method: "GET",
+  });
+
+  if (response.status !== 200) {
+    throw new Error(response.error);
+  }
+
+  return response.message;
 }

@@ -26,7 +26,6 @@ export default function ContentModerationButtons({
   setContent,
 }: Props) {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const [isBlurLoading, setIsBlurLoading] = useState(false);
 
   return (
     <Group className={cn(classes.container, { [classes.relative]: isRelative })}>
@@ -37,7 +36,7 @@ export default function ContentModerationButtons({
           setContent={setContent}
           isLoading={isDeleteLoading}
           setIsLoading={setIsDeleteLoading}
-          isDisabled={isDeleteLoading || isBlurLoading}
+          isDisabled={isDeleteLoading}
           isRelative
         />
       )}
@@ -46,7 +45,6 @@ export default function ContentModerationButtons({
           contentId={contentId}
           images={images}
           setRecords={setContent}
-          setIsLoading={setIsBlurLoading}
           isDisabled={isDeleteLoading}
           isRelative
         />

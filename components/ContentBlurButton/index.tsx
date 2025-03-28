@@ -4,19 +4,17 @@ import cn from "classnames";
 import { ActionIcon, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import callTheServer from "@/functions/callTheServer";
-import { ProgressImageType } from "@/types/global";
+import { ProgressImageType, ProgressType } from "@/types/global";
 import BlurEditor from "./BlurEditor";
-import { HandleSaveBlurProps, HandleSelectProps, HandleUpdateRecordType } from "./types";
+import { OnUpdateBlurProps } from "./types";
 import classes from "./ContentBlurButton.module.css";
 
 type Props = {
   isDisabled: boolean;
   isRelative?: boolean;
   contentId: string;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   images: ProgressImageType[];
-  setRecords?: React.Dispatch<React.SetStateAction<any | undefined>>;
-  onComplete?: (props: { [key: string]: any }) => void;
+  setRecords?: React.Dispatch<React.SetStateAction<(ProgressType | undefined)[]>>;
 };
 
 export default function ContentBlurButton({
@@ -25,73 +23,36 @@ export default function ContentBlurButton({
   isDisabled,
   isRelative,
   setRecords,
-  setIsLoading,
-  onComplete,
 }: Props) {
-  const handleUpdateRecord = useCallback(({ contentId, updateObject }: HandleUpdateRecordType) => {
-    try {
-      if (setRecords)
-        setRecords((prev: any) =>
-          prev?.map((rec: any) => (rec._id === contentId ? { ...rec, ...updateObject } : rec))
-        );
-      if (onComplete) onComplete(updateObject);
-    } catch (err) {
-      console.log("Error in handleUpdateRecord: ", err);
-    }
-  }, []);
-
-  const handleSelectBlurType = useCallback(async ({ blurType, contentId }: HandleSelectProps) => {
-    setIsLoading(true);
-
-    const response = await callTheServer({
-      endpoint: "updateContentBlurType",
-      method: "POST",
-      body: { blurType, contentId },
-    });
-
-    if (response.status === 200) {
-      const { mainUrl, images } = response.message;
-
-      if (mainUrl || images) {
-        handleUpdateRecord({
-          contentId,
-          updateObject: response.message,
-        });
-        setIsLoading(false);
-      }
-    }
-  }, []);
-
-  const handleSaveBlur = useCallback(
-    async ({ blurDots, offsets, image }: HandleSaveBlurProps) => {
+  const onUpdateBlur = useCallback(
+    async ({ blurDots, offsets, url, position }: OnUpdateBlurProps) => {
       const updatedBlurDots = blurDots.map((obj) => {
         return {
           ...obj,
-          originalHeight:
-            offsets.scaleHeight > 1
-              ? obj.originalHeight / offsets.scaleHeight
-              : obj.originalHeight * offsets.scaleHeight,
-          originalWidth:
-            offsets.scaleWidth > 1
-              ? obj.originalWidth / offsets.scaleWidth
-              : obj.originalWidth * offsets.scaleWidth,
-          x: offsets.scaleWidth > 1 ? obj.x / offsets.scaleWidth : obj.x * offsets.scaleWidth,
-          y: offsets.scaleHeight > 1 ? obj.y / offsets.scaleHeight : obj.y * offsets.scaleHeight,
+          originalHeight: obj.originalHeight / offsets.scaleHeight,
+          originalWidth: obj.originalWidth / offsets.scaleWidth,
+          x: obj.x / offsets.scaleWidth,
+          y: obj.y / offsets.scaleHeight,
         };
       });
 
       const response = await callTheServer({
-        endpoint: "createNewBlur",
+        endpoint: "updateContentBlurType",
         method: "POST",
-        body: { contentId, blurDots: updatedBlurDots, image },
+        body: { contentId, blurDots: updatedBlurDots, url, position },
       });
 
       if (response.status === 200) {
         if (setRecords) {
-          setRecords((prev: any) =>
-            prev?.map((rec: any) => (rec._id === contentId ? { ...rec, ...response.message } : rec))
-          );
+          setRecords((prev: (ProgressType | undefined)[]) => {
+            const newData = (prev || [])?.map((rec) =>
+              rec?._id === contentId ? { ...rec, ...response.message } : rec
+            );
+            return newData;
+          });
         }
+
+        return response.message;
       }
     },
     [contentId]
@@ -106,14 +67,7 @@ export default function ContentBlurButton({
           New blur
         </Title>
       ),
-      innerProps: (
-        <BlurEditor
-          images={images}
-          onUpdate={handleSaveBlur}
-          handleSelectBlurType={handleSelectBlurType}
-          contentId={contentId}
-        />
-      ),
+      innerProps: <BlurEditor images={images} contentId={contentId} onUpdate={onUpdateBlur} />,
     });
   };
 

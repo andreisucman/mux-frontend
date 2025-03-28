@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useMemo } from "react";
 import { Image, Skeleton } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ContentModerationButtons from "@/components/ContentModerationButtons";

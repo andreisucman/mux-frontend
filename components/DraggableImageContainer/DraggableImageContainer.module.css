@@ -9,6 +9,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: var(--mantne-color-dark-5);
 }
 
 .deleteIcon {
@@ -66,9 +67,3 @@
   border: rem(1) solid white;
 }
 
-.checkbox {
-  position: absolute;
-  left: rem(16);
-  top: rem(16);
-  z-index: 1;
-}

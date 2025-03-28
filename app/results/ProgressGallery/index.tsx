@@ -56,7 +56,7 @@ export default function ProgressGallery({
         handleContainerClick={handleContainerClick}
       />
     ),
-    [isSelf, isPublicPage, appliedBlurType, typeof progress]
+    [isSelf, isPublicPage, appliedBlurType, progress]
   );
 
   const gridColumnWidth = useMemo(() => (isMobile ? 125 : 200), [isMobile]);

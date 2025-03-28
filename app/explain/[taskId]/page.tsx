@@ -266,7 +266,7 @@ export default function Explain(props: Props) {
     }
   };
 
-  const handleUpdateTaskStatus = async (newStatus: TaskStatusEnum) => {
+  const handleCancelOrActivateTask = async (newStatus: TaskStatusEnum) => {
     const label = newStatus === TaskStatusEnum.ACTIVE ? "Activate" : "Cancel";
     askConfirmation({
       body: `${upperFirst(newStatus)} all future tasks of this type?`,
@@ -372,7 +372,7 @@ export default function Explain(props: Props) {
                       disabled={timeExpired}
                       className={classes.actionButton}
                       onClick={() =>
-                        handleUpdateTaskStatus(
+                        handleCancelOrActivateTask(
                           taskStatus === TaskStatusEnum.ACTIVE
                             ? TaskStatusEnum.CANCELED
                             : TaskStatusEnum.ACTIVE
@@ -394,7 +394,12 @@ export default function Explain(props: Props) {
               </Group>
               <ProofStatus
                 selectedTask={taskInfo}
-                updateTaskStatus={handleUpdateTaskStatus}
+                updateTaskStatus={(newStatus: TaskStatusEnum) => {
+                  updateTaskStatus({
+                    newStatus,
+                    isAll: false,
+                  });
+                }}
                 notStarted={!!futureStartDate}
                 expiresAt={taskInfo && taskInfo.expiresAt}
               />

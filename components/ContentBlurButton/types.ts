@@ -2,15 +2,11 @@ import { OffsetType } from "@/app/scan/types";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { BlurDotType } from "../UploadCard/types";
 
-export type HandleSaveBlurProps = {
+export type OnUpdateBlurProps = {
   blurDots: BlurDotType[];
   offsets: OffsetType;
-  image: string;
-};
-
-export type HandleUpdateRecordType = {
-  contentId: string;
-  updateObject: { [key: string]: any };
+  url: string;
+  position: string;
 };
 
 export type HandleSelectProps = {
