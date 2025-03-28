@@ -3,6 +3,7 @@ import { IconBlur } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { SimpleProgressType } from "@/app/results/types";
 import callTheServer from "@/functions/callTheServer";
 import { ProgressImageType, ProgressType } from "@/types/global";
 import BlurEditor from "./BlurEditor";
@@ -14,7 +15,7 @@ type Props = {
   isRelative?: boolean;
   contentId: string;
   images: ProgressImageType[];
-  setRecords?: React.Dispatch<React.SetStateAction<(ProgressType | undefined)[]>>;
+  setRecords?: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
 export default function ContentBlurButton({
@@ -44,7 +45,7 @@ export default function ContentBlurButton({
 
       if (response.status === 200) {
         if (setRecords) {
-          setRecords((prev: (ProgressType | undefined)[]) => {
+          setRecords((prev: SimpleProgressType[] | undefined) => {
             const newData = (prev || [])?.map((rec) =>
               rec?._id === contentId ? { ...rec, ...response.message } : rec
             );

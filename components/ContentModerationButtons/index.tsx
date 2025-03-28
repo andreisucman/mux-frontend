@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import cn from "classnames";
 import { Group } from "@mantine/core";
-import { ProgressImageType } from "@/types/global";
+import { SimpleProgressType } from "@/app/results/types";
+import { ProgressImageType, ProgressType } from "@/types/global";
 import ContentBlurButton from "../ContentBlurButton";
 import DeleteContentButton from "../DeleteContentButton";
 import classes from "./ContentModerationButtons.module.css";
@@ -13,7 +14,7 @@ type Props = {
   contentId: string;
   images: ProgressImageType[];
   collectionKey: "progress" | "proof" | "diary" | "about";
-  setContent?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  setContent?: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
 };
 
 export default function ContentModerationButtons({
