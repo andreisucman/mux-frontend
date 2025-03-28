@@ -32,7 +32,7 @@ export default function LeaveClubConfirmation({ handleLeaveClub }: Props) {
   return (
     <Stack className={classes.container}>
       <Table data={tableData} classNames={{ td: classes.td, th: classes.th }} />
-      <Button variant="default" onClick={handleLeaveClub}>
+      <Button variant="default" onClick={handleLeaveClub} mt={16}>
         Leave the Club
       </Button>
     </Stack>
