@@ -94,14 +94,17 @@ function BalancePane() {
 
   const displayBalance = useMemo(() => {
     const { pending, available } = balance || {};
+    const pendingAmount = (pending?.amount || 0) / 100;
+    const availableAmount = (available?.amount || 0) / 100;
+
     return (
       <Group className={classes.balance}>
         <Group className={classes.section}>
           <Text className={classes.annotation} c="dimmed">
             Pending
           </Text>
-          <Title order={2} className={classes.pending}>
-            {pending?.amount}
+          <Title c="dimmed" order={2} className={classes.pending}>
+            {pendingAmount}
             <Text c="dimmed" className={classes.currency}>
               {pending?.currency.toUpperCase()}
             </Text>
@@ -112,10 +115,8 @@ function BalancePane() {
             Available
           </Text>
           <Title order={2} className={classes.available}>
-            {available?.amount}
-            <Text c="dimmed" className={classes.currency}>
-              {available?.currency.toUpperCase()}
-            </Text>
+            {availableAmount}
+            <Text className={classes.currency}>{available?.currency.toUpperCase()}</Text>
           </Title>
         </Group>
       </Group>

@@ -42,6 +42,6 @@
 
 .closeButton {
   position: absolute;
-  right: rem(16);
-  top: rem(16);
+  right: rem(8);
+  top: rem(8);
 }

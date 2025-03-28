@@ -9,13 +9,13 @@ import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
 
 type Props = {
+  data: FilterItemType[];
   icons?: { [key: string]: React.ReactNode };
   placeholder: string;
   filterType?: string;
   isDisabled?: boolean;
   addToQuery?: boolean;
   allowDeselect?: boolean;
-  data: FilterItemType[];
   closeOnSelect?: boolean;
   selectedValue?: string | null;
   onSelect?: (key?: string | null) => void;

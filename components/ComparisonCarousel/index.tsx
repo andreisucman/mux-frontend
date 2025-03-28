@@ -22,10 +22,12 @@ export default function ComparisonCarousel({ data }: Props) {
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
   const title = useMemo(() => `${upperFirst(part)}`, [part]);
 
+  const redirectUrl = `/club/routines/${userName}?part=${part}`;
+
   const handleClickCarousel = useCallback(() => {
     const modalTitle = getRedirectModalTitle({
       avatar,
-      redirectUrl: `/club/routines/${userName}`,
+      redirectUrl,
       title: `${userName} - ${upperFirst(part)}`,
     });
 
@@ -35,7 +37,7 @@ export default function ComparisonCarousel({ data }: Props) {
       title: modalTitle,
       type: "progress",
     });
-  }, [userName, part, formattedDate]);
+  }, [userName, part, redirectUrl, formattedDate]);
 
   useEffect(() => {
     const objects = images?.flatMap((obj, i) => [
@@ -84,7 +86,7 @@ export default function ComparisonCarousel({ data }: Props) {
           {slides}
         </Carousel>
 
-        <CardMetaPanel name={userName || ""} avatar={avatar} formattedDate={formattedDate} />
+        <CardMetaPanel redirectUrl={redirectUrl} name={userName || ""} avatar={avatar} formattedDate={formattedDate} />
       </Stack>
     </Skeleton>
   );

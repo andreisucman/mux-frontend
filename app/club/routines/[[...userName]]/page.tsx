@@ -314,7 +314,6 @@ export default function ClubRoutines(props: Props) {
                     notPurchasedParts={notPurchased}
                     purchaseOverlayData={purchaseOverlayData}
                     handleCloseOverlay={handleCloseOverlay}
-                    setShowOverlayComponent={setShowOverlayComponent}
                   />
                 )}
                 {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (

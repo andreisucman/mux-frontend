@@ -94,7 +94,9 @@ export default function FoodScanResult() {
 
       if (!tasks) throw new Error("Tasks not found");
 
-      const foodTasks = tasks.filter((task) => task.isDish && task.status === "active");
+      const foodTasks = tasks.filter(
+        (task) => task.isDish && task.status === "active" && new Date(task.startsAt) <= new Date()
+      );
 
       if (foodTasks.length === 0) {
         openErrorModal({ description: "You don't have any active food tasks for today." });
@@ -157,7 +159,7 @@ export default function FoodScanResult() {
                 <PieChartComponent data={displayData || []} />
               </Overlay>
             </Stack>
-            <Button size="compact-sm" onClick={handleUploadAsProof}>
+            <Button variant="default" size="compact-sm" onClick={handleUploadAsProof}>
               Upload as proof
             </Button>
             <Stack className={classes.tableStack}>

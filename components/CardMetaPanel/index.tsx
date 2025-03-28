@@ -6,18 +6,19 @@ import classes from "./CardMetaPanel.module.css";
 
 type Props = {
   avatar?: { [key: string]: any } | null;
+  redirectUrl: string;
   name: string | null;
   formattedDate: string;
   customStyles?: { [key: string]: any };
 };
 
-export default function CardMetaPanel({ avatar, name, formattedDate, customStyles }: Props) {
+export default function CardMetaPanel({ redirectUrl, avatar, name, formattedDate, customStyles }: Props) {
   return (
     <UnstyledButton
       className={classes.container}
       style={customStyles ? customStyles : {}}
       component={Link}
-      href={`/club/routines/${name}`}
+      href={redirectUrl}
     >
       <Group className={classes.nameWrapper}>
         <AvatarComponent avatar={avatar} size="xs" />

@@ -18,15 +18,18 @@ export default function FilterCardContent({ filters }: Props) {
   const [ethnicityFilters, setEthnicityFilters] = useState<FilterItemType[]>([]);
   const [bodyTypeFilters, setBodyTypeFilters] = useState<FilterItemType[]>([]);
   const [sexFilters, setSexFilters] = useState<FilterItemType[]>([]);
+  const [partFilters, setPartFilters] = useState<FilterItemType[]>([]);
 
   const ageInterval = searchParams.get("ageInterval");
   const concern = searchParams.get("concern");
   const ethnicity = searchParams.get("ethnicity");
   const bodyType = searchParams.get("bodyType");
   const sex = searchParams.get("sex");
+  const part = searchParams.get("part");
 
   useEffect(() => {
     if (!filters) return;
+    setPartFilters(filters.part.map((key) => ({ label: upperFirst(key), value: key })));
     setAgeIntervalFilters(
       filters.ageInterval.map((key) => ({ label: upperFirst(key), value: key }))
     );
@@ -47,6 +50,17 @@ export default function FilterCardContent({ filters }: Props) {
     <Stack className={classes.container}>
       {filters ? (
         <>
+          {partFilters.length > 0 && (
+            <FilterDropdown
+              data={partFilters}
+              selectedValue={part}
+              filterType="part"
+              placeholder="Select part"
+              customStyles={styles}
+              allowDeselect
+              addToQuery
+            />
+          )}
           {sexFilters.length > 0 && (
             <FilterDropdown
               data={sexFilters}
@@ -54,6 +68,7 @@ export default function FilterCardContent({ filters }: Props) {
               filterType="sex"
               placeholder="Select sex"
               customStyles={styles}
+              allowDeselect
               addToQuery
             />
           )}
@@ -64,6 +79,7 @@ export default function FilterCardContent({ filters }: Props) {
               filterType="ethnicity"
               placeholder="Select ethnicity"
               customStyles={styles}
+              allowDeselect
               addToQuery
             />
           )}
@@ -74,6 +90,7 @@ export default function FilterCardContent({ filters }: Props) {
               filterType="ageInterval"
               placeholder="Select age interval"
               customStyles={styles}
+              allowDeselect
               addToQuery
             />
           )}
@@ -84,6 +101,7 @@ export default function FilterCardContent({ filters }: Props) {
               filterType="concern"
               placeholder="Select concern"
               customStyles={styles}
+              allowDeselect
               addToQuery
             />
           )}
@@ -94,6 +112,7 @@ export default function FilterCardContent({ filters }: Props) {
               filterType="bodyType"
               placeholder="Select body type"
               customStyles={styles}
+              allowDeselect
               addToQuery
             />
           )}

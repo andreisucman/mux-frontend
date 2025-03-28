@@ -30,4 +30,5 @@ export const blockFetchUserDataPaths = [
   "/scan/progress",
   "/scan/food",
   "/about",
+  "/tasks"
 ];

@@ -5,7 +5,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: rem(12);
-  background-color: var(--mantine-color-dark-6);
+  background-color: alpha(var(--mantine-color-dark-5), 0.5);
   border-radius: var(--mantine-radius-lg);
   min-height: rem(60);
   padding: rem(16);

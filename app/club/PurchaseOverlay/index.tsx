@@ -21,9 +21,6 @@ type Props = {
   notPurchasedParts: string[];
   userName: string;
   handleCloseOverlay: () => void;
-  setShowOverlayComponent: React.Dispatch<
-    React.SetStateAction<"none" | "maximizeButton" | "purchaseOverlay" | "showOtherRoutinesButton">
-  >;
 };
 
 export default function PurchaseOverlay({
@@ -31,7 +28,6 @@ export default function PurchaseOverlay({
   userName,
   notPurchasedParts,
   handleCloseOverlay,
-  setShowOverlayComponent,
 }: Props) {
   const router = useRouter();
   const defaultRouter = useDefaultRouter();

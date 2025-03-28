@@ -15,6 +15,7 @@ import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
+import { formatDate } from "@/helpers/formatDate";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import openErrorModal from "@/helpers/openErrorModal";
 import { SexEnum, TaskExampleType, TaskStatusEnum, TaskType } from "@/types/global";
@@ -43,7 +44,7 @@ export default function UploadProof(props: Props) {
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [componentToDisplay, setDisplayComponent] = useState<
-    "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed"
+    "loading" | "expired" | "waitComponent" | "videoRecorder" | "completed" | "notStarted"
   >("loading");
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
   const [existingProofRecord, setExistingProofRecord] = useState<ExistingProofRecordType | null>(
@@ -53,12 +54,13 @@ export default function UploadProof(props: Props) {
   const [isSetTaskExampleLoading, setIsSetTaskExampleLoading] = useState(false);
 
   const submissionName = searchParams.get("submissionName");
-  const { status: taskStatus, expiresAt, requisite } = taskInfo || {};
+  const { status: taskStatus, startsAt, expiresAt, requisite } = taskInfo || {};
 
   const { demographics, _id: userId } = userDetails || {};
   const { sex } = demographics || {};
 
   const taskExpired = new Date(expiresAt || 0) < new Date();
+  const taskNotStarted = new Date(startsAt || 0) > new Date();
 
   const fetchProofInfo = useCallback(async (taskId: string | null) => {
     if (!taskId) return;
@@ -152,6 +154,10 @@ export default function UploadProof(props: Props) {
       setDisplayComponent("expired");
       return;
     }
+    if (taskNotStarted) {
+      setDisplayComponent("notStarted");
+      return;
+    }
     if (isAnalysisGoing) {
       setDisplayComponent("waitComponent");
     } else if (taskStatus === "completed") {
@@ -159,7 +165,7 @@ export default function UploadProof(props: Props) {
     } else {
       setDisplayComponent("videoRecorder");
     }
-  }, [taskId, taskInfo, taskExpired, isAnalysisGoing]);
+  }, [taskId, taskInfo, taskNotStarted, taskExpired, isAnalysisGoing]);
 
   useEffect(() => {
     if (!userId || !taskId) return;
@@ -291,6 +297,12 @@ export default function UploadProof(props: Props) {
             )}
             {componentToDisplay === "expired" && (
               <OverlayWithText text="This task expired" button={overlayButton} />
+            )}
+            {componentToDisplay === "notStarted" && (
+              <OverlayWithText
+                text={`This task starts on ${formatDate({ date: taskInfo?.startsAt || new Date() })}`}
+                button={overlayButton}
+              />
             )}
           </Stack>
         </Skeleton>
