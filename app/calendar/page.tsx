@@ -206,7 +206,7 @@ export default function Calendar() {
         const response = await callTheServer({
           endpoint: "updateStatusOfTasks",
           method: "POST",
-          body: { taskIds: tasksToUpdate.map((t) => t._id), timeZone, isVoid: true, newStatus },
+          body: { taskIds: tasksToUpdate.map((t) => t._id), timeZone, newStatus },
         });
 
         if (response.status === 200) {

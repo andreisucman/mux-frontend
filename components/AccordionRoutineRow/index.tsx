@@ -1,20 +1,17 @@
 import React, { useCallback, useMemo } from "react";
-import { IconRefresh } from "@tabler/icons-react";
-import cn from "classnames";
-import { Accordion, Button, Checkbox, Group, Skeleton, Text, Title } from "@mantine/core";
+import { Accordion, Checkbox, Group, Skeleton, Title } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
 import cloneTask from "@/functions/cloneTask";
-import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { daysFrom } from "@/helpers/utils";
-import { AllTaskType, RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
+import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
 import Indicator from "../Indicator";
@@ -171,7 +168,7 @@ export default function AccordionRoutineRow({
       const response = await callTheServer({
         endpoint: "updateStatusOfTasks",
         method: "POST",
-        body: { taskIds: [taskId], newStatus, routineStatus, returnOnlyRoutines: true },
+        body: { taskIds: [taskId], newStatus, routineStatus, returnRoutines: true },
       });
 
       if (response.status === 200) {
@@ -183,6 +180,7 @@ export default function AccordionRoutineRow({
         }
 
         const { routines } = message;
+        console.log("routines", routines);
         if (setRoutines) setRoutines(routines);
       }
     },
@@ -229,7 +227,11 @@ export default function AccordionRoutineRow({
       style={focused ? { zIndex: 100 } : {}}
       ref={ref}
     >
-      <Accordion.Item key={routine._id} value={routine._id || `no_value-${index}`} className={classes.item}>
+      <Accordion.Item
+        key={routine._id}
+        value={routine._id || `no_value-${index}`}
+        className={classes.item}
+      >
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>

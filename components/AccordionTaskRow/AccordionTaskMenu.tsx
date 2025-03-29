@@ -56,7 +56,7 @@ export default function AccordionTaskMenu({
             Activate task
           </Menu.Item>
         )}
-        {taskStatus === TaskStatusEnum.CANCELED && (
+        {[TaskStatusEnum.CANCELED, TaskStatusEnum.EXPIRED].includes(taskStatus as TaskStatusEnum) && (
           <Menu.Item onClick={() => updateTaskStatus(taskId, TaskStatusEnum.DELETED)}>
             <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
             Delete task

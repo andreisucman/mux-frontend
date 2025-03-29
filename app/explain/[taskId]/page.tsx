@@ -255,7 +255,7 @@ export default function Explain(props: Props) {
     const response = await callTheServer({
       endpoint: "updateStatusOfTasks",
       method: "POST",
-      body: { taskIds: [taskId], isAll, timeZone, newStatus, isVoid: true },
+      body: { taskIds: [taskId], isAll, timeZone, newStatus },
     });
 
     if (response.status === 200) {
