@@ -10,6 +10,7 @@ type Props = {
 };
 
 export default function Indicator({ status, shape = "line", isStatic, customStyles }: Props) {
+  
   return (
     <div
       className={cn(classes.container, {

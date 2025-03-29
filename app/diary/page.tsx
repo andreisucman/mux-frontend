@@ -18,7 +18,7 @@ import setUtcMidnight from "@/helpers/setUtcMidnight";
 import { TaskStatusEnum, UserDataType } from "@/types/global";
 import DiaryContent from "../../components/DiaryContent";
 import SelectPartModalContent from "../../components/SelectPartModalContent";
-import { ChatCategoryEnum, DiaryRecordType } from "./type";
+import { DiaryRecordType } from "./type";
 import classes from "./diary.module.css";
 
 export type HandleFetchDiaryProps = {
@@ -117,8 +117,17 @@ export default function DiaryPage() {
         return;
       }
 
+      const todayMidnight = new Date();
+      todayMidnight.setHours(0, 0, 0, 0);
+
       const activeTasks =
-        tasks.filter((task) => task.status === "active").filter((t) => t.part === part) || [];
+        tasks
+          .filter((task) => task.status === "active")
+          .filter(
+            (t) =>
+              t.part === part &&
+              new Date(t.startsAt).toDateString() === todayMidnight.toDateString()
+          ) || [];
 
       if (activeTasks.length > 0) {
         const activeParts = [...new Set(activeTasks.map((t) => t.part))];

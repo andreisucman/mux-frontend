@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import NextImage from "next/image";
-import { Group, Image, Skeleton, Stack, Title } from "@mantine/core";
+import { Group, Image, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import VideoPlayer from "@/components/VideoPlayer";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
@@ -47,10 +47,10 @@ export default function DiaryTaskCard({
   }, [url]);
 
   return (
-    <Skeleton className={`skeleton ${classes.skeleton}`} visible={showSkeleton}>
+    <Skeleton className={"skeleton"} visible={showSkeleton}>
       <Stack className={classes.container}>
         <Group className={classes.head}>
-          {icon}
+          <Text className={classes.icon}>{icon}</Text>
           <Title order={5} lineClamp={1}>
             {upperFirst(name || "")}
           </Title>

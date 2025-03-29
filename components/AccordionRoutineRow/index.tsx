@@ -99,7 +99,15 @@ export default function AccordionRoutineRow({
   }, [part, startsAt, lastDate]);
 
   const totalTotal = useMemo(
-    () => routine.allTasks.reduce((a, c) => a + c.ids.length, 0),
+    () =>
+      routine.allTasks.reduce(
+        (a, c) =>
+          a +
+          c.ids.filter((obj) =>
+            [TaskStatusEnum.ACTIVE, TaskStatusEnum.COMPLETED].includes(obj.status as TaskStatusEnum)
+          ).length,
+        0
+      ),
     [routine.allTasks]
   );
 
@@ -119,9 +127,10 @@ export default function AccordionRoutineRow({
 
   const allActiveTasks = useMemo(() => {
     const activeTasks = allTasks.filter((at) =>
-      at.ids.some(
-        (idObj) =>
-          idObj.status === "active" || idObj.status === "canceled" || idObj.status === "expired"
+      at.ids.some((idObj) =>
+        [TaskStatusEnum.ACTIVE, TaskStatusEnum.COMPLETED, TaskStatusEnum.EXPIRED].includes(
+          idObj.status as TaskStatusEnum
+        )
       )
     );
     return activeTasks;
@@ -180,7 +189,6 @@ export default function AccordionRoutineRow({
         }
 
         const { routines } = message;
-        console.log("routines", routines);
         if (setRoutines) setRoutines(routines);
       }
     },
@@ -213,13 +221,6 @@ export default function AccordionRoutineRow({
 
   const showSkeleton = useShowSkeleton();
 
-  const indicatorStyles = useMemo(
-    () => ({
-      borderRadius: "1rem 0.25rem 0.25rem 1rem",
-    }),
-    []
-  );
-
   return (
     <Skeleton
       visible={showSkeleton}
@@ -245,7 +246,6 @@ export default function AccordionRoutineRow({
                   }}
                 />
               )}
-              <Indicator status={routine.status} customStyles={indicatorStyles} />
               {partIcons[part]}
               {rowLabel}
               <StatsGroup

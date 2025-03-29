@@ -2,9 +2,11 @@
   padding: 0;
   overflow: auto;
 }
+
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(rem(200), 1fr));
+  grid-template-rows: minmax(rem(400), 1fr);
   grid-auto-flow: column;
-  gap: 8px;
+  gap: rem(8);
 }

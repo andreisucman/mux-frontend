@@ -71,9 +71,10 @@ export default function UploadProof(props: Props) {
     });
 
     if (response.status === 200) {
+      console.log("response.message",response.message)
       setExistingProofRecord(response.message);
     }
-  }, []);
+  }, [taskId]);
 
   const uploadProof = async ({
     taskId,
@@ -107,8 +108,6 @@ export default function UploadProof(props: Props) {
       });
 
       if (response.status !== 200) {
-        deleteFromIndexedDb("proofVideo");
-        deleteFromIndexedDb("proofImage");
         setDisplayComponent("videoRecorder");
         openErrorModal({
           description: response.error,
@@ -117,6 +116,8 @@ export default function UploadProof(props: Props) {
         setIsAnalysisGoing(false);
       }
 
+      deleteFromIndexedDb("proofVideo");
+      deleteFromIndexedDb("proofImage");
       setDisplayComponent("waitComponent");
     } catch (err) {
       setDisplayComponent("videoRecorder");
@@ -177,12 +178,6 @@ export default function UploadProof(props: Props) {
     });
   }, [userId, taskId]);
 
-  const overlayButton = (
-    <Button mt={8} variant="default" onClick={() => router.replace("/tasks")}>
-      Return
-    </Button>
-  );
-
   const handleUpdateExample = useCallback(
     async (examples?: TaskExampleType[]) => {
       if (isSetTaskExampleLoading || !taskInfo) return;
@@ -199,6 +194,12 @@ export default function UploadProof(props: Props) {
       }
     },
     [taskInfo, isSetTaskExampleLoading]
+  );
+
+  const overlayButton = (
+    <Button mt={8} variant="default" onClick={() => router.replace("/tasks")}>
+      Return
+    </Button>
   );
 
   const setExampleButtonInfo = useMemo(() => {
@@ -248,6 +249,8 @@ export default function UploadProof(props: Props) {
 
     return response;
   }, [existingProofRecord, taskInfo]);
+
+  console.log("existingProofRecord", existingProofRecord);
 
   return (
     <Stack flex={1} className="smallPage">

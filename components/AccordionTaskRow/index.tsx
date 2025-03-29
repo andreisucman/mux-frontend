@@ -39,14 +39,30 @@ export default function AccordionTaskRow({
     [ids]
   );
 
-  const total = useMemo(() => ids.length, [ids]);
+  const total = useMemo(
+    () =>
+      ids.filter((obj) =>
+        [TaskStatusEnum.COMPLETED, TaskStatusEnum.ACTIVE].includes(obj.status as TaskStatusEnum)
+      ).length,
+    [ids]
+  );
 
   const completed = useMemo(
     () => ids.filter((io) => io.status === TaskStatusEnum.COMPLETED).length,
     [ids]
   );
 
-  const someTaskActive = useMemo(() => ids.some((obj) => obj.status === "active"), [ids]);
+  const taskStatus = useMemo(() => {
+    const isActive = ids.some((obj) => obj.status === TaskStatusEnum.ACTIVE);
+    const isCompleted =
+      !ids.some((obj) => obj.status === TaskStatusEnum.ACTIVE) &&
+      ids.some((obj) => obj.status === TaskStatusEnum.COMPLETED);
+
+    if (isActive) return TaskStatusEnum.ACTIVE;
+    if (isCompleted) return TaskStatusEnum.COMPLETED;
+    return TaskStatusEnum.EXPIRED;
+  }, [ids]);
+  
   const completionRate = useMemo(() => Math.round((completed / total) * 100), [completed, total]);
 
   const handleOpenList = () => {
@@ -57,7 +73,7 @@ export default function AccordionTaskRow({
     <Stack className={classes.container}>
       <Group className={classes.wrapper} onClick={handleOpenList}>
         <Group className={classes.title}>
-          <Indicator status={someTaskActive ? "active" : ""} />
+          <Indicator status={taskStatus} />
           <IconWithColor icon={icon} color={color} />
           <Text className={classes.name} lineClamp={2}>
             {name}
