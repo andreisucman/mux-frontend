@@ -4,6 +4,7 @@ import {
   IconChecklist,
   IconGitCompare,
   IconHandGrab,
+  IconListCheck,
   IconNotebook,
   IconPencil,
   IconRotate,
@@ -48,8 +49,8 @@ export const scanAnalysisContent = [
 
 export const generalPlanContent = [
   {
-    icon: <IconHandGrab className="icon icon__large" />,
-    description: "See and copy proven tasks from the routine.",
+    icon: <IconListCheck className="icon icon__large" />,
+    description: "See and copy tasks from the routine.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(24) }} />,

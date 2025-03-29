@@ -107,6 +107,8 @@ export default function UploadProof(props: Props) {
       });
 
       if (response.status !== 200) {
+        deleteFromIndexedDb("proofVideo");
+        deleteFromIndexedDb("proofImage");
         setDisplayComponent("videoRecorder");
         openErrorModal({
           description: response.error,
@@ -132,8 +134,6 @@ export default function UploadProof(props: Props) {
     await fetchProofInfo(taskId);
     handleFetchTaskInfo(taskId);
     setDisplayComponent("completed");
-    deleteFromIndexedDb("proofVideo");
-    deleteFromIndexedDb("proofImage");
   };
 
   useEffect(() => {

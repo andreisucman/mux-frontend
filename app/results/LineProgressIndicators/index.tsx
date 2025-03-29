@@ -40,12 +40,12 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
   };
 
   const firstThreeIndicators = useMemo(
-    () => allFeatures.slice(0, 3).map(renderIndicator),
+    () => allFeatures.slice(0, 1).map(renderIndicator),
     [allFeatures, scoresDifference]
   );
 
   const restIndicators = useMemo(
-    () => allFeatures.slice(3).map(renderIndicator),
+    () => allFeatures.slice(1).map(renderIndicator),
     [allFeatures, scoresDifference]
   );
 

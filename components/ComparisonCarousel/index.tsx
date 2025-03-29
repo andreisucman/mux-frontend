@@ -4,7 +4,7 @@ import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
-import { partIcons } from "@/helpers/icons";
+import { getPartIcon, partIcons } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import CardMetaPanel from "../CardMetaPanel";
@@ -16,19 +16,26 @@ type Props = {
 };
 
 export default function ComparisonCarousel({ data }: Props) {
-  const { userName, part, images, initialImages, initialDate, updatedAt, avatar } = data;
+  const { userName, routineName, part, images, initialImages, initialDate, updatedAt, avatar } =
+    data;
   const [slides, setSlides] = useState<React.ReactNode[]>();
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
-  const title = useMemo(() => `${upperFirst(part)}`, [part]);
 
   const redirectUrl = `/club/routines/${userName}?part=${part}`;
 
   const handleClickCarousel = useCallback(() => {
+    const icon = getPartIcon(part);
+    const title = (
+      <Title order={5} lineClamp={1}>
+        {upperFirst(routineName || part)}
+      </Title>
+    );
+
     const modalTitle = getRedirectModalTitle({
       avatar,
       redirectUrl,
-      title: `${userName} - ${upperFirst(part)}`,
+      title,
     });
 
     openResultModal({
@@ -37,7 +44,7 @@ export default function ComparisonCarousel({ data }: Props) {
       title: modalTitle,
       type: "progress",
     });
-  }, [userName, part, redirectUrl, formattedDate]);
+  }, [userName, part, routineName, redirectUrl, formattedDate]);
 
   useEffect(() => {
     const objects = images?.flatMap((obj, i) => [
@@ -65,11 +72,9 @@ export default function ComparisonCarousel({ data }: Props) {
   return (
     <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
-        <Group className={classes.title}>
-          {partIcons[part]}
-          <Title order={5}>{title}</Title>
-        </Group>
-
+        <Title order={5} className={classes.title} lineClamp={1}>
+          {partIcons[part]} {upperFirst(routineName || part)}
+        </Title>
         <Carousel
           slideSize={{ base: "50%" }}
           align="start"
@@ -86,7 +91,12 @@ export default function ComparisonCarousel({ data }: Props) {
           {slides}
         </Carousel>
 
-        <CardMetaPanel redirectUrl={redirectUrl} name={userName || ""} avatar={avatar} formattedDate={formattedDate} />
+        <CardMetaPanel
+          redirectUrl={redirectUrl}
+          name={userName || ""}
+          avatar={avatar}
+          formattedDate={formattedDate}
+        />
       </Stack>
     </Skeleton>
   );

@@ -44,7 +44,7 @@ export default function openResultModal({ record, type, title, isPublicPage }: O
 type GetRedirectModalTitleProps = {
   redirectUrl: string;
   avatar: { [key: string]: any } | null;
-  title: string;
+  title: React.ReactNode | string;
 };
 
 export function getRedirectModalTitle({ redirectUrl, avatar, title }: GetRedirectModalTitleProps) {
@@ -56,9 +56,7 @@ export function getRedirectModalTitle({ redirectUrl, avatar, title }: GetRedirec
       onClick={() => modals.closeAll()}
     >
       <AvatarComponent avatar={avatar} size="xs" />
-      <Title order={5} ml="0" lineClamp={2}>
-        {title}
-      </Title>
+      {title}
     </UnstyledButton>
   );
 }

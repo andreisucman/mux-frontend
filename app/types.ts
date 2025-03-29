@@ -16,6 +16,7 @@ export type BeforeAfterType = {
   demographics: DemographicsType;
   concerns: UserConcernType[];
   avatar: { [key: string]: any } | null;
+  routineName?:string;
   userName: string | null;
   progresses?: { progressId: string; createdAt: string }[];
 };

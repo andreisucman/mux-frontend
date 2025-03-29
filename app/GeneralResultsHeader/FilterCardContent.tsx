@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Skeleton, Stack } from "@mantine/core";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Skeleton, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -12,6 +12,8 @@ type Props = {
 };
 
 export default function FilterCardContent({ filters }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [ageIntervalFilters, setAgeIntervalFilters] = useState<FilterItemType[]>([]);
   const [concernFilters, setConcernFilters] = useState<FilterItemType[]>([]);
@@ -27,6 +29,9 @@ export default function FilterCardContent({ filters }: Props) {
   const sex = searchParams.get("sex");
   const part = searchParams.get("part");
 
+  const noFilters =
+    [ageInterval, concern, ethnicity, bodyType, sex, part].filter(Boolean).length === 0;
+
   useEffect(() => {
     if (!filters) return;
     setPartFilters(filters.part.map((key) => ({ label: upperFirst(key), value: key })));
@@ -34,7 +39,7 @@ export default function FilterCardContent({ filters }: Props) {
       filters.ageInterval.map((key) => ({ label: upperFirst(key), value: key }))
     );
     setConcernFilters(
-      filters.concern.map((key) => {
+      filters.concerns.map((key) => {
         const label = key.split("_").join(" ");
         return { label: upperFirst(label), value: key };
       })
@@ -50,6 +55,17 @@ export default function FilterCardContent({ filters }: Props) {
     <Stack className={classes.container}>
       {filters ? (
         <>
+          {concernFilters.length > 0 && (
+            <FilterDropdown
+              data={concernFilters}
+              selectedValue={concern}
+              filterType="concern"
+              placeholder="Select concern"
+              customStyles={styles}
+              allowDeselect
+              addToQuery
+            />
+          )}
           {partFilters.length > 0 && (
             <FilterDropdown
               data={partFilters}
@@ -94,17 +110,7 @@ export default function FilterCardContent({ filters }: Props) {
               addToQuery
             />
           )}
-          {concernFilters.length > 0 && (
-            <FilterDropdown
-              data={concernFilters}
-              selectedValue={concern}
-              filterType="concern"
-              placeholder="Select concern"
-              customStyles={styles}
-              allowDeselect
-              addToQuery
-            />
-          )}
+
           {bodyTypeFilters.length > 0 && (
             <FilterDropdown
               data={bodyTypeFilters}
@@ -116,6 +122,9 @@ export default function FilterCardContent({ filters }: Props) {
               addToQuery
             />
           )}
+          <Button disabled={noFilters} variant="default" onClick={() => router.replace(pathname)}>
+            Clear filters
+          </Button>
         </>
       ) : (
         <Skeleton className="skeleton" flex={1}></Skeleton>

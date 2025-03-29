@@ -75,7 +75,7 @@ export default function Considerations() {
           <TextareaComponent
             text={text}
             placeholder={
-              "I am vegetarian but I eat dairy and eggs. I have going to gym and I only have dumbbells and a barbell in my house. I try to avoid..."
+              "I am vegetarian but I eat dairy and eggs. I hate going to gym and I only have dumbbells and a barbell in my house. I had back surgery two years ago and ... I try to avoid..."
             }
             setText={setText}
           />

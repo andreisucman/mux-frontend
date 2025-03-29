@@ -27,6 +27,8 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
   gap: rem(8);
   padding: rem(16) rem(16) 0;
 }
