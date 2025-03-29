@@ -182,13 +182,15 @@ export default function AddATaskContainer({
           </Stack>
 
           <Stack className={classes.buttonsGroup}>
+            {step === 1 && (
+              <Checkbox
+                label="Let the coach draft it for me"
+                checked={enableDrafting}
+                onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
+              />
+            )}
             {step === 1 && !rawTask && (
               <>
-                <Checkbox
-                  label="Let the coach draft it for me"
-                  checked={enableDrafting}
-                  onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
-                />
                 <Button
                   variant={isSubscriptionActive ? "filled" : "default"}
                   loading={isLoading}
