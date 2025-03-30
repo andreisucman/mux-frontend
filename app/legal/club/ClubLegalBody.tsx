@@ -196,9 +196,9 @@ export default function ClubLegalBody({ addTitle }: Props) {
         <Title order={2}>4. Payment Terms</Title>
         <Title order={3}>1. Processing Fees:</Title>
         <Text>
-          All payments to Club members will be processed through our payment processor - Stripe.
-          Stripe may deduct its processing fees from your earnings, in accordance with their terms
-          and fee structure. We do not control Stripe&apos;s processing fees and times, and payments
+          All payments to Club members will be processed through our payment processor. Our payment
+          processor may deduct its processing fees from your earnings, in accordance with their
+          terms and fee structure. We do not control their processing fees and times, and payments
           may take several business days to reflect in your bank account after they are initiated.
         </Text>
         <Title order={3}>2. Payment Schedule:</Title>
@@ -219,7 +219,7 @@ export default function ClubLegalBody({ addTitle }: Props) {
           </li>
           <li>
             We may withhold taxes where required by law, based on the information provided during
-            the Stripe Connect onboarding process.
+            the Club onboarding process.
           </li>
         </ul>
       </Stack>
