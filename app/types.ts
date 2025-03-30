@@ -1,5 +1,5 @@
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
-import { DemographicsType, ProgressImageType, UserConcernType } from "@/types/global";
+import { AvatarType, DemographicsType, ProgressImageType, UserConcernType } from "@/types/global";
 
 export type BeforeAfterType = {
   _id: string;
@@ -15,8 +15,8 @@ export type BeforeAfterType = {
   createdAt?: Date;
   demographics: DemographicsType;
   concerns: UserConcernType[];
-  avatar: { [key: string]: any } | null;
-  routineName?:string;
+  avatar: AvatarType | null;
+  routineName?: string;
   userName: string | null;
   progresses?: { progressId: string; createdAt: string }[];
 };

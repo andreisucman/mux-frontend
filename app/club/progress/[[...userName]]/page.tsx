@@ -55,7 +55,6 @@ export default function ClubProgress(props: Props) {
   const sort = searchParams.get("sort");
 
   const { name, club } = userDetails || {};
-  const { followingUserName } = club || {};
 
   const isSelf = userName === name;
 
@@ -130,7 +129,7 @@ export default function ClubProgress(props: Props) {
 
   useEffect(() => {
     handleFetchProgress({ part, sort, userName });
-  }, [authStatus, userName, sort, part, followingUserName]);
+  }, [authStatus, userName, sort, part]);
 
   useEffect(() => {
     getFilters({ collection: "progress", fields: ["part"], filter: [`userName=${userName}`] }).then(

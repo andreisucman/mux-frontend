@@ -12,6 +12,7 @@ type Props = {
 
 export default function AvatarComponent({ avatar, size = "md", customStyles }: Props) {
   const { image } = avatar || {};
+
   return (
     image && (
       <Image

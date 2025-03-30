@@ -56,7 +56,6 @@ export default function ClubProof(props: Props) {
   const concern = searchParams.get("concern");
 
   const { name, club } = userDetails || {};
-  const { followingUserName } = club || {};
   const isSelf = name === userName;
 
   const handleFetchProof = useCallback(
@@ -115,7 +114,7 @@ export default function ClubProof(props: Props) {
 
   useEffect(() => {
     handleFetchProof({ userName, sort, part, concern, query });
-  }, [authStatus, userName, part, sort, concern, query, followingUserName]);
+  }, [authStatus, userName, part, sort, concern, query]);
 
   useEffect(() => {
     getFilters({ collection: "proof", fields: ["part"], filter: [`userName=${userName}`] }).then(

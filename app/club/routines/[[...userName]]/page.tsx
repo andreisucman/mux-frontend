@@ -33,7 +33,7 @@ export const runtime = "edge";
 
 type GetRoutinesProps = {
   skip?: boolean;
-  followingUserName?: string | string[];
+  userName?: string | string[];
   sort: string | null;
   part: string | null;
   routinesLength?: number;
@@ -111,12 +111,12 @@ export default function ClubRoutines(props: Props) {
   );
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, part, followingUserName, routinesLength }: GetRoutinesProps) => {
+    async ({ skip, sort, part, userName, routinesLength }: GetRoutinesProps) => {
       const response = await fetchRoutines({
         skip,
         sort,
         part,
-        followingUserName,
+        userName,
         routinesLength: routinesLength || 0,
       });
 
@@ -244,7 +244,7 @@ export default function ClubRoutines(props: Props) {
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
-      followingUserName: userName,
+      userName: userName,
       routinesLength: (routines && routines.length) || 0,
       sort,
       part,
@@ -353,7 +353,7 @@ export default function ClubRoutines(props: Props) {
                     onClick={() =>
                       handleFetchRoutines({
                         skip: true,
-                        followingUserName: userName,
+                        userName: userName,
                         routinesLength: (routines && routines.length) || 0,
                         part,
                         sort,

@@ -38,7 +38,7 @@ export type ClubUserType = {
   name?: string;
   intro?: string;
   socials: { value: string | null; label: string }[];
-  avatar?: { [key: string]: any };
+  avatar?: AvatarType | null;
   latestScoresDifference?: LatestScoresDifferenceType;
 };
 

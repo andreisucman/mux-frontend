@@ -36,60 +36,56 @@ export default function BeforeAftersPage() {
   const fetchBeforeAfters = useCallback(
     async (props?: FetchBeforeAftersProps) => {
       const { skip, existingCount } = props || {};
-      try {
-        setBeforeAfters(undefined);
+      setBeforeAfters(undefined);
 
-        let finalEndpoint = "getBeforeAfters";
-        const queryParams = [];
+      let finalEndpoint = "getBeforeAfters";
+      const queryParams = [];
 
-        if (skip && existingCount && existingCount > 0) {
-          queryParams.push(`skip=${existingCount}`);
-        }
+      if (skip && existingCount && existingCount > 0) {
+        queryParams.push(`skip=${existingCount}`);
+      }
 
-        if (bodyType) {
-          queryParams.push(`bodyType=${bodyType}`);
-        }
+      if (bodyType) {
+        queryParams.push(`bodyType=${bodyType}`);
+      }
 
-        if (part) {
-          queryParams.push(`part=${part}`);
-        }
+      if (part) {
+        queryParams.push(`part=${part}`);
+      }
 
-        if (sex) {
-          queryParams.push(`sex=${sex}`);
-        }
+      if (sex) {
+        queryParams.push(`sex=${sex}`);
+      }
 
-        if (ageInterval) {
-          queryParams.push(`ageInterval=${ageInterval}`);
-        }
+      if (ageInterval) {
+        queryParams.push(`ageInterval=${ageInterval}`);
+      }
 
-        if (ethnicity) {
-          queryParams.push(`ethnicity=${ethnicity}`);
-        }
+      if (ethnicity) {
+        queryParams.push(`ethnicity=${ethnicity}`);
+      }
 
-        if (concern) {
-          queryParams.push(`concern=${concern}`);
-        }
+      if (concern) {
+        queryParams.push(`concern=${concern}`);
+      }
 
-        if (queryParams.length > 0) {
-          finalEndpoint += `?${queryParams.join("&")}`;
-        }
+      if (queryParams.length > 0) {
+        finalEndpoint += `?${queryParams.join("&")}`;
+      }
 
-        const response = await callTheServer({
-          endpoint: finalEndpoint,
-          method: "GET",
-        });
+      const response = await callTheServer({
+        endpoint: finalEndpoint,
+        method: "GET",
+      });
 
-        if (response.status === 200) {
-          if (skip) {
-            setBeforeAfters((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
-          } else {
-            setBeforeAfters(response.message.slice(0, 20));
-          }
-          setHasMore(response.message.length === 21);
+      if (response.status === 200) {
+        if (skip) {
+          setBeforeAfters((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
         } else {
-          openErrorModal();
+          setBeforeAfters(response.message.slice(0, 20));
         }
-      } catch (err) {}
+        setHasMore(response.message.length === 21);
+      }
     },
     [beforeAfters, searchParams.toString()]
   );

@@ -39,7 +39,6 @@ export type CloneOrRescheduleRoutinesProps = {
 
 type GetRoutinesProps = {
   skip?: boolean;
-  followingUserName?: string | string[];
   type?: string;
   sort: string | null;
   part: string | null;

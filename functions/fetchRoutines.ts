@@ -5,7 +5,7 @@ type FetchRoutinesProps = {
   skip?: boolean;
   part: string | null;
   sort: string | null;
-  followingUserName?: string | string[];
+  userName?: string | string[];
   routinesLength: number;
 };
 
@@ -13,13 +13,13 @@ const fetchRoutines = async ({
   skip,
   sort,
   part,
-  followingUserName,
+  userName,
   routinesLength,
 }: FetchRoutinesProps) => {
   try {
     let endpoint = "getRoutines";
 
-    if (followingUserName) endpoint += `/${followingUserName}`;
+    if (userName) endpoint += `/${userName}`;
 
     const parts = [];
 

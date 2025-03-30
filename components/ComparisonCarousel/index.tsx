@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Carousel } from "@mantine/carousel";
-import { Group, Skeleton, Stack, Title } from "@mantine/core";
+import { Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
