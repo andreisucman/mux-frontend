@@ -1,8 +1,8 @@
 .container {
-  /* height: rem(40); */
-  /* width: rem(40); */
   min-height: rem(40);
   min-width: rem(40);
+  max-width: rem(50);
+  max-height: rem(50);
   border-radius: rem(200);
   display: flex;
   height: fit-content;
