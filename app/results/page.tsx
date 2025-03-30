@@ -31,7 +31,7 @@ export default function ResultsProgress() {
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
@@ -91,7 +91,7 @@ export default function ResultsProgress() {
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}
-          isDisabled={availableParts.length === 0}
+          isDisabled={!availableParts}
           filterNames={["part"]}
           sortItems={progressSortItems}
           onFilterClick={() =>

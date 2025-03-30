@@ -37,7 +37,7 @@ export default function RoutinesHistoryPage() {
   const status = searchParams.get("status");
   const sort = searchParams.get("sort");
 
-  const [availableParts, setAvaiableParts] = useState<FilterPartItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterPartItemType[]>();
   const [availableStatuses, setAvailableStatuses] = useState<FilterPartItemType[]>([]);
 
   const fetchInactiveTasks = useCallback(
@@ -101,8 +101,6 @@ export default function RoutinesHistoryPage() {
     fetchInactiveTasks({ status, part, sort });
   }, [status, part, sort]);
 
-  const isFilterDisabled = availableParts.length + availableStatuses.length === 0;
-
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
@@ -110,7 +108,7 @@ export default function RoutinesHistoryPage() {
           title="Task history"
           filterNames={["part", "status"]}
           sortItems={historySortItems}
-          isDisabled={isFilterDisabled}
+          isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.HistoryFilterCardContent,

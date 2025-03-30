@@ -29,7 +29,7 @@ export default function ResultsProof() {
   const { status } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
 
   const query = searchParams.get("query");
   const part = searchParams.get("part");
@@ -76,7 +76,7 @@ export default function ResultsProof() {
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}
-          isDisabled={availableParts.length === 0}
+          isDisabled={!availableParts}
           filterNames={["part"]}
           sortItems={proofSortItems}
           onFilterClick={() =>

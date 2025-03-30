@@ -30,17 +30,13 @@ export default function GeneralResultsHeader({ children, filterNames = [] }: Pro
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState<ExistingFiltersType | null>(null);
+  const [filters, setFilters] = useState<ExistingFiltersType>();
 
   const paramsCount = useMemo(() => {
     const allParams = Array.from(searchParams.keys());
     const requiredParams = allParams.filter((param) => filterNames.includes(param));
     return requiredParams.length;
   }, [searchParams.toString()]);
-
-  const filtersActive = useMemo(() => {
-    return Object.values(filters || {}).some((value: any) => value && value.length > 0);
-  }, [filters]);
 
   const getExistingFilters = useCallback(async (pathname: string) => {
     try {
@@ -72,7 +68,7 @@ export default function GeneralResultsHeader({ children, filterNames = [] }: Pro
               childrenProps: { filters },
             })
           }
-          isDisabled={!filtersActive}
+          isDisabled={!filters}
         />
       </Group>
     </Group>

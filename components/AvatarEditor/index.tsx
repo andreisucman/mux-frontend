@@ -25,7 +25,6 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
   const [updatedConfig, setUpdatedConfig] = useState<AvatarConfig | undefined>(currentConfig);
   const [avatarImage, setAvatarImage] = useState<string | undefined>(image);
 
-
   const isDirty = useMemo(() => {
     return JSON.stringify(currentConfig) !== JSON.stringify(updatedConfig);
   }, [updatedConfig]);
@@ -41,8 +40,6 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
         ...(prev || {}),
         [key]: value,
       };
-
-      console.log("key", key, "value", value);
 
       const image = createAvatar(micah, newPayload).toDataUri();
       setAvatarImage(image);

@@ -54,7 +54,7 @@ export default function MyRoutines() {
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
@@ -283,7 +283,7 @@ export default function MyRoutines() {
       <SkeletonWrapper>
         <PageHeader
           title="My routines"
-          isDisabled={availableParts.length === 0}
+          isDisabled={!availableParts}
           filterNames={["part"]}
           sortItems={routineSortItems}
           onFilterClick={() =>
