@@ -5,7 +5,8 @@ import { ActionIcon, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { SimpleProgressType } from "@/app/results/types";
 import callTheServer from "@/functions/callTheServer";
-import { ProgressImageType, ProgressType } from "@/types/global";
+import openErrorModal from "@/helpers/openErrorModal";
+import { ProgressImageType } from "@/types/global";
 import BlurEditor from "./BlurEditor";
 import { OnUpdateBlurProps } from "./types";
 import classes from "./ContentBlurButton.module.css";
@@ -54,6 +55,8 @@ export default function ContentBlurButton({
         }
 
         return response.message;
+      } else {
+        openErrorModal();
       }
     },
     [contentId]
@@ -79,7 +82,7 @@ export default function ContentBlurButton({
       variant="default"
       className={cn(classes.container, { [classes.relative]: !!isRelative })}
     >
-      <IconBlur className="icon icon__small" />
+      <IconBlur className={`${classes.icon} icon icon__small`} />
     </ActionIcon>
   );
 }

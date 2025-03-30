@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect } from "react";
-import Image from "next/image";
 import { Overlay, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -12,7 +11,7 @@ import joinClub from "@/functions/joinClub";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
-import stripe from "@/public/assets/stripe.webp";
+import { UserDataType } from "@/types/global";
 import JoinClubConfirmation from "./JoinClubConfirmation";
 import SlidingImages from "./SlidingImages";
 import classes from "./join.module.css";
@@ -33,13 +32,14 @@ export default function ClubJoin() {
       return;
     }
 
-    joinClub({
-      router,
-      setUserDetails,
-      redirectPath: "/club",
-      closeModal: true,
-    });
-  }, [userDetails]);
+    const message = await joinClub();
+
+    if (message) {
+      setUserDetails((prev: UserDataType) => ({ ...prev, ...message }));
+      router.replace("/club");
+      modals.closeAll();
+    }
+  }, [userDetails, router]);
 
   const onStart = useCallback(() => {
     modals.openContextModal({
@@ -64,7 +64,7 @@ export default function ClubJoin() {
       <SkeletonWrapper>
         <PageHeader title="Join the Club" hidePartDropdown />
         <Stack className={classes.wrapper}>
-          <Overlay zIndex={1} style={{pointerEvents: "none"}} opacity={0.5} radius={16} />
+          <Overlay zIndex={1} style={{ pointerEvents: "none" }} opacity={0.5} radius={16} />
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>
             <Text ta="center">

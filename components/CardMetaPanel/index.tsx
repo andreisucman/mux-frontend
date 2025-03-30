@@ -3,9 +3,10 @@ import { Group, Text, UnstyledButton } from "@mantine/core";
 import Link from "@/helpers/custom-router/patch-router/link";
 import AvatarComponent from "../AvatarComponent";
 import classes from "./CardMetaPanel.module.css";
+import { AvatarType } from "@/types/global";
 
 type Props = {
-  avatar?: { [key: string]: any } | null;
+  avatar?: AvatarType | null;
   redirectUrl: string;
   name: string | null;
   formattedDate: string;

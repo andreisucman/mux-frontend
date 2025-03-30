@@ -9,7 +9,7 @@ import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { BlurredUrlType, ProgressImageType } from "@/types/global";
 import { OnUpdateBlurProps } from "../../types";
 import BlurSelectorMenu from "../BlurSelectorMenu";
-import classes from "./BlurEditorSlide.module.css";
+import classes from "./BlurSelectorSlide.module.css";
 
 type Props = {
   slideIndex: number;
@@ -57,7 +57,7 @@ export default function BlurEditorSlide({
 
     const { images } = response || {};
     const position = image.position;
-    const newRelevantImage = images.find((io) => io.position === position);
+    const newRelevantImage = images?.find((io) => io.position === position);
     setSelectedUrlObject(newRelevantImage?.mainUrl);
     setEditorImages(images);
     setShowBlur(false);

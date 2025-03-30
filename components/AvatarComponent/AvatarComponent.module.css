@@ -1,8 +1,12 @@
 .container {
-  height: rem(40);
-  width: rem(40);
+  /* height: rem(40); */
+  /* width: rem(40); */
   min-height: rem(40);
   min-width: rem(40);
+  border-radius: rem(200);
+  display: flex;
+  height: fit-content;
+  width: fit-content;
 }
 
 .medium {

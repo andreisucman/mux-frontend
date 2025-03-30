@@ -1,9 +1,10 @@
 "use client";
 
-import React, { createContext, useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import callTheServer from "@/functions/callTheServer";
 import { ClubUserType } from "@/types/global";
+import { UserContext } from "../UserContext";
 
 const defaultClubContext = {
   publicUserData: null as ClubUserType | null | undefined,
@@ -18,8 +19,14 @@ type Props = {
 
 export default function ClubDataContextProvider({ children }: Props) {
   const params = useParams();
+  const router = useRouter();
   const userName = Array.isArray(params?.userName) ? params.userName?.[0] : params.userName;
   const [publicUserData, setPublicUserData] = useState<ClubUserType>();
+  const { userDetails } = useContext(UserContext);
+  const [pageLoaded, setPageLoaded] = useState(false);
+
+  const { club } = userDetails || {};
+  const { isActive: isClubActive } = club || {};
 
   const fetchPublicUserData = useCallback(
     async (userName?: string) => {
@@ -40,6 +47,13 @@ export default function ClubDataContextProvider({ children }: Props) {
     if (!userName) return;
     fetchPublicUserData(userName);
   }, [userName]);
+
+  useEffect(() => {
+    if (!pageLoaded) return;
+    if (!club || !isClubActive) router.replace("/club/join");
+  }, [club]);
+
+  useEffect(() => setPageLoaded(true));
 
   return (
     <ClubContext.Provider

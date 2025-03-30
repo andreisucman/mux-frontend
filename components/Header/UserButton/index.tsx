@@ -8,27 +8,25 @@ import {
 import { Avatar, Menu, rem, UnstyledButton } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import Link from "@/helpers/custom-router/patch-router/link";
+import { AvatarType } from "@/types/global";
 import classes from "./UserButton.module.css";
 
 type Props = {
-  avatar: { [key: string]: any } | null;
-  name?: string;
+  isClubActive: boolean;
+  avatar?: AvatarType | null;
   handleSignOut: () => void;
 };
 
-function UserButton({ avatar, name, handleSignOut }: Props) {
+function UserButton({ isClubActive, avatar, handleSignOut }: Props) {
   return (
     <Menu withArrow classNames={{ itemLabel: classes.itemLabel }}>
       <Menu.Target>
         <UnstyledButton>
-          {avatar ? (
+          {isClubActive ? (
             <AvatarComponent
               avatar={avatar}
               customStyles={{
-                marginTop: rem(1),
-                height: rem(35),
-                width: rem(36),
-                minHeight: rem(35),
+                minHeight: rem(36),
                 minWidth: rem(36),
               }}
             />
@@ -38,7 +36,7 @@ function UserButton({ avatar, name, handleSignOut }: Props) {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        {name && (
+        {isClubActive && (
           <Menu.Item component={Link} href="/club" style={{ paddingBottom: rem(4) }}>
             <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />
             My club

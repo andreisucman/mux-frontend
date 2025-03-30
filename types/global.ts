@@ -1,4 +1,4 @@
-import { BlurDotType } from "@/components/UploadCard/types";
+import { AvatarConfig } from "@/components/AvatarEditor/types";
 import { RequirementType } from "@/components/UploadContainer/types";
 import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 
@@ -21,8 +21,6 @@ type BalanceRecordType = {
 
 export type ClubDataType = {
   isActive: boolean;
-  followingUserId: string;
-  followingUserName: string;
   intro: string;
   socials: { value: string | null; label: string }[];
   payouts: {
@@ -32,7 +30,6 @@ export type ClubDataType = {
     detailsSubmitted: boolean;
     disabledReason: string;
   };
-  privacy: HeadValuePartsBoolean;
   nextAvatarUpdateAt: Date | null;
   nextNameUpdateAt: Date | null;
 };
@@ -211,10 +208,10 @@ export type PurchaseType = {
   createdAt: Date;
   sellerId: string;
   sellerName: string;
-  sellerAvatar: { [key: string]: any };
+  sellerAvatar: AvatarType | null;
   buyerId: string;
   buyerName: string;
-  buyerAvatar: { [key: string]: any };
+  buyerAvatar: AvatarType | null;
   isDeactivated?: boolean;
 };
 
@@ -230,10 +227,9 @@ export type BuyerType = {
   buyerAvatar: { [key: string]: any };
 };
 
-type UserPurchaseType = {
-  sellerId: string;
-  part: string;
-  isSubscribed: boolean;
+export type AvatarType = {
+  config: AvatarConfig;
+  image: string;
 };
 
 export interface UserDataType extends DefaultUserType {
@@ -242,7 +238,7 @@ export interface UserDataType extends DefaultUserType {
   emailVerified?: boolean;
   auth?: string;
   name: string;
-  avatar: { [key: string]: any };
+  avatar: AvatarType | null;
   country: string | null;
   club: ClubDataType | null;
   scanAnalysisQuota: number;

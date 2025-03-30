@@ -121,17 +121,24 @@ export default function RoutineModerationCard({
 
     let body = "";
 
-    if (defaultStatus !== "public" && status === "public") {
+    const isSwitchingToPublic = defaultStatus !== "public" && status === "public";
+    const isSwitchingToHidden = defaultStatus !== "hidden" && status === "hidden";
+
+    if (isSwitchingToPublic) {
       body = `This will make your ${part} progress, routines, diary, and proof public. Continue?`;
-    } else {
+    } else if (isSwitchingToHidden) {
       body = `If you have any subscribers, their subscription renewals will be canceled. Continue?`;
     }
 
-    askConfirmation({
-      title: "Confirm action",
-      body,
-      onConfirm: () => save(),
-    });
+    if (isSwitchingToHidden || isSwitchingToPublic) {
+      askConfirmation({
+        title: "Confirm action",
+        body,
+        onConfirm: () => save(),
+      });
+    } else {
+      save();
+    }
   };
 
   return (

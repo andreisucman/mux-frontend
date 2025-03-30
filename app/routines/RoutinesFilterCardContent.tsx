@@ -1,11 +1,9 @@
 import React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button, Stack } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { useSearchParams } from "next/navigation";
+import { Stack } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
-import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./RoutinesFilterCardContent.module.css";
 
 type Props = {
@@ -13,8 +11,6 @@ type Props = {
 };
 
 export default function RoutinesFilterCardContent({ filterItems = [] }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");

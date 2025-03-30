@@ -1,5 +1,5 @@
 import React from "react";
-import { rem, Title, UnstyledButton } from "@mantine/core";
+import { rem, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ProgressModalContent from "@/app/results/ProgressModalContent";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
@@ -7,6 +7,7 @@ import { SimpleProofType } from "@/app/results/proof/types";
 import { SimpleProgressType } from "@/app/results/types";
 import { BeforeAfterType } from "@/app/types";
 import AvatarComponent from "@/components/AvatarComponent";
+import { AvatarType } from "@/types/global";
 import Link from "../custom-router/patch-router/link";
 import classes from "./openResultModal.module.css";
 
@@ -43,7 +44,7 @@ export default function openResultModal({ record, type, title, isPublicPage }: O
 
 type GetRedirectModalTitleProps = {
   redirectUrl: string;
-  avatar: { [key: string]: any } | null;
+  avatar?: AvatarType | null;
   title: React.ReactNode | string;
 };
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Stack, Text } from "@mantine/core";
 
 export const data = [
@@ -49,8 +50,8 @@ export const data = [
         <Text>Muxout is entirely free.</Text>
         <Text>
           But it has an optional paid addon - the 'Improvement Coach' an AI that creates personal
-          routines for you based on your body analysis and special considerations. We also offer an
-          optional weekly progress score calculations for a one time fee.
+          routines for you based on your body analysis and special considerations. We also offer
+          optional weekly progress score calculations for one time fee.
         </Text>
         <Text>
           These addons can speed up your results, improve experience, and save you time on research,
@@ -80,8 +81,9 @@ export const data = [
       <Stack>
         <Text>You can earn on Muxout in 2 ways.</Text>
         <Text>
-          1. You can create an effective routine, and complete its tasks to improve your appearance.
-          You can then list your routne for sale to let other people have a similar transformation.
+          1. You can create an effective routine and complete its tasks to improve your appearance.
+          You can then list your routine for sale to help other people have a similar
+          transformation.
         </Text>
         <Text>
           2. You can complete your tasks and earn achievements ('Streaks'). When you have the
@@ -168,5 +170,16 @@ export const data = [
   {
     question: "How can I contact you?",
     answer: <Text>Send your emails to info@muxout.com</Text>,
+  },
+  {
+    question: "Attributions",
+    answer: (
+      <Text>
+        Avatar design by{" "}
+        <Link style={{ textDecoration: "underline" }} href="https://dribbble.com/micahlanier">
+          Micah Lanier
+        </Link>.
+      </Text>
+    ),
   },
 ];

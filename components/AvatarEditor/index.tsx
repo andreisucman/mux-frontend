@@ -1,58 +1,63 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Avatar, { AvatarConfig, genConfig } from "react-nice-avatar";
-import { Button, ColorInput, Fieldset, rem, Stack } from "@mantine/core";
+import React, { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { micah } from "@dicebear/collection";
+import { createAvatar } from "@dicebear/core";
+import { Button, ColorInput, Fieldset, Loader, rem, Stack, Text } from "@mantine/core";
 import { UpdateClubInfoProps } from "@/app/settings/ClubSettings";
-import extractGradientColors from "@/helpers/extractGradientColors";
+import { AvatarType } from "@/types/global";
+import AvatarComponent from "../AvatarComponent";
 import FilterDropdown from "../FilterDropdown";
 import { options } from "./options";
+import { AvatarConfig } from "./types";
 import classes from "./AvatarEditor.module.css";
-
-
 
 type Props = {
   canUpdateAvatar: boolean;
-  currentConfig: AvatarConfig;
-  handleUpdateClubInfo: (updatedAvatar: UpdateClubInfoProps) => void;
+  avatar?: AvatarType | null;
+  handleUpdateClubInfo: (props: UpdateClubInfoProps) => void;
 };
 
-export default function AvatarEditor({
-  canUpdateAvatar,
-  currentConfig,
-  handleUpdateClubInfo,
-}: Props) {
+export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClubInfo }: Props) {
+  const { config: currentConfig, image } = avatar || {};
   const [isLoading, setIsLoading] = useState(false);
   const [bgColorOne, setBgColorOne] = useState<string>("");
   const [bgColorTwo, setBgColorTwo] = useState<string>("");
-  const [updatedAvatar, setUpdatedAvatar] = useState<AvatarConfig>(currentConfig);
+  const [updatedConfig, setUpdatedConfig] = useState<AvatarConfig | undefined>(currentConfig);
+  const [avatarImage, setAvatarImage] = useState<string | undefined>(image);
+
 
   const isDirty = useMemo(() => {
-    return JSON.stringify(currentConfig) !== JSON.stringify(updatedAvatar);
-  }, [updatedAvatar]);
+    return JSON.stringify(currentConfig) !== JSON.stringify(updatedConfig);
+  }, [updatedConfig]);
 
-  const modifyConfig = (key: string, value: string | null | undefined) => {
-    if (!value) return;
-
-    setUpdatedAvatar((prev) =>
-      genConfig({
-        ...prev,
-        ...{ [key]: value },
-        isGradient: true,
-      })
-    );
+  const sanitizeValue = (value: any) => {
+    if (typeof value === "string") return value.split("#").join("");
+    return value;
   };
 
-  const createGradient = useCallback(
-    (colorOne: string, colorTwo: string) =>
-      `linear-gradient(90deg, ${colorOne || colorTwo} 0%, ${colorTwo || colorOne} 100%)`,
-    []
-  );
+  const modifyConfig = (key: string, value: any) => {
+    setUpdatedConfig((prev: AvatarConfig | undefined) => {
+      const newPayload: AvatarConfig = {
+        ...(prev || {}),
+        [key]: value,
+      };
+
+      console.log("key", key, "value", value);
+
+      const image = createAvatar(micah, newPayload).toDataUri();
+      setAvatarImage(image);
+
+      console.log("new image", image);
+
+      return newPayload;
+    });
+  };
 
   useEffect(() => {
-    if (!currentConfig.bgColor) return;
-    const gradientColors = extractGradientColors(currentConfig.bgColor);
-    setBgColorOne(gradientColors[0]);
-    setBgColorTwo(gradientColors[1]);
-  }, [currentConfig.bgColor]);
+    if (!currentConfig || !currentConfig.backgroundColor) return;
+    setBgColorOne(currentConfig.backgroundColor[0]);
+    setBgColorTwo(currentConfig.backgroundColor[1]);
+  }, [currentConfig]);
 
   const dropdownStyles = useMemo(
     () => ({
@@ -61,16 +66,38 @@ export default function AvatarEditor({
     []
   );
 
+  if (!currentConfig || !updatedConfig)
+    return (
+      <Stack flex={1}>
+        <Loader m="auto" />
+      </Stack>
+    );
+
   return (
     <Stack className={classes.container}>
-      <Avatar {...updatedAvatar} style={{ width: rem(100), height: rem(100), margin: "auto" }} />
+      <AvatarComponent
+        avatar={{ config: updatedConfig, image: avatarImage || "" }}
+        customStyles={{ width: rem(100), height: rem(100), margin: "auto" }}
+      />
+      <Text size="sm" c="dimmed" ta="center">
+        Avatar design by{" "}
+        <Link style={{ textDecoration: "underline" }} href="https://dribbble.com/micahlanier">
+          Micah Lanier
+        </Link>
+        .
+      </Text>
       <Stack className={classes.wrapper}>
         <Button
           loading={isLoading}
-          disabled={!isDirty || isLoading || !canUpdateAvatar}
-          onClick={() =>
-            handleUpdateClubInfo({ type: "avatar", data: updatedAvatar, setIsLoading })
-          }
+          disabled={!isDirty || isLoading || !canUpdateAvatar || !updatedConfig}
+          onClick={() => {
+            if (!updatedConfig || !avatarImage) return;
+            handleUpdateClubInfo({
+              type: "avatar",
+              data: { image: avatarImage, config: updatedConfig },
+              setIsLoading,
+            });
+          }}
         >
           Save
         </Button>
@@ -78,134 +105,123 @@ export default function AvatarEditor({
           <Fieldset legend="Skin color" className={classes.filedset}>
             <ColorInput
               flex={1}
+              disabled={!updatedConfig}
               withEyeDropper={false}
-              value={updatedAvatar.faceColor}
+              value={`#${updatedConfig.baseColor?.[0]}`}
               placeholder="Skin color"
-              defaultValue={currentConfig.faceColor}
-              onChange={(value) => modifyConfig("faceColor", value)}
-            />
-          </Fieldset>
-
-          <Fieldset legend="Hat" className={classes.filedset}>
-            <FilterDropdown
-              data={options.hatStyle}
-              placeholder="Hat"
-              selectedValue={updatedAvatar.hatStyle}
-              customStyles={dropdownStyles}
-              onSelect={(value) => modifyConfig("hatStyle", value)}
-            />
-            <ColorInput
-              flex={1}
-              mt={12}
-              withEyeDropper={false}
-              value={updatedAvatar.hatColor}
-              placeholder="Hat color"
-              defaultValue={currentConfig.hatColor}
-              onChange={(value) => modifyConfig("hatColor", value)}
+              defaultValue={`#${updatedConfig.baseColor?.[0]}`}
+              onChange={(value) => modifyConfig("baseColor", [sanitizeValue(value)])}
             />
           </Fieldset>
           <Fieldset legend="Hair" className={classes.filedset}>
             <FilterDropdown
-              data={options.hairStyle as { label: string; value: string }[]}
+              data={options.hair as { label: string; value: string }[]}
               placeholder="Hair"
               customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.hairStyle}
-              onSelect={(value) => modifyConfig("hairStyle", value)}
+              selectedValue={updatedConfig.hair?.[0]}
+              onSelect={(value) => modifyConfig("hair", value ? [value] : undefined)}
               closeOnSelect={false}
+              allowDeselect
             />
             <ColorInput
               flex={1}
               mt={12}
               withEyeDropper={false}
-              value={updatedAvatar.hairColor}
+              value={`#${updatedConfig.hairColor?.[0]}`}
               placeholder="Hair color"
-              defaultValue={currentConfig.hairColor}
-              onChange={(value) => modifyConfig("hairColor", value)}
+              onChange={(value) => modifyConfig("hairColor", [sanitizeValue(value)])}
             />
           </Fieldset>
-          <Fieldset legend="Ear" className={classes.filedset}>
+          <Fieldset legend="Ears" className={classes.filedset}>
             <FilterDropdown
-              data={options.earSize}
-              placeholder="Ear"
+              data={options.ears}
+              placeholder="Ears"
               customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.earSize}
-              onSelect={(value) => modifyConfig("earSize", value)}
+              selectedValue={updatedConfig.ears?.[0]}
+              onSelect={(value) => modifyConfig("ears", value ? [value] : undefined)}
             />
           </Fieldset>
           <Fieldset legend="Eyes" className={classes.filedset}>
             <FilterDropdown
-              data={options.eyeStyle}
+              data={options.eyes}
               placeholder="Eyes"
               customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.eyeStyle}
-              onSelect={(value) => modifyConfig("eyeStyle", value)}
+              selectedValue={updatedConfig.eyes?.[0]}
+              onSelect={(value) => modifyConfig("eyes", value ? [value] : undefined)}
             />
-          </Fieldset>
-          <Fieldset legend="Glasses" className={classes.filedset}>
             <FilterDropdown
-              data={options.glassesStyle}
-              placeholder="Glasses"
-              customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.glassesStyle}
-              onSelect={(value) => modifyConfig("glassesStyle", value)}
+              data={options.eyebrows}
+              placeholder="Brows"
+              customStyles={{ ...dropdownStyles, marginTop: rem(12) }}
+              selectedValue={updatedConfig.eyebrows?.[0]}
+              onSelect={(value) => modifyConfig("eyebrows", value ? [value] : undefined)}
             />
           </Fieldset>
           <Fieldset legend="Nose" className={classes.filedset}>
             <FilterDropdown
-              data={options.noseStyle}
+              data={options.nose}
               placeholder="Nose"
               customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.noseStyle}
-              onSelect={(value) => modifyConfig("noseStyle", value)}
+              selectedValue={updatedConfig.nose?.[0]}
+              onSelect={(value) => modifyConfig("nose", value ? [value] : undefined)}
             />
           </Fieldset>
           <Fieldset legend="Mouth" className={classes.filedset}>
             <FilterDropdown
-              data={options.mouthStyle}
+              data={options.mouth}
               placeholder="Mouth"
               customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.mouthStyle}
-              onSelect={(value) => modifyConfig("mouthStyle", value)}
+              selectedValue={updatedConfig.mouth?.[0]}
+              onSelect={(value) => modifyConfig("mouth", value ? [value] : undefined)}
             />
           </Fieldset>
           <Fieldset legend="Shirt" className={classes.filedset}>
             <FilterDropdown
-              data={options.shirtStyle as { label: string; value: string }[]}
+              data={options.shirt as { label: string; value: string }[]}
               placeholder="Shirt"
               customStyles={dropdownStyles}
-              selectedValue={updatedAvatar.shirtStyle}
-              onSelect={(value) => modifyConfig("shirtStyle", value)}
+              selectedValue={updatedConfig.shirt?.[0]}
+              allowDeselect={false}
+              onSelect={(value) => modifyConfig("shirt", value ? [value] : undefined)}
             />
             <ColorInput
               flex={1}
               mt={12}
               withEyeDropper={false}
-              value={updatedAvatar.shirtColor}
+              value={`#${updatedConfig.shirtColor?.[0]}`}
               placeholder="Shirt color"
-              defaultValue={updatedAvatar.shirtColor}
-              onChange={(value) => modifyConfig("shirtColor", value)}
+              defaultValue={`#${updatedConfig.shirtColor?.[0]}`}
+              onChange={(value) => modifyConfig("shirtColor", [sanitizeValue(value)])}
             />
           </Fieldset>
           <Fieldset legend="Background" className={classes.filedset}>
             <ColorInput
               flex={1}
               withEyeDropper={false}
-              value={bgColorOne}
+              value={`#${bgColorOne}`}
               placeholder="Color one"
               onChange={(value) => {
-                setBgColorOne(value);
-                modifyConfig("bgColor", createGradient(value, bgColorTwo));
+                if (!updatedConfig.backgroundColor) return;
+                setBgColorOne(sanitizeValue(value));
+                modifyConfig("backgroundColor", [
+                  sanitizeValue(value),
+                  updatedConfig.backgroundColor[0],
+                ]);
               }}
             />
             <ColorInput
               mt={12}
               flex={1}
               withEyeDropper={false}
-              value={bgColorTwo}
+              value={`#${bgColorTwo}`}
               placeholder="Color two"
               onChange={(value) => {
-                setBgColorTwo(value);
-                modifyConfig("bgColor", createGradient(bgColorOne, value));
+                if (!updatedConfig.backgroundColor) return;
+                setBgColorTwo(sanitizeValue(value));
+                modifyConfig("backgroundColor", [
+                  updatedConfig.backgroundColor[1],
+                  sanitizeValue(value),
+                ]);
               }}
             />
           </Fieldset>

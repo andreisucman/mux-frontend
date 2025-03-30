@@ -55,7 +55,7 @@ function Header() {
   const { status, userDetails, setStatus, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState("none");
 
-  const { avatar, name, _id: userId } = userDetails || {};
+  const { avatar, club, _id: userId } = userDetails || {};
 
   const showStartButton = useMemo(
     () => showStartButtonRoutes.some((route) => pathname === route),
@@ -199,7 +199,11 @@ function Header() {
                 />
 
                 {displayComponent === "userButton" && (
-                  <UserButton avatar={avatar || null} name={name} handleSignOut={handleSignOut} />
+                  <UserButton
+                    avatar={avatar}
+                    isClubActive={!!club && club.isActive}
+                    handleSignOut={handleSignOut}
+                  />
                 )}
               </>
             )}

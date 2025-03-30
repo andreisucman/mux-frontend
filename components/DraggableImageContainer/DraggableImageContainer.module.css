@@ -54,7 +54,7 @@
   position: absolute;
   top: rem(8);
   right: rem(8);
-  z-index: 1;
+  z-index: 0;
   gap: rem(24);
   background-color: alpha(var(--mantine-color-dark-5), 0.25);
   padding: rem(16) rem(8);

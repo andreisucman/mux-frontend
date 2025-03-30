@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
 import { IconDeviceFloppy, IconPencil, IconTargetOff, IconWorld } from "@tabler/icons-react";
-import { AvatarConfig } from "react-nice-avatar";
 import {
   ActionIcon,
   Group,
@@ -21,14 +20,14 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { UserDataType } from "@/types/global";
+import { AvatarType, UserDataType } from "@/types/global";
 import AddClubSocials from "./AddClubSocials";
 import LeaveClubConfirmation from "./LeaveClubConfirmation";
 import classes from "./ClubSettings.module.css";
 
 export type UpdateClubInfoProps = {
   type: "name" | "avatar" | "intro";
-  data: AvatarConfig | string;
+  data: AvatarType | string;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -40,6 +39,8 @@ export default function ClubSettings() {
 
   const { club, avatar, name, country } = userDetails || {};
   const { intro, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
+
+  console.log("user details avatar", avatar);
 
   const [userName, setUserName] = useState<string>(name || "");
   const [userIntro, setUserIntro] = useState<string>(intro || "");
@@ -104,11 +105,12 @@ export default function ClubSettings() {
         });
 
         if (response.status === 200) {
-          const { defaultClubPayoutData, defaultClubPrivacy } = response.message;
+          const { defaultClubPayoutData } = response.message;
+
           setUserDetails((prev: UserDataType) => ({
             ...prev,
             country: newCountry,
-            club: { ...prev.club, payouts: defaultClubPayoutData, privacy: defaultClubPrivacy },
+            club: { ...prev.club, payouts: defaultClubPayoutData },
           }));
 
           router.push("/club");
@@ -178,6 +180,8 @@ export default function ClubSettings() {
 
   const handleUpdateClubInfo = useCallback(
     async ({ type, data, setIsLoading }: UpdateClubInfoProps) => {
+      if (!data) return;
+
       let children = `You can update your ${type} once a month only. Continue?`;
 
       modals.openConfirmModal({
@@ -205,10 +209,11 @@ export default function ClubSettings() {
       modal: "general",
       centered: true,
       size: "md",
+      closeOnClickOutside: false,
       innerProps: (
         <AvatarEditor
+          avatar={avatar}
           canUpdateAvatar={canUpdateAvatar}
-          currentConfig={avatar as AvatarConfig}
           handleUpdateClubInfo={handleUpdateClubInfo}
         />
       ),

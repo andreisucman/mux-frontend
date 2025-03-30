@@ -9,3 +9,7 @@
   top: unset;
   right: unset;
 }
+
+.icon {
+  color: var(--mantine-color-gray-2);
+}

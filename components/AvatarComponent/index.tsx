@@ -1,27 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import Image from "next/image";
 import cn from "classnames";
-import Avatar, { genConfig } from "react-nice-avatar";
+import { AvatarType } from "@/types/global";
 import classes from "./AvatarComponent.module.css";
 
 type Props = {
-  avatar?: { [key: string]: any } | null;
+  avatar?: AvatarType | null;
   customStyles?: { [key: string]: any };
   size?: "xs" | "sm" | "md";
 };
 
 export default function AvatarComponent({ avatar, size = "md", customStyles }: Props) {
-  const [config, setConfig] = useState<{ [key: string]: any }>();
-
-  useEffect(() => {
-    if (!avatar) return;
-    const avatarConfig = genConfig(avatar);
-    setConfig(avatarConfig);
-  }, [avatar]);
-
+  const { image } = avatar || {};
   return (
-    config && (
-      <Avatar
-        {...config}
+    image && (
+      <Image
+        src={image}
+        alt=""
+        width={50}
+        height={50}
         style={customStyles ? customStyles : {}}
         className={cn(classes.container, {
           [classes.small]: size === "xs",

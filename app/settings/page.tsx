@@ -21,7 +21,7 @@ export default function Settings() {
           <AccountSettings />
           <OtherSettings />
         </Stack>
-        {club && <ClubSettings />}
+        {club && club.isActive && <ClubSettings />}
       </Group>
     </Stack>
   );

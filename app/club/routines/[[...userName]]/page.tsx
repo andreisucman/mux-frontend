@@ -2,7 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowDown } from "@tabler/icons-react";
+import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -24,7 +24,6 @@ import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { useRouter } from "@/helpers/custom-router";
-import openErrorModal from "@/helpers/openErrorModal";
 import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import RoutineSelectionButtons from "./RoutineSelectionButtons";
@@ -167,8 +166,6 @@ export default function ClubRoutines(props: Props) {
           tasks: [...(prev.tasks || []), ...response.message],
         }));
         isSuccess = true;
-      } else {
-        openErrorModal();
       }
       return isSuccess;
     },
@@ -368,7 +365,7 @@ export default function ClubRoutines(props: Props) {
                 )}
               </Stack>
             ) : (
-              <OverlayWithText text={"Nothing found"} />
+              <OverlayWithText text={"Nothing found"} icon={<IconCircleOff className="icon" />} />
             )}
           </Stack>
         </Stack>

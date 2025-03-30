@@ -10,10 +10,9 @@ import { UserContext } from "@/context/UserContext";
 import { generalPlanContent } from "@/data/pricingData";
 import createCheckoutSession from "@/functions/createCheckoutSession";
 import joinClub from "@/functions/joinClub";
-import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
-import { PurchaseOverlayDataType } from "@/types/global";
+import { PurchaseOverlayDataType, UserDataType } from "@/types/global";
 import classes from "./PurchaseOverlay.module.css";
 
 type Props = {
@@ -29,7 +28,6 @@ export default function PurchaseOverlay({
   notPurchasedParts,
   handleCloseOverlay,
 }: Props) {
-  const router = useRouter();
   const defaultRouter = useDefaultRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -64,14 +62,10 @@ export default function PurchaseOverlay({
   );
 
   const handleJoinClub = useCallback(async () => {
-    const isSuccess = await joinClub({
-      router,
-      setUserDetails,
-      redirectPath: null,
-      closeModal: true,
-    });
+    const clubData = await joinClub();
 
-    if (isSuccess) {
+    if (clubData) {
+      setUserDetails((prev: UserDataType) => ({ ...prev, club: clubData }));
       createCheckoutSession({
         type: "connect",
         body: {
@@ -82,6 +76,7 @@ export default function PurchaseOverlay({
         },
         setUserDetails,
       });
+      modals.closeAll();
     }
   }, [userDetails, redirectUrl]);
 
