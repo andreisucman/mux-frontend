@@ -80,7 +80,7 @@ export default function UploadCard({
   const handleClickUpload = useCallback(async () => {
     await handleUpload({ part, position, url: localUrl, blurDots, offsets });
     handleDeleteImage();
-  }, [part, position, blurDots]);
+  }, [part, localUrl, offsets, position, blurDots]);
 
   const openPhotoCapturer = useCallback(() => {
     modals.openContextModal({

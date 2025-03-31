@@ -30,6 +30,7 @@ export default function ScanProgress() {
 
   const handleUpload = useCallback(
     async ({ url, part, position, blurDots, offsets }: UploadProgressProps) => {
+      console.log("url, part, position, blurDots, offsets ",url, part, position, blurDots, offsets )
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -67,7 +68,7 @@ export default function ScanProgress() {
               y: dot.y / offsets.scaleHeight,
             };
           });
-    
+
           const response = await callTheServer({
             endpoint: "uploadProgress",
             method: "POST",
