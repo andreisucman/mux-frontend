@@ -42,43 +42,41 @@ export default function RoutinesHistoryPage() {
 
   const fetchInactiveTasks = useCallback(
     async ({ status, part, loadMore, sort }: FetchInactiveTasksProps) => {
-      try {
-        let endpoint = "getInactiveTasks";
+      let endpoint = "getInactiveTasks";
 
-        const parts = [];
+      const parts = [];
 
-        if (status) parts.push(`status=${status}`);
-        if (part) parts.push(`part=${part}`);
-        if (sort) parts.push(`sort=${sort}`);
+      if (status) parts.push(`status=${status}`);
+      if (part) parts.push(`part=${part}`);
+      if (sort) parts.push(`sort=${sort}`);
 
-        if (loadMore && inactiveTasks) {
-          parts.push(`skip=${inactiveTasks.length}`);
+      if (loadMore && inactiveTasks) {
+        parts.push(`skip=${inactiveTasks.length}`);
+      }
+
+      const query = parts.join("&");
+      endpoint += `?${query}`;
+
+      const response = await callTheServer({
+        endpoint,
+        method: "GET",
+      });
+
+      if (response.status === 200) {
+        const newData = response.message.map((record: InactiveTaskType) => ({
+          ...record,
+          onClick: () => {
+            router.push(`/explain/${record._id}?${searchParams.toString()}`);
+          },
+        }));
+
+        if (loadMore) {
+          setInactiveTasks((prev) => [...(prev || []), ...newData]);
+        } else {
+          setInactiveTasks(newData);
         }
-
-        const query = parts.join("&");
-        endpoint += `?${query}`;
-
-        const response = await callTheServer({
-          endpoint,
-          method: "GET",
-        });
-
-        if (response.status === 200) {
-          const newData = response.message.map((record: InactiveTaskType) => ({
-            ...record,
-            onClick: () => {
-              router.push(`/explain/${record._id}?${searchParams.toString()}`);
-            },
-          }));
-
-          if (loadMore) {
-            setInactiveTasks((prev) => [...(prev || []), ...newData]);
-          } else {
-            setInactiveTasks(newData);
-          }
-          setHasMore(newData.length === 61);
-        }
-      } catch (err) {
+        setHasMore(newData.length === 41);
+      } else {
         openErrorModal();
       }
     },
@@ -135,16 +133,14 @@ export default function RoutinesHistoryPage() {
                   hasMore={hasMore}
                   pageStart={0}
                 >
-                  {inactiveTasks && (
-                    <ListComponent
-                      items={inactiveTasks}
-                      rowGutter={16}
-                      render={(props: any) => {
-                        const { key, ...rest } = props.data;
-                        return <InactiveTaskRow {...rest} key={key} />;
-                      }}
-                    />
-                  )}
+                  <ListComponent
+                    items={inactiveTasks}
+                    rowGutter={16}
+                    render={(props: any) => {
+                      const { key, ...rest } = props.data;
+                      return <InactiveTaskRow {...rest} key={rest._id} />;
+                    }}
+                  />
                 </InfiniteScroll>
               ) : (
                 <OverlayWithText text={"Nothing found"} icon={<IconCircleOff className="icon" />} />
