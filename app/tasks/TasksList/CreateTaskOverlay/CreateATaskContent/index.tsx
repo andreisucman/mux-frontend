@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Select, Stack, Text, TextInput } from "@mantine/core";
+import { Group, rem, Select, Stack, Text, TextInput } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import ToCompleteInput from "@/components/ToCompleteInput";
 import { normalizeString } from "@/helpers/utils";
 import { UserConcernType } from "@/types/global";
 
 type Props = {
+  exampleVideoId: string;
   allConcerns: UserConcernType[];
   allParts: string[];
   selectedPart: string | null;
@@ -13,6 +15,7 @@ type Props = {
   setTaskName: React.Dispatch<React.SetStateAction<string>>;
   setSelectedConcern: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPart: React.Dispatch<React.SetStateAction<string | null>>;
+  setExampleVideoId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type FormattedItem = {
@@ -31,6 +34,8 @@ export default function CreateATaskContent({
   setSelectedConcern,
   selectedPart,
   setSelectedPart,
+  exampleVideoId,
+  setExampleVideoId,
 }: Props) {
   const [formattedConcerns, setFormattedConcerns] = useState<FormattedItem[]>([]);
   const [formattedParts, setFormattedParts] = useState<FormattedItem[]>([]);
@@ -152,6 +157,14 @@ export default function CreateATaskContent({
         }
         withAsterisk
         placeholder="Select relevant part"
+      />
+      <ToCompleteInput
+        title={"Example embeddable video id (optional)"}
+        placeholder="Video id"
+        prefix="https://www.youtube.com/embed/"
+        value={exampleVideoId}
+        setValue={setExampleVideoId}
+        customStyles={{ marginTop: rem(6) }}
       />
     </Stack>
   );

@@ -37,6 +37,7 @@ export default function AddATaskContainer({
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
   const [taskName, setTaskName] = useState<string>("");
   const [enableDrafting, setEnableDrafting] = useState(false);
+  const [exampleVideoId, setExampleVideoId] = useState("");
   const savedEnableDrafting = getFromLocalStorage("enableDrafting");
 
   const datesPreview = useMemo(() => {
@@ -53,8 +54,6 @@ export default function AddATaskContainer({
 
     return dates;
   }, [date, frequency]);
-
-  const tasksLeft = datesPreview.length - 3;
 
   const { nextRoutine, latestProgress, subscriptions, concerns } = userDetails || {};
 
@@ -76,34 +75,36 @@ export default function AddATaskContainer({
       ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
       : null;
 
-  const cooldownButtonText = `Next weekly routine after ${formatDate({ date: new Date(earliestCreateRoutineDate || new Date()), hideYear: true })}`;
+  const nextRoutineDate = formatDate({
+    date: new Date(earliestCreateRoutineDate || new Date()),
+    hideYear: true,
+  });
+
+  const cooldownButtonText = `Next weekly routine after ${nextRoutineDate}`;
 
   const handleCreateTask = async () => {
     if (!timeZone) return;
     if (isLoading) return;
 
-    try {
-      setError("");
-      setIsLoading(true);
+    setError("");
+    setIsLoading(true);
 
-      const response = await callTheServer({
-        endpoint: "createTaskFromDescription",
-        method: "POST",
-        body: { name: taskName, concern: selectedConcern, part: selectedPart, timeZone },
-      });
+    const response = await callTheServer({
+      endpoint: "createTaskFromDescription",
+      method: "POST",
+      body: { name: taskName, concern: selectedConcern, part: selectedPart, timeZone },
+    });
 
-      if (response.status === 200) {
-        if (response.error) {
-          setError(response.error);
-        } else {
-          setRawTask(response.message);
-          setStep(2);
-        }
+    if (response.status === 200) {
+      if (response.error) {
+        setError(response.error);
+        return;
       }
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
+      setRawTask({ ...response.message, exampleVideoId });
+      setStep(2);
     }
+
+    setIsLoading(false);
   };
 
   const onCreateManuallyClick = () => {
@@ -115,6 +116,7 @@ export default function AddATaskContainer({
         ...prev,
         description: "",
         instruction: "",
+        exampleVideoId,
       }));
     }
   };
@@ -144,6 +146,8 @@ export default function AddATaskContainer({
     setEnableDrafting(!!savedEnableDrafting);
   }, [savedEnableDrafting]);
 
+  const noDescriptionAndInstruction = !rawTask?.description && !rawTask?.instruction;
+
   return (
     <Stack className={classes.container}>
       {error && (
@@ -163,6 +167,8 @@ export default function AddATaskContainer({
                 setTaskName={setTaskName}
                 selectedConcern={selectedConcern}
                 selectedPart={selectedPart}
+                exampleVideoId={exampleVideoId}
+                setExampleVideoId={setExampleVideoId}
                 setSelectedConcern={setSelectedConcern}
                 setSelectedPart={setSelectedPart}
               />
@@ -171,7 +177,6 @@ export default function AddATaskContainer({
               <EditATaskContent
                 date={date}
                 rawTask={rawTask}
-                tasksLeft={tasksLeft}
                 frequency={frequency}
                 previewData={datesPreview}
                 setDate={setDate}
@@ -189,7 +194,7 @@ export default function AddATaskContainer({
                 onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
               />
             )}
-            {step === 1 && !rawTask && (
+            {step === 1 && noDescriptionAndInstruction && (
               <>
                 <Button
                   variant={isSubscriptionActive ? "filled" : "default"}
@@ -225,6 +230,7 @@ export default function AddATaskContainer({
                     frequency,
                     isLoading,
                     rawTask,
+                    exampleVideoId,
                     setError,
                     setIsLoading,
                   })

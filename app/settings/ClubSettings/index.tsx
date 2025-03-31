@@ -40,8 +40,6 @@ export default function ClubSettings() {
   const { club, avatar, name, country } = userDetails || {};
   const { intro, nextAvatarUpdateAt, nextNameUpdateAt } = club || {};
 
-  console.log("user details avatar", avatar);
-
   const [userName, setUserName] = useState<string>(name || "");
   const [userIntro, setUserIntro] = useState<string>(intro || "");
   const [isLoading, setIsLoading] = useState(false);
@@ -53,19 +51,20 @@ export default function ClubSettings() {
   const isIntroDirty = userIntro.trim() !== intro?.trim();
 
   const handleLeaveClub = useCallback(async () => {
-    try {
-      modals.closeAll();
-      router.push("/tasks");
+    modals.closeAll();
+    router.push("/tasks");
 
-      const response = await callTheServer({
-        endpoint: "leaveClub",
-        method: "POST",
-      });
+    const response = await callTheServer({
+      endpoint: "leaveClub",
+      method: "POST",
+    });
 
-      if (response.status === 200) {
-        setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
-      }
-    } catch (err) {
+    if (response.status === 200) {
+      setUserDetails((prev: UserDataType) => ({
+        ...prev,
+        club: { ...prev.club, isActive: false },
+      }));
+    } else {
       openErrorModal({
         description: "Please contact us at info@muxout.com",
       });
@@ -97,29 +96,30 @@ export default function ClubSettings() {
 
   const handleChangeCountry = useCallback(
     async (newCountry: string) => {
-      try {
-        const response = await callTheServer({
-          endpoint: "changeCountry",
-          method: "POST",
-          body: { newCountry },
-        });
+      setIsLoading(true);
+      const response = await callTheServer({
+        endpoint: "changeCountry",
+        method: "POST",
+        body: { newCountry },
+      });
+      setIsLoading(false);
 
-        if (response.status === 200) {
-          const { defaultClubPayoutData } = response.message;
+      if (response.status === 200) {
+        const { defaultClubPayoutData } = response.message;
 
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            country: newCountry,
-            club: { ...prev.club, payouts: defaultClubPayoutData },
-          }));
+        setUserDetails((prev: UserDataType) => ({
+          ...prev,
+          country: newCountry,
+          club: { ...prev.club, payouts: defaultClubPayoutData },
+        }));
 
-          router.push("/club");
+        router.push("/club");
 
-          modals.closeAll();
-        } else {
-          openErrorModal();
-        }
-      } catch (err) {}
+        modals.closeAll();
+      } else {
+        openErrorModal();
+        setIsLoading(true);
+      }
     },
     [userDetails, router]
   );

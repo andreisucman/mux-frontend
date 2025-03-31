@@ -19,7 +19,6 @@ type Props = {
   previewIsTasks?: boolean;
   previewData: string[] | TaskPreviewRecord[];
   rawTask?: RawTaskType;
-  tasksLeft?: number;
   frequency: number;
   readOnly?: boolean;
   date: Date | null;
@@ -32,7 +31,6 @@ function EditATaskContent({
   date,
   rawTask,
   frequency,
-  tasksLeft,
   previewData,
   previewIsTasks,
   readOnly,

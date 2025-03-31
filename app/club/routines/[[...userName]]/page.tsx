@@ -273,6 +273,7 @@ export default function ClubRoutines(props: Props) {
           title={"Club"}
           userName={userName}
           filterNames={["part"]}
+          defaultSortValue="-startsAt"
           sortItems={routineSortItems}
           isDisabled={!availableParts}
           onFilterClick={() =>

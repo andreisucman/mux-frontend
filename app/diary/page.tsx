@@ -211,6 +211,7 @@ export default function DiaryPage() {
           isDisabled={!diaryRecords}
           title="Diary"
           sortItems={diarySortItems}
+          defaultSortValue="-_id"
           filterNames={["dateFrom", "dateTo", "part"]}
           onFilterClick={() =>
             openFiltersCard({

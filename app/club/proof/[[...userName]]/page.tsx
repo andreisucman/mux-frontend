@@ -134,6 +134,7 @@ export default function ClubProof(props: Props) {
           userName={userName}
           filterNames={["part"]}
           sortItems={proofSortItems}
+          defaultSortValue="-_id"
           isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({

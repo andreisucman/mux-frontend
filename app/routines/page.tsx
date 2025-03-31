@@ -285,6 +285,7 @@ export default function MyRoutines() {
           title="My routines"
           isDisabled={!availableParts}
           filterNames={["part"]}
+          defaultSortValue="-startsAt"
           sortItems={routineSortItems}
           onFilterClick={() =>
             openFiltersCard({

@@ -1,5 +1,5 @@
 import React from "react";
-import { Group, Text, UnstyledButton } from "@mantine/core";
+import { Group, rem, Text, UnstyledButton } from "@mantine/core";
 import Link from "@/helpers/custom-router/patch-router/link";
 import AvatarComponent from "../AvatarComponent";
 import classes from "./CardMetaPanel.module.css";
@@ -22,7 +22,7 @@ export default function CardMetaPanel({ redirectUrl, avatar, name, formattedDate
       href={redirectUrl}
     >
       <Group className={classes.nameWrapper}>
-        <AvatarComponent avatar={avatar} size="xs" />
+        <AvatarComponent avatar={avatar} size="xs"  />
         <Text lineClamp={2} fw={600}>
           {name}
         </Text>

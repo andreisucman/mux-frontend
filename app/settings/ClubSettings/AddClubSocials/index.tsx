@@ -24,39 +24,46 @@ export default function AddClubSocials({ title }: Props) {
   const { club } = userDetails || {};
   const { socials } = club || { socials: [] };
 
-  const addSocial = useCallback(
-    async ({ label, value }: { label: string; value: string }) => {
-      if (!value) {
-        setAddressError("Address can't be empty");
-        return;
-      }
+  const updateSocials = async (newSocials: { [key: string]: any }) => {
+    await callTheServer({
+      endpoint: "updateUserData",
+      method: "POST",
+      body: {
+        socials: newSocials,
+      },
+    });
+  };
 
-      if (!name) {
-        setNameError("Name can't be empty");
-        return;
-      }
+  const addSocial = async ({ label, value }: { label: string; value: string }) => {
+    if (!value) {
+      setAddressError("Address can't be empty");
+      return;
+    }
 
-      const isValidUrl = validateUrl(value);
+    if (!name) {
+      setNameError("Name can't be empty");
+      return;
+    }
 
-      if (!isValidUrl) {
-        setAddressError("Invalid URL");
-        return;
-      }
+    const isValidUrl = validateUrl(value);
 
-      const newSocials = [socials, { label, value }];
+    if (!isValidUrl) {
+      setAddressError("Invalid URL");
+      return;
+    }
 
-      setUserDetails((prev: UserDataType) => ({
-        ...(prev || {}),
-        club: { ...(prev.club || {}), socials: newSocials },
-      }));
+    const newSocials = [...socials, { label, value }];
 
-      setName("");
-      setValue("");
+    setUserDetails((prev: UserDataType) => ({
+      ...(prev || {}),
+      club: { ...(prev.club || {}), socials: newSocials },
+    }));
 
-      updateSocials(newSocials);
-    },
-    [socials]
-  );
+    setName("");
+    setValue("");
+
+    updateSocials(newSocials);
+  };
 
   const deleteSocial = useCallback(
     (value: string | null) => {
@@ -71,22 +78,8 @@ export default function AddClubSocials({ title }: Props) {
 
       updateSocials(newSocials);
     },
-    [socials]
+    [socials, updateSocials]
   );
-
-  const updateSocials = useCallback(async (newSocials: { [key: string]: any }) => {
-    try {
-      await callTheServer({
-        endpoint: "updateUserData",
-        method: "POST",
-        body: {
-          socials: newSocials,
-        },
-      });
-    } catch (err) {
-      openErrorModal();
-    }
-  }, []);
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {

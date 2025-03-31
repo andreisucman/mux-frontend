@@ -1,6 +1,6 @@
 import React from "react";
-import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Stack } from "@mantine/core";
 import DateSelector from "@/components/DateSelector";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -12,6 +12,8 @@ type Props = {
 };
 
 export default function DiaryFilterCardContent({ availableParts }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const part = searchParams.get("part");
 
@@ -23,12 +25,19 @@ export default function DiaryFilterCardContent({ availableParts }: Props) {
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!availableParts?.length}
+        isDisabled={!availableParts}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />
       <DateSelector customStyles={{ width: "100%" }} preventDefaultDate showCancelButton />
+      <Button
+        disabled={!searchParams.toString()}
+        variant="default"
+        onClick={() => router.replace(pathname)}
+      >
+        Clear filters
+      </Button>
     </Stack>
   );
 }

@@ -139,6 +139,7 @@ export default function DiaryPage(props: Props) {
           title={"Club"}
           userName={userName}
           sortItems={diarySortItems}
+          defaultSortValue={"-_id"}
           filterNames={["dateFrom", "dateTo", "part"]}
           onFilterClick={() =>
             openFiltersCard({

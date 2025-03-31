@@ -62,19 +62,21 @@ export default function UploadProof(props: Props) {
   const taskExpired = new Date(expiresAt || 0) < new Date();
   const taskNotStarted = new Date(startsAt || 0) > new Date();
 
-  const fetchProofInfo = useCallback(async (taskId: string | null) => {
-    if (!taskId) return;
+  const fetchProofInfo = useCallback(
+    async (taskId: string | null) => {
+      if (!taskId) return;
 
-    const response = await callTheServer({
-      endpoint: `getProofRecord/${taskId}`,
-      method: "GET",
-    });
+      const response = await callTheServer({
+        endpoint: `getProofRecord/${taskId}`,
+        method: "GET",
+      });
 
-    if (response.status === 200) {
-      console.log("response.message",response.message)
-      setExistingProofRecord(response.message);
-    }
-  }, [taskId]);
+      if (response.status === 200) {
+        setExistingProofRecord(response.message);
+      }
+    },
+    [taskId]
+  );
 
   const uploadProof = async ({
     taskId,
@@ -249,8 +251,6 @@ export default function UploadProof(props: Props) {
 
     return response;
   }, [existingProofRecord, taskInfo]);
-
-  console.log("existingProofRecord", existingProofRecord);
 
   return (
     <Stack flex={1} className="smallPage">

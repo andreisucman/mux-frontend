@@ -1,6 +1,6 @@
 import React from "react";
-import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Stack } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
@@ -11,41 +11,47 @@ type Props = {
   statusItems?: FilterItemType[];
 };
 
-export default function HistoryFilterCardContent({ partItems = [], statusItems = [] }: Props) {
+export default function HistoryFilterCardContent({ partItems, statusItems }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
   const status = searchParams.get("status");
 
-  const partsDisabled = partItems.length === 0;
-  const statusDisabled = statusItems.length === 0;
-
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={partItems}
-        icons={partsDisabled ? undefined : partIcons}
+        data={partItems || []}
+        icons={partItems ? partIcons : undefined}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={partsDisabled}
+        isDisabled={!partItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
         addToQuery
       />
       <FilterDropdown
-        data={statusItems}
-        icons={statusDisabled ? undefined : partIcons}
+        data={statusItems || []}
+        icons={statusItems ? partIcons : undefined}
         filterType="status"
         placeholder="Filter by status"
         selectedValue={status}
-        isDisabled={statusDisabled}
+        isDisabled={!statusItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
         addToQuery
       />
+      <Button
+        disabled={!searchParams.toString()}
+        variant="default"
+        onClick={() => router.replace(pathname)}
+      >
+        Clear filters
+      </Button>
     </Stack>
   );
 }

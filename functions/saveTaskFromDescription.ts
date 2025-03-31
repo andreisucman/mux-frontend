@@ -1,6 +1,5 @@
 import { modals } from "@mantine/modals";
 import { RawTaskType } from "@/app/tasks/TasksList/CreateTaskOverlay/AddATaskContainer/types";
-import { saveToLocalStorage } from "@/helpers/localStorage";
 import callTheServer from "./callTheServer";
 
 export type HandleSaveTaskProps = {
@@ -10,6 +9,7 @@ export type HandleSaveTaskProps = {
   isLoading: boolean;
   frequency: number;
   date: Date | null;
+  exampleVideoId?: string;
   rawTask?: RawTaskType;
   setError: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +24,7 @@ const saveTaskFromDescription = async ({
   rawTask,
   isLoading,
   frequency,
+  exampleVideoId,
   setError,
   setIsLoading,
   setIsAnalysisGoing,
@@ -31,37 +32,36 @@ const saveTaskFromDescription = async ({
   if (isLoading) return;
   if (!rawTask) return;
 
-  try {
-    setIsLoading(true);
-    setError("");
+  setIsLoading(true);
+  setError("");
 
-    const { description, instruction } = rawTask;
+  const { description, instruction } = rawTask;
 
-    const response = await callTheServer({
-      endpoint: "saveTaskFromDescription",
-      method: "POST",
-      body: {
-        concern,
-        part,
-        frequency,
-        description,
-        instruction,
-        startDate: date,
-        timeZone,
-      },
-    });
+  const response = await callTheServer({
+    endpoint: "saveTaskFromDescription",
+    method: "POST",
+    body: {
+      concern,
+      part,
+      frequency,
+      description,
+      instruction,
+      exampleVideoId,
+      startDate: date,
+      timeZone,
+    },
+  });
 
-    if (response.status === 200) {
-      if (response.error) {
-        setError(response.error);
-        setIsLoading(false);
-        return;
-      }
-
-      setIsAnalysisGoing(true);
-      modals.closeAll();
+  if (response.status === 200) {
+    if (response.error) {
+      setError(response.error);
+      setIsLoading(false);
+      return;
     }
-  } catch (err) {
+
+    setIsAnalysisGoing(true);
+    modals.closeAll();
+  } else {
     setIsLoading(false);
   }
 };

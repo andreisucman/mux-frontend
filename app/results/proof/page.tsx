@@ -79,6 +79,7 @@ export default function ResultsProof() {
           isDisabled={!availableParts}
           filterNames={["part"]}
           sortItems={proofSortItems}
+          defaultSortValue="-_id"
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProofFilterCardContent,

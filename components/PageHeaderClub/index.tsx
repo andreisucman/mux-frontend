@@ -20,6 +20,7 @@ type Props = {
   userName: string;
   titles?: { label: string; value: string }[];
   isDisabled?: boolean;
+  defaultSortValue?:string;
   childrenPosition?: "first" | "last";
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
@@ -34,6 +35,7 @@ export default function PageHeaderClub({
   isDisabled,
   sortItems,
   filterNames = [],
+  defaultSortValue,
   children,
   userName,
   pageType,
@@ -79,7 +81,7 @@ export default function PageHeaderClub({
       </ActionIcon>
       {finalTitle}
       {childrenPosition === "first" && children}
-      {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
+      {sortItems && <SortButton sortItems={sortItems} defaultSortValue={defaultSortValue} isDisabled={isDisabled} />}
       {onFilterClick && (
         <FilterButton
           isDisabled={isDisabled}

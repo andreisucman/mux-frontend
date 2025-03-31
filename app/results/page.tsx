@@ -94,6 +94,7 @@ export default function ResultsProgress() {
           isDisabled={!availableParts}
           filterNames={["part"]}
           sortItems={progressSortItems}
+          defaultSortValue="-_id"
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,

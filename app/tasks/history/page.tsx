@@ -108,6 +108,7 @@ export default function RoutinesHistoryPage() {
           title="Task history"
           filterNames={["part", "status"]}
           sortItems={historySortItems}
+          defaultSortValue="-startsAt"
           isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({

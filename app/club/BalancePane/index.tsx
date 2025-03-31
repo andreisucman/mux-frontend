@@ -20,7 +20,7 @@ function BalancePane() {
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
-  const { balance, payoutsEnabled, disabledReason, detailsSubmitted } = payouts || {};
+  const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId } = payouts || {};
   const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
 
   const openCountrySelectModal = useCallback(() => {
@@ -58,6 +58,7 @@ function BalancePane() {
 
     if (response.status === 200) {
       const { defaultClubPayoutData } = response.message;
+
       setUserDetails((prev: UserDataType) => ({
         ...prev,
         country: newCountry,
@@ -204,6 +205,7 @@ function BalancePane() {
           <Button
             variant={"default"}
             size="compact-sm"
+            disabled={!connectId}
             style={{ position: "relative", zIndex: 1 }}
             onClick={redirectToWallet}
           >

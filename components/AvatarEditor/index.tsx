@@ -44,8 +44,6 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
       const image = createAvatar(micah, newPayload).toDataUri();
       setAvatarImage(image);
 
-      console.log("new image", image);
-
       return newPayload;
     });
   };
@@ -74,7 +72,13 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
     <Stack className={classes.container}>
       <AvatarComponent
         avatar={{ config: updatedConfig, image: avatarImage || "" }}
-        customStyles={{ width: rem(100), height: rem(100), margin: "auto" }}
+        customStyles={{
+          width: rem(100),
+          height: rem(100),
+          maxHeight: rem(100),
+          maxWidth: rem(100),
+          margin: "auto",
+        }}
       />
       <Text size="sm" c="dimmed" ta="center">
         Avatar design by{" "}

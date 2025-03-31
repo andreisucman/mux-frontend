@@ -8,7 +8,6 @@ import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
 import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
-import { RoutineType } from "@/types/global";
 import RoutineModerationCard from "./RoutineModerationCard";
 import classes from "./manage-routines.module.css";
 
@@ -24,7 +23,7 @@ export type RoutineDataType = {
 };
 
 export default function ManageRoutines() {
-  const [routines, setRoutines] = useState<RoutineType[]>();
+  const [routineParts, setRoutineParts] = useState<string[]>();
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
 
   const saveRoutineData = useCallback(
@@ -93,8 +92,8 @@ export default function ManageRoutines() {
   );
 
   const content = useMemo(() => {
-    if (!routineData || !routines) return <Loader m="0 auto" mt="20%" />;
-    if (routines.length === 0)
+    if (!routineData || !routineParts) return <Loader m="0 auto" mt="20%" />;
+    if (routineParts.length === 0)
       return (
         <OverlayWithText
           text="You don't have any routines"
@@ -105,16 +104,16 @@ export default function ManageRoutines() {
           }
         />
       );
-    return routines
-      .sort((a, b) => a.part.localeCompare(b.part))
-      .map((r, i) => {
-        const relevantRoutineData = routineData.find((doItem) => doItem.part === r.part);
+    return routineParts
+      .sort((a, b) => a.localeCompare(b))
+      .map((part, i) => {
+        const relevantRoutineData = routineData.find((doItem) => doItem.part === part);
         const { name, status, description, price, updatePrice } = relevantRoutineData || {};
 
         return (
           <RoutineModerationCard
             key={i}
-            part={r.part}
+            part={part}
             defaultName={name}
             defaultStatus={status}
             defaultDescription={description}
@@ -124,13 +123,13 @@ export default function ManageRoutines() {
           />
         );
       });
-  }, [routines, routineData, saveRoutineData]);
+  }, [routineParts, routineData, saveRoutineData]);
 
   useEffect(() => {
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
-        const { routines, routineData } = res.message;
-        setRoutines(routines);
+        const { parts, routineData } = res.message;
+        setRoutineParts(parts);
         setRoutineData(routineData);
       }
     });

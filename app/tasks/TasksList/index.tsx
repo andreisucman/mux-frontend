@@ -6,7 +6,6 @@ import { IconCircleOff } from "@tabler/icons-react";
 import useSWR from "swr";
 import { Carousel } from "@mantine/carousel";
 import { Loader, Stack } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
@@ -26,15 +25,12 @@ type Props = {
 };
 
 export default function TasksList({ customStyles }: Props) {
-  const { userDetails, setUserDetails } = useContext(UserContext);
-  const isMobile = useMediaQuery("(max-width: 36em)");
-
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [pageLoaded, setPageLoaded] = useState(false);
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
-
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");

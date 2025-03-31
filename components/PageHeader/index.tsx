@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
@@ -18,6 +18,7 @@ type Props = {
   children?: React.ReactNode;
   nowrapTitle?: boolean;
   nowrapContainer?: boolean;
+  defaultSortValue?: string;
   onSelect?: (value?: string | null) => void;
   onFilterClick?: () => void;
 };
@@ -29,6 +30,7 @@ export default function PageHeader({
   nowrapContainer,
   isDisabled,
   sortItems,
+  defaultSortValue,
   filterNames = [],
   children,
   onFilterClick,
@@ -69,7 +71,7 @@ export default function PageHeader({
       </ActionIcon>
       {finalTitle}
       {children}
-      {sortItems && <SortButton sortItems={sortItems} isDisabled={isDisabled} />}
+      {sortItems && <SortButton sortItems={sortItems} defaultSortValue={defaultSortValue} isDisabled={isDisabled} />}
       {onFilterClick && (
         <FilterButton
           isDisabled={isDisabled}

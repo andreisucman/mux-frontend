@@ -148,6 +148,7 @@ export default function ClubProgress(props: Props) {
           title={"Club"}
           userName={userName}
           filterNames={["part"]}
+          defaultSortValue="-_id"
           sortItems={progressSortItems}
           isDisabled={!availableParts}
           onFilterClick={() =>

@@ -15,7 +15,7 @@ function StatsGroup({ total, completed, completionRate }: Props) {
     <Group className={classes.container}>
       <StatCell icon={<IconListDetails className="icon icon__small" />} value={total} />
       <StatCell icon={<IconSquareCheck className="icon icon__small" />} value={completed} />
-      {`% ${completionRate}`}
+      {isNaN(completionRate) ? "% 0" : `% ${completionRate}`}
     </Group>
   );
 }

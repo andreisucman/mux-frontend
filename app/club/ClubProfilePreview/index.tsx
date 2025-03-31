@@ -50,9 +50,9 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
   }, []);
 
   const chevron = showCollapsedInfo ? (
-    <IconChevronUp className="icon" style={{ marginLeft: rem(4) }} />
+    <IconChevronUp className="icon" />
   ) : (
-    <IconChevronDown className="icon" style={{ marginLeft: rem(4) }} />
+    <IconChevronDown className="icon" />
   );
 
   return (
@@ -71,24 +71,26 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
           )}
         </Group>
 
-        <Collapse in={showCollapsedInfo}>
-          {!isMini && (
-            <Text size="sm" lineClamp={5} mb={2}>
-              {intro}
-            </Text>
-          )}
-          {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
-          {overall && overall > 0 ? (
-            <>
-              <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />
-              {nonZeroParts.map((obj, i) => (
-                <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
-              ))}
-            </>
-          ) : (
-            <></>
-          )}
-        </Collapse>
+        {intro && (
+          <Collapse in={showCollapsedInfo}>
+            {!isMini && (
+              <Text size="sm" lineClamp={5} mb={2}>
+                {intro}
+              </Text>
+            )}
+            {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
+            {overall && overall > 0 ? (
+              <>
+                <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />
+                {nonZeroParts.map((obj, i) => (
+                  <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
+                ))}
+              </>
+            ) : (
+              <></>
+            )}
+          </Collapse>
+        )}
       </Stack>
 
       {showButton && (

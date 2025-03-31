@@ -1,6 +1,6 @@
 import React from "react";
-import { useSearchParams } from "next/navigation";
-import { Stack } from "@mantine/core";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Stack } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
@@ -10,27 +10,34 @@ type Props = {
   filterItems?: FilterItemType[];
 };
 
-export default function RoutinesFilterCardContent({ filterItems = [] }: Props) {
+export default function RoutinesFilterCardContent({ filterItems }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
 
-  const partsDisabled = filterItems.length === 0;
-
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={filterItems}
-        icons={partsDisabled ? undefined : partIcons}
+        data={filterItems || []}
+        icons={filterItems ? partIcons : undefined}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={partsDisabled}
+        isDisabled={!filterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
         addToQuery
       />
+      <Button
+        disabled={!searchParams.toString()}
+        variant="default"
+        onClick={() => router.replace(pathname)}
+      >
+        Clear filters
+      </Button>
     </Stack>
   );
 }
