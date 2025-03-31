@@ -19,6 +19,7 @@ type Props = {
   isLoading?: boolean;
   glow?: boolean;
   underButtonText?: string;
+  beforeButtonChild?: React.ReactNode;
   content: { icon: React.ReactNode; description: string }[];
   onClick?: (props?: any) => void;
 };
@@ -30,6 +31,7 @@ export default function PricingCard({
   customHeadingStyles,
   customContainerStyles,
   description,
+  beforeButtonChild,
   icon,
   name,
   glow,
@@ -66,7 +68,8 @@ export default function PricingCard({
         </Stack>
 
         {buttonText && (
-          <>
+          <Stack gap={8}>
+            {beforeButtonChild}
             <GlowingButton
               icon={icon}
               text={buttonText}
@@ -81,7 +84,7 @@ export default function PricingCard({
                 {underButtonText}
               </Text>
             )}
-          </>
+          </Stack>
         )}
       </Stack>
     </Stack>

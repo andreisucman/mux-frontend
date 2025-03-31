@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter, usePathname, useSearchParams } from "next/navigation";
-import { CloseButton, Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
+import { Button, CloseButton, Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -186,6 +186,11 @@ export default function PurchaseOverlay({
               <></>
             )
           }
+          beforeButtonChild={
+            <Button onClick={handleCloseOverlay} variant="outline">
+              Preview
+            </Button>
+          }
           customHeadingStyles={{ padding: "1rem 0" }}
           name={selectedCardData?.name}
           description={selectedCardData?.description}
@@ -197,19 +202,7 @@ export default function PurchaseOverlay({
           glow
         />
       </Stack>
-      <Overlay
-        children={
-          <CloseButton
-            variant="default"
-            onClick={handleCloseOverlay}
-            className={classes.closeButton}
-          />
-        }
-        color="#000"
-        backgroundOpacity={0.1}
-        blur={7}
-        radius={16}
-      />
+      <Overlay color="#000" backgroundOpacity={0.1} blur={7} radius={16} />
     </Stack>
   );
 }

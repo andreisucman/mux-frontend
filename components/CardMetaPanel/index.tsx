@@ -22,7 +22,7 @@ export default function CardMetaPanel({ redirectUrl, avatar, name, formattedDate
       href={redirectUrl}
     >
       <Group className={classes.nameWrapper}>
-        <AvatarComponent avatar={avatar} size="xs"  />
+        <AvatarComponent avatar={avatar} size="sm"  />
         <Text lineClamp={2} fw={600}>
           {name}
         </Text>
