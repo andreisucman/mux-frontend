@@ -60,14 +60,11 @@ export default function BlurSelectorMenu({
         {items.map((item, i) => (
           <Menu.Item key={i}>{item}</Menu.Item>
         ))}
-        {existingValues.includes("blurred") && (
-          <Menu.Item>
-            <Group gap={8} onClick={handleNewBlur}>
-              <IconCirclePlus className="icon icon__small" /> New
-              blur
-            </Group>
-          </Menu.Item>
-        )}
+        <Menu.Item>
+          <Group gap={8} onClick={handleNewBlur}>
+            <IconCirclePlus className="icon icon__small" /> New blur
+          </Group>
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );

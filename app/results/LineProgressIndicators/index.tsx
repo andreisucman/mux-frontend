@@ -24,6 +24,8 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
   const renderIndicator = ([label, value]: [string, number], index: number) => {
     const color = getRingColor(value);
 
+    const displayValue = value > 0 ? `+${value.toFixed(0)}` : `-${Math.abs(value).toFixed(0)}`;
+
     return (
       <Group key={`${label}-${index}`} gap="sm">
         <Text size="sm" lineClamp={1}>
@@ -32,7 +34,7 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
 
         <Progress.Root className={classes.barRoot} size={18}>
           <Progress.Section value={value} color={color}>
-            <Progress.Label>{value.toFixed(0)}</Progress.Label>
+            <Progress.Label>{displayValue}</Progress.Label>
           </Progress.Section>
         </Progress.Root>
       </Group>
