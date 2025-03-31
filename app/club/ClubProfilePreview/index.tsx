@@ -74,21 +74,19 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
         {intro && (
           <Collapse in={showCollapsedInfo}>
             {!isMini && (
-              <Text size="sm" lineClamp={5} mb={2}>
-                {intro}
-              </Text>
+              <Group gap={0}>
+                <Text size="sm" lineClamp={5} mr={8}>
+                  {intro}{" "}
+                </Text>
+                {overall && (
+                  <ScoreCell
+                    score={overall}
+                    icon={<IconTrendingUp className="icon icon__small" />}
+                  />
+                )}
+              </Group>
             )}
             {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
-            {overall && overall > 0 ? (
-              <>
-                <ScoreCell score={overall} icon={<IconTrendingUp className="icon icon__small" />} />
-                {nonZeroParts.map((obj, i) => (
-                  <ScoreCell key={i} score={obj.score as number} icon={obj.icon} />
-                ))}
-              </>
-            ) : (
-              <></>
-            )}
           </Collapse>
         )}
       </Stack>
