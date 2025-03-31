@@ -73,9 +73,9 @@ export default function ClubProof(props: Props) {
       const { priceData, data, notPurchased } = message || {};
 
       setPurchaseOverlayData(priceData ? priceData : null);
+      setNotPurchased(notPurchased);
 
       if (skip) {
-        setNotPurchased(notPurchased);
         setProof([...(proof || []), ...data.slice(0, 20)]);
       } else {
         setProof(data.slice(0, 20));

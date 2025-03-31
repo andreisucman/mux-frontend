@@ -299,11 +299,7 @@ export default function ClubRoutines(props: Props) {
       />
       {accordionItems ? (
         <Stack className={classes.wrapper}>
-          <Stack
-            className={cn(classes.content, "scrollbar", {
-              [classes.relative]: showOverlayComponent !== "purchaseOverlay",
-            })}
-          >
+          <Stack className={cn(classes.content, "scrollbar")}>
             {purchaseOverlayData && (
               <>
                 {showOverlayComponent === "purchaseOverlay" && (

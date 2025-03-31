@@ -25,7 +25,7 @@ export default function ProofCardHeader({
     >
       {!hideTitle && (
         <Group className={classes.content}>
-          <span>{icon}</span>
+          <span className={classes.icon}>{icon}</span>
           <Title order={5} className={classes.taskName} lineClamp={1}>
             {taskName}
           </Title>

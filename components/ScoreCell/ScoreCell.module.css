@@ -1,10 +1,11 @@
 .cell {
   display: flex;
   align-items: center;
-  gap: rem(4);
+  gap: rem(6);
   flex-direction: row;
   justify-content: center;
   flex-wrap: nowrap;
+  margin-top: rem(4)
 }
 
 .text {
@@ -15,4 +16,5 @@
   gap: rem(4);
   flex-wrap: nowrap;
   white-space: nowrap;
+  font-size: rem(14);
 }

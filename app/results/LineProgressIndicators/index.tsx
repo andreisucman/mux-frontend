@@ -35,7 +35,7 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
         <Progress.Root
           className={classes.barRoot}
           size={18}
-          styles={{ label: { minWidth: rem(25) } }}
+          styles={{ label: { minWidth: rem(30) } }}
         >
           <Progress.Section value={value} color={color}>
             <Progress.Label>{displayValue}</Progress.Label>
