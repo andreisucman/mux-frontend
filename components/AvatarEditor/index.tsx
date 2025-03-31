@@ -204,10 +204,7 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
               onChange={(value) => {
                 if (!updatedConfig.backgroundColor) return;
                 setBgColorOne(sanitizeValue(value));
-                modifyConfig("backgroundColor", [
-                  sanitizeValue(value),
-                  updatedConfig.backgroundColor[0],
-                ]);
+                modifyConfig("backgroundColor", [sanitizeValue(value), bgColorTwo]);
               }}
             />
             <ColorInput
@@ -219,10 +216,7 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
               onChange={(value) => {
                 if (!updatedConfig.backgroundColor) return;
                 setBgColorTwo(sanitizeValue(value));
-                modifyConfig("backgroundColor", [
-                  updatedConfig.backgroundColor[1],
-                  sanitizeValue(value),
-                ]);
+                modifyConfig("backgroundColor", [bgColorOne, sanitizeValue(value)]);
               }}
             />
           </Fieldset>

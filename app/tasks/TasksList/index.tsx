@@ -49,11 +49,11 @@ export default function TasksList({ customStyles }: Props) {
 
     const earliestStartDate = tasks[0].startsAt;
 
-    const nextDay = new Date(earliestStartDate);
-    nextDay.setHours(23, 59, 59, 0);
+    const endOfDay = new Date(earliestStartDate);
+    endOfDay.setHours(23, 59, 59, 0);
 
     const tasksWithOnClick = tasks
-      .filter((t) => new Date(t.startsAt) < nextDay)
+      .filter((t) => new Date(t.startsAt) < endOfDay)
       .map((fTask) => ({
         ...fTask,
         onClick: () => {
@@ -73,13 +73,15 @@ export default function TasksList({ customStyles }: Props) {
   const tomorrowsTasks = useMemo(() => {
     if (!tasks || !tasks.length) return;
 
-    const earliestStartDate = tasks[0].startsAt;
+    const earliestStartDate = daysFrom({ date: new Date(tasks[0].startsAt), days: 1 });
 
-    const nextDay = daysFrom({ date: new Date(earliestStartDate), days: 1 });
-    nextDay.setHours(23, 59, 59, 0);
+    const endOfPeriod = daysFrom({ date: new Date(earliestStartDate), days: 1 });
+    endOfPeriod.setHours(23, 59, 59, 0);
 
     const tasksWithOnClick = tasks
-      .filter((t) => new Date(t.startsAt) > nextDay)
+      .filter(
+        (t) => new Date(t.startsAt) >= earliestStartDate && new Date(t.startsAt) < endOfPeriod
+      )
       .map((fTask) => ({
         ...fTask,
         onClick: () => {
