@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Checkbox, Stack, Title } from "@mantine/core";
 import ImageCardStack from "@/components/UploadContainer/ImageCardStack";
@@ -26,11 +26,13 @@ export default function UploadedImagesContent({
   setEnableScanAnalysis,
 }: Props) {
   const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
   const { scanAnalysisQuota } = userDetails || {};
 
   const handleEnableAnalysis = (enable: boolean) => {
+    if (isLoading) return;
     if (typeof scanAnalysisQuota !== "number") return;
     if (!isFirstAnalysis && scanAnalysisQuota === 0 && enable) {
       const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
@@ -38,6 +40,7 @@ export default function UploadedImagesContent({
         redirectUrl: `${redirectUrl}?success=true`,
         cancelUrl: redirectUrl,
         setUserDetails,
+        setIsLoading,
       });
       return;
     }
@@ -52,6 +55,7 @@ export default function UploadedImagesContent({
       </Title>
       {!hideCheckbox && (
         <Checkbox
+          disabled={isLoading}
           checked={isFirstAnalysis || enableScanAnalysis}
           label="Get scores and feedback"
           onChange={(e) => handleEnableAnalysis(e.currentTarget.checked)}

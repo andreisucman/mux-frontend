@@ -62,7 +62,7 @@ export default function ClubJoin() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title="Join the Club" hidePartDropdown />
+        <PageHeader title="Join the Club" />
         <Stack className={classes.wrapper}>
           <Overlay zIndex={1} style={{ pointerEvents: "none" }} opacity={0.5} radius={16} />
           <Stack className={classes.announcement}>

@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { useSearchParams } from "next/navigation";
 import cn from "classnames";
-import { ActionIcon, Group, Title } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 import TitleDropdown, { TitleType } from "@/app/results/TitleDropdown";
 import FilterButton from "../FilterButton";
 import SortButton from "../SortButton";
@@ -11,15 +10,13 @@ import classes from "./PageHeader.module.css";
 type Props = {
   title?: string | React.ReactNode;
   titles?: TitleType[];
-  isDisabled?: boolean;
-  hidePartDropdown?: boolean;
-  sortItems?: { value: string; label: string }[];
-  filterNames?: string[];
-  children?: React.ReactNode;
   nowrapTitle?: boolean;
   nowrapContainer?: boolean;
+  isDisabled?: boolean;
+  sortItems?: { value: string; label: string }[];
   defaultSortValue?: string;
-  onSelect?: (value?: string | null) => void;
+  filterNames?: string[];
+  children?: React.ReactNode;
   onFilterClick?: () => void;
 };
 
@@ -35,7 +32,6 @@ export default function PageHeader({
   children,
   onFilterClick,
 }: Props) {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const activeFiltersCount = useMemo(() => {
@@ -66,12 +62,15 @@ export default function PageHeader({
 
   return (
     <Group className={cn(classes.container, { [classes.nowrapContainer]: nowrapContainer })}>
-      <ActionIcon variant="default" onClick={() => router.back()}>
-        <IconChevronLeft className="icon" />
-      </ActionIcon>
       {finalTitle}
       {children}
-      {sortItems && <SortButton sortItems={sortItems} defaultSortValue={defaultSortValue} isDisabled={isDisabled} />}
+      {sortItems && (
+        <SortButton
+          sortItems={sortItems}
+          defaultSortValue={defaultSortValue}
+          isDisabled={isDisabled}
+        />
+      )}
       {onFilterClick && (
         <FilterButton
           isDisabled={isDisabled}

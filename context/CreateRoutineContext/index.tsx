@@ -4,10 +4,8 @@ import React, { createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import createCheckoutSession from "@/functions/createCheckoutSession";
 import addImprovementCoach from "@/helpers/addImprovementCoach";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
-import { useRouter } from "@/helpers/custom-router";
 import { UserContext } from "../UserContext";
 import SelectPartForRoutineModalContent from "./SelectPartForRoutineModalContent";
 
@@ -26,7 +24,6 @@ const defaultCreateRoutineContext = {
 export const CreateRoutineContext = createContext(defaultCreateRoutineContext);
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -35,22 +32,6 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
 
   const { isSubscriptionActive, isTrialUsed } =
     checkSubscriptionActivity(["improvement"], subscriptions) || {};
-
-  const handleCreateCheckoutSession = async () => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns`;
-    const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
-
-    createCheckoutSession({
-      type: "platform",
-      body: {
-        priceId: process.env.NEXT_PUBLIC_IMPROVEMENT_PRICE_ID!,
-        redirectUrl,
-        cancelUrl,
-        mode: "subscription",
-      },
-      setUserDetails,
-    });
-  };
 
   const openSelectRoutineType = (parts: { part: string; date: Date | null }[]) => {
     modals.openContextModal({

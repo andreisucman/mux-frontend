@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Group, Title } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
@@ -14,17 +13,17 @@ import SortButton from "../SortButton";
 import classes from "./PageHeaderClub.module.css";
 
 type Props = {
-  nowrap?: boolean;
   title?: string;
-  pageType: string;
-  userName: string;
   titles?: { label: string; value: string }[];
+  nowrap?: boolean;
   isDisabled?: boolean;
-  defaultSortValue?:string;
-  childrenPosition?: "first" | "last";
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
+  defaultSortValue?: string;
   children?: React.ReactNode;
+  userName: string;
+  pageType: string;
+  childrenPosition?: "first" | "last";
   onFilterClick?: () => void;
 };
 
@@ -76,12 +75,15 @@ export default function PageHeaderClub({
 
   return (
     <Group className={classes.container}>
-      <ActionIcon variant="default" onClick={() => router.back()}>
-        <IconChevronLeft className="icon" />
-      </ActionIcon>
       {finalTitle}
       {childrenPosition === "first" && children}
-      {sortItems && <SortButton sortItems={sortItems} defaultSortValue={defaultSortValue} isDisabled={isDisabled} />}
+      {sortItems && (
+        <SortButton
+          sortItems={sortItems}
+          defaultSortValue={defaultSortValue}
+          isDisabled={isDisabled}
+        />
+      )}
       {onFilterClick && (
         <FilterButton
           isDisabled={isDisabled}

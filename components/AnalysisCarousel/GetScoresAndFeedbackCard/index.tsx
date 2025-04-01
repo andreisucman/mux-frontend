@@ -39,6 +39,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
           redirectUrl: `${redirectUrl}?success=true`,
           cancelUrl: redirectUrl,
           setUserDetails,
+          setIsLoading: setLoadingButton,
         });
         return;
       }
@@ -57,6 +58,7 @@ export default function GetScoresAndFeedbackCard({ title }: Props) {
               redirectUrl: `${redirectUrl}?success=true`,
               cancelUrl: redirectUrl,
               setUserDetails,
+              setIsLoading: setLoadingButton,
             });
             return;
           }

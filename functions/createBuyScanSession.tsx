@@ -8,9 +8,10 @@ type Props = {
   redirectUrl: string;
   cancelUrl: string;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType | null>>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<any>>;
 };
 
-const createBuyScanSession = ({ redirectUrl, cancelUrl, setUserDetails }: Props) => {
+const createBuyScanSession = ({ redirectUrl, cancelUrl, setUserDetails, setIsLoading }: Props) => {
   openPaymentModal({
     title: "Add scan analysis",
     price: (
@@ -29,6 +30,7 @@ const createBuyScanSession = ({ redirectUrl, cancelUrl, setUserDetails }: Props)
           cancelUrl,
           mode: "payment",
         },
+        setIsLoading,
         setUserDetails,
       }),
     buttonText: "Buy scan analysis",

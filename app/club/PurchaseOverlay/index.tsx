@@ -74,6 +74,7 @@ export default function PurchaseOverlay({
           cancelUrl: redirectUrl,
           mode: "payment",
         },
+        setIsLoading,
         setUserDetails,
       });
       modals.closeAll();
@@ -143,6 +144,7 @@ export default function PurchaseOverlay({
         cancelUrl: redirectUrl,
         mode: "payment",
       },
+      setIsLoading,
       setUserDetails,
     });
   }, [userId, isLoading, redirectUrl, status, selectedCardData]);

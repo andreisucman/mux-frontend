@@ -44,8 +44,8 @@ export default function RoutineModerationCard({
   saveRoutineData,
   defaultName = "",
   defaultDescription = "",
-  defaultOneTimePrice = 1,
-  defaultUpdatePrice = 1,
+  defaultOneTimePrice = 5,
+  defaultUpdatePrice = 2,
 }: Props) {
   const { userDetails } = useContext(UserContext);
   const router = useRouter();
@@ -184,7 +184,7 @@ export default function RoutineModerationCard({
             defaultValue={price}
             onChange={(value) => handleDo(setOneTimePrice, Number(value))}
             clampBehavior="strict"
-            min={1}
+            min={5}
             max={10000}
             allowNegative={false}
             error={error?.price}
@@ -194,7 +194,7 @@ export default function RoutineModerationCard({
             label={<Text className={classes.label}>Price of update</Text>}
             onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
             clampBehavior="strict"
-            min={1}
+            min={2}
             max={10000}
             allowNegative={false}
             rightSection={

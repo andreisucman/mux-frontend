@@ -22,7 +22,7 @@ export default function Tasks() {
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
-        <PageHeader titles={titles} hidePartDropdown />
+        <PageHeader titles={titles} />
         <ConsiderationsInput
           placeholder={"Special considerations"}
           defaultValue={specialConsiderations || ""}

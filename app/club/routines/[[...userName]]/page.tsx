@@ -125,8 +125,6 @@ export default function ClubRoutines(props: Props) {
       if (message) {
         const { priceData, data, notPurchased } = message;
 
-        console.log("message", message);
-
         setPurchaseOverlayData(priceData ? priceData : null);
         setNotPurchased(notPurchased);
 

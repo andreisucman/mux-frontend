@@ -113,7 +113,7 @@ export default function TasksList({ customStyles }: Props) {
     } else if (todaysTasks === undefined) {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, todaysTasks, pageLoaded]);
+  }, [isAnalysisGoing, tasks, todaysTasks, pageLoaded]);
 
   useEffect(() => {
     if (!userId) return;

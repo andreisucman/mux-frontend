@@ -1,5 +1,5 @@
 .container {
-  padding: rem(8) rem(16);
+  padding: rem(8);
   border: rem(1) solid transparent;
   border-radius: var(--mantine-radius-lg);
   align-items: center;

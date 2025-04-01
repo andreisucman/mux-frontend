@@ -70,6 +70,7 @@ export default function StartPartialScanOverlay({
           redirectUrl: `${redirectUrl}?success=true`,
           cancelUrl: redirectUrl,
           setUserDetails,
+          setIsLoading: setIsButtonLoading,
         });
         return;
       }
@@ -89,6 +90,7 @@ export default function StartPartialScanOverlay({
               redirectUrl: `${redirectUrl}?success=true`,
               cancelUrl: redirectUrl,
               setUserDetails,
+              setIsLoading: setIsButtonLoading,
             });
             return;
           }

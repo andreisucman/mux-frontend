@@ -21,10 +21,9 @@ function BalancePane() {
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
   const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId } = payouts || {};
-  const submittedNotEnabled = detailsSubmitted && !payoutsEnabled;
 
   const openCountrySelectModal = useCallback(() => {
-    setLoadingButton("add");
+    setLoadingButton("bank");
     if (!country) {
       modals.openContextModal({
         modal: "general",
@@ -48,7 +47,7 @@ function BalancePane() {
   }, [country]);
 
   const handleSetCountryAndCreateAccount = useCallback(async (newCountry: string) => {
-    setLoadingButton("add");
+    setLoadingButton("bank");
 
     const response = await callTheServer({
       endpoint: "changeCountry",
@@ -67,9 +66,9 @@ function BalancePane() {
 
       handleCreateConnectAccount();
       modals.closeAll();
+    } else {
+      setLoadingButton(null);
     }
-
-    setLoadingButton(null);
   }, []);
 
   const handleCreateConnectAccount = useCallback(async () => {
@@ -83,14 +82,14 @@ function BalancePane() {
       if (response.error) {
         openErrorModal({ description: response.error });
         setUserDetails((prev: UserDataType) => ({ ...prev, country: null }));
+        setLoadingButton(null);
         return;
       }
       router.push(response.message);
     } else {
       openErrorModal({ description: response.error });
+      setLoadingButton(null);
     }
-
-    setLoadingButton(null);
   }, []);
 
   const displayBalance = useMemo(() => {
@@ -127,6 +126,9 @@ function BalancePane() {
   }, [balance]);
 
   const alert = useMemo(() => {
+    const submittedNotEnabled = detailsSubmitted && !payoutsEnabled && !disabledReason;
+    const isRejected = disabledReason === "rejected.other";
+
     if (!detailsSubmitted)
       return (
         <Alert
@@ -137,7 +139,7 @@ function BalancePane() {
           <Group gap={8}>
             Your withdrawals are inactive. To activate them add a bank account.
             <Button
-              loading={loadingButton === "add"}
+              loading={loadingButton === "bank"}
               ml="auto"
               size="compact-sm"
               onClick={openCountrySelectModal}
@@ -158,7 +160,7 @@ function BalancePane() {
         </Alert>
       );
 
-    if (!payoutsEnabled && disabledReason)
+    if (isRejected)
       return (
         <Alert
           variant="light"
@@ -166,8 +168,20 @@ function BalancePane() {
           icon={<IconInfoCircle className="icon" />}
         >
           <Stack gap={8}>
-            Your payouts have been disabled. Sign in to your wallet to fix that.
+            Sorry, but we can't support your payments. Reach out to info@muxout.com if you have
+            questions.
           </Stack>
+        </Alert>
+      );
+
+    if (!payoutsEnabled && disabledReason)
+      return (
+        <Alert
+          variant="light"
+          classNames={{ icon: classes.alertIcon }}
+          icon={<IconInfoCircle className="icon" />}
+        >
+          <Stack gap={8}>Your payouts have been disabled. Check your wallet for more info.</Stack>
         </Alert>
       );
   }, [detailsSubmitted, payoutsEnabled, disabledReason]);
