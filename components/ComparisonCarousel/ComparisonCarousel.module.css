@@ -41,3 +41,9 @@
     background-color: alpha(var(--mantine-color-dark-6), 1);
   }
 }
+
+.titleLink {
+  display: flex;
+  align-items: center;
+  gap: rem(8)
+}

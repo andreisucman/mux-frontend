@@ -68,7 +68,7 @@ export default function PricingCard({
         </Stack>
 
         {buttonText && (
-          <Stack gap={8}>
+          <Stack gap={8} mt={2}>
             {beforeButtonChild}
             <GlowingButton
               icon={icon}

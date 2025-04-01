@@ -1,6 +1,6 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter, usePathname, useSearchParams } from "next/navigation";
-import { Button, CloseButton, Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
+import { Button, Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -33,9 +33,7 @@ export default function PurchaseOverlay({
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const { status, userDetails, setUserDetails } = useContext(UserContext);
-  const [selectedCardData, setSelectedCardData] = useState<PurchaseOverlayDataType>(
-    purchaseOverlayData?.[0]
-  );
+  const [selectedCardData, setSelectedCardData] = useState<PurchaseOverlayDataType>();
   const { _id: userId, club } = userDetails || {};
 
   const part = searchParams.get("part");
@@ -62,6 +60,8 @@ export default function PurchaseOverlay({
   );
 
   const handleJoinClub = useCallback(async () => {
+    if (!selectedCardData) return;
+    
     const clubData = await joinClub();
 
     if (clubData) {
@@ -164,6 +164,12 @@ export default function PurchaseOverlay({
       };
     });
   }, [purchaseOverlayData]);
+
+  useEffect(() => {
+    if (!part) return;
+    const selectedData = purchaseOverlayData.find((obj) => obj.part === part);
+    setSelectedCardData(selectedData);
+  }, [part]);
 
   return (
     <Stack className={classes.container}>

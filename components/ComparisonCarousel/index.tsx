@@ -3,6 +3,7 @@ import { Carousel } from "@mantine/carousel";
 import { Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
 import { getPartIcon, partIcons } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
@@ -25,7 +26,6 @@ export default function ComparisonCarousel({ data }: Props) {
   const redirectUrl = `/club/routines/${userName}?part=${part}`;
 
   const handleClickCarousel = useCallback(() => {
-    const icon = getPartIcon(part);
     const title = (
       <Title order={5} lineClamp={1}>
         {upperFirst(routineName || part)}
@@ -73,7 +73,9 @@ export default function ComparisonCarousel({ data }: Props) {
     <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
         <Title order={5} className={classes.title} lineClamp={1}>
-          {partIcons[part]} {upperFirst(routineName || part)}
+          <Link className={classes.titleLink} href={redirectUrl}>
+            {partIcons[part]} {upperFirst(routineName || part)}
+          </Link>
         </Title>
         <Carousel
           slideSize={{ base: "50%" }}
