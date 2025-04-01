@@ -22,7 +22,6 @@ export default async function cloneTask({
   setTaskInfo,
   setRoutines,
 }: CloneTaskProps) {
-  
   const response = await callTheServer({
     endpoint: "cloneTask",
     method: "POST",

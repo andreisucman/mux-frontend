@@ -14,7 +14,6 @@ import { daysFrom } from "@/helpers/utils";
 import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
-import Indicator from "../Indicator";
 import InputWithCheckboxes from "../InputWithCheckboxes";
 import OverlayWithText from "../OverlayWithText";
 import StatsGroup from "../StatsGroup";
@@ -96,7 +95,7 @@ export default function AccordionRoutineRow({
     }
 
     return parts.join(" - ");
-  }, [part, startsAt, lastDate]);
+  }, [part, startsAt, lastDate, routine]);
 
   const totalTotal = useMemo(
     () =>
@@ -127,11 +126,7 @@ export default function AccordionRoutineRow({
 
   const allActiveTasks = useMemo(() => {
     const activeTasks = allTasks.filter((at) =>
-      at.ids.some((idObj) =>
-        [TaskStatusEnum.ACTIVE, TaskStatusEnum.COMPLETED, TaskStatusEnum.EXPIRED].includes(
-          idObj.status as TaskStatusEnum
-        )
-      )
+      at.ids.some((idObj) => idObj.status !== TaskStatusEnum.DELETED)
     );
     return activeTasks;
   }, [selectedConcerns, routine]);
@@ -189,7 +184,15 @@ export default function AccordionRoutineRow({
         }
 
         const { routines } = message;
-        if (setRoutines) setRoutines(routines);
+
+        if (routines.length && setRoutines) {
+          setRoutines((prev) =>
+            (prev || []).map((r) => {
+              const relevantUpdated = routines.find((ur: RoutineType) => ur._id === r._id);
+              return relevantUpdated ? relevantUpdated : r;
+            })
+          );
+        }
       }
     },
     [setRoutines, status]
