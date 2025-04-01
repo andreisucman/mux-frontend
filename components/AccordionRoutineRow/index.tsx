@@ -28,6 +28,7 @@ type Props = {
   selectedConcerns: { [key: string]: string[] };
   cloneOrRescheduleRoutines?: (routineIds: string[], isReschedule?: boolean) => void;
   updateRoutineStatuses?: (routineIds: string[], newStatus: string) => void;
+  deleteRoutines?: (routineIds: string[]) => void;
   handleCancelRoutine?: (routineId: string, isDelete?: boolean) => void;
   setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
   setSelectedRoutineIds?: React.Dispatch<React.SetStateAction<string[]>>;
@@ -47,6 +48,7 @@ export default function AccordionRoutineRow({
   isSelf,
   selectedConcerns,
   selectedRoutineIds,
+  deleteRoutines,
   setRoutines,
   openTaskDetails,
   cloneOrRescheduleRoutines,
@@ -125,9 +127,7 @@ export default function AccordionRoutineRow({
   );
 
   const allActiveTasks = useMemo(() => {
-    const activeTasks = allTasks.filter((at) =>
-      at.ids.some((idObj) => idObj.status !== TaskStatusEnum.DELETED)
-    );
+    const activeTasks = allTasks.filter((at) => at.ids.some((idObj) => !idObj.deletedOn));
     return activeTasks;
   }, [selectedConcerns, routine]);
 
@@ -196,6 +196,37 @@ export default function AccordionRoutineRow({
       }
     },
     [setRoutines, status]
+  );
+
+  const deleteTask = useCallback(
+    async (taskId: string) => {
+      const response = await callTheServer({
+        endpoint: "deleteTasks",
+        method: "POST",
+        body: { taskIds: [taskId], returnRoutines: true },
+      });
+
+      if (response.status === 200) {
+        const { message, error } = response;
+
+        if (error) {
+          openErrorModal({ description: error });
+          return;
+        }
+
+        const { routines } = message;
+
+        if (routines.length && setRoutines) {
+          setRoutines((prev) =>
+            (prev || []).map((r) => {
+              const relevantUpdated = routines.find((ur: RoutineType) => ur._id === r._id);
+              return relevantUpdated ? relevantUpdated : r;
+            })
+          );
+        }
+      }
+    },
+    [setRoutines]
   );
 
   const handleCloneTask = (taskId: string) => {
@@ -272,6 +303,7 @@ export default function AccordionRoutineRow({
                 routineId={routineId}
                 routineStatus={routine.status}
                 redirectWithDate={redirectWithDate}
+                deleteRoutines={deleteRoutines}
                 updateRoutineStatuses={updateRoutineStatuses}
                 cloneOrRescheduleRoutines={cloneOrRescheduleRoutines}
                 isSelf={isSelf}
@@ -292,6 +324,7 @@ export default function AccordionRoutineRow({
                   openTaskDetails={openTaskDetails}
                   redirectWithDate={redirectWithDate}
                   redirectToTask={redirectToTask}
+                  deleteTask={deleteTask}
                   updateTaskStatus={updateTaskStatus}
                 />
               ))}

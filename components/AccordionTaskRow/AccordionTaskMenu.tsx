@@ -8,11 +8,13 @@ type Props = {
   taskStatus: string;
   redirectToTask: (taskId: string) => void;
   updateTaskStatus: (taskId: string, newStatus: string) => void;
+  deleteTask: (taskId: string) => void;
 };
 
 export default function AccordionTaskMenu({
   taskId,
   taskStatus,
+  deleteTask,
   redirectToTask,
   updateTaskStatus,
 }: Props) {
@@ -56,8 +58,10 @@ export default function AccordionTaskMenu({
             Activate task
           </Menu.Item>
         )}
-        {[TaskStatusEnum.CANCELED, TaskStatusEnum.EXPIRED].includes(taskStatus as TaskStatusEnum) && (
-          <Menu.Item onClick={() => updateTaskStatus(taskId, TaskStatusEnum.DELETED)}>
+        {[TaskStatusEnum.CANCELED, TaskStatusEnum.EXPIRED].includes(
+          taskStatus as TaskStatusEnum
+        ) && (
+          <Menu.Item onClick={() => deleteTask(taskId)}>
             <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
             Delete task
           </Menu.Item>

@@ -61,7 +61,7 @@ export default function PurchaseOverlay({
 
   const handleJoinClub = useCallback(async () => {
     if (!selectedCardData) return;
-    
+
     const clubData = await joinClub();
 
     if (clubData) {
@@ -166,8 +166,13 @@ export default function PurchaseOverlay({
   }, [purchaseOverlayData]);
 
   useEffect(() => {
-    if (!part) return;
-    const selectedData = purchaseOverlayData.find((obj) => obj.part === part);
+    let selectedData;
+
+    if (part) {
+      selectedData = purchaseOverlayData.find((obj) => obj.part === part);
+    } else {
+      selectedData = purchaseOverlayData[0];
+    }
     setSelectedCardData(selectedData);
   }, [part]);
 

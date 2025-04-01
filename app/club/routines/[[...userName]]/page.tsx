@@ -125,6 +125,8 @@ export default function ClubRoutines(props: Props) {
       if (message) {
         const { priceData, data, notPurchased } = message;
 
+        console.log("message", message);
+
         setPurchaseOverlayData(priceData ? priceData : null);
         setNotPurchased(notPurchased);
 
@@ -216,9 +218,28 @@ export default function ClubRoutines(props: Props) {
     }
   }, [part, notPurchased]);
 
-  useEffect(() => {
-    manageOverlays();
-  }, [part, notPurchased]);
+  const deleteRoutines = useCallback(
+    async (routineIds: string[]) => {
+      const response = await callTheServer({
+        endpoint: "deleteRoutines",
+        method: "POST",
+        body: { timeZone, routineIds },
+      });
+
+      if (response.status === 200) {
+        setRoutines((prev) =>
+          prev
+            ?.filter(Boolean)
+            .map((obj) =>
+              routineIds.includes(obj._id)
+                ? response.message.find((r: RoutineType) => r._id === obj._id)
+                : obj
+            )
+        );
+      }
+    },
+    [timeZone]
+  );
 
   const accordionItems = useMemo(
     () =>
@@ -232,15 +253,20 @@ export default function ClubRoutines(props: Props) {
             timeZone={timeZone}
             selectedRoutineIds={selectedRoutineIds}
             selectedConcerns={selectedConcerns}
-            setSelectedConcerns={setSelectedConcerns}
             setRoutines={setRoutines}
+            deleteRoutines={deleteRoutines}
             openTaskDetails={openTaskDetails}
+            setSelectedConcerns={setSelectedConcerns}
             setSelectedRoutineIds={setSelectedRoutineIds}
           />
         );
       }),
     [routines, isSelf, timeZone, selectedConcerns, selectedRoutineIds]
   );
+
+  useEffect(() => {
+    manageOverlays();
+  }, [part, notPurchased]);
 
   useEffect(() => {
     const payload: GetRoutinesProps = {

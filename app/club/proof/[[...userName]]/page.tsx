@@ -36,7 +36,7 @@ export default function ClubProof(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
 
-  const { status: authStatus, userDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const { publicUserData } = useContext(ClubContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
@@ -114,7 +114,7 @@ export default function ClubProof(props: Props) {
 
   useEffect(() => {
     handleFetchProof({ userName, sort, part, concern, query });
-  }, [authStatus, userName, part, sort, concern, query]);
+  }, [userName, part, sort, concern, query]);
 
   useEffect(() => {
     getFilters({ collection: "proof", fields: ["part"], filter: [`userName=${userName}`] }).then(

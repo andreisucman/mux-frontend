@@ -16,6 +16,7 @@ type Props = {
   handleCloneTask: (taskId: string) => void;
   redirectToTask: (taskId: string) => void;
   updateTaskStatus: (taskId: string, newStatus: string) => void;
+  deleteTask: (taskId: string) => void;
 };
 
 export default function RoutineIndividualTasksList({
@@ -24,6 +25,7 @@ export default function RoutineIndividualTasksList({
   color,
   isSelf,
   taskIdsObjects,
+  deleteTask,
   handleCloneTask,
   redirectToTask,
   updateTaskStatus,
@@ -45,6 +47,7 @@ export default function RoutineIndividualTasksList({
               <AccordionTaskMenu
                 taskId={idObj._id}
                 taskStatus={idObj.status}
+                deleteTask={deleteTask}
                 redirectToTask={redirectToTask}
                 updateTaskStatus={updateTaskStatus}
               />

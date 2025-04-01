@@ -18,6 +18,7 @@ type Props = {
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   redirectWithDate: (props: RedirectWithDateProps) => void;
   redirectToTask: (taskId: string) => void;
+  deleteTask: (taskId: string) => void;
   updateTaskStatus: (taskId: string, newStatus: string) => void;
 };
 
@@ -25,6 +26,7 @@ export default function AccordionTaskRow({
   data,
   isSelf,
   routineId,
+  deleteTask,
   handleCloneTask,
   openTaskDetails,
   redirectToTask,
@@ -34,10 +36,7 @@ export default function AccordionTaskRow({
   const [openedIndividualTasks, { open, close }] = useDisclosure(false);
   const { ids, icon, key, color, name } = data;
 
-  const notDeletedIds = useMemo(
-    () => ids.filter((idObj) => idObj.status !== TaskStatusEnum.DELETED),
-    [ids]
-  );
+  const notDeletedIds = useMemo(() => ids.filter((idObj) => !idObj.deletedOn), [ids]);
 
   const total = useMemo(
     () =>
@@ -62,7 +61,7 @@ export default function AccordionTaskRow({
     if (isCompleted) return TaskStatusEnum.COMPLETED;
     return TaskStatusEnum.EXPIRED;
   }, [ids]);
-  
+
   const completionRate = useMemo(() => Math.round((completed / total) * 100), [completed, total]);
 
   const handleOpenList = () => {
@@ -119,6 +118,7 @@ export default function AccordionTaskRow({
           isSelf={isSelf}
           taskKey={key}
           taskIdsObjects={notDeletedIds}
+          deleteTask={deleteTask}
           handleCloneTask={handleCloneTask}
           redirectToTask={redirectToTask}
           updateTaskStatus={updateTaskStatus}

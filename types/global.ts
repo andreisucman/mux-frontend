@@ -148,7 +148,7 @@ export type RoutineType = {
 };
 
 export type AllTaskType = {
-  ids: { _id: string; startsAt: string; status: string }[];
+  ids: { _id: string; startsAt: string; status: string; deletedOn?: string }[];
   name: string;
   key: string;
   icon: string;
@@ -172,7 +172,6 @@ export enum RoutineStatusEnum {
   ACTIVE = "active",
   EXPIRED = "expired",
   CANCELED = "canceled",
-  DELETED = "deleted",
 }
 
 export enum AuthRedirectToEnum {
@@ -336,7 +335,6 @@ export enum TaskStatusEnum {
   EXPIRED = "expired",
   CANCELED = "canceled", // when a user cancels a task
   INACTIVE = "inactive", // when a user changes the routine
-  DELETED = "deleted",
 }
 
 export type RecipeType = {

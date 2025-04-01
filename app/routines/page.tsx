@@ -207,6 +207,29 @@ export default function MyRoutines() {
     [timeZone]
   );
 
+  const deleteRoutines = useCallback(
+    async (routineIds: string[]) => {
+      const response = await callTheServer({
+        endpoint: "deleteRoutines",
+        method: "POST",
+        body: { timeZone, routineIds },
+      });
+
+      if (response.status === 200) {
+        setRoutines((prev) =>
+          prev
+            ?.filter(Boolean)
+            .map((obj) =>
+              routineIds.includes(obj._id)
+                ? response.message.find((r: RoutineType) => r._id === obj._id)
+                : obj
+            )
+        );
+      }
+    },
+    [timeZone]
+  );
+
   const accordionItems = useMemo(
     () =>
       routines
@@ -219,10 +242,11 @@ export default function MyRoutines() {
               routine={routine}
               timeZone={timeZone}
               selectedConcerns={selectedConcerns}
+              setRoutines={setRoutines}
+              deleteRoutines={deleteRoutines}
               updateRoutineStatuses={updateRoutineStatuses}
               setSelectedConcerns={setSelectedConcerns}
               cloneOrRescheduleRoutines={handleCloneOrRescheduleRoutines}
-              setRoutines={setRoutines}
               isSelf
             />
           );

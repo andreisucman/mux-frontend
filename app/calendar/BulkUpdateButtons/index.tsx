@@ -5,13 +5,14 @@ import classes from "./BulkUpdateButtons.module.css";
 
 type Props = {
   selectedStatus: TaskStatusEnum;
-  loadingType?: TaskStatusEnum;
+  loadingType?: "deleted" | "active" | "canceled" | string;
   tasksToUpdate: TaskType[];
   updateTasks: (
     tasksToUpdate: TaskType[],
     currentStatus: TaskStatusEnum,
     newStatus: TaskStatusEnum
   ) => void;
+  deleteTasks: (tasksToDelete: TaskType[]) => void;
 };
 
 export default function BulkUpdateButtons({
@@ -19,11 +20,10 @@ export default function BulkUpdateButtons({
   tasksToUpdate,
   loadingType,
   updateTasks,
+  deleteTasks,
 }: Props) {
   const disableDelete =
-    tasksToUpdate.length === 0 ||
-    loadingType === TaskStatusEnum.DELETED ||
-    loadingType === TaskStatusEnum.ACTIVE;
+    tasksToUpdate.length === 0 || loadingType === "deleted" || loadingType === "active";
 
   return (
     <Group className={classes.container}>
@@ -41,12 +41,10 @@ export default function BulkUpdateButtons({
             Activate
           </Button>
           <Button
-            loading={loadingType === TaskStatusEnum.DELETED}
+            loading={loadingType === "deleted"}
             disabled={disableDelete}
             className={classes.button}
-            onClick={() =>
-              updateTasks(tasksToUpdate, TaskStatusEnum.CANCELED, TaskStatusEnum.DELETED)
-            }
+            onClick={() => deleteTasks(tasksToUpdate)}
           >
             Delete
           </Button>

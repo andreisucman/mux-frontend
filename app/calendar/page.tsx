@@ -50,7 +50,7 @@ export default function Calendar() {
   const [mode, setMode] = useState(givenMode || "all");
   const [tasks, setTasks] = useState<TaskType[]>();
   const [originalTasks, setOriginalTasks] = useState<TaskType[]>();
-  const [loadingType, setLoadingType] = useState<TaskStatusEnum>();
+  const [loadingType, setLoadingType] = useState<"deleted" | "active" | "canceled" | string>();
   const [selectedTaskKey, setSelectedTaskKey] = useState<string | undefined>(
     givenTaskKey as string
   );
@@ -200,32 +200,54 @@ export default function Calendar() {
     async (tasksToUpdate: TaskType[], currentStatus: TaskStatusEnum, newStatus: TaskStatusEnum) => {
       if (loadingType) return;
 
-      try {
-        setLoadingType(newStatus);
+      setLoadingType(newStatus as string);
 
-        const response = await callTheServer({
-          endpoint: "updateStatusOfTasks",
-          method: "POST",
-          body: { taskIds: tasksToUpdate.map((t) => t._id), timeZone, newStatus },
+      const response = await callTheServer({
+        endpoint: "updateStatusOfTasks",
+        method: "POST",
+        body: { taskIds: tasksToUpdate.map((t) => t._id), timeZone, newStatus },
+      });
+
+      if (response.status === 200) {
+        const newTasks = (tasks || []).filter((t) => {
+          const taIds = tasksToUpdate.map((ta) => ta._id);
+          return !taIds.includes(t._id);
         });
 
-        if (response.status === 200) {
-          const newTasks = (tasks || []).filter((t) => {
-            const taIds = tasksToUpdate.map((ta) => ta._id);
-            return !taIds.includes(t._id);
-          });
+        setTasks(newTasks);
 
-          setTasks(newTasks);
+        const date = new Date(selectedDate || new Date());
+        const tasksOfDate = getTasksOfThisDate(newTasks, date, currentStatus);
+        setSelectedTasks(tasksOfDate);
+        setTasksToUpdate([]);
 
-          const date = new Date(selectedDate || new Date());
-          const tasksOfDate = getTasksOfThisDate(newTasks, date, currentStatus);
-          setSelectedTasks(tasksOfDate);
-          setTasksToUpdate([]);
+        setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
+        setLoadingType(undefined);
+      }
+    },
+    [loadingType, timeZone, tasks]
+  );
 
-          setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
-          setLoadingType(undefined);
-        }
-      } catch (err) {
+  const deleteTasks = useCallback(
+    async (tasksToDelete: TaskType[]) => {
+      if (loadingType) return;
+
+      setLoadingType("deleted");
+
+      const response = await callTheServer({
+        endpoint: "deleteTasks",
+        method: "POST",
+        body: { taskIds: tasksToDelete.map((t) => t._id), timeZone },
+      });
+
+      if (response.status === 200) {
+        const newTasks = (tasks || []).filter((t) => {
+          const taIds = tasksToDelete.map((ta) => ta._id);
+          return !taIds.includes(t._id);
+        });
+
+        setTasks(newTasks);
+        setTasksToUpdate([]);
         setLoadingType(undefined);
       }
     },
@@ -430,6 +452,7 @@ export default function Calendar() {
                   selectedStatus={selectedStatus}
                   tasksToUpdate={tasksToUpdate}
                   updateTasks={updateTasks}
+                  deleteTasks={deleteTasks}
                 />
               )}
             </>

@@ -20,6 +20,7 @@ type Props = {
   routineStatus: RoutineStatusEnum;
   cloneOrRescheduleRoutines?: (routineIds: string[], isReschedule?: boolean) => void;
   updateRoutineStatuses?: (routineIds: string[], newStatus: string) => void;
+  deleteRoutines?: (routineIds: string[]) => void;
   redirectWithDate: (args: RedirectWithDateProps) => void;
 };
 
@@ -28,6 +29,7 @@ export default function AccordionRowMenu({
   routineStatus,
   taskKey,
   isSelf,
+  deleteRoutines,
   cloneOrRescheduleRoutines,
   updateRoutineStatuses,
   redirectWithDate,
@@ -88,10 +90,8 @@ export default function AccordionRowMenu({
                 Cancel
               </Menu.Item>
             )}
-            {routineStatus === RoutineStatusEnum.CANCELED && updateRoutineStatuses && (
-              <Menu.Item
-                onClick={() => updateRoutineStatuses([routineId], RoutineStatusEnum.DELETED)}
-              >
+            {routineStatus === RoutineStatusEnum.CANCELED && deleteRoutines && (
+              <Menu.Item onClick={() => deleteRoutines([routineId])}>
                 <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Delete
               </Menu.Item>
