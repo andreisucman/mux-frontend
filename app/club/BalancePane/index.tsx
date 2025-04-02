@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { ActionIcon, Alert, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
@@ -6,7 +7,6 @@ import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import classes from "./BalancePane.module.css";
@@ -14,7 +14,7 @@ import classes from "./BalancePane.module.css";
 function BalancePane() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const [loadingButton, setLoadingButton] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [openTooltip, setOpenTooltip] = useState(false);
   const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
 
@@ -23,7 +23,7 @@ function BalancePane() {
   const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId } = payouts || {};
 
   const openCountrySelectModal = useCallback(() => {
-    setLoadingButton("bank");
+    setIsLoading(true);
     if (!country) {
       modals.openContextModal({
         modal: "general",
@@ -39,7 +39,7 @@ function BalancePane() {
           </Title>
         ),
       });
-      setLoadingButton(null);
+      setIsLoading(false);
       return;
     }
 
@@ -47,7 +47,7 @@ function BalancePane() {
   }, [country]);
 
   const handleSetCountryAndCreateAccount = useCallback(async (newCountry: string) => {
-    setLoadingButton("bank");
+    setIsLoading(true);
 
     const response = await callTheServer({
       endpoint: "changeCountry",
@@ -67,12 +67,12 @@ function BalancePane() {
       handleCreateConnectAccount();
       modals.closeAll();
     } else {
-      setLoadingButton(null);
+      setIsLoading(false);
     }
   }, []);
 
   const handleCreateConnectAccount = useCallback(async () => {
-    setLoadingButton("bank");
+    setIsLoading(true);
     const response = await callTheServer({
       endpoint: "createConnectAccount",
       method: "POST",
@@ -82,13 +82,13 @@ function BalancePane() {
       if (response.error) {
         openErrorModal({ description: response.error });
         setUserDetails((prev: UserDataType) => ({ ...prev, country: null }));
-        setLoadingButton(null);
+        setIsLoading(false);
         return;
       }
       router.push(response.message);
     } else {
       openErrorModal({ description: response.error });
-      setLoadingButton(null);
+      setIsLoading(false);
     }
   }, []);
 
@@ -123,7 +123,7 @@ function BalancePane() {
         </Group>
       </Group>
     );
-  }, [balance]);
+  }, [isLoading, balance]);
 
   const alert = useMemo(() => {
     const submittedNotEnabled = detailsSubmitted && !payoutsEnabled && !disabledReason;
@@ -139,7 +139,8 @@ function BalancePane() {
           <Group gap={8}>
             Your withdrawals are inactive. To activate them add a bank account.
             <Button
-              loading={loadingButton === "bank"}
+              loading={isLoading}
+              disabled={isLoading}
               ml="auto"
               size="compact-sm"
               onClick={openCountrySelectModal}
@@ -184,7 +185,7 @@ function BalancePane() {
           <Stack gap={8}>Your payouts have been disabled. Check your wallet for more info.</Stack>
         </Alert>
       );
-  }, [detailsSubmitted, payoutsEnabled, disabledReason]);
+  }, [isLoading, detailsSubmitted, payoutsEnabled, disabledReason]);
 
   const redirectToWallet = useCallback(async () => {
     const response = await callTheServer({
