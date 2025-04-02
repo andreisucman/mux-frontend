@@ -1,11 +1,12 @@
 import React, { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import cn from "classnames";
-import { Group, Title } from "@mantine/core";
+import { ActionIcon, Group, Title } from "@mantine/core";
 import TitleDropdown, { TitleType } from "@/app/results/TitleDropdown";
 import FilterButton from "../FilterButton";
 import SortButton from "../SortButton";
 import classes from "./PageHeader.module.css";
+import { IconChevronLeft } from "@tabler/icons-react";
 
 type Props = {
   title?: string | React.ReactNode;
@@ -32,6 +33,7 @@ export default function PageHeader({
   children,
   onFilterClick,
 }: Props) {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const activeFiltersCount = useMemo(() => {
@@ -62,6 +64,9 @@ export default function PageHeader({
 
   return (
     <Group className={cn(classes.container, { [classes.nowrapContainer]: nowrapContainer })}>
+       <ActionIcon variant="default" onClick={() => router.back()}>
+        <IconChevronLeft className="icon" />
+      </ActionIcon>
       {finalTitle}
       {children}
       {sortItems && (

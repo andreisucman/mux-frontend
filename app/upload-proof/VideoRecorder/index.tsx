@@ -377,19 +377,21 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
   const handleChangeCaptureType = useCallback(
     async (captureType: string) => {
-      if (isRecording) return;
-      setCaptureType(captureType as string);
-      saveToLocalStorage("captureType", captureType);
+      try {
+        if (isRecording) return;
+        setCaptureType(captureType as string);
+        saveToLocalStorage("captureType", captureType);
 
-      const savedVideo = await getFromIndexedDb("proofVideo");
-      const savedImage = await getFromIndexedDb("proofImage");
-      const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
+        const savedVideo = await getFromIndexedDb("proofVideo");
+        const savedImage = await getFromIndexedDb("proofImage");
+        const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
 
-      if (savedRecords) {
-        const newTypeRecord = savedRecords[captureType];
-        const newUrl = newTypeRecord ? newTypeRecord : "";
-        setLocalUrl(newUrl);
-      }
+        if (savedRecords) {
+          const newTypeRecord = savedRecords[captureType];
+          const newUrl = newTypeRecord ? newTypeRecord : "";
+          setLocalUrl(newUrl);
+        }
+      } catch (err) {}
     },
     [isRecording]
   );
@@ -421,10 +423,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         setHasMultipleCameras(true);
       }
     } catch (err) {
-      openErrorModal({
-        description: "Failed to access camera",
-        onClose: () => modals.closeAll(),
-      });
+      console.log("Failed to access camera");
     }
   }, [videoRef.current, streamRef.current, isRecording, isVideoLoading, facingMode, aspectRatio]);
 
@@ -436,26 +435,29 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     if (!captureType) return;
 
     const loadSaved = async () => {
-      const savedImage = await getFromIndexedDb("proofImage");
-      const savedVideo = await getFromIndexedDb("proofVideo");
-      const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
+      try {
+        const savedImage = await getFromIndexedDb("proofImage");
+        const savedVideo = await getFromIndexedDb("proofVideo");
+        const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
 
-      let typeRecord;
-      let blob = null;
+        let typeRecord;
+        let blob = null;
 
-      if (savedRecords) {
-        typeRecord = savedRecords[captureType];
+        if (savedRecords) {
+          typeRecord = savedRecords[captureType];
 
-        if (typeRecord) {
-          blob = base64ToBlob(typeRecord, captureType === "image" ? "image/jpeg" : "video/webm");
+          if (typeRecord) {
+            blob = base64ToBlob(typeRecord, captureType === "image" ? "image/jpeg" : "video/webm");
+          }
         }
-      }
 
-      const savedUrl = typeRecord ? typeRecord : "";
+        const savedUrl = typeRecord ? typeRecord : "";
 
-      setLocalUrl(savedUrl);
-      setRecordedBlob(blob);
+        setLocalUrl(savedUrl);
+        setRecordedBlob(blob);
+      } catch (err) {}
     };
+
     loadSaved();
   }, [captureType]);
 

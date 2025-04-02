@@ -187,7 +187,7 @@ export default function ClubRoutines(props: Props) {
         </Title>
       ),
       size: "sm",
-      innerProps: <SelectDateModalContent buttonText="Steal routine" onSubmit={handleSubmit} />,
+      innerProps: <SelectDateModalContent buttonText="Clone routine" onSubmit={handleSubmit} />,
       modal: "general",
       centered: true,
     });

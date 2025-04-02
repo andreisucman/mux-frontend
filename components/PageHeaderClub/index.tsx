@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
-import { Group, Title } from "@mantine/core";
+import { ActionIcon, Group, Title } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
 import { useRouter } from "@/helpers/custom-router";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
@@ -11,6 +11,7 @@ import FilterDropdown from "../FilterDropdown";
 import { clubPageTypeItems } from "../PageHeader/data";
 import SortButton from "../SortButton";
 import classes from "./PageHeaderClub.module.css";
+import { IconChevronLeft } from "@tabler/icons-react";
 
 type Props = {
   title?: string;
@@ -75,6 +76,9 @@ export default function PageHeaderClub({
 
   return (
     <Group className={classes.container}>
+      <ActionIcon variant="default" onClick={() => router.back()}>
+        <IconChevronLeft className="icon" />
+      </ActionIcon>
       {finalTitle}
       {childrenPosition === "first" && children}
       {sortItems && (
