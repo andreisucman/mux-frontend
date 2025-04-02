@@ -125,7 +125,7 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             using AI and as your content Contributions for the purpose of completing the tasks.
           </li>
           <li>
-            Videoa: Videos of your body, uploaded as your content Contributions for the purpose of
+            Videos: Videos of your body, uploaded as your content Contributions for the purpose of
             completing the tasks.
           </li>
           <li>
@@ -190,8 +190,8 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
             interactions.
           </li>
           <li>
-            System and error reports: Information about your system&apos;s activity and any errors
-            encountered while using our services.
+            System and error reports: Information about your activity and any errors encountered
+            while using our services.
           </li>
         </ul>
         <Text>
@@ -320,43 +320,68 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
         </Text>
         <Title order={3}>Third-Party Service Providers</Title>
         <Text>
-          We may share your information with third-party vendors, consultants, or service providers
-          ("third parties") who perform services on our behalf. These third parties help us operate
-          and improve our services by performing essential functions like data analysis, data
-          storage, and payment processing.
+          We use Google OAuth to enable easy sign-up and sign-in to Site. This service allows you to
+          authenticate your account securely through your Google account. By using Google OAuth, you
+          acknowledge and agree that your data may be handled in accordance with Google's privacy
+          practices. For more details on how Google handles your information, please review the{" "}
+          <Link href="https://policies.google.com/privacy" style={{ textDecoration: "underline" }}>
+            Google Privacy Policy
+          </Link>
+          .
         </Text>
-        <Text>Key Points:</Text>
-        <ul>
-          <li>
-            These third parties only have access to your information when it is necessary for them
-            to perform their tasks.
-          </li>
-          <li>
-            We have contracts in place with each third-party provider to ensure they use your
-            personal information only according to our instructions and for the purposes agreed
-            upon.
-          </li>
-          <li>
-            They are prohibited from sharing or using your information for their own purposes.
-          </li>
-          <li>
-            These service providers are required to protect your data and generally retain it for no
-            longer than one year or as required for the duration of the specific service they
-            provide.
-          </li>
-        </ul>
-        <Title>Examples of Third-Party Providers:</Title>
-        <ul>
-          <li>
-            Data analytics services: We may share non-identifying information with analytics
-            providers to understand how our services are used and to improve performance.
-          </li>
-          <li>
-            Data storage providers: We may store your personal information with third-party cloud
-            storage providers who ensure secure, reliable access to data. Your personal information
-            is transferred and stored encrypted.
-          </li>
-        </ul>
+        <Text>
+          We also utilize YouTube API Services to provide relevant example videos for the tasks that
+          you create. By using the Site, you acknowledge and agree that your data may be collected
+          and processed according to YouTube's policies and{" "}
+          <Link
+            href="https://www.youtube.com/static?template=terms"
+            style={{ textDecoration: "underline" }}
+          >
+            YouTube Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="https://policies.google.com/privacy" style={{ textDecoration: "underline" }}>
+            Google Privacy Policy
+          </Link>
+          .
+        </Text>
+        <Text>
+          We use data analytics tools, including Google Analytics, to collect and analyze
+          information about how users interact with our Site. This helps us understand user
+          behavior, traffic patterns, and overall site performance. Google Analytics collects data
+          such as IP addresses, browser types, and usage data. By using our Site, you consent to the
+          processing of this data by Google in accordance with{" "}
+          <Link
+            href="https://marketingplatform.google.com/about/analytics/terms/us/"
+            style={{ textDecoration: "underline" }}
+          >
+            Google Analytics Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="https://policies.google.com/privacy" style={{ textDecoration: "underline" }}>
+            Google Privacy Policy
+          </Link>
+          .
+        </Text>
+        <Text>
+          We use Stripe to process payments securely on our Site. When you make a purchase, your
+          payment information is handled by Stripe. By using our services, you acknowledge and agree
+          that your data may be processed in accordance with{" "}
+          <Link href="https://stripe.com/legal/ssa" style={{ textDecoration: "underline" }}>
+            Stripe's Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="https://stripe.com/privacy" style={{ textDecoration: "underline" }}>
+            Stripe's Privacy Policy
+          </Link>
+          .
+        </Text>
+        <Text>
+          In addition we may share your information with other third-party vendors, consultants, or
+          service providers ("third parties") who perform services on our behalf. These third
+          parties help us operate and improve our services by performing essential functions like
+          data storage, email notification, and security.
+        </Text>
         <Title>Business Transfers</Title>
         <Text>
           If we undergo a business transaction such as a merger, acquisition, sale of assets, or

@@ -713,7 +713,9 @@ export default function TermsLegalBody({ addTitle }: Props) {
             any content related to your review in any format or through any media channels.
           </Text>
 
-          <Title order={2}>12. THIRD-PARTY WEBSITES AND CONTENT</Title>
+          <Title order={2} id="third-part-websites-and-content">
+            12. THIRD-PARTY WEBSITES AND CONTENT
+          </Title>
           <Text>
             The Services may include links to third-party websites ("Third-Party Websites") and
             content, including but not limited to articles, photographs, text, graphics, designs,
@@ -726,6 +728,17 @@ export default function TermsLegalBody({ addTitle }: Props) {
             Third-Party Content posted on, available through, or installed from the Services,
             including the content, accuracy, opinions, reliability, privacy practices, or other
             policies of such Third-Party Websites or Third-Party Content.
+          </Text>
+          <Text>
+            Specifically, the Services may include materials created by third parties and made
+            available through YouTube. By using the Services, you agree to be bound by the{" "}
+            <Link
+              href="https://www.youtube.com/static?template=terms"
+              style={{ textDecoration: "underline" }}
+            >
+              YouTube Terms of Service
+            </Link>
+            . Your continued use of our services constitutes acceptance of these terms.
           </Text>
           <Text>
             The inclusion of links to, or use of, Third-Party Websites or Third-Party Content does
