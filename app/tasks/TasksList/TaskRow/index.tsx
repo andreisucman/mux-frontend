@@ -64,43 +64,31 @@ export default function TaskRow({
     return sections;
   }, [status]);
 
-  const localStartDate = useMemo(
-    () =>
-      convertUTCToLocal({
-        utcDate: new Date(startsAt),
-        timeZone,
-      }),
-    [startsAt]
-  );
+  const dates = useMemo(() => {
+    const start = convertUTCToLocal({
+      utcDate: new Date(startsAt),
+      timeZone,
+    });
+    const expiry = convertUTCToLocal({
+      utcDate: new Date(expiresAt),
+      timeZone,
+    });
+    const moreThanOneDay = new Date(start).getTime() > daysFrom({ days: 1 }).getTime();
+    const startsOnDate = formatDate({ date: startsAt, hideYear: true });
+    return { start, expiry, moreThanOneDay, startsOnDate };
+  }, [startsAt, expiresAt]);
 
-  const localExpiryDate = useMemo(
-    () =>
-      convertUTCToLocal({
-        utcDate: new Date(expiresAt),
-        timeZone,
-      }),
-    [expiresAt]
-  );
-
-  const started = localStartDate < new Date();
-
-  const moreThanOneDay = useMemo(
-    () => new Date(localStartDate).getTime() > daysFrom({ days: 1 }).getTime(),
-    [localStartDate]
-  );
-
-  const timerDate = started ? new Date(localExpiryDate) : new Date(localStartDate);
+  const started = dates.start < new Date();
+  const timerDate = started ? new Date(dates.expiry) : new Date(dates.start);
 
   const timerText =
     status === TaskStatusEnum.COMPLETED ? "Archived in" : started ? "Expires in" : "Starts in";
 
-  const startsOnDate = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
-
   const timer = useMemo(
     () =>
-      moreThanOneDay ? (
+      dates.moreThanOneDay ? (
         <Text fz={12} c={"green.7"}>
-          Starts on {startsOnDate}
+          Starts on {dates.startsOnDate}
         </Text>
       ) : (
         <>
@@ -127,7 +115,7 @@ export default function TaskRow({
           />
         </>
       ),
-    [startsOnDate, timerDate, status, timerText]
+    [dates, timerDate, status, timerText]
   );
 
   return (

@@ -3,27 +3,16 @@ import { Button, Loader, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import askConfirmation from "@/helpers/askConfirmation";
 import { formatDate } from "@/helpers/formatDate";
+import { HandleUpdateTaskinstanceProps } from "../[taskId]/page";
 import EditExistingTask from "../EditExistingTask";
 import classes from "./EditTaskModal.module.css";
-
-export type UpdateTaskProps = {
-  taskId: string;
-  description: string;
-  instruction: string;
-  date: Date | null;
-  applyToAll?: boolean;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-};
 
 type Props = {
   taskId: string;
   startsAt: string;
   description: string;
   instruction: string;
-  updateTask: (props: UpdateTaskProps) => Promise<void>;
+  updateTask: (props: HandleUpdateTaskinstanceProps) => Promise<void>;
 };
 
 export default function EditTaskModal({
@@ -50,7 +39,7 @@ export default function EditTaskModal({
 
   const handleUpdateTask = async (applyToAll?: boolean) => {
     try {
-      const payload: UpdateTaskProps = {
+      const payload: HandleUpdateTaskinstanceProps = {
         taskId,
         description: updatedDescription,
         instruction: updatedInstruction,

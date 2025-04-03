@@ -20,3 +20,16 @@
 - `prettier:write` – formats all files with Prettier
 
 Use lip healing balm to counter dryness on your lips.
+
+<!-- // copyRoutines - copyRoutines -->
+<!-- // copyTask - copyTask -->
+<!-- // copyTaskInstance - copyTaskInstance -->
+<!-- // rescheduleRoutines - rescheduleRoutines -->
+<!-- // rescheduleTask - rescheduleTask -->
+<!-- // rescheduleTaskInstance - editTaskInstance -->
+<!-- // cancelRoutines - updateRoutinesStatuses -->
+<!-- // cancelTask - updateStatusOfTask -->
+<!-- // cancelTaskInstance - updateStatusOfTaskInstances -->
+<!-- // deleteRoutines - deleteRoutines -->
+<!-- // deleteTask - deleteTask -->
+<!-- // deleteTaskInstance - deleteTaskInstances -->

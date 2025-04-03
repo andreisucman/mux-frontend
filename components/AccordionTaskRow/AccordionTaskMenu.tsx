@@ -1,27 +1,45 @@
 import React from "react";
-import { IconBolt, IconCancel, IconDots, IconInfoCircle, IconTrash } from "@tabler/icons-react";
+import {
+  IconBolt,
+  IconCalendar,
+  IconCancel,
+  IconCopy,
+  IconDots,
+  IconNotebook,
+  IconTrash,
+} from "@tabler/icons-react";
 import { ActionIcon, Menu, rem } from "@mantine/core";
 import { TaskStatusEnum } from "@/types/global";
 
 type Props = {
-  taskId: string;
-  taskStatus: string;
-  redirectToTask: (taskId: string) => void;
-  updateTaskStatus: (taskId: string, newStatus: string) => void;
-  deleteTask: (taskId: string) => void;
+  taskKey: string;
+  isSelf: boolean;
+  hasActiveTasks: boolean;
+  allTasksCanceled: boolean;
+  hasCanceledTasks: boolean;
+  copyTask: (taskKey: string) => void;
+  rescheduleTask?: (taskKey: string) => void;
+  deleteTask?: (taskKey: string) => void;
+  redirectToTask?: (props: { taskKey?: string; page: "calendar" | "diary" }) => void;
+  updateTask?: (taskKey: string, newStatus: string) => void;
 };
 
 export default function AccordionTaskMenu({
-  taskId,
-  taskStatus,
+  taskKey,
+  isSelf,
+  hasActiveTasks,
+  hasCanceledTasks,
+  allTasksCanceled,
+  copyTask,
+  rescheduleTask,
   deleteTask,
   redirectToTask,
-  updateTaskStatus,
+  updateTask,
 }: Props) {
   return (
     <Menu
       withArrow
-      disabled={!taskId}
+      disabled={!taskKey}
       styles={{
         itemLabel: {
           display: "flex",
@@ -36,35 +54,59 @@ export default function AccordionTaskMenu({
           variant="default"
           size="sm"
           onClick={(e) => e.stopPropagation()}
-          disabled={!taskId}
+          disabled={!taskKey}
         >
           <IconDots className="icon icon__small icon__gray" />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
-        <Menu.Item onClick={() => redirectToTask(taskId)}>
-          <IconInfoCircle className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-          See task
+        <Menu.Item onClick={() => copyTask(taskKey)}>
+          <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+          Copy
         </Menu.Item>
-        {taskStatus === TaskStatusEnum.ACTIVE && (
-          <Menu.Item onClick={() => updateTaskStatus(taskId, TaskStatusEnum.CANCELED)}>
-            <IconCancel className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-            Cancel task
-          </Menu.Item>
-        )}
-        {taskStatus === TaskStatusEnum.CANCELED && (
-          <Menu.Item onClick={() => updateTaskStatus(taskId, TaskStatusEnum.ACTIVE)}>
-            <IconBolt className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-            Activate task
-          </Menu.Item>
-        )}
-        {[TaskStatusEnum.CANCELED, TaskStatusEnum.EXPIRED].includes(
-          taskStatus as TaskStatusEnum
-        ) && (
-          <Menu.Item onClick={() => deleteTask(taskId)}>
-            <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-            Delete task
-          </Menu.Item>
+        {isSelf && (
+          <>
+            {rescheduleTask && (
+              <Menu.Item onClick={() => rescheduleTask(taskKey)}>
+                <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                Reschedule
+              </Menu.Item>
+            )}
+            {redirectToTask && (
+              <>
+                <Menu.Item onClick={() => redirectToTask({ taskKey, page: "calendar" })}>
+                  <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                  See in calendar
+                </Menu.Item>
+                <Menu.Item onClick={() => redirectToTask({ taskKey, page: "diary" })}>
+                  <IconNotebook className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                  See in diary
+                </Menu.Item>
+              </>
+            )}
+            {updateTask && (
+              <>
+                {hasActiveTasks && (
+                  <Menu.Item onClick={() => updateTask(taskKey, TaskStatusEnum.CANCELED)}>
+                    <IconCancel className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                    Cancel
+                  </Menu.Item>
+                )}
+                {hasCanceledTasks && (
+                  <Menu.Item onClick={() => updateTask(taskKey, TaskStatusEnum.ACTIVE)}>
+                    <IconBolt className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                    Activate
+                  </Menu.Item>
+                )}
+              </>
+            )}
+            {deleteTask && allTasksCanceled && (
+              <Menu.Item onClick={() => deleteTask(taskKey)}>
+                <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                Delete
+              </Menu.Item>
+            )}
+          </>
         )}
       </Menu.Dropdown>
     </Menu>

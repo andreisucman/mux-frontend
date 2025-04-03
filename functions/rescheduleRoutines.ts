@@ -1,0 +1,57 @@
+import { modals } from "@mantine/modals";
+import openErrorModal from "@/helpers/openErrorModal";
+import { RoutineType } from "@/types/global";
+import callTheServer from "./callTheServer";
+
+export type RescheduleRoutinesProps = {
+  routineIds: string[];
+  startDate: Date | null;
+  isReschedule?: boolean;
+  sort?: string | null;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
+  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
+};
+
+const rescheduleRoutines = async ({
+  sort,
+  routineIds,
+  startDate,
+  setIsLoading,
+  setRoutines,
+}: RescheduleRoutinesProps) => {
+  if (!startDate) return;
+
+  setIsLoading(true);
+
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const body: { [key: string]: any } = { routineIds, startDate, timeZone, sort };
+
+  const response = await callTheServer({
+    endpoint: "rescheduleRoutines",
+    method: "POST",
+    body,
+  });
+
+  if (response.status === 200) {
+    if (response.error) {
+      openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
+      setIsLoading(false);
+      return;
+    }
+
+    setRoutines((prev) => {
+      const filtered = prev?.filter(Boolean) || [];
+      return filtered?.map((obj) =>
+        routineIds.includes(obj._id)
+          ? response.message.find((r: RoutineType) => r._id === obj._id)
+          : obj
+      );
+    });
+
+    modals.closeAll();
+  }
+  setIsLoading(false);
+};
+
+export default rescheduleRoutines;

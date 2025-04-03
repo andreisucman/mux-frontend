@@ -1,17 +1,16 @@
 import React, { useCallback, useMemo } from "react";
-import { Accordion, Checkbox, Group, Skeleton, Title } from "@mantine/core";
+import { Accordion, Group, Skeleton, Title } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
-import addTaskInstance from "@/functions/addTaskInstance";
+import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
+import updateTaskInstance from "@/functions/updateTaskInstance";
 import { useRouter } from "@/helpers/custom-router";
-import { formatDate } from "@/helpers/formatDate";
+import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { daysFrom } from "@/helpers/utils";
-import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
+import { RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
 import InputWithCheckboxes from "../InputWithCheckboxes";
@@ -21,83 +20,53 @@ import classes from "./AccordionRoutineRow.module.css";
 
 type Props = {
   routine: RoutineType;
-  isSelf: boolean;
-  timeZone?: string;
   index: number;
-  selectedRoutineIds?: string[];
+  timeZone?: string;
+  isSelf: boolean;
   selectedConcerns: { [key: string]: string[] };
-  cloneOrRescheduleRoutines?: (routineIds: string[], isReschedule?: boolean) => void;
-  updateRoutineStatuses?: (routineIds: string[], newStatus: string) => void;
+  copyRoutines?: (routineIds: string[]) => void;
+  rescheduleRoutines?: (routineIds: string[]) => void;
+  updateRoutines?: (routineIds: string[], newStatus: string) => void;
   deleteRoutines?: (routineIds: string[]) => void;
-  handleCancelRoutine?: (routineId: string, isDelete?: boolean) => void;
   setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
-  setSelectedRoutineIds?: React.Dispatch<React.SetStateAction<string[]>>;
-  openTaskDetails?: (task: AllTaskType, routineId: string) => void;
-  setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
-};
-
-export type RedirectWithDateProps = {
-  taskKey?: string;
-  page: "calendar" | "diary";
+  setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
+  rescheduleTask?: (routineId: string, taskKey: string) => void;
+  deleteTask?: (routineId: string, taskKey: string) => void;
+  updateTask?: (routineId: string, taskKey: string, newStatus: string) => void;
+  copyTask: (routineId: string, taskKey: string) => void;
+  copyTaskInstance: (taskId: string) => void;
 };
 
 export default function AccordionRoutineRow({
   routine,
   index,
-  timeZone,
   isSelf,
   selectedConcerns,
-  selectedRoutineIds,
+  copyTask,
   deleteRoutines,
-  setRoutines,
-  openTaskDetails,
-  cloneOrRescheduleRoutines,
+  updateRoutines,
+  copyRoutines,
+  rescheduleRoutines,
+  deleteTask,
+  updateTask,
+  rescheduleTask,
   setSelectedConcerns,
-  setSelectedRoutineIds,
-  updateRoutineStatuses,
+  copyTaskInstance,
+  setRoutines,
 }: Props) {
   const { ref, focused } = useFocusWithin();
   const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
 
   const router = useRouter();
 
-  const isSelected = useMemo(() => {
-    if (!selectedRoutineIds) return false;
-    return selectedRoutineIds.includes(routine._id);
-  }, [selectedRoutineIds, routine]);
-
   const handleSelectConcern = (chosenConcerns: string[]) => {
     setSelectedConcerns((prev) => ({ ...prev, [routineId]: chosenConcerns }));
   };
 
-  const handleSelectRoutine = (isSelected: boolean) => {
-    if (!setSelectedRoutineIds) return;
-    if (isSelected) {
-      setSelectedRoutineIds((prev) => prev.filter((_id) => _id !== routine._id));
-    } else {
-      setSelectedRoutineIds((prev) => [...prev, routine._id]);
-    }
-  };
-
-  const rowLabel = useMemo(() => {
-    const areSame = new Date(startsAt).toDateString() === new Date(lastDate).toDateString();
-
-    const sameMonth = new Date(startsAt).getMonth() === new Date(lastDate).getMonth();
-    const dateFrom = formatDate({
-      date: startsAt,
-      hideYear: true,
-      hideMonth: sameMonth && !areSame,
-    });
-    const dateTo = formatDate({ date: lastDate, hideYear: true });
-
-    const parts = [dateFrom];
-
-    if (!areSame) {
-      parts.push(dateTo);
-    }
-
-    return parts.join(" - ");
-  }, [part, startsAt, lastDate, routine]);
+  const rowLabel = useMemo(
+    () => getReadableDateInterval(startsAt, lastDate),
+    [part, startsAt, lastDate, routine]
+  );
 
   const totalTotal = useMemo(
     () =>
@@ -138,39 +107,15 @@ export default function AccordionRoutineRow({
     return allActiveTasks.filter((at) => chosenConcerns.includes(at.concern));
   }, [allActiveTasks, selectedConcerns]);
 
-  const redirectWithDate = useCallback(
-    ({ taskKey, page = "calendar" }: RedirectWithDateProps) => {
-      const dateFrom = new Date(routine.startsAt);
-      dateFrom.setHours(0, 0, 0, 0);
-
-      const dateTo = new Date(routine.lastDate);
-      dateTo.setDate(dateTo.getDate() + 1);
-      dateTo.setHours(0, 0, 0, 0);
-
-      const parts = [`dateFrom=${dateFrom.toISOString()}`, `dateTo=${dateTo.toISOString()}`];
-
-      if (taskKey) {
-        parts.push(`key=${taskKey}`);
-      }
-
-      const query = parts.join("&");
-
-      const url = `/${page}${query ? `?${query}` : ""}`;
-
-      router.push(url);
-    },
-    [routine]
-  );
-
-  const redirectToTask = useCallback((taskId: string | null) => {
+  const redirectToTaskInstance = useCallback((taskId: string | null) => {
     if (!taskId) return;
     router.push(`/explain/${taskId}`);
   }, []);
 
-  const updateTaskStatus = useCallback(
+  const handleUpdateTaskInstance = useCallback(
     async (taskId: string, newStatus: string) => {
       const response = await callTheServer({
-        endpoint: "updateStatusOfTasks",
+        endpoint: "updateStatusOfTaskInstances",
         method: "POST",
         body: { taskIds: [taskId], newStatus, routineStatus, returnRoutines: true },
       });
@@ -198,10 +143,10 @@ export default function AccordionRoutineRow({
     [setRoutines, status]
   );
 
-  const deleteTask = useCallback(
+  const handleDeleteTaskInstance = useCallback(
     async (taskId: string) => {
       const response = await callTheServer({
-        endpoint: "deleteTasks",
+        endpoint: "deleteTaskInstances",
         method: "POST",
         body: { taskIds: [taskId], returnRoutines: true },
       });
@@ -229,29 +174,87 @@ export default function AccordionRoutineRow({
     [setRoutines]
   );
 
-  const handleCloneTaskInstance = (taskId: string) => {
-    if (!timeZone) return;
+  const handleRescheduleTaskInstance = useCallback(
+    (taskId: string) => {
+      const cb = (routine: RoutineType) => {
+        setRoutines((prev) => prev?.map((rt) => (rt._id === routine._id ? routine : rt)));
+        modals.closeAll();
+      };
 
-    modals.openContextModal({
-      title: (
-        <Title order={5} component={"p"}>
-          Choose new date
-        </Title>
-      ),
-      size: "sm",
-      innerProps: (
-        <RecreateDateModalContent
-          buttonText="Copy task"
-          lastDate={daysFrom({ date: new Date(routine.lastDate), days: 7 })}
-          onSubmit={async ({ startDate }) =>
-            addTaskInstance({ setRoutines, startDate, taskId, timeZone })
-          }
-        />
-      ),
-      modal: "general",
-      centered: true,
-    });
-  };
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Copy task"
+            onSubmit={async ({ startDate }) =>
+              updateTaskInstance({
+                taskId,
+                date: startDate,
+                returnRoutine: true,
+                cb,
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [selectedConcerns]
+  );
+
+  const redirectToTask = useCallback(
+    ({ taskKey, page = "calendar" }: { taskKey?: string; page: "calendar" | "diary" }) => {
+      const dateFrom = new Date(routine.startsAt);
+      dateFrom.setHours(0, 0, 0, 0);
+
+      const dateTo = new Date(routine.lastDate);
+      dateTo.setDate(dateTo.getDate() + 1);
+      dateTo.setHours(0, 0, 0, 0);
+
+      const parts = [`dateFrom=${dateFrom.toISOString()}`, `dateTo=${dateTo.toISOString()}`];
+
+      if (taskKey) {
+        parts.push(`key=${taskKey}`);
+      }
+
+      const query = parts.join("&");
+
+      const url = `/${page}${query ? `?${query}` : ""}`;
+
+      router.push(url);
+    },
+    [routine]
+  );
+
+  const handleRescheduleTask = useCallback(
+    (taskKey: string) => {
+      if (!rescheduleTask) return;
+      rescheduleTask(routine._id, taskKey);
+    },
+    [routine._id, typeof rescheduleTask]
+  );
+
+  const handleDeleteTask = useCallback(
+    (taskKey: string) => {
+      if (!deleteTask) return;
+      deleteTask(routine._id, taskKey);
+    },
+    [routine._id, typeof deleteTask]
+  );
+
+  const handleUpdateTask = useCallback(
+    (taskKey: string, newStatus: string) => {
+      if (!updateTask) return;
+      updateTask(routine._id, taskKey, newStatus);
+    },
+    [routine._id, typeof updateTask]
+  );
 
   const showSkeleton = useShowSkeleton();
 
@@ -270,17 +273,6 @@ export default function AccordionRoutineRow({
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>
-              {selectedRoutineIds && (
-                <Checkbox
-                  readOnly
-                  classNames={{ input: "checkboxInput" }}
-                  checked={isSelected}
-                  onClickCapture={(e) => {
-                    e.stopPropagation();
-                    if (handleSelectRoutine) handleSelectRoutine(isSelected);
-                  }}
-                />
-              )}
               {partIcons[part]}
               {rowLabel}
               <StatsGroup
@@ -300,17 +292,16 @@ export default function AccordionRoutineRow({
                   readOnly
                 />
               )}
-              {isSelf && (
-                <AccordionRowMenu
-                  routineId={routineId}
-                  routineStatus={routine.status}
-                  redirectWithDate={redirectWithDate}
-                  deleteRoutines={deleteRoutines}
-                  updateRoutineStatuses={updateRoutineStatuses}
-                  cloneOrRescheduleRoutines={cloneOrRescheduleRoutines}
-                  isSelf={isSelf}
-                />
-              )}
+              <AccordionRowMenu
+                routineId={routineId}
+                routineStatus={routine.status}
+                redirectToTask={redirectToTask}
+                deleteRoutines={deleteRoutines}
+                updateRoutines={updateRoutines}
+                copyRoutines={copyRoutines}
+                rescheduleRoutines={rescheduleRoutines}
+                isSelf={isSelf}
+              />
             </Group>
           </Group>
         </Accordion.Control>
@@ -322,13 +313,16 @@ export default function AccordionRoutineRow({
                   key={i}
                   data={task}
                   isSelf={isSelf}
-                  routineId={routine._id}
-                  handleCloneTaskInstance={handleCloneTaskInstance}
-                  openTaskDetails={openTaskDetails}
-                  redirectWithDate={redirectWithDate}
                   redirectToTask={redirectToTask}
-                  deleteTask={deleteTask}
-                  updateTaskStatus={updateTaskStatus}
+                  redirectToTaskInstance={redirectToTaskInstance}
+                  copyTaskInstance={copyTaskInstance}
+                  deleteTaskInstance={handleDeleteTaskInstance}
+                  updateTaskInstance={handleUpdateTaskInstance}
+                  rescheduleTaskInstance={handleRescheduleTaskInstance}
+                  rescheduleTask={handleRescheduleTask}
+                  deleteTask={handleDeleteTask}
+                  updateTask={handleUpdateTask}
+                  copyTask={(taskKey: string) => copyTask(routine._id, taskKey)}
                 />
               ))}
             </>

@@ -1,55 +1,63 @@
 import React, { useMemo } from "react";
-import { IconBinoculars, IconCalendar } from "@tabler/icons-react";
-import { ActionIcon, Collapse, Group, Stack, Text } from "@mantine/core";
+import { Collapse, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import { AllTaskType, TaskStatusEnum } from "@/types/global";
-import { RedirectWithDateProps } from "../AccordionRoutineRow";
 import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
-import RoutineIndividualTasksList from "./IndividualTasksList";
+import AccordionTaskMenu from "./AccordionTaskMenu";
+import RoutineIndividualTasksList from "./TaskInstanceList";
 import classes from "./AccordionTaskRow.module.css";
 
 type Props = {
   data: AllTaskType;
-  routineId: string;
   isSelf: boolean;
-  handleCloneTaskInstance: (taskId: string) => void;
-  openTaskDetails?: (task: AllTaskType, routineId: string) => void;
-  redirectWithDate: (props: RedirectWithDateProps) => void;
-  redirectToTask: (taskId: string) => void;
-  deleteTask: (taskId: string) => void;
-  updateTaskStatus: (taskId: string, newStatus: string) => void;
+  copyTaskInstance: (taskId: string) => void;
+  rescheduleTaskInstance?: (taskKey: string) => void;
+  redirectToTaskInstance: (taskId: string) => void;
+  deleteTaskInstance: (taskId: string) => void;
+  updateTaskInstance: (taskId: string, newStatus: string) => void;
+  copyTask: (taskKey: string) => void;
+  rescheduleTask?: (taskKey: string) => void;
+  redirectToTask?: (props: { taskKey?: string; page: "calendar" | "diary" }) => void;
+  deleteTask?: (taskKey: string) => void;
+  updateTask?: (taskKey: string, newStatus: string) => void;
 };
 
 export default function AccordionTaskRow({
   data,
   isSelf,
-  routineId,
+  copyTaskInstance,
+  rescheduleTaskInstance,
+  deleteTaskInstance,
+  updateTaskInstance,
+  redirectToTaskInstance,
+  copyTask,
+  rescheduleTask,
   deleteTask,
-  handleCloneTaskInstance,
-  openTaskDetails,
+  updateTask,
   redirectToTask,
-  updateTaskStatus,
-  redirectWithDate,
 }: Props) {
   const [openedIndividualTasks, { open, close }] = useDisclosure(false);
   const { ids, icon, key, color, name } = data;
 
+  const hasActiveOrCanceledTasks = useMemo(() => {
+    const hasActive = ids.some((obj) => obj.status === TaskStatusEnum.ACTIVE);
+    const hasCanceled = ids.some((obj) => obj.status === TaskStatusEnum.CANCELED);
+    const allTasksCanceled = ids.every((obj) => obj.status === TaskStatusEnum.CANCELED);
+    return { hasActive, hasCanceled, allTasksCanceled };
+  }, [ids]);
+
   const notDeletedIds = useMemo(() => ids.filter((idObj) => !idObj.deletedOn), [ids]);
 
-  const total = useMemo(
-    () =>
-      ids.filter((obj) =>
-        [TaskStatusEnum.COMPLETED, TaskStatusEnum.ACTIVE].includes(obj.status as TaskStatusEnum)
-      ).length,
-    [ids]
-  );
-
-  const completed = useMemo(
-    () => ids.filter((io) => io.status === TaskStatusEnum.COMPLETED).length,
-    [ids]
-  );
+  const analytics = useMemo(() => {
+    const total = ids.filter((obj) =>
+      [TaskStatusEnum.COMPLETED, TaskStatusEnum.ACTIVE].includes(obj.status as TaskStatusEnum)
+    ).length;
+    const completed = ids.filter((io) => io.status === TaskStatusEnum.COMPLETED).length;
+    const completionRate = Math.round((completed / total) * 100);
+    return { total, completed, completionRate };
+  }, [ids]);
 
   const taskStatus = useMemo(() => {
     const isActive = ids.some((obj) => obj.status === TaskStatusEnum.ACTIVE);
@@ -61,8 +69,6 @@ export default function AccordionTaskRow({
     if (isCompleted) return TaskStatusEnum.COMPLETED;
     return TaskStatusEnum.EXPIRED;
   }, [ids]);
-
-  const completionRate = useMemo(() => Math.round((completed / total) * 100), [completed, total]);
 
   const handleOpenList = () => {
     openedIndividualTasks ? close() : open();
@@ -79,36 +85,23 @@ export default function AccordionTaskRow({
           </Text>
         </Group>
         <Group className={classes.content}>
-          <StatsGroup completed={completed} completionRate={completionRate} total={total} />
-          {routineId && (
-            <>
-              {isSelf ? (
-                <ActionIcon
-                  variant="default"
-                  size="sm"
-                  component="div"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (redirectWithDate) redirectWithDate({ taskKey: key, page: "calendar" });
-                  }}
-                >
-                  <IconCalendar className={"icon icon__small icon__gray"} />
-                </ActionIcon>
-              ) : (
-                <ActionIcon
-                  variant="default"
-                  size="sm"
-                  component="div"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (openTaskDetails) openTaskDetails(data, routineId);
-                  }}
-                >
-                  <IconBinoculars className={"icon icon__small icon__gray"} />
-                </ActionIcon>
-              )}
-            </>
-          )}
+          <StatsGroup
+            completed={analytics.completed}
+            completionRate={analytics.completionRate}
+            total={analytics.total}
+          />
+          <AccordionTaskMenu
+            isSelf={isSelf}
+            redirectToTask={redirectToTask}
+            rescheduleTask={rescheduleTask}
+            copyTask={copyTask}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            hasActiveTasks={hasActiveOrCanceledTasks.hasActive}
+            hasCanceledTasks={hasActiveOrCanceledTasks.hasCanceled}
+            allTasksCanceled={hasActiveOrCanceledTasks.allTasksCanceled}
+            taskKey={key}
+          />
         </Group>
       </Group>
       <Collapse in={openedIndividualTasks}>
@@ -116,12 +109,12 @@ export default function AccordionTaskRow({
           color={color}
           icon={icon}
           isSelf={isSelf}
-          taskKey={key}
           taskIdsObjects={notDeletedIds}
-          deleteTask={deleteTask}
-          handleCloneTaskInstance={handleCloneTaskInstance}
-          redirectToTask={redirectToTask}
-          updateTaskStatus={updateTaskStatus}
+          deleteTaskInstance={deleteTaskInstance}
+          copyTaskInstance={copyTaskInstance}
+          updateTaskInstance={updateTaskInstance}
+          redirectToTaskInstance={redirectToTaskInstance}
+          rescheduleTaskInstance={rescheduleTaskInstance}
         />
       </Collapse>
     </Stack>

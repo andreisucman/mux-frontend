@@ -5,7 +5,6 @@
   flex-direction: row;
   justify-content: center;
   flex-wrap: nowrap;
-  margin-top: rem(2)
 }
 
 .text {

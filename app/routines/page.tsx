@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
@@ -15,12 +15,17 @@ import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
+import copyRoutines from "@/functions/copyRoutines";
+import copyTask from "@/functions/copyTask";
+import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import rescheduleRoutines from "@/functions/rescheduleRoutines";
+import rescheduleTask from "@/functions/rescheduleTask";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
+import updateTaskInstance from "@/functions/updateTaskInstance";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import openErrorModal from "@/helpers/openErrorModal";
 import { RoutineType } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -29,13 +34,6 @@ import TasksButtons from "../tasks/TasksList/TasksButtons";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
-
-export type CloneOrRescheduleRoutinesProps = {
-  routineIds: string[];
-  startDate: Date | null;
-  isReschedule?: boolean;
-  sort?: string | null;
-};
 
 type GetRoutinesProps = {
   skip?: boolean;
@@ -54,6 +52,7 @@ export default function MyRoutines() {
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
@@ -92,7 +91,7 @@ export default function MyRoutines() {
         setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
       }
     },
-    [routines]
+    [routines, selectedConcerns]
   );
 
   const handleSetOpenValue = useCallback((part: string | null) => {
@@ -100,68 +99,40 @@ export default function MyRoutines() {
     setOpenValue(part);
   }, []);
 
-  const cloneOrRescheduleRoutines = useCallback(
-    async ({ routineIds, startDate, isReschedule, sort }: CloneOrRescheduleRoutinesProps) => {
-      if (!startDate) return;
+  const handleCopyRoutines = useCallback(
+    (routineIds: string[]) => {
+      type HandleSubmitProps = { startDate: Date | null };
 
-      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const body: { [key: string]: any } = { routineIds, startDate, timeZone, sort };
-
-      const response = await callTheServer({
-        endpoint: isReschedule ? "rescheduleRoutines" : "cloneRoutines",
-        method: "POST",
-        body,
-      });
-
-      if (response.status === 200) {
-        if (response.error) {
-          openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
-          return;
-        }
-
-        if (isReschedule) {
-          setRoutines((prev) => {
-            const filtered = prev?.filter(Boolean) || [];
-            return filtered?.map((obj) =>
-              routineIds.includes(obj._id)
-                ? response.message.find((r: RoutineType) => r._id === obj._id)
-                : obj
-            );
-          });
-        } else {
-          const newRoutineConcerns = response.message.reduce(
-            (a: { [key: string]: string[] }, c: RoutineType) => {
-              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-              return a;
-            },
-            {}
-          );
-
-          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
-          setRoutines((prev) => {
-            const updated = [...(prev || []), ...response.message];
-            if (sort === "startsAt") {
-              updated.sort(
-                (a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
-              );
-            } else {
-              updated.sort(
-                (a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime()
-              );
-            }
-            return updated;
-          });
-        }
-
+      const handleSubmit = ({ startDate }: HandleSubmitProps) => {
         modals.closeAll();
-      }
+        copyRoutines({
+          routineIds,
+          startDate,
+          inform: true,
+          ignoreIncompleteTasks: true,
+          setRoutines,
+          setIsLoading,
+          setSelectedConcerns,
+        });
+      };
+
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose start date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: <SelectDateModalContent buttonText="Copy routine" onSubmit={handleSubmit} />,
+        modal: "general",
+        centered: true,
+      });
     },
-    [sort]
+    [sort, selectedConcerns, routines]
   );
 
-  const handleCloneOrRescheduleRoutines = useCallback(
-    (routineIds: string[], isReschedule?: boolean) => {
-      const buttonText = isReschedule ? "Reschedule" : "Copy";
+  const handleRescheduleRoutines = useCallback(
+    (routineIds: string[]) => {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
@@ -171,9 +142,16 @@ export default function MyRoutines() {
         size: "sm",
         innerProps: (
           <SelectDateModalContent
-            buttonText={buttonText}
+            buttonText={"Reschedule"}
             onSubmit={({ startDate }) =>
-              cloneOrRescheduleRoutines({ routineIds, startDate, isReschedule, sort })
+              rescheduleRoutines({
+                routineIds,
+                startDate,
+                sort,
+                setIsLoading,
+                setRoutines,
+                setSelectedConcerns,
+              })
             }
           />
         ),
@@ -181,13 +159,13 @@ export default function MyRoutines() {
         centered: true,
       });
     },
-    [sort]
+    [sort, selectedConcerns, routines]
   );
 
-  const updateRoutineStatuses = useCallback(
+  const updateRoutines = useCallback(
     async (routineIds: string[], newStatus: string) => {
       const response = await callTheServer({
-        endpoint: "updateRoutineStatuses",
+        endpoint: "updateROutineStatuses",
         method: "POST",
         body: { timeZone, routineIds, newStatus },
       });
@@ -230,6 +208,142 @@ export default function MyRoutines() {
     [timeZone]
   );
 
+  const handleCopyTask = useCallback(
+    (routineId: string, taskKey: string) => {
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Copy task"
+            onSubmit={async ({ startDate }) =>
+              copyTask({
+                routineId,
+                startDate,
+                taskKey,
+                ignoreIncompleteTasks: true,
+                inform: true,
+                sort,
+                setRoutines,
+                setIsLoading,
+                setSelectedConcerns,
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [sort, routines, selectedConcerns]
+  );
+
+  const handleRescheduleTask = useCallback(
+    (routineId: string, taskKey: string) => {
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Copy task"
+            onSubmit={async ({ startDate }) =>
+              rescheduleTask({
+                routineId,
+                startDate,
+                taskKey,
+                sort,
+                setRoutines,
+                setIsLoading,
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [sort, routines, selectedConcerns]
+  );
+
+  const deleteTask = useCallback(
+    async (routineId: string, taskKey: string) => {
+      const response = await callTheServer({
+        endpoint: "deleteTask",
+        method: "POST",
+        body: { routineId, taskKey, timeZone },
+      });
+
+      if (response.status === 200) {
+        setRoutines((prev) =>
+          prev
+            ?.filter(Boolean)
+            .map((obj) =>
+              obj._id === routineId
+                ? { ...obj, allTasks: obj.allTasks.filter((at) => at.key !== taskKey) }
+                : obj
+            )
+        );
+      }
+    },
+    [timeZone]
+  );
+
+  const updateTask = useCallback(
+    async (routineId: string, taskKey: string) => {
+      const response = await callTheServer({
+        endpoint: "updateStatusOfTask",
+        method: "POST",
+        body: { routineId, taskKey, timeZone },
+      });
+
+      if (response.status === 200) {
+        setRoutines((prev) =>
+          prev?.filter(Boolean).map((obj) =>
+            obj._id === routineId
+              ? {
+                  ...obj,
+                  allTasks: obj.allTasks.map((at) =>
+                    at.key === taskKey ? { ...at, ...response.message } : at
+                  ),
+                }
+              : obj
+          )
+        );
+      }
+    },
+    [timeZone]
+  );
+
+  const handleCopyTaskInstance = useCallback((taskId: string) => {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Choose new date
+        </Title>
+      ),
+      size: "sm",
+      innerProps: (
+        <SelectDateModalContent
+          buttonText="Copy task"
+          onSubmit={async ({ startDate }) =>
+            copyTaskInstance({ setRoutines, startDate, taskId, timeZone })
+          }
+        />
+      ),
+      modal: "general",
+      centered: true,
+    });
+  }, []);
+
   const accordionItems = useMemo(
     () =>
       routines
@@ -244,15 +358,21 @@ export default function MyRoutines() {
               selectedConcerns={selectedConcerns}
               setRoutines={setRoutines}
               deleteRoutines={deleteRoutines}
-              updateRoutineStatuses={updateRoutineStatuses}
+              updateRoutines={updateRoutines}
               setSelectedConcerns={setSelectedConcerns}
-              cloneOrRescheduleRoutines={handleCloneOrRescheduleRoutines}
+              copyRoutines={handleCopyRoutines}
+              rescheduleRoutines={handleRescheduleRoutines}
+              copyTask={handleCopyTask}
+              deleteTask={deleteTask}
+              updateTask={updateTask}
+              rescheduleTask={handleRescheduleTask}
+              copyTaskInstance={handleCopyTaskInstance}
               isSelf
             />
           );
         })
         .filter(Boolean),
-    [routines, timeZone, selectedConcerns, handleCloneOrRescheduleRoutines]
+    [routines, timeZone, selectedConcerns, handleCopyRoutines]
   );
 
   useEffect(() => {
@@ -333,6 +453,10 @@ export default function MyRoutines() {
         />
         {displayComponent === "content" && (
           <Stack className={classes.wrapper}>
+            <LoadingOverlay
+              visible={isLoading}
+              style={{ position: "fixed", inset: 0, borderRadius: "1rem" }}
+            />
             <Accordion
               value={openValue}
               onChange={handleSetOpenValue}

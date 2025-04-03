@@ -14,19 +14,17 @@ import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeaderClub from "@/components/PageHeaderClub";
-import TaskInfoContainer from "@/components/TaskInfoContainer";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
-import callTheServer from "@/functions/callTheServer";
-import cloneRoutines from "@/functions/cloneRoutines";
+import copyRoutines from "@/functions/copyRoutines";
+import copyTask from "@/functions/copyTask";
+import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { useRouter } from "@/helpers/custom-router";
-import { AllTaskType, PurchaseOverlayDataType, RoutineType, UserDataType } from "@/types/global";
+import { PurchaseOverlayDataType, RoutineType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
-import RoutineSelectionButtons from "./RoutineSelectionButtons";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -39,13 +37,6 @@ type GetRoutinesProps = {
   routinesLength?: number;
 };
 
-type StealTaskProps = {
-  taskKey: string;
-  routineId: string;
-  total: number;
-  startDate: Date | null;
-};
-
 type Props = {
   params: Promise<{ userName: string }>;
 };
@@ -53,16 +44,14 @@ type Props = {
 export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
-  const { userDetails, setUserDetails, status: authStatus } = useContext(UserContext);
+  const { userDetails, status: authStatus } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
-  const [hasMore, setHasMore] = useState(false);
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
-  const [selectedRoutineIds, setSelectedRoutineIds] = useState<string[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
@@ -72,43 +61,11 @@ export default function ClubRoutines(props: Props) {
   >("none");
   const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
-  const { name, tasks, timeZone } = userDetails || {};
+  const { name, timeZone } = userDetails || {};
 
   const sort = searchParams.get("sort");
   const part = searchParams.get("part");
   const isSelf = name === userName;
-
-  const openTaskDetails = useCallback(
-    (task: AllTaskType, routineId: string) => {
-      const existingTasksKeys = (tasks || []).map((t) => t.key);
-      const alreadyExist = existingTasksKeys.includes(task.key);
-
-      modals.openContextModal({
-        modal: "general",
-        title: (
-          <Title order={5} component="p">
-            {task.name}
-          </Title>
-        ),
-        centered: true,
-        innerProps: (
-          <TaskInfoContainer
-            rawTask={task}
-            onSubmit={async (total: number, startsAt: Date | null) =>
-              handleCopyTask({
-                taskKey: task.key,
-                routineId,
-                total,
-                startDate: startsAt,
-              })
-            }
-            alreadyExists={alreadyExist}
-          />
-        ),
-      });
-    },
-    [tasks]
-  );
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, userName, routinesLength }: GetRoutinesProps) => {
@@ -143,63 +100,8 @@ export default function ClubRoutines(props: Props) {
         setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
       }
     },
-    [routines, selectedRoutineIds]
+    [routines, selectedConcerns]
   );
-
-  const handleCopyTask = useCallback(
-    async ({ taskKey, routineId, total, startDate }: StealTaskProps) => {
-      if (!taskKey || !routineId || !startDate) return false;
-
-      let isSuccess = false;
-
-      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-      const response = await callTheServer({
-        endpoint: "copyTask",
-        method: "POST",
-        body: { taskKey, routineId, startDate, total, userName, timeZone },
-      });
-
-      if (response.status === 200) {
-        setUserDetails((prev: UserDataType) => ({
-          ...prev,
-          tasks: [...(prev.tasks || []), ...response.message],
-        }));
-        isSuccess = true;
-      }
-      return isSuccess;
-    },
-    [userDetails]
-  );
-
-  const handleStealRoutines = (routineIds: string[], copyAll: boolean) => {
-    type HandleSubmitProps = { startDate: Date | null };
-
-    const handleSubmit = ({ startDate }: HandleSubmitProps) => {
-      modals.closeAll();
-      cloneRoutines({
-        routineIds,
-        startDate,
-        copyAll,
-        router,
-        setIsLoading,
-        ignoreIncompleteTasks: true,
-        userName,
-      });
-    };
-
-    modals.openContextModal({
-      title: (
-        <Title order={5} component={"p"}>
-          Choose start date
-        </Title>
-      ),
-      size: "sm",
-      innerProps: <SelectDateModalContent buttonText="Copy routine" onSubmit={handleSubmit} />,
-      modal: "general",
-      centered: true,
-    });
-  };
 
   const manageOverlays = useCallback(() => {
     const isCurrentPartPurchased = part && !notPurchased.includes(part);
@@ -224,27 +126,97 @@ export default function ClubRoutines(props: Props) {
     }
   }, [part, notPurchased]);
 
-  const deleteRoutines = useCallback(
-    async (routineIds: string[]) => {
-      const response = await callTheServer({
-        endpoint: "deleteRoutines",
-        method: "POST",
-        body: { timeZone, routineIds },
-      });
+  const handleCopyRoutines = useCallback(
+    (routineIds: string[]) => {
+      type HandleSubmitProps = { startDate: Date | null };
 
-      if (response.status === 200) {
-        setRoutines((prev) =>
-          prev
-            ?.filter(Boolean)
-            .map((obj) =>
-              routineIds.includes(obj._id)
-                ? response.message.find((r: RoutineType) => r._id === obj._id)
-                : obj
-            )
-        );
-      }
+      const handleSubmit = ({ startDate }: HandleSubmitProps) => {
+        modals.closeAll();
+        copyRoutines({
+          userName,
+          routineIds,
+          startDate,
+          inform: true,
+          ignoreIncompleteTasks: true,
+          setRoutines,
+          setIsLoading,
+          setSelectedConcerns,
+        });
+      };
+
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose start date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: <SelectDateModalContent buttonText="Copy routine" onSubmit={handleSubmit} />,
+        modal: "general",
+        centered: true,
+      });
     },
-    [timeZone]
+    [sort, selectedConcerns, routines]
+  );
+
+  const handleCopyTask = useCallback(
+    (routineId: string, taskKey: string) => {
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Copy task"
+            onSubmit={async ({ startDate }) =>
+              copyTask({
+                routineId,
+                startDate,
+                taskKey,
+                ignoreIncompleteTasks: true,
+                inform: true,
+                sort,
+                userName,
+                setRoutines,
+                setIsLoading,
+                setSelectedConcerns,
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [sort, userName, routines, selectedConcerns]
+  );
+
+  const handleCopyTaskInstance = useCallback(
+    (taskId: string) => {
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Copy task"
+            onSubmit={async ({ startDate }) =>
+              copyTaskInstance({ setRoutines, startDate, userName, taskId, timeZone, inform: true })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [userName]
   );
 
   const accordionItems = useMemo(
@@ -257,17 +229,16 @@ export default function ClubRoutines(props: Props) {
             routine={routine}
             isSelf={isSelf}
             timeZone={timeZone}
-            selectedRoutineIds={selectedRoutineIds}
             selectedConcerns={selectedConcerns}
             setRoutines={setRoutines}
-            deleteRoutines={deleteRoutines}
-            openTaskDetails={openTaskDetails}
             setSelectedConcerns={setSelectedConcerns}
-            setSelectedRoutineIds={setSelectedRoutineIds}
+            copyRoutines={handleCopyRoutines}
+            copyTaskInstance={handleCopyTaskInstance}
+            copyTask={handleCopyTask}
           />
         );
       }),
-    [routines, isSelf, timeZone, selectedConcerns, selectedRoutineIds]
+    [routines, isSelf, timeZone, selectedConcerns, handleCopyRoutines]
   );
 
   useEffect(() => {
@@ -351,12 +322,6 @@ export default function ClubRoutines(props: Props) {
                 )}
               </>
             )}
-            <RoutineSelectionButtons
-              allRoutineIds={routines?.map((r) => r._id) || []}
-              selectedRoutineIds={selectedRoutineIds}
-              disabled={!routines || !routines.length || !routines?.[0]?._id}
-              handleClick={handleStealRoutines}
-            />
             {accordionItems.length > 0 ? (
               <Stack className={classes.content}>
                 <Accordion

@@ -11,17 +11,18 @@ import ExplanationContainer from "@/components/ExplanationContainer";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
-import addTaskInstance from "@/functions/addTaskInstance";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
+import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
+import updateTaskInstance, { UpdateTaskInstanceProps } from "@/functions/updateTaskInstance";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateRecipeBox from "../CreateRecipeBox";
-import EditTaskModal, { UpdateTaskProps } from "../EditTaskModal";
+import EditTaskModal from "../EditTaskModal";
 import ProofStatus from "../ProofStatus";
 import SelectDateModalContent from "./SelectDateModalContent";
 import classes from "./explain.module.css";
@@ -43,6 +44,12 @@ type UpdateTaskStatusProps = {
   isAll: boolean;
 };
 
+export interface HandleUpdateTaskinstanceProps extends UpdateTaskInstanceProps {
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 export default function Explain(props: Props) {
   const { taskId } = use(props.params);
 
@@ -53,7 +60,7 @@ export default function Explain(props: Props) {
   const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
   const [showWaitComponent, setShowWaitComponent] = useState(false);
 
-  const { timeZone, _id: userId } = userDetails || {};
+  const { _id: userId } = userDetails || {};
   const {
     isDish,
     startsAt,
@@ -141,59 +148,6 @@ export default function Explain(props: Props) {
     if (newTaskInfo) setTaskInfo(newTaskInfo);
   };
 
-  const updateTask = async ({
-    date,
-    taskId,
-    description,
-    instruction,
-    isLoading,
-    applyToAll,
-    setIsLoading,
-    setError,
-    setStep,
-  }: UpdateTaskProps) => {
-    if (!taskId || !description || !instruction) return;
-    if (!timeZone) return;
-    if (isLoading) return;
-
-    setIsLoading(true);
-    setError("");
-
-    const response = await callTheServer({
-      endpoint: "editTask",
-      method: "POST",
-      body: {
-        taskId,
-        startDate: date,
-        updatedDescription: description,
-        updatedInstruction: instruction,
-        applyToAll,
-        timeZone,
-      },
-    });
-
-    if (response.status === 200) {
-      if (response.error) {
-        setError(response.error);
-      } else {
-        const startsAt = new Date(date || new Date());
-        const expiresAt = daysFrom({ date: startsAt, days: 1 });
-
-        const updatedTask = {
-          ...taskInfo,
-          description,
-          instruction,
-          startsAt: startsAt.toISOString(),
-          expiresAt: expiresAt.toISOString(),
-        } as TaskType;
-
-        setTaskInfo(updatedTask);
-        setStep(2);
-      }
-    }
-    setIsLoading(false);
-  };
-
   const handleCloneTaskInstance = useCallback(() => {
     modals.openContextModal({
       title: (
@@ -206,7 +160,7 @@ export default function Explain(props: Props) {
         <SelectDateModalContent
           buttonText="Copy task"
           onSubmit={async ({ startDate }) =>
-            addTaskInstance({
+            copyTaskInstance({
               setTaskInfo,
               startDate,
               taskId,
@@ -221,6 +175,46 @@ export default function Explain(props: Props) {
       centered: true,
     });
   }, [taskId, timeZone]);
+
+  const handleUpdateTaskInstance = useCallback(
+    async ({
+      date,
+      taskId,
+      isLoading,
+      applyToAll,
+      description,
+      instruction,
+      setStep,
+      setIsLoading,
+    }: HandleUpdateTaskinstanceProps) => {
+      const success = await updateTaskInstance({
+        isLoading,
+        setIsLoading,
+        taskId,
+        applyToAll,
+        date,
+        description,
+        instruction,
+      });
+
+      if (success) {
+        const startsAt = new Date(date || new Date());
+        const expiresAt = daysFrom({ date: startsAt, days: 1 });
+
+        const updatedTask = {
+          ...taskInfo,
+          description,
+          instruction,
+          startsAt: startsAt.toISOString(),
+          expiresAt: expiresAt.toISOString(),
+        } as TaskType;
+
+        setTaskInfo(updatedTask);
+        setStep(2);
+      }
+    },
+    []
+  );
 
   const openEditTaskModal = useCallback(() => {
     modals.openContextModal({
@@ -238,7 +232,7 @@ export default function Explain(props: Props) {
           description={taskDescription || ""}
           instruction={taskInstruction || ""}
           startsAt={startsAt || ""}
-          updateTask={updateTask}
+          updateTask={handleUpdateTaskInstance}
         />
       ),
       classNames: {
