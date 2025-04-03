@@ -101,7 +101,7 @@ export default function AccordionRowMenu({
         {cloneOrRescheduleRoutines && (
           <Menu.Item onClick={() => cloneOrRescheduleRoutines([routineId])}>
             <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
-            Clone
+            Copy
           </Menu.Item>
         )}
       </Menu.Dropdown>

@@ -14,7 +14,7 @@ type Props = {
   data: AllTaskType;
   routineId: string;
   isSelf: boolean;
-  handleCloneTask: (taskId: string) => void;
+  handleCloneTaskInstance: (taskId: string) => void;
   openTaskDetails?: (task: AllTaskType, routineId: string) => void;
   redirectWithDate: (props: RedirectWithDateProps) => void;
   redirectToTask: (taskId: string) => void;
@@ -27,7 +27,7 @@ export default function AccordionTaskRow({
   isSelf,
   routineId,
   deleteTask,
-  handleCloneTask,
+  handleCloneTaskInstance,
   openTaskDetails,
   redirectToTask,
   updateTaskStatus,
@@ -119,7 +119,7 @@ export default function AccordionTaskRow({
           taskKey={key}
           taskIdsObjects={notDeletedIds}
           deleteTask={deleteTask}
-          handleCloneTask={handleCloneTask}
+          handleCloneTaskInstance={handleCloneTaskInstance}
           redirectToTask={redirectToTask}
           updateTaskStatus={updateTaskStatus}
         />

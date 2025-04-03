@@ -334,7 +334,6 @@ export enum TaskStatusEnum {
   COMPLETED = "completed",
   EXPIRED = "expired",
   CANCELED = "canceled", // when a user cancels a task
-  INACTIVE = "inactive", // when a user changes the routine
 }
 
 export type RecipeType = {

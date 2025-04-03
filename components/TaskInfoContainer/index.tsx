@@ -14,6 +14,7 @@ type Props = {
 };
 
 export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyExists }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
   const [disableAdd, setDisableAdd] = useState(alreadyExists);
   const [date, setDate] = useState<Date | null>(new Date());
   const { description, instruction, total, name, color, icon } = rawTask;
@@ -44,6 +45,13 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
     return previews;
   }, [date]);
 
+  const handleClick = async () => {
+    setIsLoading(true);
+    const res = await onSubmit(total, date);
+    if (res && !isEdit) setDisableAdd(true);
+    setIsLoading(false);
+  };
+
   return (
     <Stack flex={1}>
       <EditATaskContent
@@ -59,12 +67,9 @@ export default function TaskInfoContainer({ rawTask, isEdit, onSubmit, alreadyEx
         <Button
           variant="default"
           className={classes.button}
-          disabled={disableAdd}
-          onClick={() => {
-            onSubmit(total, date).then((res) => {
-              if (res && !isEdit) setDisableAdd(true);
-            });
-          }}
+          disabled={isLoading || disableAdd}
+          loading={isLoading}
+          onClick={handleClick}
         >
           {isEdit ? "Edit task" : "Copy task"}
         </Button>

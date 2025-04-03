@@ -13,7 +13,7 @@ export type CloneTaskProps = {
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 
-export default async function cloneTask({
+export default async function addTaskInstance({
   taskId,
   resetNewTask,
   timeZone,
@@ -23,7 +23,7 @@ export default async function cloneTask({
   setRoutines,
 }: CloneTaskProps) {
   const response = await callTheServer({
-    endpoint: "cloneTask",
+    endpoint: "addTaskInstance",
     method: "POST",
     body: { taskId, startDate, returnTask, timeZone, resetNewTask },
   });

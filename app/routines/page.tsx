@@ -161,7 +161,7 @@ export default function MyRoutines() {
 
   const handleCloneOrRescheduleRoutines = useCallback(
     (routineIds: string[], isReschedule?: boolean) => {
-      const buttonText = isReschedule ? "Reschedule" : "Clone";
+      const buttonText = isReschedule ? "Reschedule" : "Copy";
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>

@@ -35,6 +35,7 @@ type StartRecordingProps = {
 
 type Props = {
   sex: SexEnum;
+  taskId: string;
   taskExpired: boolean;
   instruction: string;
   uploadProof: (props: any) => Promise<void>;
@@ -63,7 +64,7 @@ const segments = [
   },
 ];
 
-export default function VideoRecorder({ taskExpired, instruction, uploadProof }: Props) {
+export default function VideoRecorder({ taskId, taskExpired, instruction, uploadProof }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [localUrl, setLocalUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
@@ -257,7 +258,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
 
       setLocalUrl(imageData);
       setRecordedBlob(blob);
-      saveToIndexedDb("proofImage", imageData);
+      saveToIndexedDb(`proofImage-${taskId}`, imageData);
     } catch (err) {
       console.log("Error in capturePhoto: ", err);
     }
@@ -338,7 +339,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     setLocalUrl("");
     setRecordedBlob(null);
     setRecordingTime(RECORDING_TIME);
-    deleteFromIndexedDb("proofVideo");
+    deleteFromIndexedDb(`proofVideo-${taskId}`);
 
     parts.current = [];
   }, [isVideoLoading, stopBothVideoAndAudio]);
@@ -347,7 +348,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     setLocalUrl("");
     setRecordedBlob(null);
     setIsRecording(false);
-    deleteFromIndexedDb("proofImage");
+    deleteFromIndexedDb(`proofImage-${taskId}`);
   }, [captureType]);
 
   const saveVideo = useCallback(
@@ -355,7 +356,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = function () {
-        saveToIndexedDb("proofVideo", reader.result);
+        saveToIndexedDb(`proofVideo-${taskId}`, reader.result);
       };
     },
     [captureType]
@@ -382,8 +383,8 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
         setCaptureType(captureType as string);
         saveToLocalStorage("captureType", captureType);
 
-        const savedVideo = await getFromIndexedDb("proofVideo");
-        const savedImage = await getFromIndexedDb("proofImage");
+        const savedVideo = await getFromIndexedDb(`proofVideo-${taskId}`);
+        const savedImage = await getFromIndexedDb(`proofImage-${taskId}`);
         const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
 
         if (savedRecords) {
@@ -432,12 +433,12 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
   }, [savedCaptureType]);
 
   useEffect(() => {
-    if (!captureType) return;
+    if (!captureType || !taskId) return;
 
     const loadSaved = async () => {
       try {
-        const savedImage = await getFromIndexedDb("proofImage");
-        const savedVideo = await getFromIndexedDb("proofVideo");
+        const savedImage = await getFromIndexedDb(`proofImage-${taskId}`);
+        const savedVideo = await getFromIndexedDb(`proofVideo-${taskId}`);
         const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
 
         let typeRecord;
@@ -459,7 +460,7 @@ export default function VideoRecorder({ taskExpired, instruction, uploadProof }:
     };
 
     loadSaved();
-  }, [captureType]);
+  }, [captureType, taskId]);
 
   useEffect(() => {
     if (!componentLoaded) return;

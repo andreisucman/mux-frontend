@@ -36,7 +36,7 @@ export default function MaximizeOverlayButton({
     <Group className={classes.container}>
       {showOverlayComponent === "showOtherRoutinesButton" ? (
         <Button style={styles} onClick={handleShowOverlay}>
-          See other parts
+          See other routines
         </Button>
       ) : (
         <GlowingButton containerStyles={styles} text="Buy routine" onClick={handleShowOverlay} />

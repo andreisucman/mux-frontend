@@ -11,9 +11,9 @@ import ExplanationContainer from "@/components/ExplanationContainer";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
 import { UserContext } from "@/context/UserContext";
+import addTaskInstance from "@/functions/addTaskInstance";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
-import cloneTask from "@/functions/cloneTask";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
@@ -89,8 +89,6 @@ export default function Explain(props: Props) {
       return statusString;
     } else if (status === TaskStatusEnum.CANCELED) {
       return "Canceled";
-    } else if (status === TaskStatusEnum.INACTIVE) {
-      return "Inactive";
     } else if (status === TaskStatusEnum.COMPLETED) {
       return "Completed";
     }
@@ -196,7 +194,7 @@ export default function Explain(props: Props) {
     setIsLoading(false);
   };
 
-  const handleCloneTask = useCallback(() => {
+  const handleCloneTaskInstance = useCallback(() => {
     modals.openContextModal({
       title: (
         <Title order={5} component={"p"}>
@@ -206,9 +204,9 @@ export default function Explain(props: Props) {
       size: "sm",
       innerProps: (
         <SelectDateModalContent
-          buttonText="Clone task"
+          buttonText="Copy task"
           onSubmit={async ({ startDate }) =>
-            cloneTask({
+            addTaskInstance({
               setTaskInfo,
               startDate,
               taskId,
@@ -387,9 +385,9 @@ export default function Explain(props: Props) {
                   size="compact-sm"
                   variant="default"
                   className={classes.actionButton}
-                  onClick={handleCloneTask}
+                  onClick={handleCloneTaskInstance}
                 >
-                  Clone
+                  Copy
                 </Button>
               </Group>
               <ProofStatus

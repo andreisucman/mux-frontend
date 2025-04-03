@@ -16,7 +16,6 @@ export default function Indicator({ status, shape = "line", isStatic, customStyl
       className={cn(classes.container, {
         [classes.active]: status === "active",
         [classes.completed]: status === "completed",
-        [classes.inactive]: status === "inactive",
         [classes.static]: isStatic,
         [classes.round]: shape === "round",
       })}

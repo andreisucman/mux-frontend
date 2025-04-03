@@ -95,7 +95,7 @@ export default function ClubRoutines(props: Props) {
           <TaskInfoContainer
             rawTask={task}
             onSubmit={async (total: number, startsAt: Date | null) =>
-              handleStealTask({
+              handleCopyTask({
                 taskKey: task.key,
                 routineId,
                 total,
@@ -146,7 +146,7 @@ export default function ClubRoutines(props: Props) {
     [routines, selectedRoutineIds]
   );
 
-  const handleStealTask = useCallback(
+  const handleCopyTask = useCallback(
     async ({ taskKey, routineId, total, startDate }: StealTaskProps) => {
       if (!taskKey || !routineId || !startDate) return false;
 
@@ -155,7 +155,7 @@ export default function ClubRoutines(props: Props) {
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
       const response = await callTheServer({
-        endpoint: "stealTask",
+        endpoint: "copyTask",
         method: "POST",
         body: { taskKey, routineId, startDate, total, userName, timeZone },
       });
@@ -177,7 +177,15 @@ export default function ClubRoutines(props: Props) {
 
     const handleSubmit = ({ startDate }: HandleSubmitProps) => {
       modals.closeAll();
-      cloneRoutines({ routineIds, startDate, copyAll, router, setIsLoading, userName });
+      cloneRoutines({
+        routineIds,
+        startDate,
+        copyAll,
+        router,
+        setIsLoading,
+        ignoreIncompleteTasks: true,
+        userName,
+      });
     };
 
     modals.openContextModal({
@@ -187,7 +195,7 @@ export default function ClubRoutines(props: Props) {
         </Title>
       ),
       size: "sm",
-      innerProps: <SelectDateModalContent buttonText="Clone routine" onSubmit={handleSubmit} />,
+      innerProps: <SelectDateModalContent buttonText="Copy routine" onSubmit={handleSubmit} />,
       modal: "general",
       centered: true,
     });
@@ -348,7 +356,6 @@ export default function ClubRoutines(props: Props) {
               selectedRoutineIds={selectedRoutineIds}
               disabled={!routines || !routines.length || !routines?.[0]?._id}
               handleClick={handleStealRoutines}
-              isSelf={isSelf}
             />
             {accordionItems.length > 0 ? (
               <Stack className={classes.content}>

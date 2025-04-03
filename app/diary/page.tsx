@@ -121,13 +121,16 @@ export default function DiaryPage() {
       todayMidnight.setHours(0, 0, 0, 0);
 
       const activeTasks =
-        tasks
-          .filter((task) => task.status === "active")
-          .filter(
-            (t) =>
-              t.part === part &&
-              new Date(t.startsAt).toDateString() === todayMidnight.toDateString()
-          ) || [];
+        tasks.filter((t) => {
+          const taskMidnight = new Date(t.startsAt);
+          taskMidnight.setHours(0, 0, 0, 0);
+
+          return (
+            t.status === "active" &&
+            t.part === part &&
+            taskMidnight.toDateString() === todayMidnight.toDateString()
+          );
+        }) || [];
 
       if (activeTasks.length > 0) {
         const activeParts = [...new Set(activeTasks.map((t) => t.part))];

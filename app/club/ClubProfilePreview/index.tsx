@@ -57,7 +57,9 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
-      {showCollapsedInfo && <AvatarComponent avatar={avatar} />}
+      {showCollapsedInfo && (
+        <AvatarComponent avatar={avatar} customStyles={{ maxWidth: rem(48) }} />
+      )}
 
       <Stack className={classes.content}>
         <Group align="center" gap={8}>

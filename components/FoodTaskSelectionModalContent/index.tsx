@@ -27,7 +27,7 @@ export default function FoodTaskSelectionModalContent({ tasks, foodUrl }: Props)
     }
 
     if (base64Image) {
-      saveToIndexedDb("proofImage", base64Image);
+      saveToIndexedDb(`proofImage-${task._id}`, base64Image);
 
       if (!completedAt) {
         const query = modifyQuery({

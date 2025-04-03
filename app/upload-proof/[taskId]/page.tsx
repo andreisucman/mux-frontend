@@ -118,8 +118,6 @@ export default function UploadProof(props: Props) {
         setIsAnalysisGoing(false);
       }
 
-      deleteFromIndexedDb("proofVideo");
-      deleteFromIndexedDb("proofImage");
       setDisplayComponent("waitComponent");
     } catch (err) {
       setDisplayComponent("videoRecorder");
@@ -134,6 +132,8 @@ export default function UploadProof(props: Props) {
 
   const handleCompleteUpload = async (taskId: string | null) => {
     if (!taskId) return;
+    deleteFromIndexedDb(`proofVideo-${taskId}`);
+    deleteFromIndexedDb(`proofImage-${taskId}`);
     await fetchProofInfo(taskId);
     handleFetchTaskInfo(taskId);
     setDisplayComponent("completed");
@@ -295,6 +295,7 @@ export default function UploadProof(props: Props) {
                 sex={sex || SexEnum.FEMALE}
                 taskExpired={taskExpired}
                 instruction={requisite || ""}
+                taskId={taskId}
                 uploadProof={(otherArgs) => uploadProof({ taskId, ...otherArgs })}
               />
             )}

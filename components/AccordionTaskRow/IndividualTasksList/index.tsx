@@ -13,7 +13,7 @@ type Props = {
   color: string;
   isSelf: boolean;
   taskIdsObjects: { startsAt: string; status: string; _id: string }[];
-  handleCloneTask: (taskId: string) => void;
+  handleCloneTaskInstance: (taskId: string) => void;
   redirectToTask: (taskId: string) => void;
   updateTaskStatus: (taskId: string, newStatus: string) => void;
   deleteTask: (taskId: string) => void;
@@ -26,7 +26,7 @@ export default function RoutineIndividualTasksList({
   isSelf,
   taskIdsObjects,
   deleteTask,
-  handleCloneTask,
+  handleCloneTaskInstance,
   redirectToTask,
   updateTaskStatus,
 }: Props) {
@@ -59,7 +59,7 @@ export default function RoutineIndividualTasksList({
         <Button
           variant="default"
           size="compact-sm"
-          onClick={() => handleCloneTask(lastTaskObject._id)}
+          onClick={() => handleCloneTaskInstance(lastTaskObject._id)}
           className={classes.button}
         >
           <IconCopy className={`${classes.icon} icon icon__small`} /> Add more

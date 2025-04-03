@@ -3,8 +3,8 @@ import { Accordion, Checkbox, Group, Skeleton, Title } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import RecreateDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
+import addTaskInstance from "@/functions/addTaskInstance";
 import callTheServer from "@/functions/callTheServer";
-import cloneTask from "@/functions/cloneTask";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { partIcons } from "@/helpers/icons";
@@ -229,7 +229,7 @@ export default function AccordionRoutineRow({
     [setRoutines]
   );
 
-  const handleCloneTask = (taskId: string) => {
+  const handleCloneTaskInstance = (taskId: string) => {
     if (!timeZone) return;
 
     modals.openContextModal({
@@ -241,10 +241,10 @@ export default function AccordionRoutineRow({
       size: "sm",
       innerProps: (
         <RecreateDateModalContent
-          buttonText="Clone task"
+          buttonText="Copy task"
           lastDate={daysFrom({ date: new Date(routine.lastDate), days: 7 })}
           onSubmit={async ({ startDate }) =>
-            cloneTask({ setRoutines, startDate, taskId, timeZone })
+            addTaskInstance({ setRoutines, startDate, taskId, timeZone })
           }
         />
       ),
@@ -273,6 +273,7 @@ export default function AccordionRoutineRow({
               {selectedRoutineIds && (
                 <Checkbox
                   readOnly
+                  classNames={{ input: "checkboxInput" }}
                   checked={isSelected}
                   onClickCapture={(e) => {
                     e.stopPropagation();
@@ -299,15 +300,17 @@ export default function AccordionRoutineRow({
                   readOnly
                 />
               )}
-              <AccordionRowMenu
-                routineId={routineId}
-                routineStatus={routine.status}
-                redirectWithDate={redirectWithDate}
-                deleteRoutines={deleteRoutines}
-                updateRoutineStatuses={updateRoutineStatuses}
-                cloneOrRescheduleRoutines={cloneOrRescheduleRoutines}
-                isSelf={isSelf}
-              />
+              {isSelf && (
+                <AccordionRowMenu
+                  routineId={routineId}
+                  routineStatus={routine.status}
+                  redirectWithDate={redirectWithDate}
+                  deleteRoutines={deleteRoutines}
+                  updateRoutineStatuses={updateRoutineStatuses}
+                  cloneOrRescheduleRoutines={cloneOrRescheduleRoutines}
+                  isSelf={isSelf}
+                />
+              )}
             </Group>
           </Group>
         </Accordion.Control>
@@ -320,7 +323,7 @@ export default function AccordionRoutineRow({
                   data={task}
                   isSelf={isSelf}
                   routineId={routine._id}
-                  handleCloneTask={handleCloneTask}
+                  handleCloneTaskInstance={handleCloneTaskInstance}
                   openTaskDetails={openTaskDetails}
                   redirectWithDate={redirectWithDate}
                   redirectToTask={redirectToTask}

@@ -127,6 +127,10 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
+.checkboxInput {
+  border: rem(1) solid var(--mantine-color-dark-2);
+}
+
 .priceGroup {
   flex-wrap: nowrap;
   gap: rem(4);

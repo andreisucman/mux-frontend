@@ -12,6 +12,7 @@ type StealRoutinesProps = {
   copyAll: boolean;
   userName?: string;
   router: AppRouterInstance;
+  ignoreIncompleteTasks?: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -21,12 +22,19 @@ const cloneRoutines = async ({
   copyAll,
   userName,
   router,
+  ignoreIncompleteTasks,
   setIsLoading,
 }: StealRoutinesProps) => {
   setIsLoading(true);
 
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const body: { [key: string]: any } = { routineIds, userName, startDate, timeZone };
+  const body: { [key: string]: any } = {
+    routineIds,
+    ignoreIncompleteTasks,
+    userName,
+    startDate,
+    timeZone,
+  };
 
   if (copyAll) {
     body.copyAll = copyAll;

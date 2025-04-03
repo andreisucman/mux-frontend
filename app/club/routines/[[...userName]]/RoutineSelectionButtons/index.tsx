@@ -1,20 +1,17 @@
 import React from "react";
-import { IconHandGrab, IconSquareCheck } from "@tabler/icons-react";
-import { Button, Group, rem, Text } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
 import classes from "./RoutineSelectionButtons.module.css";
 
 type Props = {
   allRoutineIds: string[];
   selectedRoutineIds: string[];
   disabled?: boolean;
-  isSelf: boolean;
   handleClick: (routineIds: string[], copyAll: boolean) => void;
 };
 
 export default function RoutineSelectionButtons({
   allRoutineIds,
   selectedRoutineIds,
-  isSelf,
   disabled,
   handleClick,
 }: Props) {
@@ -28,8 +25,7 @@ export default function RoutineSelectionButtons({
         className={classes.button}
         onClick={disabled ? undefined : () => handleClick(selectedRoutineIds, false)}
       >
-        {isSelf ? "Clone" : "Copy"} selected{" "}
-        {selectedRoutineIds.length ? `(${selectedRoutineIds.length})` : ""}
+        Copy selected {selectedRoutineIds.length ? `(${selectedRoutineIds.length})` : ""}
       </Button>
       <Button
         disabled={disabled}
@@ -39,7 +35,7 @@ export default function RoutineSelectionButtons({
         className={classes.button}
         onClick={disabled ? undefined : () => handleClick(allRoutineIds, true)}
       >
-        {isSelf ? "Clone" : "Copy"} all
+        Copy all
       </Button>
     </Group>
   );
