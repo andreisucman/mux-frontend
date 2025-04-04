@@ -5,7 +5,6 @@ import callTheServer from "./callTheServer";
 export type HandleSaveTaskProps = {
   concern: string | null;
   part: string | null;
-  timeZone?: string;
   isLoading: boolean;
   frequency: number;
   date: Date | null;
@@ -20,7 +19,6 @@ const saveTaskFromDescription = async ({
   date,
   concern,
   part,
-  timeZone,
   rawTask,
   isLoading,
   frequency,
@@ -48,7 +46,6 @@ const saveTaskFromDescription = async ({
       instruction,
       exampleVideoId,
       startDate: date,
-      timeZone,
     },
   });
 

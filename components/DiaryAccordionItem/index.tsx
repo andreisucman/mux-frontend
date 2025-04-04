@@ -10,7 +10,7 @@ import classes from "./DiaryAccordionItem.module.css";
 type Props = {
   data: DiaryRecordType;
   formattedDate: string;
-  timeZone: string;
+
   index: number;
   isSelf: boolean;
   setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryRecordType[] | undefined>>;
@@ -19,7 +19,6 @@ type Props = {
 export default function DiaryAccordionItem({
   data,
   formattedDate,
-  timeZone,
   index,
   isSelf,
   setDiaryRecords,
@@ -51,7 +50,7 @@ export default function DiaryAccordionItem({
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
-        <DiaryRow data={data} index={index} timeZone={timeZone} />
+        <DiaryRow data={data} index={index} />
       </Accordion.Panel>
     </Accordion.Item>
   );

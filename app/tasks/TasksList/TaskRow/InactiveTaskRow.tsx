@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { IconCheck, IconClock, IconCancel } from "@tabler/icons-react";
+import { IconCancel, IconCheck, IconClock } from "@tabler/icons-react";
 import { ActionIcon, Group, rem, Skeleton, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { InactiveTaskType } from "@/app/tasks/history/type";
@@ -16,8 +16,6 @@ interface Props extends InactiveTaskType {
   onClick?: () => void;
 }
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
 export default function InactiveTaskRow({
   color,
   name,
@@ -29,6 +27,7 @@ export default function InactiveTaskRow({
   onClick,
 }: Props) {
   const text = useMemo(() => {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const date = convertUTCToLocal({
       utcDate: new Date(completedAt || startsAt),
       timeZone,

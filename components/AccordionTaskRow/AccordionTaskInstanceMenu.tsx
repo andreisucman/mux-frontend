@@ -62,7 +62,7 @@ export default function AccordionTaskInstanceMenu({
         </Menu.Item>
         {isSelf && (
           <>
-            {rescheduleTaskInstance && (
+            {rescheduleTaskInstance && taskStatus === TaskStatusEnum.ACTIVE && (
               <Menu.Item onClick={() => rescheduleTaskInstance(taskId)}>
                 <IconCalendarClock className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Reschedule

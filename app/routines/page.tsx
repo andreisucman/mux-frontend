@@ -24,9 +24,8 @@ import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard
 import rescheduleRoutines from "@/functions/rescheduleRoutines";
 import rescheduleTask from "@/functions/rescheduleTask";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import updateTaskInstance from "@/functions/updateTaskInstance";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { RoutineType } from "@/types/global";
+import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
@@ -58,10 +57,23 @@ export default function MyRoutines() {
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const { userDetails } = useContext(UserContext);
-  const { _id: userId, timeZone, specialConsiderations } = userDetails || {};
+  const { _id: userId, specialConsiderations } = userDetails || {};
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
+
+  const getIsRoutineActive = useCallback(
+    (startsAt: string, lastDate: string, allTasks: AllTaskType[]) => {
+      const now = new Date();
+      const withinDateRange = new Date(startsAt) <= now && now <= new Date(lastDate);
+      const hasActiveTasks = allTasks
+        .flatMap((at) => at.ids)
+        .some((idObj) => idObj.status === TaskStatusEnum.ACTIVE);
+
+      return withinDateRange && hasActiveTasks;
+    },
+    []
+  );
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {
@@ -162,51 +174,45 @@ export default function MyRoutines() {
     [sort, selectedConcerns, routines]
   );
 
-  const updateRoutines = useCallback(
-    async (routineIds: string[], newStatus: string) => {
-      const response = await callTheServer({
-        endpoint: "updateROutineStatuses",
-        method: "POST",
-        body: { timeZone, routineIds, newStatus },
-      });
+  const updateRoutines = useCallback(async (routineIds: string[], newStatus: string) => {
+    const response = await callTheServer({
+      endpoint: "updateROutineStatuses",
+      method: "POST",
+      body: { routineIds, newStatus },
+    });
 
-      if (response.status === 200) {
-        setRoutines((prev) =>
-          prev
-            ?.filter(Boolean)
-            .map((obj) =>
-              routineIds.includes(obj._id)
-                ? response.message.find((r: RoutineType) => r._id === obj._id)
-                : obj
-            )
-        );
-      }
-    },
-    [timeZone]
-  );
+    if (response.status === 200) {
+      setRoutines((prev) =>
+        prev
+          ?.filter(Boolean)
+          .map((obj) =>
+            routineIds.includes(obj._id)
+              ? response.message.find((r: RoutineType) => r._id === obj._id)
+              : obj
+          )
+      );
+    }
+  }, []);
 
-  const deleteRoutines = useCallback(
-    async (routineIds: string[]) => {
-      const response = await callTheServer({
-        endpoint: "deleteRoutines",
-        method: "POST",
-        body: { timeZone, routineIds },
-      });
+  const deleteRoutines = useCallback(async (routineIds: string[]) => {
+    const response = await callTheServer({
+      endpoint: "deleteRoutines",
+      method: "POST",
+      body: { routineIds },
+    });
 
-      if (response.status === 200) {
-        setRoutines((prev) =>
-          prev
-            ?.filter(Boolean)
-            .map((obj) =>
-              routineIds.includes(obj._id)
-                ? response.message.find((r: RoutineType) => r._id === obj._id)
-                : obj
-            )
-        );
-      }
-    },
-    [timeZone]
-  );
+    if (response.status === 200) {
+      setRoutines((prev) =>
+        prev
+          ?.filter(Boolean)
+          .map((obj) =>
+            routineIds.includes(obj._id)
+              ? response.message.find((r: RoutineType) => r._id === obj._id)
+              : obj
+          )
+      );
+    }
+  }, []);
 
   const handleCopyTask = useCallback(
     (routineId: string, taskKey: string) => {
@@ -253,7 +259,7 @@ export default function MyRoutines() {
         size: "sm",
         innerProps: (
           <SelectDateModalContent
-            buttonText="Copy task"
+            buttonText="Reschedule task"
             onSubmit={async ({ startDate }) =>
               rescheduleTask({
                 routineId,
@@ -273,57 +279,41 @@ export default function MyRoutines() {
     [sort, routines, selectedConcerns]
   );
 
-  const deleteTask = useCallback(
-    async (routineId: string, taskKey: string) => {
-      const response = await callTheServer({
-        endpoint: "deleteTask",
-        method: "POST",
-        body: { routineId, taskKey, timeZone },
-      });
+  const deleteTask = useCallback(async (routineId: string, taskKey: string) => {
+    const response = await callTheServer({
+      endpoint: "deleteTask",
+      method: "POST",
+      body: { routineId, taskKey },
+    });
 
-      if (response.status === 200) {
-        setRoutines((prev) =>
-          prev
-            ?.filter(Boolean)
-            .map((obj) =>
-              obj._id === routineId
-                ? { ...obj, allTasks: obj.allTasks.filter((at) => at.key !== taskKey) }
-                : obj
-            )
-        );
-      }
-    },
-    [timeZone]
-  );
+    if (response.status === 200) {
+      const routine = response.message;
+      setRoutines((prev) =>
+        prev?.filter(Boolean).map((obj) => (obj._id === routine._id ? routine : obj))
+      );
+    }
+  }, []);
 
   const updateTask = useCallback(
-    async (routineId: string, taskKey: string) => {
+    async (routineId: string, taskKey: string, newStatus: string) => {
       const response = await callTheServer({
         endpoint: "updateStatusOfTask",
         method: "POST",
-        body: { routineId, taskKey, timeZone },
+        body: { routineId, taskKey, newStatus },
       });
 
       if (response.status === 200) {
-        setRoutines((prev) =>
-          prev?.filter(Boolean).map((obj) =>
-            obj._id === routineId
-              ? {
-                  ...obj,
-                  allTasks: obj.allTasks.map((at) =>
-                    at.key === taskKey ? { ...at, ...response.message } : at
-                  ),
-                }
-              : obj
-          )
-        );
+        const routine = response.message;
+        if (routine)
+          setRoutines((prev) =>
+            prev?.filter(Boolean).map((obj) => (obj._id === routine._id ? routine : obj))
+          );
       }
     },
-    [timeZone]
+    [routines]
   );
 
   const handleCopyTaskInstance = useCallback((taskId: string) => {
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     modals.openContextModal({
       title: (
         <Title order={5} component={"p"}>
@@ -334,9 +324,7 @@ export default function MyRoutines() {
       innerProps: (
         <SelectDateModalContent
           buttonText="Copy task"
-          onSubmit={async ({ startDate }) =>
-            copyTaskInstance({ setRoutines, startDate, taskId, timeZone })
-          }
+          onSubmit={async ({ startDate }) => copyTaskInstance({ setRoutines, startDate, taskId })}
         />
       ),
       modal: "general",
@@ -349,12 +337,13 @@ export default function MyRoutines() {
       routines
         ?.map((routine, i) => {
           if (!routine) return null;
+          const selected = getIsRoutineActive(routine.startsAt, routine.lastDate, routine.allTasks);
           return (
             <AccordionRoutineRow
               key={routine._id}
               index={i}
               routine={routine}
-              timeZone={timeZone}
+              selected={selected}
               selectedConcerns={selectedConcerns}
               setRoutines={setRoutines}
               deleteRoutines={deleteRoutines}
@@ -372,7 +361,7 @@ export default function MyRoutines() {
           );
         })
         .filter(Boolean),
-    [routines, timeZone, selectedConcerns, handleCopyRoutines]
+    [routines, selectedConcerns, handleCopyRoutines]
   );
 
   useEffect(() => {
@@ -492,7 +481,6 @@ export default function MyRoutines() {
         {displayComponent === "empty" && <OverlayWithText text="Nothing found" />}
         {displayComponent === "createTaskOverlay" && (
           <CreateTaskOverlay
-            timeZone={timeZone}
             handleSaveTask={(props: HandleSaveTaskProps) =>
               saveTaskFromDescription({ ...props, setIsAnalysisGoing })
             }

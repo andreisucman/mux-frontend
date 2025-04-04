@@ -10,7 +10,10 @@ type Props<T> = {
 const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Props<T>) => {
   try {
     const isFormData = body instanceof FormData;
-    const headers: HeadersInit = isFormData ? {} : { "Content-Type": "application/json" };
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const headers: HeadersInit = isFormData
+      ? {}
+      : { "Content-Type": "application/json", Timezone: timeZone };
 
     const fetchOptions: RequestInit = {
       method,

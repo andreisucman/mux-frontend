@@ -22,8 +22,6 @@ type Props = {
   onClick?: () => void;
 };
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
 export default function TaskRow({
   color,
   name,
@@ -65,6 +63,7 @@ export default function TaskRow({
   }, [status]);
 
   const dates = useMemo(() => {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const start = convertUTCToLocal({
       utcDate: new Date(startsAt),
       timeZone,

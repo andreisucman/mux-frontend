@@ -56,3 +56,7 @@
     max-width: unset;
   }
 }
+
+.selected {
+  border-color: var(--mantine-color-green-7);
+}

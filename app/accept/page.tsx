@@ -35,8 +35,6 @@ export default function AcceptIndexPage() {
   const { _id: userId, demographics } = userDetails || {};
 
   const startTheFlow = useCallback(async () => {
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
     try {
       if (!tosAccepted) return;
       setIsLoading(true);
@@ -46,7 +44,6 @@ export default function AcceptIndexPage() {
           endpoint: "startTheFlow",
           method: "POST",
           body: {
-            timeZone,
             tosAccepted,
             demographics,
           },

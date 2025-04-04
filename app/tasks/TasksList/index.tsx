@@ -44,8 +44,6 @@ export default function TasksList({ customStyles }: Props) {
     return tasks && tasks.length > 0 && completedTasks.length > 0;
   }, [nextDiaryRecordAfter, tasks]);
 
-  console.log("tasks", tasks);
-
   const todaysTasks = useMemo(() => {
     if (!tasks || !tasks.length) return;
 
@@ -144,7 +142,6 @@ export default function TasksList({ customStyles }: Props) {
           <Stack className={`${classes.content} scrollbar`}>
             {displayComponent === "createTaskOverlay" && (
               <CreateTaskOverlay
-                timeZone={timeZone}
                 handleSaveTask={(props: HandleSaveTaskProps) =>
                   saveTaskFromDescription({ ...props, setIsAnalysisGoing })
                 }

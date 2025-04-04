@@ -32,11 +32,9 @@ const copyRoutines = async ({
 }: CopyRoutinesProps) => {
   if (!startDate) return;
 
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const body: { [key: string]: any } = {
     routineIds,
     startDate,
-    timeZone,
     sort,
     userName,
     ignoreIncompleteTasks,

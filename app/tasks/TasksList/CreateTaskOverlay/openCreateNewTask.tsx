@@ -5,12 +5,10 @@ import AddATaskContainer from "./AddATaskContainer";
 type OpenCreateNewTaskProps = {
   handleSaveTask: (...args: any) => Promise<void>;
   onCreateRoutineClick: (args?: any) => void;
-  timeZone?: string;
   onClose?: () => void;
 };
 
 export default function openCreateNewTask({
-  timeZone,
   handleSaveTask,
   onCreateRoutineClick,
   onClose,
@@ -26,7 +24,6 @@ export default function openCreateNewTask({
     ),
     innerProps: (
       <AddATaskContainer
-        timeZone={timeZone}
         handleSaveTask={handleSaveTask}
         onCreateRoutineClick={onCreateRoutineClick}
       />

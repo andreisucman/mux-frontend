@@ -24,8 +24,7 @@ const rescheduleRoutines = async ({
 
   setIsLoading(true);
 
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const body: { [key: string]: any } = { routineIds, startDate, timeZone, sort };
+  const body: { [key: string]: any } = { routineIds, startDate, sort };
 
   const response = await callTheServer({
     endpoint: "rescheduleRoutines",

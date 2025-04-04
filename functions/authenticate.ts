@@ -32,7 +32,6 @@ const authenticate = async ({
     body: {
       state,
       code,
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       email,
       password,
     },

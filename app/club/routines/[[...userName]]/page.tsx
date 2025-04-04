@@ -23,6 +23,7 @@ import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import { useRouter } from "@/helpers/custom-router";
 import { PurchaseOverlayDataType, RoutineType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import classes from "./routines.module.css";
@@ -44,6 +45,7 @@ type Props = {
 export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
   const { userDetails, status: authStatus } = useContext(UserContext);
@@ -61,7 +63,7 @@ export default function ClubRoutines(props: Props) {
   >("none");
   const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
-  const { name, timeZone } = userDetails || {};
+  const { name } = userDetails || {};
 
   const sort = searchParams.get("sort");
   const part = searchParams.get("part");
@@ -196,7 +198,6 @@ export default function ClubRoutines(props: Props) {
 
   const handleCopyTaskInstance = useCallback(
     (taskId: string) => {
-      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
@@ -208,7 +209,15 @@ export default function ClubRoutines(props: Props) {
           <SelectDateModalContent
             buttonText="Copy task"
             onSubmit={async ({ startDate }) =>
-              copyTaskInstance({ setRoutines, startDate, userName, taskId, timeZone, inform: true })
+              copyTaskInstance({
+                setRoutines,
+                startDate,
+                userName,
+                taskId,
+                cb: (newTaskId: string) => {
+                  router.replace(`/explain/${newTaskId}`);
+                },
+              })
             }
           />
         ),
@@ -228,7 +237,6 @@ export default function ClubRoutines(props: Props) {
             index={i}
             routine={routine}
             isSelf={isSelf}
-            timeZone={timeZone}
             selectedConcerns={selectedConcerns}
             setRoutines={setRoutines}
             setSelectedConcerns={setSelectedConcerns}
@@ -238,7 +246,7 @@ export default function ClubRoutines(props: Props) {
           />
         );
       }),
-    [routines, isSelf, timeZone, selectedConcerns, handleCopyRoutines]
+    [routines, isSelf, selectedConcerns, handleCopyRoutines]
   );
 
   useEffect(() => {

@@ -12,7 +12,6 @@ import classes from "./DiaryContent.module.css";
 type Props = {
   hasMore: boolean;
   diaryRecords?: DiaryRecordType[];
-  timeZone?: string;
   openValue: string | null;
   setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryRecordType[] | undefined>>;
   setOpenValue: React.Dispatch<React.SetStateAction<string | null>>;
@@ -23,7 +22,6 @@ export default function DiaryContent({
   hasMore,
   diaryRecords,
   openValue,
-  timeZone,
   setDiaryRecords,
   setOpenValue,
   handleFetchDiaryRecords,
@@ -39,7 +37,6 @@ export default function DiaryContent({
         <DiaryAccordionItem
           data={props.data}
           index={props.index}
-          timeZone={timeZone || ""}
           isSelf={isSelf}
           setDiaryRecords={setDiaryRecords}
           formattedDate={formattedDate}

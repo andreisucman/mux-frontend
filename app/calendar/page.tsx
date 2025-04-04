@@ -15,8 +15,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
 import { useRouter } from "@/helpers/custom-router";
-import { TaskStatusEnum, TaskType, UserDataType } from "@/types/global";
-import BulkUpdateButtons from "./BulkUpdateButtons";
+import { TaskStatusEnum, TaskType } from "@/types/global";
 import CalendarRow from "./CalendarRow";
 import DayRenderer from "./DayRenderer";
 import classes from "./calendar.module.css";
@@ -29,13 +28,12 @@ type LoadTasksProps = {
   status: string | null;
   key?: string;
   mode: string;
-  timeZone: string;
 };
 
 export default function Calendar() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
 
   const givenTaskKey = searchParams.get("key");
   const givenMode = searchParams.get("mode");
@@ -50,7 +48,6 @@ export default function Calendar() {
   const [mode, setMode] = useState(givenMode || "all");
   const [tasks, setTasks] = useState<TaskType[]>();
   const [originalTasks, setOriginalTasks] = useState<TaskType[]>();
-  const [loadingType, setLoadingType] = useState<"deleted" | "active" | "canceled" | string>();
   const [selectedTaskKey, setSelectedTaskKey] = useState<string | undefined>(
     givenTaskKey as string
   );
@@ -93,7 +90,6 @@ export default function Calendar() {
 
   const changeMode = useCallback(
     (mode: string, taskKey?: string) => {
-      if (!timeZone) return;
       setMode(mode);
       if (mode === "individual" && taskKey) {
         setSelectedTaskKey(taskKey);
@@ -105,13 +101,11 @@ export default function Calendar() {
         setSelectedTasks(originalTasks);
       }
     },
-    [timeZone, tasks, originalTasks]
+    [tasks, originalTasks]
   );
 
   const handleChangeStatus = useCallback(
     (status: TaskStatusEnum, taskKey?: string) => {
-      if (!timeZone) return;
-
       setSelectedStatus(status);
 
       loadTasks({
@@ -120,7 +114,6 @@ export default function Calendar() {
         mode: mode as string,
         dateFrom,
         dateTo,
-        timeZone,
       }).then((tasks) => {
         setTasks(tasks);
         setOriginalTasks(tasks);
@@ -143,116 +136,55 @@ export default function Calendar() {
         }
       });
     },
-    [timeZone, mode, selectedDate, dateFrom, dateTo]
+    [mode, selectedDate, dateFrom, dateTo]
   );
 
-  const loadTasks = useCallback(
-    async ({ dateFrom, dateTo, status, key, mode, timeZone }: LoadTasksProps) => {
-      setDisplayComponent("loading");
+  const loadTasks = useCallback(async ({ dateFrom, dateTo, status, key, mode }: LoadTasksProps) => {
+    setDisplayComponent("loading");
 
-      try {
-        let endpoint = "getCalendarTasks";
+    try {
+      let endpoint = "getCalendarTasks";
 
-        const parts = [];
-        const finalStatus = status || selectedStatus;
+      const parts = [];
+      const finalStatus = status || selectedStatus;
 
-        if (key) parts.push(`key=${key}`);
-        if (mode) parts.push(`mode=${mode}`);
-        if (finalStatus) parts.push(`status=${finalStatus}`);
-        if (timeZone) parts.push(`timeZone=${timeZone}`);
-        if (dateFrom) parts.push(`dateFrom=${dateFrom}`);
-        if (dateTo) parts.push(`dateTo=${dateTo}`);
+      if (key) parts.push(`key=${key}`);
+      if (mode) parts.push(`mode=${mode}`);
+      if (finalStatus) parts.push(`status=${finalStatus}`);
+      if (dateFrom) parts.push(`dateFrom=${dateFrom}`);
+      if (dateTo) parts.push(`dateTo=${dateTo}`);
 
-        const query = parts.join("&");
+      const query = parts.join("&");
 
-        if (query) endpoint += `?${query}`;
-
-        const response = await callTheServer({
-          endpoint,
-          method: "GET",
-        });
-
-        if (response.status === 200) {
-          const updated = response.message.map((record: TaskType) => {
-            const { startsAt, expiresAt, ...rest } = record;
-            return {
-              ...rest,
-              startsAt: convertUTCToLocal({
-                utcDate: new Date(startsAt),
-                timeZone,
-              }),
-              expiresAt: convertUTCToLocal({
-                utcDate: new Date(expiresAt),
-                timeZone,
-              }),
-            };
-          });
-          setDisplayComponent("list");
-
-          return updated;
-        }
-      } catch (err) {}
-    },
-    []
-  );
-
-  const updateTasks = useCallback(
-    async (tasksToUpdate: TaskType[], currentStatus: TaskStatusEnum, newStatus: TaskStatusEnum) => {
-      if (loadingType) return;
-
-      setLoadingType(newStatus as string);
+      if (query) endpoint += `?${query}`;
 
       const response = await callTheServer({
-        endpoint: "updateStatusOfTasks",
-        method: "POST",
-        body: { taskIds: tasksToUpdate.map((t) => t._id), timeZone, newStatus },
+        endpoint,
+        method: "GET",
       });
 
       if (response.status === 200) {
-        const newTasks = (tasks || []).filter((t) => {
-          const taIds = tasksToUpdate.map((ta) => ta._id);
-          return !taIds.includes(t._id);
+        const updated = response.message.map((record: TaskType) => {
+          const { startsAt, expiresAt, ...rest } = record;
+          const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          return {
+            ...rest,
+            startsAt: convertUTCToLocal({
+              utcDate: new Date(startsAt),
+              timeZone,
+            }),
+            expiresAt: convertUTCToLocal({
+              utcDate: new Date(expiresAt),
+              timeZone,
+            }),
+          };
         });
+        setDisplayComponent("list");
 
-        setTasks(newTasks);
-
-        const date = new Date(selectedDate || new Date());
-        const tasksOfDate = getTasksOfThisDate(newTasks, date, currentStatus);
-        setSelectedTasks(tasksOfDate);
-        setTasksToUpdate([]);
-
-        setUserDetails((prev: UserDataType) => ({ ...prev, ...response.message }));
-        setLoadingType(undefined);
+        return updated;
       }
-    },
-    [loadingType, timeZone, tasks]
-  );
-
-  const deleteTasks = useCallback(
-    async (tasksToDelete: TaskType[]) => {
-      if (loadingType) return;
-
-      setLoadingType("deleted");
-
-      const response = await callTheServer({
-        endpoint: "deleteTasks",
-        method: "POST",
-        body: { taskIds: tasksToDelete.map((t) => t._id), timeZone },
-      });
-
-      if (response.status === 200) {
-        const newTasks = (tasks || []).filter((t) => {
-          const taIds = tasksToDelete.map((ta) => ta._id);
-          return !taIds.includes(t._id);
-        });
-
-        setTasks(newTasks);
-        setTasksToUpdate([]);
-        setLoadingType(undefined);
-      }
-    },
-    [loadingType, timeZone, tasks]
-  );
+    } catch (err) {}
+  }, []);
 
   const getTasksOfThisDate = useCallback(
     (tasks: TaskType[] | undefined, date: Date, status: string) => {
@@ -304,7 +236,7 @@ export default function Calendar() {
     setSelectedTaskKey(undefined);
     setTasksToUpdate([]);
     setSelectedDate(null);
-  }, [timeZone, originalTasks]);
+  }, [originalTasks]);
 
   const handleShowByStatus = useCallback(
     (status: TaskStatusEnum) => {
@@ -314,7 +246,7 @@ export default function Calendar() {
         setTasksToUpdate([]);
       }
     },
-    [mode, selectedTaskKey, timeZone]
+    [mode, selectedTaskKey]
   );
 
   const redirectToTask = useCallback((taskId: string) => {
@@ -334,7 +266,6 @@ export default function Calendar() {
   );
 
   useShallowEffect(() => {
-    if (!timeZone) return;
     setTasks(undefined);
 
     loadTasks({
@@ -343,13 +274,12 @@ export default function Calendar() {
       mode: mode as string,
       dateFrom,
       dateTo,
-      timeZone,
     }).then((tasks) => {
       setTasks(tasks);
       setOriginalTasks(tasks);
       setSelectedTasks(tasks);
     });
-  }, [timeZone, dateFrom, dateTo, selectedStatus, mode]);
+  }, [dateFrom, dateTo, selectedStatus, mode]);
 
   useEffect(() => {
     if (!givenTaskKey) return;
@@ -436,9 +366,7 @@ export default function Calendar() {
                         key={index}
                         mode={mode as string}
                         task={record}
-                        tasksToUpdate={tasksToUpdate}
                         redirectToTask={redirectToTask}
-                        selectTask={selectTask}
                         changeMode={changeMode}
                         resetMode={resetMode}
                       />
@@ -446,15 +374,6 @@ export default function Calendar() {
                   })}
                 <div className={classes.emptyRow} />
               </Stack>
-              {tasksToUpdate.length > 0 && (
-                <BulkUpdateButtons
-                  loadingType={loadingType}
-                  selectedStatus={selectedStatus}
-                  tasksToUpdate={tasksToUpdate}
-                  updateTasks={updateTasks}
-                  deleteTasks={deleteTasks}
-                />
-              )}
             </>
           )}
 

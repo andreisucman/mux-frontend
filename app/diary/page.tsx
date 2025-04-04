@@ -43,7 +43,7 @@ export default function DiaryPage() {
   const dateTo = searchParams.get("dateTo");
   const part = searchParams.get("part");
 
-  const { _id: userId, tasks, timeZone } = userDetails || {};
+  const { _id: userId, tasks } = userDetails || {};
 
   const createDiaryRecord = useCallback(
     async (part: string) => {
@@ -55,7 +55,7 @@ export default function DiaryPage() {
         const response = await callTheServer({
           endpoint: "createDiaryRecord",
           method: "POST",
-          body: { timeZone, part },
+          body: { part },
         });
 
         setIsLoading(false);
@@ -82,12 +82,12 @@ export default function DiaryPage() {
           ]);
           setOpenValue(emptyDiaryRecord._id);
 
-          const defaultTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
           const nextDate = setUtcMidnight({
             date: new Date(),
             isNextDay: true,
-            timeZone: timeZone || defaultTimeZone,
+            timeZone,
           });
 
           setUserDetails((prev: UserDataType) => ({
@@ -99,7 +99,7 @@ export default function DiaryPage() {
         setIsLoading(false);
       }
     },
-    [isLoading, timeZone]
+    [isLoading]
   );
 
   const handleClickCreateRecord = useCallback(
@@ -201,7 +201,7 @@ export default function DiaryPage() {
 
   useEffect(() => {
     if (!diaryRecords) return;
-    if (!timeZone) return;
+
     const dates = diaryRecords.map((r) => new Date(r.createdAt).toDateString());
     const exists = dates.includes(new Date().toDateString());
     setDisableAddNew(exists);
@@ -238,7 +238,6 @@ export default function DiaryPage() {
               hasMore={hasMore}
               diaryRecords={diaryRecords}
               openValue={openValue}
-              timeZone={timeZone}
               setDiaryRecords={setDiaryRecords}
               setOpenValue={setOpenValue}
               handleFetchDiaryRecords={() =>

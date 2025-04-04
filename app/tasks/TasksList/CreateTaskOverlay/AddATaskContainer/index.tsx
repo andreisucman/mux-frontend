@@ -14,16 +14,11 @@ import { RawTaskType } from "./types";
 import classes from "./AddATaskContainer.module.css";
 
 type Props = {
-  timeZone?: string;
   onCreateRoutineClick: (args?: any) => void;
   handleSaveTask: (args: any) => Promise<void>;
 };
 
-export default function AddATaskContainer({
-  timeZone,
-  handleSaveTask,
-  onCreateRoutineClick,
-}: Props) {
+export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -83,7 +78,6 @@ export default function AddATaskContainer({
   const cooldownButtonText = `Next weekly routine after ${nextRoutineDate}`;
 
   const handleCreateTask = async () => {
-    if (!timeZone) return;
     if (isLoading) return;
 
     setError("");
@@ -92,7 +86,7 @@ export default function AddATaskContainer({
     const response = await callTheServer({
       endpoint: "createTaskFromDescription",
       method: "POST",
-      body: { name: taskName, concern: selectedConcern, part: selectedPart, timeZone },
+      body: { name: taskName, concern: selectedConcern, part: selectedPart },
     });
 
     if (response.status === 200) {
@@ -225,7 +219,6 @@ export default function AddATaskContainer({
                   handleSaveTask({
                     concern: selectedConcern,
                     part: selectedPart,
-                    timeZone,
                     date,
                     frequency,
                     isLoading,

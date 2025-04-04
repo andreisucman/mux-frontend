@@ -22,12 +22,10 @@ const rescheduleTask = async ({
 }: CloneRoutinesProps) => {
   if (!startDate) return;
 
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const body: { [key: string]: any } = {
     taskKey,
     routineId,
     startDate,
-    timeZone,
   };
 
   setIsLoading(true);

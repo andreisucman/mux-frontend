@@ -16,7 +16,6 @@ import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import updateTaskInstance, { UpdateTaskInstanceProps } from "@/functions/updateTaskInstance";
-import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
@@ -41,14 +40,11 @@ const allowedTaskStatuses = [
 
 type UpdateTaskStatusProps = {
   newStatus: TaskStatusEnum;
-  isAll: boolean;
 };
 
 export interface HandleUpdateTaskinstanceProps extends UpdateTaskInstanceProps {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
-
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export default function Explain(props: Props) {
   const { taskId } = use(props.params);
@@ -166,7 +162,6 @@ export default function Explain(props: Props) {
               taskId,
               resetNewTask: true,
               returnTask: true,
-              timeZone,
             })
           }
         />
@@ -174,7 +169,7 @@ export default function Explain(props: Props) {
       modal: "general",
       centered: true,
     });
-  }, [taskId, timeZone]);
+  }, [taskId]);
 
   const handleUpdateTaskInstance = useCallback(
     async ({
@@ -241,13 +236,13 @@ export default function Explain(props: Props) {
     });
   }, [taskName, taskId, taskDescription, taskInstruction, startsAt]);
 
-  const updateTaskStatus = async ({ newStatus, isAll }: UpdateTaskStatusProps) => {
+  const updateTaskStatus = async ({ newStatus }: UpdateTaskStatusProps) => {
     if (!allowedTaskStatuses.includes(newStatus)) return;
 
     const response = await callTheServer({
-      endpoint: "updateStatusOfTasks",
+      endpoint: "updateStatusOfTaskInstance",
       method: "POST",
-      body: { taskIds: [taskId], isAll, timeZone, newStatus },
+      body: { taskId, newStatus, returnTask: true },
     });
 
     if (response.status === 200) {
@@ -256,28 +251,6 @@ export default function Explain(props: Props) {
         status: newStatus,
       }));
     }
-  };
-
-  const handleCancelOrActivateTask = async (newStatus: TaskStatusEnum) => {
-    const label = newStatus === TaskStatusEnum.ACTIVE ? "Activate" : "Cancel";
-    askConfirmation({
-      body: `${upperFirst(newStatus)} all future tasks of this type?`,
-      title: "Please confirm",
-      labels: {
-        confirm: `${upperFirst(label)} this only`,
-        cancel: `${upperFirst(label)} all`,
-      },
-      onConfirm: () =>
-        updateTaskStatus({
-          newStatus,
-          isAll: false,
-        }),
-      onCancel: () =>
-        updateTaskStatus({
-          newStatus,
-          isAll: true,
-        }),
-    });
   };
 
   useEffect(() => {
@@ -364,11 +337,12 @@ export default function Explain(props: Props) {
                       disabled={timeExpired}
                       className={classes.actionButton}
                       onClick={() =>
-                        handleCancelOrActivateTask(
-                          taskStatus === TaskStatusEnum.ACTIVE
-                            ? TaskStatusEnum.CANCELED
-                            : TaskStatusEnum.ACTIVE
-                        )
+                        updateTaskStatus({
+                          newStatus:
+                            taskStatus === TaskStatusEnum.ACTIVE
+                              ? TaskStatusEnum.CANCELED
+                              : TaskStatusEnum.ACTIVE,
+                        })
                       }
                     >
                       {taskStatus === TaskStatusEnum.ACTIVE ? "Cancel" : "Activate"}
@@ -389,7 +363,6 @@ export default function Explain(props: Props) {
                 updateTaskStatus={(newStatus: TaskStatusEnum) => {
                   updateTaskStatus({
                     newStatus,
-                    isAll: false,
                   });
                 }}
                 notStarted={!!futureStartDate}

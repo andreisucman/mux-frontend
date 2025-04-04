@@ -25,7 +25,6 @@ export default function EditTaskModal({
   const [updatedDescription, setUpdatedDescription] = useState(description);
   const [updatedInstruction, setUpdatedInstruciton] = useState(instruction);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [date, setDate] = useState<Date | null>(new Date());
   const [step, setStep] = useState(1);
 
@@ -46,7 +45,6 @@ export default function EditTaskModal({
         date,
         isLoading,
         setIsLoading,
-        setError,
         setStep,
       };
 
@@ -81,11 +79,6 @@ export default function EditTaskModal({
 
   return (
     <Stack className={classes.container}>
-      {error && (
-        <Text size="sm" className={classes.error}>
-          {error}
-        </Text>
-      )}
       {isLoading && <Loader type="bars" size={48} className={classes.loader} />}
       {!isLoading && (
         <>

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from "react";
+import cn from "classnames";
 import { Accordion, Group, Skeleton, Title } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -21,8 +22,8 @@ import classes from "./AccordionRoutineRow.module.css";
 type Props = {
   routine: RoutineType;
   index: number;
-  timeZone?: string;
   isSelf: boolean;
+  selected: boolean;
   selectedConcerns: { [key: string]: string[] };
   copyRoutines?: (routineIds: string[]) => void;
   rescheduleRoutines?: (routineIds: string[]) => void;
@@ -41,6 +42,7 @@ export default function AccordionRoutineRow({
   routine,
   index,
   isSelf,
+  selected,
   selectedConcerns,
   copyTask,
   deleteRoutines,
@@ -55,7 +57,7 @@ export default function AccordionRoutineRow({
   setRoutines,
 }: Props) {
   const { ref, focused } = useFocusWithin();
-  const { _id: routineId, part, startsAt, status: routineStatus, lastDate, allTasks } = routine;
+  const { _id: routineId, part, startsAt, lastDate, allTasks } = routine;
 
   const router = useRouter();
 
@@ -115,9 +117,9 @@ export default function AccordionRoutineRow({
   const handleUpdateTaskInstance = useCallback(
     async (taskId: string, newStatus: string) => {
       const response = await callTheServer({
-        endpoint: "updateStatusOfTaskInstances",
+        endpoint: "updateStatusOfTaskInstance",
         method: "POST",
-        body: { taskIds: [taskId], newStatus, routineStatus, returnRoutines: true },
+        body: { taskId, newStatus, returnRoutine: true },
       });
 
       if (response.status === 200) {
@@ -128,27 +130,22 @@ export default function AccordionRoutineRow({
           return;
         }
 
-        const { routines } = message;
+        const { routine } = message;
 
-        if (routines.length && setRoutines) {
-          setRoutines((prev) =>
-            (prev || []).map((r) => {
-              const relevantUpdated = routines.find((ur: RoutineType) => ur._id === r._id);
-              return relevantUpdated ? relevantUpdated : r;
-            })
-          );
+        if (routine && setRoutines) {
+          setRoutines((prev) => (prev || []).map((r) => (r._id === routine._id ? routine : r)));
         }
       }
     },
-    [setRoutines, status]
+    [setRoutines]
   );
 
   const handleDeleteTaskInstance = useCallback(
     async (taskId: string) => {
       const response = await callTheServer({
-        endpoint: "deleteTaskInstances",
+        endpoint: "deleteTaskInstance",
         method: "POST",
-        body: { taskIds: [taskId], returnRoutines: true },
+        body: { taskId },
       });
 
       if (response.status === 200) {
@@ -159,14 +156,11 @@ export default function AccordionRoutineRow({
           return;
         }
 
-        const { routines } = message;
+        const { routine } = message;
 
-        if (routines.length && setRoutines) {
+        if (routine && setRoutines) {
           setRoutines((prev) =>
-            (prev || []).map((r) => {
-              const relevantUpdated = routines.find((ur: RoutineType) => ur._id === r._id);
-              return relevantUpdated ? relevantUpdated : r;
-            })
+            prev?.filter(Boolean).map((obj) => (obj._id === routine._id ? routine : obj))
           );
         }
       }
@@ -190,7 +184,7 @@ export default function AccordionRoutineRow({
         size: "sm",
         innerProps: (
           <SelectDateModalContent
-            buttonText="Copy task"
+            buttonText="Reschedule task"
             onSubmit={async ({ startDate }) =>
               updateTaskInstance({
                 taskId,
@@ -268,7 +262,7 @@ export default function AccordionRoutineRow({
       <Accordion.Item
         key={routine._id}
         value={routine._id || `no_value-${index}`}
-        className={classes.item}
+        className={cn(classes.item, { [classes.selected]: selected })}
       >
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>

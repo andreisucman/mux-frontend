@@ -30,7 +30,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
   const router = useRouter();
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
-  const { timeZone, latestProgress } = userDetails || {};
+  const { latestProgress } = userDetails || {};
 
   const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
@@ -56,7 +56,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
       });
       return;
     }
-    openCreateNewTask({ timeZone, handleSaveTask, onCreateRoutineClick });
+    openCreateNewTask({ handleSaveTask, onCreateRoutineClick });
   };
 
   return (

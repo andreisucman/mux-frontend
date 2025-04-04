@@ -13,10 +13,9 @@ import classes from "./DiaryRow.module.css";
 type Props = {
   data: DiaryRecordType;
   index: number;
-  timeZone?: string;
 };
 
-export default function DiaryRow({ data, timeZone }: Props) {
+export default function DiaryRow({ data }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
   const [isUploading, setIsUploading] = useState(false);
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
@@ -52,7 +51,7 @@ export default function DiaryRow({ data, timeZone }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls?.[0], timeZone, part: data.part, activity: data.activity },
+          body: { audio: audioUrls?.[0], part: data.part, activity: data.activity },
         });
 
         if (response.status === 200) {
@@ -72,7 +71,7 @@ export default function DiaryRow({ data, timeZone }: Props) {
         openErrorModal();
       }
     },
-    [isUploading, timeZone, data]
+    [isUploading, data]
   );
 
   return (

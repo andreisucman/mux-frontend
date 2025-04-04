@@ -27,8 +27,6 @@ const updateTaskInstance = async ({
 }: UpdateTaskInstanceProps) => {
   if (isLoading) return;
 
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   if (setIsLoading) setIsLoading(true);
 
   const response = await callTheServer({
@@ -40,7 +38,6 @@ const updateTaskInstance = async ({
       updatedDescription: description,
       updatedInstruction: instruction,
       applyToAll,
-      timeZone,
       returnRoutine,
     },
   });

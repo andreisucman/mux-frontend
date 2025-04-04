@@ -1,18 +1,16 @@
 import React, { useMemo } from "react";
 import { IconFilter, IconFilterOff, IconInfoCircle } from "@tabler/icons-react";
-import { ActionIcon, Checkbox, Group, Skeleton, Text } from "@mantine/core";
+import { ActionIcon, Group, Skeleton, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { TaskStatusEnum, TaskType } from "@/types/global";
+import { TaskType } from "@/types/global";
 import IconWithColor from "../../tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import classes from "./CalendarRow.module.css";
 
 type Props = {
   task: TaskType;
   mode: string;
-  tasksToUpdate: TaskType[];
   customStyles?: { [key: string]: any };
-  selectTask: (task: TaskType) => void;
   changeMode: (mode: string, taskKey?: string) => void;
   resetMode: () => void;
   redirectToTask: (taskId: string) => void;
@@ -22,31 +20,19 @@ export default function CalendarRow({
   task,
   mode,
   customStyles,
-  tasksToUpdate,
-  selectTask,
   redirectToTask,
   changeMode,
   resetMode,
 }: Props) {
-  const { key: taskKey, color, status, icon, name, startsAt, _id: taskId } = task;
+  const { key: taskKey, color, icon, name, startsAt, _id: taskId } = task;
 
   const date = useMemo(() => formatDate({ date: startsAt, hideYear: true }), [startsAt]);
-
-  const checked = useMemo(
-    () => tasksToUpdate.map((t) => t._id).includes(taskId),
-    [taskId, tasksToUpdate.length]
-  );
 
   const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton} mih={50}>
-      <Group
-        className={classes.container}
-        onClick={() => selectTask(task)}
-        style={customStyles ? customStyles : {}}
-      >
-        <Checkbox checked={checked} disabled={status === TaskStatusEnum.EXPIRED} readOnly />
+      <Group className={classes.container} style={customStyles ? customStyles : {}}>
         <Text className={classes.date}>{date}</Text>
         <IconWithColor icon={icon} color={color} />
         <Text className={classes.name} lineClamp={2}>

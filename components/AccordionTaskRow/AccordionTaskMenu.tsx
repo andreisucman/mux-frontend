@@ -66,7 +66,7 @@ export default function AccordionTaskMenu({
         </Menu.Item>
         {isSelf && (
           <>
-            {rescheduleTask && (
+            {rescheduleTask && hasActiveTasks && (
               <Menu.Item onClick={() => rescheduleTask(taskKey)}>
                 <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Reschedule

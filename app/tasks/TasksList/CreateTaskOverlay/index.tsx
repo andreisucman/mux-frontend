@@ -10,12 +10,11 @@ import openCreateNewTask from "./openCreateNewTask";
 import classes from "./CreateTaskOverlay.module.css";
 
 type Props = {
-  timeZone?: string;
   handleSaveTask: (args: HandleSaveTaskProps) => Promise<void>;
   customStyles?: { [key: string]: any };
 };
 
-export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTask }: Props) {
+export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Props) {
   const router = useRouter();
   const [showWeeklyButton, setShowWeeklyButton] = useState(false);
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
@@ -45,7 +44,7 @@ export default function CreateTaskOverlay({ timeZone, customStyles, handleSaveTa
       });
       return;
     }
-    openCreateNewTask({ timeZone, handleSaveTask, onCreateRoutineClick });
+    openCreateNewTask({ handleSaveTask, onCreateRoutineClick });
   };
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -12,14 +11,12 @@ type Props = {
 export default function SelectDateModalContent({ buttonText, lastDate, onSubmit }: Props) {
   const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const onClick = async () => {
     setIsLoading(true);
-    const newTaskId = await onSubmit({
+    await onSubmit({
       startDate: recreateTaskOnDate,
     });
-    if (newTaskId) router.replace(`/explain/${newTaskId}`);
     setIsLoading(false);
   };
 

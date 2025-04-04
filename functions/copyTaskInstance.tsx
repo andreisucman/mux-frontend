@@ -11,10 +11,10 @@ export type CopyTaskInstanceProps = {
   taskId: string;
   resetNewTask?: boolean;
   startDate: Date | null;
-  timeZone?: string;
   returnTask?: boolean;
   userName?: string;
   inform?: boolean;
+  cb?: (newTaskId: string) => void;
   setTaskInfo?: React.Dispatch<React.SetStateAction<TaskType | null>>;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
@@ -24,16 +24,16 @@ export default async function copyTaskInstance({
   inform,
   userName,
   resetNewTask,
-  timeZone,
   startDate,
   returnTask,
   setTaskInfo,
   setRoutines,
+  cb,
 }: CopyTaskInstanceProps) {
   const response = await callTheServer({
     endpoint: "copyTaskInstance",
     method: "POST",
-    body: { taskId, startDate, userName, returnTask, timeZone, resetNewTask },
+    body: { taskId, startDate, userName, returnTask, resetNewTask },
   });
 
   if (response.status === 200) {
@@ -83,5 +83,7 @@ export default async function copyTaskInstance({
 
       if (newTask) return newTask._id;
     }
+
+    if (cb && newTask) cb(newTask._id);
   }
 }

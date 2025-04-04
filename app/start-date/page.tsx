@@ -57,7 +57,6 @@ export default function StartDate() {
     setIsLoading(true);
 
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     const response = await callTheServer({
       endpoint: "createRoutine",
@@ -68,7 +67,6 @@ export default function StartDate() {
         creationMode,
         routineStartDate: startDate,
         specialConsiderations,
-        timeZone,
       },
     });
 
@@ -136,7 +134,11 @@ export default function StartDate() {
           />
           <Text className={classes.date}>{text}</Text>
           {isNotFirstTime && (
-            <Radio.Group name="routineMode" value={creationMode} onChange={handleChangeCreationMode}>
+            <Radio.Group
+              name="routineMode"
+              value={creationMode}
+              onChange={handleChangeCreationMode}
+            >
               <Group className={classes.radioButtonsGroup}>
                 <Radio
                   value="continue"
