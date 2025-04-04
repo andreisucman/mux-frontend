@@ -1,3 +1,5 @@
+import { AllTaskType, TaskStatusEnum } from "@/types/global";
+
 export function delayExecution(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -104,3 +106,13 @@ export function sortObjectByNumberValue(obj: { [key: string]: number }, isAscend
       : Object.entries(obj).sort(([, a], [, b]) => b - a)
   );
 }
+
+export const getIsRoutineActive = (startsAt: string, lastDate: string, allTasks: AllTaskType[]) => {
+  const now = new Date();
+  const withinDateRange = new Date(startsAt) <= now && now <= new Date(lastDate);
+  const hasActiveTasks = allTasks
+    .flatMap((at) => at.ids)
+    .some((idObj) => idObj.status === TaskStatusEnum.ACTIVE);
+
+  return withinDateRange && hasActiveTasks;
+};

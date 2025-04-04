@@ -31,6 +31,7 @@ import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
 import TasksButtons from "../tasks/TasksList/TasksButtons";
 import classes from "./routines.module.css";
+import { getIsRoutineActive } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -61,19 +62,6 @@ export default function MyRoutines() {
 
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
-
-  const getIsRoutineActive = useCallback(
-    (startsAt: string, lastDate: string, allTasks: AllTaskType[]) => {
-      const now = new Date();
-      const withinDateRange = new Date(startsAt) <= now && now <= new Date(lastDate);
-      const hasActiveTasks = allTasks
-        .flatMap((at) => at.ids)
-        .some((idObj) => idObj.status === TaskStatusEnum.ACTIVE);
-
-      return withinDateRange && hasActiveTasks;
-    },
-    []
-  );
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {

@@ -24,6 +24,7 @@ import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { useRouter } from "@/helpers/custom-router";
+import { getIsRoutineActive } from "@/helpers/utils";
 import { PurchaseOverlayDataType, RoutineType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import classes from "./routines.module.css";
@@ -231,18 +232,20 @@ export default function ClubRoutines(props: Props) {
   const accordionItems = useMemo(
     () =>
       routines?.map((routine, i) => {
+        const selected = getIsRoutineActive(routine.startsAt, routine.lastDate, routine.allTasks);
         return (
           <AccordionRoutineRow
             key={routine._id || i}
             index={i}
             routine={routine}
+            selected={selected}
             isSelf={isSelf}
             selectedConcerns={selectedConcerns}
-            setRoutines={setRoutines}
             setSelectedConcerns={setSelectedConcerns}
-            copyRoutines={handleCopyRoutines}
             copyTaskInstance={handleCopyTaskInstance}
+            copyRoutines={handleCopyRoutines}
             copyTask={handleCopyTask}
+            setRoutines={setRoutines}
           />
         );
       }),
