@@ -3,6 +3,7 @@
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
@@ -15,7 +16,6 @@ import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
-import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
@@ -119,17 +119,10 @@ export default function DiaryPage(props: Props) {
   }, [sort, part, userName, dateFrom, dateTo, authStatus]);
 
   useEffect(() => {
-    if (!userId) return;
-
-    getFilters({
-      collection: "task",
-      fields: ["part"],
-      filter: [`userName=${userName}`],
-    }).then((result) => {
-      const { availableParts } = result;
-      setAvailableParts(availableParts);
-    });
-  }, [userId]);
+    if (!purchaseOverlayData || !userName) return;
+    const availableParts = purchaseOverlayData.map((obj) => obj.part);
+    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+  }, [userName, purchaseOverlayData]);
 
   return (
     <ClubModerationLayout

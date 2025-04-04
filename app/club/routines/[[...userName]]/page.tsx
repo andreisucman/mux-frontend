@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
@@ -21,7 +22,6 @@ import copyRoutines from "@/functions/copyRoutines";
 import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
-import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { useRouter } from "@/helpers/custom-router";
 import { getIsRoutineActive } from "@/helpers/utils";
@@ -54,7 +54,7 @@ export default function ClubRoutines(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
@@ -267,17 +267,10 @@ export default function ClubRoutines(props: Props) {
   }, [sort, part, userName, authStatus]);
 
   useEffect(() => {
-    if (!userName) return;
-    getFilters({
-      userName,
-      collection: "routine",
-      fields: ["part"],
-      filter: [`userName=${userName}`],
-    }).then((result) => {
-      const { availableParts } = result;
-      setAvaiableParts(availableParts);
-    });
-  }, [userName]);
+    if (!purchaseOverlayData || !userName) return;
+    const availableParts = purchaseOverlayData.map((obj) => obj.part);
+    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+  }, [userName, purchaseOverlayData]);
 
   return (
     <ClubModerationLayout

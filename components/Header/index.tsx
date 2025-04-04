@@ -180,6 +180,7 @@ function Header() {
                 aria-label="sign in button"
                 loading={isLoading}
                 disabled={isLoading}
+                variant={pathname.startsWith("/club") ? "default" : "filled"}
                 onClick={() => handleRedirect("signInButton")}
               >
                 <IconDoorEnter stroke={1.75} className="icon" style={{ marginRight: rem(6) }} />

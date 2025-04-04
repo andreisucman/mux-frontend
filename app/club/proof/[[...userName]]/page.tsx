@@ -4,6 +4,7 @@ import React, { use, useCallback, useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
@@ -16,7 +17,6 @@ import { UserContext } from "@/context/UserContext";
 import { proofSortItems } from "@/data/sortItems";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
-import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
@@ -41,7 +41,7 @@ export default function ClubProof(props: Props) {
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
   const searchParams = useSearchParams();
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -117,13 +117,10 @@ export default function ClubProof(props: Props) {
   }, [userName, part, sort, concern, query]);
 
   useEffect(() => {
-    getFilters({ collection: "proof", fields: ["part"], filter: [`userName=${userName}`] }).then(
-      (result) => {
-        const { availableParts } = result;
-        setAvaiableParts(availableParts);
-      }
-    );
-  }, []);
+    if (!purchaseOverlayData || !userName) return;
+    const availableParts = purchaseOverlayData.map((obj) => obj.part);
+    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+  }, [userName, purchaseOverlayData]);
 
   return (
     <ClubModerationLayout

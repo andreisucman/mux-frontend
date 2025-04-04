@@ -16,7 +16,6 @@ import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { progressSortItems } from "@/data/sortItems";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
-import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import { PurchaseOverlayDataType } from "@/types/global";
@@ -42,7 +41,7 @@ export default function ClubProgress(props: Props) {
   const { status: authStatus, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -54,7 +53,7 @@ export default function ClubProgress(props: Props) {
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
 
-  const { name, club } = userDetails || {};
+  const { name } = userDetails || {};
 
   const isSelf = userName === name;
 
@@ -132,13 +131,10 @@ export default function ClubProgress(props: Props) {
   }, [authStatus, userName, sort, part]);
 
   useEffect(() => {
-    getFilters({ collection: "progress", fields: ["part"], filter: [`userName=${userName}`] }).then(
-      (result) => {
-        const { availableParts } = result;
-        setAvaiableParts(availableParts);
-      }
-    );
-  }, []);
+    if (!purchaseOverlayData || !userName) return;
+    const availableParts = purchaseOverlayData.map((obj) => obj.part);
+    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+  }, [userName, purchaseOverlayData]);
 
   return (
     <ClubModerationLayout
@@ -150,7 +146,6 @@ export default function ClubProgress(props: Props) {
           filterNames={["part"]}
           defaultSortValue="-_id"
           sortItems={progressSortItems}
-          isDisabled={!availableParts}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,

@@ -1,41 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterPartItemType } from "@/components/FilterDropdown/types";
-import getUsersFilters from "@/functions/getFilters";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
 import classes from "./ClubProgressFilterCardContent.module.css";
 
 type Props = {
-  userName?: string;
+  filterItems?: FilterItemType[];
 };
 
-export default function ClubProgressFilterCardContent({ userName }: Props) {
+export default function ClubProgressFilterCardContent({ filterItems }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
 
-  const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>();
-
-  useEffect(() => {
-    getUsersFilters({ userName, collection: "progress", fields: ["part"] }).then((result) => {
-      const { availableParts } = result;
-      setAvailableParts(availableParts);
-    });
-  }, [userName]);
-
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={availableParts || []}
-        icons={availableParts ? partIcons : undefined}
+        data={filterItems || []}
+        icons={filterItems ? partIcons : undefined}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!availableParts}
+        isDisabled={!filterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
