@@ -4,34 +4,33 @@ import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 export type CloneRoutinesProps = {
-  routineId: string;
-  taskKey: string;
+  taskId: string;
   startDate: Date | null;
   sort?: string | null;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
+  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
 
-const rescheduleTask = async ({
-  taskKey,
-  routineId,
+const rescheduleTaskInstance = async ({
+  taskId,
   startDate,
   sort,
   setIsLoading,
   setRoutines,
+  setSelectedConcerns,
 }: CloneRoutinesProps) => {
   if (!startDate) return;
 
   const body: { [key: string]: any } = {
-    taskKey,
-    routineId,
+    taskId,
     startDate,
   };
 
   setIsLoading(true);
 
   const response = await callTheServer({
-    endpoint: "rescheduleTask",
+    endpoint: "rescheduleTaskInstance",
     method: "POST",
     body,
   });
@@ -45,11 +44,20 @@ const rescheduleTask = async ({
 
     const routines: RoutineType[] = response.message;
 
-    setRoutines((prev) => {
-      const routineIds = new Set(routines.map((r) => r._id));
+    const newRoutineConcerns = routines.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
+      a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+      return a;
+    }, {});
 
+    setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+
+    setRoutines((prev) => {
+      const routineIds = new Set(routines.map((r) => r._id)); // Collect new routine IDs
+
+      // Filter out routines that are not in the new list
       let updated = (prev || []).filter((r) => routineIds.has(r._id));
 
+      // Update existing routines or add new ones
       routines.forEach((routine) => {
         const index = updated.findIndex((r) => r._id === routine._id);
         if (index !== -1) {
@@ -73,4 +81,4 @@ const rescheduleTask = async ({
   setIsLoading(false);
 };
 
-export default rescheduleTask;
+export default rescheduleTaskInstance;

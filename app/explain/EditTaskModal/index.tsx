@@ -1,40 +1,25 @@
 import React, { useState } from "react";
-import { Button, Loader, Stack, Text } from "@mantine/core";
+import { Button, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import askConfirmation from "@/helpers/askConfirmation";
-import { formatDate } from "@/helpers/formatDate";
 import { HandleUpdateTaskinstanceProps } from "../[taskId]/page";
 import EditExistingTask from "../EditExistingTask";
 import classes from "./EditTaskModal.module.css";
 
 type Props = {
   taskId: string;
-  startsAt: string;
   description: string;
   instruction: string;
   updateTask: (props: HandleUpdateTaskinstanceProps) => Promise<void>;
 };
 
-export default function EditTaskModal({
-  taskId,
-  startsAt,
-  description,
-  instruction,
-  updateTask,
-}: Props) {
+export default function EditTaskModal({ taskId, description, instruction, updateTask }: Props) {
   const [updatedDescription, setUpdatedDescription] = useState(description);
   const [updatedInstruction, setUpdatedInstruciton] = useState(instruction);
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState<Date | null>(new Date());
   const [step, setStep] = useState(1);
 
-  const starsKeyDate = formatDate({ date: startsAt });
-  const nowKeyDate = formatDate({ date: date || new Date() });
-
-  const isDirty =
-    updatedDescription !== description ||
-    updatedInstruction !== instruction ||
-    starsKeyDate !== nowKeyDate;
+  const isDirty = updatedDescription !== description || updatedInstruction !== instruction;
 
   const handleUpdateTask = async (applyToAll?: boolean) => {
     try {
@@ -42,7 +27,6 @@ export default function EditTaskModal({
         taskId,
         description: updatedDescription,
         instruction: updatedInstruction,
-        date,
         isLoading,
         setIsLoading,
         setStep,
@@ -85,8 +69,6 @@ export default function EditTaskModal({
           {step === 1 && (
             <>
               <EditExistingTask
-                date={date}
-                setDate={setDate}
                 updatedDescription={updatedDescription}
                 updatedInstruction={updatedInstruction}
                 setUpdatedDescription={setUpdatedDescription}
@@ -100,8 +82,6 @@ export default function EditTaskModal({
           {step === 2 && (
             <EditExistingTask
               readOnly={true}
-              date={date}
-              setDate={setDate}
               updatedDescription={updatedDescription}
               updatedInstruction={updatedInstruction}
               setUpdatedDescription={setUpdatedDescription}

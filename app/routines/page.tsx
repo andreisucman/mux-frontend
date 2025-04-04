@@ -23,15 +23,16 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import rescheduleRoutines from "@/functions/rescheduleRoutines";
 import rescheduleTask from "@/functions/rescheduleTask";
+import rescheduleTaskInstance from "@/functions/rescheduleTaskInstance";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
+import { getIsRoutineActive } from "@/helpers/utils";
+import { RoutineType } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
 import TasksButtons from "../tasks/TasksList/TasksButtons";
 import classes from "./routines.module.css";
-import { getIsRoutineActive } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -320,6 +321,37 @@ export default function MyRoutines() {
     });
   }, []);
 
+  const handleRescheduleTaskInstance = useCallback(
+    (taskId: string) => {
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Choose new date
+          </Title>
+        ),
+        size: "sm",
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Reschedule task"
+            onSubmit={async ({ startDate }) =>
+              rescheduleTaskInstance({
+                startDate,
+                taskId,
+                sort,
+                setRoutines,
+                setIsLoading,
+                setSelectedConcerns
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    [sort, routines, selectedConcerns]
+  );
+
   const accordionItems = useMemo(
     () =>
       routines
@@ -339,6 +371,7 @@ export default function MyRoutines() {
               setSelectedConcerns={setSelectedConcerns}
               copyRoutines={handleCopyRoutines}
               rescheduleRoutines={handleRescheduleRoutines}
+              rescheduleTaskInstance={handleRescheduleTaskInstance}
               copyTask={handleCopyTask}
               deleteTask={deleteTask}
               updateTask={updateTask}

@@ -58,5 +58,5 @@
 }
 
 .selected {
-  border-color: var(--mantine-color-green-7);
+  border-color: var(--mantine-color-dark-3);
 }

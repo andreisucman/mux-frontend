@@ -1,11 +1,8 @@
 import React, { useCallback, useMemo } from "react";
 import cn from "classnames";
-import { Accordion, Group, Skeleton, Title } from "@mantine/core";
+import { Accordion, Group, Skeleton } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
-import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import callTheServer from "@/functions/callTheServer";
-import updateTaskInstance from "@/functions/updateTaskInstance";
 import { useRouter } from "@/helpers/custom-router";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { partIcons } from "@/helpers/icons";
@@ -36,6 +33,7 @@ type Props = {
   updateTask?: (routineId: string, taskKey: string, newStatus: string) => void;
   copyTask: (routineId: string, taskKey: string) => void;
   copyTaskInstance: (taskId: string) => void;
+  rescheduleTaskInstance?: (taskId: string) => void;
 };
 
 export default function AccordionRoutineRow({
@@ -55,6 +53,7 @@ export default function AccordionRoutineRow({
   setSelectedConcerns,
   copyTaskInstance,
   setRoutines,
+  rescheduleTaskInstance,
 }: Props) {
   const { ref, focused } = useFocusWithin();
   const { _id: routineId, part, startsAt, lastDate, allTasks } = routine;
@@ -168,39 +167,10 @@ export default function AccordionRoutineRow({
     [setRoutines]
   );
 
-  const handleRescheduleTaskInstance = useCallback(
-    (taskId: string) => {
-      const cb = (routine: RoutineType) => {
-        setRoutines((prev) => prev?.map((rt) => (rt._id === routine._id ? routine : rt)));
-        modals.closeAll();
-      };
-
-      modals.openContextModal({
-        title: (
-          <Title order={5} component={"p"}>
-            Choose new date
-          </Title>
-        ),
-        size: "sm",
-        innerProps: (
-          <SelectDateModalContent
-            buttonText="Reschedule task"
-            onSubmit={async ({ startDate }) =>
-              updateTaskInstance({
-                taskId,
-                date: startDate,
-                returnRoutine: true,
-                cb,
-              })
-            }
-          />
-        ),
-        modal: "general",
-        centered: true,
-      });
-    },
-    [selectedConcerns]
-  );
+  const handleRescheduleTaskInstance = useCallback((taskId: string) => {
+    if (!rescheduleTaskInstance) return;
+    rescheduleTaskInstance(taskId);
+  }, []);
 
   const redirectToTask = useCallback(
     ({ taskKey, page = "calendar" }: { taskKey?: string; page: "calendar" | "diary" }) => {

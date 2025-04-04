@@ -1,32 +1,24 @@
 import React from "react";
-import { IconCalendar, IconSquareRoundedCheck } from "@tabler/icons-react";
+import { IconSquareRoundedCheck } from "@tabler/icons-react";
 import { Group, rem, Stack, Text } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
 import TextareaComponent from "@/components/TextAreaComponent";
-import { daysFrom } from "@/helpers/utils";
 import classes from "./EditExistingTask.module.css";
 
 type Props = {
   readOnly?: boolean;
-  date: Date | null;
   updatedDescription: string;
   updatedInstruction: string;
-  setDate: React.Dispatch<React.SetStateAction<Date | null>>;
   setUpdatedDescription: React.Dispatch<React.SetStateAction<string>>;
   setUpdatedInstruction: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function EditExistingTask({
   readOnly,
-  date,
   updatedDescription,
   updatedInstruction,
   setUpdatedDescription,
   setUpdatedInstruction,
-  setDate,
 }: Props) {
-  const latestDateOfWeek = daysFrom({ days: 7 });
-
   const todayMidnight = new Date();
   todayMidnight.setHours(0, 0, 0, 0);
 
@@ -59,21 +51,6 @@ export default function EditExistingTask({
         }
         placeholder="Updated instruction of the task"
       />
-      <Stack className={classes.box}>
-        <Text size="xs" c="dimmed">
-          Starting date:
-        </Text>
-        <DatePickerInput
-          value={date}
-          onChange={setDate}
-          excludeDate={(date) => new Date(date) < todayMidnight || new Date(date) > latestDateOfWeek}
-          placeholder="Pick date"
-          size="sm"
-          closeOnChange
-          disabled={readOnly}
-          leftSection={<IconCalendar className="icon" stroke={1.5} />}
-        />
-      </Stack>
     </Stack>
   );
 }

@@ -226,7 +226,6 @@ export default function Explain(props: Props) {
           taskId={taskId || ""}
           description={taskDescription || ""}
           instruction={taskInstruction || ""}
-          startsAt={startsAt || ""}
           updateTask={handleUpdateTaskInstance}
         />
       ),
