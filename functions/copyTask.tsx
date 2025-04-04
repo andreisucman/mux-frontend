@@ -86,6 +86,7 @@ const copyTask = async ({
       const newRoutineConcerns = [...new Set(routine.allTasks.map((t: AllTaskType) => t.concern))];
 
       setSelectedConcerns((prev) => ({ ...prev, [routine._id]: newRoutineConcerns }));
+
       setRoutines((prev) => {
         const updated = [...(prev || []), routine];
         if (sort === "startsAt") {

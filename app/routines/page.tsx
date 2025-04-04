@@ -199,7 +199,7 @@ export default function MyRoutines() {
           )
       );
     }
-  }, []);
+  }, [routines]);
 
   const handleCopyTask = useCallback(
     (routineId: string, taskKey: string) => {
@@ -264,20 +264,23 @@ export default function MyRoutines() {
     [sort, routines, selectedConcerns]
   );
 
-  const deleteTask = useCallback(async (routineId: string, taskKey: string) => {
-    const response = await callTheServer({
-      endpoint: "deleteTask",
-      method: "POST",
-      body: { routineId, taskKey },
-    });
+  const deleteTask = useCallback(
+    async (routineId: string, taskKey: string) => {
+      const response = await callTheServer({
+        endpoint: "deleteTask",
+        method: "POST",
+        body: { routineId, taskKey },
+      });
 
-    if (response.status === 200) {
-      const routine = response.message;
-      setRoutines((prev) =>
-        prev?.filter(Boolean).map((obj) => (obj._id === routine._id ? routine : obj))
-      );
-    }
-  }, []);
+      if (response.status === 200) {
+        const routine = response.message;
+        setRoutines((prev) =>
+          prev?.filter(Boolean).map((obj) => (obj._id === routine._id ? routine : obj))
+        );
+      }
+    },
+    [routines]
+  );
 
   const updateTask = useCallback(
     async (routineId: string, taskKey: string, newStatus: string) => {
@@ -336,7 +339,7 @@ export default function MyRoutines() {
                 sort,
                 setRoutines,
                 setIsLoading,
-                setSelectedConcerns
+                setSelectedConcerns,
               })
             }
           />

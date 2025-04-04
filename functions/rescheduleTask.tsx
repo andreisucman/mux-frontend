@@ -45,8 +45,6 @@ const rescheduleTask = async ({
 
     const routines: RoutineType[] = response.message;
 
-    console.log("routines", routines);
-
     setRoutines((prev) => {
       const routineIds = new Set(routines.map((r) => r._id));
 
