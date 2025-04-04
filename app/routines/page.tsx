@@ -109,8 +109,6 @@ export default function MyRoutines() {
         copyRoutines({
           routineIds,
           startDate,
-          inform: true,
-          ignoreIncompleteTasks: true,
           setRoutines,
           setIsLoading,
           setSelectedConcerns,
@@ -220,8 +218,6 @@ export default function MyRoutines() {
                 routineId,
                 startDate,
                 taskKey,
-                ignoreIncompleteTasks: true,
-                inform: true,
                 sort,
                 setRoutines,
                 setIsLoading,

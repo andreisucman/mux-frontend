@@ -60,3 +60,7 @@
 .selected {
   border-color: var(--mantine-color-dark-3);
 }
+
+.canceled {
+  border-color: alpha(var(--mantine-color-red-9), 0.5);
+}

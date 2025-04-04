@@ -8,7 +8,7 @@ import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { RoutineType, TaskStatusEnum } from "@/types/global";
+import { RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
 import InputWithCheckboxes from "../InputWithCheckboxes";
@@ -232,7 +232,10 @@ export default function AccordionRoutineRow({
       <Accordion.Item
         key={routine._id}
         value={routine._id || `no_value-${index}`}
-        className={cn(classes.item, { [classes.selected]: selected })}
+        className={cn(classes.item, {
+          [classes.selected]: selected,
+          [classes.canceled]: routine.status === RoutineStatusEnum.CANCELED,
+        })}
       >
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
