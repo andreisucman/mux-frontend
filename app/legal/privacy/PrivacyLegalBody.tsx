@@ -59,13 +59,13 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           <li>Provide personalized recommendations based on your images and videos.</li>
           <li>
             If you choose to participate in our revenue sharing program (the "Club") we display your
-            graphical, audio and textual information to other suitable users as outline in the{" "}
+            graphical, audio and textual information to other suitable users as outlined in the{" "}
             <Link href="/legal/club" style={{ textDecoration: "underline" }}>
               Club&apos;s terms of service
             </Link>
             .
           </li>
-          <li>Process subscription, rewards, and comission payments.</li>
+          <li>Process payments and payouts.</li>
           <li>Suggest relevant third-party products based on your data.</li>
           <li>Communicate with you and improve our Services.</li>
         </ul>
