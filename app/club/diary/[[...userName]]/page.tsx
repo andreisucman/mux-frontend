@@ -32,7 +32,7 @@ export default function DiaryPage(props: Props) {
   const userName = params?.userName?.[0];
 
   const { userDetails, status: authStatus } = useContext(UserContext);
-  const { name, _id: userId } = userDetails || {};
+  const { name } = userDetails || {};
   const isSelf = userName === name;
 
   const searchParams = useSearchParams();
@@ -124,6 +124,11 @@ export default function DiaryPage(props: Props) {
     setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
+  const showButton =
+    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
+    diaryRecords &&
+    diaryRecords.length > 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -137,7 +142,7 @@ export default function DiaryPage(props: Props) {
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
-              childrenProps: { availableParts },
+              childrenProps: { filterItems: availableParts },
             })
           }
           isDisabled={!diaryRecords}
@@ -160,7 +165,21 @@ export default function DiaryPage(props: Props) {
                 handleCloseOverlay={handleCloseOverlay}
               />
             )}
-            {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
+          </>
+        )}
+        {diaryRecords ? (
+          <>
+            <DiaryContent
+              diaryRecords={diaryRecords}
+              openValue={openValue}
+              setOpenValue={setOpenValue}
+              hasMore={hasMore}
+              handleFetchDiaryRecords={() =>
+                handleFetchDiaryRecords({ dateFrom, dateTo, sort, part })
+              }
+            />
+
+            {showButton && (
               <MaximizeOverlayButton
                 showOverlayComponent={showOverlayComponent}
                 notPurchased={notPurchased}
@@ -168,17 +187,6 @@ export default function DiaryPage(props: Props) {
               />
             )}
           </>
-        )}
-        {diaryRecords ? (
-          <DiaryContent
-            diaryRecords={diaryRecords}
-            openValue={openValue}
-            setOpenValue={setOpenValue}
-            hasMore={hasMore}
-            handleFetchDiaryRecords={() =>
-              handleFetchDiaryRecords({ dateFrom, dateTo, sort, part })
-            }
-          />
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}

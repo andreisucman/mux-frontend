@@ -8,10 +8,10 @@ import { partIcons } from "@/helpers/icons";
 import classes from "./DiaryFilterCardContent.module.css";
 
 type Props = {
-  availableParts?: FilterItemType[];
+  filterItems?: FilterItemType[];
 };
 
-export default function DiaryFilterCardContent({ availableParts }: Props) {
+export default function DiaryFilterCardContent({ filterItems }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -20,12 +20,12 @@ export default function DiaryFilterCardContent({ availableParts }: Props) {
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={availableParts || []}
+        data={filterItems || []}
         icons={partIcons}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!availableParts}
+        isDisabled={!filterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

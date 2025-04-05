@@ -173,7 +173,10 @@ export default function PurchaseOverlay({
     if (part) {
       selectedData = purchaseOverlayData.find((obj) => obj.part === part);
     } else {
-      selectedData = purchaseOverlayData[0];
+      const filteredPurchaseOverlayData = purchaseOverlayData.filter(
+        (o) => notPurchasedParts.includes(o.part)
+      );
+      selectedData = filteredPurchaseOverlayData[0];
     }
     setSelectedCardData(selectedData);
   }, [part]);

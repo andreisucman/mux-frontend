@@ -6,8 +6,8 @@ export const data = [
     question: "What is Muxout?",
     answer: (
       <Text>
-        Muxout is a place where people maximize their appearance with self-improvement routines
-        and inspire others to do the same.
+        Muxout is a place where people maximize their appearance with self-improvement routines and
+        inspire others to do the same.
       </Text>
     ),
   },
@@ -105,8 +105,8 @@ export const data = [
           account.
         </Text>
         <Text>
-          After your information is verified you can withdraw your balance at any time on your Club
-          page.
+          After your information is verified your earnings will be automatically sent to the bank
+          account you've added.
         </Text>
       </Stack>
     ),
@@ -118,11 +118,11 @@ export const data = [
         <Text>
           Muxout is available globally. However, our payment processing partners may have their own
           restrictions with respect to jurisdictions. Therefore, if your country is not supported by
-          our payment processor you won't be able to earn and withdraw your rewards.
+          our payment processor you won't be able to earn or withdraw your rewards.
         </Text>
         <Text>
-          You will learn if your country is not supported when you add your bank account on your
-          club's profile page.
+          You will see if your country is not supported when you add your bank account on your
+          Club profile page.
         </Text>
       </Stack>
     ),
@@ -178,7 +178,8 @@ export const data = [
         Avatar design by{" "}
         <Link style={{ textDecoration: "underline" }} href="https://dribbble.com/micahlanier">
           Micah Lanier
-        </Link>.
+        </Link>
+        .
       </Text>
     ),
   },

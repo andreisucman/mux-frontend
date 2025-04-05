@@ -122,6 +122,11 @@ export default function ClubProof(props: Props) {
     setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
+  const showButton =
+    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
+    proof &&
+    proof.length > 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -164,7 +169,21 @@ export default function ClubProof(props: Props) {
                 handleCloseOverlay={handleCloseOverlay}
               />
             )}
-            {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
+          </>
+        )}
+        {proof ? (
+          <>
+            <ProofGallery
+              proof={proof}
+              hasMore={hasMore}
+              userName={userName}
+              handleFetchProof={handleFetchProof}
+              setProof={setProof}
+              isSelf={isSelf}
+              isPublicPage
+              columns={2}
+            />
+            {showButton && (
               <MaximizeOverlayButton
                 showOverlayComponent={showOverlayComponent}
                 notPurchased={notPurchased}
@@ -172,18 +191,6 @@ export default function ClubProof(props: Props) {
               />
             )}
           </>
-        )}
-        {proof ? (
-          <ProofGallery
-            proof={proof}
-            hasMore={hasMore}
-            userName={userName}
-            handleFetchProof={handleFetchProof}
-            setProof={setProof}
-            isSelf={isSelf}
-            isPublicPage
-            columns={2}
-          />
         ) : (
           <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
         )}

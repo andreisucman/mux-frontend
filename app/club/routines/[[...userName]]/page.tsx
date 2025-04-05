@@ -272,6 +272,11 @@ export default function ClubRoutines(props: Props) {
     setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
+  const showButton =
+    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
+    routines &&
+    routines.length > 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -317,13 +322,6 @@ export default function ClubRoutines(props: Props) {
                     handleCloseOverlay={handleCloseOverlay}
                   />
                 )}
-                {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
-                  <MaximizeOverlayButton
-                    showOverlayComponent={showOverlayComponent}
-                    notPurchased={notPurchased}
-                    setShowOverlayComponent={setShowOverlayComponent}
-                  />
-                )}
               </>
             )}
             {accordionItems.length > 0 ? (
@@ -342,7 +340,15 @@ export default function ClubRoutines(props: Props) {
                   }}
                 >
                   {accordionItems}
+                  {showButton && (
+                    <MaximizeOverlayButton
+                      showOverlayComponent={showOverlayComponent}
+                      notPurchased={notPurchased}
+                      setShowOverlayComponent={setShowOverlayComponent}
+                    />
+                  )}
                 </Accordion>
+
                 {hasMore && (
                   <ActionIcon
                     variant="default"

@@ -1,9 +1,5 @@
 .container {
-  position: absolute;
-  z-index: 1000;
   background-color: alpha(var(--mantine-color-dark-6), 0.75);
   padding: rem(16);
-  left: 0;
-  right: 0;
-  bottom: 0;
+  border-radius: rem(16);
 }

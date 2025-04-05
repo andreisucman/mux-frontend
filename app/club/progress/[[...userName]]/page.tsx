@@ -136,6 +136,13 @@ export default function ClubProgress(props: Props) {
     setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
+  
+
+  const showButton =
+    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
+    progress &&
+    progress.length > 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -179,13 +186,6 @@ export default function ClubProgress(props: Props) {
                     handleCloseOverlay={handleCloseOverlay}
                   />
                 )}
-                {["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) && (
-                  <MaximizeOverlayButton
-                    showOverlayComponent={showOverlayComponent}
-                    notPurchased={notPurchased}
-                    setShowOverlayComponent={setShowOverlayComponent}
-                  />
-                )}
               </>
             )}
             <ProgressGallery
@@ -197,6 +197,13 @@ export default function ClubProgress(props: Props) {
               handleFetchProgress={handleFetchProgress}
               setProgress={setProgress}
             />
+            {showButton && (
+              <MaximizeOverlayButton
+                showOverlayComponent={showOverlayComponent}
+                notPurchased={notPurchased}
+                setShowOverlayComponent={setShowOverlayComponent}
+              />
+            )}
           </Stack>
         ) : (
           <Loader m="0 auto" pt="15%" />
