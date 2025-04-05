@@ -68,13 +68,14 @@ export default function ComparisonCarousel({ data }: Props) {
   }, [updatedAt, images && images.length]);
 
   const showSkeleton = useShowSkeleton();
+  const icon = getPartIcon(part, "icon__large");
 
   return (
     <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
         <Title order={5} className={classes.title} lineClamp={1}>
           <Link className={classes.titleLink} href={redirectUrl}>
-            {partIcons[part]} {upperFirst(routineName || part)}
+            {icon} {upperFirst(routineName || part)}
           </Link>
         </Title>
         <Carousel

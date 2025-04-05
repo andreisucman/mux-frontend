@@ -21,6 +21,7 @@ const createBuyScanSession = ({ redirectUrl, cancelUrl, setUserDetails, setIsLoa
     ),
     isCentered: true,
     modalType: "scan",
+    description: "You have a free scan analysis every month. If you need more you can buy it now.",
     onClick: () =>
       createCheckoutSession({
         type: "platform",

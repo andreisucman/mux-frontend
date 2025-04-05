@@ -338,7 +338,7 @@ export default function ClubRoutines(props: Props) {
                   variant="separated"
                   className={`${classes.accordion} scrollbar`}
                   classNames={{
-                    content: classes.content,
+                    content: classes.routineContent,
                     chevron: classes.chevron,
                     label: classes.label,
                     control: classes.control,

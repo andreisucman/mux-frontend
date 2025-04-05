@@ -10,7 +10,6 @@ import ComparisonCarousel from "@/components/ComparisonCarousel";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import callTheServer from "@/functions/callTheServer";
-import openErrorModal from "@/helpers/openErrorModal";
 import GeneralResultsHeader from "./GeneralResultsHeader";
 import { BeforeAfterType } from "./types";
 import classes from "./page.module.css";

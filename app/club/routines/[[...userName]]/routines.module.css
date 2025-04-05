@@ -14,9 +14,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0;
   border-radius: rem(8);
   overflow: hidden;
+}
+
+.routineContent {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
 }
 
 .active {
