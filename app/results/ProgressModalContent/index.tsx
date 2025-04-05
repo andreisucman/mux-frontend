@@ -55,6 +55,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
             loading={isLoading}
             disabled={isLoading}
             text={"See routine"}
+            containerStyles={{ maxWidth: rem(325), margin: "auto" }}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleRedirect}
           />

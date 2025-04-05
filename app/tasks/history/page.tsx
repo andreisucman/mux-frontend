@@ -15,7 +15,6 @@ import callTheServer from "@/functions/callTheServer";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { useRouter } from "@/helpers/custom-router";
-import openErrorModal from "@/helpers/openErrorModal";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
 import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";
@@ -42,43 +41,43 @@ export default function RoutinesHistoryPage() {
 
   const fetchInactiveTasks = useCallback(
     async ({ status, part, loadMore, sort }: FetchInactiveTasksProps) => {
-      let endpoint = "getInactiveTasks";
+      try {
+        let endpoint = "getInactiveTasks";
 
-      const parts = [];
+        const parts = [];
 
-      if (status) parts.push(`status=${status}`);
-      if (part) parts.push(`part=${part}`);
-      if (sort) parts.push(`sort=${sort}`);
+        if (status) parts.push(`status=${status}`);
+        if (part) parts.push(`part=${part}`);
+        if (sort) parts.push(`sort=${sort}`);
 
-      if (loadMore && inactiveTasks) {
-        parts.push(`skip=${inactiveTasks.length}`);
-      }
-
-      const query = parts.join("&");
-      endpoint += `?${query}`;
-
-      const response = await callTheServer({
-        endpoint,
-        method: "GET",
-      });
-
-      if (response.status === 200) {
-        const newData = response.message.map((record: InactiveTaskType) => ({
-          ...record,
-          onClick: () => {
-            router.push(`/explain/${record._id}?${searchParams.toString()}`);
-          },
-        }));
-
-        if (loadMore) {
-          setInactiveTasks((prev) => [...(prev || []), ...newData]);
-        } else {
-          setInactiveTasks(newData);
+        if (loadMore && inactiveTasks) {
+          parts.push(`skip=${inactiveTasks.length}`);
         }
-        setHasMore(newData.length === 41);
-      } else {
-        openErrorModal();
-      }
+
+        const query = parts.join("&");
+        endpoint += `?${query}`;
+
+        const response = await callTheServer({
+          endpoint,
+          method: "GET",
+        });
+
+        if (response.status === 200) {
+          const newData = response.message.map((record: InactiveTaskType) => ({
+            ...record,
+            onClick: () => {
+              router.push(`/explain/${record._id}?${searchParams.toString()}`);
+            },
+          }));
+
+          if (loadMore) {
+            setInactiveTasks((prev) => [...(prev || []), ...newData]);
+          } else {
+            setInactiveTasks(newData);
+          }
+          setHasMore(newData.length === 41);
+        }
+      } catch (err) {}
     },
     [hasMore, inactiveTasks]
   );

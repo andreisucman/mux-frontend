@@ -3,7 +3,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: rem(16);
+  gap: 0;
 
   inset: 0;
 

@@ -72,36 +72,41 @@ export default function ClubRoutines(props: Props) {
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, userName, routinesLength }: GetRoutinesProps) => {
-      const response = await fetchRoutines({
-        skip,
-        sort,
-        part,
-        userName,
-        routinesLength: routinesLength || 0,
-      });
+      try {
+        const response = await fetchRoutines({
+          skip,
+          sort,
+          part,
+          userName,
+          routinesLength: routinesLength || 0,
+        });
 
-      const { message } = response || {};
+        const { message } = response || {};
 
-      if (message) {
-        const { priceData, data, notPurchased } = message;
+        if (message) {
+          const { priceData, data, notPurchased } = message;
 
-        setPurchaseOverlayData(priceData ? priceData : null);
-        setNotPurchased(notPurchased);
+          setPurchaseOverlayData(priceData ? priceData : null);
+          setNotPurchased(notPurchased);
 
-        if (skip) {
-          setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-          setHasMore(data.length === 21);
-        } else {
-          setRoutines(data.slice(0, 20));
+          if (skip) {
+            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+            setHasMore(data.length === 21);
+          } else {
+            setRoutines(data.slice(0, 20));
+          }
+
+          const newRoutineConcerns = data.reduce(
+            (a: { [key: string]: string[] }, c: RoutineType) => {
+              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+              return a;
+            },
+            {}
+          );
+
+          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
         }
-
-        const newRoutineConcerns = data.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
-          a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-          return a;
-        }, {});
-
-        setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
-      }
+      } catch (err) {}
     },
     [routines, selectedConcerns]
   );
@@ -340,13 +345,6 @@ export default function ClubRoutines(props: Props) {
                   }}
                 >
                   {accordionItems}
-                  {showButton && (
-                    <MaximizeOverlayButton
-                      showOverlayComponent={showOverlayComponent}
-                      notPurchased={notPurchased}
-                      setShowOverlayComponent={setShowOverlayComponent}
-                    />
-                  )}
                 </Accordion>
 
                 {hasMore && (
@@ -365,6 +363,13 @@ export default function ClubRoutines(props: Props) {
                   >
                     <IconArrowDown />
                   </ActionIcon>
+                )}
+                {showButton && (
+                  <MaximizeOverlayButton
+                    showOverlayComponent={showOverlayComponent}
+                    notPurchased={notPurchased}
+                    setShowOverlayComponent={setShowOverlayComponent}
+                  />
                 )}
               </Stack>
             ) : (

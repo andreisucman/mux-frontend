@@ -58,7 +58,7 @@ export default function ResultsProgress() {
         setHasMore(data.length === 21);
       } catch (err) {}
     },
-    []
+    [progress]
   );
 
   const handleContainerClick = useCallback(

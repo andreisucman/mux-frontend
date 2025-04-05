@@ -66,31 +66,36 @@ export default function MyRoutines() {
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {
-      const response = await fetchRoutines({
-        skip,
-        part,
-        sort,
-        routinesLength: routinesLength || 0,
-      });
+      try {
+        const response = await fetchRoutines({
+          skip,
+          part,
+          sort,
+          routinesLength: routinesLength || 0,
+        });
 
-      const { message } = response || {};
+        const { message } = response || {};
 
-      if (message) {
-        const { data } = message;
-        if (skip) {
-          setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-          setHasMore(data.length === 21);
-        } else {
-          setRoutines(data.slice(0, 20));
+        if (message) {
+          const { data } = message;
+          if (skip) {
+            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+            setHasMore(data.length === 21);
+          } else {
+            setRoutines(data.slice(0, 20));
+          }
+
+          const newRoutineConcerns = data.reduce(
+            (a: { [key: string]: string[] }, c: RoutineType) => {
+              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+              return a;
+            },
+            {}
+          );
+
+          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
         }
-
-        const newRoutineConcerns = data.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
-          a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-          return a;
-        }, {});
-
-        setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
-      }
+      } catch (err) {}
     },
     [routines, selectedConcerns]
   );
@@ -181,25 +186,28 @@ export default function MyRoutines() {
     }
   }, []);
 
-  const deleteRoutines = useCallback(async (routineIds: string[]) => {
-    const response = await callTheServer({
-      endpoint: "deleteRoutines",
-      method: "POST",
-      body: { routineIds },
-    });
+  const deleteRoutines = useCallback(
+    async (routineIds: string[]) => {
+      const response = await callTheServer({
+        endpoint: "deleteRoutines",
+        method: "POST",
+        body: { routineIds },
+      });
 
-    if (response.status === 200) {
-      setRoutines((prev) =>
-        prev
-          ?.filter(Boolean)
-          .map((obj) =>
-            routineIds.includes(obj._id)
-              ? response.message.find((r: RoutineType) => r._id === obj._id)
-              : obj
-          )
-      );
-    }
-  }, [routines]);
+      if (response.status === 200) {
+        setRoutines((prev) =>
+          prev
+            ?.filter(Boolean)
+            .map((obj) =>
+              routineIds.includes(obj._id)
+                ? response.message.find((r: RoutineType) => r._id === obj._id)
+                : obj
+            )
+        );
+      }
+    },
+    [routines]
+  );
 
   const handleCopyTask = useCallback(
     (routineId: string, taskKey: string) => {

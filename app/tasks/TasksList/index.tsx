@@ -35,14 +35,7 @@ export default function TasksList({ customStyles }: Props) {
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
 
-  const { nextDiaryRecordAfter, tasks, _id: userId, timeZone } = userDetails || {};
-
-  const canAddDiary = useMemo(() => {
-    const completedTasks =
-      tasks?.filter((task) => task.status === "completed").map((r) => r.part) || [];
-
-    return tasks && tasks.length > 0 && completedTasks.length > 0;
-  }, [nextDiaryRecordAfter, tasks]);
+  const { tasks, _id: userId } = userDetails || {};
 
   const todaysTasks = useMemo(() => {
     if (!tasks || !tasks.length) return;
@@ -67,7 +60,13 @@ export default function TasksList({ customStyles }: Props) {
       .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
       .filter((gr) => gr.length);
 
-    return data;
+    const activeTasks =
+      tasksWithOnClick?.filter((task) => task.status === "active").map((r) => r.part) || [];
+
+    return {
+      tasks: data,
+      canAddDiary: tasks && tasks.length > 0 && activeTasks.length > 0,
+    };
   }, [tasks]);
 
   const tomorrowsTasks = useMemo(() => {
@@ -102,7 +101,7 @@ export default function TasksList({ customStyles }: Props) {
     if (!pageLoaded) return;
     if (!tasks) return;
 
-    const nearestTasksCount = (todaysTasks?.length || 0) + (tomorrowsTasks?.length || 0);
+    const nearestTasksCount = (todaysTasks?.tasks?.length || 0) + (tomorrowsTasks?.length || 0);
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
@@ -110,7 +109,7 @@ export default function TasksList({ customStyles }: Props) {
       setDisplayComponent("createTaskOverlay");
     } else if (nearestTasksCount > 0) {
       setDisplayComponent("content");
-    } else if (todaysTasks === undefined) {
+    } else if (todaysTasks?.tasks === undefined) {
       setDisplayComponent("loading");
     }
   }, [isAnalysisGoing, tasks, todaysTasks, pageLoaded]);
@@ -174,10 +173,13 @@ export default function TasksList({ customStyles }: Props) {
                   container: classes.container,
                 }}
               >
-                {todaysTasks && (
+                {todaysTasks?.tasks && (
                   <Carousel.Slide>
-                    {todaysTasks && todaysTasks.length > 0 ? (
-                      <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
+                    {todaysTasks.tasks && todaysTasks.tasks.length > 0 ? (
+                      <TasksSlide
+                        taskGroups={todaysTasks.tasks}
+                        canAddDiary={!!todaysTasks.canAddDiary}
+                      />
                     ) : (
                       <OverlayWithText
                         text="No tasks for today"

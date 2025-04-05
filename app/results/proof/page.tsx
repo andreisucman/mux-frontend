@@ -39,25 +39,27 @@ export default function ResultsProof() {
 
   const handleFetchProof = useCallback(
     async ({ part, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
-      const message = await fetchUsersProof({
-        concern,
-        part,
-        query,
-        sort,
-        currentArrayLength: currentArray?.length || 0,
-        skip,
-      });
+      try {
+        const message = await fetchUsersProof({
+          concern,
+          part,
+          query,
+          sort,
+          currentArrayLength: currentArray?.length || 0,
+          skip,
+        });
 
-      const { data } = message || {};
+        const { data } = message || {};
 
-      if (skip) {
-        setProof([...(currentArray || []), ...data.slice(0, 20)]);
-      } else {
-        setProof(data.slice(0, 20));
-      }
-      setHasMore(data.length === 21);
+        if (skip) {
+          setProof([...(currentArray || []), ...data.slice(0, 20)]);
+        } else {
+          setProof(data.slice(0, 20));
+        }
+        setHasMore(data.length === 21);
+      } catch (err) {}
     },
-    []
+    [proof]
   );
 
   useEffect(() => {

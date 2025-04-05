@@ -12,11 +12,9 @@ import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
-import Link from "@/helpers/custom-router/patch-router/link";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
-import { UserDataType } from "@/types/global";
 import { ReferrerEnum } from "../auth/AuthForm/types";
 import RewardCard from "./RewardCard";
 import { RewardCardType } from "./types";
@@ -32,7 +30,7 @@ export type ClaimRewardProps = {
 
 export default function Rewards() {
   const router = useRouter();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [rewards, setRewards] = useState<RewardCardType[]>();
   const [hasMore, setHasMore] = useState(false);
 
@@ -45,26 +43,28 @@ export default function Rewards() {
 
   const fetchRewards = useCallback(
     async (skip?: boolean) => {
-      let finalEndpoint = "getRewards";
-      const queryParams = [];
+      try {
+        let finalEndpoint = "getRewards";
+        const queryParams = [];
 
-      if (skip && rewards && rewards.length > 0) {
-        queryParams.push(`skip=${rewards.length}`);
-      }
-
-      const response = await callTheServer({
-        endpoint: finalEndpoint,
-        method: "GET",
-      });
-
-      if (response.status === 200) {
-        if (skip) {
-          setRewards([...(rewards || []), ...response.message.slice(0, 20)]);
-        } else {
-          setRewards(response.message.slice(0, 20));
+        if (skip && rewards && rewards.length > 0) {
+          queryParams.push(`skip=${rewards.length}`);
         }
-        setHasMore(response.message.length === 21);
-      }
+
+        const response = await callTheServer({
+          endpoint: finalEndpoint,
+          method: "GET",
+        });
+
+        if (response.status === 200) {
+          if (skip) {
+            setRewards([...(rewards || []), ...response.message.slice(0, 20)]);
+          } else {
+            setRewards(response.message.slice(0, 20));
+          }
+          setHasMore(response.message.length === 21);
+        }
+      } catch (err) {}
     },
     [rewards && rewards.length]
   );

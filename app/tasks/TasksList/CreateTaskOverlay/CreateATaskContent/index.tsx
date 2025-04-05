@@ -119,7 +119,24 @@ export default function CreateATaskContent({
         placeholder="Enter task name"
         withAsterisk
       />
-
+      <Select
+        data={relevantParts}
+        value={selectedPart}
+        label={
+          <Text size="xs" c="dimmed" component="span">
+            Relevant part
+          </Text>
+        }
+        onChange={(part) =>
+          handleSelect(
+            "part",
+            part,
+            relevantParts.find((c) => c.value === part)
+          )
+        }
+        withAsterisk
+        placeholder="Select relevant part"
+      />
       <Select
         data={relevantConcerns}
         value={selectedConcern}
@@ -138,25 +155,6 @@ export default function CreateATaskContent({
         placeholder="Select relevant concern"
         withAsterisk
         searchable
-      />
-
-      <Select
-        data={relevantParts}
-        value={selectedPart}
-        label={
-          <Text size="xs" c="dimmed" component="span">
-            Relevant part
-          </Text>
-        }
-        onChange={(part) =>
-          handleSelect(
-            "part",
-            part,
-            relevantParts.find((c) => c.value === part)
-          )
-        }
-        withAsterisk
-        placeholder="Select relevant part"
       />
       <ToCompleteInput
         title={"Example embeddable video id (optional)"}

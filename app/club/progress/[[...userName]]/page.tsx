@@ -59,30 +59,32 @@ export default function ClubProgress(props: Props) {
 
   const handleFetchProgress = useCallback(
     async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
-      const message = await fetchProgress({
-        part,
-        sort,
-        currentArrayLength: (currentArray && currentArray.length) || 0,
-        userName,
-        skip,
-      });
+      try {
+        const message = await fetchProgress({
+          part,
+          sort,
+          currentArrayLength: (currentArray && currentArray.length) || 0,
+          userName,
+          skip,
+        });
 
-      const { priceData, data, notPurchased } = message || {};
+        const { priceData, data, notPurchased } = message || {};
 
-      setPurchaseOverlayData(priceData ? priceData : null);
+        setPurchaseOverlayData(priceData ? priceData : null);
 
-      if (message) {
-        setNotPurchased(notPurchased);
+        if (message) {
+          setNotPurchased(notPurchased);
 
-        if (skip) {
-          setProgress([...(currentArray || []), ...data.slice(0, 20)]);
-        } else {
-          setProgress(data.slice(0, 20));
+          if (skip) {
+            setProgress([...(currentArray || []), ...data.slice(0, 20)]);
+          } else {
+            setProgress(data.slice(0, 20));
+          }
+          setHasMore(data.length === 21);
         }
-        setHasMore(data.length === 21);
-      }
+      } catch (err) {}
     },
-    []
+    [progress]
   );
 
   const handleContainerClick = useCallback(
@@ -135,8 +137,6 @@ export default function ClubProgress(props: Props) {
     const availableParts = purchaseOverlayData.map((obj) => obj.part);
     setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
-
-  
 
   const showButton =
     ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&

@@ -55,34 +55,37 @@ export default function ClubProof(props: Props) {
   const sort = searchParams.get("sort");
   const concern = searchParams.get("concern");
 
-  const { name, club } = userDetails || {};
+  const { name } = userDetails || {};
   const isSelf = name === userName;
 
   const handleFetchProof = useCallback(
     async ({ part, userName, sort, concern, currentArray, query, skip }: HandleFetchProofProps) => {
-      const message = await fetchUsersProof({
-        concern,
-        part,
-        query,
-        sort,
-        currentArrayLength: (currentArray && currentArray.length) || 0,
-        userName,
-        skip,
-      });
+      try {
+        const message = await fetchUsersProof({
+          concern,
+          part,
+          query,
+          sort,
+          currentArrayLength: (currentArray && currentArray.length) || 0,
+          userName,
+          skip,
+        });
 
-      const { priceData, data, notPurchased } = message || {};
+        const { priceData, data, notPurchased } = message || {};
 
-      setPurchaseOverlayData(priceData ? priceData : null);
-      setNotPurchased(notPurchased);
+        setPurchaseOverlayData(priceData ? priceData : null);
+        setNotPurchased(notPurchased);
 
-      if (skip) {
-        setProof([...(proof || []), ...data.slice(0, 20)]);
-      } else {
-        setProof(data.slice(0, 20));
-      }
-      setHasMore(data.length === 21);
+        if (skip) {
+          setProof([...(proof || []), ...data.slice(0, 20)]);
+        } else {
+          setProof(data.slice(0, 20));
+        }
+
+        setHasMore(data.length === 21);
+      } catch (err) {}
     },
-    []
+    [proof]
   );
 
   const manageOverlays = useCallback(() => {
