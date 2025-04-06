@@ -22,9 +22,10 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
   const allFeatures = showOverall ? [["overall", overall], ...restFeatures] : (restFeatures as any);
 
   const renderIndicator = ([label, value]: [string, number], index: number) => {
-    const color = getRingColor(value);
+    const color = value < 0 ? "var(--mantine-color-red-7)" : "var(--mantine-color-green-7)";
 
-    const displayValue = value > 0 ? `+${value.toFixed(0)}` : value < 0 ? `-${Math.abs(value).toFixed(0)}` : undefined;
+    const displayValue =
+      value > 0 ? `+${value.toFixed(0)}` : value < 0 ? `-${Math.abs(value).toFixed(0)}` : undefined;
 
     return (
       <Group key={`${label}-${index}`} gap="sm">

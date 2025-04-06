@@ -4,25 +4,8 @@ export function delayExecution(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function getRingColor(score: number, isPotential?: boolean) {
-  return score <= 65
-    ? isPotential
-      ? "orange.7"
-      : "orange.9"
-    : isPotential
-      ? "green.7"
-      : "green.9";
-}
-
-export function getLineIndicatorColor(score: number) {
-  let color = "var(--mantine-color-green-7)";
-  if (score < 7) {
-    color = "var(--mantine-color-orange-7)";
-  }
-  if (score < 3) {
-    color = "var(--mantine-color-red-7)";
-  }
-  return color;
+export function getRingColor(score: number) {
+  return score < 0 ? "red.7" : score <= 65 ? "orange.7" : "gren.7";
 }
 
 export function calculateCircleRadius(rectWidth: number, rectHeight: number, numCircles: number) {
