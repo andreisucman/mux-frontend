@@ -33,7 +33,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript forceColorScheme="dark" />
-        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <meta charSet="UTF-8" />
         <meta name="theme-color" content="#2e2e2e" />

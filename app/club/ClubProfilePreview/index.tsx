@@ -1,10 +1,10 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
-import { getPartIcon } from "@/helpers/icons";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
 import SocialsDisplayLine from "./SocialsDisplayLine";
@@ -20,20 +20,13 @@ type Props = {
 
 function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const part = searchParams.get("part");
+
   const { name, intro, avatar, socials, latestScoresDifference } = data || { socials: [] };
-  const { overall } = latestScoresDifference || {};
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
 
-  const nonZeroParts = useMemo(
-    () =>
-      Object.entries(latestScoresDifference || {})
-        .filter(([key, value]) => typeof value === "number")
-        .map(([key, overall]) => {
-          const icon = getPartIcon(key, "icon__small");
-          return { icon, score: overall };
-        }),
-    [latestScoresDifference]
-  );
+  const partOverall = latestScoresDifference?.[part as "body"];
 
   const handleToggleCollapse = () => {
     setShowCollapsedInfo((prev) => {
@@ -80,9 +73,9 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
                 <Text size="sm" lineClamp={5} mr={8}>
                   {intro}{" "}
                 </Text>
-                {overall && (
+                {partOverall && (
                   <ScoreCell
-                    score={overall}
+                    score={partOverall.overall}
                     icon={<IconTrendingUp className="icon icon__small" />}
                   />
                 )}

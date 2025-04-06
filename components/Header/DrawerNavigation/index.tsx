@@ -1,5 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
+  IconBrandInstagram,
+  IconBrandX,
   IconCalendar,
   IconDoorEnter,
   IconDoorExit,
@@ -97,6 +99,19 @@ const legalLinks = [
     title: "Club",
     path: "/legal/club",
     icon: <IconLicense stroke={1.25} className="icon icon__small" />,
+  },
+];
+
+const socialLinks = [
+  {
+    title: "Instagram",
+    path: "https://www.instagram.com/muxout_com/",
+    icon: <IconBrandInstagram stroke={1.25} className="icon icon__small" />,
+  },
+  {
+    title: "X",
+    path: "https://x.com/muxout_com",
+    icon: <IconBrandX stroke={1.25} className="icon icon__small" />,
   },
 ];
 
@@ -199,6 +214,18 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
     );
   }, [status, linkClicked]);
 
+  const socialsNavigation = useMemo(() => {
+    return (
+      <NavigationStack
+        clickLink={clickLink}
+        closeDrawer={closeDrawer}
+        linkClicked={linkClicked}
+        links={socialLinks}
+        customStyles={{ flexDirection: "row" }}
+      />
+    );
+  }, [status, linkClicked]);
+
   return (
     <Stack className={classes.container}>
       <Divider />
@@ -229,6 +256,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         </>
       )}
       <Stack className={classes.footer}>
+        {socialsNavigation}
         {legalNavigation}
         <Text className={classes.copyright}>&copy; {year} Muxout. All rights reserved</Text>
       </Stack>
