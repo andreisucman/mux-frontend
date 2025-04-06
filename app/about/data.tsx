@@ -15,11 +15,11 @@ export const data = [
     question: "How does it work?",
     answer: (
       <Stack>
-        <Text>First, you scan yourself to get feedback on your appearance from our AI.</Text>
+        <Text>First, you scan yourself to get feedback on your appearance from our system.</Text>
         <Text>
           After you get your feedback and a list of potential concerns you can start creating your
           routines. You can create routines manually by adding individual tasks or use our
-          'Improvement Coach' to create a routine for the whole week.
+          'Improvement Coach' addon to create a routine for the whole week.
         </Text>
         <Text>After you have your routines you can start completing the tasks in them.</Text>
         <Text>
@@ -49,13 +49,12 @@ export const data = [
       <Stack>
         <Text>Muxout is entirely free.</Text>
         <Text>
-          But it has an optional paid addon - the 'Improvement Coach' an AI that creates personal
-          routines for you based on your body analysis and special considerations. We also offer
-          optional weekly progress score calculations for one time fee.
+          But it has an optional paid addon - the 'Improvement Coach' that creates personal routines
+          for you based on your body analysis and special considerations.
         </Text>
         <Text>
-          These addons can speed up your results, improve experience, and save you time on research,
-          but you don't have to buy them to use the platform.
+          This addon can improve your experience, and save you time on research, but you don't have
+          to buy it to use the platform.
         </Text>
       </Stack>
     ),
@@ -64,13 +63,11 @@ export const data = [
     question: "Will my images be listed on the home page?",
     answer: (
       <Stack>
-        <Text>
-          None of your images are listed automatically. All of your data is private when you start
-          using Muxout.
-        </Text>
+        <Text>None of your data is public automatically when you start using Muxout.</Text>
         <Text>
           To display your before-after images on the home page you will have to join 'the Club' and
-          list a routine for sale.
+          list a routine for sale. Only accounts that explicitly listed their routines for sale are
+          publicly displayed on the home page.
         </Text>
       </Stack>
     ),
@@ -97,8 +94,8 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To be able to earn on Muxout you have to join the 'Club'. Joining the Club is free and it
-          doesn't make your data public.
+          To be able to wthdraw your rewards you have to join the 'Club'. Joining the Club is free
+          and it doesn't make your data public (unless you publish your routines for sale).
         </Text>
         <Text>
           During the onboarding process you provide the legally required information and your bank
@@ -106,7 +103,7 @@ export const data = [
         </Text>
         <Text>
           After your information is verified your earnings will be automatically sent to the bank
-          account you've added.
+          account you've provided after the processing period of 7 days.
         </Text>
       </Stack>
     ),
@@ -121,8 +118,8 @@ export const data = [
           our payment processor you won't be able to earn or withdraw your rewards.
         </Text>
         <Text>
-          You will see if your country is not supported when you add your bank account on your
-          Club profile page.
+          You will see if your country is not supported when you add your bank account on your Club
+          profile page.
         </Text>
       </Stack>
     ),
