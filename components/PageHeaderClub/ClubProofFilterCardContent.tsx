@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterPartItemType } from "@/components/FilterDropdown/types";
 import getUsersFilters from "@/functions/getFilters";
@@ -48,7 +49,10 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
       <Button
         disabled={!searchParams.toString()}
         variant="default"
-        onClick={() => router.replace(pathname)}
+        onClick={() => {
+          modals.closeAll();
+          router.replace(pathname);
+        }}
       >
         Clear filters
       </Button>

@@ -17,17 +17,12 @@ const style = { minWidth: rem(24), minHeight: rem(24) };
 
 export const improvementCoachContent = [
   {
-    icon: <IconPencil className="icon icon__large" style={style} />,
-    description: "Drafts your manual task description and instructions.",
-  },
-  {
     icon: <IconChecklist className="icon icon__large" style={style} />,
     description: "Creates weekly routines based on your physical condition and concerns.",
   },
   {
-    icon: <IconToolsKitchen2 className="icon icon__large" style={style} />,
-    description:
-      "Suggests personal recipes to match your calorie amount based on your physical condition, products at hand and kitchenware.",
+    icon: <IconPencil className="icon icon__large" style={style} />,
+    description: "Drafts your manual task description and instructions.",
   },
 ];
 

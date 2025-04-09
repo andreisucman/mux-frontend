@@ -18,6 +18,7 @@ export default function Analysis() {
   );
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   const { latestProgress } = userDetails || {};
   const { overall, ...rest } = latestProgress || {};
@@ -41,14 +42,22 @@ export default function Analysis() {
   }, []);
 
   useEffect(() => {
-    if (!userDetails) return;
+    if (!pageLoaded) return;
+
+    if (!userDetails) {
+      router.replace(`/`);
+    }
 
     if (rest !== null && isEmpty) {
       setDisplayComponent("upload");
     } else if (latestProgress) {
       setDisplayComponent("carousel");
     }
-  }, [isEmpty, userDetails]);
+  }, [isEmpty, pageLoaded, userDetails]);
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

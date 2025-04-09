@@ -19,7 +19,7 @@ export default function ScanPartsChoicesProvider({ children }: { children: React
     if (savedScanParts) {
       setParts(savedScanParts as string[]);
     } else {
-      setParts(["face", "mouth", "scalp", "body"]);
+      setParts(["face", "hair"]);
     }
   }, []);
 

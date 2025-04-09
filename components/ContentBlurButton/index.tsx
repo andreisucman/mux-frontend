@@ -27,7 +27,7 @@ export default function ContentBlurButton({
   setRecords,
 }: Props) {
   const onUpdateBlur = useCallback(
-    async ({ blurDots, offsets, url, position }: OnUpdateBlurProps) => {
+    async ({ blurDots, offsets, url }: OnUpdateBlurProps) => {
       const updatedBlurDots = blurDots.map((obj) => {
         return {
           ...obj,
@@ -41,7 +41,7 @@ export default function ContentBlurButton({
       const response = await callTheServer({
         endpoint: "updateContentBlurType",
         method: "POST",
-        body: { contentId, blurDots: updatedBlurDots, url, position },
+        body: { contentId, blurDots: updatedBlurDots, url },
       });
 
       if (response.status === 200) {

@@ -51,6 +51,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     isTrialUsed,
   }: OnCreateRoutineClickProps) => {
     if (isLoading) return;
+    console.log("isSubscriptionActive", isSubscriptionActive);
 
     if (isSubscriptionActive) {
       const partsScanned = Object.entries(latestProgress || {})
@@ -69,7 +70,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
 
       addImprovementCoach({
         improvementSubscription: subscriptions?.improvement,
-        onComplete: () => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed }),
+        onComplete: () => onCreateRoutineClick({ isSubscriptionActive: true, isTrialUsed }),
         redirectUrl,
         cancelUrl,
         setUserDetails,

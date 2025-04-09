@@ -1,25 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { IconBodyScan } from "@tabler/icons-react";
+import { IconBodyScan, IconMoodNeutral } from "@tabler/icons-react";
 import { Skeleton, Text, UnstyledButton } from "@mantine/core";
-import { IconScanFood } from "@/components/customIcons";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
-import { ScanTypeEnum } from "@/types/global";
+import { getPartIcon } from "@/helpers/icons";
 import classes from "./StartButton.module.css";
 
 type Props = {
-  scanType: ScanTypeEnum;
   onClick: () => void;
-  part: "body" | "food";
+  part: "face" | "hair";
 };
 
 const icons: { [key: string]: React.ReactNode } = {
   progress: <IconBodyScan className="icon icon__large" />,
-  food: <IconScanFood className={`icon ${classes.icon}`} />,
+  hair: <IconMoodNeutral className={`icon ${classes.icon}`} />,
 };
 
-export default function StartButton({ onClick, scanType, part }: Props) {
+export default function StartButton({ onClick, part }: Props) {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [relevantPlaceholder, setRelevantPlaceholder] = useState<StaticImageData>();
   const { userDetails } = useContext(UserContext);
@@ -30,15 +28,16 @@ export default function StartButton({ onClick, scanType, part }: Props) {
     if (!pageLoaded) return;
 
     const relevantPlaceholder = placeholders.find(
-      (item) =>
-        item.sex.includes(sex || "female") && item.scanType === scanType && item.part === part
+      (item) => item.sex.includes(sex || "female") && item.part === part
     );
     setRelevantPlaceholder(relevantPlaceholder?.url);
-  }, [sex, pageLoaded, scanType]);
+  }, [sex, pageLoaded]);
 
   useEffect(() => {
     setPageLoaded(true);
   }, []);
+
+  const icon = getPartIcon(part);
 
   return (
     <UnstyledButton className={classes.container} onClick={onClick}>
@@ -56,7 +55,7 @@ export default function StartButton({ onClick, scanType, part }: Props) {
         </div>
       </Skeleton>
       <Text className={classes.label}>
-        {icons[scanType]}Scan {scanType}
+        {icon} Scan {part}
       </Text>
     </UnstyledButton>
   );

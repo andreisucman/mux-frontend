@@ -103,7 +103,7 @@ export type UserPotentialRecordType = {
   overall: number;
   face: FormattedRatingType | null;
   mouth: FormattedRatingType | null;
-  scalp: FormattedRatingType | null;
+  hair: FormattedRatingType | null;
   body: FormattedRatingType | null;
 };
 
@@ -111,7 +111,7 @@ export type UserProgressRecordType = {
   overall: number;
   face: ProgressType | null;
   mouth: ProgressType | null;
-  scalp: ProgressType | null;
+  hair: ProgressType | null;
   body: ProgressType | null;
 };
 
@@ -126,11 +126,11 @@ export type UserConcernType = {
 export type StreaksType = {
   faceStreak: number;
   mouthStreak: number;
-  scalpStreak: number;
+  hairStreak: number;
   bodyStreak: number;
   clubFaceStreak: number;
   clubMouthStreak: number;
-  clubScalpStreak: number;
+  clubHairStreak: number;
   clubBodyStreak: number;
 };
 
@@ -184,7 +184,7 @@ export type LatestScoresType = {
   overall: number;
   face: FormattedRatingType;
   mouth: FormattedRatingType;
-  scalp: FormattedRatingType;
+  hair: FormattedRatingType;
   body: FormattedRatingType;
 };
 
@@ -192,7 +192,7 @@ export type LatestScoresDifferenceType = {
   overall: number;
   face: { [key: string]: number };
   mouth: { [key: string]: number };
-  scalp: { [key: string]: number };
+  hair: { [key: string]: number };
   body: { [key: string]: number };
 };
 
@@ -240,7 +240,6 @@ export interface UserDataType extends DefaultUserType {
   avatar: AvatarType | null;
   country: string | null;
   club: ClubDataType | null;
-  scanAnalysisQuota: number;
   concerns: UserConcernType[];
   demographics: DemographicsType;
   requiredProgress: RequirementType[];
@@ -248,6 +247,7 @@ export interface UserDataType extends DefaultUserType {
   streaks: StreaksType;
   subscriptions: UserSubscriptionsType;
   nextRoutine: NextActionType[];
+  nextScan: NextActionType[];
   latestScanImages?: string[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
@@ -320,11 +320,6 @@ export type FormattedRatingType = {
 export enum SexEnum {
   MALE = "male",
   FEMALE = "female",
-}
-
-export enum ScanTypeEnum {
-  PROGRESS = "progress",
-  FOOD = "food",
 }
 
 export type NextActionType = { part: PartEnum; date: Date | null };

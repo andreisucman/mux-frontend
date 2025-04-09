@@ -1,9 +1,14 @@
 .container {
+  position: relative;
+
+  border-radius: rem(16);
+  overflow: hidden;
   flex: 1;
 }
 
-.loaderWrapper {
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+.close {
+  position: absolute;
+  top: rem(16);
+  left: rem(16);
+  z-index: 1;
 }

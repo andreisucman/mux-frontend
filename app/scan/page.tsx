@@ -5,7 +5,6 @@ import { Group, Stack, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
-import { ScanTypeEnum } from "@/types/global";
 import SexSelector from "../../components/SexSelector";
 import { ReferrerEnum } from "../auth/AuthForm/types";
 import StartButton from "./StartButton";
@@ -55,14 +54,12 @@ export default function ScanIndexPage() {
         </Group>
         <Group className={classes.content}>
           <StartButton
-            scanType={ScanTypeEnum.PROGRESS}
-            part={"body"}
-            onClick={() => handleRedirect("/scan/progress")}
+            part={"face"}
+            onClick={() => handleRedirect("/scan/progress", "part=face")}
           />
           <StartButton
-            scanType={ScanTypeEnum.FOOD}
-            part={"food"}
-            onClick={() => handleRedirect("/scan/food")}
+            part={"hair"}
+            onClick={() => handleRedirect("/scan/progress", "part=hair")}
           />
         </Group>
       </Stack>

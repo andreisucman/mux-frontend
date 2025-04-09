@@ -101,7 +101,6 @@ export default function BlurEditorSlide({
         setBlurDots={setBlurDots}
         showBlur={showBlur}
         defaultShowBlur
-        fullSize
       />
       <Group className={classes.buttons}>
         <ActionIcon

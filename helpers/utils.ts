@@ -5,7 +5,11 @@ export function delayExecution(ms: number) {
 }
 
 export function getRingColor(score: number) {
-  return score < 0 ? "red.7" : score <= 65 ? "orange.7" : "gren.7";
+  return score < 0
+    ? "var(--mantine-color-red-7)"
+    : score <= 65
+      ? "var(--mantine-color-orange-7)"
+      : "var(--mantine-color-green-7)";
 }
 
 export function calculateCircleRadius(rectWidth: number, rectHeight: number, numCircles: number) {

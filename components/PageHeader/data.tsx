@@ -1,8 +1,8 @@
 export const partItems = [
   { label: "Face", value: "face" },
-  { label: "Mouth", value: "mouth" },
-  { label: "Scalp", value: "scalp" },
-  { label: "Body", value: "body" },
+  // { label: "Mouth", value: "mouth" },
+  { label: "Hair", value: "hair" },
+  // { label: "Body", value: "body" },
 ];
 
 export const taskStatuses = [

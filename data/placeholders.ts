@@ -8,8 +8,7 @@ import femaleHeadFront from "@/public/assets/placeholders/female-head-front.svg"
 import femaleHeadLeft from "@/public/assets/placeholders/female-head-left.svg";
 import femaleHeadRight from "@/public/assets/placeholders/female-head-right.svg";
 import femaleMouth from "@/public/assets/placeholders/female-mouth.svg";
-import femaleScalp from "@/public/assets/placeholders/female-scalp.svg";
-import food from "@/public/assets/placeholders/food.svg";
+import femaleHair from "@/public/assets/placeholders/female-scalp.svg";
 import maleBodyBack from "@/public/assets/placeholders/male-body-back.svg";
 import maleBodyFront from "@/public/assets/placeholders/male-body-front.svg";
 import maleBodyLeft from "@/public/assets/placeholders/male-body-left.svg";
@@ -18,147 +17,121 @@ import maleHeadFront from "@/public/assets/placeholders/male-head-front.svg";
 import maleHeadLeft from "@/public/assets/placeholders/male-head-left.svg";
 import maleHeadRight from "@/public/assets/placeholders/male-head-right.svg";
 import maleMouth from "@/public/assets/placeholders/male-mouth.svg";
-import maleScalp from "@/public/assets/placeholders/male-scalp.svg";
-import { PositionEnum, ScanTypeEnum } from "@/types/global";
+import maleHair from "@/public/assets/placeholders/male-scalp.svg";
+import { PositionEnum } from "@/types/global";
 
 export const placeholders: {
   sex: string[];
-  scanType: ScanTypeEnum;
   part?: PartEnum;
   position?: PositionEnum;
   url: StaticImageData;
 }[] = [
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.FACE,
     position: PositionEnum.FRONT,
     url: maleHeadFront,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.FACE,
     position: PositionEnum.RIGHT,
     url: maleHeadRight,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.FACE,
     position: PositionEnum.LEFT,
     url: maleHeadLeft,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
-    part: PartEnum.SCALP,
+    part: PartEnum.HAIR,
     position: PositionEnum.FRONT,
-    url: maleScalp,
+    url: maleHair,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.MOUTH,
     position: PositionEnum.FRONT,
     url: maleMouth,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.FRONT,
     url: maleBodyFront,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.RIGHT,
     url: maleBodyRight,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.LEFT,
     url: maleBodyLeft,
   },
   {
     sex: ["male"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.BACK,
     url: maleBodyBack,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.FACE,
     position: PositionEnum.FRONT,
     url: femaleHeadFront,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.FACE,
     position: PositionEnum.RIGHT,
     url: femaleHeadRight,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.FACE,
     position: PositionEnum.LEFT,
     url: femaleHeadLeft,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
-    part: PartEnum.SCALP,
+    part: PartEnum.HAIR,
     position: PositionEnum.FRONT,
-    url: femaleScalp,
+    url: femaleHair,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.MOUTH,
     position: PositionEnum.FRONT,
     url: femaleMouth,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.FRONT,
     url: femaleBodyFront,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.RIGHT,
     url: femaleBodyRight,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.LEFT,
     url: femaleBodyLeft,
   },
   {
     sex: ["female"],
-    scanType: ScanTypeEnum.PROGRESS,
     part: PartEnum.BODY,
     position: PositionEnum.BACK,
     url: femaleBodyBack,
-  },
-  {
-    sex: ["male", "female"],
-    scanType: ScanTypeEnum.FOOD,
-    position: PositionEnum.FRONT,
-    part: PartEnum.FOOD,
-    url: food,
   },
 ];

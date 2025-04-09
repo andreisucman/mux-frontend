@@ -60,12 +60,12 @@ export default function TasksList({ customStyles }: Props) {
       .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
       .filter((gr) => gr.length);
 
-    const activeTasks =
-      tasksWithOnClick?.filter((task) => task.status === "active").map((r) => r.part) || [];
+    const completed =
+      tasksWithOnClick?.filter((task) => task.status === "completed").map((r) => r.part) || [];
 
     return {
       tasks: data,
-      canAddDiary: tasks && tasks.length > 0 && activeTasks.length > 0,
+      canAddDiary: tasks && tasks.length > 0 && completed.length > 1,
     };
   }, [tasks]);
 

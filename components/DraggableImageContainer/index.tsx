@@ -17,11 +17,9 @@ type Props = {
   showBlur: boolean;
   blurDots: BlurDotType[];
   disableDelete?: boolean;
-  placeholder?: any;
   defaultShowBlur?: boolean;
   customImageStyles?: { [key: string]: any };
   customStyles?: { [key: string]: any };
-  fullSize?: boolean;
 };
 
 export default function DraggableImageContainer({
@@ -31,8 +29,6 @@ export default function DraggableImageContainer({
   customImageStyles,
   customStyles,
   showBlur,
-  placeholder,
-  fullSize,
   setOffsets,
   handleDelete,
   setBlurDots,
@@ -45,20 +41,9 @@ export default function DraggableImageContainer({
   const [imageLoaded, setImageLoaded] = useState(false);
   const defaultDotPosition = { x: 100, y: 100 };
 
-  const containerStyles = image
-    ? {}
-    : {
-        backgroundImage: `url(${placeholder.src})`,
-        backgroundSize: "contain",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      };
-
-  const imageStyles = useMemo(() => {
+  const imageStyles = () => {
     let width = 0;
     let height = 0;
-
-    if (fullSize) return { width: "100%", height: "100%" };
 
     const ratio = (imageRef.current?.naturalHeight || 1) / (imageRef.current?.naturalWidth || 1);
 
@@ -71,14 +56,7 @@ export default function DraggableImageContainer({
     }
 
     return { width, height };
-  }, [
-    fullSize,
-    image,
-    imageRef.current,
-    containerRef.current,
-    imageRef.current?.naturalHeight,
-    imageRef.current?.naturalWidth,
-  ]);
+  };
 
   const calculateOffsets = () => {
     let scaleHeight = 0;
@@ -109,13 +87,12 @@ export default function DraggableImageContainer({
     const id = Math.random().toString(36).slice(2, 9);
     const renderedWidth = imageRef.current.clientWidth;
     const renderedHeight = imageRef.current.clientHeight;
-    const originalWidth = renderedWidth / 3;
-    const originalHeight = renderedHeight / 3;
+    const size = Math.max(renderedWidth, renderedHeight) / 2;
 
     const newDot = {
       id,
-      originalWidth,
-      originalHeight,
+      originalWidth: size,
+      originalHeight: size,
       scale: 1,
       angle: 180,
       x: defaultDotPosition.x,
@@ -132,11 +109,12 @@ export default function DraggableImageContainer({
   };
 
   const handleRemoveDot = () => {
-    if (blurDots.length === 1) return;
+    if (blurDots.length === 0 || !selectedDotId) return;
+
     setBlurDots((prev) => {
-      const newDot = prev[0];
-      setSelectedDotId(newDot.id);
-      return [newDot];
+      const newDots = prev.filter((obj) => obj.id !== selectedDotId);
+      if (newDots.length) setSelectedDotId(newDots[0].id);
+      return newDots;
     });
   };
 
@@ -164,11 +142,7 @@ export default function DraggableImageContainer({
   }, [imageLoaded, image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
 
   return (
-    <Stack
-      className={classes.container}
-      ref={containerRef}
-      style={customStyles ? { ...containerStyles, ...customStyles } : containerStyles}
-    >
+    <Stack className={classes.container} ref={containerRef} style={customStyles || {}}>
       {handleDelete && image && (
         <ActionIcon
           className={classes.deleteIcon}
@@ -181,7 +155,7 @@ export default function DraggableImageContainer({
       )}
 
       {image && (
-        <div className={classes.imageWrapper} style={imageStyles}>
+        <div className={classes.imageWrapper} style={imageStyles()}>
           {showBlur && image && (
             <>
               {blurDots.map((dot, i) => {
@@ -224,7 +198,7 @@ export default function DraggableImageContainer({
                     <IconPlus className="icon icon__small" />
                   </ActionIcon>
                   <ActionIcon
-                    disabled={blurDots.length <= 1}
+                    disabled={blurDots.length === 0 || !selectedDotId}
                     variant="default"
                     onClick={handleRemoveDot}
                   >

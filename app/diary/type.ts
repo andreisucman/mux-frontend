@@ -14,7 +14,6 @@ export type DiaryActivityType = {
   thumbnail?: string;
   icon?: string;
   contentType: "image" | "video";
-  categoryName: "proof" | "food";
 };
 
 export enum ChatCategoryEnum {
@@ -22,7 +21,6 @@ export enum ChatCategoryEnum {
   PRODUCT = "product",
   DIARY = "diary",
   ANSWERS = "answers",
-  FOOD = "food",
   ROUTINE = "routine",
   GENERAL = "general",
 }

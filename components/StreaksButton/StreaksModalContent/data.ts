@@ -10,9 +10,9 @@ export const streaksDescription = [
     description: "Complete all mouth related tasks within the day with proofs.",
   },
   {
-    key: "scalpStreak",
-    name: "Scalp streaks",
-    description: "Complete all scalp related tasks within the day with proofs.",
+    key: "hairStreak",
+    name: "Hair streaks",
+    description: "Complete all hair related tasks within the day with proofs.",
   },
   {
     key: "bodyStreak",
@@ -22,25 +22,21 @@ export const streaksDescription = [
   {
     key: "clubFaceStreak",
     name: "Club face streaks",
-    description:
-      "Complete all face related tasks within the day and share proofs in the Club.",
+    description: "Complete all face related tasks within the day and share proofs in the Club.",
   },
   {
     key: "clubMouthStreak",
     name: "Club mouth streaks",
-    description:
-      "Complete all mouth related tasks within the day and share proofs in the Club.",
+    description: "Complete all mouth related tasks within the day and share proofs in the Club.",
   },
   {
-    key: "clubScalpStreak",
-    name: "Club scalp streaks",
-    description:
-      "Complete all scalp related tasks within the day and share proofs in the Club.",
+    key: "clubHairStreak",
+    name: "Club hair streaks",
+    description: "Complete all hair related tasks within the day and share proofs in the Club.",
   },
   {
     key: "clubBodyStreak",
     name: "Club body streaks",
-    description:
-      "Complete all body related tasks within the day and share proofs in the Club.",
+    description: "Complete all body related tasks within the day and share proofs in the Club.",
   },
 ];

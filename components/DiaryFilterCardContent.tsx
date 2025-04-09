@@ -1,6 +1,7 @@
 import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import DateSelector from "@/components/DateSelector";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -34,7 +35,10 @@ export default function DiaryFilterCardContent({ filterItems }: Props) {
       <Button
         disabled={!searchParams.toString()}
         variant="default"
-        onClick={() => router.replace(pathname)}
+        onClick={() => {
+          modals.closeAll();
+          router.replace(pathname);
+        }}
       >
         Clear filters
       </Button>

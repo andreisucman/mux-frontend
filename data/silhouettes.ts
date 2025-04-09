@@ -32,9 +32,9 @@ export const silhouettes: {
   {
     sex: ["male"],
     scanType: ScanTypeEnum.PROGRESS,
-    part: PartEnum.SCALP,
+    part: PartEnum.HAIR,
     position: PositionEnum.FRONT,
-    url: "/assets/silhouettes/male-scalp.webp",
+    url: "/assets/silhouettes/male-hair.webp",
   },
   {
     sex: ["male", "female"],
@@ -95,9 +95,9 @@ export const silhouettes: {
   {
     sex: ["female"],
     scanType: ScanTypeEnum.PROGRESS,
-    part: PartEnum.SCALP,
+    part: PartEnum.HAIR,
     position: PositionEnum.FRONT,
-    url: "/assets/silhouettes/female-scalp.webp",
+    url: "/assets/silhouettes/female-hair.webp",
   },
   {
     sex: ["female"],

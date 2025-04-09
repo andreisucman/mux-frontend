@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Skeleton, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { ExistingFiltersType } from "./types";
@@ -122,7 +123,14 @@ export default function FilterCardContent({ filters }: Props) {
               addToQuery
             />
           )}
-          <Button disabled={noFilters} variant="default" onClick={() => router.replace(pathname)}>
+          <Button
+            disabled={noFilters}
+            variant="default"
+            onClick={() => {
+              modals.closeAll();
+              router.replace(pathname);
+            }}
+          >
             Clear filters
           </Button>
         </>

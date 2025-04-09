@@ -42,9 +42,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   const code = searchParams.get("code");
   const error = searchParams.get("error");
-  const onProtectedPage = protectedPaths.some(
-    (path) => path.includes(pathname) || pathname.includes(path)
-  );
+  const onProtectedPage = protectedPaths.some((path) => path.includes(pathname));
   const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
 
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
@@ -105,7 +103,14 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     if (!status || !pathname) return;
-    const exceptions = ["/club/routines", "/club/progress", "/club/proof", "/club/diary"];
+    const exceptions = [
+      "/club/routines",
+      "/club/progress",
+      "/club/proof",
+      "/club/diary",
+      "/wait",
+      "/scan",
+    ];
     const isException = exceptions.some((path) => pathname.includes(path));
 
     if (onProtectedPage && pathname !== "/" && !isException) {
@@ -117,8 +122,10 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   useEffect(() => {
     if (userId || !pageLoaded) return;
+    const exceptions = ["/analysis"];
+    const isException = exceptions.includes(pathname);
 
-    if (pathsThatRequireId.includes(pathname)) {
+    if (pathsThatRequireId.includes(pathname) && !isException) {
       router.replace("/scan");
     }
   }, [userId, pageLoaded]);

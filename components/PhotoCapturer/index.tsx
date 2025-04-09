@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { IconCamera, IconCameraRotate, IconStopwatch } from "@tabler/icons-react";
+import { IconCamera, IconCameraRotate, IconStopwatch, IconX } from "@tabler/icons-react";
 import cn from "classnames";
-import { Button, Group, rem, Stack, Text } from "@mantine/core";
+import { ActionIcon, Button, Group, rem, Stack, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -12,6 +12,7 @@ type Props = {
   hideTimerButton?: boolean;
   hideFlipCamera?: boolean;
   silhouette?: string;
+  handleCancel?: () => void;
   handleCapture: (base64string: string) => void;
 };
 
@@ -19,6 +20,7 @@ const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
 export default function PhotoCapturer({
   handleCapture,
+  handleCancel,
   defaultFacingMode = "user",
   hideTimerButton,
   hideFlipCamera,
@@ -171,8 +173,14 @@ export default function PhotoCapturer({
           </Text>
         </div>
       )}
+      <div className={classes.grid} />
       <Group className={classes.buttonGroup}>
-        <audio ref={audioRef} src={audioUrl} preload="auto" />
+        <audio hidden ref={audioRef} src={audioUrl} preload="auto" />
+        {handleCancel && (
+          <ActionIcon variant="default" className={classes.close} onClick={handleCancel}>
+            <IconX className="icon" />
+          </ActionIcon>
+        )}
         {!hideTimerButton && (
           <Button
             variant="default"

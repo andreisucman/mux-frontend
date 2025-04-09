@@ -5,6 +5,7 @@ import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
 import classes from "./RoutinesFilterCardContent.module.css";
+import { modals } from "@mantine/modals";
 
 type Props = {
   filterItems?: FilterItemType[];
@@ -34,7 +35,10 @@ export default function RoutinesFilterCardContent({ filterItems }: Props) {
       <Button
         disabled={!searchParams.toString()}
         variant="default"
-        onClick={() => router.replace(pathname)}
+        onClick={() => {
+          modals.closeAll();
+          router.replace(pathname);
+        }}
       >
         Clear filters
       </Button>

@@ -1,6 +1,22 @@
 .container {
+  position: relative;
   flex: 1;
   height: 100%;
+}
+
+.buttons {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  width: 100%;
+  max-width: rem(300);
+
+  display: flex;
+  gap: rem(16);
 }
 
 .imageCell {
@@ -14,60 +30,9 @@
   overflow: hidden;
 }
 
-.uploadingStack {
-  max-width: rem(150);
-  min-height: rem(106);
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: rem(8);
-  height: rem(36);
-}
-
-.button {
-  display: flex;
-  justify-content: center;
-  z-index: 2;
-  width: 100%;
-  max-width: rem(200);
-}
-
-.buttonWrapper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  padding: rem(16);
-}
-
-.secondary {
-  background-color: var(--mantine-color-dark-5);
-  border: 1px solid var(--mantine-color-dark-4);
-
-  &:hover {
-    background-color: var(--mantine-color-dark-6);
-    border: 1px solid var(--mantine-color-dark-6);
-  }
-}
-
-.body {
-  display: flex;
-  flex-direction: column;
+.capturerWrapper {
+  position: relative;
   flex: 1;
-  width: 100%;
-  padding: 0;
-  aspect-ratio: 16/9;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    aspect-ratio: 9/16;
-  }
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
 }
 
 .progressCell {
@@ -82,9 +47,53 @@
   max-width: rem(200);
 }
 
+.uploadingStack {
+  max-width: rem(150);
+  min-height: rem(106);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: rem(8);
+  height: rem(36);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
 .checkbox {
+  display: flex;
+  gap: rem(16);
+
   position: absolute;
   left: rem(16);
   top: rem(16);
   z-index: 1;
+}
+
+.enableScanCheckbox {
+  color: var(--mantine-color-gray-2);
+}
+
+.nextButtons {
+  position: relative;
+  padding: rem(16);
+  background-color: var(--mantine-color-dark-6);
+  width: 100%;
+  border-radius: rem(16);
+}
+
+.closeStartAnalysis {
+  position: absolute;
+  top: rem(16);
+  right: rem(16);
+}
+
+.openStartAnalysisButton {
+  position: absolute;
+  top: rem(16);
+  right: rem(16);
+  max-width: rem(100);
+  width: 100%;
 }

@@ -1,35 +1,51 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { Loader, Stack } from "@mantine/core";
+import { useSearchParams } from "next/navigation";
+import { Button, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import InputWithCheckboxes from "@/components/InputWithCheckboxes";
+import SkeletonWrapper from "@/app/SkeletonWrapper";
+import FilterDropdown from "@/components/FilterDropdown";
+import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
-import UploadContainer from "@/components/UploadContainer";
-import { ScanPartsChoicesContext } from "@/context/ScanPartsChoicesContext";
+import { partItems } from "@/components/PageHeader/data";
+import UploadCard from "@/components/UploadCard";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
+import { useRouter } from "@/helpers/custom-router";
+import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
-import { ScanTypeEnum, UserDataType } from "@/types/global";
-import { titles } from "../pageTitles";
+import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
+import { UserDataType } from "@/types/global";
 import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
 
 export default function ScanProgress() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { parts, setParts } = useContext(ScanPartsChoicesContext);
-
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { _id: userId, requiredProgress, toAnalyze } = userDetails || {};
+  const part = searchParams.get("part") || "face";
+
+  const { _id: userId, toAnalyze, nextScan } = userDetails || {};
+
+  const { isScanAvailable, checkBackDate } = useCheckScanAvailability({
+    part,
+    nextScan,
+  });
+
+  const nextScanText = useMemo(() => {
+    return `Your next ${part} scan is after ${checkBackDate}.`;
+  }, [part]);
 
   const handleUpload = useCallback(
-    async ({ url, part, position, blurDots, offsets }: UploadProgressProps) => {
+    async ({ url, part, blurDots, offsets }: UploadProgressProps) => {
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -74,7 +90,6 @@ export default function ScanProgress() {
             body: {
               userId,
               part,
-              position,
               blurDots: updatedBlurDots,
               image: originalImageUrl,
             },
@@ -104,8 +119,12 @@ export default function ScanProgress() {
               setProgress(100);
               setUserDetails((prev: UserDataType) => ({
                 ...prev,
-                ...response.message,
+                toAnalyze: response.message,
               }));
+
+              const lastImage = response.message[response.message.length - 1];
+
+              return lastImage;
             }
           } else {
             openErrorModal();
@@ -122,42 +141,41 @@ export default function ScanProgress() {
     [userDetails, setUserDetails]
   );
 
-  const uploadedParts = useMemo(() => {
-    return [...new Set(toAnalyze?.map((obj) => obj.part))].filter((rec) => Boolean(rec));
-  }, [toAnalyze]) as string[];
-
   return (
-    <>
-      {requiredProgress ? (
-        <Stack className={`${classes.container} smallPage`}>
-          <PageHeader
-            titles={titles}
-            children={
-              <>
-                {parts && (
-                  <InputWithCheckboxes
-                    dataToIgnore={uploadedParts}
-                    data={parts}
-                    setData={setParts}
-                    placeholder="Select part to upload"
-                    defaultData={["face", "mouth", "scalp", "body"]}
-                    withPills
-                  />
-                )}
-              </>
-            }
+    <Stack className={`${classes.container} smallPage`}>
+      <PageHeader
+        title="Scan"
+        children={
+          <FilterDropdown
+            selectedValue={part}
+            data={partItems}
+            icons={partIcons}
+            filterType="part"
+            placeholder="Select part"
+            addToQuery
           />
-          <UploadContainer
-            requirements={requiredProgress || []}
+        }
+      />
+      <SkeletonWrapper show={!toAnalyze}>
+        {isScanAvailable ? (
+          <UploadCard
+            handleUpload={handleUpload}
+            part={part}
             progress={progress}
             isLoading={isLoading}
-            scanType={ScanTypeEnum.PROGRESS}
-            handleUpload={handleUpload}
+            setIsLoading={setIsLoading}
           />
-        </Stack>
-      ) : (
-        <Loader m="0 auto" pt="15%" />
-      )}
-    </>
+        ) : (
+          <OverlayWithText
+            text={nextScanText}
+            button={
+              <Button mt={8} variant="default" onClick={() => router.replace("/analysis")}>
+                See the latest analysis
+              </Button>
+            }
+          />
+        )}
+      </SkeletonWrapper>
+    </Stack>
   );
 }

@@ -36,7 +36,6 @@ const showSignInButtonRoutes = [
   "/scan",
   "/accept",
   "/scan/progress",
-  "/scan/food",
   "/club/routines",
   "/club/progress",
   "/club/diary",
@@ -80,8 +79,6 @@ function Header() {
 
       if (pathname.includes("/scan/progress")) {
         routeReferrer = ReferrerEnum.SCAN_PROGRESS;
-      } else if (pathname.includes("/scan/food")) {
-        routeReferrer = ReferrerEnum.SCAN_FOOD;
       } else if (pathname.includes("/scan")) {
         routeReferrer = ReferrerEnum.SCAN_FOOD;
       } else if (pathname.includes("/club/routines")) {

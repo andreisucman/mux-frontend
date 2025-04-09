@@ -147,10 +147,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
             rec.path === "/scan"
               ? {
                   ...rec,
-                  children: [
-                    { title: "Progress", path: `/scan/progress` },
-                    { title: "Food", path: `/scan/food` },
-                  ],
+                  children: [{ title: "Progress", path: `/scan/progress` }],
                 }
               : rec
           )

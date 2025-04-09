@@ -41,6 +41,7 @@ export default function FilterDropdown({
 
   const handleSelect = useCallback(
     (newValue: string | null) => {
+      console.log("newValue", newValue);
       if (addToQuery) {
         const params = [];
 
@@ -58,20 +59,11 @@ export default function FilterDropdown({
           }
         }
 
-        if (filterType === "type") {
-          params.push(
-            { name: "part", value: null, action: "delete" },
-            { name: "position", value: null, action: "delete" }
-          );
-        }
-
-        if (filterType === "part") {
-          params.push({ name: "position", value: null, action: "delete" });
-        }
-
         const newQuery = modifyQuery({
           params,
         });
+
+        console.log("newQuery", newQuery);
 
         router.replace(`${pathname}?${newQuery}`);
       }
@@ -79,7 +71,7 @@ export default function FilterDropdown({
       if (onSelect) onSelect(newValue);
       if (closeOnSelect) modals.closeAll();
     },
-    [pathname, closeOnSelect, addToQuery, allowDeselect, onSelect]
+    [pathname, selectedValue, closeOnSelect, addToQuery, allowDeselect, onSelect]
   );
 
   const renderSelectOption: SelectProps["renderOption"] = ({ option, checked }) => {

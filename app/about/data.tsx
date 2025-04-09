@@ -6,8 +6,8 @@ export const data = [
     question: "What is Muxout?",
     answer: (
       <Text>
-        Muxout is a place where people maximize their appearance with self-improvement routines and
-        inspire others to do the same.
+        Muxout is a place where you can maximize your appearance with self-improvement routines and
+        share your routine to inspire and earn.
       </Text>
     ),
   },
@@ -19,7 +19,7 @@ export const data = [
         <Text>
           After you get your feedback and a list of potential concerns you can start creating your
           routines. You can create routines manually by adding individual tasks or use our
-          'Improvement Coach' addon to create a routine for the whole week.
+          'Improvement Coach' - the AI addon to create a routine for the whole week.
         </Text>
         <Text>After you have your routines you can start completing the tasks in them.</Text>
         <Text>
@@ -148,22 +148,7 @@ export const data = [
       </Text>
     ),
   },
-  {
-    question: "What is food scan for?",
-    answer: (
-      <Stack>
-        <Text>
-          Food scan lets you easily control the amount of calories you consume. This is useful if
-          you need to lose or gain weight. Just take a picture of your plate and our AI will tell
-          you how much of it you can eat to stay within your calorie goal.
-        </Text>
-        <Text>
-          It will also tell you if this food contradicts your special considerations if you have
-          added this info to your account.
-        </Text>
-      </Stack>
-    ),
-  },
+
   {
     question: "How can I contact you?",
     answer: <Text>Send your emails to info@muxout.com</Text>,

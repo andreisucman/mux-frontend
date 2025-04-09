@@ -8,8 +8,7 @@ export type OffsetType = {
 
 export type UploadProgressProps = {
   url: string;
-  part: PartEnum;
-  position: string;
+  part: string | null;
   blurDots: BlurDotType[];
   offsets: OffsetType;
 };
@@ -20,5 +19,5 @@ export enum PositionEnum {
   RIGHT = "right",
   LEFT = "left",
   MOUTH = "mouth",
-  SCALP = "scalp",
+  HAIR = "hair",
 }
