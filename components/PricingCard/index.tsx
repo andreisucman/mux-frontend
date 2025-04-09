@@ -68,7 +68,7 @@ export default function PricingCard({
         </Stack>
 
         {buttonText && (
-          <Stack gap={12} mt={2}>
+          <Stack gap={12}>
             {beforeButtonChild}
             <GlowingButton
               icon={icon}
@@ -77,7 +77,7 @@ export default function PricingCard({
               loading={isLoading}
               addGradient={addGradient}
               onClick={onClick}
-              containerStyles={{ marginTop: rem(8) }}
+              containerStyles={{ marginTop: rem(4) }}
             />
             {underButtonText && (
               <Text size="xs" c="dimmed" ta="center">

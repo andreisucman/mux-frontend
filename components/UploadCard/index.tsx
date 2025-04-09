@@ -249,14 +249,6 @@ export default function UploadCard({
               <>
                 {showStartAnalysis && isAbsolute && (
                   <Stack className={classes.nextButtons}>
-                    <Title order={5}>Start analysis</Title>
-                    <ActionIcon
-                      className={classes.closeStartAnalysis}
-                      variant="default"
-                      onClick={() => setShowStartAnalysis(false)}
-                    >
-                      <IconX className="icon" />
-                    </ActionIcon>
                     <Button
                       disabled={isButtonLoading || !localUrl || uploadedImages.length >= 4}
                       variant="default"
@@ -265,7 +257,11 @@ export default function UploadCard({
                       Add more
                     </Button>
                     {localUrl && (
-                      <Button disabled={isButtonLoading || !localUrl} onClick={handleStartAnalysis}>
+                      <Button
+                        disabled={isButtonLoading || !localUrl}
+                        loading={isButtonLoading}
+                        onClick={handleStartAnalysis}
+                      >
                         Analyze
                       </Button>
                     )}

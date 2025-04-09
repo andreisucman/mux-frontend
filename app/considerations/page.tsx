@@ -64,18 +64,18 @@ export default function Considerations() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
-        <PageHeader title="Special considerations" />
+        <PageHeader title="Important details" />
         <InstructionContainer
           title="Instructions"
-          instruction={"Add any special considerations or preferences you have."}
-          description="Your routine will be adapted to them."
+          instruction={"Add information about yourself to tailor your routine."}
+          description="Missing ths information may result in an ineffective routine."
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>
           <TextareaComponent
             text={text}
             placeholder={
-              "I am vegetarian but I eat dairy and eggs. I hate going to gym and I only have dumbbells and a barbell in my house. I had back surgery two years ago and ... I try to avoid..."
+              "I have allergy to caffeine. Three months ago I was diagnosed with diabetes type 2, and therefore I can't take sugar-based medications or anything containing high glucose. I live in Florida. For the past month I have tried XYZ topical cream to improve my acne but saw no effect..."
             }
             setText={setText}
           />

@@ -8,35 +8,50 @@ import classes from "./EditTaskModal.module.css";
 
 type Props = {
   taskId: string;
+  taskDate: string;
   description: string;
   instruction: string;
   updateTask: (props: HandleUpdateTaskinstanceProps) => Promise<void>;
 };
 
-export default function EditTaskModal({ taskId, description, instruction, updateTask }: Props) {
+export default function EditTaskModal({
+  taskId,
+  description,
+  taskDate,
+  instruction,
+  updateTask,
+}: Props) {
   const [updatedDescription, setUpdatedDescription] = useState(description);
   const [updatedInstruction, setUpdatedInstruciton] = useState(instruction);
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
+  const [date, setDate] = useState<Date | null>(new Date());
 
-  const isDirty = updatedDescription !== description || updatedInstruction !== instruction;
+  const isDirty =
+    updatedDescription !== description ||
+    updatedInstruction !== instruction ||
+    date?.toDateString() !== new Date(taskDate).toDateString();
 
   const handleUpdateTask = async (applyToAll?: boolean) => {
-    try {
-      const payload: HandleUpdateTaskinstanceProps = {
-        taskId,
-        description: updatedDescription,
-        instruction: updatedInstruction,
-        isLoading,
-        setIsLoading,
-        setStep,
-      };
+    const isDateUpdated = date?.toDateString() !== new Date(taskDate).toDateString();
 
-      if (applyToAll) payload.applyToAll = true;
+    const payload: HandleUpdateTaskinstanceProps = {
+      taskId,
+      description: updatedDescription,
+      instruction: updatedInstruction,
+      isLoading,
+      setIsLoading,
+      setStep,
+    };
 
-      updateTask(payload);
-      modals.closeAll();
-    } catch (err) {}
+    if (applyToAll) payload.applyToAll = true;
+    if (isDateUpdated) {
+      payload.isReschedule = true;
+      payload.date = date;
+    }
+
+    updateTask(payload);
+    modals.closeAll();
   };
 
   const saveEdits = () => {
@@ -69,6 +84,8 @@ export default function EditTaskModal({ taskId, description, instruction, update
           {step === 1 && (
             <>
               <EditExistingTask
+                date={date}
+                setDate={setDate}
                 updatedDescription={updatedDescription}
                 updatedInstruction={updatedInstruction}
                 setUpdatedDescription={setUpdatedDescription}
@@ -82,6 +99,8 @@ export default function EditTaskModal({ taskId, description, instruction, update
           {step === 2 && (
             <EditExistingTask
               readOnly={true}
+              date={date}
+              setDate={setDate}
               updatedDescription={updatedDescription}
               updatedInstruction={updatedInstruction}
               setUpdatedDescription={setUpdatedDescription}

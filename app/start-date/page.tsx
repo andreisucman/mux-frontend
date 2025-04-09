@@ -2,19 +2,15 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Group, Radio, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import createCheckoutSession from "@/functions/createCheckoutSession";
-import fetchUserData from "@/functions/fetchUserData";
-import startSubscriptionTrial from "@/functions/startSubscriptionTrial";
 import addImprovementCoach from "@/helpers/addImprovementCoach";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import openPaymentModal from "@/helpers/openPaymentModal";
 import { daysFrom } from "@/helpers/utils";
 import { UserConcernType, UserSubscriptionsType } from "@/types/global";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -102,7 +98,7 @@ export default function StartDate() {
 
   const description = isNotFirstTime
     ? ""
-    : "Consider scheduling your routine 3-4 days into the future. This will give you time to adjust and get the necessary products.";
+    : "Consider scheduling your routine 2-3 days into the future. This will give you time to adjust and get the necessary products.";
 
   useEffect(() => {
     if (savedCreationMode) {

@@ -43,6 +43,7 @@ type UpdateTaskStatusProps = {
 };
 
 export interface HandleUpdateTaskinstanceProps extends UpdateTaskInstanceProps {
+  isReschedule?: boolean;
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -171,10 +172,34 @@ export default function Explain(props: Props) {
     });
   }, [taskId]);
 
+  const handleRescheduleTask = useCallback(
+    async (taskId: string, startDate: Date) => {
+      const body: { [key: string]: any } = {
+        taskId,
+        startDate,
+        isVoid: true,
+      };
+
+      try {
+        const response = await callTheServer({
+          endpoint: "rescheduleTaskInstance",
+          method: "POST",
+          body,
+        });
+
+        if (response.status === 200) {
+          setTaskInfo((prev: any) => ({ ...(prev || {}), startsAt: startDate }));
+        }
+      } catch (err) {}
+    },
+    [taskInfo]
+  );
+
   const handleUpdateTaskInstance = useCallback(
     async ({
       date,
       taskId,
+      isReschedule,
       isLoading,
       applyToAll,
       description,
@@ -182,6 +207,11 @@ export default function Explain(props: Props) {
       setStep,
       setIsLoading,
     }: HandleUpdateTaskinstanceProps) => {
+      if (isReschedule && date) {
+        await handleRescheduleTask(taskId, date);
+        setStep(2);
+        return;
+      }
       const success = await updateTaskInstance({
         isLoading,
         setIsLoading,
@@ -224,6 +254,7 @@ export default function Explain(props: Props) {
       innerProps: (
         <EditTaskModal
           taskId={taskId || ""}
+          taskDate={startsAt || ""}
           description={taskDescription || ""}
           instruction={taskInstruction || ""}
           updateTask={handleUpdateTaskInstance}
