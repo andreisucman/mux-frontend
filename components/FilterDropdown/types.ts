@@ -1,6 +1,7 @@
 export type FilterItemType = {
   label: string;
   value: string;
+  parts?: string[];
   disabled?: boolean;
 };
 

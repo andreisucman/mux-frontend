@@ -16,4 +16,12 @@
   display: flex;
   flex-direction: column;
   gap: rem(16);
+  background-color: var(--mantine-color-dark-6);
+}
+
+.content {
+  display: block;
+  gap: rem(16);
+  padding: rem(16);
+  flex: 1;
 }

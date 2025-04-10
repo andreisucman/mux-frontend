@@ -1,8 +1,8 @@
 .container {
-  margin: rem(8) 0 0;
+  margin: auto;
   gap: rem(8);
   align-items: center;
-  padding: 0 rem(32);
+  max-width: rem(500);
 }
 
 .title {

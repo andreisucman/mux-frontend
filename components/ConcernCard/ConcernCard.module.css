@@ -1,0 +1,51 @@
+.container {
+  align-items: center;
+
+  margin: rem(24) 0;
+}
+
+.content {
+  position: relative;
+}
+
+.titleStack {
+  z-index: -1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+}
+
+.title {
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.score {
+  text-align: center;
+  font-weight: 600;
+  font-size: rem(48);
+}
+
+.explanation {
+  text-align: center;
+  max-width: rem(600);
+}
+
+.change {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--mantine-color-red-7);
+  font-weight: 600;
+  font-size: rem(16);
+
+  transform: translate(-50%, -50%);
+}
+
+.positive {
+  color: var(--mantine-color-green-7);
+  left: unset;
+  right: 0;
+}

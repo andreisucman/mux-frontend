@@ -4,6 +4,7 @@ import "@mantine/dates/styles.layer.css";
 import "@mantine/nprogress/styles.layer.css";
 import "@mantine/spotlight/styles.layer.css";
 import "@mantine/carousel/styles.layer.css";
+import "@mantine/charts/styles.layer.css";
 
 import React, { Suspense } from "react";
 import { GoogleTagManager } from "@next/third-parties/google";

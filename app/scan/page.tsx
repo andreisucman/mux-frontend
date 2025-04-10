@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { IconHourglass } from "@tabler/icons-react";
 import { Button, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -16,21 +17,22 @@ import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { PartEnum, UserDataType } from "@/types/global";
-import { UploadProgressProps } from "../concerns/types";
-import classes from "./progress.module.css";
+import { UploadProgressProps } from "../select-part/types";
+import classes from "./scan.module.css";
 
 export const runtime = "edge";
 
 export default function ScanProgress() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { status, userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   const part = searchParams.get("part") || "face";
 
-  const { _id: userId, email, toAnalyze, nextScan } = userDetails || {};
+  const { _id: userId, toAnalyze, nextScan } = userDetails || {};
 
   const { isScanAvailable, checkBackDate } = useCheckScanAvailability({
     part,
@@ -38,8 +40,8 @@ export default function ScanProgress() {
   });
 
   const nextScanText = useMemo(() => {
-    return `Your next ${part} scan is after ${checkBackDate}.`;
-  }, [part]);
+    return `You can scan your ${part} again after ${checkBackDate}.`;
+  }, [part, checkBackDate]);
 
   const handleUpload = useCallback(
     async ({ url, beforeImageUrl, part, blurDots, offsets }: UploadProgressProps) => {
@@ -99,10 +101,18 @@ export default function ScanProgress() {
                 openAuthModal({
                   title: "Sign in to continue",
                   stateObject: {
-                    referrer: ReferrerEnum.SCAN_PROGRESS,
-                    redirectPath: "/scan/progress",
+                    referrer: ReferrerEnum.SCAN,
+                    redirectPath: "/scan",
                     localUserId: userId,
                   },
+                });
+                return;
+              }
+
+              if (response.error === "not similar") {
+                openErrorModal({
+                  description:
+                    "Your current photo is too different from the previous. Click 'Overlay previous' in the top left and try to match it when taking the new photo.",
                 });
                 return;
               }
@@ -139,36 +149,19 @@ export default function ScanProgress() {
     [userDetails, setUserDetails]
   );
 
-  const handleRedirect = useCallback(
-    (redirectPath: string, redirectQuery?: string) => {
-      let redirectUrl = redirectPath;
-      if (redirectQuery) redirectUrl += `?${redirectQuery}`;
+  useEffect(() => {
+    if (!pageLoaded) return;
 
-      if (status === "authenticated") {
-        router.push(redirectUrl);
-      } else {
-        if (email) {
-          openAuthModal({
-            title: "Sign in to continue",
-            stateObject: {
-              redirectPath,
-              redirectQuery,
-              localUserId: userId,
-              referrer: ReferrerEnum.SCAN_INDEX,
-            },
-          });
-        } else {
-          const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`; // the user is coming for the first time
-          router.push(encodedPath);
-        }
-      }
-    },
-    [status, userDetails]
-  );
+    if (!userDetails) router.replace("/select-part");
+  }, [userDetails, pageLoaded]);
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Scan condition" />
+      <PageHeader title="Scan" />
       <SkeletonWrapper show={!toAnalyze}>
         {isScanAvailable ? (
           <UploadCard
@@ -179,10 +172,11 @@ export default function ScanProgress() {
           />
         ) : (
           <OverlayWithText
+            icon={<IconHourglass size={24} />}
             text={nextScanText}
             button={
-              <Button mt={8} variant="default" onClick={() => router.replace("/analysis")}>
-                See the latest analysis
+              <Button mt={8} variant="default" onClick={() => router.replace(`/analysis?part=${part}`)}>
+                See latest analysis
               </Button>
             }
           />

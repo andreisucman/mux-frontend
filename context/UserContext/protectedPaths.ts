@@ -20,13 +20,13 @@ export const protectedPaths = [
   "/club/manage-routines",
 ];
 
-export const pathsThatRequireId = ["/analysis", "/scan/progress"];
+export const pathsThatRequireId = ["/analysis", "/scan"];
 
 export const blockFetchUserDataPaths = [
   "/",
   "/auth",
   "/accept",
-  "/scan/progress",
+  "/scan",
   "/about",
   "/tasks",
   "/wait",

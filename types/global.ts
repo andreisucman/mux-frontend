@@ -102,8 +102,6 @@ export type UserConcernType = {
 export type StreaksType = {
   faceStreak: number;
   hairStreak: number;
-  clubFaceStreak: number;
-  clubHairStreak: number;
 };
 
 export type RoutineType = {
@@ -146,22 +144,25 @@ export enum RoutineStatusEnum {
   CANCELED = "canceled",
 }
 
-export enum AuthRedirectToEnum {
-  clubMemberRoutines = "clubMemberRoutines",
-  clubMemberAbout = "clubMemberAbout",
-  routines = "routines",
-}
+export type ScoreType = {
+  value: number;
+  explanation: string;
+  name: string;
+  part: PartEnum;
+};
 
 export type LatestScoresType = {
-  overall: number;
-  face: FormattedRatingType;
-  hair: FormattedRatingType;
+  [key: string]: ScoreType[];
+};
+
+export type ScoreDifferenceType = {
+  value: number;
+  name: string;
+  part: PartEnum;
 };
 
 export type LatestScoresDifferenceType = {
-  overall: number;
-  face: { [key: string]: number };
-  hair: { [key: string]: number };
+  [key: string]: ScoreDifferenceType[];
 };
 
 export type PurchaseType = {
@@ -221,8 +222,10 @@ export interface UserDataType extends DefaultUserType {
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
   latestProgress: UserProgressRecordType;
-  latestScores: LatestScoresType;
-  latestScoresDifference: LatestScoresDifferenceType;
+  latestConcernScores: LatestScoresType;
+  latestConcernScoresDifference: LatestScoresDifferenceType;
+  latestFeatureScores: LatestScoresType;
+  latestFeatureScoresDifference: LatestScoresDifferenceType;
   tasks: TaskType[];
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;

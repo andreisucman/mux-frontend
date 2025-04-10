@@ -4,11 +4,12 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button, Checkbox, Progress, Stack, Text } from "@mantine/core";
-import { UploadProgressProps } from "@/app/concerns/types";
+import { UploadProgressProps } from "@/app/select-part/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
+import { getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { PartEnum, ToAnalyzeType, UserDataType } from "@/types/global";
 import DraggableImageContainer from "../DraggableImageContainer";
@@ -167,10 +168,21 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     setIsButtonLoading(true);
 
     try {
+      const savedSelectedConcerns: { value: string; label: string; part: string }[] | null =
+        getFromLocalStorage("selectedConcerns");
+
+      const body: { [key: string]: any } = { userId };
+
+      if (savedSelectedConcerns)
+        body.userUploadedConcerns = savedSelectedConcerns.map((i) => ({
+          name: i.value,
+          part: i.part,
+        }));
+
       const response = await callTheServer({
         endpoint: "startProgressAnalysis",
         method: "POST",
-        body: { userId },
+        body,
       });
 
       if (response.status === 200) {
@@ -181,7 +193,10 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
         }
 
         const analysisRedirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/analysis?${searchParams.toString()}`;
-        router.push(`/wait?redirectUrl=${encodeURIComponent(analysisRedirectUrl)}`);
+        const onErrorRedirectUrl = analysisRedirectUrl;
+        router.push(
+          `/wait?redirectUrl=${encodeURIComponent(analysisRedirectUrl)}&onErrorRedirectUrl=${encodeURIComponent(onErrorRedirectUrl)}`
+        );
       }
     } catch (err) {
       setIsButtonLoading(false);

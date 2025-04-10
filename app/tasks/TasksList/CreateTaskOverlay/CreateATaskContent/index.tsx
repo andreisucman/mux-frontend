@@ -44,11 +44,13 @@ export default function CreateATaskContent({
 
   useEffect(() => {
     if (allConcerns.length > 0) {
-      const formattedConcerns = allConcerns.map((co) => ({
-        label: normalizeString(co.name),
-        value: co.name,
-        part: co.part,
-      }));
+      const formattedConcerns = allConcerns
+        .filter((co) => !co.isDisabled)
+        .map((co) => ({
+          label: normalizeString(co.name),
+          value: co.name,
+          part: co.part,
+        }));
       setFormattedConcerns(formattedConcerns);
       setRelevantConcerns(formattedConcerns);
     }

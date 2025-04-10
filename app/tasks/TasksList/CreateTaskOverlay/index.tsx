@@ -31,7 +31,7 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
             You need to scan your appearance first. Click{" "}
             <UnstyledButton
               onClick={() => {
-                router.push("/scan/progress");
+                router.push("/scan");
                 modals.closeAll();
               }}
               style={{ textDecoration: "underline" }}

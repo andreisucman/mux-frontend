@@ -68,7 +68,7 @@ export default function AcceptIndexPage() {
         }
       }
 
-      const encodedRedirectUrl = searchParams.get("redirectUrl") || "/scan/progress";
+      const encodedRedirectUrl = searchParams.get("redirectUrl") || "/scan";
       const redirectUrl = decodeAndCheckUriComponent(encodedRedirectUrl);
 
       if (redirectUrl) {

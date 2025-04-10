@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IconCamera, IconCameraRotate, IconStopwatch, IconX } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Button, Group, rem, Stack, Text } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
@@ -27,6 +27,7 @@ export default function PhotoCapturer({
   silhouette,
 }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">(defaultFacingMode);
+  const { height: viewportHeight, width: viewportWidth } = useViewportSize();
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -101,12 +102,15 @@ export default function PhotoCapturer({
     setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
   }, [facingMode]);
 
+  const aspectRatio = isMobile ? viewportHeight / viewportWidth : 1;
+
   const startVideoPreview = useCallback(async () => {
     try {
       const constraints: MediaStreamConstraints = {
         audio: false,
         video: {
           facingMode,
+          aspectRatio: { ideal: aspectRatio },
           frameRate: { max: 30 },
         },
       };
@@ -130,7 +134,7 @@ export default function PhotoCapturer({
         onClose: () => modals.closeAll(),
       });
     }
-  }, [facingMode]);
+  }, [facingMode, aspectRatio]);
 
   useEffect(() => {
     startVideoPreview();

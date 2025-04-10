@@ -5,11 +5,11 @@ export function delayExecution(ms: number) {
 }
 
 export function getRingColor(score: number) {
-  return score < 0
-    ? "var(--mantine-color-red-7)"
-    : score <= 65
-      ? "var(--mantine-color-orange-7)"
-      : "var(--mantine-color-green-7)";
+  return score < 60
+    ? "var(--mantine-color-orange-7)"
+    : score < 20
+      ? "var(--mantine-color-green-7)"
+      : "var(--mantine-color-red-7)";
 }
 
 export function normalizeString(string: string) {

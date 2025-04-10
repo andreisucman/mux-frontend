@@ -103,7 +103,16 @@ function WaitComponent({
         <Text c="dimmed" size="sm">
           {finalDescription} {progress && <span>({progress}%)</span>}
         </Text>
-        {!hideDisclaimer && <Disclaimer />}
+        {!hideDisclaimer && (
+          <Disclaimer
+            title="Disclaimer"
+            body="The content of this website is for informational purposes only and is not intended as
+        professional medical advice. It should not be used for diagnosing or treating any medical
+        condition. Always seek the guidance of a qualified healthcare provider with any questions or
+        concerns you may have regarding your health or medical care. Never disregard professional
+        advice or delay seeking it because of something you see on this site."
+          />
+        )}
       </Stack>
     </Stack>
   );

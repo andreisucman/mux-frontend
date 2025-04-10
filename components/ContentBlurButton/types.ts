@@ -1,4 +1,4 @@
-import { OffsetType } from "@/app/concerns/types";
+import { OffsetType } from "@/app/select-part/types";
 import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { BlurDotType } from "../UploadCard/types";
 

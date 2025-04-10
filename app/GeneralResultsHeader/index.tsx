@@ -1,13 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Group, Title } from "@mantine/core";
-import { createSpotlight } from "@mantine/spotlight";
 import FilterButton from "@/components/FilterButton";
-import { FilterItemType } from "@/components/FilterDropdown/types";
-import SearchButton from "@/components/SearchButton";
 import callTheServer from "@/functions/callTheServer";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import TitleDropdown from "../results/TitleDropdown";
 import { ExistingFiltersType } from "./types";
 import classes from "./GeneralResultsHeader.module.css";
 
@@ -15,11 +11,6 @@ const collectionMap: { [key: string]: string } = {
   "/": "progress",
   "/proof": "proof",
 };
-
-const titles = [
-  { label: "Progress", value: "/" },
-  { label: "Proof", value: "/proof" },
-];
 
 type Props = {
   children?: React.ReactNode;

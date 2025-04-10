@@ -22,3 +22,11 @@
   inset: 0;
   gap: rem(12);
 }
+
+.button {
+  margin-left: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin-left: unset;
+  }
+}

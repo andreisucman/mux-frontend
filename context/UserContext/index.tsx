@@ -121,16 +121,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   }, [status, pathname]);
 
   useEffect(() => {
-    if (userId || !pageLoaded) return;
-    const exceptions = ["/analysis"];
-    const isException = exceptions.includes(pathname);
-
-    if (pathsThatRequireId.includes(pathname) && !isException) {
-      router.replace("/scan");
-    }
-  }, [userId, pageLoaded]);
-
-  useEffect(() => {
     if (!userDetailsState) return;
     if (code) return;
 

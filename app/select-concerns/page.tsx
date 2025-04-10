@@ -1,23 +1,32 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { IconSearch } from "@tabler/icons-react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { IconCircleOff, IconSearch } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Button, Group, Loader, Pill, rem, Stack, TextInput } from "@mantine/core";
+import { Alert, Button, Group, Loader, Pill, rem, Stack, TextInput } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
+import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import AddNewContentButton from "./AddNewConcernButton";
+import {
+  deleteFromLocalStorage,
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "@/helpers/localStorage";
+import { normalizeString } from "@/helpers/utils";
+import { PartEnum, UserConcernType } from "@/types/global";
 import ConcernRow from "./ConcernRow";
-import classes from "./concerns.module.css";
+import NextNoConcernsButton from "./NextNoConcernsButton";
+import classes from "./select-concerns.module.css";
 
 export const runtime = "edge";
 
 export interface SelectedConcernItemType extends FilterItemType {
-  isNew?: boolean;
+  part: PartEnum;
 }
 
 const transformConcerns = (concernItems: { name: string }[]): FilterItemType[] => {
@@ -29,45 +38,49 @@ const transformConcerns = (concernItems: { name: string }[]): FilterItemType[] =
   return items;
 };
 
-export default function ConcernsPage() {
+export default function SelectConcernsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { userDetails } = useContext(UserContext);
   const [query, setQuery] = useState("");
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [noSearchResults, setNoSearchResults] = useState(false);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  const [concerns, setConcerns] = useState<SelectedConcernItemType[]>([]);
+  const [concerns, setConcerns] = useState<FilterItemType[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<SelectedConcernItemType[]>([]);
+  const [nextNoConcern, setNextNoConcern] = useState(false);
 
-  const disableAdd = selectedConcerns.length >= 5;
+  const disableAdd = nextNoConcern || selectedConcerns.length >= 3;
+  const part = searchParams.get("part") || "face";
 
   const handleNext = () => {
     setIsButtonLoading(true);
-    router.push("/scan");
+    router.push(`/scan?part=${part}`);
   };
 
   const handleSelectConcerns = async (item: FilterItemType) => {
-    if (disableAdd) return;
-
     let newSelected = null;
     const exists = selectedConcerns.some((i) => i.value === item.value);
 
     if (exists) {
       newSelected = selectedConcerns.filter((i) => i.value !== item.value);
     } else {
+      if (disableAdd) return;
       newSelected = [...selectedConcerns, item];
     }
 
-    saveToLocalStorage("selectedConcerns", newSelected);
-    setSelectedConcerns(newSelected);
+    const selectedWithPart = newSelected.map((i) => ({ ...i, part: part as PartEnum }));
+
+    saveToLocalStorage("selectedConcerns", selectedWithPart);
+    setSelectedConcerns(selectedWithPart);
   };
 
   const handleFetchConcerns = async (text?: string, skip = 0) => {
-    if (disableAdd) return;
-
     let endpoint = "getConcerns";
     const params = new URLSearchParams();
 
+    if (part) params.append("part", part);
     if (text) params.append("q", text);
     params.append("skip", skip.toString());
 
@@ -80,9 +93,7 @@ export default function ConcernsPage() {
       setHasMore(items.length === 21);
 
       const newIncoming = transformConcerns(items.slice(0, 20));
-      const newData = skip
-        ? [...concerns, ...newIncoming]
-        : [...concerns.filter((o) => o.isNew), ...newIncoming];
+      const newData = skip ? [...concerns, ...newIncoming] : newIncoming;
 
       setConcerns(newData);
       setNoSearchResults(items.length === 0);
@@ -91,18 +102,15 @@ export default function ConcernsPage() {
     }
   };
 
-  const handleAddNewConcern = async (newConcernName: string) => {
-    const newConcern = {
-      value: newConcernName.toLowerCase().split(" ").join("_"),
-      label: upperFirst(newConcernName.toLowerCase()),
-      isNew: true,
-    };
+  const handleSetNextNoConcern = () => {
+    setNextNoConcern((prev) => {
+      if (!prev) {
+        deleteFromLocalStorage("selectedConcerns");
+        setSelectedConcerns([]);
+      }
 
-    const newConcerns = [...selectedConcerns, newConcern];
-
-    setConcerns(newConcerns);
-    setSelectedConcerns(newConcerns);
-    saveToLocalStorage("selectedConcerns", newConcerns);
+      return !prev;
+    });
   };
 
   const list = useMemo(() => {
@@ -119,7 +127,7 @@ export default function ConcernsPage() {
         />
       );
     });
-  }, [concerns.length, selectedConcerns.length]);
+  }, [disableAdd, concerns, selectedConcerns.length]);
 
   const selectedConcernsPills = useMemo(() => {
     const pills = selectedConcerns.map((concern, index) => (
@@ -140,29 +148,46 @@ export default function ConcernsPage() {
   useEffect(() => {
     handleFetchConcerns().then((data) => {
       if (data) {
-        const savedSelectedConcerns = getFromLocalStorage("selectedConcerns");
+        const exists = (item: { [key: string]: any }, key: string) =>
+          data.some((obj) => obj.value === item[key]);
 
-        if (savedSelectedConcerns) {
-          setSelectedConcerns(
-            (savedSelectedConcerns as FilterItemType[]).filter((item: FilterItemType) =>
-              data.some((obj) => obj.value === item.value)
-            ) as FilterItemType[]
+        const { concerns: userConcerns } = userDetails || {};
+
+        if (userConcerns && userConcerns.length > 0) {
+          const filtered = (userConcerns as UserConcernType[]).filter((item) =>
+            exists(item, "name")
           );
+          const transformed = filtered.map((item) => ({
+            label: normalizeString(item.name),
+            value: item.name,
+            part: item.part,
+          }));
+          setSelectedConcerns(transformed);
+        } else {
+          const savedSelectedConcerns = getFromLocalStorage("selectedConcerns");
+          if (savedSelectedConcerns) {
+            setSelectedConcerns(
+              (savedSelectedConcerns as SelectedConcernItemType[]).filter((item) =>
+                exists(item, "value")
+              ) as SelectedConcernItemType[]
+            );
+          }
         }
       }
       setIsLoading(false);
     });
-  }, []);
+  }, [part]);
 
-  const disableNext = isButtonLoading || !selectedConcerns.length;
+  const disableNext = !nextNoConcern && (isButtonLoading || !selectedConcerns.length);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Select your concerns" />
+      <PageHeader title="Select concerns" />
       <Stack className={classes.content}>
+        <Alert p={"0.5rem 1rem"}>What are you concerned about?</Alert>
         <TextInput
           radius="xl"
-          placeholder={disableAdd ? "Max limit reached" : "Search questions"}
+          placeholder={"Search concerns"}
           rightSectionWidth={42}
           disabled={disableAdd}
           leftSection={<IconSearch size={16} stroke={1.5} />}
@@ -172,9 +197,15 @@ export default function ConcernsPage() {
           }}
         />
         {selectedConcernsPills.length > 0 && <Group gap={12}>{selectedConcernsPills}</Group>}
+        <NextNoConcernsButton
+          nextNoConcern={nextNoConcern}
+          toggleNoConcern={handleSetNextNoConcern}
+        />
         <Stack className={`${classes.listWrapper} scrollbar`}>
           {isLoading ? (
-            <Loader m="auto" />
+            <Stack pt="20%">
+              <Loader m="0 auto" />
+            </Stack>
           ) : (
             <InfiniteScroll
               loader={
@@ -189,17 +220,19 @@ export default function ConcernsPage() {
               className={classes.list}
             >
               {noSearchResults ? (
-                <AddNewContentButton
-                  isDisabled={disableAdd}
-                  handleAddNewConcern={handleAddNewConcern}
-                />
+                <OverlayWithText icon={<IconCircleOff size={16} />} text="Nothing found" />
               ) : (
                 list
               )}
             </InfiniteScroll>
           )}
         </Stack>
-        <Button loading={isButtonLoading} disabled={disableNext} onClick={handleNext}>
+        <Button
+          className={classes.button}
+          loading={isButtonLoading}
+          disabled={disableNext}
+          onClick={handleNext}
+        >
           Next
         </Button>
       </Stack>

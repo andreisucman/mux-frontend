@@ -4,7 +4,7 @@ import cn from "classnames";
 import Draggable from "react-draggable";
 import { ActionIcon, AngleSlider, Group, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
-import { OffsetType } from "@/app/concerns/types";
+import { OffsetType } from "@/app/select-part/types";
 import { BlurDotType } from "../UploadCard/types";
 import VerticalSlider from "./VerticalSlider";
 import classes from "./DraggableImageContainer.module.css";
@@ -63,7 +63,6 @@ export default function DraggableImageContainer({
     let scaleWidth = 0;
 
     if (!imageRef.current) return { scaleHeight, scaleWidth };
-
     const naturalWidth = imageRef.current.naturalWidth;
     const naturalHeight = imageRef.current.naturalHeight;
 
@@ -140,7 +139,7 @@ export default function DraggableImageContainer({
     if (!imageLoaded) return;
     const offsets = calculateOffsets();
     setOffsets(offsets);
-  }, [imageLoaded, image, imageRef.current?.naturalWidth, imageRef.current?.naturalHeight]);
+  }, [imageLoaded, image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
 
   return (
     <Stack className={classes.container} ref={containerRef} style={customStyles || {}}>

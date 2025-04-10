@@ -22,7 +22,7 @@ const fetchUserData = async (props?: FetchUerDataProps): Promise<UserDataType | 
     if (response.status === 200) {
       data = response.message;
 
-      if (setUserDetails) setUserDetails(data);
+      if (setUserDetails && data) setUserDetails(data);
     }
 
     if (response.status === 404) {

@@ -35,7 +35,7 @@ const showStartButtonRoutes = [
 const showSignInButtonRoutes = [
   "/scan",
   "/accept",
-  "/scan/progress",
+  "/select-part",
   "/club/routines",
   "/club/progress",
   "/club/diary",
@@ -75,12 +75,12 @@ function Header() {
     setIsLoading(true);
 
     if (referrer === "signInButton") {
-      let routeReferrer = ReferrerEnum.SCAN_INDEX;
+      let routeReferrer = ReferrerEnum.SCAN;
 
-      if (pathname.includes("/scan/progress")) {
-        routeReferrer = ReferrerEnum.SCAN_PROGRESS;
+      if (pathname.includes("/select-part")) {
+        routeReferrer = ReferrerEnum.CHOOSE_PART;
       } else if (pathname.includes("/scan")) {
-        routeReferrer = ReferrerEnum.SCAN_FOOD;
+        routeReferrer = ReferrerEnum.SCAN;
       } else if (pathname.includes("/club/routines")) {
         routeReferrer = ReferrerEnum.CLUB_ROUTINES;
       } else if (pathname.includes("/club/progress")) {
@@ -108,7 +108,7 @@ function Header() {
     }
 
     if (referrer === "startButton") {
-      router.push("/scan");
+      router.push("/select-part");
     }
   };
 

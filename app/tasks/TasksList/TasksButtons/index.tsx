@@ -43,7 +43,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
             You need to scan yourself to be able to create tasks. Click{" "}
             <UnstyledButton
               onClick={() => {
-                router.push("/scan/progress");
+                router.push("/scan");
                 modals.closeAll();
               }}
               style={{ textDecoration: "underline", cursor: "pointer" }}
