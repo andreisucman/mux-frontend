@@ -257,7 +257,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
               <PhotoCapturer
                 handleCapture={(base64string: string) => handleCapture(base64string)}
                 handleCancel={showCancelCapture ? () => handleCancel() : undefined}
-                defaultFacingMode="environment"
+                defaultFacingMode="user"
                 hideTimerButton
                 hideFlipCamera
               />
