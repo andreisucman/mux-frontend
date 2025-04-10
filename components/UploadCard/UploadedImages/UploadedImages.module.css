@@ -1,11 +1,11 @@
 .container {
-  overflow: unset;
   position: absolute;
-  bottom:rem(16);
+  bottom: rem(16);
   left: rem(16);
   right: rem(16);
   min-height: rem(50);
   z-index: 1;
+  overflow: unset;
 }
 
 .image {

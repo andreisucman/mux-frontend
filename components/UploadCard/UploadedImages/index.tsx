@@ -11,7 +11,7 @@ type Props = {
 };
 export default function UploadedImages({ images, onClick, handleRemove, handleAddMore }: Props) {
   return (
-    <Group className={`${classes.container} scrollbar`}>
+    <Group className={`scrollbar ${classes.container} `}>
       {images.map((image) => (
         <Stack className={classes.imageWrapper} key={image}>
           <ActionIcon size="xs" className={classes.close} onClick={() => handleRemove(image)}>

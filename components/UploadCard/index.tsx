@@ -54,6 +54,27 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   const showCancelCapture = somethingUploaded && displayComponent === "capture";
   const isAbsolute = localUrl.startsWith("https://");
 
+  const uploadedImages = useMemo(() => {
+    if (!toAnalyze) return [];
+    return toAnalyze.map((obj) => obj.mainUrl.url);
+  }, [toAnalyze]);
+
+  const imagesMissingUpdates = useMemo(() => {
+    if (!latestProgress) return [];
+
+    const partProgress = latestProgress[part];
+
+    if (!partProgress) return [];
+
+    const { images } = partProgress;
+
+    if (!toAnalyze || toAnalyze?.length === 0) return images;
+
+    const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
+
+    return images.filter((imo) => uploadedUrls.includes(imo.mainUrl.url));
+  }, [toAnalyze, latestProgress?.[part]]);
+
   const handleToggleBlur = () => {
     setShowBlur((prev: boolean) => {
       if (prev) {
@@ -128,10 +149,11 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
+    const finalOverlayImage = overlayImage || imagesMissingUpdates[0]?.mainUrl?.url;
     const lastToAnalyzeObject = await handleUpload({
       part,
       url: localUrl,
-      beforeImageUrl: overlayImage,
+      beforeImageUrl: finalOverlayImage,
       blurDots,
       offsets,
     });
@@ -178,27 +200,6 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
       setDisplayComponent("capture");
     }
   }, [toAnalyze && toAnalyze.length]);
-
-  const uploadedImages = useMemo(() => {
-    if (!toAnalyze) return [];
-    return toAnalyze.map((obj) => obj.mainUrl.url);
-  }, [toAnalyze]);
-
-  const imagesMissingUpdates = useMemo(() => {
-    if (!latestProgress) return [];
-
-    const partProgress = latestProgress[part];
-
-    if (!partProgress) return [];
-
-    const { images } = partProgress;
-
-    if (!toAnalyze || toAnalyze?.length === 0) return images;
-
-    const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
-
-    return images.filter((imo) => uploadedUrls.includes(imo.mainUrl.url));
-  }, [toAnalyze, latestProgress?.[part]]);
 
   return (
     <SkeletonWrapper show={displayComponent === "loading"}>
