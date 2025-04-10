@@ -49,7 +49,7 @@ export const data = [
       <Stack>
         <Text>Muxout is entirely free.</Text>
         <Text>
-          But it has an optional paid addon - the 'Improvement Coach' that creates personal routines
+          We have an optional paid addon - the 'Improvement Coach' that creates personal routines
           for you based on your body analysis and special considerations.
         </Text>
         <Text>
@@ -63,10 +63,10 @@ export const data = [
     question: "Will my images be listed on the home page?",
     answer: (
       <Stack>
-        <Text>None of your data is public automatically when you start using Muxout.</Text>
+        <Text>None of your images is listed automatically when you start using Muxout.</Text>
         <Text>
-          To display your before-after images on the home page you will have to join 'the Club' and
-          list a routine for sale. Only accounts that explicitly listed their routines for sale are
+          To display your before-afters on the home page you will have to join 'the Club' and list a
+          routine for sale. Only accounts that explicitly listed their routines for sale are
           publicly displayed on the home page.
         </Text>
       </Stack>
@@ -102,8 +102,8 @@ export const data = [
           account.
         </Text>
         <Text>
-          After your information is verified your earnings will be automatically sent to the bank
-          account you've provided after the processing period of 7 days.
+          After your information is verified your earnings will be automatically sent to your bank
+          account after the processing period of 7 days.
         </Text>
       </Stack>
     ),

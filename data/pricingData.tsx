@@ -2,14 +2,9 @@ import {
   IconAnalyze,
   IconCamera,
   IconChecklist,
-  IconGitCompare,
-  IconHandGrab,
   IconListCheck,
   IconNotebook,
   IconPencil,
-  IconRotate,
-  IconScoreboard,
-  IconToolsKitchen2,
 } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
 
@@ -29,17 +24,8 @@ export const improvementCoachContent = [
 export const scanAnalysisContent = [
   {
     icon: <IconAnalyze className="icon icon__large" style={style} />,
-    description: "Analyzes your appearance and provides a score for different body features.",
+    description: "Resets your weekly next scan time to today",
   },
-  {
-    icon: <IconGitCompare className="icon icon__large" style={style} />,
-    description: "Compares your current condition with the previous and explains what changed.",
-  },
-  {
-    icon: <IconScoreboard className="icon icon__large" style={style} />,
-    description: "Displays your scores under your images to highlight your progress.",
-  },
-  ,
 ];
 
 export const generalPlanContent = [

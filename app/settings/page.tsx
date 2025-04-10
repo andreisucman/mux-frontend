@@ -6,7 +6,6 @@ import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import AccountSettings from "./AccountSettings";
 import ClubSettings from "./ClubSettings";
-import OtherSettings from "./OtherSettings";
 import classes from "./settings.module.css";
 
 export default function Settings() {
@@ -17,10 +16,7 @@ export default function Settings() {
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader title="Settings" />
       <Group className={classes.content}>
-        <Stack className={classes.left}>
-          <AccountSettings />
-          <OtherSettings />
-        </Stack>
+        <AccountSettings />
         {club && club.isActive && <ClubSettings />}
       </Group>
     </Stack>

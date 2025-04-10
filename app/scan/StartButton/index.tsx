@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { IconBodyScan, IconMoodNeutral } from "@tabler/icons-react";
 import { Skeleton, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
@@ -10,11 +9,6 @@ import classes from "./StartButton.module.css";
 type Props = {
   onClick: () => void;
   part: "face" | "hair";
-};
-
-const icons: { [key: string]: React.ReactNode } = {
-  progress: <IconBodyScan className="icon icon__large" />,
-  hair: <IconMoodNeutral className={`icon ${classes.icon}`} />,
 };
 
 export default function StartButton({ onClick, part }: Props) {

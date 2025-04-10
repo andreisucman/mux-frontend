@@ -7,7 +7,6 @@ type RingComponentProps = {
   ringSize: number;
   data: { value: number; color: string; label: string }[];
   customStyles?: { [key: string]: any };
-  isPotential?: boolean;
   showTitle?: boolean;
   fontSize?: number;
 };
@@ -15,13 +14,12 @@ type RingComponentProps = {
 const RingComponent = ({
   data,
   ringSize,
-  isPotential,
   customStyles,
   fontSize = 14,
   showTitle = true,
 }: RingComponentProps) => {
   const modelObject = data[0];
-  const labelValue = isPotential ? modelObject.value + data[1].value : modelObject.value;
+  const labelValue = modelObject.value;
 
   return (
     <Stack className={classes.container} style={customStyles ? customStyles : {}}>

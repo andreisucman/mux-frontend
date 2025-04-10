@@ -6,7 +6,7 @@ import { AllTaskType, TaskStatusEnum } from "@/types/global";
 import Indicator from "../Indicator";
 import StatsGroup from "../StatsGroup";
 import AccordionTaskMenu from "./AccordionTaskMenu";
-import RoutineIndividualTasksList from "./TaskInstanceList";
+import TaskInstanceList from "./TaskInstanceList";
 import classes from "./AccordionTaskRow.module.css";
 
 type Props = {
@@ -105,7 +105,7 @@ export default function AccordionTaskRow({
         </Group>
       </Group>
       <Collapse in={openedIndividualTasks}>
-        <RoutineIndividualTasksList
+        <TaskInstanceList
           color={color}
           icon={icon}
           isSelf={isSelf}

@@ -1,5 +1,4 @@
 export type ExistingFiltersType = {
-  bodyType: string[];
   ethnicity: string[];
   skinColor: string[];
   concerns: string[];

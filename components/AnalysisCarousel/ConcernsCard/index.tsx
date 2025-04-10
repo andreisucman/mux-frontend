@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { rem, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { rem, Skeleton, Stack, Text } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
-import ConcernsSortCard from "@/app/sort-concerns/ConcernsSortCard";
 import DragAndDrop from "@/app/sort-concerns/ConcernsSortCard/DragAndDrop";
 import GlowingButton from "@/components/GlowingButton";
 import { AuthStateEnum } from "@/context/UserContext/types";

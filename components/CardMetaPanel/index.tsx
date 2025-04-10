@@ -1,9 +1,9 @@
 import React from "react";
-import { Group, rem, Text, UnstyledButton } from "@mantine/core";
+import { Group, Text, UnstyledButton } from "@mantine/core";
 import Link from "@/helpers/custom-router/patch-router/link";
+import { AvatarType } from "@/types/global";
 import AvatarComponent from "../AvatarComponent";
 import classes from "./CardMetaPanel.module.css";
-import { AvatarType } from "@/types/global";
 
 type Props = {
   avatar?: AvatarType | null;
@@ -13,7 +13,13 @@ type Props = {
   customStyles?: { [key: string]: any };
 };
 
-export default function CardMetaPanel({ redirectUrl, avatar, name, formattedDate, customStyles }: Props) {
+export default function CardMetaPanel({
+  redirectUrl,
+  avatar,
+  name,
+  formattedDate,
+  customStyles,
+}: Props) {
   return (
     <UnstyledButton
       className={classes.container}
@@ -22,7 +28,7 @@ export default function CardMetaPanel({ redirectUrl, avatar, name, formattedDate
       href={redirectUrl}
     >
       <Group className={classes.nameWrapper}>
-        <AvatarComponent avatar={avatar} size="sm"  />
+        <AvatarComponent avatar={avatar} size="sm" />
         <Text lineClamp={2} fw={600}>
           {name}
         </Text>

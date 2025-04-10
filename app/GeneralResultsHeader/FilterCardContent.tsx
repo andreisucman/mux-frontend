@@ -19,19 +19,16 @@ export default function FilterCardContent({ filters }: Props) {
   const [ageIntervalFilters, setAgeIntervalFilters] = useState<FilterItemType[]>([]);
   const [concernFilters, setConcernFilters] = useState<FilterItemType[]>([]);
   const [ethnicityFilters, setEthnicityFilters] = useState<FilterItemType[]>([]);
-  const [bodyTypeFilters, setBodyTypeFilters] = useState<FilterItemType[]>([]);
   const [sexFilters, setSexFilters] = useState<FilterItemType[]>([]);
   const [partFilters, setPartFilters] = useState<FilterItemType[]>([]);
 
   const ageInterval = searchParams.get("ageInterval");
   const concern = searchParams.get("concern");
   const ethnicity = searchParams.get("ethnicity");
-  const bodyType = searchParams.get("bodyType");
   const sex = searchParams.get("sex");
   const part = searchParams.get("part");
 
-  const noFilters =
-    [ageInterval, concern, ethnicity, bodyType, sex, part].filter(Boolean).length === 0;
+  const noFilters = [ageInterval, concern, ethnicity, sex, part].filter(Boolean).length === 0;
 
   useEffect(() => {
     if (!filters) return;
@@ -46,7 +43,6 @@ export default function FilterCardContent({ filters }: Props) {
       })
     );
     setEthnicityFilters(filters.ethnicity.map((key) => ({ label: upperFirst(key), value: key })));
-    setBodyTypeFilters(filters.bodyType.map((key) => ({ label: upperFirst(key), value: key })));
     setSexFilters(filters.sex.map((key) => ({ label: upperFirst(key), value: key })));
   }, [typeof filters]);
 
@@ -112,17 +108,6 @@ export default function FilterCardContent({ filters }: Props) {
             />
           )}
 
-          {bodyTypeFilters.length > 0 && (
-            <FilterDropdown
-              data={bodyTypeFilters}
-              selectedValue={bodyType}
-              filterType="bodyType"
-              placeholder="Select body type"
-              customStyles={styles}
-              allowDeselect
-              addToQuery
-            />
-          )}
           <Button
             disabled={noFilters}
             variant="default"

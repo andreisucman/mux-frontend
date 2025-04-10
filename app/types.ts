@@ -1,5 +1,4 @@
-import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
-import { AvatarType, DemographicsType, ProgressImageType, UserConcernType } from "@/types/global";
+import { AvatarType, DemographicsType, PartEnum, ProgressImageType, UserConcernType } from "@/types/global";
 
 export type BeforeAfterType = {
   _id: string;

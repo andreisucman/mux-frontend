@@ -12,16 +12,6 @@ export function getRingColor(score: number) {
       : "var(--mantine-color-green-7)";
 }
 
-export function calculateCircleRadius(rectWidth: number, rectHeight: number, numCircles: number) {
-  let circlesPerRow = Math.ceil(Math.sqrt(numCircles * (rectWidth / rectHeight)));
-  let circlesPerCol = Math.ceil(numCircles / circlesPerRow);
-
-  const diameterWidth = rectWidth / circlesPerRow;
-  const diameterHeight = rectHeight / circlesPerCol;
-
-  return Math.min(diameterWidth, diameterHeight);
-}
-
 export function normalizeString(string: string) {
   if (!string) return "";
   const normalized = string
@@ -84,14 +74,6 @@ export function validateUrl(url: string) {
   } catch (e) {
     return false;
   }
-}
-
-export function sortObjectByNumberValue(obj: { [key: string]: number }, isAscending: boolean) {
-  return Object.fromEntries(
-    isAscending
-      ? Object.entries(obj).sort(([, a], [, b]) => a - b)
-      : Object.entries(obj).sort(([, a], [, b]) => b - a)
-  );
 }
 
 export const getIsRoutineActive = (startsAt: string, lastDate: string, allTasks: AllTaskType[]) => {

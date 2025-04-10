@@ -10,7 +10,6 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { partItems } from "@/components/PageHeader/data";
 import UploadCard from "@/components/UploadCard";
-import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
@@ -19,7 +18,7 @@ import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
-import { UserDataType } from "@/types/global";
+import { PartEnum, UserDataType } from "@/types/global";
 import { UploadProgressProps } from "../types";
 import classes from "./progress.module.css";
 

@@ -26,7 +26,7 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
   const { name, intro, avatar, socials, latestScoresDifference } = data || { socials: [] };
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
 
-  const partOverall = latestScoresDifference?.[part as "body"];
+  const partOverall = latestScoresDifference?.[part as "face"];
 
   const handleToggleCollapse = () => {
     setShowCollapsedInfo((prev) => {

@@ -1,18 +1,10 @@
 import { AvatarConfig } from "@/components/AvatarEditor/types";
-import { RequirementType } from "@/components/UploadContainer/types";
-import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 
 export type DefaultUserType = {
   timeZone: string;
   tosAccepted: boolean;
   specialConsiderations: string;
 };
-
-export type HeadValuePartsBoolean = {
-  name: string;
-  value: boolean;
-  parts: { name: string; value: boolean }[];
-}[];
 
 type BalanceRecordType = {
   amount: number;
@@ -48,13 +40,6 @@ export type DemographicsType = {
   ethnicity: EthnicityEnum;
   ageInterval: AgeIntervalEnum;
 };
-
-export enum PositionEnum {
-  FRONT = "front",
-  BACK = "back",
-  RIGHT = "right",
-  LEFT = "left",
-}
 
 export enum EthnicityEnum {
   WHITE = "white",
@@ -100,20 +85,10 @@ export type ToAnalyzeType = {
   part: PartEnum | null;
 };
 
-export type UserPotentialRecordType = {
-  overall: number;
-  face: FormattedRatingType | null;
-  mouth: FormattedRatingType | null;
-  hair: FormattedRatingType | null;
-  body: FormattedRatingType | null;
-};
-
 export type UserProgressRecordType = {
   overall: number;
   face: ProgressType | null;
-  mouth: ProgressType | null;
   hair: ProgressType | null;
-  body: ProgressType | null;
 };
 
 export type UserConcernType = {
@@ -126,13 +101,9 @@ export type UserConcernType = {
 
 export type StreaksType = {
   faceStreak: number;
-  mouthStreak: number;
   hairStreak: number;
-  bodyStreak: number;
   clubFaceStreak: number;
-  clubMouthStreak: number;
   clubHairStreak: number;
-  clubBodyStreak: number;
 };
 
 export type RoutineType = {
@@ -184,17 +155,13 @@ export enum AuthRedirectToEnum {
 export type LatestScoresType = {
   overall: number;
   face: FormattedRatingType;
-  mouth: FormattedRatingType;
   hair: FormattedRatingType;
-  body: FormattedRatingType;
 };
 
 export type LatestScoresDifferenceType = {
   overall: number;
   face: { [key: string]: number };
-  mouth: { [key: string]: number };
   hair: { [key: string]: number };
-  body: { [key: string]: number };
 };
 
 export type PurchaseType = {
@@ -232,6 +199,11 @@ export type AvatarType = {
   image: string;
 };
 
+export enum PartEnum {
+  FACE = "face",
+  HAIR = "hair",
+}
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email?: string | null;
@@ -248,17 +220,10 @@ export interface UserDataType extends DefaultUserType {
   subscriptions: UserSubscriptionsType;
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
-  potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
   latestScores: LatestScoresType;
   latestScoresDifference: LatestScoresDifferenceType;
   tasks: TaskType[];
-  coachEnergy: number;
-  nutrition: {
-    dailyCalorieGoal: number | null;
-    recommendedDailyCalorieGoal: number | null;
-    remainingDailyCalories: number | null;
-  };
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;
   nextDiaryRecordAfter: { [key: string]: Date | null } | null;
@@ -272,8 +237,6 @@ export type SubscriptionType = {
 
 export type UserSubscriptionsType = {
   improvement: SubscriptionType;
-  peek: SubscriptionType;
-  advisor: SubscriptionType;
 };
 
 export type ProgressImageType = {
@@ -304,12 +267,6 @@ export interface BeforeAfterType extends ProgressType {
   updatedAt: string;
 }
 
-export type StyleGoalsType = {
-  name: string;
-  description: string;
-  icon: string;
-};
-
 export type FormattedRatingType = {
   explanations?: { feature: string; explanation: string }[];
 } & {
@@ -339,23 +296,6 @@ export type RecipeType = {
   canPersonalize: boolean;
 };
 
-export type SuggestionType = {
-  _id: string;
-  asin: string;
-  name: string;
-  url: string;
-  type: "product" | "place";
-  image: string;
-  description: string;
-  rating: number;
-  suggestion: string;
-  variant: string;
-  rank: number;
-  intro: string;
-  priceAndUnit: string;
-  productFeatures: string[];
-};
-
 export type TaskExampleType = { type: string; url: string };
 
 export type TaskType = {
@@ -377,7 +317,6 @@ export type TaskType = {
   status: TaskStatusEnum;
   isDish: boolean;
   recipe: RecipeType;
-  suggestions: SuggestionType[];
   productTypes: string[];
   isCreated?: boolean;
   proofId: string;

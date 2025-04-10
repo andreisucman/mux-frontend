@@ -16,9 +16,7 @@ import {
 
 export const partIcons: { [key: string]: React.ReactNode } = {
   face: <IconMoodNeutral className="icon" />,
-  mouth: <IconDental className="icon" />,
   hair: <IconWhirl className="icon" />,
-  body: <IconMan className="icon" />,
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
@@ -43,11 +41,9 @@ const getPartIcon = (key: string, className = "") => {
   switch (key) {
     case "face":
       return <IconMoodNeutral className={`icon ${className}`} />;
-    case "mouth":
-      return <IconDental className={`icon ${className}`} />;
     case "hair":
       return <IconWhirl className={`icon ${className}`} />;
-    case "body":
+
       return <IconMan className={`icon ${className}`} />;
   }
 };

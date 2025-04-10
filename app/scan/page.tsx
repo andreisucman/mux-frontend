@@ -5,7 +5,6 @@ import { Group, Stack, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
-import SexSelector from "../../components/SexSelector";
 import { ReferrerEnum } from "../auth/AuthForm/types";
 import StartButton from "./StartButton";
 import classes from "./scan.module.css";
@@ -49,7 +48,6 @@ export default function ScanIndexPage() {
       <Stack className={classes.wrapper}>
         <Group align="center">
           <Title order={1}>Scan yourself</Title>
-          <SexSelector />
         </Group>
         <Group className={classes.content}>
           <StartButton

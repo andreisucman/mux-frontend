@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   IconCamera,
   IconCameraRotate,
-  IconFlipHorizontal,
   IconPlayerStopFilled,
   IconRotateRectangle,
   IconStopwatch,
@@ -12,7 +11,6 @@ import { Button, Group, rem, SegmentedControl, Stack, Text } from "@mantine/core
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
-import adjustVideoQuality from "@/helpers/adjustVideoQuality";
 import base64ToBlob from "@/helpers/base64ToBlob";
 import { deleteFromIndexedDb, getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
