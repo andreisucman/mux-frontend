@@ -2,7 +2,6 @@ import {
   IconCancel,
   IconCheckbox,
   IconClock,
-  IconDental,
   IconGenderFemale,
   IconGenderMale,
   IconMan,
@@ -43,8 +42,6 @@ const getPartIcon = (key: string, className = "") => {
       return <IconMoodNeutral className={`icon ${className}`} />;
     case "hair":
       return <IconWhirl className={`icon ${className}`} />;
-
-      return <IconMan className={`icon ${className}`} />;
   }
 };
 

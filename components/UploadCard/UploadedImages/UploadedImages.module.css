@@ -5,7 +5,7 @@
   right: rem(16);
   min-height: rem(50);
   z-index: 1;
-  overflow: unset;
+  overflow: unset !important;
 }
 
 .image {
