@@ -51,7 +51,6 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     isTrialUsed,
   }: OnCreateRoutineClickProps) => {
     if (isLoading) return;
-    console.log("isSubscriptionActive", isSubscriptionActive);
 
     if (isSubscriptionActive) {
       const partsScanned = Object.entries(latestProgress || {})

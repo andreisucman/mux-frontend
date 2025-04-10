@@ -41,7 +41,6 @@ export default function FilterDropdown({
 
   const handleSelect = useCallback(
     (newValue: string | null) => {
-      console.log("newValue", newValue);
       if (addToQuery) {
         const params = [];
 
@@ -62,8 +61,6 @@ export default function FilterDropdown({
         const newQuery = modifyQuery({
           params,
         });
-
-        console.log("newQuery", newQuery);
 
         router.replace(`${pathname}?${newQuery}`);
       }

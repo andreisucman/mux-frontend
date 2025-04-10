@@ -140,30 +140,6 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
     closeDrawer();
   }, []);
 
-  const finalDefaultNavigation = useMemo(() => {
-    const finalItems =
-      status === AuthStateEnum.AUTHENTICATED
-        ? defaultNavigation.map((rec: NavigationLinkType) =>
-            rec.path === "/scan"
-              ? {
-                  ...rec,
-                  children: [{ title: "Progress", path: `/scan/progress` }],
-                }
-              : rec
-          )
-        : defaultNavigation;
-
-    return (
-      <NavigationStack
-        clickLink={clickLink}
-        closeDrawer={closeDrawer}
-        linkClicked={linkClicked}
-        links={finalItems}
-        showLowerDivider
-      />
-    );
-  }, [status, linkClicked]);
-
   const finalAuthenticatedNavigation = useMemo(() => {
     const { club } = userDetails || {};
     const finalNavigation: NavigationLinkType[] = [...defaultAuthenticatedNavigation];
@@ -227,7 +203,13 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
     <Stack className={classes.container}>
       <Divider />
       <>
-        {finalDefaultNavigation}
+        <NavigationStack
+          clickLink={clickLink}
+          closeDrawer={closeDrawer}
+          linkClicked={linkClicked}
+          links={defaultNavigation}
+          showLowerDivider
+        />
         {status !== "authenticated" && (
           <UnstyledButton className={classes.signInButton} onClick={() => handleRedirect("/auth")}>
             <IconDoorEnter className="icon" stroke={1.25} />

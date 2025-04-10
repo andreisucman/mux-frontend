@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconX } from "@tabler/icons-react";
-import { ActionIcon, Button, Checkbox, Progress, Stack, Text, Title } from "@mantine/core";
+import { Button, Checkbox, Progress, Stack, Text } from "@mantine/core";
 import { UploadProgressProps } from "@/app/scan/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import createBuyScanSession from "@/functions/createBuyScanSession";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { ToAnalyzeType, UserDataType } from "@/types/global";
@@ -19,33 +19,24 @@ import UploadedImages from "./UploadedImages";
 import classes from "./UploadCard.module.css";
 
 type Props = {
-  part: string | null;
+  part: PartEnum;
   progress: number;
   isLoading?: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handleUpload: (args: UploadProgressProps) => Promise<ToAnalyzeType>;
 };
 
-export default function UploadCard({
-  part,
-  progress,
-  isLoading,
-  setIsLoading,
-  handleUpload,
-}: Props) {
+export default function UploadCard({ part, progress, isLoading, handleUpload }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const [enableScanAnalysis, setEnableScanAnalysis] = useState(true);
   const [displayComponent, setDisplayComponent] = useState<"loading" | "capture" | "preview">(
     "loading"
   );
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-
   const [showStartAnalysis, setShowStartAnalysis] = useState(false);
-
   const [localUrl, setLocalUrl] = useState("");
+  const [overlayImage, setOverlayImage] = useState("");
   const [offsets, setOffsets] = useState({
     scaleHeight: 0,
     scaleWidth: 0,
@@ -53,7 +44,7 @@ export default function UploadCard({
   const [showBlur, setShowBlur] = useState(false);
   const [blurDots, setBlurDots] = useState<BlurDotType[]>([]);
 
-  const { _id: userId, toAnalyze } = userDetails || {};
+  const { _id: userId, toAnalyze, latestProgress } = userDetails || {};
 
   const distinctUploadedParts = [
     ...new Set(toAnalyze?.map((obj) => obj.part).filter(Boolean)),
@@ -70,6 +61,10 @@ export default function UploadCard({
       }
       return !prev;
     });
+  };
+
+  const handleOverlayPrevious = (imageUrl: string) => {
+    setOverlayImage((prev: string) => (prev ? "" : imageUrl));
   };
 
   const handleCancel = useCallback(() => {
@@ -133,7 +128,13 @@ export default function UploadCard({
   }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
-    const lastToAnalyzeObject = await handleUpload({ part, url: localUrl, blurDots, offsets });
+    const lastToAnalyzeObject = await handleUpload({
+      part,
+      url: localUrl,
+      beforeImageUrl: overlayImage,
+      blurDots,
+      offsets,
+    });
     if (lastToAnalyzeObject) setLocalUrl(lastToAnalyzeObject.mainUrl.url);
     setDisplayComponent("preview");
     setShowStartAnalysis(true);
@@ -145,12 +146,10 @@ export default function UploadCard({
     setIsButtonLoading(true);
 
     try {
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
-
       const response = await callTheServer({
         endpoint: "startProgressAnalysis",
         method: "POST",
-        body: { userId, enableScanAnalysis },
+        body: { userId },
       });
 
       if (response.status === 200) {
@@ -166,7 +165,7 @@ export default function UploadCard({
     } catch (err) {
       setIsButtonLoading(false);
     }
-  }, [userId, isLoading, pathname, enableScanAnalysis, somethingUploaded]);
+  }, [userId, isLoading, pathname, somethingUploaded]);
 
   useEffect(() => {
     if (!toAnalyze) return;
@@ -184,6 +183,22 @@ export default function UploadCard({
     if (!toAnalyze) return [];
     return toAnalyze.map((obj) => obj.mainUrl.url);
   }, [toAnalyze]);
+
+  const imagesMissingUpdates = useMemo(() => {
+    if (!latestProgress) return [];
+
+    const partProgress = latestProgress[part];
+
+    if (!partProgress) return [];
+
+    const { images } = partProgress;
+
+    if (!toAnalyze || toAnalyze?.length === 0) return images;
+
+    const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
+
+    return images.filter((imo) => uploadedUrls.includes(imo.mainUrl.url));
+  }, [toAnalyze, latestProgress?.[part]]);
 
   return (
     <SkeletonWrapper show={displayComponent === "loading"}>
@@ -219,13 +234,34 @@ export default function UploadCard({
             </>
           )}
           {displayComponent === "capture" && (
-            <PhotoCapturer
-              handleCapture={(base64string: string) => handleCapture(base64string)}
-              handleCancel={showCancelCapture ? () => handleCancel() : undefined}
-              defaultFacingMode="environment"
-              hideTimerButton
-              hideFlipCamera
-            />
+            <>
+              {imagesMissingUpdates.length > 0 && (
+                <>
+                  {overlayImage && (
+                    <Image
+                      src={overlayImage}
+                      width={100}
+                      height={100}
+                      alt=""
+                      className={classes.overlayImage}
+                    />
+                  )}
+                  <Checkbox
+                    className={classes.checkbox}
+                    checked={!!overlayImage}
+                    onChange={() => handleOverlayPrevious(imagesMissingUpdates[0].mainUrl.url)}
+                    label="Overlay previous"
+                  />
+                </>
+              )}
+              <PhotoCapturer
+                handleCapture={(base64string: string) => handleCapture(base64string)}
+                handleCancel={showCancelCapture ? () => handleCancel() : undefined}
+                defaultFacingMode="environment"
+                hideTimerButton
+                hideFlipCamera
+              />
+            </>
           )}
           {isLoading && (
             <Stack className={classes.progressCell}>

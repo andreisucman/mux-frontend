@@ -8,6 +8,7 @@ export type OffsetType = {
 
 export type UploadProgressProps = {
   url: string;
+  beforeImageUrl?:string;
   part: string | null;
   blurDots: BlurDotType[];
   offsets: OffsetType;

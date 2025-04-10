@@ -30,6 +30,17 @@
   overflow: hidden;
 }
 
+.overlayImage {
+  position: absolute;
+  inset: 0;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  opacity: 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+
 .capturerWrapper {
   position: relative;
   flex: 1;

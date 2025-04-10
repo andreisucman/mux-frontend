@@ -41,19 +41,14 @@ function WaitComponent({
       try {
         if (!userId) return;
 
-        console.log("userId, operationKey", userId, operationKey);
-
         const response = await callTheServer({
           endpoint: `checkAnalysisCompletion`,
           body: { userId, operationKey },
           method: "POST",
         });
 
-        console.log("response", response);
-
         if (response.status === 200) {
           if (response.error) {
-            console.log("line 56", response.error);
             clearInterval(intervalId);
             if (onError) onError();
             openErrorModal({
@@ -67,22 +62,17 @@ function WaitComponent({
 
           const { jobProgress, ...otherData } = response.message;
 
-          console.log("response.message", response.message);
-
           if (jobProgress < 100) {
             setProgress(jobProgress);
           } else if (jobProgress >= 100) {
             setProgress(100);
 
-            console.log("line 77", response.error);
             clearInterval(intervalId);
 
             onComplete(otherData);
           }
         }
       } catch (err) {
-        console.log("line 84", err);
-
         clearInterval(intervalId);
         if (onError) onError();
       }
@@ -95,7 +85,6 @@ function WaitComponent({
     const updateInterval = 6000;
 
     const intervalId = setInterval(() => {
-      console.log("checked");
       checkAnalysisCompletion(intervalId);
     }, updateInterval);
 

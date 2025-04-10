@@ -26,7 +26,6 @@ export default function ScanIndexPage() {
         router.push(redirectUrl);
       } else {
         if (email) {
-          // the user has finished the onboarding
           openAuthModal({
             title: "Sign in to continue",
             stateObject: {

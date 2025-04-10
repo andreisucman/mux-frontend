@@ -10,6 +10,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { partItems } from "@/components/PageHeader/data";
 import UploadCard from "@/components/UploadCard";
+import { PartEnum } from "@/context/ScanPartsChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
@@ -45,7 +46,7 @@ export default function ScanProgress() {
   }, [part]);
 
   const handleUpload = useCallback(
-    async ({ url, part, blurDots, offsets }: UploadProgressProps) => {
+    async ({ url, beforeImageUrl, part, blurDots, offsets }: UploadProgressProps) => {
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -91,6 +92,7 @@ export default function ScanProgress() {
               userId,
               part,
               blurDots: updatedBlurDots,
+              beforeImage: beforeImageUrl,
               image: originalImageUrl,
             },
           });
@@ -105,6 +107,14 @@ export default function ScanProgress() {
                     redirectPath: "/scan/progress",
                     localUserId: userId,
                   },
+                });
+                return;
+              }
+
+              if (response.error === "not similar") {
+                openErrorModal({
+                  description:
+                    "Your current photo is too different from the previous. Click 'Overlay previous' in the top left and try to match it when taking the new photo.",
                 });
                 return;
               }
@@ -159,11 +169,10 @@ export default function ScanProgress() {
       <SkeletonWrapper show={!toAnalyze}>
         {isScanAvailable ? (
           <UploadCard
-            handleUpload={handleUpload}
-            part={part}
+            part={part as PartEnum}
             progress={progress}
             isLoading={isLoading}
-            setIsLoading={setIsLoading}
+            handleUpload={handleUpload}
           />
         ) : (
           <OverlayWithText

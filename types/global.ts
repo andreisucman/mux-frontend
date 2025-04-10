@@ -94,6 +94,7 @@ export type BlurredUrlType = {
 export type ToAnalyzeType = {
   createdAt: Date;
   mainUrl: BlurredUrlType;
+  updateUrl: BlurredUrlType;
   contentUrlTypes: BlurredUrlType[];
   position: string;
   part: PartEnum | null;
@@ -242,13 +243,11 @@ export interface UserDataType extends DefaultUserType {
   club: ClubDataType | null;
   concerns: UserConcernType[];
   demographics: DemographicsType;
-  requiredProgress: RequirementType[];
   toAnalyze: ToAnalyzeType[];
   streaks: StreaksType;
   subscriptions: UserSubscriptionsType;
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
-  latestScanImages?: string[];
   potential: UserPotentialRecordType;
   latestProgress: UserProgressRecordType;
   latestScores: LatestScoresType;
