@@ -90,6 +90,18 @@ export const data = [
     ),
   },
   {
+    question: "How can I sell my routine?",
+    answer: (
+      <Stack>
+        <Text>
+          To publish your routine for sale you need to be using it yourself for at least one week.
+          After you have the before-after photos you can join the Club and publish the routine on
+          the manage routines page.
+        </Text>
+      </Stack>
+    ),
+  },
+  {
     question: "How can I withdraw my earnings?",
     answer: (
       <Stack>
@@ -148,7 +160,17 @@ export const data = [
       </Text>
     ),
   },
-
+  {
+    question: "Do you have an app?",
+    answer: (
+      <Stack>
+        <Text>
+          To download Muxout to your phone open the site in Google Chrome, tap on the three dots in
+          the top right to open browser menu, and then 'Install App' or 'Add to home screen'.
+        </Text>
+      </Stack>
+    ),
+  },
   {
     question: "How can I contact you?",
     answer: <Text>Send your emails to info@muxout.com</Text>,

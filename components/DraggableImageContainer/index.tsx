@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
@@ -63,6 +63,7 @@ export default function DraggableImageContainer({
     let scaleWidth = 0;
 
     if (!imageRef.current) return { scaleHeight, scaleWidth };
+
     const naturalWidth = imageRef.current.naturalWidth;
     const naturalHeight = imageRef.current.naturalHeight;
 
@@ -139,7 +140,7 @@ export default function DraggableImageContainer({
     if (!imageLoaded) return;
     const offsets = calculateOffsets();
     setOffsets(offsets);
-  }, [imageLoaded, image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
+  }, [imageLoaded, image, imageRef.current?.naturalWidth, imageRef.current?.naturalHeight]);
 
   return (
     <Stack className={classes.container} ref={containerRef} style={customStyles || {}}>
