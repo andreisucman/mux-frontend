@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button, Checkbox, Progress, Stack, Text } from "@mantine/core";
-import { UploadProgressProps } from "@/app/scan/types";
+import { UploadProgressProps } from "@/app/concerns/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";

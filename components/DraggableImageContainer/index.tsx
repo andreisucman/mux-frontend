@@ -4,7 +4,7 @@ import cn from "classnames";
 import Draggable from "react-draggable";
 import { ActionIcon, AngleSlider, Group, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
-import { OffsetType } from "@/app/scan/types";
+import { OffsetType } from "@/app/concerns/types";
 import { BlurDotType } from "../UploadCard/types";
 import VerticalSlider from "./VerticalSlider";
 import classes from "./DraggableImageContainer.module.css";

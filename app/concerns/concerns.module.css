@@ -1,0 +1,24 @@
+.container {
+  width: 100%;
+  margin: auto;
+}
+
+.content {
+  flex: 1;
+}
+
+.listWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.list {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  inset: 0;
+  gap: rem(12);
+}
