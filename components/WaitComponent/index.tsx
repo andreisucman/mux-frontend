@@ -80,6 +80,8 @@ function WaitComponent({
     [userId, operationKey]
   );
 
+  console.log("concerns");
+
   useEffect(() => {
     if (!userId) return;
     const updateInterval = 6000;

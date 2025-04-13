@@ -1,4 +1,4 @@
-import { FilterItemType, FilterPartItemType } from "@/components/FilterDropdown/types";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partItems, taskStatuses } from "@/components/PageHeader/data";
 import callTheServer from "./callTheServer";
 
@@ -12,7 +12,7 @@ type GetUsersFiltersProps = {
 const getFilters = async ({ userName, filter, collection, fields }: GetUsersFiltersProps) => {
   let result = {
     availableStatuses: [] as FilterItemType[],
-    availableParts: [] as FilterPartItemType[],
+    availableParts: [] as FilterItemType[],
   };
   try {
     if (!collection) throw new Error("Collection is missing");

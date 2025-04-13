@@ -6,7 +6,7 @@ import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
-import { FilterPartItemType } from "@/components/FilterDropdown/types";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -36,8 +36,8 @@ export default function RoutinesHistoryPage() {
   const status = searchParams.get("status");
   const sort = searchParams.get("sort");
 
-  const [availableParts, setAvaiableParts] = useState<FilterPartItemType[]>();
-  const [availableStatuses, setAvailableStatuses] = useState<FilterPartItemType[]>([]);
+  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
+  const [availableStatuses, setAvailableStatuses] = useState<FilterItemType[]>([]);
 
   const fetchInactiveTasks = useCallback(
     async ({ status, part, loadMore, sort }: FetchInactiveTasksProps) => {

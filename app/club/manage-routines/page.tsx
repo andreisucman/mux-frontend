@@ -1,20 +1,25 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Loader, rem, Stack } from "@mantine/core";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { IconCircleOff } from "@tabler/icons-react";
+import { Button, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import FilterDropdown from "@/components/FilterDropdown";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
 import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
+import { normalizeString } from "@/helpers/utils";
 import RoutineModerationCard from "./RoutineModerationCard";
 import classes from "./manage-routines.module.css";
 
 export const runtime = "edge";
 
 export type RoutineDataType = {
-  part: string;
+  concern: string;
   name: string;
   status: string;
   description: string;
@@ -23,8 +28,12 @@ export type RoutineDataType = {
 };
 
 export default function ManageRoutines() {
-  const [routineParts, setRoutineParts] = useState<string[]>();
+  const [routineConcerns, setRoutineConcerns] = useState<FilterItemType[]>([]);
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
+  const [selectedRoutineData, setSelectedRoutineData] = useState<RoutineDataType>();
+
+  const searchParams = useSearchParams();
+  const concern = searchParams.get("concern") || routineConcerns[0]?.value;
 
   const saveRoutineData = useCallback(
     async (
@@ -75,15 +84,16 @@ export default function ManageRoutines() {
         if (routineData?.length === 0) {
           setRoutineData([updatedRoutine]);
         } else {
-          const partData = routineData?.find((r) => r.part === updatedRoutine.part);
-
+          const partData = routineData?.find((r) => r.concern === updatedRoutine.concern);
           if (partData) {
             setRoutineData((prev) =>
-              prev?.map((r) => (r.part === updatedRoutine.part ? updatedRoutine : r))
+              prev?.map((r) => (r.concern === updatedRoutine.concern ? updatedRoutine : r))
             );
           } else {
             setRoutineData((prev) => [...(prev || []), updatedRoutine]);
           }
+
+          setSelectedRoutineData(updatedRoutine);
         }
       }
       setIsLoading(false);
@@ -91,55 +101,68 @@ export default function ManageRoutines() {
     [routineData]
   );
 
-  const content = useMemo(() => {
-    if (!routineData || !routineParts) return <Loader m="0 auto" mt="20%" />;
-    if (routineParts.length === 0)
-      return (
-        <OverlayWithText
-          text="You don't have any routines"
-          button={
-            <Button variant="default" mt={rem(8)} c="gray.2" component={Link} href="/routines">
-              Add a routine
-            </Button>
-          }
-        />
-      );
-    return routineParts
-      .sort((a, b) => a.localeCompare(b))
-      .map((part, i) => {
-        const relevantRoutineData = routineData.find((doItem) => doItem.part === part);
-        const { name, status, description, price, updatePrice } = relevantRoutineData || {};
-
-        return (
-          <RoutineModerationCard
-            key={i}
-            part={part}
-            defaultName={name}
-            defaultStatus={status}
-            defaultDescription={description}
-            defaultOneTimePrice={price}
-            defaultUpdatePrice={updatePrice}
-            saveRoutineData={saveRoutineData}
-          />
-        );
-      });
-  }, [routineParts, routineData, saveRoutineData]);
+  const handleSelectRoutine = (concern?: string | null) => {
+    if (!routineData || !concern) return;
+    const relevantRoutineData = routineData.find((doItem) => doItem.concern === concern);
+    setSelectedRoutineData(relevantRoutineData);
+  };
 
   useEffect(() => {
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
-        const { parts, routineData } = res.message;
-        setRoutineParts(parts);
+        const { concerns, routineData } = res.message;
+
+        const concernsItems = concerns.map((c: string) => ({
+          value: c,
+          label: normalizeString(c),
+        }));
+        setRoutineConcerns(concernsItems);
         setRoutineData(routineData);
+        setSelectedRoutineData(routineData[0]);
       }
     });
   }, []);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Manage routines" />
-      <SkeletonWrapper>
-        <Stack flex={1}>{content}</Stack>
+      <PageHeader
+        title="Manage routines"
+        children={
+          <FilterDropdown
+            data={routineConcerns}
+            selectedValue={concern}
+            filterType="concern"
+            placeholder="Select concern"
+            onSelect={handleSelectRoutine}
+            addToQuery
+            searchable
+          />
+        }
+      />
+      <SkeletonWrapper show={!routineData}>
+        <Stack flex={1}>
+          {routineConcerns.length > 0 ? (
+            <RoutineModerationCard
+              concern={concern}
+              defaultName={selectedRoutineData?.name}
+              defaultStatus={selectedRoutineData?.status}
+              defaultDescription={selectedRoutineData?.description}
+              defaultOneTimePrice={selectedRoutineData?.price}
+              defaultUpdatePrice={selectedRoutineData?.updatePrice}
+              saveRoutineData={saveRoutineData}
+            />
+          ) : (
+            <OverlayWithText
+              icon={<IconCircleOff size={24} />}
+              text="You don't have any routines"
+              button={
+                <Button variant="default" mt={rem(8)} c="gray.2" component={Link} href="/routines">
+                  Add a routine
+                </Button>
+              }
+            />
+          )}
+        </Stack>
       </SkeletonWrapper>
     </Stack>
   );

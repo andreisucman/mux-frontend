@@ -67,8 +67,8 @@ export default function SortConcerns() {
         <PageHeader title="Sort concerns" />
         <InstructionContainer
           title="Instructions"
-          instruction={`These are the potential concerns identified from your photos.`}
-          description="Drag and drop to change their importance or click the minus sign to ignore."
+          instruction={`These concerns will determine the tasks in your routine.`}
+          description="Drag and drop to change their importance or ignore."
           customStyles={{ flex: 0 }}
         />
         <Button

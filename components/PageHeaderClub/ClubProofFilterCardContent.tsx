@@ -3,7 +3,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
-import { FilterPartItemType } from "@/components/FilterDropdown/types";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import getUsersFilters from "@/functions/getFilters";
 import { partIcons } from "@/helpers/icons";
 import classes from "./ClubProofFilterCardContent.module.css";
@@ -16,7 +16,7 @@ export default function ClubProofFilterCardContent({ userName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [availableParts, setAvailableParts] = useState<FilterPartItemType[]>();
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
 
   const part = searchParams.get("part");
 

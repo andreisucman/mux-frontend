@@ -4,12 +4,23 @@ export function delayExecution(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function getRingColor(score: number) {
-  return score < 60
-    ? "var(--mantine-color-orange-7)"
-    : score < 20
-      ? "var(--mantine-color-green-7)"
-      : "var(--mantine-color-red-7)";
+export function getRingColor(score: number, isInverted?: boolean) {
+  let color =
+    score <= 60
+      ? "var(--mantine-color-orange-7)"
+      : score <= 20
+        ? "var(--mantine-color-green-7)"
+        : "var(--mantine-color-red-7)";
+
+  if (isInverted)
+    color =
+      score <= 20
+        ? "var(--mantine-color-red-7)"
+        : score <= 60
+          ? "var(--mantine-color-orange-7)"
+          : "var(--mantine-color-green-7)";
+
+  return color;
 }
 
 export function normalizeString(string: string) {

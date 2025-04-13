@@ -1,7 +1,7 @@
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import { IconCircleMinus, IconCirclePlus, IconGripVertical } from "@tabler/icons-react";
+import { IconGripVertical } from "@tabler/icons-react";
 import cn from "classnames";
-import { ActionIcon, Group, rem, Text } from "@mantine/core";
+import { Button, Group, rem, Text } from "@mantine/core";
 import { useListState, useShallowEffect } from "@mantine/hooks";
 import { normalizeString } from "@/helpers/utils";
 import { UserConcernType } from "@/types/global";
@@ -54,20 +54,15 @@ export default function DragAndDrop({ data, disabled, onUpdate, handleUpdateConc
             </div>
           </Group>
 
-          <ActionIcon
-            variant="default"
+          <Button
             disabled={disabled}
-            mt={rem(12)}
             onClick={() => {
               handleUpdateConcern({ ...item, isDisabled: !item.isDisabled });
             }}
+            variant="default"
           >
-            {item.isDisabled ? (
-              <IconCirclePlus className="icon" />
-            ) : (
-              <IconCircleMinus className="icon" />
-            )}
-          </ActionIcon>
+            {item.isDisabled ? <Text size="sm">Enable</Text> : <Text size="sm">Ignore</Text>}
+          </Button>
         </div>
       )}
     </Draggable>

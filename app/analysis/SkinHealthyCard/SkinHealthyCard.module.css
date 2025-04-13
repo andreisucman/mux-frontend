@@ -2,17 +2,13 @@
   flex: 1;
   background-color: var(--mantine-color-dark-6);
   border-radius: rem(16);
+  align-items: center;
 }
 
 .wrapper {
-  margin: 35% auto 0;
   align-items: center;
-  border: rem(2) solid var(--mantine-color-dark-5);
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
-  padding: rem(16);
   border-radius: rem(16);
   width: 100%;
-  max-width: clamp(90%, 30vw, rem(400));
 }
 
 .title {

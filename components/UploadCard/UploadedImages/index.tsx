@@ -26,7 +26,7 @@ export default function UploadedImages({ images, onClick, handleRemove, handleAd
           />
         </Stack>
       ))}
-      {images.length < 4 && (
+      {images.length < 3 && (
         <div className={classes.addButton} onClick={handleAddMore}>
           <IconPlus className={"icon icon__large"} />
         </div>

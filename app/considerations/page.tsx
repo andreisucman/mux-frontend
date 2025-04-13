@@ -67,8 +67,8 @@ export default function Considerations() {
         <PageHeader title="Important details" />
         <InstructionContainer
           title="Instructions"
-          instruction={"Add information about yourself to tailor your routine."}
-          description="Missing ths information may result in an ineffective routine."
+          instruction={"Add details about yourself to tailor your routine."}
+          description="Adding this can significantly improve the effectiveness of the routine."
           customStyles={{ flex: 0 }}
         />
         <Stack className={classes.wrapper}>

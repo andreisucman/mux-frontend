@@ -15,6 +15,7 @@ type Props = {
   filterType?: string;
   isDisabled?: boolean;
   addToQuery?: boolean;
+  searchable?: boolean;
   allowDeselect?: boolean;
   closeOnSelect?: boolean;
   selectedValue?: string | null;
@@ -25,6 +26,7 @@ type Props = {
 export default function FilterDropdown({
   data,
   icons,
+  searchable,
   allowDeselect,
   placeholder,
   isDisabled,
@@ -54,7 +56,9 @@ export default function FilterDropdown({
           }
         } else {
           if (filterType) {
-            params.push({ name: filterType, value: newValue, action: "replace" });
+            if (newValue) {
+              params.push({ name: filterType, value: newValue, action: "replace" });
+            }
           }
         }
 
@@ -93,6 +97,7 @@ export default function FilterDropdown({
       leftSection={icon}
       leftSectionWidth={40}
       withScrollArea={false}
+      searchable={searchable}
       style={customStyles ? customStyles : {}}
       classNames={{
         dropdown: classes.dropdown,

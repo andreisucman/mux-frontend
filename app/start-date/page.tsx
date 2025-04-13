@@ -87,7 +87,7 @@ export default function StartDate() {
     }
   };
 
-  const text = startDate ? startDate.toDateString() : "Click on the calendar to select date";
+  const text = startDate ? startDate.toDateString() : "Click on the calendar to select a date";
 
   const isNotFirstTime = useMemo(() => {
     if (!part) {

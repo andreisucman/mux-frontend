@@ -10,17 +10,16 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
-import { getPartIcon } from "@/helpers/icons";
+import { normalizeString } from "@/helpers/utils";
 import { RoutineDataType } from "../page";
 import classes from "./RoutineModerationCard.module.css";
 
 type Props = {
-  part: string;
+  concern: string;
   defaultStatus?: string;
   defaultName?: string;
   defaultDescription?: string;
@@ -39,7 +38,7 @@ const statuses = [
 ];
 
 export default function RoutineModerationCard({
-  part,
+  concern,
   defaultStatus = "hidden",
   saveRoutineData,
   defaultName = "",
@@ -58,8 +57,7 @@ export default function RoutineModerationCard({
   const [price, setOneTimePrice] = useState<number>(defaultOneTimePrice);
   const [updatePrice, setSubscriptionPrice] = useState<number>(defaultUpdatePrice);
 
-  const icon = getPartIcon(part);
-  const label = upperFirst(part);
+  const label = normalizeString(concern);
 
   const handleDo = (
     setter: React.Dispatch<React.SetStateAction<any>>,
@@ -78,8 +76,8 @@ export default function RoutineModerationCard({
 
   const handleRedirect = useCallback(() => {
     const { name } = userDetails || {};
-    router.push(`/club/routines/${name}?part=${part}`);
-  }, [userDetails, part]);
+    router.push(`/club/routines/${name}?concern=${concern}`);
+  }, [userDetails, concern]);
 
   const isSaved = useMemo(() => {
     return (
@@ -108,7 +106,7 @@ export default function RoutineModerationCard({
     const save = async () =>
       saveRoutineData(
         {
-          part,
+          concern,
           name,
           description,
           status: status || "hidden",
@@ -125,9 +123,9 @@ export default function RoutineModerationCard({
     const isSwitchingToHidden = defaultStatus !== "hidden" && status === "hidden";
 
     if (isSwitchingToPublic) {
-      body = `This will make your ${part} progress, routines, diary, and proof public. Continue?`;
+      body = `This will make your ${concern} related routines, progress, diary, and proof public. Continue?`;
     } else if (isSwitchingToHidden) {
-      body = `If you have any subscribers, their subscription renewals will be canceled. Continue?`;
+      body = `If you have any subscribers for ${concern}, their subscription renewals will be canceled. Continue?`;
     }
 
     if (isSwitchingToHidden || isSwitchingToPublic) {
@@ -144,7 +142,7 @@ export default function RoutineModerationCard({
   return (
     <Stack className={classes.container}>
       <Title order={5} className={classes.title}>
-        {icon} {label} routine
+        {label} routine
       </Title>
       <TextInput
         placeholder="The name of your routine"
@@ -162,14 +160,14 @@ export default function RoutineModerationCard({
         error={error?.name}
       />
       <TextareaComponent
-        setText={(value) => handleDo(setDescription, value, 150)}
+        setText={(value) => handleDo(setDescription, value, 2000)}
         text={description}
-        customStyles={{ gap: rem(4) }}
+        customStyles={{ gap: rem(4), minHeight: rem(300) }}
         heading={
           <Group justify="space-between" align="center">
             <Text className={classes.label}>Description</Text>
             <Text size="sm" c="dimmed" mr={16}>
-              {150 - description.length}
+              {2000 - description.length}
             </Text>
           </Group>
         }

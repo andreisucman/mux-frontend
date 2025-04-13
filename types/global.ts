@@ -86,7 +86,6 @@ export type ToAnalyzeType = {
 };
 
 export type UserProgressRecordType = {
-  overall: number;
   face: ProgressType | null;
   hair: ProgressType | null;
 };

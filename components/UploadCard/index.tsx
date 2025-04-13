@@ -301,7 +301,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                 {showStartAnalysis && isAbsolute && (
                   <Stack className={classes.nextButtons}>
                     <Button
-                      disabled={isButtonLoading || !localUrl || uploadedImages.length >= 4}
+                      disabled={isButtonLoading || !localUrl || uploadedImages.length >= 3}
                       variant="default"
                       onClick={handleAddMore}
                     >

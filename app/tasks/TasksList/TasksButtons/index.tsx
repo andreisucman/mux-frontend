@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import {
   IconCalendar,
@@ -34,8 +34,13 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
 
   const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
+  const notScanned = useMemo(() => {
+    if (!latestProgress) return true;
+    return Object.values(latestProgress).filter(Boolean).length === 0;
+  }, [latestProgress]);
+
   const onCreateManuallyClick = () => {
-    if (!latestProgress?.overall) {
+    if (notScanned) {
       openErrorModal({
         title: "Please scan yourself",
         description: (

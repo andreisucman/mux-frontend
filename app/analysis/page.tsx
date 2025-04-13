@@ -17,6 +17,7 @@ import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import { ReferrerEnum } from "../auth/AuthForm/types";
+import FeatureAnalysisCard from "./FeatureAnalysisCard";
 import SkinHealthyCard from "./SkinHealthyCard";
 import classes from "./analysis.module.css";
 
@@ -27,7 +28,7 @@ export default function Analysis() {
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "carousel" | "upload" | "perfect"
+    "loading" | "carousel" | "upload" | "healthy"
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,7 +117,7 @@ export default function Analysis() {
     if (latestProgress !== null && isEmpty) {
       setDisplayComponent("upload");
     } else if (noConcerns) {
-      setDisplayComponent("perfect");
+      setDisplayComponent("healthy");
     } else if (latestProgress) {
       setDisplayComponent("carousel");
     }
@@ -142,7 +143,7 @@ export default function Analysis() {
         }
       />
       <Skeleton visible={displayComponent === "loading"} className={`${classes.skeleton} skeleton`}>
-        {displayComponent === "upload" && (
+        {displayComponent === "upload" ? (
           <OverlayWithText
             icon={<IconCircleOff size={24} />}
             text={`There is no analysis for ${part}`}
@@ -152,20 +153,19 @@ export default function Analysis() {
               </Button>
             }
           />
-        )}
-        {displayComponent === "perfect" && (
-          <SkinHealthyCard
-            part={part}
-            latestFeatureScores={latestFeatureScores}
-            latestFeatureScoresDifference={latestFeatureScoresDifference}
-          />
-        )}
-        {displayComponent === "carousel" && (
+        ) : (
           <Stack className={classes.content}>
-            <Text size="sm" c="dimmed">
-              Severity of concerns
-            </Text>
-            {concernCards}
+            {displayComponent === "carousel" && (
+              <>
+                <Text size="sm" c="dimmed">
+                  Severity of concerns
+                </Text>
+                {concernCards}
+              </>
+            )}
+            {displayComponent === "healthy" && (
+              <SkinHealthyCard part={part} latestFeatureScores={latestFeatureScores} />
+            )}
             <GlowingButton
               loading={isLoading}
               disabled={isLoading}
@@ -175,8 +175,8 @@ export default function Analysis() {
             />
             <Disclaimer
               body="This information is not intended as
-                  professional medical advice. It should not be used for diagnosing or treating any medical
-                  condition."
+                professional medical advice. It should not be used for diagnosing or treating any medical
+                condition."
               customStyles={{ marginBottom: rem(16) }}
               dimmed
             />

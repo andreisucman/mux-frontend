@@ -1,20 +1,16 @@
 import React from "react";
 import { IconCheck } from "@tabler/icons-react";
 import { RingProgress, Stack, Text, Title } from "@mantine/core";
-import { LatestScoresDifferenceType, LatestScoresType } from "@/types/global";
+import { LatestScoresType } from "@/types/global";
+import FeatureAnalysisCard from "../FeatureAnalysisCard";
 import classes from "./SkinHealthyCard.module.css";
 
 type Props = {
   part: string;
-  latestFeatureScores: LatestScoresType;
-  latestFeatureScoresDifference: LatestScoresDifferenceType;
+  latestFeatureScores?: LatestScoresType;
 };
 
-export default function SkinHealthyCard({
-  part,
-  latestFeatureScores,
-  latestFeatureScoresDifference,
-}: Props) {
+export default function SkinHealthyCard({ part, latestFeatureScores }: Props) {
   const data = [
     {
       value: 100 as number,
@@ -22,6 +18,7 @@ export default function SkinHealthyCard({
       color: "var(--mantine-color-green-7)",
     },
   ];
+
   return (
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
@@ -35,11 +32,9 @@ export default function SkinHealthyCard({
             </Stack>
           }
         />
-        <Title className={classes.title}>Your {part} looks perfect!</Title>
-        <Text className={classes.description}>We couldn't find any concerns from your photos!</Text>
-        <Stack>
-          
-        </Stack>
+        <Title className={classes.title}>Your {part} looks healthy!</Title>
+        <Text className={classes.description}>We couldn't see any concerns from your photos!</Text>
+        <FeatureAnalysisCard part={part} latestFeatureScores={latestFeatureScores} />
       </Stack>
     </Stack>
   );
