@@ -65,7 +65,7 @@ export default function Considerations() {
       <PageHeader title="Add details" />
       <InstructionContainer
         title="Descrption"
-        instruction={"Adding details increases the effectiveness of the routine"}
+        instruction={"Add details to increases the relevance and effectiveness of the routine"}
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.wrapper}>

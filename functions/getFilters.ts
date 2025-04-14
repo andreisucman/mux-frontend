@@ -42,12 +42,10 @@ const getFilters = async ({ userName, filter, collection, fields }: GetUsersFilt
       const { concern, part, status } = response.message || {};
 
       if (response.message) {
-        console.log(" response.message", response.message);
         if (part) {
           result.availableParts = partItems.filter((item) => part.includes(item.value));
         }
 
-        console.log("concern 49", concern);
         if (concern) {
           result.availableConcerns = concern.map((c: string) => ({
             value: c,

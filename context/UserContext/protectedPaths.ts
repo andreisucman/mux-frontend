@@ -29,5 +29,5 @@ export const blockFetchUserDataPaths = [
   "/about",
   "/tasks",
   "/wait",
-  "/analysis",
+  // "/analysis",
 ];
