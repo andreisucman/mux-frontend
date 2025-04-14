@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff, IconSearch } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -17,8 +17,10 @@ import {
   getFromLocalStorage,
   saveToLocalStorage,
 } from "@/helpers/localStorage";
+import openAuthModal from "@/helpers/openAuthModal";
 import { normalizeString } from "@/helpers/utils";
 import { PartEnum, UserConcernType } from "@/types/global";
+import { ReferrerEnum } from "../auth/AuthForm/types";
 import ConcernRow from "./ConcernRow";
 import NextNoConcernsButton from "./NextNoConcernsButton";
 import classes from "./select-concerns.module.css";
@@ -41,7 +43,7 @@ const transformConcerns = (concernItems: { name: string }[]): FilterItemType[] =
 export default function SelectConcernsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userDetails } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [query, setQuery] = useState("");
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,12 +53,41 @@ export default function SelectConcernsPage() {
   const [selectedConcerns, setSelectedConcerns] = useState<SelectedConcernItemType[]>([]);
   const [nextNoConcern, setNextNoConcern] = useState(false);
 
+  const { _id: userId, email } = userDetails || {};
+
   const disableAdd = nextNoConcern || selectedConcerns.length >= 3;
   const part = searchParams.get("part") || "face";
 
+  const handleRedirect = useCallback(
+    (redirectPath: string, redirectQuery?: string) => {
+      let redirectUrl = redirectPath;
+      if (redirectQuery) redirectUrl += `?${redirectQuery}`;
+
+      if (status === "authenticated") {
+        router.push(redirectUrl);
+      } else {
+        if (email) {
+          openAuthModal({
+            title: "Sign in to continue",
+            stateObject: {
+              redirectPath,
+              redirectQuery,
+              localUserId: userId,
+              referrer: ReferrerEnum.CHOOSE_PART,
+            },
+          });
+        } else {
+          const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+          router.push(encodedPath);
+        }
+      }
+    },
+    [status, userDetails]
+  );
+
   const handleNext = () => {
     setIsButtonLoading(true);
-    router.push(`/scan?part=${part}`);
+    handleRedirect(`/scan`, `part=${part}`);
   };
 
   const handleSelectConcerns = async (item: FilterItemType) => {
@@ -184,7 +215,7 @@ export default function SelectConcernsPage() {
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader title="Select concerns" />
       <Stack className={classes.content}>
-        <Alert p={"0.5rem 1rem"}>What are you concerned about?</Alert>
+        <Alert variant="default" p={"0.5rem 1rem"}>What concern are you targeting?</Alert>
         <TextInput
           radius="xl"
           placeholder={"Search concerns"}

@@ -1,26 +1,20 @@
 import React, { useMemo } from "react";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
-import { Collapse, Divider, Group, Progress, rem, Stack, Text } from "@mantine/core";
-import { upperFirst, useDisclosure } from "@mantine/hooks";
-import { BeforeAfterType } from "@/app/types";
-import { getRingColor } from "@/helpers/utils";
+import { Group, Progress, rem, Stack, Text } from "@mantine/core";
+import { normalizeString } from "@/helpers/utils";
+import { ScoreDifferenceType } from "@/types/global";
 import classes from "./LineProgressIndicators.module.css";
 
 type Props = {
   customStyles?: { [key: string]: any };
-  record: BeforeAfterType;
+  concernScoreDifference?: ScoreDifferenceType;
   title?: string;
 };
 
-export default function LineProgressIndicators({ customStyles, record, title }: Props) {
-  const { scoresDifference = {} } = record || {};
-  const { overall = 0, explanations, ...rest } = scoresDifference || {};
-  const [indicatorsOpen, { toggle: toggleOpenIndicators }] = useDisclosure(false);
-
-  const restFeatures = Object.entries(rest);
-  const showOverall = restFeatures.length > 1;
-  const allFeatures = showOverall ? [["overall", overall], ...restFeatures] : (restFeatures as any);
-
+export default function LineProgressIndicators({
+  title,
+  customStyles,
+  concernScoreDifference,
+}: Props) {
   const renderIndicator = ([label, value]: [string, number], index: number) => {
     const color = value < 0 ? "var(--mantine-color-red-7)" : "var(--mantine-color-green-7)";
 
@@ -30,7 +24,7 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
     return (
       <Group key={`${label}-${index}`} gap="sm">
         <Text size="sm" lineClamp={1}>
-          {upperFirst(label)}
+          {normalizeString(label)}
         </Text>
 
         <Progress.Root
@@ -46,21 +40,10 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
     );
   };
 
-  const firstThreeIndicators = useMemo(
-    () => allFeatures.slice(0, 1).map(renderIndicator),
-    [allFeatures, scoresDifference]
-  );
-
-  const restIndicators = useMemo(
-    () => allFeatures.slice(1).map(renderIndicator),
-    [allFeatures, scoresDifference]
-  );
-
-  const chevron = indicatorsOpen ? (
-    <IconChevronUp className="icon icon__small" />
-  ) : (
-    <IconChevronDown className="icon icon__small" />
-  );
+  const concernIndicator = useMemo(() => {
+    if (!concernScoreDifference) return;
+    return renderIndicator([concernScoreDifference.name, concernScoreDifference.value], 0);
+  }, [concernScoreDifference]);
 
   return (
     <Stack className={classes.container} style={customStyles || {}}>
@@ -70,22 +53,9 @@ export default function LineProgressIndicators({ customStyles, record, title }: 
             {title}
           </Text>
         )}
+
         <Stack className={`${classes.indicatorsWrapper} scrollbar`}>
-          {firstThreeIndicators}
-          {restIndicators.length > 0 && (
-            <>
-              <Divider
-                label={
-                  <Group c="dimmed" className={classes.labelGroup} onClick={toggleOpenIndicators}>
-                    {chevron}
-                  </Group>
-                }
-              />
-              <Collapse in={indicatorsOpen}>
-                <Stack gap={8}>{restIndicators}</Stack>
-              </Collapse>
-            </>
-          )}
+          <Stack gap={8}>{concernIndicator}</Stack>
         </Stack>
       </Stack>
     </Stack>

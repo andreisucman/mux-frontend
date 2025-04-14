@@ -6,7 +6,6 @@ export type OnUpdateBlurProps = {
   blurDots: BlurDotType[];
   offsets: OffsetType;
   url: string;
-  position: string;
 };
 
 export type HandleSelectProps = {

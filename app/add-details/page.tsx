@@ -10,8 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { UserDataType } from "@/types/global";
-import SkeletonWrapper from "../SkeletonWrapper";
-import classes from "./considerations.module.css";
+import classes from "./add-details.module.css";
 
 export const runtime = "edge";
 
@@ -52,7 +51,7 @@ export default function Considerations() {
     updateSpecialConsiderations(text);
 
     const stringParams = searchParams.toString();
-    router.push(`/start-date${stringParams ? `?${stringParams}` : ""}`);
+    router.push(`/choose-date${stringParams ? `?${stringParams}` : ""}`);
   }
 
   useEffect(() => {
@@ -63,27 +62,24 @@ export default function Considerations() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper>
-        <PageHeader title="Important details" />
-        <InstructionContainer
-          title="Instructions"
-          instruction={"Add details about yourself to tailor your routine."}
-          description="Adding this can significantly improve the effectiveness of the routine."
-          customStyles={{ flex: 0 }}
+      <PageHeader title="Add details" />
+      <InstructionContainer
+        title="Descrption"
+        instruction={"Adding details increases the effectiveness of the routine"}
+        customStyles={{ flex: 0 }}
+      />
+      <Stack className={classes.wrapper}>
+        <TextareaComponent
+          text={text}
+          placeholder={
+            "I have allergy to caffeine. Three months ago I was diagnosed with diabetes type 2, and therefore I can't take sugar-based medications or anything containing high glucose. I live in Florida. For the past month I have tried XYZ topical cream to improve my acne but saw no effect..."
+          }
+          setText={setText}
         />
-        <Stack className={classes.wrapper}>
-          <TextareaComponent
-            text={text}
-            placeholder={
-              "I have allergy to caffeine. Three months ago I was diagnosed with diabetes type 2, and therefore I can't take sugar-based medications or anything containing high glucose. I live in Florida. For the past month I have tried XYZ topical cream to improve my acne but saw no effect..."
-            }
-            setText={setText}
-          />
-          <Button loading={isLoading} onClick={() => onButtonClick(text)} disabled={isLoading}>
-            Next
-          </Button>
-        </Stack>
-      </SkeletonWrapper>
+      </Stack>
+      <Button loading={isLoading} onClick={() => onButtonClick(text)} disabled={isLoading}>
+        Next
+      </Button>
     </Stack>
   );
 }

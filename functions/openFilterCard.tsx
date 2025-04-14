@@ -1,6 +1,6 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import FilterCardContent from "@/app/GeneralResultsHeader/FilterCardContent";
+import FilterCardContent from "@/components/FilterCardContent/FilterCardContent";
 import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent";
 import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
 import DiaryFilterCardContent from "@/components/DiaryFilterCardContent";

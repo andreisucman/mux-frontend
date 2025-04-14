@@ -28,7 +28,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { nextRoutine, latestProgress, subscriptions } = userDetails || {};
+  const { nextRoutine, latestConcernScores, subscriptions } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } =
     checkSubscriptionActivity(["improvement"], subscriptions) || {};
@@ -53,18 +53,14 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     if (isLoading) return;
 
     if (isSubscriptionActive) {
-      const partsScanned = Object.entries(latestProgress || {})
-        .filter((gr) => typeof gr[1] !== "number")
-        .filter((gr) => gr[1])
-        .map((gr) => gr[0]);
+      const partsScanned = Object.keys(latestConcernScores || {});
 
       if (partsScanned && partsScanned.length > 0) {
         const relevantRoutines = nextRoutine?.filter((obj) => partsScanned.includes(obj.part));
-
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }
     } else {
-      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sort-concerns`;
+      const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/add-details`;
       const cancelUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}`;
 
       addImprovementCoach({

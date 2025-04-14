@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Stack } from "@mantine/core";
 import WaitComponent from "@/components/WaitComponent";
@@ -21,11 +21,6 @@ export default function WaitPage() {
 
   const encodedRedirectUrl = searchParams.get("redirectUrl") || "/analysis";
   const redirectUrl = decodeURIComponent(encodedRedirectUrl);
-
-  const hideDisclaimer = useMemo(() => {
-    const path = redirectUrl.split("?").shift();
-    return path !== "/analysis";
-  }, [redirectUrl]);
 
   const onComplete = useCallback(
     (userData: UserDataType) => {
@@ -56,7 +51,6 @@ export default function WaitPage() {
         description="Analyzing your data"
         operationKey={operationKey}
         errorRedirectUrl={onErrorRedirectUrl || "/scan"}
-        hideDisclaimer={hideDisclaimer}
         onComplete={onComplete}
         onError={onError}
       />

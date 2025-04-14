@@ -3,15 +3,32 @@ import cn from "classnames";
 import { DonutChart } from "@mantine/charts";
 import { Stack, Text, Title } from "@mantine/core";
 import { normalizeString } from "@/helpers/utils";
-import classes from "./ConcernCard.module.css";
+import classes from "./AnalysisCard.module.css";
 
-type Props = { currentScore: number; changeScore: number; concern: string; explanation: string };
+type Props = {
+  currentScore: number;
+  changeScore: number;
+  concern: string;
+  explanation: string;
+  isReverse?: boolean;
+};
 
-export default function ConcernCard({ currentScore, changeScore, concern, explanation }: Props) {
-  const data = [
-    { name: "Not ok", value: currentScore, color: "var(--mantine-color-red-7)" },
-    { name: "Ok", value: 100 - currentScore, color: "var(--mantine-color-green-7)" },
-  ];
+export default function AnalysisCard({
+  currentScore,
+  changeScore,
+  concern,
+  explanation,
+  isReverse,
+}: Props) {
+  const data = isReverse
+    ? [
+        { name: "Ok", value: currentScore, color: "var(--mantine-color-green-7)" },
+        { name: "Not ok", value: 100 - currentScore, color: "var(--mantine-color-gray-7)" },
+      ]
+    : [
+        { name: "Not ok", value: currentScore, color: "var(--mantine-color-red-7)" },
+        { name: "Ok", value: 100 - currentScore, color: "var(--mantine-color-gray-7)" },
+      ];
 
   const change = useMemo(() => {
     if (!changeScore) return;

@@ -5,7 +5,7 @@ import classes from "./ConcernRow.module.css";
 
 type Props = {
   isChecked: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   item: FilterItemType;
   handleSelectConcerns: (item: FilterItemType) => void;
 };

@@ -8,15 +8,14 @@ export const protectedPaths = [
   "/results",
   "/results/proof",
   "/upload-proof",
-  "/sort-concerns",
-  "/considerations",
+  "/add-details",
   "/club",
   "/club/join",
   "/waitroom",
   "/routines",
   "/diary",
   "/verify-email",
-  "/start-date",
+  "/choose-date",
   "/club/manage-routines",
 ];
 

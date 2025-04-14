@@ -44,7 +44,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   const [showBlur, setShowBlur] = useState(false);
   const [blurDots, setBlurDots] = useState<BlurDotType[]>([]);
 
-  const { _id: userId, toAnalyze, latestProgress } = userDetails || {};
+  const { _id: userId, toAnalyze, latestProgressImages } = userDetails || {};
 
   const distinctUploadedParts = [
     ...new Set(toAnalyze?.map((obj) => obj.part).filter(Boolean)),
@@ -60,20 +60,20 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   }, [toAnalyze]);
 
   const imagesMissingUpdates = useMemo(() => {
-    if (!latestProgress) return [];
+    if (!latestProgressImages || !latestProgressImages[part]) return [];
 
-    const partProgress = latestProgress[part];
+    const partProgressImage = latestProgressImages[part];
 
-    if (!partProgress) return [];
+    if (!partProgressImage) return [];
 
-    const { images } = partProgress;
+    const images = partProgressImage.map((obj) => obj.mainUrl.url);
 
     if (!toAnalyze || toAnalyze?.length === 0) return images;
 
     const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
 
-    return images.filter((imo) => uploadedUrls.includes(imo.mainUrl.url));
-  }, [toAnalyze, latestProgress?.[part]]);
+    return images.filter((url) => uploadedUrls.includes(url));
+  }, [toAnalyze, latestProgressImages?.[part]]);
 
   const handleToggleBlur = () => {
     setShowBlur((prev: boolean) => {
@@ -149,7 +149,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
-    const finalOverlayImage = overlayImage || imagesMissingUpdates[0]?.mainUrl?.url;
+    const finalOverlayImage = overlayImage || imagesMissingUpdates[0];
     const lastToAnalyzeObject = await handleUpload({
       part,
       url: localUrl,
@@ -264,7 +264,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                   <Checkbox
                     className={classes.checkbox}
                     checked={!!overlayImage}
-                    onChange={() => handleOverlayPrevious(imagesMissingUpdates[0].mainUrl.url)}
+                    onChange={() => handleOverlayPrevious(imagesMissingUpdates[0])}
                     label="Overlay previous"
                   />
                 </>

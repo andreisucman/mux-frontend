@@ -5,8 +5,19 @@ import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import { ExistingFiltersType } from "./types";
 import classes from "./FilterCardContent.module.css";
+
+export type ExistingFiltersType = {
+  ethnicity: string[];
+  skinColor: string[];
+  concerns: string[];
+  ageInterval: string[];
+  sex: string[];
+  type: string[];
+  part: string[];
+  styleName: string[];
+  taskName: string[];
+};
 
 type Props = {
   filters?: ExistingFiltersType | null;
@@ -52,17 +63,7 @@ export default function FilterCardContent({ filters }: Props) {
     <Stack className={classes.container}>
       {filters ? (
         <>
-          {concernFilters.length > 0 && (
-            <FilterDropdown
-              data={concernFilters}
-              selectedValue={concern}
-              filterType="concern"
-              placeholder="Select concern"
-              customStyles={styles}
-              allowDeselect
-              addToQuery
-            />
-          )}
+    
           {partFilters.length > 0 && (
             <FilterDropdown
               data={partFilters}

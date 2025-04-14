@@ -3,8 +3,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Button, rem, Skeleton, Stack, Text } from "@mantine/core";
-import ConcernCard from "@/components/ConcernCard";
+import { Button, rem, SegmentedControl, Skeleton, Stack, Text, Title } from "@mantine/core";
+import AnalysisCard from "@/components/AnalysisCard";
+import AnalysisLegend from "@/components/AnalysisCard/AnalysisLegend";
 import FilterDropdown from "@/components/FilterDropdown";
 import GlowingButton from "@/components/GlowingButton";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -17,8 +18,6 @@ import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import { ReferrerEnum } from "../auth/AuthForm/types";
-import FeatureAnalysisCard from "./FeatureAnalysisCard";
-import SkinHealthyCard from "./SkinHealthyCard";
 import classes from "./analysis.module.css";
 
 export const runtime = "edge";
@@ -37,45 +36,31 @@ export default function Analysis() {
 
   const {
     _id: userId,
-    latestProgress,
     latestConcernScores,
     latestConcernScoresDifference,
-    latestFeatureScores,
-    latestFeatureScoresDifference,
+    latestProgressImages,
   } = userDetails || {};
 
-  const isEmpty = useMemo(
-    () => latestProgress && !latestProgress[part as "face"],
-    [latestProgress, part]
-  );
+  const checkPresence = useMemo(() => {
+    const partConcerns = latestConcernScores?.[part as "face"];
+    const noConcerns = (partConcerns || []).filter((item) => item.value > 0).length === 0;
+    const noAnalysis = !latestProgressImages?.[part];
 
-  const noConcerns = useMemo(() => {
-    if (!latestConcernScores || isEmpty) return;
-    const partConcerns = latestConcernScores[part as "face"];
+    return { noConcerns, noAnalysis };
+  }, [latestConcernScores, latestProgressImages, part]);
 
-    return partConcerns.filter((item) => item.value > 0).length === 0;
-  }, [latestConcernScores, part]);
+  const { noConcerns, noAnalysis } = checkPresence;
 
-  const noFeatures = useMemo(() => {
-    if (!latestFeatureScores || isEmpty) return;
-    const partFeatures = latestFeatureScores[part as "face"];
+  const cards = useMemo(() => {
+    const partLatestConcernScores = latestConcernScores?.[part as "face"] || [];
+    const partLatestConcernScoreDifference = latestConcernScoresDifference?.[part as "face"] || [];
 
-    return partFeatures.filter((item) => item.value > 0).length === 0;
-  }, [latestFeatureScores, part]);
-
-  const concernCards = useMemo(() => {
-    if (!latestConcernScores || !latestConcernScoresDifference || isEmpty) return;
-
-    const partLatestConcernScores = latestConcernScores[part as "face"];
-
-    const partLatestScoreDifference = latestConcernScoresDifference[part as "face"];
-
-    return partLatestConcernScores.map((obj, i) => {
-      const relevantDifferenceObject = partLatestScoreDifference.find(
+    const concernCards = partLatestConcernScores.map((obj, i) => {
+      const relevantDifferenceObject = partLatestConcernScoreDifference.find(
         (dobj) => dobj.name === obj.name
       ) || { value: 0 };
       return (
-        <ConcernCard
+        <AnalysisCard
           key={i}
           currentScore={obj.value}
           changeScore={relevantDifferenceObject.value}
@@ -84,7 +69,11 @@ export default function Analysis() {
         />
       );
     });
-  }, [part, isEmpty, latestConcernScores, latestConcernScoresDifference]);
+
+    return { concernCards };
+  }, [part, latestConcernScores, latestConcernScoresDifference]);
+
+  const { concernCards } = cards;
 
   const handleClick = useCallback(() => {
     if (isLoading) return;
@@ -114,14 +103,12 @@ export default function Analysis() {
       router.replace(`/`);
     }
 
-    if (latestProgress !== null && isEmpty) {
+    if (noAnalysis) {
       setDisplayComponent("upload");
-    } else if (noConcerns) {
-      setDisplayComponent("healthy");
-    } else if (latestProgress) {
+    } else {
       setDisplayComponent("carousel");
     }
-  }, [part, isEmpty, noConcerns, pageLoaded, userDetails]);
+  }, [part, noAnalysis, noConcerns, pageLoaded, userDetails]);
 
   useEffect(() => {
     setPageLoaded(true);
@@ -148,7 +135,11 @@ export default function Analysis() {
             icon={<IconCircleOff size={24} />}
             text={`There is no analysis for ${part}`}
             button={
-              <Button mt={8} variant="default" onClick={() => router.push("/select-part")}>
+              <Button
+                mt={8}
+                variant="default"
+                onClick={() => router.push(`/select-concerns?part=${part}`)}
+              >
                 Create
               </Button>
             }
@@ -157,15 +148,24 @@ export default function Analysis() {
           <Stack className={classes.content}>
             {displayComponent === "carousel" && (
               <>
-                <Text size="sm" c="dimmed">
-                  Severity of concerns
-                </Text>
-                {concernCards}
+                {noConcerns && (
+                  <>
+                    <Stack m={"1.5rem 0"}>
+                      <Title ta="center">Your {part} looks healthy!</Title>
+                      <Text ta="center">We couldn't find any concerns from your photos!</Text>
+                    </Stack>
+                  </>
+                )}
+
+                {!noConcerns && (
+                  <>
+                    <AnalysisLegend color="var(--mantine-color-red-7)" text="Severity" />
+                    {concernCards}
+                  </>
+                )}
               </>
             )}
-            {displayComponent === "healthy" && (
-              <SkinHealthyCard part={part} latestFeatureScores={latestFeatureScores} />
-            )}
+
             <GlowingButton
               loading={isLoading}
               disabled={isLoading}

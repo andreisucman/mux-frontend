@@ -1,7 +1,7 @@
 .container {
   align-items: center;
 
-  margin: rem(24) 0;
+  margin: rem(32) 0;
 }
 
 .content {
@@ -9,7 +9,6 @@
 }
 
 .titleStack {
-  z-index: -1;
   position: absolute;
   top: 50%;
   left: 50%;

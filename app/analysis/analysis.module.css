@@ -25,3 +25,9 @@
   padding: rem(16);
   flex: 1;
 }
+
+.segmentedControl {
+  position: absolute;
+  right: rem(16);
+  top: rem(16);
+}

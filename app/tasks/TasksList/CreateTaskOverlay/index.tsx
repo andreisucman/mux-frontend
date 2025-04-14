@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button, Stack, Text, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
@@ -20,10 +20,15 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
   const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
     useContext(CreateRoutineContext);
   const { userDetails } = useContext(UserContext);
-  const { latestProgress } = userDetails || {};
+  const { latestProgressImages } = userDetails || {};
+
+  const nothingScanned = useMemo(() => {
+    const values = Object.values(latestProgressImages || {});
+    return values.filter(Boolean).length === 0;
+  }, [latestProgressImages]);
 
   const onCreateManuallyClick = () => {
-    if (!latestProgress?.overall) {
+    if (nothingScanned) {
       openErrorModal({
         title: "Please scan yourself",
         description: (

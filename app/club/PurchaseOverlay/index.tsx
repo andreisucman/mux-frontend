@@ -36,7 +36,7 @@ export default function PurchaseOverlay({
   const [selectedCardData, setSelectedCardData] = useState<PurchaseOverlayDataType>();
   const { _id: userId, club } = userDetails || {};
 
-  const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
@@ -149,20 +149,20 @@ export default function PurchaseOverlay({
     });
   }, [userId, isLoading, redirectUrl, status, selectedCardData]);
 
-  const handleChangeCard = (part: string) => {
-    const query = modifyQuery({ params: [{ name: "part", value: part, action: "replace" }] });
+  const handleChangeCard = (concern: string) => {
+    const query = modifyQuery({ params: [{ name: "concern", value: concern, action: "replace" }] });
     defaultRouter.replace(`${pathname}?${query}`);
-    const relevantData = purchaseOverlayData.find((o) => o.part === part);
+    const relevantData = purchaseOverlayData.find((o) => o.concern === concern);
     if (!relevantData) return;
     setSelectedCardData(relevantData);
   };
 
   const segments = useMemo(() => {
     return purchaseOverlayData.map((obj, i) => {
-      const label = upperFirst(obj.part);
+      const label = upperFirst(obj.concern);
       return {
         label,
-        value: obj.part,
+        value: obj.concern,
       };
     });
   }, [purchaseOverlayData]);
@@ -170,16 +170,16 @@ export default function PurchaseOverlay({
   useEffect(() => {
     let selectedData;
 
-    if (part) {
-      selectedData = purchaseOverlayData.find((obj) => obj.part === part);
+    if (concern) {
+      selectedData = purchaseOverlayData.find((obj) => obj.concern === concern);
     } else {
-      const filteredPurchaseOverlayData = purchaseOverlayData.filter(
-        (o) => notPurchasedParts.includes(o.part)
+      const filteredPurchaseOverlayData = purchaseOverlayData.filter((o) =>
+        notPurchasedParts.includes(o.concern)
       );
       selectedData = filteredPurchaseOverlayData[0];
     }
     setSelectedCardData(selectedData);
-  }, [part]);
+  }, [concern]);
 
   return (
     <Stack className={classes.container}>
@@ -194,7 +194,7 @@ export default function PurchaseOverlay({
             segments.length > 1 ? (
               <SegmentedControl
                 data={segments}
-                value={part || notPurchasedParts[0] || selectedCardData?.part}
+                value={concern || notPurchasedParts[0] || selectedCardData?.concern}
                 className={classes.segmentedControl}
                 onChange={handleChangeCard}
               />

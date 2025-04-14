@@ -1,9 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconChevronDown, IconChevronUp, IconTrendingUp } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
-import ScoreCell from "@/components/ScoreCell";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
@@ -69,17 +68,9 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
         {intro && (
           <Collapse in={showCollapsedInfo}>
             {!isMini && (
-              <Group gap={0}>
-                <Text size="sm" lineClamp={5} mr={8}>
-                  {intro}{" "}
-                </Text>
-                {partOverall && (
-                  <ScoreCell
-                    score={partOverall.overall}
-                    icon={<IconTrendingUp className="icon icon__small" />}
-                  />
-                )}
-              </Group>
+              <Text size="sm" lineClamp={5} mr={8}>
+                {intro}{" "}
+              </Text>
             )}
             {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
           </Collapse>

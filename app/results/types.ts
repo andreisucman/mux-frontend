@@ -1,4 +1,4 @@
-import { PartEnum, ProgressImageType } from "@/types/global";
+import { PartEnum, ProgressImageType, ScoreDifferenceType, ScoreType } from "@/types/global";
 
 export type SimpleProgressType = {
   _id: string;
@@ -6,8 +6,8 @@ export type SimpleProgressType = {
   part: PartEnum;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
-  scores: { [key: string]: number };
-  scoresDifference: { [key: string]: number };
+  concernScore?: ScoreType;
+  concernScoreDifference?: ScoreDifferenceType;
   createdAt: string;
   initialDate: string;
   isPublic: boolean;

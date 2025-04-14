@@ -54,7 +54,7 @@ export default function ClubRoutines(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>();
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
@@ -273,8 +273,8 @@ export default function ClubRoutines(props: Props) {
 
   useEffect(() => {
     if (!purchaseOverlayData || !userName) return;
-    const availableParts = purchaseOverlayData.map((obj) => obj.part);
-    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
+    setAvailableConcerns(availableConcerns.map((c) => ({ value: c, label: upperFirst(c) })));
   }, [userName, purchaseOverlayData]);
 
   const showButton =
@@ -292,12 +292,12 @@ export default function ClubRoutines(props: Props) {
           filterNames={["part"]}
           defaultSortValue="-startsAt"
           sortItems={routineSortItems}
-          isDisabled={!availableParts}
+          isDisabled={!availableConcerns}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
               childrenProps: {
-                filterItems: availableParts,
+                filterItems: availableConcerns,
                 userName,
               },
             })

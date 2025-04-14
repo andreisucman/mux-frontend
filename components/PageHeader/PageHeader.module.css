@@ -14,3 +14,7 @@
 .nowrapContainer {
   flex-wrap: nowrap;
 }
+
+.center {
+  align-items: center;
+}

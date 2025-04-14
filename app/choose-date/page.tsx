@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -12,9 +11,8 @@ import addImprovementCoach from "@/helpers/addImprovementCoach";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { daysFrom } from "@/helpers/utils";
-import { UserConcernType, UserSubscriptionsType } from "@/types/global";
-import SkeletonWrapper from "../SkeletonWrapper";
-import classes from "./start-date.module.css";
+import { PartEnum, UserConcernType, UserSubscriptionsType } from "@/types/global";
+import classes from "./choose-date.module.css";
 
 export const runtime = "edge";
 
@@ -25,7 +23,7 @@ type CreateRoutineProps = {
   specialConsiderations: string;
 };
 
-export default function StartDate() {
+export default function ChooseDatePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +32,7 @@ export default function StartDate() {
   const [creationMode, setCreationMode] = useState("scratch");
   const { specialConsiderations, concerns, subscriptions, nextRoutine } = userDetails || {};
 
-  const part = searchParams.get("part");
+  const part = searchParams.get("part") || "face";
 
   const savedCreationMode = getFromLocalStorage("creationMode");
 
@@ -44,22 +42,24 @@ export default function StartDate() {
   }, []);
 
   const createRoutine = async ({
-    concerns,
     startDate,
+    concerns = [],
     subscriptions,
     specialConsiderations,
   }: CreateRoutineProps) => {
-    if (isLoading || !startDate || !concerns || !subscriptions) return;
+    if (isLoading || !startDate || !subscriptions) return;
     setIsLoading(true);
 
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
+
+    const partConcerns = concerns.filter((co) => co.part === part);
 
     const response = await callTheServer({
       endpoint: "createRoutine",
       method: "POST",
       body: {
         part,
-        concerns,
+        concerns: partConcerns,
         creationMode,
         routineStartDate: startDate,
         specialConsiderations,
@@ -96,10 +96,6 @@ export default function StartDate() {
     return nextRoutine?.some((obj) => obj.part === part && !!obj.date);
   }, [part, nextRoutine]);
 
-  const description = isNotFirstTime
-    ? ""
-    : "Consider scheduling your routine 2-3 days into the future. This will give you time to adjust and get the necessary products.";
-
   useEffect(() => {
     if (savedCreationMode) {
       setCreationMode(savedCreationMode as string);
@@ -108,73 +104,61 @@ export default function StartDate() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper>
-        <PageHeader title="Choose start date" />
-        <InstructionContainer
-          title="Instructions"
-          instruction={"Choose the start date of your routine."}
-          description={description}
-          customStyles={{ flex: 0 }}
+      <PageHeader title="Choose start date" />
+      <Stack className={classes.wrapper}>
+        <DatePicker
+          level="month"
+          m="auto"
+          w="100%"
+          minDate={new Date()}
+          maxDate={daysFrom({ days: 7 })}
+          value={startDate}
+          onChange={setStartDate}
+          hideOutsideDates
+          classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
         />
-        <Stack className={classes.wrapper}>
-          <DatePicker
-            level="month"
-            m="auto"
-            w="100%"
-            minDate={new Date()}
-            maxDate={daysFrom({ days: 7 })}
-            value={startDate}
-            onChange={setStartDate}
-            hideOutsideDates
-            classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
-          />
-          <Text className={classes.date}>{text}</Text>
-          {isNotFirstTime && (
-            <Radio.Group
-              name="routineMode"
-              value={creationMode}
-              onChange={handleChangeCreationMode}
-            >
-              <Group className={classes.radioButtonsGroup}>
-                <Radio
-                  value="continue"
-                  label="Review existing"
-                  classNames={{
-                    root: classes.radioButton,
-                    body: classes.radioBody,
-                    labelWrapper: classes.labelWrapper,
-                    label: classes.label,
-                  }}
-                />
-                <Radio
-                  value="scratch"
-                  label="From scratch"
-                  classNames={{
-                    root: classes.radioButton,
-                    body: classes.radioBody,
-                    labelWrapper: classes.labelWrapper,
-                    label: classes.label,
-                  }}
-                />
-              </Group>
-            </Radio.Group>
-          )}
-          <Button
-            loading={isLoading}
-            onClick={() =>
-              createRoutine({
-                concerns,
-                startDate,
-                subscriptions,
-                specialConsiderations: specialConsiderations || "",
-              })
-            }
-            disabled={isLoading || !startDate}
-          >
-            Create
-          </Button>
-        </Stack>
-      </SkeletonWrapper>
+        <Text className={classes.date}>{text}</Text>
+        {isNotFirstTime && (
+          <Radio.Group name="routineMode" value={creationMode} onChange={handleChangeCreationMode}>
+            <Group className={classes.radioButtonsGroup}>
+              <Radio
+                value="continue"
+                label="Review existing"
+                classNames={{
+                  root: classes.radioButton,
+                  body: classes.radioBody,
+                  labelWrapper: classes.labelWrapper,
+                  label: classes.label,
+                }}
+              />
+              <Radio
+                value="scratch"
+                label="From scratch"
+                classNames={{
+                  root: classes.radioButton,
+                  body: classes.radioBody,
+                  labelWrapper: classes.labelWrapper,
+                  label: classes.label,
+                }}
+              />
+            </Group>
+          </Radio.Group>
+        )}
+      </Stack>
+      <Button
+        loading={isLoading}
+        onClick={() =>
+          createRoutine({
+            concerns,
+            startDate,
+            subscriptions,
+            specialConsiderations: specialConsiderations || "",
+          })
+        }
+        disabled={isLoading || !startDate}
+      >
+        Create
+      </Button>
     </Stack>
   );
 }

@@ -40,7 +40,7 @@ export default function ProgressGallery({
 }: Props) {
   const searchParams = useSearchParams();
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
   const sort = searchParams.get("sort");
 
   const appliedBlurType = progress?.[0]?.images?.[0]?.mainUrl?.name;
@@ -72,7 +72,7 @@ export default function ProgressGallery({
           }
           loadMore={() =>
             handleFetchProgress({
-              part,
+              concern,
               skip: hasMore,
               currentArray: progress,
               userName,

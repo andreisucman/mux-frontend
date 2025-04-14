@@ -1,4 +1,12 @@
-import { AvatarType, DemographicsType, PartEnum, ProgressImageType, UserConcernType } from "@/types/global";
+import {
+  AvatarType,
+  DemographicsType,
+  PartEnum,
+  ProgressImageType,
+  ScoreDifferenceType,
+  ScoreType,
+  UserConcernType,
+} from "@/types/global";
 
 export type BeforeAfterType = {
   _id: string;
@@ -6,8 +14,8 @@ export type BeforeAfterType = {
   part: PartEnum;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
-  scores: { [key: string]: number };
-  scoresDifference: { [key: string]: number };
+  concernScore?: ScoreType;
+  concernScoreDifference?: ScoreDifferenceType;
   initialDate: string;
   isPublic: boolean;
   updatedAt?: Date;

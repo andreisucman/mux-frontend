@@ -12,13 +12,13 @@ type Props = {
 };
 
 function ProgressIndicator({ customStyles, showTitle = false, ringSize, record }: Props) {
-  const { scoresDifference } = record || {};
-  const { overall = 0, explanations, ...rest } = scoresDifference || {};
-  let restFeatures = Object.entries(rest);
+  const { concernScoreDifference } = record || {};
+  const { explanations, ...rest } = concernScoreDifference || {};
 
-  if (restFeatures.length > 1) restFeatures.unshift(["Overall", overall]);
-
-  const ringColor = useMemo(() => getRingColor(overall), [overall]);
+  const ringColor = useMemo(
+    () => getRingColor(concernScoreDifference.value),
+    [concernScoreDifference]
+  );
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}} gap={0}>
@@ -26,12 +26,12 @@ function ProgressIndicator({ customStyles, showTitle = false, ringSize, record }
         ringSize={ringSize}
         data={[
           {
-            value: overall as number,
+            value: concernScoreDifference.value as number,
             label: "Overall",
             color: ringColor,
           },
           {
-            value: 100 - (overall as number),
+            value: 100 - (concernScoreDifference.value as number),
             label: "Overall",
             color: "gray.4",
           },

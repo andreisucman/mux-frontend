@@ -51,13 +51,13 @@ export default function BlurEditorSlide({
       blurDots,
       url: selectedUrlObject?.url || "",
       offsets,
-      position: image.position,
     });
     setIsLoading(false);
 
     const { images } = response || {};
-    const position = image.position;
-    const newRelevantImage = images?.find((io) => io.position === position);
+    const newRelevantImage = images?.find((io) =>
+      io.urls.some((urlObj) => urlObj.url === selectedUrlObject?.url)
+    );
     setSelectedUrlObject(newRelevantImage?.mainUrl);
     setEditorImages(images);
     setShowBlur(false);

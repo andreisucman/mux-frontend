@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import TitleDropdown, { TitleType } from "@/app/results/TitleDropdown";
 import FilterButton from "../FilterButton";
 import SortButton from "../SortButton";
 import classes from "./PageHeader.module.css";
-import { IconChevronLeft } from "@tabler/icons-react";
 
 type Props = {
   title?: string | React.ReactNode;
@@ -19,6 +19,7 @@ type Props = {
   filterNames?: string[];
   children?: React.ReactNode;
   onFilterClick?: () => void;
+  center?: boolean;
 };
 
 export default function PageHeader({
@@ -31,6 +32,7 @@ export default function PageHeader({
   defaultSortValue,
   filterNames = [],
   children,
+  center,
   onFilterClick,
 }: Props) {
   const router = useRouter();
@@ -51,7 +53,9 @@ export default function PageHeader({
           <Title
             order={1}
             lineClamp={3}
-            className={cn(classes.title, { [classes.nowrapTitle]: nowrapTitle })}
+            className={cn(classes.title, {
+              [classes.nowrapTitle]: nowrapTitle,
+            })}
           >
             {title}
           </Title>
@@ -63,8 +67,13 @@ export default function PageHeader({
   }, [titles, title]);
 
   return (
-    <Group className={cn(classes.container, { [classes.nowrapContainer]: nowrapContainer })}>
-       <ActionIcon variant="default" onClick={() => router.back()}>
+    <Group
+      className={cn(classes.container, {
+        [classes.nowrapContainer]: nowrapContainer,
+        [classes.center]: center,
+      })}
+    >
+      <ActionIcon variant="default" onClick={() => router.back()}>
         <IconChevronLeft className="icon" />
       </ActionIcon>
       {finalTitle}

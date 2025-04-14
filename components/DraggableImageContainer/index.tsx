@@ -82,7 +82,7 @@ export default function DraggableImageContainer({
 
   const handleAddDot = () => {
     if (!imageRef.current) return;
-    if (blurDots.length > 1) return;
+    if (blurDots.length > 2) return;
 
     const id = Math.random().toString(36).slice(2, 9);
     const renderedWidth = imageRef.current.clientWidth;

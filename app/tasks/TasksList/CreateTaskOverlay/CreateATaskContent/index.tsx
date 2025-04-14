@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Group, rem, Select, Stack, Text, TextInput } from "@mantine/core";
+import { rem, Select, Stack, Text, TextInput } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import ToCompleteInput from "@/components/ToCompleteInput";
 import { normalizeString } from "@/helpers/utils";
@@ -44,13 +44,11 @@ export default function CreateATaskContent({
 
   useEffect(() => {
     if (allConcerns.length > 0) {
-      const formattedConcerns = allConcerns
-        .filter((co) => !co.isDisabled)
-        .map((co) => ({
-          label: normalizeString(co.name),
-          value: co.name,
-          part: co.part,
-        }));
+      const formattedConcerns = allConcerns.map((co) => ({
+        label: normalizeString(co.name),
+        value: co.name,
+        part: co.part,
+      }));
       setFormattedConcerns(formattedConcerns);
       setRelevantConcerns(formattedConcerns);
     }
@@ -156,7 +154,6 @@ export default function CreateATaskContent({
         }
         placeholder="Select relevant concern"
         withAsterisk
-        searchable
       />
       <ToCompleteInput
         title={"Example embeddable video id (optional)"}

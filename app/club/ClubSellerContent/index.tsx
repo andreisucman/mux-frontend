@@ -12,7 +12,7 @@ export default function ClubSellerContent() {
   const [hasMore, setHasMore] = useState(false);
   const [buyers, setBuyers] = useState<PurchaseType[]>();
   const { userDetails } = useContext(UserContext);
-  const { name, avatar, club, latestScoresDifference } = userDetails || {};
+  const { name, avatar, club } = userDetails || {};
   const { intro, socials } = club || { socials: [] };
 
   const handleFetchPurchases = useCallback(
@@ -35,11 +35,7 @@ export default function ClubSellerContent() {
 
   return (
     <Skeleton className={classes.container} visible={!userDetails}>
-      <ClubProfilePreview
-        data={{ name, avatar, intro, socials, latestScoresDifference }}
-        type="you"
-        showButton
-      />
+      <ClubProfilePreview data={{ name, avatar, intro, socials }} type="you" showButton />
       <BalancePane />
       <Stack className={classes.list}>
         <Text c="dimmed" size="sm">

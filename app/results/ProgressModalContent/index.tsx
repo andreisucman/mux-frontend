@@ -23,7 +23,16 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { userName, images, initialImages, updatedAt, createdAt, isPublic, initialDate } = record;
+  const {
+    userName,
+    concernScoreDifference,
+    images,
+    initialImages,
+    updatedAt,
+    createdAt,
+    isPublic,
+    initialDate,
+  } = record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
@@ -48,7 +57,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      <LineProgressIndicators title="Difference" record={record} />
+      <LineProgressIndicators title="Improvement" concernScoreDifference={concernScoreDifference} />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

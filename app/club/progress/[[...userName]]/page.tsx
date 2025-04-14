@@ -41,7 +41,7 @@ export default function ClubProgress(props: Props) {
   const { status: authStatus, userDetails } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -50,7 +50,7 @@ export default function ClubProgress(props: Props) {
   >("none");
   const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
-  const part = searchParams.get("part");
+  const concern = searchParams.get("concern") || availableConcerns?.[0]?.value;
   const sort = searchParams.get("sort");
 
   const { name } = userDetails || {};
@@ -58,31 +58,29 @@ export default function ClubProgress(props: Props) {
   const isSelf = userName === name;
 
   const handleFetchProgress = useCallback(
-    async ({ part, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
-      try {
-        const message = await fetchProgress({
-          part,
-          sort,
-          currentArrayLength: (currentArray && currentArray.length) || 0,
-          userName,
-          skip,
-        });
+    async ({ concern, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
+      const message = await fetchProgress({
+        concern,
+        sort,
+        currentArrayLength: (currentArray && currentArray.length) || 0,
+        userName,
+        skip,
+      });
 
-        const { priceData, data, notPurchased } = message || {};
+      const { priceData, data, notPurchased } = message || {};
 
-        setPurchaseOverlayData(priceData ? priceData : null);
+      setPurchaseOverlayData(priceData ? priceData : null);
 
-        if (message) {
-          setNotPurchased(notPurchased);
+      if (message) {
+        setNotPurchased(notPurchased);
 
-          if (skip) {
-            setProgress([...(currentArray || []), ...data.slice(0, 20)]);
-          } else {
-            setProgress(data.slice(0, 20));
-          }
-          setHasMore(data.length === 21);
+        if (skip) {
+          setProgress([...(currentArray || []), ...data.slice(0, 20)]);
+        } else {
+          setProgress(data.slice(0, 20));
         }
-      } catch (err) {}
+        setHasMore(data.length === 21);
+      }
     },
     [progress]
   );
@@ -102,9 +100,9 @@ export default function ClubProgress(props: Props) {
   );
 
   const manageOverlays = useCallback(() => {
-    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    const isCurrentConcernPurchased = concern && !notPurchased.includes(concern);
 
-    if (isCurrentPartPurchased) {
+    if (isCurrentConcernPurchased) {
       if (notPurchased.length > 0) {
         setShowOverlayComponent("showOtherRoutinesButton");
       } else {
@@ -113,29 +111,30 @@ export default function ClubProgress(props: Props) {
     } else if (notPurchased.length > 0) {
       setShowOverlayComponent("purchaseOverlay");
     }
-  }, [part, notPurchased]);
+  }, [concern, notPurchased]);
 
   const handleCloseOverlay = useCallback(() => {
-    const isCurrentPartPurchased = part && !notPurchased.includes(part);
-    if (isCurrentPartPurchased) {
+    const isCurrentConcernPurchased = concern && !notPurchased.includes(concern);
+    if (isCurrentConcernPurchased) {
       setShowOverlayComponent("showOtherRoutinesButton");
     } else {
       setShowOverlayComponent("maximizeButton");
     }
-  }, [part, notPurchased]);
+  }, [concern, notPurchased]);
 
   useEffect(() => {
     manageOverlays();
-  }, [part, notPurchased]);
+  }, [concern, notPurchased]);
 
   useEffect(() => {
-    handleFetchProgress({ part, sort, userName });
-  }, [authStatus, userName, sort, part]);
+    if (!concern) return;
+    handleFetchProgress({ concern, sort, userName });
+  }, [authStatus, userName, sort, concern]);
 
   useEffect(() => {
     if (!purchaseOverlayData || !userName) return;
-    const availableParts = purchaseOverlayData.map((obj) => obj.part);
-    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
+    setAvailableConcerns(availableConcerns.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
   const showButton =
@@ -157,7 +156,7 @@ export default function ClubProgress(props: Props) {
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
               childrenProps: {
-                filterItems: availableParts,
+                filterItems: availableConcerns,
               },
             })
           }

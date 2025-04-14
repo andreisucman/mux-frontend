@@ -43,7 +43,7 @@ export default function DiaryPage(props: Props) {
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
-  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [showOverlayComponent, setShowOverlayComponent] = useState<
     "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
   >("none");
@@ -120,8 +120,8 @@ export default function DiaryPage(props: Props) {
 
   useEffect(() => {
     if (!purchaseOverlayData || !userName) return;
-    const availableParts = purchaseOverlayData.map((obj) => obj.part);
-    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
+    setAvailableConcerns(availableConcerns.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
   const showButton =
@@ -142,7 +142,7 @@ export default function DiaryPage(props: Props) {
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
-              childrenProps: { filterItems: availableParts },
+              childrenProps: { filterItems: availableConcerns },
             })
           }
           isDisabled={!diaryRecords}

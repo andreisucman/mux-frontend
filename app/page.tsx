@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ComparisonCarousel from "@/components/ComparisonCarousel";
+import { ExistingFiltersType } from "@/components/FilterCardContent/FilterCardContent";
+import FilterDropdown from "@/components/FilterDropdown";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
-import GeneralResultsHeader from "./GeneralResultsHeader";
+import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import { normalizeString } from "@/helpers/utils";
 import { BeforeAfterType } from "./types";
 import classes from "./page.module.css";
 
@@ -19,11 +23,19 @@ type FetchBeforeAftersProps = {
   existingCount?: number;
 };
 
+const collectionMap: { [key: string]: string } = {
+  "/": "progress",
+  "/proof": "proof",
+};
+
 export default function BeforeAftersPage() {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
   const [beforeAfters, setBeforeAfters] = useState<BeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
+  const [filters, setFilters] = useState<ExistingFiltersType>();
 
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
@@ -94,14 +106,63 @@ export default function BeforeAftersPage() {
     [searchParams.toString(), width]
   );
 
+  const getExistingFilters = useCallback(async (pathname: string) => {
+    const response = await callTheServer({
+      endpoint: `getExistingFilters/${collectionMap[pathname]}`,
+      method: "GET",
+    });
+
+    if (response.status === 200) {
+      const { concerns } = response.message || {};
+
+      if (concerns && concerns[0]) {
+        router.replace(`/${pathname}?concern=${concerns[0]}`);
+      }
+
+      setFilters(response.message);
+    }
+  }, []);
+
+  const concernFilters = useMemo(() => {
+    if (!filters) return [];
+    return filters.concerns.map((c) => ({ value: c, label: normalizeString(c) }));
+  }, [filters]);
+
   useEffect(() => {
+    getExistingFilters(pathname);
+  }, []);
+
+  useEffect(() => {
+    if (!concern) {
+      setBeforeAfters([]);
+      return;
+    }
     fetchBeforeAfters();
   }, [part, sex, ageInterval, ethnicity, bodyType, concern]);
 
   return (
     <Stack className={`${classes.container} mediumPage`} ref={ref}>
-      <GeneralResultsHeader
-        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType", "concern"]}
+      <PageHeader
+        title="Results"
+        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType"]}
+        isDisabled={!filters}
+        children={
+          <FilterDropdown
+            data={concernFilters}
+            selectedValue={concern}
+            isDisabled={!filters}
+            filterType="concern"
+            placeholder="Select concern"
+            addToQuery
+          />
+        }
+        onFilterClick={() =>
+          openFiltersCard({
+            cardName: FilterCardNamesEnum.FilterCardContent,
+            childrenProps: { filters },
+          })
+        }
+        center
       />
       {beforeAfters ? (
         <>
@@ -132,7 +193,7 @@ export default function BeforeAftersPage() {
           )}
         </>
       ) : (
-        <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+        <Loader style={{ margin: "auto" }} />
       )}
     </Stack>
   );

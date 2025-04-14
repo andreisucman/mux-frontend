@@ -50,17 +50,17 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
     return dates;
   }, [date, frequency]);
 
-  const { nextRoutine, latestProgress, subscriptions, concerns } = userDetails || {};
+  const { nextRoutine, latestProgressImages, subscriptions, concerns } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } = checkSubscriptionActivity(
     ["improvement"],
     subscriptions
   );
 
-  const partsScanned = Object.entries(latestProgress || {})
-    .filter((gr) => typeof gr[1] !== "number")
-    .filter((gr) => gr[1])
-    .map((gr) => gr[0]);
+  const partsScanned = useMemo(() => {
+    const values = Object.keys(latestProgressImages || {});
+    return values.filter(Boolean);
+  }, [latestProgressImages]);
 
   const isCreateRoutineInCooldown = nextRoutine?.every(
     (ro) => ro.date && new Date(ro.date || 0) > new Date()

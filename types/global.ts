@@ -93,9 +93,6 @@ export type UserProgressRecordType = {
 export type UserConcernType = {
   name: string;
   part: PartEnum;
-  explanation: string;
-  importance: number;
-  isDisabled: boolean;
 };
 
 export type StreaksType = {
@@ -134,7 +131,7 @@ export type PurchaseOverlayDataType = {
   name: string;
   description: string;
   price: number;
-  part: string;
+  concern: string;
 };
 
 export enum RoutineStatusEnum {
@@ -204,6 +201,10 @@ export enum PartEnum {
   HAIR = "hair",
 }
 
+export type LatestProgressImagesType = {
+  [key: string]: ProgressImageType[];
+};
+
 export interface UserDataType extends DefaultUserType {
   _id?: string;
   email?: string | null;
@@ -220,11 +221,9 @@ export interface UserDataType extends DefaultUserType {
   subscriptions: UserSubscriptionsType;
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
-  latestProgress: UserProgressRecordType;
+  latestProgressImages: LatestProgressImagesType;
   latestConcernScores: LatestScoresType;
   latestConcernScoresDifference: LatestScoresDifferenceType;
-  latestFeatureScores: LatestScoresType;
-  latestFeatureScoresDifference: LatestScoresDifferenceType;
   tasks: TaskType[];
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;
@@ -242,7 +241,6 @@ export type UserSubscriptionsType = {
 };
 
 export type ProgressImageType = {
-  position: string;
   mainUrl: BlurredUrlType;
   urls: BlurredUrlType[];
 };
@@ -256,8 +254,10 @@ export type ProgressType = {
   initialDate: string;
   images: ProgressImageType[];
   initialImages: ProgressImageType[];
-  scores: FormattedRatingType;
-  scoresDifference: { [key: string]: any };
+  concernScore?: ScoreType;
+  concernScoreDifference?: ScoreDifferenceType;
+  featureScores?: ScoreType[];
+  featureScoresDifference?: ScoreDifferenceType[];
   explanation: string;
   specialConsiderations: string | null;
   avatar?: { [key: string]: string };
@@ -265,14 +265,22 @@ export type ProgressType = {
   isPublic: boolean;
 };
 
-export interface BeforeAfterType extends ProgressType {
+export type BeforeAfterType = {
+  initialDate: string;
   updatedAt: string;
-}
-
-export type FormattedRatingType = {
-  explanations?: { feature: string; explanation: string }[];
-} & {
-  [key: string]: number;
+  demographics: DemographicsType;
+  images: ProgressImageType[];
+  initialImages: ProgressImageType[];
+  concernScore?: ScoreType;
+  concernScoreDifference?: ScoreDifferenceType;
+  featureScores?: ScoreType[];
+  featureScoresDifference?: ScoreDifferenceType[];
+  isPublic: boolean;
+  concern: string;
+  avatar?: { [key: string]: any };
+  userName?: string;
+  routineName?: string;
+  part: PartEnum;
 };
 
 export enum SexEnum {

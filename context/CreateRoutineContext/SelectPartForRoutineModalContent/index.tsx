@@ -1,11 +1,9 @@
 import React from "react";
-import { IconStack2 } from "@tabler/icons-react";
-import { Button, Group, rem, Stack } from "@mantine/core";
+import { Button, Group, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import Timer from "@/components/Timer";
 import { useRouter } from "@/helpers/custom-router";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { partIcons } from "@/helpers/icons";
 
 type Props = {
@@ -14,7 +12,6 @@ type Props = {
 
 export default function SelectPartForRoutineModalContent({ parts }: Props) {
   const router = useRouter();
-  const activeParts = parts.filter((part) => !part.date || new Date(part.date) < new Date());
 
   const handleClick = (url: string) => {
     router.push(url);
@@ -23,16 +20,6 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
 
   return (
     <Stack flex={1}>
-      {activeParts.length > 1 && (
-        <Button
-          variant="default"
-          component={Link}
-          href={"/sort-concerns"}
-          onClick={() => modals.closeAll()}
-        >
-          <IconStack2 className="icon" style={{ marginRight: rem(6) }} /> All
-        </Button>
-      )}
       {parts.map((part, index) => {
         const { part: key, date } = part;
 
@@ -41,7 +28,15 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
         const text = upperFirst(key);
 
         const render = !!isCooldown ? (
-          <Timer date={date} children={<Group gap={8}>{icon} Next {key} after</Group>} showDays />
+          <Timer
+            date={date}
+            children={
+              <Group gap={8}>
+                {icon} Next {key} after
+              </Group>
+            }
+            showDays
+          />
         ) : (
           <Group gap={8}>
             {icon} {text}
@@ -53,7 +48,7 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
             variant="default"
             key={index}
             disabled={!!isCooldown}
-            onClick={() => handleClick(`/sort-concerns?part=${key}`)}
+            onClick={() => handleClick(`/add-details?part=${key}`)}
           >
             {render}
           </Button>

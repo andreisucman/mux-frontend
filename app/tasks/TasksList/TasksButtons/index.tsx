@@ -30,14 +30,14 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
   const router = useRouter();
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
-  const { latestProgress } = userDetails || {};
+  const { latestProgressImages } = userDetails || {};
 
   const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
   const notScanned = useMemo(() => {
-    if (!latestProgress) return true;
-    return Object.values(latestProgress).filter(Boolean).length === 0;
-  }, [latestProgress]);
+    const values = Object.keys(latestProgressImages || {});
+    return values.filter(Boolean).length === 0;
+  }, [latestProgressImages]);
 
   const onCreateManuallyClick = () => {
     if (notScanned) {

@@ -31,32 +31,30 @@ export default function ResultsProgress() {
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
+  const [availableConcerns, setAvaiableConcerns] = useState<FilterItemType[]>();
 
-  const part = searchParams.get("part");
+  const concern = searchParams.get("concern") || availableConcerns?.[0]?.value;
   const sort = searchParams.get("sort");
 
   const handleFetchProgress = useCallback(
-    async ({ part, skip, sort, userName, currentArray }: HandleFetchProgressProps) => {
-      try {
-        setProgress(undefined);
-        const message = await fetchProgress({
-          part,
-          sort,
-          skip,
-          userName,
-          currentArrayLength: (currentArray && currentArray.length) || 0,
-        });
+    async ({ concern, skip, sort, userName, currentArray }: HandleFetchProgressProps) => {
+      setProgress(undefined);
+      const message = await fetchProgress({
+        concern,
+        sort,
+        skip,
+        userName,
+        currentArrayLength: (currentArray && currentArray.length) || 0,
+      });
 
-        const { data } = message;
+      const { data } = message;
 
-        if (skip) {
-          setProgress([...(currentArray || []), ...data.slice(0, 20)]);
-        } else {
-          setProgress(data.slice(0, 20));
-        }
-        setHasMore(data.length === 21);
-      } catch (err) {}
+      if (skip) {
+        setProgress([...(currentArray || []), ...data.slice(0, 20)]);
+      } else {
+        setProgress(data.slice(0, 20));
+      }
+      setHasMore(data.length === 21);
     },
     [progress]
   );
@@ -76,13 +74,14 @@ export default function ResultsProgress() {
   );
 
   useEffect(() => {
-    handleFetchProgress({ part, sort });
-  }, [status, sort, part]);
+    if (!concern) return;
+    handleFetchProgress({ concern, sort });
+  }, [status, sort, concern]);
 
   useEffect(() => {
-    getFilters({ collection: "task", fields: ["part"] }).then((result) => {
-      const { availableParts } = result;
-      setAvaiableParts(availableParts);
+    getFilters({ collection: "progress", fields: ["concern"] }).then((result) => {
+      const { availableConcerns } = result;
+      setAvaiableConcerns(availableConcerns);
     });
   }, []);
 
@@ -91,7 +90,7 @@ export default function ResultsProgress() {
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}
-          isDisabled={!availableParts}
+          isDisabled={!availableConcerns}
           filterNames={["part"]}
           sortItems={progressSortItems}
           defaultSortValue="-_id"
@@ -99,7 +98,7 @@ export default function ResultsProgress() {
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
               childrenProps: {
-                filterItems: availableParts,
+                filterItems: availableConcerns,
               },
             })
           }

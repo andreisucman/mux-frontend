@@ -41,7 +41,7 @@ export default function ClubProof(props: Props) {
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
   const searchParams = useSearchParams();
-  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -121,8 +121,8 @@ export default function ClubProof(props: Props) {
 
   useEffect(() => {
     if (!purchaseOverlayData || !userName) return;
-    const availableParts = purchaseOverlayData.map((obj) => obj.part);
-    setAvailableParts(availableParts.map((p) => ({ value: p, label: upperFirst(p) })));
+    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
+    setAvailableConcerns(availableConcerns.map((p) => ({ value: p, label: upperFirst(p) })));
   }, [userName, purchaseOverlayData]);
 
   const showButton =

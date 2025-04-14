@@ -19,7 +19,7 @@ export const data = [
         <Text>
           After you get your feedback and a list of potential concerns you can start creating your
           routines. You can create routines manually by adding individual tasks or use our
-          'Improvement Coach' - the AI addon to create a routine for the whole week.
+          'Improvement Coach' - the AI addon that creates a routine for you based on your details.
         </Text>
         <Text>After you have your routines you can start completing the tasks in them.</Text>
         <Text>
@@ -50,10 +50,10 @@ export const data = [
         <Text>Muxout is entirely free.</Text>
         <Text>
           We have an optional paid addon - the 'Improvement Coach' that creates personal routines
-          for you based on your body analysis and special considerations.
+          for you based on your concerns and special considerations.
         </Text>
         <Text>
-          This addon can improve your experience, and save you time on research, but you don't have
+          This addon can improve your experience and save you time on research, but you don't have
           to buy it to use the platform.
         </Text>
       </Stack>
@@ -85,6 +85,30 @@ export const data = [
         <Text>
           2. You can complete your tasks and earn achievements ('Streaks'). When you have the
           necessary achievements you can claim rewards on the Rewards page.
+        </Text>
+      </Stack>
+    ),
+  },
+  {
+    question: "How can I publish my routine for sale?",
+    answer: (
+      <Stack>
+        <Text>
+          To be able to publish your routine for sale you have to join the Club. The Club is a free
+          opt-in service that lets you buy or sell routines.
+        </Text>
+        <Text>
+          Next, you have to have at least one set of before-after images taken via our platform.
+          This means that you'll have to follow your routine for at least one week.
+        </Text>
+        <Text>
+          Then, the routine you're publishing has to have at least 80% of proven task completions.
+          This means that 80% of the tasks you've completed within the routine must have either an
+          image or video proof.
+        </Text>
+        <Text>
+          Lastly, you have to have at least 10 points of improvement between your before and after
+          images. This means that you'll only be able to publish a routine that is working.
         </Text>
       </Stack>
     ),
@@ -144,7 +168,13 @@ export const data = [
     answer: (
       <Text>
         Yes, you can delete your content at any time by clicking the trash button near your uploaded
-        content. You can also delete your account in the settings.
+        content. You can also delete your account in the settings. Please note that while your
+        information dissappears from the public view immediately, the deletion of your data from our
+        servers may take some time as outlined in our{" "}
+        <Link href="/legal/terms" style={{ textDecoration: "underline" }}>
+          Terms of Service
+        </Link>
+        .
       </Text>
     ),
   },
