@@ -31,10 +31,6 @@
   align-items: center;
 }
 
-.statsGroup {
-  gap: rem(8);
-}
-
 .skeleton {
   position: relative;
   z-index: 0;

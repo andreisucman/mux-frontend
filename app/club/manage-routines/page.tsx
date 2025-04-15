@@ -81,7 +81,7 @@ export default function ManageRoutines() {
           return;
         }
 
-        if (routineData?.length === 0) {
+        if (!routineData) {
           setRoutineData([updatedRoutine]);
         } else {
           const partData = routineData?.find((r) => r.concern === updatedRoutine.concern);
@@ -135,7 +135,6 @@ export default function ManageRoutines() {
             placeholder="Select concern"
             onSelect={handleSelectRoutine}
             addToQuery
-            searchable
           />
         }
       />

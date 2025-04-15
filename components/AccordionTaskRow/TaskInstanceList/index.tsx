@@ -1,5 +1,5 @@
 import React from "react";
-import { Group, Stack, Text } from "@mantine/core";
+import { Button, Group, Stack, Text } from "@mantine/core";
 import IconWithColor from "@/app/tasks/TasksList/CreateTaskOverlay/IconWithColor";
 import Indicator from "@/components/Indicator";
 import { formatDate } from "@/helpers/formatDate";
@@ -13,6 +13,7 @@ type Props = {
   taskIdsObjects: { startsAt: string; status: string; _id: string }[];
   redirectToTaskInstance?: (taskId: string) => void;
   copyTaskInstance: (taskId: string) => void;
+  addTaskInstance: (taskId: string) => void;
   rescheduleTaskInstance?: (taskId: string) => void;
   updateTaskInstance?: (taskId: string, newStatus: string) => void;
   deleteTaskInstance?: (taskId: string) => void;
@@ -25,6 +26,7 @@ export default function TaskInstanceList({
   taskIdsObjects,
   deleteTaskInstance,
   copyTaskInstance,
+  addTaskInstance,
   rescheduleTaskInstance,
   redirectToTaskInstance,
   updateTaskInstance,
@@ -61,6 +63,15 @@ export default function TaskInstanceList({
           </Group>
         );
       })}
+      {isSelf && (
+        <Button
+          size="compact-sm"
+          variant="default"
+          onClick={() => addTaskInstance(taskIdsObjects[0]._id)}
+        >
+          Add more
+        </Button>
+      )}
     </Stack>
   );
 }

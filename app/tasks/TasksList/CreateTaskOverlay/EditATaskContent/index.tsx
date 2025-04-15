@@ -1,9 +1,14 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { IconCalendar } from "@tabler/icons-react";
 import { Group, NumberInput, rem, Stack, Text } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import FilterDropdown from "@/components/FilterDropdown";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import TextareaComponent from "@/components/TextAreaComponent";
+import callTheServer from "@/functions/callTheServer";
+import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { daysFrom } from "@/helpers/utils";
+import { RoutineType } from "@/types/global";
 import { RawTaskType } from "../AddATaskContainer/types";
 import NewTaskPreviewRow from "../NewTaskPreviewRow";
 import classes from "./EditATaskContent.module.css";
@@ -22,10 +27,14 @@ type Props = {
   frequency: number;
   readOnly?: boolean;
   date: Date | null;
+  selectedDestinationRoutine: string;
+  setSelectedDestinationRoutine: React.Dispatch<React.SetStateAction<string>>;
   setRawTask?: React.Dispatch<React.SetStateAction<RawTaskType | undefined>>;
   setFrequency?: React.Dispatch<React.SetStateAction<number>>;
   setDate: React.Dispatch<React.SetStateAction<Date | null>>;
 };
+
+const defaultAvailableDestinationRoutines = [{ value: "", label: "Create new routine" }];
 
 function EditATaskContent({
   date,
@@ -34,10 +43,17 @@ function EditATaskContent({
   previewData,
   previewIsTasks,
   readOnly,
+  selectedDestinationRoutine,
   setRawTask,
   setFrequency,
   setDate,
+  setSelectedDestinationRoutine,
 }: Props) {
+  const [isFetching, setIsFetching] = useState(false);
+  const [availableDestinationRoutines, setAvailableDestinationRoutines] = useState<
+    FilterItemType[]
+  >(defaultAvailableDestinationRoutines);
+
   const { description, instruction } = rawTask || {};
   const latestDateOfWeek = daysFrom({ days: 7 });
   const previeTitle = previewIsTasks ? "Tasks preview:" : "Dates preview:";
@@ -54,6 +70,47 @@ function EditATaskContent({
   ) : (
     <Text size="sm">{previewData.join(", ")}</Text>
   );
+
+  const fetchRoutines = async (date: Date) => {
+    setIsFetching(true);
+    const midnight = new Date(date);
+    midnight.setHours(0, 0, 0, 0);
+
+    const query = `startsAt<=${midnight.toISOString()}&lastDate>=${midnight.toISOString()}`;
+
+    const response = await callTheServer({
+      endpoint: `getRoutines?${query}`,
+      method: "GET",
+    });
+
+    if (response.status === 200) {
+      const { data } = response.message;
+
+      const newItems = data.map((r: RoutineType) => {
+        const interval = getReadableDateInterval(r.startsAt, r.lastDate);
+
+        return {
+          value: r._id,
+          label: `${interval} ${r.part} routine`,
+        };
+      });
+
+      setAvailableDestinationRoutines([...defaultAvailableDestinationRoutines, ...newItems]);
+
+      if (newItems.length > 0) {
+        setSelectedDestinationRoutine(newItems[0].value);
+      } else {
+        setSelectedDestinationRoutine("");
+      }
+    }
+
+    setIsFetching(false);
+  };
+
+  useEffect(() => {
+    if (!date) return;
+    fetchRoutines(date);
+  }, [date]);
 
   return (
     <Stack className={classes.container}>
@@ -140,6 +197,19 @@ function EditATaskContent({
           size="sm"
           closeOnChange
           leftSection={<IconCalendar className="icon" stroke={1.5} />}
+        />
+      </Stack>
+      <Stack className={classes.box}>
+        <Text size="xs" c="dimmed">
+          Destination routine:
+        </Text>
+        <FilterDropdown
+          selectedValue={selectedDestinationRoutine}
+          data={availableDestinationRoutines}
+          onSelect={(value) => setSelectedDestinationRoutine(value || "")}
+          placeholder="Select routine"
+          isDisabled={isFetching}
+          customStyles={{ maxWidth: "unset" }}
         />
       </Stack>
       <Stack className={classes.box}>

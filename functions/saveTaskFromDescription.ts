@@ -4,28 +4,34 @@ import callTheServer from "./callTheServer";
 
 export type HandleSaveTaskProps = {
   concern: string | null;
+  returnTasks?: boolean;
+  returnRoutine?: boolean;
   part: string | null;
   isLoading: boolean;
   frequency: number;
   date: Date | null;
   exampleVideoId?: string;
   rawTask?: RawTaskType;
+  selectedDestinationRoutine: string;
   setError: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAnalysisGoing: React.Dispatch<React.SetStateAction<boolean>>;
+  cb: (args: any) => void;
 };
 
 const saveTaskFromDescription = async ({
   date,
   concern,
   part,
+  returnTasks,
+  returnRoutine,
   rawTask,
   isLoading,
   frequency,
   exampleVideoId,
+  selectedDestinationRoutine,
   setError,
   setIsLoading,
-  setIsAnalysisGoing,
+  cb,
 }: HandleSaveTaskProps) => {
   if (isLoading) return;
   if (!rawTask) return;
@@ -41,10 +47,13 @@ const saveTaskFromDescription = async ({
     body: {
       concern,
       part,
+      returnTasks,
+      returnRoutine,
       frequency,
       description,
       instruction,
       exampleVideoId,
+      selectedDestinationRoutine,
       startDate: date,
     },
   });
@@ -56,7 +65,7 @@ const saveTaskFromDescription = async ({
       return;
     }
 
-    setIsAnalysisGoing(true);
+    cb(response.message);
     modals.closeAll();
   } else {
     setIsLoading(false);

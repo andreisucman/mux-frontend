@@ -17,13 +17,22 @@ type Props = {
 };
 
 export default function ComparisonCarousel({ data }: Props) {
-  const { userName, routineName, part, images, initialImages, initialDate, updatedAt, avatar } =
-    data;
+  const {
+    userName,
+    routineName,
+    part,
+    concern,
+    images,
+    initialImages,
+    initialDate,
+    updatedAt,
+    avatar,
+  } = data;
   const [slides, setSlides] = useState<React.ReactNode[]>();
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
 
-  const redirectUrl = `/club/routines/${userName}?part=${part}`;
+  const redirectUrl = `/club/routines/${userName}?concern=${concern}`;
 
   const handleClickCarousel = useCallback(() => {
     const title = (

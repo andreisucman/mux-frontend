@@ -1,20 +1,24 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconHourglass } from "@tabler/icons-react";
-import { Button, Stack } from "@mantine/core";
+import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import UploadCard from "@/components/UploadCard";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
+import createCheckoutSession from "@/functions/createCheckoutSession";
+import fetchUserData from "@/functions/fetchUserData";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
+import openPaymentModal from "@/helpers/openPaymentModal";
 import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
 import { PartEnum, UserDataType } from "@/types/global";
 import { UploadProgressProps } from "../select-part/types";
@@ -24,12 +28,14 @@ export const runtime = "edge";
 
 export default function ScanProgress() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [pageLoaded, setPageLoaded] = useState(false);
 
+  const query = searchParams.toString();
   const part = searchParams.get("part") || "face";
 
   const { _id: userId, toAnalyze, nextScan } = userDetails || {};
@@ -42,6 +48,56 @@ export default function ScanProgress() {
   const nextScanText = useMemo(() => {
     return `You can scan your ${part} again after ${checkBackDate}.`;
   }, [part, checkBackDate]);
+
+  const handleResetTimer = useCallback(() => {
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}${query ? `?${query}` : ""}`;
+
+    openPaymentModal({
+      title: `Reset ${part} scan`,
+      price: (
+        <Group className="priceGroup">
+          <Title order={4}>$1</Title>/<Text>one time</Text>
+        </Group>
+      ),
+      isCentered: true,
+      modalType: "scan",
+      buttonText: "Reset scan timer",
+      description: `You can scan your ${part} once a week for free. If you want more you can reset the timer here.`,
+      onClick: () =>
+        createCheckoutSession({
+          type: "platform",
+          body: {
+            mode: "payment",
+            priceId: process.env.NEXT_PUBLIC_SCAN_PRICE_ID!,
+            redirectUrl,
+            cancelUrl: redirectUrl,
+            part,
+          },
+          setUserDetails,
+        }),
+      onClose: () => fetchUserData({ setUserDetails }),
+    });
+  }, [query]);
+
+  const scanButtons = useMemo(() => {
+    if (status === AuthStateEnum.AUTHENTICATED) {
+      return (
+        <Group mt={8}>
+          <Button flex={1} miw={175} variant="default" onClick={handleResetTimer}>
+            Reset scan timer
+          </Button>
+          <Button
+            flex={1}
+            miw={175}
+            variant="default"
+            onClick={() => router.replace(`/analysis?part=${part}`)}
+          >
+            See latest analysis
+          </Button>
+        </Group>
+      );
+    }
+  }, [status, pathname, handleResetTimer]);
 
   const handleUpload = useCallback(
     async ({ url, beforeImageUrl, part, blurDots, offsets }: UploadProgressProps) => {
@@ -174,11 +230,7 @@ export default function ScanProgress() {
           <OverlayWithText
             icon={<IconHourglass size={24} />}
             text={nextScanText}
-            button={
-              <Button mt={8} variant="default" onClick={() => router.replace(`/analysis?part=${part}`)}>
-                See latest analysis
-              </Button>
-            }
+            button={scanButtons}
           />
         )}
       </SkeletonWrapper>

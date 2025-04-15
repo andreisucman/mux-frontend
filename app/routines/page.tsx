@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { ConsiderationsInput } from "@/components/ConsiderationsInput";
@@ -26,12 +26,13 @@ import rescheduleTask from "@/functions/rescheduleTask";
 import rescheduleTaskInstance from "@/functions/rescheduleTaskInstance";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { getIsRoutineActive } from "@/helpers/utils";
+import { getConcernsOfRoutines, getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
 import SkeletonWrapper from "../SkeletonWrapper";
 import CreateTaskOverlay from "../tasks/TasksList/CreateTaskOverlay";
 import TasksButtons from "../tasks/TasksList/TasksButtons";
+import MoveTaskModalContent from "./MoveTaskModalContent";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -44,6 +45,11 @@ type GetRoutinesProps = {
   routinesLength?: number;
 };
 
+export type HandleModifyTaskProps = {
+  startDate: Date | null;
+  selectedRoutineId?: string;
+};
+
 export default function MyRoutines() {
   const searchParams = useSearchParams();
   const [routines, setRoutines] = useState<RoutineType[]>();
@@ -53,7 +59,6 @@ export default function MyRoutines() {
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
@@ -66,36 +71,27 @@ export default function MyRoutines() {
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {
-      try {
-        const response = await fetchRoutines({
-          skip,
-          part,
-          sort,
-          routinesLength: routinesLength || 0,
-        });
+      const response = await fetchRoutines({
+        skip,
+        part,
+        sort,
+        routinesLength: routinesLength || 0,
+      });
 
-        const { message } = response || {};
+      const { message } = response || {};
 
-        if (message) {
-          const { data } = message;
-          if (skip) {
-            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-            setHasMore(data.length === 21);
-          } else {
-            setRoutines(data.slice(0, 20));
-          }
-
-          const newRoutineConcerns = data.reduce(
-            (a: { [key: string]: string[] }, c: RoutineType) => {
-              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-              return a;
-            },
-            {}
-          );
-
-          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+      if (message) {
+        const { data } = message;
+        if (skip) {
+          setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+          setHasMore(data.length === 21);
+        } else {
+          setRoutines(data.slice(0, 20));
         }
-      } catch (err) {}
+
+        const newRoutineConcerns = getConcernsOfRoutines(data);
+        setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+      }
     },
     [routines, selectedConcerns]
   );
@@ -115,7 +111,6 @@ export default function MyRoutines() {
           routineIds,
           startDate,
           setRoutines,
-          setIsLoading,
           setSelectedConcerns,
         });
       };
@@ -152,7 +147,6 @@ export default function MyRoutines() {
                 routineIds,
                 startDate,
                 sort,
-                setIsLoading,
                 setRoutines,
                 setSelectedConcerns,
               })
@@ -168,7 +162,7 @@ export default function MyRoutines() {
 
   const updateRoutines = useCallback(async (routineIds: string[], newStatus: string) => {
     const response = await callTheServer({
-      endpoint: "updateROutineStatuses",
+      endpoint: "updateRoutineStatuses",
       method: "POST",
       body: { routineIds, newStatus },
     });
@@ -214,21 +208,21 @@ export default function MyRoutines() {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
-            Choose new date
+            Copy task
           </Title>
         ),
-        size: "sm",
+        size: "md",
         innerProps: (
-          <SelectDateModalContent
+          <MoveTaskModalContent
             buttonText="Copy task"
-            onSubmit={async ({ startDate }) =>
+            handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
               copyTask({
                 routineId,
                 startDate,
                 taskKey,
                 sort,
+                targetRoutineId: selectedRoutineId,
                 setRoutines,
-                setIsLoading,
                 setSelectedConcerns,
               })
             }
@@ -246,21 +240,22 @@ export default function MyRoutines() {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
-            Choose new date
+            Reschedule task
           </Title>
         ),
-        size: "sm",
+        size: "md",
         innerProps: (
-          <SelectDateModalContent
+          <MoveTaskModalContent
             buttonText="Reschedule task"
-            onSubmit={async ({ startDate }) =>
+            handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
               rescheduleTask({
-                routineId,
+                currentRoutineId: routineId,
+                targetRoutineId: selectedRoutineId,
                 startDate,
                 taskKey,
                 sort,
                 setRoutines,
-                setIsLoading,
+                setSelectedConcerns,
               })
             }
           />
@@ -313,14 +308,16 @@ export default function MyRoutines() {
     modals.openContextModal({
       title: (
         <Title order={5} component={"p"}>
-          Choose new date
+          Copy task instance
         </Title>
       ),
-      size: "sm",
+      size: "md",
       innerProps: (
-        <SelectDateModalContent
+        <MoveTaskModalContent
           buttonText="Copy task"
-          onSubmit={async ({ startDate }) => copyTaskInstance({ setRoutines, startDate, taskId })}
+          handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
+            copyTaskInstance({ setRoutines, targetRoutineId: selectedRoutineId, startDate, taskId })
+          }
         />
       ),
       modal: "general",
@@ -328,25 +325,55 @@ export default function MyRoutines() {
     });
   }, []);
 
-  const handleRescheduleTaskInstance = useCallback(
-    (taskId: string) => {
+  const handleAddTaskInstance = useCallback(
+    (taskId: string, lastDate: Date, selectedRoutineId: string) => {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
-            Choose new date
+            Add another instance
           </Title>
         ),
         size: "sm",
         innerProps: (
           <SelectDateModalContent
-            buttonText="Reschedule task"
-            onSubmit={async ({ startDate }) =>
-              rescheduleTaskInstance({
+            buttonText="Copy task"
+            lastDate={lastDate}
+            onSubmit={async ({ startDate }: HandleModifyTaskProps) =>
+              copyTaskInstance({
+                setRoutines,
+                targetRoutineId: selectedRoutineId,
                 startDate,
                 taskId,
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    []
+  );
+
+  const handleRescheduleTaskInstance = useCallback(
+    (taskId: string) => {
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Reschedule task instance
+          </Title>
+        ),
+        size: "md",
+        innerProps: (
+          <MoveTaskModalContent
+            buttonText="Reschedule task"
+            handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
+              rescheduleTaskInstance({
                 sort,
+                taskId,
+                startDate,
+                selectedRoutineId,
                 setRoutines,
-                setIsLoading,
                 setSelectedConcerns,
               })
             }
@@ -359,11 +386,27 @@ export default function MyRoutines() {
     [sort, routines, selectedConcerns]
   );
 
+  const handleUpdateRoutines = (args: { routine: RoutineType }) => {
+    const { routine } = args;
+
+    const exists = routines?.some((r) => String(r._id) === String(routine._id));
+
+    if (exists) {
+      setRoutines((prev?: RoutineType[]) =>
+        (prev || []).map((r) => (r._id === routine._id ? routine : r))
+      );
+    } else {
+      setRoutines((prev?: RoutineType[]) => [...(prev || []), routine]);
+    }
+    const getNewConcerns = getConcernsOfRoutines([routine]);
+    setSelectedConcerns((prev) => ({ ...prev, ...getNewConcerns }));
+  };
+
   const accordionItems = useMemo(
     () =>
       routines
         ?.map((routine, i) => {
-          if (!routine) return null;
+          if (!routine || routine.deletedOn) return null;
           const selected = getIsRoutineActive(routine.startsAt, routine.lastDate, routine.allTasks);
           return (
             <AccordionRoutineRow
@@ -384,6 +427,7 @@ export default function MyRoutines() {
               updateTask={updateTask}
               rescheduleTask={handleRescheduleTask}
               copyTaskInstance={handleCopyTaskInstance}
+              addTaskInstance={handleAddTaskInstance}
               isSelf
             />
           );
@@ -465,15 +509,11 @@ export default function MyRoutines() {
         <TasksButtons
           disableCreateTask={displayComponent === "wait"}
           handleSaveTask={(props: HandleSaveTaskProps) =>
-            saveTaskFromDescription({ ...props, setIsAnalysisGoing })
+            saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutines })
           }
         />
         {displayComponent === "content" && (
           <Stack className={classes.wrapper}>
-            <LoadingOverlay
-              visible={isLoading}
-              style={{ position: "fixed", inset: 0, borderRadius: "1rem" }}
-            />
             <Accordion
               value={openValue}
               onChange={handleSetOpenValue}
@@ -510,7 +550,7 @@ export default function MyRoutines() {
         {displayComponent === "createTaskOverlay" && (
           <CreateTaskOverlay
             handleSaveTask={(props: HandleSaveTaskProps) =>
-              saveTaskFromDescription({ ...props, setIsAnalysisGoing })
+              saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutines })
             }
           />
         )}

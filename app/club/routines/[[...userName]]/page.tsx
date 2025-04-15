@@ -4,7 +4,7 @@ import React, { use, useCallback, useContext, useEffect, useMemo, useState } fro
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
-import { Accordion, ActionIcon, Loader, LoadingOverlay, Stack, Title } from "@mantine/core";
+import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
@@ -52,7 +52,6 @@ export default function ClubRoutines(props: Props) {
   const { userDetails, status: authStatus } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [openValue, setOpenValue] = useState<string | null>();
-  const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
@@ -147,7 +146,6 @@ export default function ClubRoutines(props: Props) {
           inform: true,
           ignoreIncompleteTasks: true,
           setRoutines,
-          setIsLoading,
           setSelectedConcerns,
         });
       };
@@ -189,7 +187,6 @@ export default function ClubRoutines(props: Props) {
                 sort,
                 userName,
                 setRoutines,
-                setIsLoading,
                 setSelectedConcerns,
               })
             }
@@ -305,10 +302,6 @@ export default function ClubRoutines(props: Props) {
         />
       }
     >
-      <LoadingOverlay
-        visible={isLoading}
-        style={{ position: "fixed", inset: 0, borderRadius: "1rem" }}
-      />
       <ClubProfilePreview
         type={isSelf ? "you" : "member"}
         data={publicUserData}

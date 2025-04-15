@@ -10,7 +10,7 @@ import classes from "./FilterCardContent.module.css";
 export type ExistingFiltersType = {
   ethnicity: string[];
   skinColor: string[];
-  concerns: string[];
+  concern: string[];
   ageInterval: string[];
   sex: string[];
   type: string[];
@@ -28,7 +28,6 @@ export default function FilterCardContent({ filters }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [ageIntervalFilters, setAgeIntervalFilters] = useState<FilterItemType[]>([]);
-  const [concernFilters, setConcernFilters] = useState<FilterItemType[]>([]);
   const [ethnicityFilters, setEthnicityFilters] = useState<FilterItemType[]>([]);
   const [sexFilters, setSexFilters] = useState<FilterItemType[]>([]);
   const [partFilters, setPartFilters] = useState<FilterItemType[]>([]);
@@ -43,18 +42,16 @@ export default function FilterCardContent({ filters }: Props) {
 
   useEffect(() => {
     if (!filters) return;
-    setPartFilters(filters.part.map((key) => ({ label: upperFirst(key), value: key })));
-    setAgeIntervalFilters(
-      filters.ageInterval.map((key) => ({ label: upperFirst(key), value: key }))
-    );
-    setConcernFilters(
-      filters.concerns.map((key) => {
-        const label = key.split("_").join(" ");
-        return { label: upperFirst(label), value: key };
-      })
-    );
-    setEthnicityFilters(filters.ethnicity.map((key) => ({ label: upperFirst(key), value: key })));
-    setSexFilters(filters.sex.map((key) => ({ label: upperFirst(key), value: key })));
+    if (filters.part)
+      setPartFilters(filters.part.map((key) => ({ label: upperFirst(key), value: key })));
+    if (filters.ageInterval)
+      setAgeIntervalFilters(
+        filters.ageInterval.map((key) => ({ label: upperFirst(key), value: key }))
+      );
+    if (filters.ethnicity)
+      setEthnicityFilters(filters.ethnicity.map((key) => ({ label: upperFirst(key), value: key })));
+    if (filters.sex)
+      setSexFilters(filters.sex.map((key) => ({ label: upperFirst(key), value: key })));
   }, [typeof filters]);
 
   const styles = useMemo(() => ({ flex: "unset", width: "100%", maxWidth: "unset" }), []);
@@ -63,7 +60,6 @@ export default function FilterCardContent({ filters }: Props) {
     <Stack className={classes.container}>
       {filters ? (
         <>
-    
           {partFilters.length > 0 && (
             <FilterDropdown
               data={partFilters}

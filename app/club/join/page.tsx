@@ -69,8 +69,7 @@ export default function ClubJoin() {
             <Title order={2}>Welcome</Title>
             <Text ta="center">
               Club is a place where people share their routines, progress and feedback. Here you can
-              see what worked for others and monetize your achievements to help people like you get
-              a similar transformation.
+              see what worked for others and monetize your achievements.
             </Text>
             <GlowingButton
               text="Join the Club"

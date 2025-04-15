@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import useSWR from "swr";
 import { Carousel } from "@mantine/carousel";
@@ -15,6 +15,7 @@ import fetchUserData from "@/functions/fetchUserData";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
 import { daysFrom } from "@/helpers/utils";
+import { TaskType, UserDataType } from "@/types/global";
 import CreateTaskOverlay from "./CreateTaskOverlay";
 import TasksButtons from "./TasksButtons";
 import TasksSlide from "./TasksSlide";
@@ -24,9 +25,11 @@ type Props = {
   customStyles?: { [key: string]: any };
 };
 
+const MemoizedTasksSlide = React.memo(TasksSlide);
+const MemoizedOverlayWithText = React.memo(OverlayWithText);
+
 export default function TasksList({ customStyles }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -36,83 +39,95 @@ export default function TasksList({ customStyles }: Props) {
   >("loading");
 
   const { tasks, _id: userId } = userDetails || {};
+  const searchParamsString = useMemo(() => searchParams.toString(), [searchParams]);
 
-  const todaysTasks = useMemo(() => {
+  const getTaskClickHandler = useCallback(
+    (taskId: string) => () => {
+      router.push(`/explain/${taskId}?${searchParamsString}`);
+    },
+    [router, searchParamsString]
+  );
+
+  const nearestTasks = useMemo(() => {
     if (!tasks || !tasks.length) return;
 
-    const earliestStartDate = tasks[0].startsAt;
+    const todayStart = tasks[0].startsAt;
+    const tomorrowStart = daysFrom({ date: new Date(tasks[0].startsAt), days: 1 });
 
-    const endOfDay = new Date(earliestStartDate);
-    endOfDay.setHours(23, 59, 59, 0);
+    const todayEnd = new Date(todayStart);
+    todayEnd.setHours(23, 59, 59, 0);
 
-    const tasksWithOnClick = tasks
-      .filter((t) => new Date(t.startsAt) < endOfDay)
+    const tomorrowEnd = daysFrom({ date: new Date(tomorrowStart), days: 1 });
+    tomorrowEnd.setHours(23, 59, 59, 0);
+
+    const todaysTasksWithOnClick = tasks
+      .filter((t) => new Date(t.startsAt) < todayEnd)
       .map((fTask) => ({
         ...fTask,
-        onClick: () => {
-          router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
-        },
+        onClick: getTaskClickHandler(fTask._id),
       }));
 
-    const concerns = [...new Set(tasks.map((t) => t.concern))];
+    const tomorrowsTasksWithOnClick = tasks
+      .filter((t) => new Date(t.startsAt) >= tomorrowStart && new Date(t.startsAt) < tomorrowEnd)
+      .map((fTask) => ({
+        ...fTask,
+        onClick: getTaskClickHandler(fTask._id),
+      }));
 
-    const data = concerns
-      .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
+    const todaysConcerns = [...new Set(todaysTasksWithOnClick.map((t) => t.concern))];
+    const tomorrowsConcerns = [...new Set(tomorrowsTasksWithOnClick.map((t) => t.concern))];
+
+    const todaysTasks = todaysConcerns
+      .map((concern) => todaysTasksWithOnClick.filter((t) => t.concern === concern))
       .filter((gr) => gr.length);
 
-    const completed =
-      tasksWithOnClick?.filter((task) => task.status === "completed").map((r) => r.part) || [];
+    const tomorrowsTasks = tomorrowsConcerns
+      .map((concern) => tomorrowsTasksWithOnClick.filter((t) => t.concern === concern))
+      .filter((gr) => gr.length);
+
+    const todayTasksCompleted =
+      todaysTasksWithOnClick?.filter((task) => task.status === "completed").map((r) => r.part) ||
+      [];
 
     return {
-      tasks: data,
-      canAddDiary: tasks && tasks.length > 0 && completed.length > 1,
+      todaysTasks,
+      tomorrowsTasks,
+      todaysTasksLength: todaysTasksWithOnClick.length,
+      tomorrowsTasksLength: tomorrowsTasksWithOnClick.length,
+      canAddDiary: tasks && tasks.length > 0 && todayTasksCompleted.length > 1,
     };
-  }, [tasks]);
+  }, [tasks, tasks?.length, getTaskClickHandler]);
 
-  const tomorrowsTasks = useMemo(() => {
-    if (!tasks || !tasks.length) return;
+  const { todaysTasks, tomorrowsTasks, todaysTasksLength, tomorrowsTasksLength, canAddDiary } =
+    nearestTasks || {};
 
-    const earliestStartDate = daysFrom({ date: new Date(tasks[0].startsAt), days: 1 });
+  const handleUpdateTasks = useCallback(
+    (response: { tasks: TaskType[] }) => {
+      setUserDetails((prev: UserDataType) => ({ ...prev, tasks: response.tasks }));
+    },
+    [setUserDetails]
+  );
 
-    const endOfPeriod = daysFrom({ date: new Date(earliestStartDate), days: 1 });
-    endOfPeriod.setHours(23, 59, 59, 0);
-
-    const tasksWithOnClick = tasks
-      .filter(
-        (t) => new Date(t.startsAt) >= earliestStartDate && new Date(t.startsAt) < endOfPeriod
-      )
-      .map((fTask) => ({
-        ...fTask,
-        onClick: () => {
-          router.push(`/explain/${fTask._id}?${searchParams.toString()}`);
-        },
-      }));
-
-    const concerns = [...new Set(tasks.map((t) => t.concern))];
-
-    const data = concerns
-      .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
-      .filter((gr) => gr.length);
-
-    return data;
-  }, [tasks, todaysTasks]);
+  const handleSaveTask = useCallback(
+    (props: HandleSaveTaskProps) =>
+      saveTaskFromDescription({ ...props, returnTasks: true, cb: handleUpdateTasks }),
+    [handleUpdateTasks]
+  );
 
   useEffect(() => {
-    if (!pageLoaded) return;
-    if (!tasks) return;
+    if (!pageLoaded || !tasks) return;
 
-    const nearestTasksCount = (todaysTasks?.tasks?.length || 0) + (tomorrowsTasks?.length || 0);
-
+    const nearestTasksCount = (todaysTasksLength || 0) + (tomorrowsTasksLength || 0);
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
     } else if (nearestTasksCount === 0) {
       setDisplayComponent("createTaskOverlay");
     } else if (nearestTasksCount > 0) {
       setDisplayComponent("content");
-    } else if (todaysTasks?.tasks === undefined) {
+    } else {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, tasks, todaysTasks, pageLoaded]);
+  }, [isAnalysisGoing, tasks, todaysTasksLength, tomorrowsTasksLength, pageLoaded]);
 
   useEffect(() => {
     if (!userId) return;
@@ -121,42 +136,33 @@ export default function TasksList({ customStyles }: Props) {
       userId,
       operationKey: "routine",
       setShowWaitComponent: setIsAnalysisGoing,
-    }).then((res) => {
-      setPageLoaded(true);
-    });
-  }, [userId, pathname]);
+    }).then(() => setPageLoaded(true));
+  }, [userId]);
 
-  useSWR(userId, () => fetchUserData({ setUserDetails }));
+  const fetcher = useCallback(() => fetchUserData({ setUserDetails }), [setUserDetails]);
+  useSWR(userId, fetcher);
 
   return (
-    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
+    <Stack className={classes.container} style={customStyles ?? {}}>
       <TasksButtons
         disableCreateTask={displayComponent === "wait"}
-        handleSaveTask={(props: HandleSaveTaskProps) =>
-          saveTaskFromDescription({ ...props, setIsAnalysisGoing })
-        }
+        handleSaveTask={handleSaveTask}
       />
       {displayComponent !== "loading" && (
         <CreateRoutineProvider>
           <Stack className={`${classes.content} scrollbar`}>
             {displayComponent === "createTaskOverlay" && (
-              <CreateTaskOverlay
-                handleSaveTask={(props: HandleSaveTaskProps) =>
-                  saveTaskFromDescription({ ...props, setIsAnalysisGoing })
-                }
-              />
+              <CreateTaskOverlay handleSaveTask={handleSaveTask} />
             )}
             {displayComponent === "wait" && (
               <WaitComponent
-                operationKey={"routine"}
+                operationKey="routine"
                 description="Creating your task(s)"
                 onComplete={() => {
                   fetchUserData({ setUserDetails });
                   setIsAnalysisGoing(false);
                 }}
-                onError={() => {
-                  setIsAnalysisGoing(false);
-                }}
+                onError={() => setIsAnalysisGoing(false)}
                 customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
               />
             )}
@@ -173,26 +179,21 @@ export default function TasksList({ customStyles }: Props) {
                   container: classes.container,
                 }}
               >
-                {todaysTasks?.tasks && (
-                  <Carousel.Slide>
-                    {todaysTasks.tasks && todaysTasks.tasks.length > 0 ? (
-                      <TasksSlide
-                        taskGroups={todaysTasks.tasks}
-                        canAddDiary={!!todaysTasks.canAddDiary}
-                      />
-                    ) : (
-                      <OverlayWithText
-                        text="No tasks for today"
-                        icon={<IconCircleOff className="icon" />}
-                      />
-                    )}
-                  </Carousel.Slide>
-                )}
                 <Carousel.Slide>
-                  {tomorrowsTasks && tomorrowsTasks.length > 0 ? (
-                    <TasksSlide taskGroups={tomorrowsTasks} />
+                  {todaysTasks?.length ? (
+                    <MemoizedTasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
                   ) : (
-                    <OverlayWithText
+                    <MemoizedOverlayWithText
+                      text="No tasks for today"
+                      icon={<IconCircleOff className="icon" />}
+                    />
+                  )}
+                </Carousel.Slide>
+                <Carousel.Slide>
+                  {tomorrowsTasks?.length ? (
+                    <MemoizedTasksSlide taskGroups={tomorrowsTasks} />
+                  ) : (
+                    <MemoizedOverlayWithText
                       text="No tasks for tomorrow"
                       icon={<IconCircleOff className="icon" />}
                     />

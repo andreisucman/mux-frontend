@@ -4,7 +4,8 @@ import Link from "@/helpers/custom-router/patch-router/link";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
-import { AllTaskType, RoutineType } from "@/types/global";
+import { getConcernsOfRoutines } from "@/helpers/utils";
+import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 export type CopyTaskProps = {
@@ -14,8 +15,8 @@ export type CopyTaskProps = {
   inform?: boolean;
   userName?: string;
   sort?: string | null;
+  targetRoutineId?: string;
   ignoreIncompleteTasks?: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
   setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
@@ -27,8 +28,8 @@ const copyTask = async ({
   inform,
   sort,
   userName,
+  targetRoutineId,
   ignoreIncompleteTasks,
-  setIsLoading,
   setRoutines,
   setSelectedConcerns,
 }: CopyTaskProps) => {
@@ -37,12 +38,12 @@ const copyTask = async ({
   const body: { [key: string]: any } = {
     taskKey,
     routineId,
+    targetRoutineId,
     ignoreIncompleteTasks,
     startDate,
     userName,
   };
 
-  setIsLoading(true);
   modals.closeAll();
 
   const response = await callTheServer({
@@ -54,7 +55,6 @@ const copyTask = async ({
   if (response.status === 200) {
     if (response.error) {
       openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
-      setIsLoading(false);
       return;
     }
 
@@ -83,9 +83,8 @@ const copyTask = async ({
       });
     } else {
       const routine = response.message;
-      const newRoutineConcerns = [...new Set(routine.allTasks.map((t: AllTaskType) => t.concern))];
-
-      setSelectedConcerns((prev) => ({ ...prev, [routine._id]: newRoutineConcerns }));
+      const newRoutineConcerns = getConcernsOfRoutines([routine]);
+      setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
 
       setRoutines((prev) => {
         const updated = [...(prev || []), routine];
@@ -98,7 +97,6 @@ const copyTask = async ({
       });
       modals.closeAll();
     }
-    setIsLoading(false);
   }
 };
 

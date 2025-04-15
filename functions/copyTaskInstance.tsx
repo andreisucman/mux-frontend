@@ -9,6 +9,7 @@ import callTheServer from "./callTheServer";
 
 export type CopyTaskInstanceProps = {
   taskId: string;
+  targetRoutineId?: string;
   resetNewTask?: boolean;
   startDate: Date | null;
   returnTask?: boolean;
@@ -23,6 +24,7 @@ export default async function copyTaskInstance({
   taskId,
   inform,
   userName,
+  targetRoutineId,
   resetNewTask,
   startDate,
   returnTask,
@@ -33,7 +35,7 @@ export default async function copyTaskInstance({
   const response = await callTheServer({
     endpoint: "copyTaskInstance",
     method: "POST",
-    body: { taskId, startDate, userName, returnTask, resetNewTask },
+    body: { taskId, startDate, targetRoutineId, userName, returnTask, resetNewTask },
   });
 
   if (response.status === 200) {

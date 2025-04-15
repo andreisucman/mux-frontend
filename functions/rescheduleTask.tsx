@@ -1,34 +1,36 @@
 import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
+import { deduplicateRoutines, getConcernsOfRoutines } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 export type CloneRoutinesProps = {
-  routineId: string;
+  currentRoutineId: string;
+  targetRoutineId?: string;
   taskKey: string;
   startDate: Date | null;
   sort?: string | null;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
+  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
 
 const rescheduleTask = async ({
   taskKey,
-  routineId,
+  currentRoutineId,
+  targetRoutineId,
   startDate,
   sort,
-  setIsLoading,
   setRoutines,
+  setSelectedConcerns,
 }: CloneRoutinesProps) => {
   if (!startDate) return;
 
   const body: { [key: string]: any } = {
     taskKey,
-    routineId,
+    currentRoutineId,
+    targetRoutineId,
     startDate,
   };
-
-  setIsLoading(true);
 
   const response = await callTheServer({
     endpoint: "rescheduleTask",
@@ -39,38 +41,17 @@ const rescheduleTask = async ({
   if (response.status === 200) {
     if (response.error) {
       openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
-      setIsLoading(false);
       return;
     }
 
     const routines: RoutineType[] = response.message;
 
-    setRoutines((prev) => {
-      const routineIds = new Set(routines.map((r) => r._id));
-
-      let updated = (prev || []).filter((r) => routineIds.has(r._id));
-
-      routines.forEach((routine) => {
-        const index = updated.findIndex((r) => r._id === routine._id);
-        if (index !== -1) {
-          updated[index] = routine;
-        } else {
-          updated.push(routine);
-        }
-      });
-
-      updated.sort((a, b) =>
-        sort === "startsAt"
-          ? new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
-          : new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime()
-      );
-
-      return updated;
-    });
+    const newRoutineConcerns = getConcernsOfRoutines(routines);
+    setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
+    setRoutines((prev) => deduplicateRoutines(prev || [], routines, sort || ""));
   }
 
   modals.closeAll();
-  setIsLoading(false);
 };
 
 export default rescheduleTask;

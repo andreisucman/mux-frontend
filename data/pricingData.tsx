@@ -24,7 +24,7 @@ export const improvementCoachContent = [
 export const scanAnalysisContent = [
   {
     icon: <IconAnalyze className="icon icon__large" style={style} />,
-    description: "Resets your weekly next scan time to today",
+    description: "Resets your scan timer to today",
   },
 ];
 

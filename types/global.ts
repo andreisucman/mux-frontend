@@ -110,6 +110,7 @@ export type RoutineType = {
   status: RoutineStatusEnum;
   startsAt: string;
   lastDate: string;
+  deletedOn?: Date;
   allTasks: AllTaskType[];
 };
 

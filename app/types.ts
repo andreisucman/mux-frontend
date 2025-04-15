@@ -5,13 +5,13 @@ import {
   ProgressImageType,
   ScoreDifferenceType,
   ScoreType,
-  UserConcernType,
 } from "@/types/global";
 
 export type BeforeAfterType = {
   _id: string;
   userId: string;
   part: PartEnum;
+  concern: string;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
   concernScore?: ScoreType;
@@ -21,7 +21,6 @@ export type BeforeAfterType = {
   updatedAt?: Date;
   createdAt?: Date;
   demographics: DemographicsType;
-  concerns: UserConcernType[];
   avatar: AvatarType | null;
   routineName?: string;
   userName: string | null;

@@ -1,6 +1,6 @@
 .container {
   padding: rem(12) rem(16);
-  gap: rem(8);
+  gap: rem(12);
   width: 100%;
 
   border-radius: var(--mantine-radius-lg);

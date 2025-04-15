@@ -1,0 +1,11 @@
+.container {
+  cursor: default;
+  border-radius: rem(4) rem(8) rem(8) rem(4);
+  background-color: var(--mantine-color-dark-6);
+  overflow: hidden;
+}
+
+.title {
+  position: relative;
+  padding: 0 rem(4);
+}

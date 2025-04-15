@@ -6,7 +6,7 @@ import { TaskType } from "@/types/global";
 import TaskRow from "../TaskRow";
 import classes from "./TasksSlide.module.css";
 
-interface TaskTypeWithOnClick extends TaskType {
+export interface TaskTypeWithOnClick extends TaskType {
   onClick: () => void;
 }
 

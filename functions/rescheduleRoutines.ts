@@ -8,7 +8,6 @@ export type RescheduleRoutinesProps = {
   startDate: Date | null;
   isReschedule?: boolean;
   sort?: string | null;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
   setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
@@ -17,12 +16,9 @@ const rescheduleRoutines = async ({
   sort,
   routineIds,
   startDate,
-  setIsLoading,
   setRoutines,
 }: RescheduleRoutinesProps) => {
   if (!startDate) return;
-
-  setIsLoading(true);
 
   const body: { [key: string]: any } = { routineIds, startDate, sort };
 
@@ -35,7 +31,6 @@ const rescheduleRoutines = async ({
   if (response.status === 200) {
     if (response.error) {
       openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
-      setIsLoading(false);
       return;
     }
 
@@ -50,7 +45,6 @@ const rescheduleRoutines = async ({
 
     modals.closeAll();
   }
-  setIsLoading(false);
 };
 
 export default rescheduleRoutines;

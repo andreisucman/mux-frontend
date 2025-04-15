@@ -14,7 +14,6 @@ export type CopyRoutinesProps = {
   userName?: string;
   sort?: string | null;
   ignoreIncompleteTasks?: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
   setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
@@ -26,7 +25,6 @@ const copyRoutines = async ({
   sort,
   userName,
   ignoreIncompleteTasks,
-  setIsLoading,
   setRoutines,
   setSelectedConcerns,
 }: CopyRoutinesProps) => {
@@ -40,7 +38,6 @@ const copyRoutines = async ({
     ignoreIncompleteTasks,
   };
 
-  setIsLoading(true);
   modals.closeAll();
 
   const response = await callTheServer({
@@ -52,7 +49,6 @@ const copyRoutines = async ({
   if (response.status === 200) {
     if (response.error) {
       openErrorModal({ description: response.error, onClose: () => modals.closeAll() });
-      setIsLoading(false);
       return;
     }
 
@@ -100,7 +96,6 @@ const copyRoutines = async ({
       });
       modals.closeAll();
     }
-    setIsLoading(false);
   }
 };
 

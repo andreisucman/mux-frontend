@@ -12,6 +12,7 @@ import classes from "./AccordionTaskRow.module.css";
 type Props = {
   data: AllTaskType;
   isSelf: boolean;
+  addTaskInstance: (taskId: string) => void;
   copyTaskInstance: (taskId: string) => void;
   rescheduleTaskInstance?: (taskKey: string) => void;
   redirectToTaskInstance: (taskId: string) => void;
@@ -27,6 +28,7 @@ type Props = {
 export default function AccordionTaskRow({
   data,
   isSelf,
+  addTaskInstance,
   copyTaskInstance,
   rescheduleTaskInstance,
   deleteTaskInstance,
@@ -112,6 +114,7 @@ export default function AccordionTaskRow({
           taskIdsObjects={notDeletedIds}
           deleteTaskInstance={deleteTaskInstance}
           copyTaskInstance={copyTaskInstance}
+          addTaskInstance={addTaskInstance}
           updateTaskInstance={updateTaskInstance}
           redirectToTaskInstance={redirectToTaskInstance}
           rescheduleTaskInstance={rescheduleTaskInstance}

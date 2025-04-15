@@ -123,9 +123,9 @@ export default function RoutineModerationCard({
     const isSwitchingToHidden = defaultStatus !== "hidden" && status === "hidden";
 
     if (isSwitchingToPublic) {
-      body = `This will make your ${concern} related routines, progress, diary, and proof public. Continue?`;
+      body = `This will make your routines related to ${normalizeString(concern).toLowerCase()} and their associated progress, diary, and proof public. Continue?`;
     } else if (isSwitchingToHidden) {
-      body = `If you have any subscribers for ${concern}, their subscription renewals will be canceled. Continue?`;
+      body = `If you have any subscribers for your ${normalizeString(concern).toLowerCase()} routines their subscriptions will be canceled. Continue?`;
     }
 
     if (isSwitchingToHidden || isSwitchingToPublic) {
@@ -142,10 +142,10 @@ export default function RoutineModerationCard({
   return (
     <Stack className={classes.container}>
       <Title order={5} className={classes.title}>
-        {label} routine
+        {label} routines
       </Title>
       <TextInput
-        placeholder="The name of your routine"
+        placeholder="The name for your routines"
         value={name}
         label={
           <Group justify="space-between" align="center">
@@ -171,7 +171,7 @@ export default function RoutineModerationCard({
             </Text>
           </Group>
         }
-        placeholder="What is unique about your routine"
+        placeholder="What is unique about your routines"
         error={error?.description}
         editable
       />

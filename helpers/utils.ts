@@ -1,4 +1,4 @@
-import { AllTaskType, TaskStatusEnum } from "@/types/global";
+import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
 
 export function delayExecution(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -95,4 +95,35 @@ export const getIsRoutineActive = (startsAt: string, lastDate: string, allTasks:
     .some((idObj) => idObj.status === TaskStatusEnum.ACTIVE);
 
   return withinDateRange && hasActiveTasks;
+};
+
+export const getConcernsOfRoutines = (data: RoutineType[]) =>
+  data.reduce((a: { [key: string]: string[] }, c: RoutineType) => {
+    a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
+    return a;
+  }, {});
+
+export const deduplicateRoutines = (
+  previousRoutines: RoutineType[],
+  newRoutines: RoutineType[],
+  sort: string
+) => {
+  const updatedRoutines = [...previousRoutines];
+
+  for (let i = 0; i < newRoutines.length; i++) {
+    const index = previousRoutines.findIndex((r) => r._id === newRoutines[i]._id);
+    if (index !== -1) {
+      updatedRoutines[index] = { ...previousRoutines[index], ...newRoutines[i] };
+    } else {
+      updatedRoutines.push(newRoutines[i]);
+    }
+  }
+
+  updatedRoutines.sort((a, b) =>
+    sort === "startsAt"
+      ? new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
+      : new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime()
+  );
+
+  return updatedRoutines;
 };

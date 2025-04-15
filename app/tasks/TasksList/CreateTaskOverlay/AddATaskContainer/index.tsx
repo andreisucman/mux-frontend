@@ -33,6 +33,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
   const [taskName, setTaskName] = useState<string>("");
   const [enableDrafting, setEnableDrafting] = useState(false);
   const [exampleVideoId, setExampleVideoId] = useState("");
+  const [selectedDestinationRoutine, setSelectedDestinationRoutine] = useState("");
   const savedEnableDrafting = getFromLocalStorage("enableDrafting");
 
   const datesPreview = useMemo(() => {
@@ -158,13 +159,13 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                 allConcerns={concerns || []}
                 allParts={partsScanned}
                 taskName={taskName}
-                setTaskName={setTaskName}
                 selectedConcern={selectedConcern}
                 selectedPart={selectedPart}
                 exampleVideoId={exampleVideoId}
                 setExampleVideoId={setExampleVideoId}
                 setSelectedConcern={setSelectedConcern}
                 setSelectedPart={setSelectedPart}
+                setTaskName={setTaskName}
               />
             )}
             {step === 2 && (
@@ -173,9 +174,11 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                 rawTask={rawTask}
                 frequency={frequency}
                 previewData={datesPreview}
+                selectedDestinationRoutine={selectedDestinationRoutine}
                 setDate={setDate}
                 setRawTask={setRawTask}
                 setFrequency={setFrequency}
+                setSelectedDestinationRoutine={setSelectedDestinationRoutine}
               />
             )}
           </Stack>
@@ -219,6 +222,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                   handleSaveTask({
                     concern: selectedConcern,
                     part: selectedPart,
+                    selectedDestinationRoutine,
                     date,
                     frequency,
                     isLoading,

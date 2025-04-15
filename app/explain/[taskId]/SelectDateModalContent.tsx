@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Button, Stack } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { HandleModifyTaskProps } from "@/app/routines/page";
 
 type Props = {
   buttonText: string;
   lastDate?: Date;
-  onSubmit: ({ startDate }: { startDate: Date | null }) => any;
+  onSubmit: ({ startDate, selectedRoutineId }: HandleModifyTaskProps) => any;
 };
 
 export default function SelectDateModalContent({ buttonText, lastDate, onSubmit }: Props) {

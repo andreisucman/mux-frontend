@@ -27,15 +27,15 @@ type FormattedItem = {
 
 export default function CreateATaskContent({
   taskName,
-  setTaskName,
   allConcerns,
   allParts,
   selectedConcern,
-  setSelectedConcern,
   selectedPart,
-  setSelectedPart,
   exampleVideoId,
+  setTaskName,
   setExampleVideoId,
+  setSelectedPart,
+  setSelectedConcern,
 }: Props) {
   const [formattedConcerns, setFormattedConcerns] = useState<FormattedItem[]>([]);
   const [formattedParts, setFormattedParts] = useState<FormattedItem[]>([]);

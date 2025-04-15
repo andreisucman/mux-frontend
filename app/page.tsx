@@ -14,6 +14,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { normalizeString } from "@/helpers/utils";
 import { BeforeAfterType } from "./types";
 import classes from "./page.module.css";
@@ -113,19 +114,44 @@ export default function BeforeAftersPage() {
     });
 
     if (response.status === 200) {
-      const { concerns } = response.message || {};
+      const { concern } = response.message || {};
 
-      if (concerns && concerns[0]) {
-        router.replace(`/${pathname}?concern=${concerns[0]}`);
+      if (concern && concern[0]) {
+        const savedBaConcernFilter = getFromLocalStorage("baConcernFilter");
+
+        let query;
+
+        if (savedBaConcernFilter && concern.includes(savedBaConcernFilter)) {
+          query = `?concern=${savedBaConcernFilter}`;
+        } else {
+          query = `?concern=${concern[0]}`;
+        }
+
+        router.replace(query);
       }
 
       setFilters(response.message);
     }
   }, []);
 
+  const handleChangeConcern = (value?: string | null) => {
+    if (!value) return;
+    saveToLocalStorage("baConcernFilter", value);
+  };
+
   const concernFilters = useMemo(() => {
     if (!filters) return [];
-    return filters.concerns.map((c) => ({ value: c, label: normalizeString(c) }));
+
+    return filters.concern.map((c) => ({ value: c, label: normalizeString(c) }));
+  }, [filters]);
+
+  const noFilters = useMemo(() => {
+    const { concern, ...rest } = filters || {};
+    return (
+      Object.values(rest)
+        .flat()
+        .filter((arr) => arr?.length).length === 0
+    );
   }, [filters]);
 
   useEffect(() => {
@@ -133,10 +159,7 @@ export default function BeforeAftersPage() {
   }, []);
 
   useEffect(() => {
-    if (!concern) {
-      setBeforeAfters([]);
-      return;
-    }
+    if (!concern) return;
     fetchBeforeAfters();
   }, [part, sex, ageInterval, ethnicity, bodyType, concern]);
 
@@ -145,14 +168,15 @@ export default function BeforeAftersPage() {
       <PageHeader
         title="Results"
         filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType"]}
-        isDisabled={!filters}
+        isDisabled={noFilters}
         children={
           <FilterDropdown
             data={concernFilters}
             selectedValue={concern}
-            isDisabled={!filters}
+            isDisabled={concernFilters.length === 0}
             filterType="concern"
             placeholder="Select concern"
+            onSelect={handleChangeConcern}
             addToQuery
           />
         }

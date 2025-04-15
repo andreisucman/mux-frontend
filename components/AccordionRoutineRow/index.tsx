@@ -8,6 +8,7 @@ import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
+import { daysFrom } from "@/helpers/utils";
 import { RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
@@ -33,6 +34,7 @@ type Props = {
   updateTask?: (routineId: string, taskKey: string, newStatus: string) => void;
   copyTask: (routineId: string, taskKey: string) => void;
   copyTaskInstance: (taskId: string) => void;
+  addTaskInstance?: (taskId: string, lastDate: Date, selectedRoutineId: string) => void;
   rescheduleTaskInstance?: (taskId: string) => void;
 };
 
@@ -53,9 +55,11 @@ export default function AccordionRoutineRow({
   setSelectedConcerns,
   copyTaskInstance,
   setRoutines,
+  addTaskInstance,
   rescheduleTaskInstance,
 }: Props) {
   const { ref, focused } = useFocusWithin();
+  const showSkeleton = useShowSkeleton();
   const { _id: routineId, part, startsAt, lastDate, allTasks } = routine;
 
   const router = useRouter();
@@ -204,6 +208,14 @@ export default function AccordionRoutineRow({
     [routine._id, typeof rescheduleTask]
   );
 
+  const handleAddTaskInstance = useCallback(
+    (taskId: string, lastDate: Date, selectedRoutineId: string) => {
+      if (!addTaskInstance) return;
+      addTaskInstance(taskId, lastDate, selectedRoutineId);
+    },
+    [typeof addTaskInstance]
+  );
+
   const handleDeleteTask = useCallback(
     (taskKey: string) => {
       if (!deleteTask) return;
@@ -219,8 +231,6 @@ export default function AccordionRoutineRow({
     },
     [routine._id, typeof updateTask]
   );
-
-  const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton
@@ -283,6 +293,13 @@ export default function AccordionRoutineRow({
                   redirectToTask={redirectToTask}
                   redirectToTaskInstance={redirectToTaskInstance}
                   copyTaskInstance={copyTaskInstance}
+                  addTaskInstance={(taskId: string) =>
+                    handleAddTaskInstance(
+                      taskId,
+                      daysFrom({ date: new Date(routine.lastDate), days: 7 }),
+                      routine._id
+                    )
+                  }
                   deleteTaskInstance={handleDeleteTaskInstance}
                   updateTaskInstance={handleUpdateTaskInstance}
                   rescheduleTaskInstance={handleRescheduleTaskInstance}
