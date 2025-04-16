@@ -346,11 +346,24 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
           .
         </Text>
         <Text>
-          We use data analytics tools, including Google Analytics, to collect and analyze
-          information about how users interact with our Site. This helps us understand user
-          behavior, traffic patterns, and overall site performance. Google Analytics collects data
-          such as IP addresses, browser types, and usage data. By using our Site, you consent to the
-          processing of this data by Google in accordance with{" "}
+          We partner with Microsoft Clarity and Microsoft Advertising to capture how you use and
+          interact with our website through behavioral metrics, heatmaps, and session replay to
+          improve and market our products/services. Website usage data is captured using first and
+          third-party cookies and other tracking technologies to determine the popularity of
+          products/services and online activity. Additionally, we use this information for site
+          optimization, fraud/security purposes, and advertising. For more information about how
+          Microsoft collects and uses your data, visit the{" "}
+          <Link href="https://www.microsoft.com/en-us/privacy/privacystatement">
+            Microsoft Privacy Statement
+          </Link>
+          .
+        </Text>
+        <Text>
+          We use Google Analytics, to collect and analyze information about how users interact with
+          our Site. This helps us understand user behavior, traffic patterns, and overall site
+          performance. Google Analytics collects data such as IP addresses, browser types, and usage
+          data. By using our Site, you consent to the processing of this data by Google in
+          accordance with{" "}
           <Link
             href="https://marketingplatform.google.com/about/analytics/terms/us/"
             style={{ textDecoration: "underline" }}

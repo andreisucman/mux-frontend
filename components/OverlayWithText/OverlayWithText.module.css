@@ -14,5 +14,10 @@
 
 .wrapper {
   align-items: center;
-  gap: rem(4);
+  gap: rem(8);
+  max-width: rem(200);
+}
+
+.icon {
+  display: flex;
 }

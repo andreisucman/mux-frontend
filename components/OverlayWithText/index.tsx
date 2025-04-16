@@ -14,7 +14,11 @@ export default function OverlayWithText({ icon, text, button, outerStyles, inner
   return (
     <Stack className={classes.container} style={outerStyles ? outerStyles : {}}>
       <Stack className={classes.wrapper} style={innerStyles ? innerStyles : {}} c="dimmed">
-        {icon && <Text size="xl">{icon}</Text>}
+        {icon && (
+          <Text size="xl" className={classes.icon}>
+            {icon}
+          </Text>
+        )}
         {text && (
           <Text size="sm" ta="center">
             {text}

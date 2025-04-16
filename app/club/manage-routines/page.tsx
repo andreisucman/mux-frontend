@@ -30,7 +30,13 @@ export type RoutineDataType = {
 export default function ManageRoutines() {
   const [routineConcerns, setRoutineConcerns] = useState<FilterItemType[]>([]);
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
-  const [selectedRoutineData, setSelectedRoutineData] = useState<RoutineDataType>();
+  const [defaultRoutineData, setDefaultRoutineData] = useState<RoutineDataType>();
+
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [price, setPrice] = useState<number>(5);
+  const [updatePrice, setUpdatePrice] = useState<number>(2);
 
   const searchParams = useSearchParams();
   const concern = searchParams.get("concern") || routineConcerns[0]?.value;
@@ -93,7 +99,8 @@ export default function ManageRoutines() {
             setRoutineData((prev) => [...(prev || []), updatedRoutine]);
           }
 
-          setSelectedRoutineData(updatedRoutine);
+          setFields(updatedRoutine);
+          setDefaultRoutineData(updatedRoutine);
         }
       }
       setIsLoading(false);
@@ -101,13 +108,26 @@ export default function ManageRoutines() {
     [routineData]
   );
 
+  const setFields = (data?: RoutineDataType) => {
+    const { name, description, price, updatePrice, status } = data || {};
+    setName(name || "");
+    setDescription(description || "");
+    setPrice(price || 5);
+    setUpdatePrice(updatePrice || 2);
+    setStatus(status || "hidden");
+  };
+
   const handleSelectRoutine = (concern?: string | null) => {
     if (!routineData || !concern) return;
     const relevantRoutineData = routineData.find((doItem) => doItem.concern === concern);
-    setSelectedRoutineData(relevantRoutineData);
+
+    setFields(relevantRoutineData);
+    setDefaultRoutineData(relevantRoutineData);
   };
 
   useEffect(() => {
+    if (!concern) return;
+
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
         const { concerns, routineData } = res.message;
@@ -118,10 +138,22 @@ export default function ManageRoutines() {
         }));
         setRoutineConcerns(concernsItems);
         setRoutineData(routineData);
-        setSelectedRoutineData(routineData[0]);
+
+        let data = routineData[0];
+
+        const relevantRoutineData = routineData.find(
+          (doItem: RoutineDataType) => doItem.concern === concern
+        );
+
+        if (relevantRoutineData) {
+          data = relevantRoutineData;
+        }
+
+        setFields(data);
+        setDefaultRoutineData(data);
       }
     });
-  }, []);
+  }, [typeof concern]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -140,14 +172,20 @@ export default function ManageRoutines() {
       />
       <SkeletonWrapper show={!routineData}>
         <Stack flex={1}>
-          {routineConcerns.length > 0 ? (
+          {defaultRoutineData ? (
             <RoutineModerationCard
+              name={name}
+              description={description}
+              price={price}
+              updatePrice={updatePrice}
+              status={status}
+              setName={setName}
+              setDescription={setDescription}
+              setPrice={setPrice}
+              setUpdatePrice={setUpdatePrice}
+              setStatus={setStatus}
               concern={concern}
-              defaultName={selectedRoutineData?.name}
-              defaultStatus={selectedRoutineData?.status}
-              defaultDescription={selectedRoutineData?.description}
-              defaultOneTimePrice={selectedRoutineData?.price}
-              defaultUpdatePrice={selectedRoutineData?.updatePrice}
+              defaultRoutineData={defaultRoutineData}
               saveRoutineData={saveRoutineData}
             />
           ) : (

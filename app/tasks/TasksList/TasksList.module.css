@@ -27,12 +27,3 @@
   flex: 1;
   height: 100%;
 }
-
-.carouselControl {
-  background-color: alpha(var(--mantine-color-brand-5));
-  color: white;
-
-  &:hover {
-    background-color: alpha(var(--mantine-color-brand-6), 1);
-  }
-}

@@ -12,6 +12,8 @@ type Props = {
   selectedPart: string | null;
   taskName: string;
   selectedConcern: string | null;
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
   setTaskName: React.Dispatch<React.SetStateAction<string>>;
   setSelectedConcern: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedPart: React.Dispatch<React.SetStateAction<string | null>>;
@@ -26,12 +28,14 @@ type FormattedItem = {
 };
 
 export default function CreateATaskContent({
+  error,
   taskName,
   allConcerns,
   allParts,
   selectedConcern,
   selectedPart,
   exampleVideoId,
+  setError,
   setTaskName,
   setExampleVideoId,
   setSelectedPart,
@@ -108,17 +112,6 @@ export default function CreateATaskContent({
 
   return (
     <Stack gap={8}>
-      <TextInput
-        label={
-          <Text size="xs" c="dimmed" component="span">
-            Task name
-          </Text>
-        }
-        value={taskName}
-        onChange={(e) => setTaskName(e.currentTarget.value)}
-        placeholder="Enter task name"
-        withAsterisk
-      />
       <Select
         data={relevantParts}
         value={selectedPart}
@@ -155,8 +148,24 @@ export default function CreateATaskContent({
         placeholder="Select relevant concern"
         withAsterisk
       />
+      <TextInput
+        label={
+          <Text size="xs" c="dimmed" component="span">
+            Task name
+          </Text>
+        }
+        error={error}
+        value={taskName}
+        rightSection={<Text size="sm">{taskName.trim().length}</Text>}
+        onChange={(e) => {
+          setTaskName(e.currentTarget.value);
+          setError("");
+        }}
+        placeholder="Enter task name"
+        withAsterisk
+      />
       <ToCompleteInput
-        title={"Example embeddable video id (optional)"}
+        title={"Embeddable video id (optional)"}
         placeholder="Video id"
         prefix="https://www.youtube.com/embed/"
         value={exampleVideoId}

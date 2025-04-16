@@ -19,12 +19,18 @@ import { RoutineDataType } from "../page";
 import classes from "./RoutineModerationCard.module.css";
 
 type Props = {
+  name: string;
+  status: string;
+  description: string;
+  price: number;
+  updatePrice: number;
   concern: string;
-  defaultStatus?: string;
-  defaultName?: string;
-  defaultDescription?: string;
-  defaultOneTimePrice?: number;
-  defaultUpdatePrice?: number;
+  defaultRoutineData: RoutineDataType;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  setPrice: React.Dispatch<React.SetStateAction<number>>;
+  setUpdatePrice: React.Dispatch<React.SetStateAction<number>>;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
   saveRoutineData: (
     obj: RoutineDataType,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -39,31 +45,26 @@ const statuses = [
 
 export default function RoutineModerationCard({
   concern,
-  defaultStatus = "hidden",
+  name,
+  status,
+  description,
+  price,
+  updatePrice,
+  defaultRoutineData,
   saveRoutineData,
-  defaultName = "",
-  defaultDescription = "",
-  defaultOneTimePrice = 5,
-  defaultUpdatePrice = 2,
+  setName,
+  setDescription,
+  setPrice,
+  setUpdatePrice,
+  setStatus,
 }: Props) {
-  const { userDetails } = useContext(UserContext);
   const router = useRouter();
-
+  const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<{ [key: string]: any }>();
-  const [name, setName] = useState<string>(defaultName);
-  const [status, setStatus] = useState<string | null>(defaultStatus);
-  const [description, setDescription] = useState<string>(defaultDescription);
-  const [price, setOneTimePrice] = useState<number>(defaultOneTimePrice);
-  const [updatePrice, setSubscriptionPrice] = useState<number>(defaultUpdatePrice);
-
   const label = normalizeString(concern);
 
-  const handleDo = (
-    setter: React.Dispatch<React.SetStateAction<any>>,
-    value: any,
-    maxLength?: number
-  ) => {
+  const handleDo = (setter: any, value: any, maxLength?: number) => {
     if (maxLength) {
       if (value.length <= maxLength) {
         setter(value);
@@ -78,27 +79,6 @@ export default function RoutineModerationCard({
     const { name } = userDetails || {};
     router.push(`/club/routines/${name}?concern=${concern}`);
   }, [userDetails, concern]);
-
-  const isSaved = useMemo(() => {
-    return (
-      status === defaultStatus &&
-      name === defaultName &&
-      description === defaultDescription &&
-      price === defaultOneTimePrice &&
-      updatePrice === defaultUpdatePrice
-    );
-  }, [
-    name,
-    status,
-    description,
-    price,
-    updatePrice,
-    defaultStatus,
-    defaultName,
-    defaultDescription,
-    defaultOneTimePrice,
-    defaultUpdatePrice,
-  ]);
 
   const handleSave = () => {
     if (isLoading) return;
@@ -119,13 +99,14 @@ export default function RoutineModerationCard({
 
     let body = "";
 
-    const isSwitchingToPublic = defaultStatus !== "public" && status === "public";
-    const isSwitchingToHidden = defaultStatus !== "hidden" && status === "hidden";
+    const isSwitchingToPublic = defaultRoutineData.status !== "public" && status === "public";
+    const isSwitchingToHidden = defaultRoutineData.status !== "hidden" && status === "hidden";
+    const concernName = normalizeString(concern).toLowerCase();
 
     if (isSwitchingToPublic) {
-      body = `This will make your routines related to ${normalizeString(concern).toLowerCase()} and their associated progress, diary, and proof public. Continue?`;
+      body = `This will make your routines related to ${concernName} and their associated progress, diary, and proof public. Continue?`;
     } else if (isSwitchingToHidden) {
-      body = `If you have any subscribers for your ${normalizeString(concern).toLowerCase()} routines their subscriptions will be canceled. Continue?`;
+      body = `If you have any subscribers for your ${concernName} routines their subscriptions will be canceled. Continue?`;
     }
 
     if (isSwitchingToHidden || isSwitchingToPublic) {
@@ -138,6 +119,16 @@ export default function RoutineModerationCard({
       save();
     }
   };
+
+  const isSaved = useMemo(() => {
+    return (
+      status === defaultRoutineData.status &&
+      name.trim() === defaultRoutineData.name.trim() &&
+      description.trim() === defaultRoutineData.description.trim() &&
+      price === defaultRoutineData.price &&
+      updatePrice === defaultRoutineData.updatePrice
+    );
+  }, [name, status, description, price, updatePrice, defaultRoutineData]);
 
   return (
     <Stack className={classes.container}>
@@ -180,7 +171,7 @@ export default function RoutineModerationCard({
           <NumberInput
             label={<Text className={classes.label}>One-time price</Text>}
             defaultValue={price}
-            onChange={(value) => handleDo(setOneTimePrice, Number(value))}
+            onChange={(value) => handleDo(setPrice, Number(value))}
             clampBehavior="strict"
             min={5}
             max={10000}
@@ -190,7 +181,7 @@ export default function RoutineModerationCard({
           <NumberInput
             defaultValue={updatePrice}
             label={<Text className={classes.label}>Price of update</Text>}
-            onChange={(value) => handleDo(setSubscriptionPrice, Number(value))}
+            onChange={(value) => handleDo(setUpdatePrice, Number(value))}
             clampBehavior="strict"
             min={2}
             max={10000}
@@ -218,7 +209,7 @@ export default function RoutineModerationCard({
             variant="default"
             className={classes.button}
             onClick={handleRedirect}
-            disabled={defaultStatus === "hidden" || isLoading}
+            disabled={status === "hidden" || isLoading}
           >
             View
           </Button>

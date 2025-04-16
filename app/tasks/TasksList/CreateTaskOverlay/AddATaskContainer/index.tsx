@@ -82,6 +82,12 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
     if (isLoading) return;
 
     setError("");
+
+    if (taskName.trim().length < 20) {
+      setError("At least 20 characters for task name");
+      return;
+    }
+
     setIsLoading(true);
 
     const response = await callTheServer({
@@ -143,19 +149,19 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
 
   const noDescriptionAndInstruction = !rawTask?.description && !rawTask?.instruction;
 
+  const disableCreate = !taskName || !selectedConcern || !selectedPart;
+  const disableSave =
+    !selectedConcern || !selectedPart || !rawTask?.description || !rawTask?.instruction;
+
   return (
     <Stack className={classes.container}>
-      {error && (
-        <Text size="xs" className={classes.error}>
-          {error}
-        </Text>
-      )}
       {isLoading && <Loader type="bars" size={48} className={classes.loader} />}
       {!isLoading && step < 3 && (
         <>
           <Stack flex={1}>
             {step === 1 && (
               <CreateATaskContent
+                error={error}
                 allConcerns={concerns || []}
                 allParts={partsScanned}
                 taskName={taskName}
@@ -166,20 +172,28 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                 setSelectedConcern={setSelectedConcern}
                 setSelectedPart={setSelectedPart}
                 setTaskName={setTaskName}
+                setError={setError}
               />
             )}
             {step === 2 && (
-              <EditATaskContent
-                date={date}
-                rawTask={rawTask}
-                frequency={frequency}
-                previewData={datesPreview}
-                selectedDestinationRoutine={selectedDestinationRoutine}
-                setDate={setDate}
-                setRawTask={setRawTask}
-                setFrequency={setFrequency}
-                setSelectedDestinationRoutine={setSelectedDestinationRoutine}
-              />
+              <>
+                {error && (
+                  <Text size="xs" className={classes.error}>
+                    {error}
+                  </Text>
+                )}
+                <EditATaskContent
+                  date={date}
+                  rawTask={rawTask}
+                  frequency={frequency}
+                  previewData={datesPreview}
+                  selectedDestinationRoutine={selectedDestinationRoutine}
+                  setDate={setDate}
+                  setRawTask={setRawTask}
+                  setFrequency={setFrequency}
+                  setSelectedDestinationRoutine={setSelectedDestinationRoutine}
+                />
+              </>
             )}
           </Stack>
 
@@ -196,7 +210,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                 <Button
                   variant={isSubscriptionActive ? "filled" : "default"}
                   loading={isLoading}
-                  disabled={!selectedConcern || !selectedPart}
+                  disabled={disableCreate}
                   onClick={onCreateManuallyClick}
                 >
                   Create task manually
@@ -215,9 +229,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
             {step === 2 && rawTask && (
               <Button
                 loading={isLoading}
-                disabled={
-                  !selectedConcern || !selectedPart || !rawTask.description || !rawTask.instruction
-                }
+                disabled={disableSave}
                 onClick={() =>
                   handleSaveTask({
                     concern: selectedConcern,

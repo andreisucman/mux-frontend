@@ -62,7 +62,7 @@ export default function ScanProgress() {
       isCentered: true,
       modalType: "scan",
       buttonText: "Reset scan timer",
-      description: `You can scan your ${part} once a week for free. If you want more you can reset the timer here.`,
+      description: `You can scan your ${part} for free once a week. If you want more you can reset the timer now.`,
       onClick: () =>
         createCheckoutSession({
           type: "platform",
@@ -82,7 +82,7 @@ export default function ScanProgress() {
   const scanButtons = useMemo(() => {
     if (status === AuthStateEnum.AUTHENTICATED) {
       return (
-        <Group mt={8}>
+        <Group mt={8} gap={12}>
           <Button flex={1} miw={175} variant="default" onClick={handleResetTimer}>
             Reset scan timer
           </Button>

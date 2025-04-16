@@ -174,7 +174,7 @@ export default function TasksList({ customStyles }: Props) {
                 classNames={{
                   root: classes.root,
                   controls: classes.controls,
-                  control: `carouselControl ${classes.carouselControl}`,
+                  control: `carouselControl`,
                   viewport: classes.viewport,
                   container: classes.container,
                 }}
@@ -184,7 +184,7 @@ export default function TasksList({ customStyles }: Props) {
                     <MemoizedTasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
                   ) : (
                     <MemoizedOverlayWithText
-                      text="No tasks for today"
+                      text="No tasks"
                       icon={<IconCircleOff className="icon" />}
                     />
                   )}
@@ -194,7 +194,7 @@ export default function TasksList({ customStyles }: Props) {
                     <MemoizedTasksSlide taskGroups={tomorrowsTasks} />
                   ) : (
                     <MemoizedOverlayWithText
-                      text="No tasks for tomorrow"
+                      text="No tasks on this date"
                       icon={<IconCircleOff className="icon" />}
                     />
                   )}

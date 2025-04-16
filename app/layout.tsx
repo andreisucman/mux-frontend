@@ -7,10 +7,10 @@ import "@mantine/carousel/styles.layer.css";
 import "@mantine/charts/styles.layer.css";
 
 import React, { Suspense } from "react";
-import { GoogleTagManager } from "@next/third-parties/google";
 import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NavigationProgress } from "@mantine/nprogress";
+import CookieDisclaimer from "@/components/CookieDisclaimer";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
 import UserContextProvider from "@/context/UserContext";
@@ -50,12 +50,10 @@ export default function RootLayout({ children }: Props) {
           rel="stylesheet"
         />
       </head>
-      {process.env.NEXT_PUBLIC_ENV !== "dev" && (
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID!} />
-      )}
       <body>
         <div className="bgPattern" />
         <MantineProvider theme={theme} defaultColorScheme="dark" forceColorScheme="dark">
+          <CookieDisclaimer />
           <Suspense fallback={<Loader m="auto" />}>
             <UserContextProvider>
               <ModalsProvider
@@ -67,9 +65,7 @@ export default function RootLayout({ children }: Props) {
                 <HandleOnComplete />
 
                 <Header />
-                <Stack className={classes.container}>
-                  {children}
-                </Stack>
+                <Stack className={classes.container}>{children}</Stack>
               </ModalsProvider>
             </UserContextProvider>
           </Suspense>
