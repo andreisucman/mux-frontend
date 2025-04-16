@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Loader, Stack, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -19,6 +18,7 @@ import { individualResultTitles } from "./individualResultTitles";
 import ProgressGallery from "./ProgressGallery";
 import { SimpleProgressType } from "./types";
 import classes from "./results.module.css";
+import { normalizeString } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -66,7 +66,7 @@ export default function ResultsProgress() {
         type: "progress",
         title: (
           <Title order={5} component={"p"}>
-            {upperFirst(data.part)} progress
+            {normalizeString(data.concern)} progress
           </Title>
         ),
       }),
