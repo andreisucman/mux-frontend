@@ -16,11 +16,11 @@
   justify-content: center;
   position: relative;
   flex: 1;
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }
 
 .video {
-  position:absolute;
+  position: absolute;
   inset: 0;
   height: 100%;
   width: 100%;

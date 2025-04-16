@@ -7,12 +7,19 @@ import "@mantine/carousel/styles.layer.css";
 import "@mantine/charts/styles.layer.css";
 
 import React, { Suspense } from "react";
-import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
+import {
+  ColorSchemeScript,
+  Loader,
+  MantineProvider,
+  Stack,
+  useComputedColorScheme,
+} from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NavigationProgress } from "@mantine/nprogress";
 import CookieDisclaimer from "@/components/CookieDisclaimer";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
+import ThemeColorSetter from "@/components/ThemeColorSetter";
 import UserContextProvider from "@/context/UserContext";
 import { HandleOnComplete } from "@/helpers/custom-router";
 import { theme } from "../theme";
@@ -32,13 +39,10 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript forceColorScheme="dark" />
+        <ColorSchemeScript defaultColorScheme="auto" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <meta charSet="UTF-8" />
-        <meta name="theme-color" content="#2e2e2e" />
-        <meta name="msapplication-navbutton-color" content="#2e2e2e" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
@@ -52,7 +56,8 @@ export default function RootLayout({ children }: Props) {
       </head>
       <body>
         <div className="bgPattern" />
-        <MantineProvider theme={theme} defaultColorScheme="dark" forceColorScheme="dark">
+        <MantineProvider theme={theme} defaultColorScheme="auto">
+          <ThemeColorSetter />
           <CookieDisclaimer />
           <Suspense fallback={<Loader m="auto" />}>
             <UserContextProvider>

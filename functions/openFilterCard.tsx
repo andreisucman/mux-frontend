@@ -1,9 +1,9 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import FilterCardContent from "@/components/FilterCardContent/FilterCardContent";
 import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent";
 import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
 import DiaryFilterCardContent from "@/components/DiaryFilterCardContent";
+import FilterCardContent from "@/components/FilterCardContent/FilterCardContent";
 import ClubProgressFilterCardContent from "@/components/PageHeaderClub/ClubProgressFilterCardContent";
 import ClubProofFilterCardContent from "@/components/PageHeaderClub/ClubProofFilterCardContent";
 
@@ -39,6 +39,7 @@ const openFiltersCard = ({ cardName, childrenProps }: Props) => {
 
   modals.openContextModal({
     modal: "general",
+    classNames: { overlay: "overlay" },
     title: (
       <Title order={5} component="p">
         Filters

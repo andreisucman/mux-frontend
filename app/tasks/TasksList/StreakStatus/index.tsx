@@ -15,7 +15,7 @@ function StreakStatus({ completionPercent, customRingStyles }: Props) {
     { value: completionPercent, color: "var(--mantine-color-green-7)" },
     {
       value: 100 - completionPercent,
-      color: "var(--mantine-color-dark-4)",
+      color: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
     }
   );
 

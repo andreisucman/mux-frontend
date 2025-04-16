@@ -46,6 +46,7 @@ export default function ClubJoin() {
       centered: true,
       modal: "general",
       size: "sm",
+      classNames: { overlay: "overlay" },
       innerProps: <JoinClubConfirmation handleJoinClub={handleJoinClub} type="start" />,
       title: (
         <Title order={5} component={"p"}>

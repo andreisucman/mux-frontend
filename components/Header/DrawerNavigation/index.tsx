@@ -18,7 +18,6 @@ import {
 } from "@tabler/icons-react";
 import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import { AuthStateEnum } from "@/context/UserContext/types";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { NavigationLinkType } from "./LinkRow";
 import NavigationStack from "./NavigationStack";
@@ -33,7 +32,7 @@ const defaultNavigation = [
   {
     title: "Scan",
     icon: <IconScan stroke={1.35} className="icon" />,
-    path: "/scan",
+    path: "/select-part",
   },
   {
     title: "Rewards",

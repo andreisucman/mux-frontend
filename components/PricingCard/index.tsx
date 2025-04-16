@@ -8,6 +8,7 @@ type Props = {
   headerChildren?: React.ReactNode;
   addGradient?: boolean;
   price?: React.ReactNode;
+  showFooter?: boolean;
   customContentStyles?: { [key: string]: any };
   customContainerStyles?: { [key: string]: any };
   customHeadingStyles?: { [key: string]: any };
@@ -26,6 +27,7 @@ type Props = {
 
 export default function PricingCard({
   content,
+  showFooter = true,
   addGradient = false,
   customContentStyles,
   customHeadingStyles,
@@ -47,7 +49,10 @@ export default function PricingCard({
       className={cn(classes.container, { [classes.glow]: glow })}
       style={customContainerStyles || {}}
     >
-      <Stack className={classes.heading} style={customHeadingStyles ? customHeadingStyles : {}}>
+      <Stack
+        className={`${classes.heading} gradient`}
+        style={customHeadingStyles ? customHeadingStyles : {}}
+      >
         {headerChildren}
         <Title order={4} className={classes.name} lineClamp={2}>
           {name}
@@ -87,6 +92,7 @@ export default function PricingCard({
           </Stack>
         )}
       </Stack>
+      {showFooter && <Stack className={`${classes.footer} gradient`} />}
     </Stack>
   );
 }

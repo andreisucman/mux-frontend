@@ -61,6 +61,7 @@ export default function ClubBuyerContent() {
       modals.openContextModal({
         modal: "general",
         centered: true,
+        classNames: { overlay: "overlay" },
         withCloseButton: true,
         title: (
           <Title order={5} component={"p"}>

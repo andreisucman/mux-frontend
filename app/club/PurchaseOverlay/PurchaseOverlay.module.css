@@ -5,6 +5,8 @@
   align-items: center;
   inset: 0;
   z-index: 1;
+  box-shadow: var(--mantine-shadows-md);
+  padding: rem(16);
 }
 
 .wrapper {

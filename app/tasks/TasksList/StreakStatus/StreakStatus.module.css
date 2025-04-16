@@ -1,7 +1,7 @@
 .container {
   gap: rem(2);
-  background-color: var(--mantine-color-dark-6);
-  border: rem(1) solid var(--mantine-color-dark-5);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   border-radius: var(--mantine-radius-lg);
   padding: 0 rem(8);
 }
@@ -22,5 +22,5 @@
   height: rem(16);
   display: flex;
   margin-left: rem(2);
-  color: var(--mantine-color-gray-3);
+  color: var(--mantine-color-gray-1);
 }

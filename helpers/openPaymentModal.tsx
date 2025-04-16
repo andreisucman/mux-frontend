@@ -51,6 +51,7 @@ export default function openPaymentModal({
     centered: isCentered,
     withCloseButton,
     closeOnClickOutside: withCloseButton,
+    classNames: { overlay: "overlay" },
     title: (
       <Title order={5} component={"p"}>
         {title}

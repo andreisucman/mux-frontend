@@ -153,6 +153,7 @@ export default function Explain(props: Props) {
         </Title>
       ),
       size: "sm",
+      classNames: { overlay: "overlay" },
       innerProps: (
         <SelectDateModalContent
           buttonText="Copy task"
@@ -246,6 +247,7 @@ export default function Explain(props: Props) {
       centered: true,
       modal: "general",
       size: "auto",
+      classNames: { overlay: "overlay", content: classes.editModalContent },
       title: (
         <Title order={5} component={"p"}>
           Edit {taskName?.toLowerCase()}
@@ -260,9 +262,6 @@ export default function Explain(props: Props) {
           updateTask={handleUpdateTaskInstance}
         />
       ),
-      classNames: {
-        content: classes.editModalContent,
-      },
     });
   }, [taskName, taskId, taskDescription, taskInstruction, startsAt]);
 

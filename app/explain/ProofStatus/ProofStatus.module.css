@@ -1,7 +1,7 @@
 .container {
   gap: rem(8);
   padding: rem(8);
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   justify-content: center;
   align-items: center;

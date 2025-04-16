@@ -122,6 +122,7 @@ export default function PurchaseOverlay({
         modals.openContextModal({
           centered: true,
           modal: "general",
+          classNames: { overlay: "overlay" },
           innerProps: (
             <JoinClubConfirmation
               handleJoinClub={handleJoinClub}
@@ -185,7 +186,7 @@ export default function PurchaseOverlay({
     modals.openContextModal({
       modal: "general",
       centered: true,
-      size: "sm",
+      classNames: { overlay: "overlay" },
       innerProps: (
         <RoutineDescriptionModal
           text={selectedCardData?.description || ""}
@@ -260,7 +261,7 @@ export default function PurchaseOverlay({
           glow
         />
       </Stack>
-      <Overlay color="#000" backgroundOpacity={0.1} blur={7} radius={16} />
+      <Overlay className={"overlay"} backgroundOpacity={0.1} blur={7} radius={16} />
     </Stack>
   );
 }

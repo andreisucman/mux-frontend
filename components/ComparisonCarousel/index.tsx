@@ -80,7 +80,7 @@ export default function ComparisonCarousel({ data }: Props) {
   const icon = getPartIcon(part, "icon__large");
 
   return (
-    <Skeleton className={"skeleton"} visible={showSkeleton || !slides}>
+    <Skeleton className={"skeleton shadow"} visible={showSkeleton || !slides}>
       <Stack className={classes.container}>
         <Title order={5} className={classes.title} lineClamp={1}>
           <Link className={classes.titleLink} href={redirectUrl}>

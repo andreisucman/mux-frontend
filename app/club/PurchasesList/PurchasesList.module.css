@@ -2,7 +2,7 @@
   position: relative;
   flex: 1;
   overflow-y: auto;
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   padding: rem(16) 0;
 }

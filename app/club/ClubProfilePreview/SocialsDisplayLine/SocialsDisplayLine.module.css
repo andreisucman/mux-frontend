@@ -17,7 +17,7 @@
   gap: rem(4);
 
   &:hover {
-    color: white;
+    color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-white));
   }
 }
 

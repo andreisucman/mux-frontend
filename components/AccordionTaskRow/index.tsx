@@ -111,6 +111,7 @@ export default function AccordionTaskRow({
           color={color}
           icon={icon}
           isSelf={isSelf}
+          taskKey={key}
           taskIdsObjects={notDeletedIds}
           deleteTaskInstance={deleteTaskInstance}
           copyTaskInstance={copyTaskInstance}

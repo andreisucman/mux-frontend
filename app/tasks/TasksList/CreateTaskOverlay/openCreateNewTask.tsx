@@ -17,6 +17,7 @@ export default function openCreateNewTask({
     centered: true,
     modal: "general",
     size: "auto",
+    classNames: { overlay: "overlay" },
     title: (
       <Title order={5} component={"p"}>
         Add a task

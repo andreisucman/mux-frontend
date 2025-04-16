@@ -23,11 +23,19 @@ export default function AnalysisCard({
   const data = isReverse
     ? [
         { name: "Ok", value: currentScore, color: "var(--mantine-color-green-7)" },
-        { name: "Not ok", value: 100 - currentScore, color: "var(--mantine-color-gray-7)" },
+        {
+          name: "Not ok",
+          value: 100 - currentScore,
+          color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-gray-7))",
+        },
       ]
     : [
         { name: "Not ok", value: currentScore, color: "var(--mantine-color-red-7)" },
-        { name: "Ok", value: 100 - currentScore, color: "var(--mantine-color-gray-7)" },
+        {
+          name: "Ok",
+          value: 100 - currentScore,
+          color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-gray-7))",
+        },
       ];
 
   const change = useMemo(() => {

@@ -2,7 +2,7 @@
   cursor: default;
   align-items: center;
   border-radius: var(--mantine-radius-lg);
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   padding: 0 rem(16);
 }
 

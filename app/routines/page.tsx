@@ -117,6 +117,7 @@ export default function MyRoutines() {
           </Title>
         ),
         size: "sm",
+        classNames: { overlay: "overlay" },
         innerProps: <SelectDateModalContent buttonText="Copy routine" onSubmit={handleSubmit} />,
         modal: "general",
         centered: true,
@@ -134,6 +135,7 @@ export default function MyRoutines() {
           </Title>
         ),
         size: "sm",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <SelectDateModalContent
             buttonText={"Reschedule"}
@@ -206,6 +208,7 @@ export default function MyRoutines() {
           </Title>
         ),
         size: "md",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <MoveTaskModalContent
             buttonText="Copy task"
@@ -236,6 +239,7 @@ export default function MyRoutines() {
         </Title>
       ),
       size: "md",
+      classNames: { overlay: "overlay" },
       innerProps: (
         <MoveTaskModalContent
           buttonText="Copy task"
@@ -258,6 +262,7 @@ export default function MyRoutines() {
           </Title>
         ),
         size: "md",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <MoveTaskModalContent
             buttonText="Reschedule task"
@@ -326,6 +331,7 @@ export default function MyRoutines() {
           </Title>
         ),
         size: "sm",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <SelectDateModalContent
             buttonText="Copy task"
@@ -356,6 +362,7 @@ export default function MyRoutines() {
           </Title>
         ),
         size: "md",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <MoveTaskModalContent
             buttonText="Reschedule task"
@@ -505,6 +512,7 @@ export default function MyRoutines() {
               value={openValue}
               onChange={handleSetOpenValue}
               chevron={false}
+              variant="separated"
               className={`${classes.accordion} scrollbar`}
               classNames={{
                 content: classes.content,

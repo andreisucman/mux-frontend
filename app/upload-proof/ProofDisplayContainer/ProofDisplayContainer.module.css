@@ -6,7 +6,7 @@
   align-items: center;
   flex: 1;
   width: 100%;
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
 }

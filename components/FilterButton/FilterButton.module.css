@@ -12,10 +12,9 @@
 }
 
 .button {
-  color: var(--mantine-color-gray-3);
   z-index: 0;
 
   &[data-disabled] {
-    color: var(--mantine-color-dark-3);
+    color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-3));
   }
 }

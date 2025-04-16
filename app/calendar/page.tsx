@@ -321,7 +321,7 @@ export default function Calendar() {
           classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
         />
 
-        <Group>
+        <Group className={classes.buttons}>
           <Button
             size="compact-sm"
             variant="default"
@@ -372,7 +372,6 @@ export default function Calendar() {
                       />
                     );
                   })}
-                <div className={classes.emptyRow} />
               </Stack>
             </>
           )}

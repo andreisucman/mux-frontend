@@ -32,7 +32,7 @@ export default function RewardCard({ data, claimReward }: Props) {
   const finalValue = Math.round(Number(completion) > 100 ? 100 : Number(completion)) || 0;
 
   return (
-    <Skeleton visible={showSkeleton} className="skeleton">
+    <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
       <Stack className={classes.container}>
         <Group className={classes.heading}>
           {value && <Text>${value}</Text>}

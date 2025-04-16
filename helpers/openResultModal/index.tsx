@@ -31,6 +31,7 @@ export default function openResultModal({ record, type, title, isPublicPage }: O
     centered: true,
     modal: "general",
     title,
+    classNames: { overlay: "overlay", content: "scrollbar" },
     size: rem(960),
     innerProps: content,
     removeScrollProps: { allowPinchZoom: true },
@@ -38,7 +39,6 @@ export default function openResultModal({ record, type, title, isPublicPage }: O
       content: { display: "flex", flexDirection: "column" },
       body: { display: "flex", flexDirection: "column", flex: 1 },
     },
-    classNames: { content: "scrollbar" },
   });
 }
 

@@ -3,6 +3,10 @@
   margin: auto;
 
   max-width: clamp(rem(760), 38.5%, rem(920));
+  box-shadow: var(--mantine-shadows-md);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+
+  border-radius: var(--mantine-radius-lg);
 
   @media (max-width: $mantine-breakpoint-xs) {
     transform: unset;
@@ -10,8 +14,6 @@
 }
 
 .wrapper {
-  background-color: var(--mantine-color-dark-6);
-  border-radius: var(--mantine-radius-lg);
   padding: rem(16);
 }
 

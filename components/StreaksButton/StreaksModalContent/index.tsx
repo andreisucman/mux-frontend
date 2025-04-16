@@ -13,7 +13,10 @@ export default function StreaksModalContent({ streaksSections }: Props) {
     if (value > 0) {
       sections.push({ value: 100, color: "var(--mantine-color-green-7)" });
     } else {
-      sections.push({ value: 0, color: "var(--mantine-color-dark-4)" });
+      sections.push({
+        value: 0,
+        color: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
+      });
     }
 
     const descriptionObject = streaksDescription.find((obj) => obj.key === key);
@@ -45,7 +48,7 @@ export default function StreaksModalContent({ streaksSections }: Props) {
   return (
     <Stack>
       <Text ta="center" c="dimmed" size="sm" maw={300} m="auto">
-        Streaks enable you to claim rewards. Visit the Rewards page to see what you can claim.
+        Streaks let you to claim rewards. Visit the Rewards page to see what you can claim.
       </Text>
       {rows}
     </Stack>

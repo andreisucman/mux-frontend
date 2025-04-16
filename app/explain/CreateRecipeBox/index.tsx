@@ -83,6 +83,7 @@ export default function CreateRecipeBox({
       centered: true,
       modal: "general",
       size: "md",
+      classNames: { overlay: "overlay" },
       title: (
         <Title order={5} component={"p"}>
           Recipe settings

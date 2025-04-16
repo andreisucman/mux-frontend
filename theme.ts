@@ -58,7 +58,7 @@ export const theme = createTheme({
   fontFamily: "Open Sans, sans-serif",
   defaultRadius: 16,
   colors: { red, green, orange, brand },
-  black: "#000000",
+  black: "#2e2e2d",
   primaryColor: "brand",
   primaryShade: 6,
   autoContrast: true,
@@ -69,6 +69,7 @@ export const theme = createTheme({
     lg: rem(18),
     xl: rem(20),
   },
+  shadows: { md: "4px 8px 16px 0 rgba(0, 0, 0, 0.1)", sm: "2px 4px 8px 0 rgba(0, 0, 0, 0.1)" },
   headings: {
     fontFamily: "Poppins",
     fontWeight: "600",
@@ -81,6 +82,6 @@ export const theme = createTheme({
       h5: { fontSize: rem(16) },
     },
   },
-  
+
   cursorType: "pointer",
 });

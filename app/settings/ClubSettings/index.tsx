@@ -75,6 +75,7 @@ export default function ClubSettings() {
     modals.openContextModal({
       centered: true,
       modal: "general",
+      classNames: { overlay: "overlay" },
       innerProps: (
         <LeaveClubConfirmation
           handleLeaveClub={() =>
@@ -128,6 +129,7 @@ export default function ClubSettings() {
     modals.openContextModal({
       modal: "general",
       centered: true,
+      classNames: { overlay: "overlay" },
       innerProps: (
         <SelectCountry
           onClick={(newCountry: string) =>
@@ -192,6 +194,7 @@ export default function ClubSettings() {
           </Title>
         ),
         centered: true,
+        classNames: { overlay: "overlay" },
         labels: { confirm: "Yes", cancel: "No" },
         onConfirm: () => updateClubInfo({ type, data, setIsLoading }),
       });
@@ -209,6 +212,7 @@ export default function ClubSettings() {
       modal: "general",
       centered: true,
       size: "md",
+      classNames: { overlay: "overlay" },
       closeOnClickOutside: false,
       innerProps: (
         <AvatarEditor

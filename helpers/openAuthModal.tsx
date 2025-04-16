@@ -13,6 +13,7 @@ export default async function openAuthModal({ title, stateObject, customStyles }
   modals.openContextModal({
     modal: "general",
     centered: true,
+    classNames: { overlay: "overlay" },
     title: (
       <Title order={5} component={"p"}>
         {title}

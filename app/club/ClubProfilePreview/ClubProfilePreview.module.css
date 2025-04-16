@@ -4,7 +4,8 @@
   width: 100%;
 
   border-radius: var(--mantine-radius-lg);
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  box-shadow: var(--mantine-shadows-md);
 }
 
 .row {

@@ -1,6 +1,6 @@
 .container {
   padding: rem(16);
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   justify-content: center;
   align-items: center;

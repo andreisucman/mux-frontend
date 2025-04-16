@@ -44,7 +44,7 @@
   width: 100%;
   height: 100%;
 
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: light-dark(rgba(255, 255, 255, 0.75), rgba(0, 0, 0, 0.75));
 }
 
 @keyframes fadeIn {
@@ -69,7 +69,8 @@
   height: 100%;
   pointer-events: none;
   border-radius: rem(16);
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
   background-size: 20% 20%;
   z-index: 1;

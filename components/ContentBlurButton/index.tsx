@@ -66,6 +66,7 @@ export default function ContentBlurButton({
     modals.openContextModal({
       modal: "general",
       centered: true,
+      classNames: { overlay: "overlay" },
       title: (
         <Title order={5} component={"div"}>
           New blur

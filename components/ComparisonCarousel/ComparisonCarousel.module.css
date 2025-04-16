@@ -3,9 +3,10 @@
   position: relative;
 
   overflow: hidden;
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   justify-content: center;
+  box-shadow: var(--mantine-shadows-sm);
 }
 
 .carousel {
@@ -34,16 +35,22 @@
 }
 
 .carouselControl {
-  background-color: alpha(var(--mantine-color-dark-6), 0.75);
-  color: white;
+  background-color: alpha(
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)),
+    0.75
+  );
+  color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-white));
 
   &:hover {
-    background-color: alpha(var(--mantine-color-dark-6), 1);
+    background-color: alpha(
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)),
+      1
+    );
   }
 }
 
 .titleLink {
   display: flex;
   align-items: center;
-  gap: rem(8)
+  gap: rem(8);
 }

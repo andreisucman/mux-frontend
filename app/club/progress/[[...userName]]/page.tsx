@@ -21,6 +21,7 @@ import openResultModal from "@/helpers/openResultModal";
 import { PurchaseOverlayDataType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import classes from "./progress.module.css";
+import { normalizeString } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -92,7 +93,7 @@ export default function ClubProgress(props: Props) {
         type: "progress",
         title: (
           <Title order={5} component={"p"}>
-            {upperFirst(data.part)} progress
+            {normalizeString(data.concern)} progress
           </Title>
         ),
       }),

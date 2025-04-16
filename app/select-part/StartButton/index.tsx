@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { Skeleton, Text, UnstyledButton } from "@mantine/core";
+import { Skeleton, Text, UnstyledButton, useComputedColorScheme } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
 import { getPartIcon } from "@/helpers/icons";
@@ -12,6 +12,8 @@ type Props = {
 };
 
 export default function StartButton({ onClick, part }: Props) {
+  const computedColorScheme = useComputedColorScheme("light");
+
   const [pageLoaded, setPageLoaded] = useState(false);
   const [relevantPlaceholder, setRelevantPlaceholder] = useState<StaticImageData>();
   const { userDetails } = useContext(UserContext);
@@ -19,13 +21,16 @@ export default function StartButton({ onClick, part }: Props) {
   const { sex } = demographics || {};
 
   useEffect(() => {
-    if (!pageLoaded) return;
+    if (!pageLoaded || !computedColorScheme) return;
 
     const relevantPlaceholder = placeholders.find(
-      (item) => item.sex.includes(sex || "female") && item.part === part
+      (item) =>
+        item.sex.includes(sex || "female") &&
+        item.part === part &&
+        item.scheme === computedColorScheme
     );
     setRelevantPlaceholder(relevantPlaceholder?.url);
-  }, [sex, pageLoaded]);
+  }, [sex, computedColorScheme, pageLoaded]);
 
   useEffect(() => {
     setPageLoaded(true);

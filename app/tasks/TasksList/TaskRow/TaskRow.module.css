@@ -7,19 +7,19 @@
   gap: 0;
   flex: 1;
   width: 100%;
-  max-height: rem(70);
-  min-height: rem(70);
-  border: rem(1) solid var(--mantine-color-dark-5);
-  background-color: var(--mantine-color-dark-6);
+  max-height: rem(80);
+  min-height: rem(80);
+  border: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
 
   &:hover {
-    background-color: var(--mantine-color-dark-5);
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
   }
 }
 
 .wrapper {
   gap: 0;
-  padding: 0 rem(8) 0 rem(16);
+  padding: 0 0 0 rem(16);
   width: 100%;
 }
 
@@ -42,4 +42,9 @@
 .label {
   display: flex;
   justify-content: center;
+}
+
+
+.ringProgress {
+  margin-right: rem(4);
 }

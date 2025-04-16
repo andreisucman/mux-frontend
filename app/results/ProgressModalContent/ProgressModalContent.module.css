@@ -4,9 +4,10 @@
   overflow: hidden;
   width: 100%;
   gap: 0;
+  box-shadow: var(--mantine-shadows-sm);
 }
 
 .buttonWrapper {
   padding: rem(8) rem(16) rem(24) rem(16);
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
 }

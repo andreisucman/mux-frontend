@@ -37,6 +37,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     modals.openContextModal({
       modal: "general",
       centered: true,
+      classNames: { overlay: "overlay" },
       title: (
         <Title order={5} component={"p"}>
           Which routine to create?

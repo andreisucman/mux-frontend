@@ -2,7 +2,7 @@
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconDoorEnter, IconRocket } from "@tabler/icons-react";
+import { IconDoorEnter, IconRocket, IconScan } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
@@ -158,17 +158,11 @@ function Header() {
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>
             {displayComponent === "startButton" && (
               <GlowingButton
-                text="Start"
+                text="Analyze"
                 aria-label="start analysis button"
                 loading={isLoading}
                 disabled={isLoading}
-                icon={
-                  <IconRocket
-                    stroke={1.5}
-                    className="icon icon__large"
-                    style={{ marginRight: rem(6) }}
-                  />
-                }
+                icon={<IconRocket stroke={1.5} size={24} style={{ marginRight: rem(6) }} />}
                 onClick={() => handleRedirect("startButton")}
               />
             )}
@@ -225,6 +219,7 @@ function Header() {
           title: classes.drawerTitle,
           content: classes.drawerContent,
           body: classes.drawerBody,
+          overlay: "overlay",
         }}
       >
         <DrawerNavigation closeDrawer={close} handleSignOut={handleSignOut} />

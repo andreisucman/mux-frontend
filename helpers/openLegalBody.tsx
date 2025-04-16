@@ -26,12 +26,12 @@ export default function openLegalBody(type: "club" | "terms" | "privacy") {
     centered: true,
     modal: "general",
     size: "lg",
+    classNames: { overlay: "overlay", content: "scrollbar" },
     title: (
       <Title order={5} component={"p"}>
         {title}
       </Title>
     ),
-    classNames: { content: "scrollbar" },
     innerProps: <Stack>{body}</Stack>,
   });
 }

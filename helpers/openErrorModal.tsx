@@ -13,6 +13,7 @@ export default function openErrorModal(props?: Props) {
   try {
     modals.open({
       centered: true,
+      classNames: { overlay: "overlay" },
       title: (
         <Title component="p" order={5}>
           🚨 {title || "Ups, this didn't work!"}

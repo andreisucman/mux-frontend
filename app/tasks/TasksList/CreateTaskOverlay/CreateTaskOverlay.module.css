@@ -3,7 +3,10 @@
   z-index: 3;
 
   flex: 1;
-  background-color: alpha(var(--mantine-color-dark-6), 0.75);
+  background-color: alpha(
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)),
+    0.75
+  );
   border-radius: var(--mantine-radius-lg);
 }
 

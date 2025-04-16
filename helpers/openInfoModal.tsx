@@ -14,6 +14,7 @@ export default function openInfoModal(props?: Props) {
   try {
     modals.open({
       centered: true,
+      classNames: { overlay: "overlay" },
       title: (
         <Title order={5} component={"p"}>
           {title}

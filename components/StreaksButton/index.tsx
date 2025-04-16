@@ -44,9 +44,9 @@ function StreaksButton({ streaks, customRingStyles }: Props) {
     } else {
       sections.push({
         value: 0,
-        color: "var(--mantine-color-dark-4)",
+        color: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
       });
-      icon = <IconFlame className={classes.icon} color="white" />;
+      icon = <IconFlame className={classes.icon} />;
     }
 
     return { sections, icon };
@@ -55,6 +55,7 @@ function StreaksButton({ streaks, customRingStyles }: Props) {
   const openStreaksModal = useCallback(() => {
     modals.openContextModal({
       modal: "general",
+      classNames: { overlay: "overlay" },
       title: (
         <Title component="div" order={5}>
           Streaks

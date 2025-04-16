@@ -24,7 +24,7 @@
   width: rem(12);
   height: rem(12);
   border-radius: 1000px;
-  background-color: white;
+  background-color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-white));
 }
 
 .indicatorActive {

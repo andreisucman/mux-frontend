@@ -159,6 +159,7 @@ export default function DiaryPage() {
     modals.openContextModal({
       modal: "general",
       centered: true,
+      classNames: { overlay: "overlay" },
       innerProps: (
         <SelectPartModalContent
           userId={userId}

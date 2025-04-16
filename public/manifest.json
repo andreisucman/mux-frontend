@@ -1,12 +1,12 @@
 {
   "name": "Max You Out",
   "short_name": "Muxout",
-  "description": "Become 5 star all around",
+  "description": "Maximize your look",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#2e2e2e",
-  "theme_color": "#2e2e2e",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "icons/lowres.png",

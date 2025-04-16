@@ -101,7 +101,7 @@ export default function ResultsProof() {
             isSelf
           />
         ) : (
-          <Loader m="0 auto" pt="25%"  />
+          <Loader m="0 auto" pt="25%" />
         )}
       </SkeletonWrapper>
     </Stack>

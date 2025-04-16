@@ -17,5 +17,5 @@
 .stick {
   height: rem(2);
   width: 100%;
-  background-color: #fff;
+  background-color: light-dark(var(--mantine-color-dark-6), var(--mantine-color-white));
 }

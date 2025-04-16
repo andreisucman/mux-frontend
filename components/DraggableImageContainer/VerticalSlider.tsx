@@ -18,7 +18,7 @@ function VerticalSlier({ value, setValue }: Props) {
         style={{
           width: 16,
           height: 120,
-          backgroundColor: "var(--mantine-color-dark-4)",
+          backgroundColor: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
           position: "relative",
         }}
       >
@@ -28,7 +28,7 @@ function VerticalSlier({ value, setValue }: Props) {
             bottom: 0,
             height: `${value * 100}%`,
             width: 16,
-            backgroundColor: "var(--mantine-color-dark-5)",
+            backgroundColor: "light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5))",
             opacity: 0.7,
           }}
         />
@@ -40,7 +40,7 @@ function VerticalSlier({ value, setValue }: Props) {
             left: 0,
             width: 16,
             height: 16,
-            backgroundColor: "var(--mantine-color-dark-3)",
+            backgroundColor: "light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-3))",
           }}
         />
       </div>

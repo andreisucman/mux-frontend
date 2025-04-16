@@ -146,7 +146,7 @@ export default function RoutinesHistoryPage() {
               )}
             </>
           ) : (
-            <Loader m="0 auto" pt="25%"  />
+            <Loader m="0 auto" pt="25%" />
           )}
         </Stack>
       </SkeletonWrapper>

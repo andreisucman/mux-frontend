@@ -146,7 +146,7 @@ export default function ClubRoutines(props: Props) {
             Choose start date
           </Title>
         ),
-        size: "sm",
+        classNames: { overlay: "overlay" },
         innerProps: <SelectDateModalContent buttonText="Copy routine" onSubmit={handleSubmit} />,
         modal: "general",
         centered: true,
@@ -164,6 +164,7 @@ export default function ClubRoutines(props: Props) {
           </Title>
         ),
         size: "md",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <MoveTaskModalContent
             buttonText="Copy task"
@@ -196,6 +197,7 @@ export default function ClubRoutines(props: Props) {
           </Title>
         ),
         size: "md",
+        classNames: { overlay: "overlay" },
         innerProps: (
           <MoveTaskModalContent
             buttonText="Copy task"

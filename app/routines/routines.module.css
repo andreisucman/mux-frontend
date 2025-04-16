@@ -16,7 +16,6 @@
   position: absolute;
   inset: 0;
   flex: 1;
-  background-color: none !important;
 }
 
 .content {
@@ -37,7 +36,6 @@
 }
 
 .control {
-  background: none !important;
 }
 
 .getMoreButton {

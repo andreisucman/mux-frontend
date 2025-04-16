@@ -34,11 +34,13 @@ body::-webkit-scrollbar-thumb {
   inset: 0;
   z-index: -1;
   background-image: linear-gradient(
-    -45deg,
-    var(--mantine-color-dark-7) 49.9%,
-    alpha(var(--mantine-color-dark-6), 0.25) 50%,
-    alpha(var(--mantine-color-dark-6), 0.25) 74.9%,
-    alpha(var(--mantine-color-dark-6), 0.5) 75%
+    20deg,
+    transparent 40%,
+    light-dark(alpha(var(--mantine-color-gray-0), 1), alpha(var(--mantine-color-dark-6), 0.5))
+      40%,
+    light-dark(alpha(var(--mantine-color-gray-0), 1), alpha(var(--mantine-color-dark-6), 0.5))
+      70%,
+    transparent 70%
   );
 }
 
@@ -47,12 +49,6 @@ body::-webkit-scrollbar-thumb {
   flex-direction: column;
   flex: 1;
   height: 100%;
-}
-
-.selected {
-  background-color: var(--mantine-color-dark-6);
-  background-color: var(--mantine-color-dark-5);
-  border: rem(1) solid var(--mantine-color-dark-4);
 }
 
 .icon {
@@ -79,9 +75,15 @@ body::-webkit-scrollbar-thumb {
     max-width: rem(32);
     max-height: rem(32);
   }
+}
 
-  &__gray {
-    color: var(--mantine-color-gray-4);
+.overlay {
+  @mixin dark {
+    background-color: alpha(var(--mantine-color-black), 0.5);
+  }
+
+  @mixin light {
+    background-color: alpha(var(--mantine-color-gray-0), 0.75);
   }
 }
 
@@ -113,12 +115,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 .carouselControl {
-  background-color: var(--mantine-color-gray-4);
-  color: var(--mantine-color-dark-5);
   border-color: transparent;
 
   &:hover {
-    background-color: alpha(var(--mantine-color-gray-4));
     border-color: transparent;
   }
 
@@ -129,14 +128,21 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
-.checkboxInput {
-  border: rem(1) solid var(--mantine-color-dark-2);
-}
-
 .priceGroup {
   flex-wrap: nowrap;
   gap: rem(4);
-  color: white;
   width: 100%;
   justify-content: center;
+}
+
+.gradient {
+  background-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-8));
+  background-image: linear-gradient(
+    45deg,
+    light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-8)) 0%,
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)) 25%,
+    light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-7)) 50%,
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5)) 75%,
+    light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-8)) 100%
+  );
 }

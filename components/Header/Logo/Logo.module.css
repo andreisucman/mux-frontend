@@ -7,3 +7,23 @@
   width: 100%;
   margin-bottom: rem(8);
 }
+
+.dark {
+  @mixin light {
+    display: none;
+  }
+
+  @mixin dark {
+    display: block;
+  }
+}
+
+.light {
+  @mixin dark {
+    display: none;
+  }
+
+  @mixin light {
+    display: block;
+  }
+}

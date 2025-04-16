@@ -1,7 +1,7 @@
 .container {
   cursor: default;
   border-radius: rem(4) rem(8) rem(8) rem(4);
-  background-color: var(--mantine-color-dark-6);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   overflow: hidden;
 }
 

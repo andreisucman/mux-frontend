@@ -78,7 +78,7 @@ export default function BlurEditorSlide({
           top: rem(8),
           left: rem(8),
           zIndex: 1,
-          backgroundColor: "var(--mantine-color-dark-6)",
+          backgroundColor: "light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6))",
           padding: "0.25rem 0.5rem",
           borderRadius: rem(16),
         }}

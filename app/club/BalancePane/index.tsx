@@ -28,6 +28,7 @@ function BalancePane() {
       modals.openContextModal({
         modal: "general",
         centered: true,
+        classNames: { overlay: "overlay" },
         innerProps: (
           <SelectCountry
             onClick={(newCountry: string) => handleSetCountryAndCreateAccount(newCountry)}

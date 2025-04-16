@@ -206,7 +206,7 @@ export default function UploadProof(props: Props) {
 
     const response: { [key: string]: any } = {};
     let text = null;
-    let color = "var(--mantine-color-gray-2)";
+    let color = "var(--mantine-color-gray-1)";
 
     const alreadyExists = taskInfo.examples.some((e) => e.url === existingProofRecord.mainUrl.url);
 

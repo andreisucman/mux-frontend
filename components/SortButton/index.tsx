@@ -34,7 +34,6 @@ export default function SortButton({
       sortItems.map((item, i) => (
         <Checkbox
           key={i}
-          size="md"
           label={item.label}
           checked={sort === item.value}
           onChange={() => handleSelect(item.value)}

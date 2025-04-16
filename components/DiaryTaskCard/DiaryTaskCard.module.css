@@ -7,7 +7,7 @@
   flex: 1;
   width: 100%;
   min-width: rem(200);
-  border: rem(1) solid var(--mantine-color-dark-5);
+  border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
 }
 
 .head {
@@ -30,7 +30,10 @@
   aspect-ratio: 9/16;
   flex: 1;
   width: 100%;
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  background-color: alpha(
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5)),
+    0.5
+  );
 }
 
 .image {

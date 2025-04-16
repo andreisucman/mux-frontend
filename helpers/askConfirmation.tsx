@@ -17,6 +17,7 @@ const askConfirmation = ({ title, body, labels, onConfirm, onCancel }: AskConfir
       </Title>
     ),
     centered: true,
+    classNames: { overlay: "overlay" },
     children: <Text>{body}</Text>,
     labels: labels || { confirm: "Yes", cancel: "No" },
     onConfirm,

@@ -24,7 +24,7 @@ export default function SkeletonWrapper({ children, show }: Props) {
   }, [status, onProtectedPath]);
 
   return (
-    <Skeleton visible={show || showSkeleton} className="skeleton" style={{ gap: rem(16) }}>
+    <Skeleton style={{ gap: rem(16) }} visible={show || showSkeleton} className={`skeleton`}>
       {children}
     </Skeleton>
   );

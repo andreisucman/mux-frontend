@@ -17,8 +17,8 @@
 
 .item {
   position: relative;
-  border: rem(1) solid var(--mantine-color-dark-5);
   border-radius: var(--mantine-radius-lg);
+  border: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));
 
   &:last-child {
     margin-bottom: unset;
@@ -54,7 +54,7 @@
 }
 
 .selected {
-  border-color: var(--mantine-color-dark-3);
+  /* border-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-3)); */
 }
 
 .canceled {

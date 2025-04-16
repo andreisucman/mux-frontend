@@ -6,10 +6,14 @@
   width: 100%;
   min-width: rem(200);
 
-  background-color: alpha(var(--mantine-color-dark-5), 0.5);
+  background-color: alpha(
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5)),
+    0.5
+  );
+  border: rem(1) solid transparent;
 
   &:hover {
-    background-color: var(--mantine-color-dark-5);
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   }
 }
 
@@ -34,20 +38,20 @@
   padding-bottom: 176%;
   background-image: linear-gradient(
     45deg,
-    var(--mantine-color-dark-7) 49.9%,
-    alpha(var(--mantine-color-dark-6), 0.5) 50%,
-    alpha(var(--mantine-color-dark-6), 0.5) 74.9%,
-    var(--mantine-color-dark-5) 75%
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 49.9%,
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 50%,
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 84.9%,
+    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 85%
   );
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 
   &:hover {
     background-image: linear-gradient(
       45deg,
-      var(--mantine-color-dark-7) 49.9%,
-      alpha(var(--mantine-color-brand-6), 0.5) 50%,
-      alpha(var(--mantine-color-brand-6), 0.5) 74.9%,
-      var(--mantine-color-dark-5) 75%
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 49.9%,
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 50%,
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 84.9%,
+      light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5)) 85%
     );
   }
 }
@@ -68,7 +72,7 @@
 .overlay {
   display: flex;
   z-index: 0;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: light-dark(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25));
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
 
   &:hover {
@@ -79,10 +83,10 @@
 
 .disabledOverlay {
   cursor: not-allowed;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: light-dark(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25));
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: light-dark(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25));
   }
 }
 
@@ -91,4 +95,24 @@
   align-items: center;
   gap: rem(8);
   padding: rem(8) rem(16);
+}
+
+.dark {
+  @mixin light {
+    display: none;
+  }
+
+  @mixin dark {
+    display: block;
+  }
+}
+
+.light {
+  @mixin dark {
+    display: none;
+  }
+
+  @mixin light {
+    display: block;
+  }
 }

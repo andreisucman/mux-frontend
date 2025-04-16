@@ -69,7 +69,7 @@ export default function DeleteContentButton({
         [classes[position]]: true,
       })}
     >
-      <IconTrash className={"icon icon__small"} color={"var(--mantine-color-gray-2)"} />
+      <IconTrash className={"icon icon__small"} color={"var(--mantine-color-gray-1)"} />
     </ActionIcon>
   );
 }

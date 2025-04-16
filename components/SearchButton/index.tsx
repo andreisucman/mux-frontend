@@ -138,6 +138,7 @@ export default function SearchButton({
         disabled={disableSpotlight}
         store={spotlightStore}
         actions={spotlightActions}
+        classNames={{overlay:"overlay"}}
         onQueryChange={(query: string) => {
           setSearchQuery(query);
           if (query) getAutocompleteData(collection, query);
