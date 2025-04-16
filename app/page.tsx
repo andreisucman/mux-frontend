@@ -217,7 +217,7 @@ export default function BeforeAftersPage() {
           )}
         </>
       ) : (
-        <Loader style={{ margin: "auto" }} />
+        <Loader m="0 auto" pt="25%" />
       )}
     </Stack>
   );

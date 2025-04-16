@@ -196,7 +196,7 @@ export default function TasksList({ customStyles }: Props) {
           </Stack>
         </CreateRoutineProvider>
       )}
-      {displayComponent === "loading" && <Loader m="0 auto" pt="15%" />}
+      {displayComponent === "loading" && <Loader m="0 auto" pt="25%" />}
     </Stack>
   );
 }

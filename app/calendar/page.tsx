@@ -355,7 +355,7 @@ export default function Calendar() {
         </Group>
 
         <Stack className={`${classes.content} scrollbar`}>
-          {displayComponent === "loading" && <Loader m="0 auto" pt="15%" />}
+          {displayComponent === "loading" && <Loader m="auto" />}
           {displayComponent === "list" && (
             <>
               <Stack className={classes.list}>

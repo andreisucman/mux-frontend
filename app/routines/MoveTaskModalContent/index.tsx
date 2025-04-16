@@ -81,7 +81,7 @@ export default function MoveTaskModalContent({ buttonText, handleClick }: Props)
       />
       <Stack>
         {isFetching ? (
-          <Loader m="auto" />
+          <Loader m="0 auto" pt="25%" />
         ) : (
           <>
             {routinesOnTheChosenDate && routinesOnTheChosenDate.length > 0 ? (

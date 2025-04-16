@@ -209,7 +209,7 @@ export default function RoutineModerationCard({
             variant="default"
             className={classes.button}
             onClick={handleRedirect}
-            disabled={defaultRoutineData.status === "hidden" || isLoading}
+            disabled={defaultRoutineData?.status === "hidden" || isLoading}
           >
             View
           </Button>

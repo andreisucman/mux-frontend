@@ -215,7 +215,9 @@ export default function SelectConcernsPage() {
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader title="Select concerns" />
       <Stack className={classes.content}>
-        <Alert variant="default" p={"0.5rem 1rem"}>What concern are you targeting?</Alert>
+        <Alert variant="default" p={"0.5rem 1rem"}>
+          What concern are you targeting?
+        </Alert>
         <TextInput
           radius="xl"
           placeholder={"Search concerns"}
@@ -234,14 +236,14 @@ export default function SelectConcernsPage() {
         />
         <Stack className={`${classes.listWrapper} scrollbar`}>
           {isLoading ? (
-            <Stack pt="20%">
-              <Loader m="0 auto" />
+            <Stack>
+              <Loader m="0 auto" pt="25%" />
             </Stack>
           ) : (
             <InfiniteScroll
               loader={
                 <Stack mb={rem(16)} key={0}>
-                  <Loader style={{ margin: "auto" }} />
+                  <Loader m="auto" />
                 </Stack>
               }
               loadMore={() => handleFetchConcerns(query, concerns.length)}

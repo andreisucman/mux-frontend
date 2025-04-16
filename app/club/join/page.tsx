@@ -65,7 +65,6 @@ export default function ClubJoin() {
       <SkeletonWrapper>
         <PageHeader title="Join the Club" />
         <Stack className={classes.wrapper}>
-          <Overlay zIndex={1} style={{ pointerEvents: "none" }} opacity={0.5} radius={16} />
           <Stack className={classes.announcement}>
             <Title order={2}>Welcome</Title>
             <Text ta="center">

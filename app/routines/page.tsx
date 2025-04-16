@@ -559,7 +559,7 @@ export default function MyRoutines() {
             customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
           />
         )}
-        {displayComponent === "loading" && <Loader style={{ margin: "auto" }} />}
+        {displayComponent === "loading" && <Loader m="0 auto" pt="25%" />}
       </SkeletonWrapper>
     </Stack>
   );

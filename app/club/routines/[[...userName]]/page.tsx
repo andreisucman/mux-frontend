@@ -355,7 +355,7 @@ export default function ClubRoutines(props: Props) {
           </Stack>
         </Stack>
       ) : (
-        <Loader style={{ margin: "auto" }} />
+        <Loader m="0 auto" pt="25%" />
       )}
     </ClubModerationLayout>
   );

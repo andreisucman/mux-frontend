@@ -24,8 +24,9 @@ import classes from "./diary.module.css";
 export type HandleFetchDiaryProps = {
   dateFrom: string | null;
   dateTo: string | null;
-  part: string | null;
+  concern: string | null;
   sort: string | null;
+  part: string | null;
 };
 
 export default function DiaryPage() {
@@ -42,6 +43,7 @@ export default function DiaryPage() {
   const dateFrom = searchParams.get("dateFrom");
   const dateTo = searchParams.get("dateTo");
   const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
 
   const { _id: userId, tasks } = userDetails || {};
 
@@ -172,11 +174,12 @@ export default function DiaryPage() {
   }, [userId]);
 
   const handleFetchDiaryRecords = useCallback(
-    async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
+    async ({ dateFrom, dateTo, part, concern, sort }: HandleFetchDiaryProps) => {
       try {
         const message = await fetchDiaryRecords({
           sort,
           part,
+          concern,
           dateFrom,
           dateTo,
           currentArrayLength: diaryRecords?.length,
@@ -198,8 +201,8 @@ export default function DiaryPage() {
   );
 
   useEffect(() => {
-    handleFetchDiaryRecords({ dateFrom, dateTo, part, sort });
-  }, [part, sort, dateFrom, dateTo]);
+    handleFetchDiaryRecords({ dateFrom, dateTo, part, concern, sort });
+  }, [part, sort, concern, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!diaryRecords) return;
@@ -243,11 +246,11 @@ export default function DiaryPage() {
               setDiaryRecords={setDiaryRecords}
               setOpenValue={setOpenValue}
               handleFetchDiaryRecords={() =>
-                handleFetchDiaryRecords({ dateFrom, dateTo, part, sort })
+                handleFetchDiaryRecords({ dateFrom, dateTo, part, concern, sort })
               }
             />
           ) : (
-            <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+            <Loader m="0 auto" pt="25%" />
           )}
         </Stack>
       </SkeletonWrapper>

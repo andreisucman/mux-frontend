@@ -30,13 +30,21 @@ export type RoutineDataType = {
 export default function ManageRoutines() {
   const [routineConcerns, setRoutineConcerns] = useState<FilterItemType[]>([]);
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
-  const [defaultRoutineData, setDefaultRoutineData] = useState<RoutineDataType>();
+  const [defaultRoutineData, setDefaultRoutineData] = useState<RoutineDataType>({
+    concern: "",
+    description: "",
+    name: "",
+    status: "hidden",
+    price: 5,
+    updatePrice: 2,
+  });
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState<string>("hidden");
   const [price, setPrice] = useState<number>(5);
   const [updatePrice, setUpdatePrice] = useState<number>(2);
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   const searchParams = useSearchParams();
   const concern = searchParams.get("concern") || routineConcerns[0]?.value;
@@ -121,11 +129,14 @@ export default function ManageRoutines() {
     if (!routineData || !concern) return;
     const relevantRoutineData = routineData.find((doItem) => doItem.concern === concern);
 
-    setFields(relevantRoutineData);
-    setDefaultRoutineData(relevantRoutineData);
+    if (relevantRoutineData) {
+      setFields(relevantRoutineData);
+      setDefaultRoutineData(relevantRoutineData);
+    }
   };
 
   useEffect(() => {
+    if (!pageLoaded) return;
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
         const { concerns, routineData } = res.message;
@@ -148,11 +159,15 @@ export default function ManageRoutines() {
           data = relevantRoutineData;
         }
 
-        setFields(data);
-        setDefaultRoutineData(data);
+        if (data) {
+          setFields(data);
+          setDefaultRoutineData(data);
+        }
       }
     });
-  }, []);
+  }, [pageLoaded]);
+
+  useEffect(() => setPageLoaded(true), []);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -171,7 +186,7 @@ export default function ManageRoutines() {
       />
       <SkeletonWrapper show={!routineData}>
         <Stack flex={1}>
-          {defaultRoutineData ? (
+          {routineConcerns.length > 0 ? (
             <RoutineModerationCard
               name={name}
               description={description}

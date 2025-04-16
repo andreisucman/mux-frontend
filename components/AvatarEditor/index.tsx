@@ -64,7 +64,7 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
   if (!currentConfig || !updatedConfig)
     return (
       <Stack flex={1}>
-        <Loader m="auto" />
+        <Loader m="0 auto" pt="25%" />
       </Stack>
     );
 

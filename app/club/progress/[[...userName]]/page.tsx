@@ -205,7 +205,7 @@ export default function ClubProgress(props: Props) {
             )}
           </Stack>
         ) : (
-          <Loader m="0 auto" pt="15%" />
+          <Loader m="0 auto" pt="25%" />
         )}
       </Stack>
     </ClubModerationLayout>

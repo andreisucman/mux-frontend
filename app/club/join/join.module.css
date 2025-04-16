@@ -6,7 +6,6 @@
   position: relative;
   flex: 1;
   gap: rem(28);
-  padding: rem(16);
   border-radius: var(--mantine-radius-lg);
 }
 

@@ -47,7 +47,7 @@ export default function PurchasesList({
             <InfiniteScroll
               loader={
                 <Stack mb={rem(16)} key={0}>
-                  <Loader m="auto" />
+                  <Loader m="0 auto" pt="25%" />
                 </Stack>
               }
               loadMore={handleFetchPurchases}
@@ -68,7 +68,7 @@ export default function PurchasesList({
         </>
       ) : (
         <Stack flex={1}>
-          <Loader style={{ margin: "auto" }} />
+          <Loader m="0 auto" pt="25%" />
         </Stack>
       )}
     </Stack>

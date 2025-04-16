@@ -52,14 +52,16 @@ export default function DiaryPage(props: Props) {
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
   const dateTo = searchParams.get("dateTo");
+  const concern = searchParams.get("concern");
   const part = searchParams.get("part");
 
   const handleFetchDiaryRecords = useCallback(
-    async ({ dateFrom, dateTo, part, sort }: HandleFetchDiaryProps) => {
+    async ({ dateFrom, dateTo, concern, part, sort }: HandleFetchDiaryProps) => {
       const message = await fetchDiaryRecords({
         userName,
         sort,
         part,
+        concern,
         dateFrom,
         dateTo,
         currentArrayLength: diaryRecords?.length,
@@ -86,7 +88,7 @@ export default function DiaryPage(props: Props) {
   );
 
   const manageOverlays = useCallback(() => {
-    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    const isCurrentPartPurchased = concern && !notPurchased.includes(concern);
 
     if (isCurrentPartPurchased) {
       if (notPurchased.length > 0) {
@@ -97,26 +99,26 @@ export default function DiaryPage(props: Props) {
     } else if (notPurchased.length > 0) {
       setShowOverlayComponent("purchaseOverlay");
     }
-  }, [part, notPurchased]);
+  }, [concern, notPurchased]);
 
   const handleCloseOverlay = useCallback(() => {
-    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    const isCurrentPartPurchased = concern && !notPurchased.includes(concern);
     if (isCurrentPartPurchased) {
       setShowOverlayComponent("showOtherRoutinesButton");
     } else {
       setShowOverlayComponent("maximizeButton");
     }
-  }, [part, notPurchased]);
+  }, [concern, notPurchased]);
 
   useEffect(() => {
     manageOverlays();
-  }, [part, notPurchased]);
+  }, [concern, notPurchased]);
 
   useEffect(() => {
     if (!userName) return;
 
-    handleFetchDiaryRecords({ dateTo, dateFrom, sort, part });
-  }, [sort, part, userName, dateFrom, dateTo, authStatus]);
+    handleFetchDiaryRecords({ dateTo, dateFrom, sort, part, concern });
+  }, [sort, concern, userName, dateFrom, dateTo, authStatus]);
 
   useEffect(() => {
     if (!purchaseOverlayData || !userName) return;
@@ -138,7 +140,7 @@ export default function DiaryPage(props: Props) {
           userName={userName}
           sortItems={diarySortItems}
           defaultSortValue={"-_id"}
-          filterNames={["dateFrom", "dateTo", "part"]}
+          filterNames={["dateFrom", "dateTo", "part", "concern"]}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
@@ -175,7 +177,7 @@ export default function DiaryPage(props: Props) {
               setOpenValue={setOpenValue}
               hasMore={hasMore}
               handleFetchDiaryRecords={() =>
-                handleFetchDiaryRecords({ dateFrom, dateTo, sort, part })
+                handleFetchDiaryRecords({ dateFrom, dateTo, sort, part, concern })
               }
             />
 
@@ -188,7 +190,7 @@ export default function DiaryPage(props: Props) {
             )}
           </>
         ) : (
-          <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+          <Loader m="0 auto" pt="25%" />
         )}
       </Stack>
     </ClubModerationLayout>

@@ -194,7 +194,7 @@ export default function Rewards() {
           )}
         </>
       ) : (
-        <Loader style={{ margin: "0 auto", paddingTop: "15%" }} />
+        <Loader m="0 auto" pt="25%"  />
       )}
     </Stack>
   );
