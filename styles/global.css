@@ -113,12 +113,12 @@ body::-webkit-scrollbar-thumb {
 }
 
 .carouselControl {
-  background-color: alpha(var(--mantine-color-gray-5));
+  background-color: var(--mantine-color-gray-4);
   color: var(--mantine-color-dark-5);
   border-color: transparent;
 
   &:hover {
-    background-color: alpha(var(--mantine-color-gray-6), 1);
+    background-color: alpha(var(--mantine-color-gray-4));
     border-color: transparent;
   }
 

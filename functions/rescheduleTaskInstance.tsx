@@ -1,6 +1,6 @@
 import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
-import { deduplicateRoutines, getConcernsOfRoutines } from "@/helpers/utils";
+import { deduplicateRoutines } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
@@ -10,7 +10,6 @@ export type CloneRoutinesProps = {
   selectedRoutineId?: string;
   sort?: string | null;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
-  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
 
 const rescheduleTaskInstance = async ({
@@ -19,7 +18,6 @@ const rescheduleTaskInstance = async ({
   sort,
   selectedRoutineId,
   setRoutines,
-  setSelectedConcerns,
 }: CloneRoutinesProps) => {
   if (!startDate) return;
 
@@ -43,8 +41,6 @@ const rescheduleTaskInstance = async ({
 
     const routines: RoutineType[] = response.message;
 
-    const newRoutineConcerns = getConcernsOfRoutines(routines);
-    setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
     setRoutines((prev) => deduplicateRoutines(prev || [], routines, sort || ""));
   }
 

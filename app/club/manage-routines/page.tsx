@@ -126,8 +126,6 @@ export default function ManageRoutines() {
   };
 
   useEffect(() => {
-    if (!concern) return;
-
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
         const { concerns, routineData } = res.message;
@@ -136,6 +134,7 @@ export default function ManageRoutines() {
           value: c,
           label: normalizeString(c),
         }));
+
         setRoutineConcerns(concernsItems);
         setRoutineData(routineData);
 
@@ -153,7 +152,7 @@ export default function ManageRoutines() {
         setDefaultRoutineData(data);
       }
     });
-  }, [typeof concern]);
+  }, []);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

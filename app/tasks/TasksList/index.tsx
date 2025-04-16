@@ -25,9 +25,6 @@ type Props = {
   customStyles?: { [key: string]: any };
 };
 
-const MemoizedTasksSlide = React.memo(TasksSlide);
-const MemoizedOverlayWithText = React.memo(OverlayWithText);
-
 export default function TasksList({ customStyles }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -181,24 +178,19 @@ export default function TasksList({ customStyles }: Props) {
               >
                 <Carousel.Slide>
                   {todaysTasks?.length ? (
-                    <MemoizedTasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
+                    <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
                   ) : (
-                    <MemoizedOverlayWithText
+                    <OverlayWithText
                       text="No tasks"
                       icon={<IconCircleOff className="icon" />}
                     />
                   )}
                 </Carousel.Slide>
-                <Carousel.Slide>
-                  {tomorrowsTasks?.length ? (
-                    <MemoizedTasksSlide taskGroups={tomorrowsTasks} />
-                  ) : (
-                    <MemoizedOverlayWithText
-                      text="No tasks on this date"
-                      icon={<IconCircleOff className="icon" />}
-                    />
-                  )}
-                </Carousel.Slide>
+                {tomorrowsTasks?.length && (
+                  <Carousel.Slide>
+                    <TasksSlide taskGroups={tomorrowsTasks} />
+                  </Carousel.Slide>
+                )}
               </Carousel>
             )}
           </Stack>

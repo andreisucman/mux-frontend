@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import cn from "classnames";
 import { Accordion, Group, Skeleton } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
@@ -22,12 +22,10 @@ type Props = {
   index: number;
   isSelf: boolean;
   selected: boolean;
-  selectedConcerns: { [key: string]: string[] };
   copyRoutines?: (routineIds: string[]) => void;
   rescheduleRoutines?: (routineIds: string[]) => void;
   updateRoutines?: (routineIds: string[], newStatus: string) => void;
   deleteRoutines?: (routineIds: string[]) => void;
-  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
   rescheduleTask?: (routineId: string, taskKey: string) => void;
   deleteTask?: (routineId: string, taskKey: string) => void;
@@ -43,7 +41,6 @@ export default function AccordionRoutineRow({
   index,
   isSelf,
   selected,
-  selectedConcerns,
   copyTask,
   deleteRoutines,
   updateRoutines,
@@ -52,21 +49,17 @@ export default function AccordionRoutineRow({
   deleteTask,
   updateTask,
   rescheduleTask,
-  setSelectedConcerns,
   copyTaskInstance,
   setRoutines,
   addTaskInstance,
   rescheduleTaskInstance,
 }: Props) {
-  const { ref, focused } = useFocusWithin();
-  const showSkeleton = useShowSkeleton();
-  const { _id: routineId, part, startsAt, lastDate, allTasks } = routine;
+  const { _id: routineId, concerns, part, startsAt, lastDate, allTasks } = routine;
 
   const router = useRouter();
-
-  const handleSelectConcern = (chosenConcerns: string[]) => {
-    setSelectedConcerns((prev) => ({ ...prev, [routineId]: chosenConcerns }));
-  };
+  const { ref, focused } = useFocusWithin();
+  const showSkeleton = useShowSkeleton();
+  const [selectedConcerns, setSelectedConcerns] = useState<string[]>(concerns);
 
   const rowLabel = useMemo(
     () => getReadableDateInterval(startsAt, lastDate),
@@ -106,16 +99,18 @@ export default function AccordionRoutineRow({
   }, [selectedConcerns, routine]);
 
   const selectedTasks = useMemo(() => {
-    if (!selectedConcerns[routineId]) return [];
-
-    const chosenConcerns = selectedConcerns[routineId].map((o) => o);
-    return allActiveTasks.filter((at) => chosenConcerns.includes(at.concern));
+    return allActiveTasks.filter((at) => selectedConcerns.includes(at.concern));
   }, [allActiveTasks, selectedConcerns]);
 
   const redirectToTaskInstance = useCallback((taskId: string | null) => {
     if (!taskId) return;
     router.push(`/explain/${taskId}`);
   }, []);
+
+  const handleSelectConcern = (chosenConcerns: string[]) => {
+    if (chosenConcerns.length === 0) return;
+    setSelectedConcerns(chosenConcerns);
+  };
 
   const handleUpdateTaskInstance = useCallback(
     async (taskId: string, newStatus: string) => {
@@ -260,10 +255,10 @@ export default function AccordionRoutineRow({
             </Group>
 
             <Group onClick={(e) => e.stopPropagation()} className={classes.selectWrapper}>
-              {selectedConcerns[routineId] && (
+              {selectedConcerns.length > 0 && (
                 <InputWithCheckboxes
-                  data={selectedConcerns[routineId]}
-                  placeholder={`Filter tasks by concerns (${selectedConcerns[routineId].length})`}
+                  data={selectedConcerns}
+                  placeholder={`Filter tasks by concerns (${selectedConcerns.length})`}
                   defaultData={[...new Set(allActiveTasks.map((t) => t.concern))]}
                   setData={handleSelectConcern}
                   readOnly

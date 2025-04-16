@@ -1,10 +1,11 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter, usePathname, useSearchParams } from "next/navigation";
-import { Button, Group, Overlay, SegmentedControl, Stack, Title } from "@mantine/core";
+import { Button, Group, Overlay, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import JoinClubConfirmation from "@/app/club/join/JoinClubConfirmation";
+import FilterDropdown from "@/components/FilterDropdown";
 import PricingCard from "@/components/PricingCard";
 import { UserContext } from "@/context/UserContext";
 import { generalPlanContent } from "@/data/pricingData";
@@ -12,7 +13,9 @@ import createCheckoutSession from "@/functions/createCheckoutSession";
 import joinClub from "@/functions/joinClub";
 import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
+import { normalizeString } from "@/helpers/utils";
 import { PurchaseOverlayDataType, UserDataType } from "@/types/global";
+import RoutineDescriptionModal from "./RoutineDescriptionModal";
 import classes from "./PurchaseOverlay.module.css";
 
 type Props = {
@@ -81,75 +84,78 @@ export default function PurchaseOverlay({
     }
   }, [userDetails, redirectUrl]);
 
-  const handleAddSubscription = useCallback(async () => {
-    if (isLoading) return;
-    setIsLoading(true);
+  const handleAddSubscription = useCallback(
+    async (isLoading: boolean, setIsLoading: any) => {
+      if (isLoading) return;
+      setIsLoading(true);
 
-    if (status !== "authenticated") {
-      let parts = pathname.split("/").filter((p) => p);
-      parts.pop();
+      if (status !== "authenticated") {
+        let parts = pathname.split("/").filter((p) => p);
+        parts.pop();
 
-      const redirectPath = "/" + parts.join("/");
+        const redirectPath = "/" + parts.join("/");
 
-      const referrer = getReferrer(redirectPath);
+        const referrer = getReferrer(redirectPath);
 
-      const params = [];
+        const params = [];
 
-      if (userName) {
-        params.push({ name: "userName", value: userName, action: "replace" });
+        if (userName) {
+          params.push({ name: "userName", value: userName, action: "replace" });
+        }
+
+        const query = modifyQuery({ params }) || searchParams.toString();
+
+        openAuthModal({
+          stateObject: {
+            referrer,
+            redirectPath,
+            redirectQuery: query,
+            localUserId: userId,
+          },
+          title: "Start your change",
+        });
+        setIsLoading(false);
+        return;
       }
 
-      const query = modifyQuery({ params }) || searchParams.toString();
+      if (!club?.isActive) {
+        modals.openContextModal({
+          centered: true,
+          modal: "general",
+          innerProps: (
+            <JoinClubConfirmation
+              handleJoinClub={handleJoinClub}
+              description="To buy a routine you need to join the Club."
+              type="confirm"
+            />
+          ),
+          title: (
+            <Title order={5} component={"p"}>
+              Join the Club to continue
+            </Title>
+          ),
+        });
+        setIsLoading(false);
+        return;
+      }
 
-      openAuthModal({
-        stateObject: {
-          referrer,
-          redirectPath,
-          redirectQuery: query,
-          localUserId: userId,
+      createCheckoutSession({
+        type: "connect",
+        body: {
+          dataId: selectedCardData?._id,
+          priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
+          redirectUrl,
+          cancelUrl: redirectUrl,
+          mode: "payment",
         },
-        title: "Start your change",
+        setIsLoading,
+        setUserDetails,
       });
-      setIsLoading(false);
-      return;
-    }
+    },
+    [userId, isLoading, redirectUrl, status, selectedCardData]
+  );
 
-    if (!club?.isActive) {
-      modals.openContextModal({
-        centered: true,
-        modal: "general",
-        innerProps: (
-          <JoinClubConfirmation
-            handleJoinClub={handleJoinClub}
-            description="To buy a routine you need to join the Club."
-            type="confirm"
-          />
-        ),
-        title: (
-          <Title order={5} component={"p"}>
-            Join the Club to continue
-          </Title>
-        ),
-      });
-      setIsLoading(false);
-      return;
-    }
-
-    createCheckoutSession({
-      type: "connect",
-      body: {
-        dataId: selectedCardData?._id,
-        priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-        redirectUrl,
-        cancelUrl: redirectUrl,
-        mode: "payment",
-      },
-      setIsLoading,
-      setUserDetails,
-    });
-  }, [userId, isLoading, redirectUrl, status, selectedCardData]);
-
-  const handleChangeCard = (concern: string) => {
+  const handleChangeCard = (concern?: string | null) => {
     const query = modifyQuery({ params: [{ name: "concern", value: concern, action: "replace" }] });
     defaultRouter.replace(`${pathname}?${query}`);
     const relevantData = purchaseOverlayData.find((o) => o.concern === concern);
@@ -161,11 +167,38 @@ export default function PurchaseOverlay({
     return purchaseOverlayData.map((obj, i) => {
       const label = upperFirst(obj.concern);
       return {
-        label,
+        label: normalizeString(obj.concern),
         value: obj.concern,
       };
     });
   }, [purchaseOverlayData]);
+
+  const controlledDescription = useMemo(() => {
+    if (!selectedCardData) return;
+    const intro = selectedCardData.description.slice(0, 150);
+    const isLong = intro !== selectedCardData.description;
+
+    return { intro: isLong ? `${intro}...` : intro, isLong };
+  }, [selectedCardData]);
+
+  const handleDescriptionClick = useCallback(() => {
+    modals.openContextModal({
+      modal: "general",
+      centered: true,
+      size: "sm",
+      innerProps: (
+        <RoutineDescriptionModal
+          text={selectedCardData?.description || ""}
+          onButtonClick={handleAddSubscription}
+        />
+      ),
+      title: (
+        <Title component={"p"} order={5}>
+          {selectedCardData?.name} - {userName}
+        </Title>
+      ),
+    });
+  }, [selectedCardData]);
 
   useEffect(() => {
     let selectedData;
@@ -192,11 +225,12 @@ export default function PurchaseOverlay({
           }
           headerChildren={
             segments.length > 1 ? (
-              <SegmentedControl
+              <FilterDropdown
                 data={segments}
-                value={concern || notPurchasedParts[0] || selectedCardData?.concern}
-                className={classes.segmentedControl}
-                onChange={handleChangeCard}
+                selectedValue={concern || notPurchasedParts[0] || selectedCardData?.concern}
+                placeholder="Select concern"
+                onSelect={handleChangeCard}
+                customStyles={{ marginLeft: "auto", maxWidth: "unset", marginBottom: rem(8) }}
               />
             ) : (
               <></>
@@ -207,12 +241,20 @@ export default function PurchaseOverlay({
               Preview
             </Button>
           }
-          customHeadingStyles={{ padding: "1rem 0" }}
+          customHeadingStyles={{ padding: "1rem" }}
           name={selectedCardData?.name}
-          description={selectedCardData?.description}
+          description={
+            <Text
+              component="span"
+              onClick={controlledDescription?.isLong ? handleDescriptionClick : undefined}
+              style={controlledDescription?.isLong ? { cursor: "pointer" } : {}}
+            >
+              {controlledDescription?.intro}
+            </Text>
+          }
           buttonText="Buy routine"
           content={generalPlanContent}
-          onClick={handleAddSubscription}
+          onClick={() => handleAddSubscription(isLoading, setIsLoading)}
           isLoading={isLoading}
           addGradient
           glow

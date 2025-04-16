@@ -9,7 +9,6 @@ export type RescheduleRoutinesProps = {
   isReschedule?: boolean;
   sort?: string | null;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
-  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
 
 const rescheduleRoutines = async ({

@@ -39,7 +39,6 @@ export default function InputWithCheckboxes({
   const handleValueSelect = (val: string) => {
     if (dataToIgnore?.includes(val)) return;
     const newValue = data.includes(val) ? data.filter((v) => v !== val) : [...data, val];
-
     setData(newValue);
   };
 

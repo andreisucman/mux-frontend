@@ -88,10 +88,10 @@ function EditATaskContent({
 
       const newItems = data.map((r: RoutineType) => {
         const interval = getReadableDateInterval(r.startsAt, r.lastDate);
-
+        const taskCount = r.allTasks.reduce((a, c) => a + c.ids.length, 0);
         return {
           value: r._id,
-          label: `${interval} ${r.part} routine`,
+          label: `${interval} ${r.part} routine - ${taskCount} task(s)`,
         };
       });
 

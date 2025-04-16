@@ -26,7 +26,7 @@ import rescheduleTask from "@/functions/rescheduleTask";
 import rescheduleTaskInstance from "@/functions/rescheduleTaskInstance";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { getConcernsOfRoutines, getIsRoutineActive } from "@/helpers/utils";
+import { getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
 import SkeletonWrapper from "../SkeletonWrapper";
@@ -60,7 +60,6 @@ export default function MyRoutines() {
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
   const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
-  const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const { userDetails } = useContext(UserContext);
@@ -88,12 +87,9 @@ export default function MyRoutines() {
         } else {
           setRoutines(data.slice(0, 20));
         }
-
-        const newRoutineConcerns = getConcernsOfRoutines(data);
-        setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
       }
     },
-    [routines, selectedConcerns]
+    [routines]
   );
 
   const handleSetOpenValue = useCallback((part: string | null) => {
@@ -111,7 +107,6 @@ export default function MyRoutines() {
           routineIds,
           startDate,
           setRoutines,
-          setSelectedConcerns,
         });
       };
 
@@ -127,7 +122,7 @@ export default function MyRoutines() {
         centered: true,
       });
     },
-    [sort, selectedConcerns, routines]
+    [sort, routines]
   );
 
   const handleRescheduleRoutines = useCallback(
@@ -148,7 +143,6 @@ export default function MyRoutines() {
                 startDate,
                 sort,
                 setRoutines,
-                setSelectedConcerns,
               })
             }
           />
@@ -157,7 +151,7 @@ export default function MyRoutines() {
         centered: true,
       });
     },
-    [sort, selectedConcerns, routines]
+    [sort, routines]
   );
 
   const updateRoutines = useCallback(async (routineIds: string[], newStatus: string) => {
@@ -223,7 +217,6 @@ export default function MyRoutines() {
                 sort,
                 targetRoutineId: selectedRoutineId,
                 setRoutines,
-                setSelectedConcerns,
               })
             }
           />
@@ -232,8 +225,29 @@ export default function MyRoutines() {
         centered: true,
       });
     },
-    [sort, routines, selectedConcerns]
+    [sort, routines]
   );
+
+  const handleCopyTaskInstance = useCallback((taskId: string) => {
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Copy task instance
+        </Title>
+      ),
+      size: "md",
+      innerProps: (
+        <MoveTaskModalContent
+          buttonText="Copy task"
+          handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
+            copyTaskInstance({ setRoutines, targetRoutineId: selectedRoutineId, startDate, taskId })
+          }
+        />
+      ),
+      modal: "general",
+      centered: true,
+    });
+  }, []);
 
   const handleRescheduleTask = useCallback(
     (routineId: string, taskKey: string) => {
@@ -255,7 +269,6 @@ export default function MyRoutines() {
                 taskKey,
                 sort,
                 setRoutines,
-                setSelectedConcerns,
               })
             }
           />
@@ -264,7 +277,7 @@ export default function MyRoutines() {
         centered: true,
       });
     },
-    [sort, routines, selectedConcerns]
+    [sort, routines]
   );
 
   const deleteTask = useCallback(
@@ -303,27 +316,6 @@ export default function MyRoutines() {
     },
     [routines]
   );
-
-  const handleCopyTaskInstance = useCallback((taskId: string) => {
-    modals.openContextModal({
-      title: (
-        <Title order={5} component={"p"}>
-          Copy task instance
-        </Title>
-      ),
-      size: "md",
-      innerProps: (
-        <MoveTaskModalContent
-          buttonText="Copy task"
-          handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
-            copyTaskInstance({ setRoutines, targetRoutineId: selectedRoutineId, startDate, taskId })
-          }
-        />
-      ),
-      modal: "general",
-      centered: true,
-    });
-  }, []);
 
   const handleAddTaskInstance = useCallback(
     (taskId: string, lastDate: Date, selectedRoutineId: string) => {
@@ -374,7 +366,6 @@ export default function MyRoutines() {
                 startDate,
                 selectedRoutineId,
                 setRoutines,
-                setSelectedConcerns,
               })
             }
           />
@@ -383,7 +374,7 @@ export default function MyRoutines() {
         centered: true,
       });
     },
-    [sort, routines, selectedConcerns]
+    [sort, routines]
   );
 
   const handleUpdateRoutines = (args: { routine: RoutineType }) => {
@@ -398,8 +389,6 @@ export default function MyRoutines() {
     } else {
       setRoutines((prev?: RoutineType[]) => [...(prev || []), routine]);
     }
-    const getNewConcerns = getConcernsOfRoutines([routine]);
-    setSelectedConcerns((prev) => ({ ...prev, ...getNewConcerns }));
   };
 
   const accordionItems = useMemo(
@@ -414,11 +403,9 @@ export default function MyRoutines() {
               index={i}
               routine={routine}
               selected={selected}
-              selectedConcerns={selectedConcerns}
               setRoutines={setRoutines}
               deleteRoutines={deleteRoutines}
               updateRoutines={updateRoutines}
-              setSelectedConcerns={setSelectedConcerns}
               copyRoutines={handleCopyRoutines}
               rescheduleRoutines={handleRescheduleRoutines}
               rescheduleTaskInstance={handleRescheduleTaskInstance}
@@ -433,7 +420,7 @@ export default function MyRoutines() {
           );
         })
         .filter(Boolean),
-    [routines, selectedConcerns, handleCopyRoutines]
+    [routines, handleCopyRoutines]
   );
 
   useEffect(() => {

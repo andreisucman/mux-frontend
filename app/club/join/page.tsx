@@ -45,6 +45,7 @@ export default function ClubJoin() {
     modals.openContextModal({
       centered: true,
       modal: "general",
+      size: "sm",
       innerProps: <JoinClubConfirmation handleJoinClub={handleJoinClub} type="start" />,
       title: (
         <Title order={5} component={"p"}>

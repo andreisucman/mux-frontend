@@ -83,8 +83,8 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
 
     setError("");
 
-    if (taskName.trim().length < 20) {
-      setError("At least 20 characters for task name");
+    if (taskName.trim().length < 10) {
+      setError("At least 10 characters for task name");
       return;
     }
 

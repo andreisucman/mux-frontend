@@ -15,7 +15,6 @@ export type CopyRoutinesProps = {
   sort?: string | null;
   ignoreIncompleteTasks?: boolean;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
-  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
 
 const copyRoutines = async ({
@@ -26,7 +25,6 @@ const copyRoutines = async ({
   userName,
   ignoreIncompleteTasks,
   setRoutines,
-  setSelectedConcerns,
 }: CopyRoutinesProps) => {
   if (!startDate) return;
 
@@ -76,15 +74,6 @@ const copyRoutines = async ({
         ),
       });
     } else {
-      const newRoutineConcerns = response.message.reduce(
-        (a: { [key: string]: string[] }, c: RoutineType) => {
-          a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-          return a;
-        },
-        {}
-      );
-
-      setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
       setRoutines((prev) => {
         const updated = [...(prev || []), ...response.message];
         if (sort === "startsAt") {

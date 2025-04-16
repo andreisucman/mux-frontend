@@ -4,7 +4,6 @@ import Link from "@/helpers/custom-router/patch-router/link";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
-import { getConcernsOfRoutines } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
@@ -18,7 +17,6 @@ export type CopyTaskProps = {
   targetRoutineId?: string;
   ignoreIncompleteTasks?: boolean;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
-  setSelectedConcerns: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 };
 
 const copyTask = async ({
@@ -31,7 +29,6 @@ const copyTask = async ({
   targetRoutineId,
   ignoreIncompleteTasks,
   setRoutines,
-  setSelectedConcerns,
 }: CopyTaskProps) => {
   if (!startDate) return;
 
@@ -83,8 +80,6 @@ const copyTask = async ({
       });
     } else {
       const routine = response.message;
-      const newRoutineConcerns = getConcernsOfRoutines([routine]);
-      setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
 
       setRoutines((prev) => {
         const updated = [...(prev || []), routine];

@@ -105,7 +105,7 @@ export type RoutineType = {
   userId: string;
   type: string;
   part: string;
-  concerns: UserConcernType[];
+  concerns: string[];
   finalSchedule: { [key: string]: any };
   status: RoutineStatusEnum;
   startsAt: string;
@@ -120,7 +120,6 @@ export type AllTaskType = {
   key: string;
   icon: string;
   color: string;
-  total: number;
   completed: number;
   concern: string;
   description: string;

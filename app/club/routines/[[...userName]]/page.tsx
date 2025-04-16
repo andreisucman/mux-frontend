@@ -11,6 +11,8 @@ import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
+import MoveTaskModalContent from "@/app/routines/MoveTaskModalContent";
+import { HandleModifyTaskProps } from "@/app/routines/page";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -54,7 +56,6 @@ export default function ClubRoutines(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>();
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
-  const [selectedConcerns, setSelectedConcerns] = useState<{ [key: string]: string[] }>({});
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -94,20 +95,10 @@ export default function ClubRoutines(props: Props) {
           } else {
             setRoutines(data.slice(0, 20));
           }
-
-          const newRoutineConcerns = data.reduce(
-            (a: { [key: string]: string[] }, c: RoutineType) => {
-              a[c._id] = [...new Set(c.allTasks.map((t) => t.concern))];
-              return a;
-            },
-            {}
-          );
-
-          setSelectedConcerns((prev) => ({ ...prev, ...newRoutineConcerns }));
         }
       } catch (err) {}
     },
-    [routines, selectedConcerns]
+    [routines]
   );
 
   const manageOverlays = useCallback(() => {
@@ -146,7 +137,6 @@ export default function ClubRoutines(props: Props) {
           inform: true,
           ignoreIncompleteTasks: true,
           setRoutines,
-          setSelectedConcerns,
         });
       };
 
@@ -162,7 +152,7 @@ export default function ClubRoutines(props: Props) {
         centered: true,
       });
     },
-    [sort, selectedConcerns, routines]
+    [sort, routines]
   );
 
   const handleCopyTask = useCallback(
@@ -170,24 +160,22 @@ export default function ClubRoutines(props: Props) {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
-            Choose new date
+            Copy task
           </Title>
         ),
-        size: "sm",
+        size: "md",
         innerProps: (
-          <SelectDateModalContent
+          <MoveTaskModalContent
             buttonText="Copy task"
-            onSubmit={async ({ startDate }) =>
+            handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
               copyTask({
                 routineId,
                 startDate,
                 taskKey,
-                ignoreIncompleteTasks: true,
-                inform: true,
-                sort,
                 userName,
+                sort,
+                targetRoutineId: selectedRoutineId,
                 setRoutines,
-                setSelectedConcerns,
               })
             }
           />
@@ -196,7 +184,7 @@ export default function ClubRoutines(props: Props) {
         centered: true,
       });
     },
-    [sort, userName, routines, selectedConcerns]
+    [sort, userName, routines]
   );
 
   const handleCopyTaskInstance = useCallback(
@@ -204,22 +192,20 @@ export default function ClubRoutines(props: Props) {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
-            Choose new date
+            Copy task instance
           </Title>
         ),
-        size: "sm",
+        size: "md",
         innerProps: (
-          <SelectDateModalContent
+          <MoveTaskModalContent
             buttonText="Copy task"
-            onSubmit={async ({ startDate }) =>
+            handleClick={async ({ startDate, selectedRoutineId }: HandleModifyTaskProps) =>
               copyTaskInstance({
                 setRoutines,
-                startDate,
                 userName,
+                targetRoutineId: selectedRoutineId,
+                startDate,
                 taskId,
-                cb: (newTaskId: string) => {
-                  router.replace(`/explain/${newTaskId}`);
-                },
               })
             }
           />
@@ -242,8 +228,6 @@ export default function ClubRoutines(props: Props) {
             routine={routine}
             selected={selected}
             isSelf={isSelf}
-            selectedConcerns={selectedConcerns}
-            setSelectedConcerns={setSelectedConcerns}
             copyTaskInstance={handleCopyTaskInstance}
             copyRoutines={handleCopyRoutines}
             copyTask={handleCopyTask}
@@ -251,7 +235,7 @@ export default function ClubRoutines(props: Props) {
           />
         );
       }),
-    [routines, isSelf, selectedConcerns, handleCopyRoutines]
+    [routines, isSelf, handleCopyRoutines]
   );
 
   useEffect(() => {
