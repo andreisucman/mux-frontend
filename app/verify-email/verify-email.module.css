@@ -4,10 +4,6 @@
 
 .wrapper {
   flex: 1;
-  background-color: alpha(
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)),
-    0.5
-  );
 
   border-radius: var(--mantine-radius-lg);
   max-height: rem(500);
@@ -18,16 +14,15 @@
 }
 
 .content {
-  max-width: clamp(rem(300), 90%, rem(400));
+  max-width: clamp(rem(350), 90%, rem(400));
   padding: rem(24) rem(16);
   width: 100%;
 
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
 
   align-items: center;
   justify-content: center;
-  transform: translateY(-10%);
 }
 
 .title {

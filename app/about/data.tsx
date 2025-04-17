@@ -121,7 +121,7 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To be able to wthdraw your rewards you have to join the Club. Joining the Club is free and
+          To be able to withdraw your rewards you have to join the Club. Joining the Club is free and
           it doesn&apos;t make your data public (unless you publish your routines for sale).
         </Text>
         <Text>
