@@ -159,7 +159,7 @@ function Header() {
           <Group className={classes.navigation} style={headerStyles as CSSProperties}>
             {displayComponent === "startButton" && (
               <GlowingButton
-                text="Analyze"
+                text="Start"
                 aria-label="start analysis button"
                 loading={isLoading}
                 disabled={isLoading}

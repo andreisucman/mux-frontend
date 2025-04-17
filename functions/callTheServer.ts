@@ -4,10 +4,9 @@ type Props<T> = {
   endpoint: string;
   method: "GET" | "POST";
   body?: T | FormData;
-  server?: "api" | "chat" | "processing" | "admin";
 };
 
-const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Props<T>) => {
+const callTheServer = async <T>({ endpoint, method, body }: Props<T>) => {
   try {
     const isFormData = body instanceof FormData;
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -25,16 +24,10 @@ const callTheServer = async <T>({ endpoint, method, body, server = "api" }: Prop
       fetchOptions.body = isFormData ? body : JSON.stringify(body);
     }
 
-    const serverUrl =
-      server === "api"
-        ? process.env.NEXT_PUBLIC_API_SERVER_URL
-        : server === "chat"
-          ? process.env.NEXT_PUBLIC_CHAT_SERVER_URL
-          : server === "admin"
-            ? process.env.NEXT_PUBLIC_ADMIN_SERVER_URL
-            : process.env.NEXT_PUBLIC_PROCESSING_SERVER_URL;
-
-    const response = await fetch(`${serverUrl}/${endpoint}`, fetchOptions);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_SERVER_URL}/${endpoint}`,
+      fetchOptions
+    );
 
     if (response.status === 429) {
       openErrorModal({ description: "You're browsing too fast. Slow down." });

@@ -76,6 +76,7 @@ export default function SelectConcernsPage() {
               referrer: ReferrerEnum.CHOOSE_PART,
             },
           });
+          setIsButtonLoading(false)
         } else {
           const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`;
           router.push(encodedPath);

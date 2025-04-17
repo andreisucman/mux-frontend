@@ -159,7 +159,6 @@ export default function BeforeAftersPage() {
   }, []);
 
   useEffect(() => {
-    if (!concern) return;
     fetchBeforeAfters();
   }, [part, sex, ageInterval, ethnicity, bodyType, concern]);
 
