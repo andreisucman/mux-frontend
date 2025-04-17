@@ -103,7 +103,8 @@ export default function ResultsProgress() {
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
               childrenProps: {
-                filterItems: availableConcerns,
+                concernFilterItems: availableConcerns,
+                partFilterItems: availableParts,
               },
             })
           }

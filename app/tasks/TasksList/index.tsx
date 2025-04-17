@@ -193,7 +193,13 @@ export default function TasksList({ customStyles }: Props) {
           </Stack>
         </CreateRoutineProvider>
       )}
-      {displayComponent === "loading" && <Loader m="0 auto" pt="30%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))" />}
+      {displayComponent === "loading" && (
+        <Loader
+          m="0 auto"
+          pt="20%"
+          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+        />
+      )}
     </Stack>
   );
 }

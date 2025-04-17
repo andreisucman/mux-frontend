@@ -8,11 +8,11 @@ import { partIcons } from "@/helpers/icons";
 import classes from "./RoutinesFilterCardContent.module.css";
 
 type Props = {
-  concernItems?: FilterItemType[];
-  partItems?: FilterItemType[];
+  concernFilterItems?: FilterItemType[];
+  partFilterItems?: FilterItemType[];
 };
 
-export default function RoutinesFilterCardContent({ concernItems, partItems }: Props) {
+export default function RoutinesFilterCardContent({ concernFilterItems, partFilterItems }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -23,23 +23,23 @@ export default function RoutinesFilterCardContent({ concernItems, partItems }: P
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={partItems || []}
-        icons={partItems ? partIcons : undefined}
+        data={partFilterItems || []}
+        icons={partFilterItems ? partIcons : undefined}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!partItems}
+        isDisabled={!partFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
         addToQuery
       />
       <FilterDropdown
-        data={concernItems || []}
+        data={concernFilterItems || []}
         filterType="concern"
         placeholder="Filter by concern"
-        selectedValue={concern}
-        isDisabled={!concernItems}
+        selectedValue={concern || ""}
+        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect

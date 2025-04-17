@@ -4,7 +4,6 @@ import React, { use, useCallback, useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";

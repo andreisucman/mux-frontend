@@ -5,29 +5,25 @@
   border-radius: var(--mantine-radius-lg);
   width: 100%;
   min-width: rem(200);
+  overflow: hidden;
 
   background-image: linear-gradient(
     45deg,
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 49.9%,
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 50%,
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 94.9%,
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 95%
+    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 49.9%,
+    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 50%,
+    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 94.9%,
+    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 95%
   );
 
   &:hover {
     background-image: linear-gradient(
       45deg,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 49.9%,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 50%,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7)) 94.9%,
-      light-dark(var(--mantine-color-brand-2), var(--mantine-color-brand-5)) 95%
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 49.9%,
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 50%,
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 94.9%,
+      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 95%
     );
   }
-}
-
-.first {
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
-  border-radius: 0 0 rem(16) rem(16) ;
 }
 
 .icon {
@@ -87,10 +83,13 @@
 }
 
 .label {
-  display: flex;
-  align-items: center;
-  gap: rem(8);
-  padding: rem(8) rem(16);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: rem(32);
+  font-weight: 600;
+  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-4));
 }
 
 .dark {

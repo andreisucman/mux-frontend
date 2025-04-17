@@ -20,6 +20,9 @@ export default function ClubProgressFilterCardContent({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  console.log("partFilterItems", partFilterItems);
+  console.log("concernFilterItems", concernFilterItems);
+
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
 
@@ -38,7 +41,7 @@ export default function ClubProgressFilterCardContent({
         closeOnSelect
       />
       <FilterDropdown
-        data={partFilterItems || []}
+        data={concernFilterItems || []}
         filterType="concern"
         placeholder="Filter by concern"
         selectedValue={concern}

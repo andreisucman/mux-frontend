@@ -24,8 +24,12 @@ export default function MaximizeOverlayButton({
 
   const handleShowOverlay = useCallback(() => {
     if (showOverlayComponent === "showOtherRoutinesButton") {
+      const [part, concern] = notPurchased[0].split("-");
       const newQuery = modifyQuery({
-        params: [{ name: "part", value: notPurchased[0], action: "replace" }],
+        params: [
+          { name: "part", value: part, action: "replace" },
+          { name: "concern", value: concern, action: "replace" },
+        ],
       });
       router.push(`${pathname}${newQuery ? `?${newQuery}` : ""}`);
     }

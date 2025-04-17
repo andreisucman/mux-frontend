@@ -194,7 +194,10 @@ export default function BeforeAftersPage() {
             <InfiniteScroll
               loader={
                 <Stack mb={rem(16)} key={0}>
-                  <Loader m="auto" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
+                  <Loader
+                    m="auto"
+                    color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+                  />
                 </Stack>
               }
               loadMore={() =>
@@ -217,7 +220,11 @@ export default function BeforeAftersPage() {
           )}
         </>
       ) : (
-        <Loader m="0 auto" pt="30%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
+        <Loader
+          m="0 auto"
+          pt="20%"
+          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+        />
       )}
     </Stack>
   );

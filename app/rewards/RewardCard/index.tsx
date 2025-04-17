@@ -16,11 +16,12 @@ export default function RewardCard({ data, claimReward }: Props) {
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails } = useContext(UserContext);
-  const { left, icon, count, value, title, condition, requisite } = data;
+  const { left, icon, count, value, title, condition, requisite, sign } = data;
 
   const completion = useMemo(() => {
     if (!userDetails) return 0;
-    return checkRewardCompletion(requisite, userDetails);
+
+    return checkRewardCompletion(userDetails, requisite, sign);
   }, [requisite, userDetails]);
 
   useEffect(() => {

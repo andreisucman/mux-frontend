@@ -81,7 +81,11 @@ export default function MoveTaskModalContent({ buttonText, handleClick }: Props)
       />
       <Stack>
         {isFetching ? (
-          <Loader m="0 auto" pt="30%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
+          <Loader
+            m="0 auto"
+            pt="20%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
         ) : (
           <>
             {routinesOnTheChosenDate && routinesOnTheChosenDate.length > 0 ? (

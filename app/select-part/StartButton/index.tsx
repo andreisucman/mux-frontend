@@ -6,6 +6,7 @@ import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
 import { getPartIcon } from "@/helpers/icons";
 import classes from "./StartButton.module.css";
+import { upperFirst } from "@mantine/hooks";
 
 type Props = {
   onClick: () => void;
@@ -55,9 +56,7 @@ export default function StartButton({ onClick, part, isFirst }: Props) {
           )}
         </div>
       </Skeleton>
-      <Text className={cn(classes.label, { [classes.first]: isFirst })}>
-        {icon} Scan {part}
-      </Text>
+      <Text className={cn(classes.label)}>{upperFirst(part)}</Text>
     </UnstyledButton>
   );
 }

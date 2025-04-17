@@ -11,4 +11,5 @@ export type RewardCardType = {
   count: number;
   left: number;
   renewsOn: string;
+  sign: number;
 };

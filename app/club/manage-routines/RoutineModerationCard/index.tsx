@@ -25,6 +25,7 @@ type Props = {
   price: number;
   updatePrice: number;
   concern: string;
+  part: string;
   defaultRoutineData: RoutineDataType;
   setName: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
@@ -45,6 +46,7 @@ const statuses = [
 
 export default function RoutineModerationCard({
   concern,
+  part,
   name,
   status,
   description,
@@ -88,6 +90,7 @@ export default function RoutineModerationCard({
         {
           concern,
           name,
+          part,
           description,
           status: status || "hidden",
           price,

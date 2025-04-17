@@ -73,6 +73,7 @@ export default function ClubProgress(props: Props) {
       });
 
       const { priceData, data, notPurchased } = message || {};
+      console.log("priceData", priceData);
 
       setPurchaseOverlayData(priceData ? priceData : null);
 
@@ -156,7 +157,7 @@ export default function ClubProgress(props: Props) {
           pageType="progress"
           title={"Club"}
           userName={userName}
-          filterNames={["part"]}
+          filterNames={["part", "concern"]}
           defaultSortValue="-_id"
           isDisabled={!availableConcerns && !availableParts}
           sortItems={progressSortItems}

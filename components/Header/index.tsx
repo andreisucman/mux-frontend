@@ -36,6 +36,7 @@ const showSignInButtonRoutes = [
   "/scan",
   "/accept",
   "/select-part",
+  "/select-concern",
   "/club/routines",
   "/club/progress",
   "/club/diary",
@@ -171,7 +172,7 @@ function Header() {
                 aria-label="sign in button"
                 loading={isLoading}
                 disabled={isLoading}
-                variant={pathname.startsWith("/club") ? "default" : "filled"}
+                variant={"default"}
                 onClick={() => handleRedirect("signInButton")}
               >
                 <IconDoorEnter stroke={1.75} className="icon" style={{ marginRight: rem(6) }} />

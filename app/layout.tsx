@@ -40,7 +40,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.json" />
         <meta charSet="UTF-8" />
         <meta
@@ -59,7 +59,14 @@ export default function RootLayout({ children }: Props) {
         <MantineProvider theme={theme} defaultColorScheme="auto">
           <ThemeColorSetter />
           <CookieDisclaimer />
-          <Suspense fallback={<Loader m="auto" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>}>
+          <Suspense
+            fallback={
+              <Loader
+                m="auto"
+                color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+              />
+            }
+          >
             <UserContextProvider>
               <ModalsProvider
                 modals={{

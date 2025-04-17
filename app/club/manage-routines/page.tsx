@@ -215,6 +215,7 @@ export default function ManageRoutines() {
           {routineConcerns.length > 0 ? (
             <RoutineModerationCard
               name={name}
+              part={part}
               description={description}
               price={price}
               updatePrice={updatePrice}
