@@ -34,7 +34,7 @@
 
 .change {
   position: absolute;
-  top: 0;
+  top: 16px;
   left: 0;
   color: var(--mantine-color-red-7);
   font-weight: 600;
@@ -45,6 +45,4 @@
 
 .positive {
   color: var(--mantine-color-green-7);
-  left: unset;
-  right: 0;
 }

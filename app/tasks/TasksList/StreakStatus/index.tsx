@@ -15,7 +15,7 @@ function StreakStatus({ completionPercent, customRingStyles }: Props) {
     { value: completionPercent, color: "var(--mantine-color-green-7)" },
     {
       value: 100 - completionPercent,
-      color: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
+      color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))",
     }
   );
 
@@ -34,6 +34,7 @@ function StreakStatus({ completionPercent, customRingStyles }: Props) {
       sections={sections}
       styles={customRingStyles}
       classNames={{ label: classes.label }}
+      rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
     />
   );
 }

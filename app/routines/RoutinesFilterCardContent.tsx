@@ -1,32 +1,45 @@
 import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
 import classes from "./RoutinesFilterCardContent.module.css";
-import { modals } from "@mantine/modals";
 
 type Props = {
-  filterItems?: FilterItemType[];
+  concernItems?: FilterItemType[];
+  partItems?: FilterItemType[];
 };
 
-export default function RoutinesFilterCardContent({ filterItems }: Props) {
+export default function RoutinesFilterCardContent({ concernItems, partItems }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
 
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={filterItems || []}
-        icons={filterItems ? partIcons : undefined}
+        data={partItems || []}
+        icons={partItems ? partIcons : undefined}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!filterItems}
+        isDisabled={!partItems}
+        customStyles={{ maxWidth: "unset" }}
+        allowDeselect
+        closeOnSelect
+        addToQuery
+      />
+      <FilterDropdown
+        data={concernItems || []}
+        filterType="concern"
+        placeholder="Filter by concern"
+        selectedValue={concern}
+        isDisabled={!concernItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect

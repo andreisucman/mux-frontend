@@ -15,7 +15,7 @@ export default function StreaksModalContent({ streaksSections }: Props) {
     } else {
       sections.push({
         value: 0,
-        color: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
+        color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))",
       });
     }
 
@@ -35,6 +35,7 @@ export default function StreaksModalContent({ streaksSections }: Props) {
           }
           sections={sections}
           classNames={{ label: classes.label }}
+          rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
         />
         <Stack className={classes.rowRight}>
           <Title order={5} component={"div"}>
@@ -47,10 +48,10 @@ export default function StreaksModalContent({ streaksSections }: Props) {
   });
   return (
     <Stack>
+      {rows}
       <Text ta="center" c="dimmed" size="sm" maw={300} m="auto">
         Streaks let you to claim rewards. Visit the Rewards page to see what you can claim.
       </Text>
-      {rows}
     </Stack>
   );
 }

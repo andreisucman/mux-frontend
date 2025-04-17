@@ -4,7 +4,6 @@ import React, { use, useCallback, useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { Loader, Stack, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
@@ -18,10 +17,11 @@ import { progressSortItems } from "@/data/sortItems";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
+import { normalizeString } from "@/helpers/utils";
 import { PurchaseOverlayDataType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
+import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./progress.module.css";
-import { normalizeString } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -43,6 +43,7 @@ export default function ClubProgress(props: Props) {
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -51,12 +52,15 @@ export default function ClubProgress(props: Props) {
   >("none");
   const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
-  const concern = searchParams.get("concern") || availableConcerns?.[0]?.value;
+  const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
   const sort = searchParams.get("sort");
 
   const { name } = userDetails || {};
-
   const isSelf = userName === name;
+
+  const currentCombination = [part, concern].filter(Boolean).join("-");
+  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
 
   const handleFetchProgress = useCallback(
     async ({ concern, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
@@ -101,9 +105,12 @@ export default function ClubProgress(props: Props) {
   );
 
   const manageOverlays = useCallback(() => {
-    const isCurrentConcernPurchased = concern && !notPurchased.includes(concern);
+    if (!progress || progress.length === 0) {
+      setShowOverlayComponent("none");
+      return;
+    }
 
-    if (isCurrentConcernPurchased) {
+    if (isCurrentCombinationPurchased) {
       if (notPurchased.length > 0) {
         setShowOverlayComponent("showOtherRoutinesButton");
       } else {
@@ -112,31 +119,30 @@ export default function ClubProgress(props: Props) {
     } else if (notPurchased.length > 0) {
       setShowOverlayComponent("purchaseOverlay");
     }
-  }, [concern, notPurchased]);
+  }, [progress, isCurrentCombinationPurchased, notPurchased]);
 
   const handleCloseOverlay = useCallback(() => {
-    const isCurrentConcernPurchased = concern && !notPurchased.includes(concern);
-    if (isCurrentConcernPurchased) {
+    if (isCurrentCombinationPurchased) {
       setShowOverlayComponent("showOtherRoutinesButton");
     } else {
       setShowOverlayComponent("maximizeButton");
     }
-  }, [concern, notPurchased]);
+  }, [isCurrentCombinationPurchased]);
 
   useEffect(() => {
     manageOverlays();
-  }, [concern, notPurchased]);
+  }, [progress, isCurrentCombinationPurchased, notPurchased]);
 
   useEffect(() => {
-    if (!concern) return;
     handleFetchProgress({ concern, sort, userName });
   }, [authStatus, userName, sort, concern]);
 
-  useEffect(() => {
-    if (!purchaseOverlayData || !userName) return;
-    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
-    setAvailableConcerns(availableConcerns.map((p) => ({ value: p, label: upperFirst(p) })));
-  }, [userName, purchaseOverlayData]);
+  useGetAvailablePartsAndConcerns({
+    purchaseOverlayData,
+    setConcerns: setAvailableConcerns,
+    setParts: setAvailableParts,
+    userName,
+  });
 
   const showButton =
     ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
@@ -152,12 +158,14 @@ export default function ClubProgress(props: Props) {
           userName={userName}
           filterNames={["part"]}
           defaultSortValue="-_id"
+          isDisabled={!availableConcerns && !availableParts}
           sortItems={progressSortItems}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
               childrenProps: {
-                filterItems: availableConcerns,
+                concernFilterItems: availableConcerns,
+                partFilterItems: availableParts,
               },
             })
           }
@@ -206,7 +214,11 @@ export default function ClubProgress(props: Props) {
             )}
           </Stack>
         ) : (
-          <Loader m="0 auto" pt="25%" />
+          <Loader
+            m="0 auto"
+            pt="30%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
         )}
       </Stack>
     </ClubModerationLayout>

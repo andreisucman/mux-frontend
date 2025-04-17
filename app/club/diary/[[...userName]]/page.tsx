@@ -3,7 +3,6 @@
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader, Stack } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
@@ -19,6 +18,7 @@ import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
+import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./diary.module.css";
 
 export const runtime = "edge";
@@ -44,6 +44,7 @@ export default function DiaryPage(props: Props) {
     PurchaseOverlayDataType[] | null
   >();
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [showOverlayComponent, setShowOverlayComponent] = useState<
     "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
   >("none");
@@ -54,6 +55,9 @@ export default function DiaryPage(props: Props) {
   const dateTo = searchParams.get("dateTo");
   const concern = searchParams.get("concern");
   const part = searchParams.get("part");
+
+  const currentCombination = [part, concern].filter(Boolean).join("-");
+  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
 
   const handleFetchDiaryRecords = useCallback(
     async ({ dateFrom, dateTo, concern, part, sort }: HandleFetchDiaryProps) => {
@@ -88,9 +92,12 @@ export default function DiaryPage(props: Props) {
   );
 
   const manageOverlays = useCallback(() => {
-    const isCurrentPartPurchased = concern && !notPurchased.includes(concern);
+    if (!diaryRecords || diaryRecords.length === 0) {
+      setShowOverlayComponent("none");
+      return;
+    }
 
-    if (isCurrentPartPurchased) {
+    if (isCurrentCombinationPurchased) {
       if (notPurchased.length > 0) {
         setShowOverlayComponent("showOtherRoutinesButton");
       } else {
@@ -99,20 +106,19 @@ export default function DiaryPage(props: Props) {
     } else if (notPurchased.length > 0) {
       setShowOverlayComponent("purchaseOverlay");
     }
-  }, [concern, notPurchased]);
+  }, [diaryRecords, notPurchased, isCurrentCombinationPurchased]);
 
   const handleCloseOverlay = useCallback(() => {
-    const isCurrentPartPurchased = concern && !notPurchased.includes(concern);
-    if (isCurrentPartPurchased) {
+    if (isCurrentCombinationPurchased) {
       setShowOverlayComponent("showOtherRoutinesButton");
     } else {
       setShowOverlayComponent("maximizeButton");
     }
-  }, [concern, notPurchased]);
+  }, [isCurrentCombinationPurchased]);
 
   useEffect(() => {
     manageOverlays();
-  }, [concern, notPurchased]);
+  }, [isCurrentCombinationPurchased]);
 
   useEffect(() => {
     if (!userName) return;
@@ -120,11 +126,12 @@ export default function DiaryPage(props: Props) {
     handleFetchDiaryRecords({ dateTo, dateFrom, sort, part, concern });
   }, [sort, concern, userName, dateFrom, dateTo, authStatus]);
 
-  useEffect(() => {
-    if (!purchaseOverlayData || !userName) return;
-    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
-    setAvailableConcerns(availableConcerns.map((p) => ({ value: p, label: upperFirst(p) })));
-  }, [userName, purchaseOverlayData]);
+  useGetAvailablePartsAndConcerns({
+    purchaseOverlayData,
+    setConcerns: setAvailableConcerns,
+    setParts: setAvailableParts,
+    userName,
+  });
 
   const showButton =
     ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
@@ -144,10 +151,13 @@ export default function DiaryPage(props: Props) {
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
-              childrenProps: { filterItems: availableConcerns },
+              childrenProps: {
+                partFilterItems: availableParts,
+                concernFilterItems: availableConcerns,
+              },
             })
           }
-          isDisabled={!diaryRecords}
+          isDisabled={!availableParts && !availableConcerns}
         />
       }
     >
@@ -190,7 +200,11 @@ export default function DiaryPage(props: Props) {
             )}
           </>
         ) : (
-          <Loader m="0 auto" pt="25%" />
+          <Loader
+            m="0 auto"
+            pt="30%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
         )}
       </Stack>
     </ClubModerationLayout>

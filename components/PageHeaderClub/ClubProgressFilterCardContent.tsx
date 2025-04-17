@@ -8,25 +8,41 @@ import { partIcons } from "@/helpers/icons";
 import classes from "./ClubProgressFilterCardContent.module.css";
 
 type Props = {
-  filterItems?: FilterItemType[];
+  concernFilterItems?: FilterItemType[];
+  partFilterItems?: FilterItemType[];
 };
 
-export default function ClubProgressFilterCardContent({ filterItems }: Props) {
+export default function ClubProgressFilterCardContent({
+  partFilterItems,
+  concernFilterItems,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
 
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={filterItems || []}
-        icons={filterItems ? partIcons : undefined}
+        data={partFilterItems || []}
+        icons={partFilterItems ? partIcons : undefined}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!filterItems}
+        isDisabled={!partFilterItems}
+        customStyles={{ maxWidth: "unset" }}
+        allowDeselect
+        addToQuery
+        closeOnSelect
+      />
+      <FilterDropdown
+        data={partFilterItems || []}
+        filterType="concern"
+        placeholder="Filter by concern"
+        selectedValue={concern}
+        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

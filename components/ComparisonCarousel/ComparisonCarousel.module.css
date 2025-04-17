@@ -3,10 +3,9 @@
   position: relative;
 
   overflow: hidden;
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   justify-content: center;
-  box-shadow: var(--mantine-shadows-sm);
 }
 
 .carousel {

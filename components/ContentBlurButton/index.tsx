@@ -83,7 +83,7 @@ export default function ContentBlurButton({
       variant="default"
       className={cn(classes.container, { [classes.relative]: !!isRelative })}
     >
-      <IconBlur className={`${classes.icon} icon icon__small`} />
+      <IconBlur className={"icon icon__small"} />
     </ActionIcon>
   );
 }

@@ -47,7 +47,7 @@ export default function PurchasesList({
             <InfiniteScroll
               loader={
                 <Stack mb={rem(16)} key={0}>
-                  <Loader m="0 auto" pt="25%" />
+                  <Loader m="0 auto" pt="30%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
                 </Stack>
               }
               loadMore={handleFetchPurchases}
@@ -68,7 +68,7 @@ export default function PurchasesList({
         </>
       ) : (
         <Stack flex={1}>
-          <Loader m="0 auto" pt="25%" />
+          <Loader m="0 auto" pt="30%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
         </Stack>
       )}
     </Stack>

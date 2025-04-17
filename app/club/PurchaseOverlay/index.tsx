@@ -253,7 +253,7 @@ export default function PurchaseOverlay({
               {controlledDescription?.intro}
             </Text>
           }
-          buttonText="Buy routine"
+          buttonText="Buy routines"
           content={generalPlanContent}
           onClick={() => handleAddSubscription(isLoading, setIsLoading)}
           isLoading={isLoading}
@@ -261,7 +261,7 @@ export default function PurchaseOverlay({
           glow
         />
       </Stack>
-      <Overlay className={"overlay"} backgroundOpacity={0.1} blur={7} radius={16} />
+      <Overlay className={classes.overlay} backgroundOpacity={0.1} blur={7} radius={16} />
     </Stack>
   );
 }

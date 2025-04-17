@@ -9,24 +9,36 @@ import { partIcons } from "@/helpers/icons";
 import classes from "./DiaryFilterCardContent.module.css";
 
 type Props = {
-  filterItems?: FilterItemType[];
+  partFilterItems?: FilterItemType[];
+  concernFilterItems?: FilterItemType[];
 };
 
-export default function DiaryFilterCardContent({ filterItems }: Props) {
+export default function DiaryFilterCardContent({ partFilterItems, concernFilterItems }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
 
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={filterItems || []}
+        data={partFilterItems || []}
         icons={partIcons}
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!filterItems}
+        isDisabled={!partFilterItems}
+        customStyles={{ maxWidth: "unset" }}
+        allowDeselect
+        addToQuery
+      />
+      <FilterDropdown
+        data={partFilterItems || []}
+        filterType="concern"
+        placeholder="Filter by concern"
+        selectedValue={concern}
+        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

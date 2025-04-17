@@ -301,86 +301,89 @@ export default function Calendar() {
         nowrapTitle
         nowrapContainer
       />
-      <SkeletonWrapper show={!selectedTasks}>
-        <DatePicker
-          level="month"
-          m="auto"
-          w="100%"
-          defaultDate={calendarMonth}
-          value={mode === "all" ? selectedDate : null}
-          onChange={mode === "all" ? (date) => handleSelectDate(date) : undefined}
-          renderDay={(date) => (
-            <DayRenderer
-              date={date}
-              status={selectedStatus}
-              mode={mode as string}
-              dates={dates}
-              keysToBeDeleted={keysToBeDeleted}
-            />
-          )}
-          classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
-        />
+      <DatePicker
+        level="month"
+        m="auto"
+        w="100%"
+        defaultDate={calendarMonth}
+        value={mode === "all" ? selectedDate : null}
+        onChange={mode === "all" ? (date) => handleSelectDate(date) : undefined}
+        renderDay={(date) => (
+          <DayRenderer
+            date={date}
+            status={selectedStatus}
+            mode={mode as string}
+            dates={dates}
+            keysToBeDeleted={keysToBeDeleted}
+          />
+        )}
+        classNames={{ calendarHeader: classes.calendarHeader, month: classes.calendarMonth }}
+      />
 
-        <Group className={classes.buttons}>
-          <Button
-            size="compact-sm"
-            variant="default"
-            className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]: selectedStatus === TaskStatusEnum.ACTIVE,
-            })}
-            onClick={() => handleShowByStatus(TaskStatusEnum.ACTIVE)}
-          >
-            Active
-          </Button>
-          <Button
-            size="compact-sm"
-            variant="default"
-            className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]: selectedStatus === TaskStatusEnum.CANCELED,
-            })}
-            onClick={() => handleShowByStatus(TaskStatusEnum.CANCELED)}
-          >
-            Canceled
-          </Button>
-          <Button
-            size="compact-sm"
-            variant="default"
-            className={cn(classes.taskStatusButton, {
-              [classes.selectedButton]: selectedStatus === TaskStatusEnum.EXPIRED,
-            })}
-            onClick={() => handleShowByStatus(TaskStatusEnum.EXPIRED)}
-          >
-            Expired
-          </Button>
-        </Group>
+      <Group className={classes.buttons}>
+        <Button
+          size="compact-sm"
+          variant="default"
+          className={cn(classes.taskStatusButton, {
+            [classes.selectedButton]: selectedStatus === TaskStatusEnum.ACTIVE,
+          })}
+          onClick={() => handleShowByStatus(TaskStatusEnum.ACTIVE)}
+        >
+          Active
+        </Button>
+        <Button
+          size="compact-sm"
+          variant="default"
+          className={cn(classes.taskStatusButton, {
+            [classes.selectedButton]: selectedStatus === TaskStatusEnum.CANCELED,
+          })}
+          onClick={() => handleShowByStatus(TaskStatusEnum.CANCELED)}
+        >
+          Canceled
+        </Button>
+        <Button
+          size="compact-sm"
+          variant="default"
+          className={cn(classes.taskStatusButton, {
+            [classes.selectedButton]: selectedStatus === TaskStatusEnum.EXPIRED,
+          })}
+          onClick={() => handleShowByStatus(TaskStatusEnum.EXPIRED)}
+        >
+          Expired
+        </Button>
+      </Group>
 
-        <Stack className={`${classes.content} scrollbar`}>
-          {displayComponent === "loading" && <Loader m="auto" />}
-          {displayComponent === "list" && (
-            <>
-              <Stack className={classes.list}>
-                {selectedTasks &&
-                  selectedTasks.map((record, index) => {
-                    return (
-                      <CalendarRow
-                        key={index}
-                        mode={mode as string}
-                        task={record}
-                        redirectToTask={redirectToTask}
-                        changeMode={changeMode}
-                        resetMode={resetMode}
-                      />
-                    );
-                  })}
-              </Stack>
-            </>
-          )}
+      <Stack className={`${classes.content} scrollbar`}>
+        {displayComponent === "loading" && (
+          <Loader
+            m="30% auto 0"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
+        )}
+        {displayComponent === "list" && (
+          <>
+            <Stack className={classes.list}>
+              {selectedTasks &&
+                selectedTasks.map((record, index) => {
+                  return (
+                    <CalendarRow
+                      key={index}
+                      mode={mode as string}
+                      task={record}
+                      redirectToTask={redirectToTask}
+                      changeMode={changeMode}
+                      resetMode={resetMode}
+                    />
+                  );
+                })}
+            </Stack>
+          </>
+        )}
 
-          {displayComponent !== "loading" && selectedTasks && selectedTasks.length === 0 && (
-            <OverlayWithText icon={emptyIcon} text={`No ${selectedStatus} tasks`} />
-          )}
-        </Stack>
-      </SkeletonWrapper>
+        {displayComponent !== "loading" && selectedTasks && selectedTasks.length === 0 && (
+          <OverlayWithText icon={emptyIcon} text={`No ${selectedStatus} tasks`} />
+        )}
+      </Stack>
     </Stack>
   );
 }

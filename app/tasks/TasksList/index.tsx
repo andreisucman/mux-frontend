@@ -180,10 +180,7 @@ export default function TasksList({ customStyles }: Props) {
                   {todaysTasks?.length ? (
                     <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
                   ) : (
-                    <OverlayWithText
-                      text="No tasks"
-                      icon={<IconCircleOff className="icon" />}
-                    />
+                    <OverlayWithText text="No tasks" icon={<IconCircleOff className="icon" />} />
                   )}
                 </Carousel.Slide>
                 {tomorrowsTasks?.length && (
@@ -196,7 +193,7 @@ export default function TasksList({ customStyles }: Props) {
           </Stack>
         </CreateRoutineProvider>
       )}
-      {displayComponent === "loading" && <Loader m="0 auto" pt="25%" />}
+      {displayComponent === "loading" && <Loader m="0 auto" pt="30%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))" />}
     </Stack>
   );
 }

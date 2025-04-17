@@ -79,7 +79,7 @@ export default function ExampleContainer({ title, examples, customClass, customS
           classNames={{
             root: classes.carouselRoot,
             controls: classes.carouselControls,
-            control: `carouselControl ${classes.carouselControl}`,
+            control: `carouselControl`,
             viewport: classes.carouselViewport,
             container: classes.carouselContainer,
           }}

@@ -63,8 +63,8 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
           <GlowingButton
             loading={isLoading}
             disabled={isLoading}
-            text={"See routine"}
-            containerStyles={{ maxWidth: rem(325), margin: "auto" }}
+            text={"See routines"}
+            containerStyles={{ maxWidth: rem(325) }}
             icon={<IconEye className={"icon"} style={{ marginRight: rem(6) }} />}
             onClick={handleRedirect}
           />

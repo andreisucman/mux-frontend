@@ -13,12 +13,12 @@ import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
+import { normalizeString } from "@/helpers/utils";
 import SkeletonWrapper from "../SkeletonWrapper";
 import { individualResultTitles } from "./individualResultTitles";
 import ProgressGallery from "./ProgressGallery";
 import { SimpleProgressType } from "./types";
 import classes from "./results.module.css";
-import { normalizeString } from "@/helpers/utils";
 
 export const runtime = "edge";
 
@@ -31,7 +31,8 @@ export default function ResultsProgress() {
   const { status } = useContext(UserContext);
   const [progress, setProgress] = useState<SimpleProgressType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableConcerns, setAvaiableConcerns] = useState<FilterItemType[]>();
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>();
 
   const concern = searchParams.get("concern") || availableConcerns?.[0]?.value;
   const sort = searchParams.get("sort");
@@ -79,9 +80,13 @@ export default function ResultsProgress() {
   }, [status, sort, concern]);
 
   useEffect(() => {
-    getFilters({ collection: "progress", fields: ["concern"] }).then((result) => {
-      const { availableConcerns } = result;
-      setAvaiableConcerns(availableConcerns);
+    getFilters({
+      collection: "progress",
+      fields: ["part", "concern"],
+    }).then((result) => {
+      const { availableParts, availableConcerns } = result;
+      setAvailableParts(availableParts);
+      setAvailableConcerns(availableConcerns);
     });
   }, []);
 
@@ -120,7 +125,11 @@ export default function ResultsProgress() {
             )}
           </>
         ) : (
-          <Loader m="0 auto" pt="25%" />
+          <Loader
+            m="0 auto"
+            pt="30%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
         )}
       </SkeletonWrapper>
     </Stack>

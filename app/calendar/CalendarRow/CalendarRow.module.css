@@ -1,22 +1,13 @@
 .container {
-  cursor: pointer;
+  cursor: default;
   overflow: hidden;
   align-items: center;
   flex-wrap: nowrap;
   border-radius: var(--mantine-radius-lg);
   width: 100%;
   height: rem(50);
-  box-shadow: var(--mantine-shadow-sm);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   padding: 0 rem(8);
-
-  &:hover {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
-  }
-}
-
-.name {
-  cursor: pointer;
 }
 
 .date {

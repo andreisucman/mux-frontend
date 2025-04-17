@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Button, rem, Stack } from "@mantine/core";
+import { Button, Group, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -20,6 +20,7 @@ export const runtime = "edge";
 
 export type RoutineDataType = {
   concern: string;
+  part: string;
   name: string;
   status: string;
   description: string;
@@ -29,9 +30,11 @@ export type RoutineDataType = {
 
 export default function ManageRoutines() {
   const [routineConcerns, setRoutineConcerns] = useState<FilterItemType[]>([]);
+  const [routineParts, setRoutineParts] = useState<FilterItemType[]>([]);
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
   const [defaultRoutineData, setDefaultRoutineData] = useState<RoutineDataType>({
     concern: "",
+    part: "",
     description: "",
     name: "",
     status: "hidden",
@@ -48,6 +51,7 @@ export default function ManageRoutines() {
 
   const searchParams = useSearchParams();
   const concern = searchParams.get("concern") || routineConcerns[0]?.value;
+  const part = searchParams.get("part") || routineParts[0]?.value;
 
   const saveRoutineData = useCallback(
     async (
@@ -98,10 +102,16 @@ export default function ManageRoutines() {
         if (!routineData) {
           setRoutineData([updatedRoutine]);
         } else {
-          const partData = routineData?.find((r) => r.concern === updatedRoutine.concern);
-          if (partData) {
+          const relevantRoutine = routineData?.find(
+            (r) => r.concern === updatedRoutine.concern && r.part === updatedRoutine.part
+          );
+          if (relevantRoutine) {
             setRoutineData((prev) =>
-              prev?.map((r) => (r.concern === updatedRoutine.concern ? updatedRoutine : r))
+              prev?.map((r) =>
+                r.concern === updatedRoutine.concern && r.part === updatedRoutine.part
+                  ? updatedRoutine
+                  : r
+              )
             );
           } else {
             setRoutineData((prev) => [...(prev || []), updatedRoutine]);
@@ -125,9 +135,9 @@ export default function ManageRoutines() {
     setStatus(status || "hidden");
   };
 
-  const handleSelectRoutine = (concern?: string | null) => {
-    if (!routineData || !concern) return;
-    const relevantRoutineData = routineData.find((doItem) => doItem.concern === concern);
+  const handleSelectConcern = (fieldName: "concern" | "part", value?: string | null) => {
+    if (!routineData || !value) return;
+    const relevantRoutineData = routineData.find((doItem) => doItem[fieldName] === value);
 
     if (relevantRoutineData) {
       setFields(relevantRoutineData);
@@ -139,20 +149,26 @@ export default function ManageRoutines() {
     if (!pageLoaded) return;
     callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
       if (res.status === 200) {
-        const { concerns, routineData } = res.message;
+        const { concerns, parts, routineData } = res.message;
 
         const concernsItems = concerns.map((c: string) => ({
           value: c,
           label: normalizeString(c),
         }));
 
+        const partItems = parts.map((c: string) => ({
+          value: c,
+          label: normalizeString(c),
+        }));
+
+        setRoutineParts(partItems);
         setRoutineConcerns(concernsItems);
         setRoutineData(routineData);
 
         let data = routineData[0];
 
         const relevantRoutineData = routineData.find(
-          (doItem: RoutineDataType) => doItem.concern === concern
+          (doItem: RoutineDataType) => doItem.concern === concern && doItem.part === part
         );
 
         if (relevantRoutineData) {
@@ -174,14 +190,24 @@ export default function ManageRoutines() {
       <PageHeader
         title="Manage routines"
         children={
-          <FilterDropdown
-            data={routineConcerns}
-            selectedValue={concern}
-            filterType="concern"
-            placeholder="Select concern"
-            onSelect={handleSelectRoutine}
-            addToQuery
-          />
+          <Group>
+            <FilterDropdown
+              data={routineConcerns}
+              selectedValue={concern}
+              filterType="concern"
+              placeholder="Select concern"
+              onSelect={() => handleSelectConcern("concern", concern)}
+              addToQuery
+            />
+            <FilterDropdown
+              data={routineParts}
+              selectedValue={part}
+              filterType="part"
+              placeholder="Select part"
+              onSelect={() => handleSelectConcern("part", part)}
+              addToQuery
+            />
+          </Group>
         }
       />
       <SkeletonWrapper show={!routineData}>

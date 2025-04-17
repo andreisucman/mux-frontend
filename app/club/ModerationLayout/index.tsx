@@ -2,7 +2,7 @@
 
 import React, { useContext } from "react";
 import { useSearchParams } from "next/navigation";
-import { Skeleton, Stack } from "@mantine/core";
+import { Loader, Skeleton, Stack } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import classes from "./ClubModerationLayout.module.css";
 
@@ -19,12 +19,12 @@ export default function ClubModerationLayout({ children, header }: Props) {
 
   const code = searchParams.get("code");
 
+  const showLoader = !publicUserData || !!code;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       {header}
-      <Skeleton className={`skeleton ${classes.skeleton}`} visible={!publicUserData || !!code}>
-        {children}
-      </Skeleton>
+      {showLoader ? <Loader m="auto" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))" /> : children}
     </Stack>
   );
 }

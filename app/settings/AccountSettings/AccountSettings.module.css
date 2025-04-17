@@ -7,7 +7,7 @@
   flex-direction: column;
   padding: rem(16);
   gap: rem(16);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
 }
 
@@ -15,15 +15,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-
-  &:hover {
-    color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-white));
-  }
 }
 
 .disabled {
   pointer-events: none;
   cursor: not-allowed;
 
-  color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-3));
+  color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
 }

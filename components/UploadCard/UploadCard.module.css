@@ -25,7 +25,7 @@
   flex: 1;
   height: 100%;
   width: 100%;
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
 }
@@ -77,20 +77,33 @@
   display: flex;
   gap: rem(16);
 
+  z-index: 1;
+}
+
+.checkboxWrapper {
+  padding: rem(8) rem(12);
+
   position: absolute;
   left: rem(16);
   top: rem(16);
+
+  background-color: alpha(
+    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6)),
+    0.5
+  );
+  border: rem(1) solid light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-6));
+  border-radius: rem(16);
   z-index: 1;
 }
 
 .enableScanCheckbox {
-  color: var(--mantine-color-gray-1);
+  color: var(--mantine-color-gray-2);
 }
 
 .nextButtons {
   position: relative;
   padding: rem(16);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   width: 100%;
   border-radius: rem(16);
 }

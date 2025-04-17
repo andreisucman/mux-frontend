@@ -31,7 +31,7 @@ export const scanAnalysisContent = [
 export const generalPlanContent = [
   {
     icon: <IconListCheck className="icon icon__large" />,
-    description: "See and copy tasks from the routine.",
+    description: "See and copy tasks from the routines.",
   },
   {
     icon: <IconNotebook className="icon icon__large" style={{ minWidth: rem(24) }} />,

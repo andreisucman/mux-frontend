@@ -12,7 +12,7 @@ import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import MoveTaskModalContent from "@/app/routines/MoveTaskModalContent";
-import { HandleModifyTaskProps } from "@/app/routines/page";
+import { GetRoutinesProps, HandleModifyTaskProps } from "@/app/routines/page";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -25,21 +25,13 @@ import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { useRouter } from "@/helpers/custom-router";
 import { getIsRoutineActive } from "@/helpers/utils";
 import { PurchaseOverlayDataType, RoutineType } from "@/types/global";
 import MaximizeOverlayButton from "../../MaximizeOverlayButton";
+import useGetAvailablePartsAndConcerns from "./useGetAvailablePartsAndConcerns";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
-
-type GetRoutinesProps = {
-  skip?: boolean;
-  userName?: string | string[];
-  sort: string | null;
-  part: string | null;
-  routinesLength?: number;
-};
 
 type Props = {
   params: Promise<{ userName: string }>;
@@ -48,14 +40,14 @@ type Props = {
 export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
-  const { userDetails, status: authStatus } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [openValue, setOpenValue] = useState<string | null>();
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null
   >();
@@ -68,43 +60,49 @@ export default function ClubRoutines(props: Props) {
 
   const sort = searchParams.get("sort");
   const part = searchParams.get("part");
+  const concern = searchParams.get("concern");
   const isSelf = name === userName;
 
+  const currentCombination = [part, concern].filter(Boolean).join("-");
+  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
+
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, part, userName, routinesLength }: GetRoutinesProps) => {
-      try {
-        const response = await fetchRoutines({
-          skip,
-          sort,
-          part,
-          userName,
-          routinesLength: routinesLength || 0,
-        });
+    async ({ skip, sort, concern, part, userName, routinesLength }: GetRoutinesProps) => {
+      const response = await fetchRoutines({
+        skip,
+        sort,
+        part,
+        concern,
+        userName,
+        routinesLength: routinesLength || 0,
+      });
 
-        const { message } = response || {};
+      const { message } = response || {};
 
-        if (message) {
-          const { priceData, data, notPurchased } = message;
+      if (message) {
+        const { priceData, data, notPurchased } = message;
 
-          setPurchaseOverlayData(priceData ? priceData : null);
-          setNotPurchased(notPurchased);
+        setPurchaseOverlayData(priceData ? priceData : null);
+        setNotPurchased(notPurchased);
 
-          if (skip) {
-            setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
-            setHasMore(data.length === 21);
-          } else {
-            setRoutines(data.slice(0, 20));
-          }
+        if (skip) {
+          setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
+          setHasMore(data.length === 21);
+        } else {
+          setRoutines(data.slice(0, 20));
         }
-      } catch (err) {}
+      }
     },
     [routines]
   );
 
   const manageOverlays = useCallback(() => {
-    const isCurrentPartPurchased = part && !notPurchased.includes(part);
+    if (!routines || routines.length === 0) {
+      setShowOverlayComponent("none");
+      return;
+    }
 
-    if (isCurrentPartPurchased) {
+    if (isCurrentCombinationPurchased) {
       if (notPurchased.length > 0) {
         setShowOverlayComponent("showOtherRoutinesButton");
       } else {
@@ -113,16 +111,15 @@ export default function ClubRoutines(props: Props) {
     } else if (notPurchased.length > 0) {
       setShowOverlayComponent("purchaseOverlay");
     }
-  }, [part, notPurchased]);
+  }, [isCurrentCombinationPurchased, notPurchased, routines]);
 
   const handleCloseOverlay = useCallback(() => {
-    const isCurrentPartPurchased = part && !notPurchased.includes(part);
-    if (isCurrentPartPurchased) {
+    if (isCurrentCombinationPurchased) {
       setShowOverlayComponent("showOtherRoutinesButton");
     } else {
       setShowOverlayComponent("maximizeButton");
     }
-  }, [part, notPurchased]);
+  }, [isCurrentCombinationPurchased]);
 
   const handleCopyRoutines = useCallback(
     (routineIds: string[]) => {
@@ -242,7 +239,7 @@ export default function ClubRoutines(props: Props) {
 
   useEffect(() => {
     manageOverlays();
-  }, [part, notPurchased]);
+  }, [isCurrentCombinationPurchased, notPurchased, routines]);
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
@@ -250,15 +247,17 @@ export default function ClubRoutines(props: Props) {
       routinesLength: (routines && routines.length) || 0,
       sort,
       part,
+      concern,
     };
     handleFetchRoutines(payload);
-  }, [sort, part, userName, authStatus]);
+  }, [sort, part, concern, userName]);
 
-  useEffect(() => {
-    if (!purchaseOverlayData || !userName) return;
-    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
-    setAvailableConcerns(availableConcerns.map((c) => ({ value: c, label: upperFirst(c) })));
-  }, [userName, purchaseOverlayData]);
+  useGetAvailablePartsAndConcerns({
+    purchaseOverlayData,
+    setConcerns: setAvailableConcerns,
+    setParts: setAvailableParts,
+    userName,
+  });
 
   const showButton =
     ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
@@ -272,15 +271,16 @@ export default function ClubRoutines(props: Props) {
           pageType="routines"
           title={"Club"}
           userName={userName}
-          filterNames={["part"]}
+          filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
           sortItems={routineSortItems}
-          isDisabled={!availableConcerns}
+          isDisabled={!availableConcerns && !availableParts}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
               childrenProps: {
-                filterItems: availableConcerns,
+                concernItems: availableConcerns,
+                partItems: availableParts,
                 userName,
               },
             })
@@ -335,6 +335,7 @@ export default function ClubRoutines(props: Props) {
                         skip: true,
                         userName: userName,
                         routinesLength: (routines && routines.length) || 0,
+                        concern,
                         part,
                         sort,
                       })
@@ -357,7 +358,11 @@ export default function ClubRoutines(props: Props) {
           </Stack>
         </Stack>
       ) : (
-        <Loader m="0 auto" pt="25%" />
+        <Loader
+          m="0 auto"
+          pt="30%"
+          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+        />
       )}
     </ClubModerationLayout>
   );

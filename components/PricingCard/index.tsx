@@ -57,7 +57,15 @@ export default function PricingCard({
         <Title order={4} className={classes.name} lineClamp={2}>
           {name}
         </Title>
-        {price ? price : <Loader color="white" size="sm" m="auto" />}
+        {price ? (
+          price
+        ) : (
+          <Loader
+            size="sm"
+            m="auto"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
+        )}
         <Text className={classes.description} lineClamp={4}>
           {description}
         </Text>

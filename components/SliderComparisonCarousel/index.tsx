@@ -41,8 +41,8 @@ export default function SliderComparisonCarousel({
   return (
     <Stack className={classes.container}>
       <Group className={classes.dates}>
-        <span>{firstDate}</span>
         <span>{lastDate}</span>
+        <span>{firstDate}</span>
       </Group>
 
       <Carousel

@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button, Checkbox, Progress, Stack, Text } from "@mantine/core";
+import { Button, Checkbox, Group, Progress, Stack, Text } from "@mantine/core";
 import { UploadProgressProps } from "@/app/select-part/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
@@ -230,12 +230,14 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
           {displayComponent === "preview" && (
             <>
               {!isAbsolute && (
-                <Checkbox
-                  className={classes.checkbox}
-                  checked={showBlur}
-                  onChange={handleToggleBlur}
-                  label="Blur features"
-                />
+                <Group className={classes.checkboxWrapper}>
+                  <Checkbox
+                    className={classes.checkbox}
+                    checked={showBlur}
+                    onChange={handleToggleBlur}
+                    label="Blur features"
+                  />
+                </Group>
               )}
               <DraggableImageContainer
                 showBlur={showBlur}
@@ -261,12 +263,14 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                       className={classes.overlayImage}
                     />
                   )}
-                  <Checkbox
-                    className={classes.checkbox}
-                    checked={!!overlayImage}
-                    onChange={() => handleOverlayPrevious(imagesMissingUpdates[0])}
-                    label="Overlay previous"
-                  />
+                  <Group className={classes.checkboxWrapper}>
+                    <Checkbox
+                      className={classes.checkbox}
+                      checked={!!overlayImage}
+                      onChange={() => handleOverlayPrevious(imagesMissingUpdates[0])}
+                      label="Overlay previous"
+                    />
+                  </Group>
                 </>
               )}
               <PhotoCapturer

@@ -29,7 +29,8 @@ export default function ResultsProof() {
   const { status } = useContext(UserContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>();
 
   const query = searchParams.get("query");
   const part = searchParams.get("part");
@@ -67,9 +68,13 @@ export default function ResultsProof() {
   }, [status, part, sort, concern, query]);
 
   useEffect(() => {
-    getFilters({ collection: "task", fields: ["part"] }).then((result) => {
-      const { availableParts } = result;
-      setAvaiableParts(availableParts);
+    getFilters({
+      collection: "task",
+      fields: ["part", "concern"],
+    }).then((result) => {
+      const { availableParts, availableConcerns } = result;
+      setAvailableParts(availableParts);
+      setAvailableConcerns(availableConcerns);
     });
   }, []);
 
@@ -79,14 +84,15 @@ export default function ResultsProof() {
         <PageHeader
           titles={individualResultTitles}
           isDisabled={!availableParts}
-          filterNames={["part"]}
+          filterNames={["part", "concern"]}
           sortItems={proofSortItems}
           defaultSortValue="-_id"
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
               childrenProps: {
-                filterItems: availableParts,
+                partFilterItems: availableParts,
+                concernFilterItems: availableConcerns,
               },
             })
           }
@@ -101,7 +107,11 @@ export default function ResultsProof() {
             isSelf
           />
         ) : (
-          <Loader m="0 auto" pt="25%" />
+          <Loader
+            m="0 auto"
+            pt="30%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
         )}
       </SkeletonWrapper>
     </Stack>

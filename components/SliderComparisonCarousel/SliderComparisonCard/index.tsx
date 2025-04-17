@@ -15,15 +15,15 @@ export default function SliderComparisonCard({ srcOne, srcTwo }: Props) {
         style={{ width: "100%", flex: 1 }}
         itemOne={
           <ReactCompareSliderImage
-            src={srcTwo}
-            alt="Image one"
+            src={srcOne}
+            alt="Image two"
             style={{ objectFit: "contain", objectPosition: "center" }}
           />
         }
         itemTwo={
           <ReactCompareSliderImage
-            src={srcOne}
-            alt="Image two"
+            src={srcTwo}
+            alt="Image one"
             style={{ objectFit: "contain", objectPosition: "center" }}
           />
         }

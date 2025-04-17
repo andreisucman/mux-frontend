@@ -37,11 +37,13 @@ import classes from "./routines.module.css";
 
 export const runtime = "edge";
 
-type GetRoutinesProps = {
+export type GetRoutinesProps = {
   skip?: boolean;
   type?: string;
   sort: string | null;
   part: string | null;
+  concern: string | null;
+  userName?: string;
   routinesLength?: number;
 };
 
@@ -59,21 +61,24 @@ export default function MyRoutines() {
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>();
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const { userDetails } = useContext(UserContext);
   const { _id: userId, specialConsiderations } = userDetails || {};
 
+  const concern = searchParams.get("concern");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
 
   const handleFetchRoutines = useCallback(
-    async ({ skip, sort, part, routinesLength }: GetRoutinesProps) => {
+    async ({ skip, sort, part, concern, routinesLength }: GetRoutinesProps) => {
       const response = await fetchRoutines({
         skip,
         part,
         sort,
+        concern,
         routinesLength: routinesLength || 0,
       });
 
@@ -435,9 +440,10 @@ export default function MyRoutines() {
       routinesLength: (routines && routines.length) || 0,
       sort,
       part,
+      concern,
     };
     handleFetchRoutines(payload);
-  }, [sort, part]);
+  }, [sort, part, concern]);
 
   useEffect(() => {
     if (!routines || !pageLoaded) return;
@@ -455,13 +461,13 @@ export default function MyRoutines() {
   }, [isAnalysisGoing, routines, pageLoaded]);
 
   useEffect(() => {
-    getFilters({ collection: "routine", fields: ["part"] }).then((result) => {
-      const { availableParts } = result;
-      setAvaiableParts(availableParts);
-    });
-
-    getFromIndexedDb("openRoutinesRow").then((part) => {
-      setOpenValue(part);
+    getFilters({
+      collection: "routine",
+      fields: ["part", "concerns"],
+    }).then((result) => {
+      const { availableParts, availableConcerns } = result;
+      setAvailableParts(availableParts);
+      setAvailableConcerns(availableConcerns);
     });
   }, []);
 
@@ -482,15 +488,16 @@ export default function MyRoutines() {
       <SkeletonWrapper>
         <PageHeader
           title="My routines"
-          isDisabled={!availableParts}
-          filterNames={["part"]}
+          isDisabled={!availableParts && !availableConcerns}
+          filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
           sortItems={routineSortItems}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
               childrenProps: {
-                filterItems: availableParts,
+                partFilterItems: availableParts,
+                concernFilterItems: availableConcerns,
               },
             })
           }
@@ -531,6 +538,7 @@ export default function MyRoutines() {
                   handleFetchRoutines({
                     skip: true,
                     routinesLength: (routines && routines.length) || 0,
+                    concern,
                     sort,
                     part,
                   })
@@ -556,6 +564,7 @@ export default function MyRoutines() {
             onComplete={() => {
               handleFetchRoutines({
                 routinesLength: (routines && routines.length) || 0,
+                concern,
                 sort,
                 part,
               });
@@ -567,7 +576,13 @@ export default function MyRoutines() {
             customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
           />
         )}
-        {displayComponent === "loading" && <Loader m="0 auto" pt="25%" />}
+        {displayComponent === "loading" && (
+          <Loader
+            m="0 auto"
+            pt="30%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
+        )}
       </SkeletonWrapper>
     </Stack>
   );

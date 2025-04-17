@@ -149,6 +149,7 @@ export default function TaskRow({
           className={classes.ringProgress}
           styles={{ label: { display: "flex", justifyContent: "center" } }}
           sections={sections}
+          rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
         />
       </Group>
     </Skeleton>

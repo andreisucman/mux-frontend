@@ -35,6 +35,7 @@ export default function DraggableImageContainer({
 }: Props) {
   const nodeRef = useRef(null);
   const secondNodeRef = useRef(null);
+  const thirdNodeRef = useRef(null);
   const { width: containerWidth, height: containerHeight, ref: containerRef } = useElementSize();
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [selectedDotId, setSelectedDotId] = useState<string>();
@@ -82,7 +83,7 @@ export default function DraggableImageContainer({
 
   const handleAddDot = () => {
     if (!imageRef.current) return;
-    if (blurDots.length > 2) return;
+    if (blurDots.length > 3) return;
 
     const id = Math.random().toString(36).slice(2, 9);
     const renderedWidth = imageRef.current.clientWidth;
@@ -92,7 +93,7 @@ export default function DraggableImageContainer({
     const newDot = {
       id,
       originalWidth: size,
-      originalHeight: size,
+      originalHeight: size / 2,
       scale: 1,
       angle: 180,
       x: defaultDotPosition.x,
@@ -100,8 +101,8 @@ export default function DraggableImageContainer({
     };
 
     if (blurDots.length) {
-      newDot.scale = blurDots[0].scale;
-      newDot.angle = 360 - blurDots[0].angle;
+      newDot.scale = blurDots[blurDots.length - 1].scale;
+      newDot.angle = 360 - blurDots[blurDots.length - 1].angle;
     }
 
     setSelectedDotId(newDot.id);
@@ -159,7 +160,7 @@ export default function DraggableImageContainer({
           {showBlur && image && (
             <>
               {blurDots.map((dot, i) => {
-                const nodeRefs = [nodeRef, secondNodeRef];
+                const nodeRefs = [nodeRef, secondNodeRef, thirdNodeRef];
 
                 return (
                   <Draggable
@@ -191,14 +192,14 @@ export default function DraggableImageContainer({
               <Stack className={classes.controlPanel}>
                 <Group>
                   <ActionIcon
-                    disabled={blurDots.length === 2}
+                    disabled={blurDots.length >= 3}
                     variant="default"
                     onClick={handleAddDot}
                   >
                     <IconPlus className="icon icon__small" />
                   </ActionIcon>
                   <ActionIcon
-                    disabled={blurDots.length === 0 || !selectedDotId}
+                    disabled={blurDots.length - 1 < 0 || !selectedDotId}
                     variant="default"
                     onClick={handleRemoveDot}
                   >

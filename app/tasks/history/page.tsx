@@ -36,7 +36,7 @@ export default function RoutinesHistoryPage() {
   const status = searchParams.get("status");
   const sort = searchParams.get("sort");
 
-  const [availableParts, setAvaiableParts] = useState<FilterItemType[]>();
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
   const [availableStatuses, setAvailableStatuses] = useState<FilterItemType[]>([]);
 
   const fetchInactiveTasks = useCallback(
@@ -89,7 +89,7 @@ export default function RoutinesHistoryPage() {
       fields: ["part", "status"],
     }).then((result) => {
       const { availableParts, availableStatuses } = result;
-      setAvaiableParts(availableParts);
+      setAvailableParts(availableParts);
       setAvailableStatuses(availableStatuses);
     });
   }, []);
@@ -124,7 +124,11 @@ export default function RoutinesHistoryPage() {
                 <InfiniteScroll
                   loader={
                     <Stack mb={rem(16)} key={0}>
-                      <Loader type="oval" m="auto" />
+                      <Loader
+                        type="oval"
+                        m="auto"
+                        color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+                      />
                     </Stack>
                   }
                   loadMore={() => fetchInactiveTasks({ status, part, loadMore: true })}
@@ -146,7 +150,11 @@ export default function RoutinesHistoryPage() {
               )}
             </>
           ) : (
-            <Loader m="0 auto" pt="25%" />
+            <Loader
+              m="0 auto"
+              pt="30%"
+              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+            />
           )}
         </Stack>
       </SkeletonWrapper>

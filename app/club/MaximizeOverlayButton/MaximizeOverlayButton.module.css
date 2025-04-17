@@ -1,8 +1,4 @@
 .container {
-  background-color: alpha(
-    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6)),
-    0.75
-  );
   padding: rem(16);
   border-radius: rem(16);
   box-shadow: var(--mantine-shadows-md);

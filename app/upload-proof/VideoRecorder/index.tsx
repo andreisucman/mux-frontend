@@ -495,7 +495,12 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
         instruction={instruction}
         customStyles={{ flex: 0 }}
       />
-      <SegmentedControl value={captureType} onChange={handleChangeCaptureType} data={segments} />
+      <SegmentedControl
+        classNames={{ root: "segmentControlRoot" }}
+        value={captureType}
+        onChange={handleChangeCaptureType}
+        data={segments}
+      />
       <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
         {!localUrl && (
           <>

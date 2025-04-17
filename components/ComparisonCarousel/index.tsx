@@ -58,12 +58,12 @@ export default function ComparisonCarousel({ data }: Props) {
   useEffect(() => {
     const objects = images?.flatMap((obj, i) => [
       {
-        image: obj.mainUrl.url || "",
-        date: formatDate({ date: initialDate }),
-      },
-      {
         image: initialImages?.[i].mainUrl.url || "",
         date: formatDate({ date: updatedAt || null }),
+      },
+      {
+        image: obj.mainUrl.url || "",
+        date: formatDate({ date: initialDate }),
       },
     ]);
 

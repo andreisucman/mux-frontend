@@ -38,10 +38,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: rem(1) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+  border: rem(1) solid var(--mantine-color-dark-4);
   border-radius: rem(16);
 
   &:hover {
-    border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-3));
+    border: rem(1) solid var(--mantine-color-dark-3);
   }
 }

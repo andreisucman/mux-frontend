@@ -16,10 +16,7 @@
   display: flex;
   flex-direction: column;
   gap: rem(16);
-  background-color: light-dark(
-    var(--mantine-color-gray-1),
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6))
-  );
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
 }
 
 .content {
@@ -27,10 +24,4 @@
   gap: rem(16);
   padding: rem(16);
   flex: 1;
-}
-
-.segmentedControl {
-  position: absolute;
-  right: rem(16);
-  top: rem(16);
 }

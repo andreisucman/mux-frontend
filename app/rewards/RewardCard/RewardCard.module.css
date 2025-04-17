@@ -1,8 +1,7 @@
 .container {
   gap: 0;
   border-radius: var(--mantine-radius-lg);
-  background-color: alpha(light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6)), 1);
-  border: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));
+  background-color: alpha(light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6)), 1);
 }
 
 .heading {
@@ -13,7 +12,7 @@
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
   padding: 0 rem(16);
   background-color: alpha(
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5)),
+    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5)),
     0.5
   );
 }

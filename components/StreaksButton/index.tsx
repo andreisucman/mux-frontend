@@ -44,7 +44,7 @@ function StreaksButton({ streaks, customRingStyles }: Props) {
     } else {
       sections.push({
         value: 0,
-        color: "light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-4))",
+        color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))",
       });
       icon = <IconFlame className={classes.icon} />;
     }
@@ -85,6 +85,7 @@ function StreaksButton({ streaks, customRingStyles }: Props) {
       styles={customRingStyles}
       classNames={{ label: classes.label }}
       onClick={openStreaksModal}
+      rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
     />
   );
 }

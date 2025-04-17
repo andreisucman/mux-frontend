@@ -26,7 +26,7 @@ export default function AnalysisCard({
         {
           name: "Not ok",
           value: 100 - currentScore,
-          color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-gray-7))",
+          color: "light-dark(var(--mantine-color-white),var(--mantine-color-gray-7))",
         },
       ]
     : [
@@ -34,7 +34,7 @@ export default function AnalysisCard({
         {
           name: "Ok",
           value: 100 - currentScore,
-          color: "light-dark(var(--mantine-color-gray-4),var(--mantine-color-gray-7))",
+          color: "light-dark(var(--mantine-color-white),var(--mantine-color-gray-7))",
         },
       ];
 
@@ -42,7 +42,7 @@ export default function AnalysisCard({
     if (!changeScore) return;
     return (
       <span className={cn(classes.change, { [classes.positive]: changeScore < 0 })}>
-        +{changeScore}
+        {changeScore}
       </span>
     );
   }, [changeScore]);

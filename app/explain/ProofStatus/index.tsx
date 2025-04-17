@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { useRouter } from "@/helpers/custom-router";
 import {
   IconArrowBackUp,
   IconCamera,
@@ -9,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { useRouter } from "@/helpers/custom-router";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
@@ -44,7 +44,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
         : [
             {
               value: 0,
-              color: "gray.3",
+              color: "gray.4",
             },
           ],
     [status]
@@ -110,6 +110,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
         label={ringLabel}
         classNames={{ label: classes.ringLabel }}
         sections={sections}
+        rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
       />
 
       <Group className={classes.nameGroup}>

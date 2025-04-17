@@ -39,7 +39,7 @@ export default function MaximizeOverlayButton({
           See other routines
         </Button>
       ) : (
-        <GlowingButton containerStyles={styles} text="Buy routine" onClick={handleShowOverlay} />
+        <GlowingButton containerStyles={styles} text="Buy routines" onClick={handleShowOverlay} />
       )}
     </Group>
   );

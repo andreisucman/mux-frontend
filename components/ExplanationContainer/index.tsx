@@ -7,13 +7,11 @@ type Props = {
   text?: string;
   size?: string;
   customStyles?: { [key: string]: any };
-  customClass?: string;
 };
 
 export default function ExplanationContainer({
   title,
   text,
-  customClass,
   customStyles,
   size = "md",
 }: Props) {
@@ -21,7 +19,7 @@ export default function ExplanationContainer({
 
   return (
     <Stack
-      className={customClass ? `${classes.container} ${classes[customClass]}` : classes.container}
+      className={classes.container}
       style={customStyles ? customStyles : {}}
     >
       {title && (

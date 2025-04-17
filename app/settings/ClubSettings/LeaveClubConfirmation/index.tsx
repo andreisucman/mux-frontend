@@ -19,7 +19,7 @@ const tableData = {
     ],
     [
       <IconCash className="icon icon__title" />,
-      "You are responsible for withdrawing your balance before you leave.",
+      "Your earnings will be paid out to you within 7 business days.",
     ],
   ],
 };

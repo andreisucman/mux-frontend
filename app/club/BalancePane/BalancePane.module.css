@@ -47,7 +47,7 @@
 
   &:first-child {
     justify-content: flex-end;
-    border-right: rem(1) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+    border-right: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   }
 }
 
@@ -67,8 +67,7 @@
 }
 
 .balance {
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-  border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   padding: 0 rem(12);
   justify-content: center;

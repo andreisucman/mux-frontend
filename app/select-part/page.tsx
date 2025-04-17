@@ -18,7 +18,7 @@ export default function SelectPartPage() {
           <Title order={1}>Select part</Title>
         </Group>
         <Group className={classes.content}>
-          <StartButton part={"face"} onClick={() => router.push(`/select-concerns?part=face`)} />
+          <StartButton isFirst part={"face"} onClick={() => router.push(`/select-concerns?part=face`)} />
           <StartButton part={"hair"} onClick={() => router.push(`/select-concerns?part=hair`)} />
         </Group>
       </Stack>

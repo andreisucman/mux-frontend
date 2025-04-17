@@ -132,6 +132,7 @@ export type PurchaseOverlayDataType = {
   description: string;
   price: number;
   concern: string;
+  part: string;
 };
 
 export enum RoutineStatusEnum {

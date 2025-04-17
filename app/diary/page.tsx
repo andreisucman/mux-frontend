@@ -5,11 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
+import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
@@ -38,6 +40,8 @@ export default function DiaryPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [disableAddNew, setDisableAddNew] = useState(true);
+  const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
 
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
@@ -213,6 +217,17 @@ export default function DiaryPage() {
     setDisableAddNew(exists);
   }, [diaryRecords]);
 
+  useEffect(() => {
+    getFilters({
+      collection: "diary",
+      fields: ["part", "concerns"],
+    }).then((result) => {
+      const { availableParts, availableConcerns } = result;
+      setAvailableParts(availableParts);
+      setAvailableConcerns(availableConcerns);
+    });
+  }, []);
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
@@ -221,11 +236,14 @@ export default function DiaryPage() {
           title="Diary"
           sortItems={diarySortItems}
           defaultSortValue="-_id"
-          filterNames={["dateFrom", "dateTo", "part"]}
+          filterNames={["dateFrom", "dateTo", "part", "concern"]}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
-              childrenProps: { userId: userDetails?._id },
+              childrenProps: {
+                partFilterItems: availableParts,
+                concernFilterItems: availableConcerns,
+              },
             })
           }
           nowrapTitle
@@ -251,7 +269,11 @@ export default function DiaryPage() {
               }
             />
           ) : (
-            <Loader m="0 auto" pt="25%" />
+            <Loader
+              m="0 auto"
+              pt="30%"
+              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+            />
           )}
         </Stack>
       </SkeletonWrapper>

@@ -4,6 +4,7 @@ import callTheServer from "./callTheServer";
 type FetchRoutinesProps = {
   skip?: boolean;
   part: string | null;
+  concern: string | null;
   sort: string | null;
   userName?: string | string[];
   routinesLength: number;
@@ -13,6 +14,7 @@ const fetchRoutines = async ({
   skip,
   sort,
   part,
+  concern,
   userName,
   routinesLength,
 }: FetchRoutinesProps) => {
@@ -25,6 +27,10 @@ const fetchRoutines = async ({
 
     if (part) {
       parts.push(`part=${part}`);
+    }
+
+    if (concern) {
+      parts.push(`concern=${concern}`);
     }
 
     if (sort) {

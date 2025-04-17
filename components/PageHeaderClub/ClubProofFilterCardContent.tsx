@@ -1,46 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import getUsersFilters from "@/functions/getFilters";
 import { partIcons } from "@/helpers/icons";
 import classes from "./ClubProofFilterCardContent.module.css";
 
 type Props = {
-  userName?: string;
+  partFilterItems?: FilterItemType[];
+  concernFilterItems?: FilterItemType[];
 };
 
-export default function ClubProofFilterCardContent({ userName }: Props) {
+export default function ClubProofFilterCardContent({ partFilterItems, concernFilterItems }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
 
   const part = searchParams.get("part");
-
-  useEffect(() => {
-    getUsersFilters({
-      userName,
-      collection: "proof",
-      fields: ["part"],
-    }).then((result) => {
-      const { availableParts } = result;
-
-      setAvailableParts(availableParts);
-    });
-  }, [userName]);
+  const concern = searchParams.get("concern");
 
   return (
     <Stack className={classes.container}>
       <FilterDropdown
-        data={availableParts || []}
-        icons={availableParts ? partIcons : undefined}
+        data={partFilterItems || []}
+        icons={partFilterItems ? partIcons : undefined}
         placeholder="Filter by part"
         selectedValue={part}
         filterType="part"
-        isDisabled={!availableParts}
+        isDisabled={!partFilterItems}
+        customStyles={{ maxWidth: "unset" }}
+        allowDeselect
+        addToQuery
+        closeOnSelect
+      />
+      <FilterDropdown
+        data={concernFilterItems || []}
+        placeholder="Filter by concern"
+        selectedValue={concern}
+        filterType="concern"
+        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

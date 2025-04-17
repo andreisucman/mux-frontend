@@ -32,6 +32,7 @@ const RingComponent = ({
             {labelValue.toFixed(0)}
           </Text>
         }
+        rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
       />
       {showTitle && (
         <Text fz={fontSize} c="dimmed" className={classes.label}>

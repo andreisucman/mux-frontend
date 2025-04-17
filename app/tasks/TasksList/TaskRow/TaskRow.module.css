@@ -10,10 +10,10 @@
   max-height: rem(80);
   min-height: rem(80);
   border: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));
-  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
 
   &:hover {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   }
 }
 

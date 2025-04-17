@@ -38,14 +38,9 @@ export default function Club() {
       <PageHeader title="Club profile" />
       <SkeletonWrapper>
         <SegmentedControl
-          styles={{
-            label: {
-              maxHeight: rem(28),
-              padding: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            },
+          classNames={{
+            label: "segmentControlLabel",
+            root: "segmentControlRoot",
           }}
           value={selectedSegment}
           data={segments}

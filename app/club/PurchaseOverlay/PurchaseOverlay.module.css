@@ -41,8 +41,6 @@
   margin-bottom: rem(8);
 }
 
-.closeButton {
-  position: absolute;
-  right: rem(8);
-  top: rem(8);
+.overlay {
+  background-color: transparent;
 }
