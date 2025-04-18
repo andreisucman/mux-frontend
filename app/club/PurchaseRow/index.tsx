@@ -1,13 +1,13 @@
 import React, { memo, useMemo } from "react";
 import { IconCalendar } from "@tabler/icons-react";
 import cn from "classnames";
-import { Button, Group, Skeleton, Stack, Text } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { Button, Group, Skeleton, Text } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
 import Indicator from "@/components/Indicator";
 import { formatDate } from "@/helpers/formatDate";
 import { getPartIcon } from "@/helpers/icons";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
+import { normalizeString } from "@/helpers/utils";
 import { PurchaseType } from "@/types/global";
 import classes from "./PurchaseRow.module.css"; // Assume this CSS works for both variants
 
@@ -39,6 +39,7 @@ function PurchaseRow(props: Props) {
     sellerId,
     buyerName,
     part,
+    concern,
     subscriptionId,
     contentEndDate,
     isDeactivated,
@@ -70,14 +71,8 @@ function PurchaseRow(props: Props) {
   const name = buyerName || sellerName;
 
   return (
-    <Stack
-      className={classes.wrapper}
-      onClick={onRowClick && name ? () => onRowClick(name) : undefined}
-    >
-      <Skeleton
-        className={cn(classes.container, { [classes.cursorDefault]: variant === "seller" })}
-        visible={showSkeleton}
-      >
+    <Skeleton visible={showSkeleton}>
+      <Group className={cn(classes.container, { [classes.cursorDefault]: variant === "seller" })}>
         <AvatarComponent avatar={buyerAvatar || sellerAvatar} size="sm" />
         <Text lineClamp={1} className={classes.name}>
           {name}
@@ -85,7 +80,7 @@ function PurchaseRow(props: Props) {
         <Group wrap="nowrap">
           <Text className={classes.name}>
             {icon}
-            <Text component="span">{upperFirst(part)}</Text>
+            <Text component="span">{normalizeString(concern)}</Text>
           </Text>
           <Text component="span" className={classes.name}>
             <IconCalendar className="icon icon__small" />
@@ -109,8 +104,8 @@ function PurchaseRow(props: Props) {
             {status === "active" ? "Subscribed" : "Not subscribed"}
           </span>
         </Button>
-      </Skeleton>
-    </Stack>
+      </Group>
+    </Skeleton>
   );
 }
 

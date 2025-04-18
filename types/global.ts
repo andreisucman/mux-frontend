@@ -166,6 +166,7 @@ export type PurchaseType = {
   _id: string;
   name: string;
   part: string;
+  concern: string;
   paid: number;
   paymentIntentId: string;
   subscriptionId?: string;

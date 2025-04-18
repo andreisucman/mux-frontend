@@ -7,7 +7,6 @@ import fetchPurchases from "@/functions/fetchPurchases";
 import { useRouter } from "@/helpers/custom-router";
 import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
-import openInfoModal from "@/helpers/openInfoModal";
 import { PurchaseType } from "@/types/global";
 import PurchasesList from "../PurchasesList";
 import SubscribeToUpdatesModalContent from "./SubscribeToUpdatesModalContent";

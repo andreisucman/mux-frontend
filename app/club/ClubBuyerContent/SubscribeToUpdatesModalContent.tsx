@@ -75,9 +75,7 @@ export default function SubscribeToUpdatesModalContent({ sellerId, sellerName, p
         isLoading={isLoading}
         content={updateContent}
         buttonText={"Subscribe"}
-        customHeadingStyles={{
-          borderRadius: 0,
-        }}
+   
         onClick={() => onSubscribeClick(sellerId, part)}
       />
     </Stack>
