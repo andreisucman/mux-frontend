@@ -20,9 +20,6 @@ export default function ClubProgressFilterCardContent({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  console.log("partFilterItems", partFilterItems);
-  console.log("concernFilterItems", concernFilterItems);
-
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
 
@@ -34,7 +31,6 @@ export default function ClubProgressFilterCardContent({
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!partFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
@@ -45,7 +41,6 @@ export default function ClubProgressFilterCardContent({
         filterType="concern"
         placeholder="Filter by concern"
         selectedValue={concern}
-        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

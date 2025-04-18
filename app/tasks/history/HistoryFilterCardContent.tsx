@@ -28,7 +28,6 @@ export default function HistoryFilterCardContent({ partItems, statusItems }: Pro
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!partItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
@@ -40,7 +39,6 @@ export default function HistoryFilterCardContent({ partItems, statusItems }: Pro
         filterType="status"
         placeholder="Filter by status"
         selectedValue={status}
-        isDisabled={!statusItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect

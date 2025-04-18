@@ -34,7 +34,7 @@ export default function ResultsProgress() {
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>();
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>();
 
-  const concern = searchParams.get("concern") || availableConcerns?.[0]?.value;
+  const concern = searchParams.get("concern");
   const sort = searchParams.get("sort");
 
   const handleFetchProgress = useCallback(
@@ -75,7 +75,6 @@ export default function ResultsProgress() {
   );
 
   useEffect(() => {
-    if (!concern) return;
     handleFetchProgress({ concern, sort });
   }, [status, sort, concern]);
 
@@ -95,8 +94,9 @@ export default function ResultsProgress() {
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}
-          isDisabled={!availableConcerns}
-          filterNames={["part"]}
+          disableFilter={!availableConcerns}
+          disableSort={availableConcerns?.length === 0}
+          filterNames={["part", "concern"]}
           sortItems={progressSortItems}
           defaultSortValue="-_id"
           onFilterClick={() =>

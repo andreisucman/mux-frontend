@@ -76,7 +76,7 @@ export default function SelectConcernsPage() {
               referrer: ReferrerEnum.CHOOSE_PART,
             },
           });
-          setIsButtonLoading(false)
+          setIsButtonLoading(false);
         } else {
           const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`;
           router.push(encodedPath);
@@ -216,9 +216,7 @@ export default function SelectConcernsPage() {
     <Stack className={`${classes.container} smallPage`}>
       <PageHeader title="Select concerns" />
       <Stack className={classes.content}>
-        <Alert variant="default" p={"0.5rem 1rem"}>
-          What concern are you targeting?
-        </Alert>
+        <Alert p={"0.5rem 1rem"}>What concern are you targeting?</Alert>
         <TextInput
           radius="xl"
           placeholder={"Search concerns"}

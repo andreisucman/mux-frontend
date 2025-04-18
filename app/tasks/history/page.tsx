@@ -106,7 +106,8 @@ export default function RoutinesHistoryPage() {
           filterNames={["part", "status"]}
           sortItems={historySortItems}
           defaultSortValue="-startsAt"
-          isDisabled={!availableParts}
+          disableFilter={!availableParts}
+          disableSort={availableParts?.length === 0}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.HistoryFilterCardContent,

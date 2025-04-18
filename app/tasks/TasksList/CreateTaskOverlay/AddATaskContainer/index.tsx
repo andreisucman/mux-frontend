@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button, Checkbox, Loader, Stack, Text } from "@mantine/core";
+import { Alert, Button, Checkbox, Loader, Stack, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import addImprovementCoach from "@/helpers/addImprovementCoach";
 import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
+import { useRouter } from "@/helpers/custom-router";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { daysFrom } from "@/helpers/utils";
@@ -21,6 +24,7 @@ type Props = {
 export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -59,13 +63,14 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
   );
 
   const partsScanned = useMemo(() => {
-    const values = Object.keys(latestProgressImages || {});
-    return values.filter(Boolean);
+    const entries = Object.entries(latestProgressImages || {}).filter((gr) => Boolean(gr[1]));
+    return entries.map((gr) => gr[0]);
   }, [latestProgressImages]);
 
   const isCreateRoutineInCooldown = nextRoutine?.every(
     (ro) => ro.date && new Date(ro.date || 0) > new Date()
   );
+
   const earliestCreateRoutineDate =
     nextRoutine && nextRoutine.length
       ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
@@ -123,8 +128,9 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
   };
 
   const handleEnableDrafting = async (enable: boolean) => {
+    setEnableDrafting(enable);
+
     if (isSubscriptionActive) {
-      setEnableDrafting(enable);
       saveToLocalStorage("enableDrafting", enable);
     } else {
       if (enable) {
@@ -143,18 +149,40 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
     }
   };
 
+  const handleRedirectToScan = () => {
+    router.push("/select-part");
+    modals.closeAll();
+  };
+
   useEffect(() => {
     setEnableDrafting(!!savedEnableDrafting);
   }, [savedEnableDrafting]);
 
+  const notScanned = partsScanned.length === 0;
   const noDescriptionAndInstruction = !rawTask?.description && !rawTask?.instruction;
-
-  const disableCreate = !taskName || !selectedConcern || !selectedPart;
+  const disableWeeklyRoutine = !!isCreateRoutineInCooldown || notScanned;
+  const disableCreate = !taskName || !selectedConcern || !selectedPart || notScanned;
   const disableSave =
-    !selectedConcern || !selectedPart || !rawTask?.description || !rawTask?.instruction;
+    !selectedConcern ||
+    !selectedPart ||
+    !rawTask?.description ||
+    !rawTask?.instruction ||
+    notScanned;
 
   return (
     <Stack className={classes.container}>
+      {partsScanned.length === 0 && (
+        <Alert p="0.5rem 1rem">
+          You need to{" "}
+          <span
+            onClick={handleRedirectToScan}
+            style={{ cursor: "pointer", textDecoration: "underline" }}
+          >
+            scan
+          </span>{" "}
+          yourself first.
+        </Alert>
+      )}
       {isLoading && <Loader type="bars" size={48} className={classes.loader} />}
       {!isLoading && step < 3 && (
         <>
@@ -177,11 +205,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
             )}
             {step === 2 && (
               <>
-                {error && (
-                  <Text size="xs" className={classes.error}>
-                    {error}
-                  </Text>
-                )}
+                {error && <Alert p="0.5rem 1rem">{error}</Alert>}
                 <EditATaskContent
                   date={date}
                   rawTask={rawTask}
@@ -200,6 +224,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
           <Stack className={classes.buttonsGroup}>
             {step === 1 && (
               <Checkbox
+                disabled={notScanned}
                 label="Let the coach draft it for me"
                 checked={enableDrafting}
                 onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
@@ -217,7 +242,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                 </Button>
                 <Button
                   variant={isSubscriptionActive ? "default" : "filled"}
-                  disabled={!!isCreateRoutineInCooldown}
+                  disabled={disableWeeklyRoutine}
                   onClick={() => {
                     onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });
                   }}

@@ -16,7 +16,7 @@ export default function SortButton({
   sortItems,
   defaultSortValue = "-createdAt",
   customStyles,
-  isDisabled,
+  isDisabled = sortItems.length === 0,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();

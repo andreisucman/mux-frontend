@@ -28,7 +28,6 @@ export default function RoutinesFilterCardContent({ concernFilterItems, partFilt
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!partFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
@@ -39,7 +38,6 @@ export default function RoutinesFilterCardContent({ concernFilterItems, partFilt
         filterType="concern"
         placeholder="Filter by concern"
         selectedValue={concern || ""}
-        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect

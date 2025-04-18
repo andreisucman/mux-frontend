@@ -28,17 +28,15 @@ export default function DiaryFilterCardContent({ partFilterItems, concernFilterI
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
-        isDisabled={!partFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
       />
       <FilterDropdown
-        data={partFilterItems || []}
+        data={concernFilterItems || []}
         filterType="concern"
         placeholder="Filter by concern"
         selectedValue={concern}
-        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

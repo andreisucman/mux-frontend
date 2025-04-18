@@ -9,7 +9,7 @@ import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
 
 type Props = {
-  data: FilterItemType[];
+  data?: FilterItemType[];
   icons?: { [key: string]: React.ReactNode };
   placeholder: string;
   filterType?: string;
@@ -29,7 +29,7 @@ export default function FilterDropdown({
   searchable,
   allowDeselect,
   placeholder,
-  isDisabled,
+  isDisabled = data?.length === 0,
   addToQuery,
   filterType,
   selectedValue,

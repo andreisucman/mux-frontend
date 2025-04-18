@@ -27,13 +27,13 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
     return values.filter(Boolean).length === 0;
   }, [latestProgressImages]);
 
-  const onCreateManuallyClick = () => {
+  const handleClick = (cb: () => void) => {
     if (nothingScanned) {
       openErrorModal({
         title: "Please scan yourself",
         description: (
           <Text>
-            You need to scan your appearance first. Click{" "}
+            You need to{" "}
             <UnstyledButton
               onClick={() => {
                 router.push("/scan");
@@ -41,15 +41,15 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
               }}
               style={{ textDecoration: "underline" }}
             >
-              here
+              scan
             </UnstyledButton>{" "}
-            to start.
+            yourself first.
           </Text>
         ),
       });
       return;
     }
-    openCreateNewTask({ handleSaveTask, onCreateRoutineClick });
+    cb();
   };
 
   useEffect(() => {
@@ -68,7 +68,9 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
           variant="default"
           disabled={isLoading}
           className={classes.button}
-          onClick={onCreateManuallyClick}
+          onClick={() =>
+            handleClick(() => openCreateNewTask({ handleSaveTask, onCreateRoutineClick }))
+          }
         >
           Create a task manually
         </Button>
@@ -77,7 +79,9 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
             disabled={isLoading}
             loading={isLoading}
             className={classes.button}
-            onClick={() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed })}
+            onClick={() =>
+              handleClick(() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed }))
+            }
           >
             Create weekly routine
           </Button>

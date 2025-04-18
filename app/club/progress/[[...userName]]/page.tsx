@@ -73,7 +73,6 @@ export default function ClubProgress(props: Props) {
       });
 
       const { priceData, data, notPurchased } = message || {};
-      console.log("priceData", priceData);
 
       setPurchaseOverlayData(priceData ? priceData : null);
 
@@ -150,6 +149,8 @@ export default function ClubProgress(props: Props) {
     progress &&
     progress.length > 0;
 
+  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -159,7 +160,8 @@ export default function ClubProgress(props: Props) {
           userName={userName}
           filterNames={["part", "concern"]}
           defaultSortValue="-_id"
-          isDisabled={!availableConcerns && !availableParts}
+          disableFilter={!availableConcerns && !availableParts}
+          disableSort={noPartsAndConcerns}
           sortItems={progressSortItems}
           onFilterClick={() =>
             openFiltersCard({

@@ -11,14 +11,13 @@ import classes from "./CookieDisclaimer.module.css";
 export default function CookieDisclaimer() {
   const [showBanner, setShowBanner] = useState(false);
   const [hasConsent, setHasConsent] = useState(false);
-  const savedConsent = getFromLocalStorage("cookieConsent");
 
   const handleDecide = (verdict: boolean) => {
     setHasConsent(verdict);
     setShowBanner(false);
     saveToLocalStorage("cookieConsent", verdict);
 
-    if (!verdict && window.clarity) {
+    if (!verdict) {
       Clarity.consent(false);
     }
   };
@@ -28,6 +27,8 @@ export default function CookieDisclaimer() {
   }, [hasConsent]);
 
   useEffect(() => {
+    const savedConsent = getFromLocalStorage("cookieConsent");
+
     if (savedConsent === true || savedConsent === false) {
       setHasConsent(savedConsent);
     } else {
@@ -37,7 +38,7 @@ export default function CookieDisclaimer() {
         }
       });
     }
-  }, [savedConsent]);
+  }, []);
 
   return (
     <>

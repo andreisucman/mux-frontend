@@ -115,6 +115,7 @@ export default function CreateATaskContent({
       <Select
         data={relevantParts}
         value={selectedPart}
+        disabled={relevantParts.length === 0}
         label={
           <Text size="xs" c="dimmed" component="span">
             Relevant part
@@ -133,6 +134,7 @@ export default function CreateATaskContent({
       <Select
         data={relevantConcerns}
         value={selectedConcern}
+        disabled={relevantConcerns.length === 0}
         label={
           <Text size="xs" c="dimmed" component="span">
             Relevant concern
@@ -154,6 +156,7 @@ export default function CreateATaskContent({
             Task name
           </Text>
         }
+        disabled={relevantParts.length === 0}
         error={error}
         value={taskName}
         rightSection={<Text size="sm">{taskName.trim().length}</Text>}
@@ -171,6 +174,7 @@ export default function CreateATaskContent({
         value={exampleVideoId}
         setValue={setExampleVideoId}
         customStyles={{ marginTop: rem(6) }}
+        isDisabled={relevantParts.length === 0}
       />
     </Stack>
   );

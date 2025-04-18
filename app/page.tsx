@@ -167,7 +167,7 @@ export default function BeforeAftersPage() {
       <PageHeader
         title="Results"
         filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType"]}
-        isDisabled={noFilters}
+        disableFilter={noFilters}
         children={
           <FilterDropdown
             data={concernFilters}

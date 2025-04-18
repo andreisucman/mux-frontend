@@ -10,7 +10,7 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
-import Link from "@/helpers/custom-router/patch-router/link";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { normalizeString } from "@/helpers/utils";
 import RoutineModerationCard from "./RoutineModerationCard";
@@ -29,6 +29,8 @@ export type RoutineDataType = {
 };
 
 export default function ManageRoutines() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [routineConcerns, setRoutineConcerns] = useState<FilterItemType[]>([]);
   const [routineParts, setRoutineParts] = useState<FilterItemType[]>([]);
   const [routineData, setRoutineData] = useState<RoutineDataType[]>();
@@ -49,7 +51,6 @@ export default function ManageRoutines() {
   const [updatePrice, setUpdatePrice] = useState<number>(2);
   const [pageLoaded, setPageLoaded] = useState(false);
 
-  const searchParams = useSearchParams();
   const concern = searchParams.get("concern") || routineConcerns[0]?.value;
   const part = searchParams.get("part") || routineParts[0]?.value;
 
@@ -197,6 +198,7 @@ export default function ManageRoutines() {
               filterType="concern"
               placeholder="Select concern"
               onSelect={() => handleSelectConcern("concern", concern)}
+              isDisabled={routineConcerns.length === 0}
               addToQuery
             />
             <FilterDropdown
@@ -205,6 +207,7 @@ export default function ManageRoutines() {
               filterType="part"
               placeholder="Select part"
               onSelect={() => handleSelectConcern("part", part)}
+              isDisabled={routineParts.length === 0}
               addToQuery
             />
           </Group>
@@ -234,7 +237,7 @@ export default function ManageRoutines() {
               icon={<IconCircleOff size={24} />}
               text="You don't have any routines"
               button={
-                <Button variant="default" mt={rem(8)} c="gray.2" component={Link} href="/routines">
+                <Button variant="default" onClick={() => router.push("/routines")} mt={rem(8)}>
                   Add a routine
                 </Button>
               }

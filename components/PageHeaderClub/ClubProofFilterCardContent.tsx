@@ -28,7 +28,6 @@ export default function ClubProofFilterCardContent({ partFilterItems, concernFil
         placeholder="Filter by part"
         selectedValue={part}
         filterType="part"
-        isDisabled={!partFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery
@@ -39,7 +38,6 @@ export default function ClubProofFilterCardContent({ partFilterItems, concernFil
         placeholder="Filter by concern"
         selectedValue={concern}
         filterType="concern"
-        isDisabled={!concernFilterItems}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         addToQuery

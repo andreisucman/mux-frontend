@@ -228,13 +228,16 @@ export default function DiaryPage() {
     });
   }, []);
 
+  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
         <PageHeader
-          isDisabled={!diaryRecords}
+          disableFilter={!diaryRecords}
           title="Diary"
           sortItems={diarySortItems}
+          disableSort={noPartsAndConcerns}
           defaultSortValue="-_id"
           filterNames={["dateFrom", "dateTo", "part", "concern"]}
           onFilterClick={() =>

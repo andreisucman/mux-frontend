@@ -296,7 +296,7 @@ export default function Calendar() {
     <Stack flex={1} className="smallPage">
       <PageHeader
         title="My calendar"
-        isDisabled={mode === "individual"}
+        disableFilter={mode === "individual"}
         children={<DateSelector />}
         nowrapTitle
         nowrapContainer

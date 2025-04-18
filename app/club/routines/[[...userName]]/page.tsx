@@ -264,6 +264,8 @@ export default function ClubRoutines(props: Props) {
     routines &&
     routines.length > 0;
 
+  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -274,7 +276,8 @@ export default function ClubRoutines(props: Props) {
           filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
           sortItems={routineSortItems}
-          isDisabled={!availableConcerns && !availableParts}
+          disableFilter={!availableConcerns && !availableParts}
+          disableSort={noPartsAndConcerns}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,

@@ -13,7 +13,8 @@ type Props = {
   titles?: TitleType[];
   nowrapTitle?: boolean;
   nowrapContainer?: boolean;
-  isDisabled?: boolean;
+  disableSort?: boolean;
+  disableFilter?: boolean;
   sortItems?: { value: string; label: string }[];
   defaultSortValue?: string;
   filterNames?: string[];
@@ -27,7 +28,8 @@ export default function PageHeader({
   titles,
   nowrapTitle,
   nowrapContainer,
-  isDisabled,
+  disableSort,
+  disableFilter,
   sortItems,
   defaultSortValue,
   filterNames = [],
@@ -82,12 +84,12 @@ export default function PageHeader({
         <SortButton
           sortItems={sortItems}
           defaultSortValue={defaultSortValue}
-          isDisabled={isDisabled}
+          isDisabled={disableSort}
         />
       )}
       {onFilterClick && (
         <FilterButton
-          isDisabled={isDisabled}
+          isDisabled={disableFilter}
           onFilterClick={onFilterClick}
           activeFiltersCount={activeFiltersCount}
         />

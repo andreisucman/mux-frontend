@@ -2,9 +2,11 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import cn from "classnames";
 import { Button, Stack } from "@mantine/core";
 import { nprogress } from "@mantine/nprogress";
-import { useRouter } from "next/navigation";
+import notFoundImageLight from "@/public/assets/not-found-light.svg";
 import notFoundImage from "@/public/assets/not-found.svg";
 import classes from "./not-found.module.css";
 
@@ -29,7 +31,20 @@ export default function NotFoundPage() {
   return (
     <Stack className={`${classes.container} smallPage`}>
       <div className={classes.inner}>
-        <Image className={classes.image} src={notFoundImage.src} alt="" width={800} height={800} />
+        <Image
+          className={cn(classes.image, { [classes.dark]: true })}
+          src={notFoundImage.src}
+          alt=""
+          width={800}
+          height={800}
+        />
+        <Image
+          className={cn(classes.image, { [classes.light]: true })}
+          src={notFoundImageLight.src}
+          alt=""
+          width={800}
+          height={800}
+        />
         <div className={classes.content}>
           <Button variant="default" onClick={handleNavigation}>
             Return

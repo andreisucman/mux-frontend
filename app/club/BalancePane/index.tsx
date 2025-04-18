@@ -133,6 +133,7 @@ function BalancePane() {
     if (!detailsSubmitted)
       return (
         <Alert
+          p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
           icon={<IconInfoCircle className="icon" />}
@@ -154,6 +155,7 @@ function BalancePane() {
     if (submittedNotEnabled)
       return (
         <Alert
+          p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
           icon={<IconInfoCircle className="icon" />}
@@ -165,6 +167,7 @@ function BalancePane() {
     if (isRejected)
       return (
         <Alert
+          p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
           icon={<IconInfoCircle className="icon" />}
@@ -179,6 +182,7 @@ function BalancePane() {
     if (!payoutsEnabled && disabledReason)
       return (
         <Alert
+          p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
           icon={<IconInfoCircle className="icon" />}

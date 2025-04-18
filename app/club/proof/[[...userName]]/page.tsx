@@ -145,7 +145,8 @@ export default function ClubProof(props: Props) {
           filterNames={["part"]}
           sortItems={proofSortItems}
           defaultSortValue="-_id"
-          isDisabled={!availableParts}
+          disableFilter={!availableParts}
+          disableSort={availableParts.length === 0}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProofFilterCardContent,

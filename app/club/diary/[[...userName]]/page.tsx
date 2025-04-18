@@ -138,6 +138,8 @@ export default function DiaryPage(props: Props) {
     diaryRecords &&
     diaryRecords.length > 0;
 
+  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
   return (
     <ClubModerationLayout
       header={
@@ -157,7 +159,8 @@ export default function DiaryPage(props: Props) {
               },
             })
           }
-          isDisabled={!availableParts && !availableConcerns}
+          disableFilter={!availableParts && !availableConcerns}
+          disableSort={noPartsAndConcerns}
         />
       }
     >

@@ -2,13 +2,6 @@
   flex: 1;
 }
 
-.error {
-  padding: rem(8) rem(16);
-  border: rem(1) solid var(--mantine-color-red-7);
-  border-radius: var(--mantine-radius-lg);
-  color: var(--mantine-color-red-7);
-}
-
 .addedContainer {
   justify-content: center;
   width: 100%;

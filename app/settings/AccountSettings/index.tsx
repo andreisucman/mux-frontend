@@ -159,7 +159,7 @@ export default function AccountSettings() {
           Account
         </Title>
         {deleteOn && (
-          <Alert variant="light" styles={{ icon: { marginRight: rem(8) } }}>
+          <Alert p="0.5rem 1rem" styles={{ icon: { marginRight: rem(8) } }}>
             <Stack gap={8}>
               <Title order={5}>Warning!</Title>
               Your account is scheduled for deletion on {formattedDeleteOnDate}

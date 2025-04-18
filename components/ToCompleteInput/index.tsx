@@ -7,6 +7,7 @@ type Props = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder: string;
   title: string;
+  isDisabled: boolean;
   customStyles?: { [key: string]: any };
 };
 
@@ -15,6 +16,7 @@ export default function ToCompleteInput({
   title,
   value,
   setValue,
+  isDisabled,
   customStyles,
   placeholder,
 }: Props) {
@@ -29,6 +31,7 @@ export default function ToCompleteInput({
         </Text>{" "}
         <TextInput
           value={value}
+          disabled={isDisabled}
           onChange={(e) => setValue(e.currentTarget.value)}
           placeholder={placeholder}
         />

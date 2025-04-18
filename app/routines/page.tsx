@@ -483,12 +483,15 @@ export default function MyRoutines() {
     });
   }, [userId]);
 
+  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
   return (
     <Stack className={`${classes.container} smallPage`}>
       <SkeletonWrapper>
         <PageHeader
           title="My routines"
-          isDisabled={!availableParts && !availableConcerns}
+          disableFilter={!availableParts && !availableConcerns}
+          disableSort={noPartsAndConcerns}
           filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
           sortItems={routineSortItems}
