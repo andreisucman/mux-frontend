@@ -36,16 +36,16 @@ body::-webkit-scrollbar-thumb {
   background-image:
     repeating-linear-gradient(
       7.5deg,
-      transparent 45%,
-      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 45%,
+      transparent 40%,
+      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 40%,
       light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
       transparent 70%,
       transparent 140%
     ),
     repeating-linear-gradient(
-      170deg,
-      transparent 75%,
-      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 75%,
+      150deg,
+      transparent 70%,
+      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
       light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 100%,
       transparent 100%,
       transparent 180%
@@ -53,6 +53,26 @@ body::-webkit-scrollbar-thumb {
   background-position:
     0 0,
     0 100%;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    background-image:
+      repeating-linear-gradient(
+        25deg,
+        transparent 40%,
+        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 40%,
+        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
+        transparent 70%,
+        transparent 140%
+      ),
+      repeating-linear-gradient(
+        150deg,
+        transparent 70%,
+        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
+        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 100%,
+        transparent 100%,
+        transparent 180%
+      );
+  }
 }
 
 .skeleton {

@@ -93,7 +93,7 @@ export default function TasksList({ customStyles }: Props) {
       tomorrowsTasksLength: tomorrowsTasksWithOnClick.length,
       canAddDiary: tasks && tasks.length > 0 && todayTasksCompleted.length > 1,
     };
-  }, [tasks, tasks?.length, getTaskClickHandler]);
+  }, [tasks, getTaskClickHandler]);
 
   const { todaysTasks, tomorrowsTasks, todaysTasksLength, tomorrowsTasksLength, canAddDiary } =
     nearestTasks || {};
@@ -124,7 +124,7 @@ export default function TasksList({ customStyles }: Props) {
     } else {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, tasks, todaysTasksLength, tomorrowsTasksLength, pageLoaded]);
+  }, [isAnalysisGoing, tasks, nearestTasks, pageLoaded]);
 
   useEffect(() => {
     if (!userId) return;
