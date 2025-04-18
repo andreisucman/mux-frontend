@@ -68,7 +68,7 @@ export default function PurchaseOverlay({
     const clubData = await joinClub();
 
     if (clubData) {
-      setUserDetails((prev: UserDataType) => ({ ...prev, club: clubData }));
+      setUserDetails((prev: UserDataType) => ({ ...prev, ...clubData }));
       createCheckoutSession({
         type: "connect",
         body: {
@@ -82,7 +82,7 @@ export default function PurchaseOverlay({
       });
       modals.closeAll();
     }
-  }, [userDetails, redirectUrl]);
+  }, [userDetails, selectedCardData, redirectUrl]);
 
   const handleAddSubscription = useCallback(
     async (isLoading: boolean, setIsLoading: any) => {

@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { IconDoorExit, IconLock, IconRoute, IconTrophy } from "@tabler/icons-react";
-import { rem, Stack, Table, Text } from "@mantine/core";
+import { Alert, rem, Stack, Table, Text } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import TosCheckbox from "@/components/TosCheckbox";
 import openLegalBody from "@/helpers/openLegalBody";
@@ -75,7 +75,7 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
 
   return (
     <Stack flex={1} gap={12}>
-      {description && <Text className={classes.description}>{description}</Text>}
+      {description && <Alert ta="center" p="0.5rem 1rem">{description}</Alert>}
       <Table data={confirmData} classNames={{ td: classes.td, th: classes.th }} />
       <Stack className={classes.actionWrapper}>
         <TosCheckbox
