@@ -1,12 +1,12 @@
 .container {
+  position: relative;
   max-width: rem(440);
   width: 100%;
   gap: 0;
   border-radius: var(--mantine-radius-lg);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-  overflow: hidden;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  box-shadow: var(--mantine-shadow-sm);
   z-index: 900;
-  box-shadow: var(--mantine-shadows-md);
 }
 
 .heading {
@@ -16,7 +16,7 @@
   gap: 0;
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
   background-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-8));
-  border-radius: rem(15) 0 0;
+  border-radius: rem(16) rem(16) 0 0;
   overflow-x: hidden;
   overflow-y: visible;
   gap: rem(12);
@@ -25,6 +25,7 @@
 .content {
   padding: rem(16);
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+  border-radius: 0 0 rem(16) rem(16);
 }
 
 .name {

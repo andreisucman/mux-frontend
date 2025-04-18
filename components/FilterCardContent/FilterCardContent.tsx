@@ -10,7 +10,7 @@ import classes from "./FilterCardContent.module.css";
 export type ExistingFiltersType = {
   ethnicity: string[];
   skinColor: string[];
-  concern: string[];
+  concerns: string[];
   ageInterval: string[];
   sex: string[];
   type: string[];

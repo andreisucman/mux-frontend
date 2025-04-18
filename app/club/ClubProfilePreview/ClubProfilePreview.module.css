@@ -1,11 +1,24 @@
 .container {
+  position: relative;
   padding: rem(12) rem(16);
   gap: rem(12);
   width: 100%;
 
   border-radius: var(--mantine-radius-lg);
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
-  box-shadow: var(--mantine-shadows-md);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: -1;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 10px;
+    box-shadow: var(--mantine-shadow-sm);
+    pointer-events: none;
+  }
 }
 
 .row {

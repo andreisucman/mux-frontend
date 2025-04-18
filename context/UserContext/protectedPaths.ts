@@ -18,16 +18,3 @@ export const protectedPaths = [
   "/choose-date",
   "/club/manage-routines",
 ];
-
-export const pathsThatRequireId = ["/analysis", "/scan"];
-
-export const blockFetchUserDataPaths = [
-  "/",
-  "/auth",
-  "/accept",
-  "/scan",
-  "/about",
-  "/tasks",
-  "/wait",
-  // "/analysis",
-];

@@ -57,7 +57,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      <LineProgressIndicators title="Improvement" concernScoreDifference={concernScoreDifference} />
+      <LineProgressIndicators title="Severity" concernScoreDifference={concernScoreDifference} />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

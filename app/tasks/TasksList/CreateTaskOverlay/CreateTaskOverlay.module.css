@@ -5,7 +5,10 @@
   flex: 1;
 
   border-radius: var(--mantine-radius-lg);
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  background-color: alpha(
+    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6)),
+    0.5
+  );
 }
 
 .wrapper {

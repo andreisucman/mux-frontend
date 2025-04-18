@@ -118,7 +118,7 @@ export default function TaskRow({
   );
 
   return (
-    <Skeleton visible={showSkeleton} mih={70}>
+    <Skeleton visible={showSkeleton} mih={70} className={classes.skeleton}>
       <Group
         className={classes.container}
         onClick={onClick ? onClick : undefined}

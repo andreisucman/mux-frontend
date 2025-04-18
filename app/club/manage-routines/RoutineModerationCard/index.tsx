@@ -107,7 +107,7 @@ export default function RoutineModerationCard({
     const concernName = normalizeString(concern).toLowerCase();
 
     if (isSwitchingToPublic) {
-      body = `This will make your routines related to ${concernName} and their associated progress, diary, and proof public. Continue?`;
+      body = `This will make your ${concernName} related routines and their progress, diary, and proofs public. Continue?`;
     } else if (isSwitchingToHidden) {
       body = `If you have any subscribers for your ${concernName} routines their subscriptions will be canceled. Continue?`;
     }
@@ -176,7 +176,6 @@ export default function RoutineModerationCard({
             defaultValue={price}
             onChange={(value) => handleDo(setPrice, Number(value))}
             clampBehavior="strict"
-            min={5}
             max={10000}
             allowNegative={false}
             error={error?.price}
@@ -186,7 +185,6 @@ export default function RoutineModerationCard({
             label={<Text className={classes.label}>Price of update</Text>}
             onChange={(value) => handleDo(setUpdatePrice, Number(value))}
             clampBehavior="strict"
-            min={2}
             max={10000}
             allowNegative={false}
             rightSection={

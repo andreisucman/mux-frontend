@@ -48,7 +48,6 @@ export default function BeforeAftersPage() {
   const fetchBeforeAfters = useCallback(
     async (props?: FetchBeforeAftersProps) => {
       const { skip, existingCount } = props || {};
-      setBeforeAfters(undefined);
 
       let finalEndpoint = "getBeforeAfters";
       const queryParams = [];
@@ -89,6 +88,8 @@ export default function BeforeAftersPage() {
         endpoint: finalEndpoint,
         method: "GET",
       });
+
+      console.log("response", response);
 
       if (response.status === 200) {
         if (skip) {
@@ -141,12 +142,12 @@ export default function BeforeAftersPage() {
 
   const concernFilters = useMemo(() => {
     if (!filters) return [];
-
-    return filters.concern.map((c) => ({ value: c, label: normalizeString(c) }));
+    console.log("filters", filters);
+    return filters.concerns.map((c) => ({ value: c, label: normalizeString(c) }));
   }, [filters]);
 
   const noFilters = useMemo(() => {
-    const { concern, ...rest } = filters || {};
+    const { concerns, ...rest } = filters || {};
     return (
       Object.values(rest)
         .flat()

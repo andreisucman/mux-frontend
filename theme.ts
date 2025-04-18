@@ -69,7 +69,7 @@ export const theme = createTheme({
     lg: rem(18),
     xl: rem(20),
   },
-  shadows: { md: "4px 8px 16px 0 rgba(0, 0, 0, 0.1)", sm: "2px 4px 8px 0 rgba(0, 0, 0, 0.1)" },
+  shadows: { md: "4px 8px 16px 0 rgba(0, 0, 0, 0.2)", sm: "2px 4px 16px 0 rgba(0, 0, 0, 0.2)" },
   headings: {
     fontFamily: "Poppins",
     fontWeight: "600",

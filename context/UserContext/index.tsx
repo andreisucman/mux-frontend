@@ -11,7 +11,7 @@ import { getCookieValue } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
-import { blockFetchUserDataPaths, pathsThatRequireId, protectedPaths } from "./protectedPaths";
+import { protectedPaths } from "./protectedPaths";
 import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
 
 function registerServiceWorker() {
@@ -47,8 +47,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
   const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
-  const [pageLoaded, setPageLoaded] = useState(false);
-  const { _id: userId, emailVerified } = userDetailsState || {};
+  const { emailVerified } = userDetailsState || {};
 
   const setUserDetails = useCallback(
     (value: React.SetStateAction<Partial<UserDataType | null>>) => {
@@ -108,8 +107,11 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
       "/club/progress",
       "/club/proof",
       "/club/diary",
-      "/wait",
+      "/select-part",
+      "/select-concern",
       "/scan",
+      "/wait",
+      "/analysis",
     ];
     const isException = exceptions.some((path) => pathname.includes(path));
 
@@ -137,13 +139,11 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;
     if (error) return;
-    if (blockFetchUserDataPaths.includes(pathname)) return;
     fetchUserData({ setUserDetails });
   });
 
   useEffect(() => {
     registerServiceWorker();
-    setPageLoaded(true);
   }, []);
 
   return (

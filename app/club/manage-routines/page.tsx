@@ -75,14 +75,14 @@ export default function ManageRoutines() {
         return;
       }
 
-      if (!price || price < 1) {
-        setError({ price: "Set a one-time price." });
+      if (!price || price < 5) {
+        setError({ price: "The one-time price must be at least $5" });
         setIsLoading(false);
         return;
       }
 
-      if (!updatePrice || updatePrice < 1) {
-        setError({ updatePrice: "Set a subscription price." });
+      if (!updatePrice || updatePrice < 2) {
+        setError({ updatePrice: "The update price must be at least $2" });
         setIsLoading(false);
         return;
       }

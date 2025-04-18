@@ -1,5 +1,5 @@
 import { AuthStateEnum } from "@/context/UserContext/types";
-import { clearCookies } from "@/helpers/cookies";
+import { clearCookies, getCookieValue } from "@/helpers/cookies";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import callTheServer from "./callTheServer";
@@ -9,10 +9,14 @@ type FetchUerDataProps = {
   setUserDetails?: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>>;
 };
 
+const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
+
 const fetchUserData = async (props?: FetchUerDataProps): Promise<UserDataType | null> => {
+  let data = null;
+  if (!isLoggedInCookie) return data;
+
   const { setStatus, setUserDetails } = props || {};
 
-  let data = null;
   try {
     const response = await callTheServer({
       endpoint: "getUserData",

@@ -24,7 +24,6 @@ export default function PhotoCapturer({
   defaultFacingMode = "user",
   hideTimerButton,
   hideFlipCamera,
-  silhouette,
 }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">(defaultFacingMode);
   const { height: viewportHeight, width: viewportWidth } = useViewportSize();
@@ -161,15 +160,7 @@ export default function PhotoCapturer({
       })}
     >
       <video ref={videoRef} autoPlay muted></video>
-      {silhouette && (
-        <div
-          className={classes.silhouetteOverlay}
-          style={{
-            mask: `url('${silhouette}') center/contain no-repeat, linear-gradient(#000 0 0)`,
-            maskComposite: "exclude",
-          }}
-        />
-      )}
+
       {timerStarted && (
         <div className={classes.timerOverlay}>
           <Text fz={40} c="red.7">
