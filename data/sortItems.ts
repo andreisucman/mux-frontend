@@ -1,24 +1,24 @@
 export const historySortItems = [
-  { label: "Older", value: "startsAt" },
-  { label: "Newer", value: "-startsAt" },
+  { label: "Older first", value: "startsAt" },
+  { label: "Newer first", value: "-startsAt" },
 ];
 
 export const diarySortItems = [
-  { label: "Older", value: "_id" },
-  { label: "Newer", value: "-_id" },
+  { label: "Older first", value: "_id" },
+  { label: "Newer first", value: "-_id" },
 ];
 
 export const routineSortItems = [
-  { label: "Older", value: "startsAt" },
-  { label: "Newer", value: "-startsAt" },
+  { label: "Older first", value: "startsAt" },
+  { label: "Newer first", value: "-startsAt" },
 ];
 
 export const progressSortItems = [
-  { label: "Older", value: "_id" },
-  { label: "Newer", value: "-_id" },
+  { label: "Older first", value: "_id" },
+  { label: "Newer first", value: "-_id" },
 ];
 
 export const proofSortItems = [
-  { label: "Older", value: "_id" },
-  { label: "Newer", value: "-_id" },
+  { label: "Older first", value: "_id" },
+  { label: "Newer first", value: "-_id" },
 ];

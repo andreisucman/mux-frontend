@@ -12,6 +12,8 @@
   padding: 0 rem(16);
   min-height: rem(70);
 
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+
   @media (max-width: $mantine-breakpoint-sm) {
     padding: 0 rem(16);
   }
