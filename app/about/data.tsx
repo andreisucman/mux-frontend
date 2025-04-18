@@ -6,8 +6,8 @@ export const data = [
     question: "What is Muxout?",
     answer: (
       <Text>
-        Muxout is a place where you can maximize your appearance with self-improvement routines and
-        share your routine to inspire and earn.
+        Muxout is a place where you can create a routine to improve your appearance and share it to
+        inspire and earn.
       </Text>
     ),
   },
@@ -121,12 +121,11 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To be able to withdraw your rewards you have to join the Club. Joining the Club is free and
-          it doesn&apos;t make your data public (unless you publish your routines for sale).
+          To be able to withdraw your rewards you have to join the Club. Joining the Club is free
+          and it doesn&apos;t make your data public (unless you publish your routines for sale).
         </Text>
         <Text>
-          During the onboarding you provide the legally required information and your bank
-          account.
+          During the onboarding you provide the legally required information and your bank account.
         </Text>
         <Text>
           After your information is verified your earnings will be automatically sent to your bank
@@ -147,8 +146,8 @@ export const data = [
           This will allow you to drag and drop shapes on your image to blur the underlying areas.
         </Text>
         <Text>
-          You can also do it later on the &apos;My results&apos; page by clicking the blur icon
-          at the top left of the image card.
+          You can also do it later on the &apos;My results&apos; page by clicking the blur icon at
+          the top left of the image card.
         </Text>
       </Stack>
     ),

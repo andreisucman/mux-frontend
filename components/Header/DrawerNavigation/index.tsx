@@ -107,11 +107,6 @@ const socialLinks = [
     path: "https://www.instagram.com/muxout_com/",
     icon: <IconBrandInstagram stroke={1.25} className="icon icon__small" />,
   },
-  {
-    title: "X",
-    path: "https://x.com/muxout_com",
-    icon: <IconBrandX stroke={1.25} className="icon icon__small" />,
-  },
 ];
 
 type Props = {
