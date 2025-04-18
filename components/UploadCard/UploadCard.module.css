@@ -106,6 +106,7 @@
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   width: 100%;
   border-radius: rem(16);
+  gap: rem(12);
 }
 
 .closeStartAnalysis {

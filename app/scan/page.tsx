@@ -50,7 +50,7 @@ export default function ScanProgress() {
   }, [part, checkBackDate]);
 
   const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${pathname}${query ? `?${query}` : ""}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${query ? `?${query}` : ""}`;
 
     openPaymentModal({
       title: `Reset ${part} scan`,

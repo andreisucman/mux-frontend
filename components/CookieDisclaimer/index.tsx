@@ -13,30 +13,28 @@ export default function CookieDisclaimer() {
   const [hasConsent, setHasConsent] = useState(false);
 
   const handleDecide = (verdict: boolean) => {
+    saveToLocalStorage("cookieConsent", verdict);
     setHasConsent(verdict);
     setShowBanner(false);
-    saveToLocalStorage("cookieConsent", verdict);
-
-    if (!verdict) {
-      Clarity.consent(false);
-    }
+    Clarity.consent(verdict);
   };
 
   useEffect(() => {
     Clarity.init(process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID!);
-  }, [hasConsent]);
+    const savedConsent = getFromLocalStorage("cookieConsent") as boolean | null;
 
-  useEffect(() => {
-    const savedConsent = getFromLocalStorage("cookieConsent");
-
-    if (savedConsent === true || savedConsent === false) {
+    if (savedConsent !== null) {
       setHasConsent(savedConsent);
+      setShowBanner(false);
+      Clarity.consent(savedConsent);
     } else {
-      callTheServer({ endpoint: "getIsFromEu", method: "GET" }).then((res) => {
-        if (res.status === 200) {
-          setShowBanner(res.message);
-        }
-      });
+      callTheServer({ endpoint: "getIsFromEu", method: "GET" })
+        .then((res) => {
+          if (res.status === 200) {
+            setShowBanner(res.message === true);
+          }
+        })
+        .catch(() => setShowBanner(true));
     }
   }, []);
 
