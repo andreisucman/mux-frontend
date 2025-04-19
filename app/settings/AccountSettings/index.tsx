@@ -3,6 +3,7 @@ import {
   IconAsterisk,
   IconCreditCard,
   IconDeviceFloppy,
+  IconEye,
   IconInfoCircle,
 } from "@tabler/icons-react";
 import cn from "classnames";
@@ -37,7 +38,7 @@ export default function AccountSettings() {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { deleteOn, email: currentEmail, auth } = userDetails || {};
+  const { deleteOn, isPublic, email: currentEmail, auth } = userDetails || {};
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState<string>(currentEmail || "");
@@ -170,6 +171,20 @@ export default function AccountSettings() {
           </Alert>
         )}
         <Stack className={classes.list}>
+          <Alert
+            icon={
+              <IconEye
+                size={18}
+                style={{
+                  color: "light-dark(var(--mantine-color-dark-2),var(--mantine-color-gray-2))",
+                }}
+              />
+            }
+            p="0.5rem 1rem"
+            styles={{ icon: { marginRight: rem(4) } }}
+          >
+            Your account is {isPublic ? "public" : "not public"}
+          </Alert>
           <TextInput
             maw={425}
             value={email}

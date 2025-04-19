@@ -211,6 +211,7 @@ export interface UserDataType extends DefaultUserType {
   _id?: string;
   email?: string | null;
   emailVerified?: boolean;
+  isPublic?: boolean;
   auth?: string;
   name: string;
   avatar: AvatarType | null;
