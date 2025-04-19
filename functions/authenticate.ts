@@ -10,6 +10,7 @@ type AuthenticateProps = {
   email?: string;
   password?: string;
   router: AppRouterInstance;
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
   setStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>>;
   setUserDetails: React.Dispatch<React.SetStateAction<Partial<UserDataType | null>>>;
 };
@@ -21,6 +22,7 @@ const authenticate = async ({
   email,
   password,
   setStatus,
+  setIsLoading,
   setUserDetails,
 }: AuthenticateProps) => {
   const parsedState = state ? JSON.parse(decodeURIComponent(state)) : {};
@@ -39,6 +41,8 @@ const authenticate = async ({
 
   if (response.status === 200) {
     if (response.error) {
+      if (setIsLoading) setIsLoading(false);
+
       if (response.error === "blocked") {
         openErrorModal({
           title: `Account blocked`,
@@ -94,6 +98,7 @@ const authenticate = async ({
 
     router.push(redirectUrl);
   } else {
+    if (setIsLoading) setIsLoading(false);
     setStatus(AuthStateEnum.UNAUTHENTICATED);
   }
 };

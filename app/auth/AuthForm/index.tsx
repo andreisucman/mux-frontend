@@ -98,6 +98,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
         password,
         state,
         router,
+        setIsLoading: setIsEmailLoading,
         setStatus,
         setUserDetails,
       });
