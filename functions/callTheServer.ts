@@ -15,7 +15,7 @@ const callTheServer = async <T>({ endpoint, method, body }: Props<T>) => {
     const headers: HeadersInit = isFormData ? {} : { "Content-Type": "application/json" };
 
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    document.cookie = `timeZone=${encodeURIComponent(timeZone)}; path=/; domain=muxout.com; SameSite=Lax`;
+    document.cookie = `MUX_timeZone=${encodeURIComponent(timeZone)}; path=/; domain=muxout.com; SameSite=Lax`;
 
     const fetchOptions: RequestInit = {
       method,

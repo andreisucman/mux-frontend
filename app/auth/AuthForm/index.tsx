@@ -33,7 +33,8 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
   const [passwordError, setPasswordError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const { setStatus, setUserDetails } = useContext(UserContext);
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
@@ -53,6 +54,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
   const handleSubmitForm = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
+      if (isEmailLoading) return;
 
       const emailValid = validateEmail(email);
 
@@ -89,6 +91,8 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
       const state = encodeURIComponent(JSON.stringify(stateObject));
 
+      setIsEmailLoading(true);
+
       authenticate({
         email,
         password,
@@ -100,7 +104,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
       modals.closeAll();
     },
-    [showResetPassword, password, email]
+    [showResetPassword, password, email, isEmailLoading]
   );
 
   return (
@@ -111,8 +115,13 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
       {!showResetPassword && (
         <>
           <Button
-            onClick={() => signIn({ stateObject })}
+            onClick={() => {
+              setIsGoogleLoading(true);
+              signIn({ stateObject });
+            }}
             className={classes.button}
+            loading={isGoogleLoading}
+            disabled={isGoogleLoading}
             variant="default"
           >
             <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
@@ -160,7 +169,12 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
               </span>
             </Text>
           )}
-          <Button type="submit" className={classes.button}>
+          <Button
+            type="submit"
+            className={classes.button}
+            loading={isEmailLoading}
+            disabled={isEmailLoading}
+          >
             <IconMail className="icon" style={{ marginRight: rem(6) }} /> {buttonText}
           </Button>
           <UnstyledButton
