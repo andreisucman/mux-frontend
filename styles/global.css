@@ -43,7 +43,7 @@ body::-webkit-scrollbar-thumb {
       transparent 140%
     ),
     repeating-linear-gradient(
-      150deg,
+      170deg,
       transparent 80%,
       light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 80%,
       light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 100%,
@@ -57,7 +57,7 @@ body::-webkit-scrollbar-thumb {
   @media (max-width: $mantine-breakpoint-xs) {
     background-image:
       repeating-linear-gradient(
-        25deg,
+        22deg,
         transparent 40%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 40%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 75%,
@@ -65,7 +65,7 @@ body::-webkit-scrollbar-thumb {
         transparent 140%
       ),
       repeating-linear-gradient(
-        150deg,
+        160deg,
         transparent 75%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 75%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 100%,
