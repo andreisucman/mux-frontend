@@ -30,7 +30,7 @@ function ProgressCard({ data, isPublicPage, isSelf, setProgress, handleContainer
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
       <div className={classes.imageWrapper} ref={ref}>
-        {isSelf && (
+        {isSelf && !isPublicPage && (
           <>
             <ContentModerationButtons
               collectionKey="progress"

@@ -118,7 +118,7 @@ export default function ResultsProgress() {
                 handleContainerClick={handleContainerClick}
                 handleFetchProgress={handleFetchProgress}
                 setProgress={setProgress}
-                isPublicPage
+                isPublicPage={false}
                 isSelf
               />
             ) : (

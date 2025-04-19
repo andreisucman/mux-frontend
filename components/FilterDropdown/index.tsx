@@ -16,6 +16,7 @@ type Props = {
   isDisabled?: boolean;
   addToQuery?: boolean;
   searchable?: boolean;
+  searchValue?: string;
   allowDeselect?: boolean;
   closeOnSelect?: boolean;
   selectedValue?: string | null;
@@ -28,6 +29,7 @@ export default function FilterDropdown({
   icons,
   searchable,
   allowDeselect,
+  searchValue,
   placeholder,
   isDisabled = data?.length === 0,
   addToQuery,
@@ -97,6 +99,7 @@ export default function FilterDropdown({
       leftSection={icon}
       leftSectionWidth={40}
       withScrollArea={false}
+      searchValue={searchValue}
       searchable={searchable}
       style={customStyles ? customStyles : {}}
       classNames={{

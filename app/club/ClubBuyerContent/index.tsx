@@ -56,7 +56,7 @@ export default function ClubBuyerContent() {
   );
 
   const handleOpenModal = useCallback(
-    async (sellerId: string, sellerName: string, part: string) => {
+    async (sellerId: string, sellerName: string, part: string, concern: string) => {
       modals.openContextModal({
         modal: "general",
         centered: true,
@@ -68,7 +68,12 @@ export default function ClubBuyerContent() {
           </Title>
         ),
         innerProps: (
-          <SubscribeToUpdatesModalContent sellerId={sellerId} sellerName={sellerName} part={part} />
+          <SubscribeToUpdatesModalContent
+            sellerId={sellerId}
+            sellerName={sellerName}
+            part={part}
+            concern={concern}
+          />
         ),
       });
     },

@@ -282,8 +282,8 @@ export default function ClubRoutines(props: Props) {
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
               childrenProps: {
-                concernItems: availableConcerns,
-                partItems: availableParts,
+                concernFilterItems: availableConcerns,
+                partFilterItems: availableParts,
                 userName,
               },
             })

@@ -82,7 +82,9 @@ const authenticate = async ({
       const userName = query.get("userName");
 
       if (userName) {
-        redirectUrl += `/${userName}`;
+        query.delete("userName");
+        const otherParams = query.toString();
+        redirectUrl += `/${userName}${otherParams ? "?" + otherParams : ""}`;
       } else {
         redirectUrl += `?${redirectQuery}`;
       }

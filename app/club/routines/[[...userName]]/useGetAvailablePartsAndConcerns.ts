@@ -18,14 +18,15 @@ export default function useGetAvailablePartsAndConcerns({
 }: Props) {
   useEffect(() => {
     if (!purchaseOverlayData || !userName) return;
-    const availableConcerns = purchaseOverlayData.map((obj) => obj.concern);
+
+    const availableConcerns = Array.from(new Set(purchaseOverlayData.map((obj) => obj.concern)));
     setConcerns(
       availableConcerns
         .map((c) => ({ value: c || "", label: normalizeString(c || "") }))
         .filter((r) => r.value)
     );
 
-    const availableParts = purchaseOverlayData.map((obj) => obj.part);
+    const availableParts = Array.from(new Set(purchaseOverlayData.map((obj) => obj.part)));
     setParts(
       availableParts
         .map((p) => ({ value: p || "", label: normalizeString(p || "") }))

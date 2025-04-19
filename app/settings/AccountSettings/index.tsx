@@ -183,7 +183,7 @@ export default function AccountSettings() {
             p="0.5rem 1rem"
             styles={{ icon: { marginRight: rem(4) } }}
           >
-            Your account is {isPublic ? "public" : "not public"}
+            Your account is {isPublic ? "public" : "private"}
           </Alert>
           <TextInput
             maw={425}

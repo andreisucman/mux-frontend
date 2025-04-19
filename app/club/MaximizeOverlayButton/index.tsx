@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button, Group, rem } from "@mantine/core";
-import GlowingButton from "@/components/GlowingButton";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./MaximizeOverlayButton.module.css";
 
@@ -38,13 +37,9 @@ export default function MaximizeOverlayButton({
 
   return (
     <Group className={classes.container}>
-      {showOverlayComponent === "showOtherRoutinesButton" ? (
-        <Button style={styles} onClick={handleShowOverlay}>
-          See other routines
-        </Button>
-      ) : (
-        <GlowingButton containerStyles={styles} text="Buy routines" onClick={handleShowOverlay} />
-      )}
+      <Button style={styles} onClick={handleShowOverlay}>
+        See info card
+      </Button>
     </Group>
   );
 }

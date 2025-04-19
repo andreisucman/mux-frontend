@@ -23,11 +23,11 @@
   margin-bottom: auto;
   border-radius: 0;
   overflow: hidden;
-  clip-path: inset(1px);
 }
 
 .carouselRoot {
   background-color: unset;
+  clip-path: inset(2px);
 }
 
 .carouselViewport {
@@ -45,17 +45,11 @@
 }
 
 .carouselControl {
-  background-color: alpha(
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)),
-    0.75
-  );
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-white));
 
   &:hover {
-    background-color: alpha(
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)),
-      1
-    );
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   }
 }
 

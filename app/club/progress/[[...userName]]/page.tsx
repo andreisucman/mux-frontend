@@ -202,11 +202,11 @@ export default function ClubProgress(props: Props) {
             <ProgressGallery
               progress={progress}
               hasMore={hasMore}
-              isPublicPage={false}
               isSelf={isSelf}
               handleContainerClick={handleContainerClick}
               handleFetchProgress={handleFetchProgress}
               setProgress={setProgress}
+              isPublicPage
             />
             {showButton && (
               <MaximizeOverlayButton

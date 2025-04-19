@@ -7,9 +7,14 @@ import callTheServer from "@/functions/callTheServer";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./SubscribeToUpdatesModalContent.module.css";
 
-type Props = { sellerId: string; sellerName: string; part: string };
+type Props = { sellerId: string; sellerName: string; part: string; concern: string };
 
-export default function SubscribeToUpdatesModalContent({ sellerId, sellerName, part }: Props) {
+export default function SubscribeToUpdatesModalContent({
+  sellerId,
+  sellerName,
+  part,
+  concern,
+}: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [price, setPrice] = useState<React.ReactNode>();
@@ -45,13 +50,13 @@ export default function SubscribeToUpdatesModalContent({ sellerId, sellerName, p
     });
   }, []);
 
-  const onSubscribeClick = async (sellerId: string, part: string) => {
+  const onSubscribeClick = async (sellerId: string, part: string, concern: string) => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
     setIsLoading(true);
     const response = await callTheServer({
       endpoint: "subscribeToUpdates",
       method: "POST",
-      body: { sellerId, part, redirectUrl, cancelUrl: redirectUrl },
+      body: { sellerId, part, concern, redirectUrl, cancelUrl: redirectUrl },
     });
 
     if (response.status === 200) {
@@ -75,8 +80,7 @@ export default function SubscribeToUpdatesModalContent({ sellerId, sellerName, p
         isLoading={isLoading}
         content={updateContent}
         buttonText={"Subscribe"}
-   
-        onClick={() => onSubscribeClick(sellerId, part)}
+        onClick={() => onSubscribeClick(sellerId, part, concern)}
       />
     </Stack>
   );

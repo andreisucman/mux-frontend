@@ -164,12 +164,16 @@ export default function ClubSettings() {
         if (response.error) {
           openErrorModal({ description: response.error });
           setIsLoading(false);
+
+          setUserName(name || "");
+          setUserIntro(intro || "");
           return;
         }
 
+        setUserName(response.message.name);
         setUserDetails((prev: UserDataType) => ({
           ...prev,
-          [type]: data,
+          ...response.message,
         }));
 
         modals.closeAll();

@@ -14,7 +14,7 @@ type Props = {
   data?: PurchaseType[];
   handleFetchPurchases: () => void;
   onRowClick: (args: any) => void;
-  onSubscribeClick: (sellerId: string, sellerName: string, part: string) => void;
+  onSubscribeClick: (sellerId: string, sellerName: string, part: string, concern: string) => void;
   onUnsubscribeClick: () => void;
 };
 

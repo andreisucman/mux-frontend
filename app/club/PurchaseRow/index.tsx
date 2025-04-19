@@ -19,7 +19,7 @@ type CommonProps = {
 
 type BuyerProps = CommonProps & {
   variant: "buyer";
-  onSubscribeClick: (sellerId: string, sellerName: string, part: string) => void;
+  onSubscribeClick: (sellerId: string, sellerName: string, part: string, concern: string) => void;
   onUnsubscribeClick: () => void;
 };
 
@@ -63,10 +63,10 @@ function PurchaseRow(props: Props) {
       const { onSubscribeClick, onUnsubscribeClick } = restProps as BuyerProps;
       return status === "active"
         ? () => onUnsubscribeClick()
-        : () => onSubscribeClick(sellerId, sellerName, part);
+        : () => onSubscribeClick(sellerId, sellerName, part, concern);
     }
     return undefined;
-  }, [variant, status, sellerId, sellerName, part, restProps]);
+  }, [variant, status, sellerId, sellerName, part, concern, restProps]);
 
   const name = buyerName || sellerName;
 

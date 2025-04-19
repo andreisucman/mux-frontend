@@ -32,7 +32,7 @@ export default function ComparisonCarousel({ data }: Props) {
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
 
-  const redirectUrl = `/club/routines/${userName}?concern=${concern}`;
+  const redirectUrl = `/club/routines/${userName}?part=${part}&concern=${concern}`;
 
   const handleClickCarousel = useCallback(() => {
     const title = (
@@ -68,8 +68,14 @@ export default function ComparisonCarousel({ data }: Props) {
     ]);
 
     const newSlides = objects.map((object, index) => (
-      <Carousel.Slide key={index} onClick={handleClickCarousel}>
-        <ImageCard image={object.image} datePosition="top-left" showDate isRelative />
+      <Carousel.Slide key={index} onClick={handleClickCarousel} className={classes.slide}>
+        <ImageCard
+          image={object.image}
+          datePosition="top-left"
+          position={index % 2 === 0 ? "right" : "left"}
+          showDate
+          isRelative
+        />
       </Carousel.Slide>
     ));
 
@@ -92,7 +98,6 @@ export default function ComparisonCarousel({ data }: Props) {
           align="start"
           slidesToScroll={2}
           withIndicators={slides && slides.length > 2}
-          className={classes.carousel}
           classNames={{
             viewport: classes.carouselViewport,
             root: classes.carouselRoot,

@@ -6,6 +6,7 @@ import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
 import classes from "./RoutinesFilterCardContent.module.css";
+import { normalizeString } from "@/helpers/utils";
 
 type Props = {
   concernFilterItems?: FilterItemType[];
@@ -28,6 +29,7 @@ export default function RoutinesFilterCardContent({ concernFilterItems, partFilt
         filterType="part"
         placeholder="Filter by part"
         selectedValue={part}
+        searchValue={normalizeString(part || "")}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect
@@ -38,6 +40,7 @@ export default function RoutinesFilterCardContent({ concernFilterItems, partFilt
         filterType="concern"
         placeholder="Filter by concern"
         selectedValue={concern || ""}
+        searchValue={normalizeString(concern || "")}
         customStyles={{ maxWidth: "unset" }}
         allowDeselect
         closeOnSelect

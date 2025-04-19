@@ -10,6 +10,7 @@ type Props = {
   isRelative?: boolean;
   showDate?: boolean;
   child?: React.ReactNode;
+  position?: "right" | "left";
   datePosition?: "top-left" | "bottom-right";
   onClick?: () => void;
   customStyles?: { [key: string]: any };
@@ -22,6 +23,7 @@ export default function ImageCard({
   child,
   isRelative,
   showDate,
+  position,
   datePosition = "bottom-right",
   customWrapperStyles,
   customStyles,
@@ -35,7 +37,11 @@ export default function ImageCard({
     >
       <div className={classes.imageWrapper} style={customWrapperStyles ? customWrapperStyles : {}}>
         <Image
-          className={cn(classes.image, { [classes.relative]: isRelative })}
+          className={cn(classes.image, {
+            [classes.relative]: isRelative,
+            [classes.left]: position === "left",
+            [classes.right]: position === "right",
+          })}
           src={image || ""}
           width={300}
           height={400}

@@ -97,19 +97,14 @@ export default function PurchaseOverlay({
 
         const referrer = getReferrer(redirectPath);
 
-        const params = [];
-
-        if (userName) {
-          params.push({ name: "userName", value: userName, action: "replace" });
-        }
-
-        const query = modifyQuery({ params }) || searchParams.toString();
+        const params = new URLSearchParams(searchParams);
+        params.append("userName", userName);
 
         openAuthModal({
           stateObject: {
             referrer,
             redirectPath,
-            redirectQuery: query,
+            redirectQuery: params.toString(),
             localUserId: userId,
           },
           title: "Start your change",
