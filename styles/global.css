@@ -35,17 +35,17 @@ body::-webkit-scrollbar-thumb {
   z-index: -1;
   background-image:
     repeating-linear-gradient(
-      7.5deg,
+      4deg,
       transparent 40%,
       light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 40%,
-      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
-      transparent 70%,
+      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 80%,
+      transparent 80%,
       transparent 140%
     ),
     repeating-linear-gradient(
       150deg,
-      transparent 70%,
-      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
+      transparent 80%,
+      light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 80%,
       light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 100%,
       transparent 100%,
       transparent 180%
@@ -60,14 +60,14 @@ body::-webkit-scrollbar-thumb {
         25deg,
         transparent 40%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 40%,
-        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
-        transparent 70%,
+        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 75%,
+        transparent 75%,
         transparent 140%
       ),
       repeating-linear-gradient(
         150deg,
-        transparent 70%,
-        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 70%,
+        transparent 75%,
+        light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 75%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 100%,
         transparent 100%,
         transparent 180%
