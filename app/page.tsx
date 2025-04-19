@@ -89,8 +89,6 @@ export default function BeforeAftersPage() {
         method: "GET",
       });
 
-      console.log("response", response);
-
       if (response.status === 200) {
         if (skip) {
           setBeforeAfters((prev) => [...(prev || []), ...response.message.slice(0, 20)]);
@@ -142,7 +140,6 @@ export default function BeforeAftersPage() {
 
   const concernFilters = useMemo(() => {
     if (!filters) return [];
-    console.log("filters", filters);
     return filters.concerns.map((c) => ({ value: c, label: normalizeString(c) }));
   }, [filters]);
 

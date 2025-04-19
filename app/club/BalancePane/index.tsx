@@ -102,26 +102,10 @@ function BalancePane() {
 
     return (
       <Group className={classes.balance}>
-        <Group className={classes.section}>
-          <Text className={classes.annotation} c="dimmed">
-            Pending
-          </Text>
-          <Title c="dimmed" order={2} className={classes.pending}>
-            {pendingAmount}
-            <Text c="dimmed" className={classes.currency}>
-              {pendingCurrency}
-            </Text>
-          </Title>
-        </Group>
-        <Group className={classes.section}>
-          <Text className={classes.annotation} c="dimmed" style={{ right: 0, left: "unset" }}>
-            Available
-          </Text>
-          <Title order={2} className={classes.available}>
-            {availableAmount}
-            <Text className={classes.currency}>{availableCurrency}</Text>
-          </Title>
-        </Group>
+        <Title order={2} className={classes.amount}>
+          {pendingAmount || availableAmount}
+          <Text className={classes.currency}>{pendingCurrency || availableCurrency}</Text>
+        </Title>
       </Group>
     );
   }, [isLoading, balance]);
@@ -213,7 +197,7 @@ function BalancePane() {
         <Group gap={8}>
           <Tooltip
             opened={openTooltip}
-            label="Manage your bank accounts, payout schedule and see the status of your payouts in the wallet."
+            label="The balance is paid out to your bank account automatically. You can change the bank account in the wallet."
             ref={clickOutsideRef}
             onClick={() => setOpenTooltip((prev) => !prev)}
             multiline

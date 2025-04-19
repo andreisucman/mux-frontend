@@ -3,7 +3,7 @@
 }
 
 .wrapper {
-  padding: rem(10%) 0;
+  padding: 10% 0 20%;
   border-radius: var(--mantine-radius-lg);
   margin: auto;
   width: 100%;

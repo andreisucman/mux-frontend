@@ -177,16 +177,18 @@ export default function TasksList({ customStyles }: Props) {
                 }}
               >
                 <Carousel.Slide>
-                  {todaysTasks?.length ? (
+                  {todaysTasks && todaysTasks?.length > 0 ? (
                     <TasksSlide taskGroups={todaysTasks} canAddDiary={!!canAddDiary} />
                   ) : (
                     <OverlayWithText text="No tasks" icon={<IconCircleOff className="icon" />} />
                   )}
                 </Carousel.Slide>
-                {tomorrowsTasks?.length && (
+                {tomorrowsTasks && tomorrowsTasks?.length > 0 ? (
                   <Carousel.Slide>
                     <TasksSlide taskGroups={tomorrowsTasks} />
                   </Carousel.Slide>
+                ) : (
+                  <></>
                 )}
               </Carousel>
             )}

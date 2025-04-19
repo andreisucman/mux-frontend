@@ -28,7 +28,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails, setUserDetails } = useContext(UserContext);
 
-  const { nextRoutine, latestConcernScores, subscriptions } = userDetails || {};
+  const { nextRoutine, latestProgressImages, subscriptions } = userDetails || {};
 
   const { isSubscriptionActive, isTrialUsed } =
     checkSubscriptionActivity(["improvement"], subscriptions) || {};
@@ -52,12 +52,15 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
     isTrialUsed,
   }: OnCreateRoutineClickProps) => {
     if (isLoading) return;
+    if (!nextRoutine) return;
 
     if (isSubscriptionActive) {
-      const partsScanned = Object.keys(latestConcernScores || {});
+      const partsScanned = Object.entries(latestProgressImages || {})
+        .filter(([key, value]) => Boolean(value))
+        .map(([key, _]) => key);
 
-      if (partsScanned && partsScanned.length > 0) {
-        const relevantRoutines = nextRoutine?.filter((obj) => partsScanned.includes(obj.part));
+      if (partsScanned.length > 0) {
+        const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
         if (relevantRoutines) openSelectRoutineType(relevantRoutines);
       }
     } else {

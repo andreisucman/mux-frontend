@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
-import { Group, Loader, rem, Stack, Text } from "@mantine/core";
+import { Loader, rem, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -134,7 +134,7 @@ export default function Rewards() {
         openInfoModal({
           title: "✔️ Success!",
           description: (
-            <Group gap={8}>
+            <Text>
               Reward transfer initiated. It should be added to your{" "}
               <span
                 style={{ cursor: "pointer", textDecoration: "underline" }}
@@ -143,10 +143,10 @@ export default function Rewards() {
                   modals.closeAll();
                 }}
               >
-                Club balance
-              </span>{" "}
+                Club balance{" "}
+              </span>
               within minutes.
-            </Group>
+            </Text>
           ),
         });
       }
@@ -173,7 +173,10 @@ export default function Rewards() {
             <InfiniteScroll
               loader={
                 <Stack mb={rem(16)} key={0}>
-                  <Loader m="auto" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
+                  <Loader
+                    m="auto"
+                    color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+                  />
                 </Stack>
               }
               loadMore={() => fetchRewards(hasMore)}
@@ -194,7 +197,11 @@ export default function Rewards() {
           )}
         </>
       ) : (
-        <Loader m="0 auto" pt="20%" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
+        <Loader
+          m="0 auto"
+          pt="20%"
+          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+        />
       )}
     </Stack>
   );

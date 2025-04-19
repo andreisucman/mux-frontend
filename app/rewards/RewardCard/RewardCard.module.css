@@ -1,7 +1,22 @@
 .container {
+  position: relative;
   gap: 0;
   border-radius: var(--mantine-radius-lg);
-  background-color: alpha(light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6)), 1);
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: -1;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 10px;
+    box-shadow: var(--mantine-shadow-sm);
+    pointer-events: none;
+    animation: unset;
+  }
 }
 
 .heading {
@@ -34,4 +49,6 @@
   font-size: var(--mantine-font-size-md);
   flex: 1;
   width: 100%;
+
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
 }

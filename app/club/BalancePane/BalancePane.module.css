@@ -2,53 +2,18 @@
   gap: rem(12);
 }
 
-.available,
-.pending {
-  margin-left: rem(16);
-
+.amount {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: rem(32);
+  font-size: rem(24);
   min-height: rem(60);
   gap: rem(8);
 
   align-items: center;
   justify-content: center;
   transform: translateY(2px);
-
-  @media (max-width: $mantine-breakpoint-xs) {
-    font-size: rem(24);
-  }
-}
-
-.pending {
-  margin-left: unset;
-  margin-right: rem(16);
-  font-size: rem(24);
-  color: var(--mantine-color-gray-6);
-
-  @media (max-width: $mantine-breakpoint-xs) {
-    font-size: rem(20);
-  }
-}
-
-.annotation {
-  font-size: rem(10);
-  position: absolute;
-  top: rem(4);
-  left: 0;
-}
-
-.section {
-  position: relative;
-  flex: 1;
-
-  &:first-child {
-    justify-content: flex-end;
-    border-right: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  }
 }
 
 .row {
