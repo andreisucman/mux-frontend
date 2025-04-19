@@ -38,17 +38,24 @@ export default function PasswordInputWithStrength({
 
   const bars = Array(4)
     .fill(0)
-    .map((_, index) => (
-      <Progress
-        styles={{ section: { transitionDuration: "0ms" } }}
-        value={
-          password.length > 0 && index === 0 ? 100 : score >= ((index + 1) / 4) * 100 ? 100 : 0
-        }
-        color={score > 80 ? "teal" : score > 50 ? "yellow" : "red"}
-        key={index}
-        size={4}
-      />
-    ));
+    .map((_, index) => {
+      const color = score > 80 ? "green" : score > 50 ? "yellow" : "red";
+
+      return (
+        <Progress
+          styles={{
+            section: { transitionDuration: "0ms" },
+            root: { position: "relative", zIndex: 1 },
+          }}
+          value={
+            password.length > 0 && index === 0 ? 100 : score >= ((index + 1) / 4) * 100 ? 100 : 0
+          }
+          color={color}
+          key={index}
+          size={4}
+        />
+      );
+    });
 
   return (
     <Stack gap={8}>

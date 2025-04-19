@@ -25,7 +25,7 @@ export default async function startSubscriptionTrial({ subscriptionName, onCompl
             description: (
               <Text>
                 You need to scan your face first. Click{" "}
-                <Link href="/scan/progress" style={{ textDecoration: "underline" }}>
+                <Link href="/select-concerns?part=face" style={{ textDecoration: "underline" }}>
                   here
                 </Link>{" "}
                 to start.

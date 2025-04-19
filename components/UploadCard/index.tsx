@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Button, Checkbox, Group, Progress, Stack, Text } from "@mantine/core";
+import { IconDragDrop, IconHandGrab } from "@tabler/icons-react";
+import Draggable from "react-draggable";
+import { ActionIcon, Button, Checkbox, Group, Progress, Stack, Text } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { UploadProgressProps } from "@/app/select-part/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
@@ -29,6 +32,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const buttonsRef = useRef(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [displayComponent, setDisplayComponent] = useState<"loading" | "capture" | "preview">(
     "loading"
@@ -291,39 +295,47 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
             </Stack>
           )}
           {!isLoading && localUrl && (
-            <div className={classes.buttons}>
-              {!isAbsolute && (
-                <Button
-                  loading={isLoading}
-                  disabled={isLoading || !localUrl}
-                  onClick={handleClickUpload}
-                >
-                  Upload
-                </Button>
-              )}
-              <>
-                {showStartAnalysis && isAbsolute && (
-                  <Stack className={classes.nextButtons}>
-                    <Button
-                      disabled={isButtonLoading || !localUrl || uploadedImages.length >= 3}
-                      variant="default"
-                      onClick={handleAddMore}
-                    >
-                      Add more
-                    </Button>
-                    {localUrl && (
-                      <Button
-                        disabled={isButtonLoading || !localUrl}
-                        loading={isButtonLoading}
-                        onClick={handleStartAnalysis}
-                      >
-                        Analyze
-                      </Button>
-                    )}
-                  </Stack>
+            <Draggable defaultClassName={classes.dragger} cancel=".no-drag" nodeRef={buttonsRef}>
+              <div className={classes.buttons} ref={buttonsRef}>
+                <ActionIcon variant="default" className={classes.dndIcon}>
+                  <IconHandGrab size={16} />
+                </ActionIcon>
+                {!isAbsolute && (
+                  <Button
+                    className="no-drag"
+                    loading={isLoading}
+                    disabled={isLoading || !localUrl}
+                    onClick={handleClickUpload}
+                  >
+                    Upload
+                  </Button>
                 )}
-              </>
-            </div>
+                <>
+                  {showStartAnalysis && isAbsolute && (
+                    <Stack className={classes.nextButtons}>
+                      <Button
+                        disabled={isButtonLoading || !localUrl || uploadedImages.length >= 3}
+                        variant="default"
+                        className="no-drag"
+                        onClick={handleAddMore}
+                      >
+                        Add more
+                      </Button>
+                      {localUrl && (
+                        <Button
+                          disabled={isButtonLoading || !localUrl}
+                          loading={isButtonLoading}
+                          className="no-drag"
+                          onClick={handleStartAnalysis}
+                        >
+                          Analyze
+                        </Button>
+                      )}
+                    </Stack>
+                  )}
+                </>
+              </div>
+            </Draggable>
           )}
 
           {!showStartAnalysis && isAbsolute && somethingUploaded && (

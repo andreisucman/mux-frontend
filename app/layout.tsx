@@ -7,13 +7,7 @@ import "@mantine/carousel/styles.layer.css";
 import "@mantine/charts/styles.layer.css";
 
 import React, { Suspense } from "react";
-import {
-  ColorSchemeScript,
-  Loader,
-  MantineProvider,
-  Stack,
-  useComputedColorScheme,
-} from "@mantine/core";
+import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NavigationProgress } from "@mantine/nprogress";
 import CookieDisclaimer from "@/components/CookieDisclaimer";

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconHandGrab, IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
 import { ActionIcon, AngleSlider, Group, rem, Stack } from "@mantine/core";
@@ -36,8 +36,9 @@ export default function DraggableImageContainer({
   const nodeRef = useRef(null);
   const secondNodeRef = useRef(null);
   const thirdNodeRef = useRef(null);
-  const { width: containerWidth, height: containerHeight, ref: containerRef } = useElementSize();
+  const controlPaneRef = useRef(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
+  const { width: containerWidth, height: containerHeight, ref: containerRef } = useElementSize();
   const [selectedDotId, setSelectedDotId] = useState<string>();
   const [imageLoaded, setImageLoaded] = useState(false);
   const defaultDotPosition = { x: 100, y: 100 };
@@ -94,14 +95,16 @@ export default function DraggableImageContainer({
       id,
       originalWidth: size,
       originalHeight: size / 2,
-      scale: 1,
+      scaleX: 1,
+      scaleY: 1,
       angle: 180,
       x: defaultDotPosition.x,
       y: defaultDotPosition.y,
     };
 
     if (blurDots.length) {
-      newDot.scale = blurDots[blurDots.length - 1].scale;
+      newDot.scaleX = blurDots[blurDots.length - 1].scaleX;
+      newDot.scaleY = blurDots[blurDots.length - 1].scaleY;
       newDot.angle = 360 - blurDots[blurDots.length - 1].angle;
     }
 
@@ -119,9 +122,14 @@ export default function DraggableImageContainer({
     });
   };
 
-  const handleChangeSize = (scale: number, dotId?: string) => {
+  const handleChangeWidth = (scale: number, dotId?: string) => {
     if (!dotId) return;
-    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, scale } : d)));
+    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, scaleX: scale } : d)));
+  };
+
+  const handleChangeHeight = (scale: number, dotId?: string) => {
+    if (!dotId) return;
+    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, scaleY: scale } : d)));
   };
 
   const handleChangeCoordinates = (x: number, y: number, dotId?: string) => {
@@ -180,8 +188,8 @@ export default function DraggableImageContainer({
                           [classes.selectedNode]: dot.id === selectedDotId,
                         })}
                         style={{
-                          width: dot.originalWidth * dot.scale,
-                          height: dot.originalHeight * dot.scale,
+                          width: dot.originalWidth * dot.scaleX,
+                          height: dot.originalHeight * dot.scaleY,
                           transform: `rotate(${dot.angle}deg)`,
                         }}
                       ></div>
@@ -189,34 +197,53 @@ export default function DraggableImageContainer({
                   </Draggable>
                 );
               })}
-              <Stack className={classes.controlPanel}>
-                <Group>
-                  <ActionIcon
-                    disabled={blurDots.length >= 3}
-                    variant="default"
-                    onClick={handleAddDot}
-                  >
-                    <IconPlus className="icon icon__small" />
+              <Draggable
+                defaultClassName={classes.dragger}
+                cancel=".no-drag"
+                nodeRef={controlPaneRef}
+              >
+                <Stack className={classes.controlPanel} ref={controlPaneRef}>
+                  <ActionIcon variant="default" className={classes.dndIcon}>
+                    <IconHandGrab size={16} />
                   </ActionIcon>
-                  <ActionIcon
-                    disabled={blurDots.length - 1 < 0 || !selectedDotId}
-                    variant="default"
-                    onClick={handleRemoveDot}
-                  >
-                    <IconMinus className="icon icon__small" />
-                  </ActionIcon>
-                </Group>
-                <VerticalSlider
-                  value={selectedDot?.scale || 1}
-                  setValue={(value) => handleChangeSize(value, selectedDotId)}
-                />
-                <AngleSlider
-                  value={selectedDot?.angle || 180}
-                  onChange={(value) => handleChangeAngle(value, selectedDotId)}
-                  size={60}
-                  thumbSize={8}
-                />
-              </Stack>
+                  <Group>
+                    <ActionIcon
+                      className="no-drag"
+                      disabled={blurDots.length >= 3}
+                      variant="default"
+                      onClick={handleAddDot}
+                    >
+                      <IconPlus className="icon icon__small" />
+                    </ActionIcon>
+                    <ActionIcon
+                      className="no-drag"
+                      disabled={blurDots.length - 1 < 0 || !selectedDotId}
+                      variant="default"
+                      onClick={handleRemoveDot}
+                    >
+                      <IconMinus className="icon icon__small" />
+                    </ActionIcon>
+                  </Group>
+                  <Group className="no-drag">
+                    <VerticalSlider
+                      value={selectedDot?.scaleX || 1}
+                      setValue={(value) => handleChangeWidth(value, selectedDotId)}
+                    />
+                    <VerticalSlider
+                      value={selectedDot?.scaleY || 1}
+                      setValue={(value) => handleChangeHeight(value, selectedDotId)}
+                    />
+                  </Group>
+
+                  <AngleSlider
+                    className="no-drag"
+                    value={selectedDot?.angle || 180}
+                    onChange={(value) => handleChangeAngle(value, selectedDotId)}
+                    size={60}
+                    thumbSize={8}
+                  />
+                </Stack>
+              </Draggable>
             </>
           )}
           <img

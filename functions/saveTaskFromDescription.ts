@@ -60,7 +60,22 @@ const saveTaskFromDescription = async ({
 
   if (response.status === 200) {
     if (response.error) {
-      setError(response.error);
+      if (response.error === "short") {
+        setError("Make your description and instruction at least 50 characters long.");
+      } else if (response.error === "long") {
+        setError("Make your description and instruction less than 200 characters long.");
+      } else if (response.error === "scan") {
+        setError(`You need to scan your ${part} first.`);
+      } else if (response.error === "inappropriate") {
+        setError("Your text seems to contain inappropriate language. Please try again.");
+      } else if (response.error === "violates") {
+        setError(
+          "This task violates our ToS. Please modify your description or instruction and try again."
+        );
+      } else {
+        setError(response.error);
+      }
+
       setIsLoading(false);
       return;
     }

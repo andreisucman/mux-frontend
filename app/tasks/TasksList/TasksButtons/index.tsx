@@ -45,10 +45,10 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
         title: "Please scan yourself",
         description: (
           <Text>
-            You need to scan yourself to be able to create tasks. Click{" "}
+            You need to scan yourself first. Click{" "}
             <UnstyledButton
               onClick={() => {
-                router.push("/scan");
+                router.push("/select-part");
                 modals.closeAll();
               }}
               style={{ textDecoration: "underline", cursor: "pointer" }}

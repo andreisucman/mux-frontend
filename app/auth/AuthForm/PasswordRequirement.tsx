@@ -6,7 +6,12 @@ type Props = { meets: boolean; label: string };
 
 function PasswordRequirement({ meets, label }: Props) {
   return (
-    <Text component="div" c={meets ? "teal" : "red"} size="sm" mt={6}>
+    <Text
+      component="div"
+      c={meets ? "teal" : "red"}
+      size="sm"
+      mt={6}
+    >
       <Center inline>
         {meets ? (
           <IconCheck className="icon icon__small" />

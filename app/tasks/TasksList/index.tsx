@@ -93,7 +93,7 @@ export default function TasksList({ customStyles }: Props) {
       tomorrowsTasksLength: tomorrowsTasksWithOnClick.length,
       canAddDiary: tasks && tasks.length > 0 && todayTasksCompleted.length > 1,
     };
-  }, [tasks, getTaskClickHandler]);
+  }, [userDetails, getTaskClickHandler]);
 
   const { todaysTasks, tomorrowsTasks, todaysTasksLength, tomorrowsTasksLength, canAddDiary } =
     nearestTasks || {};

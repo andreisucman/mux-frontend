@@ -47,7 +47,7 @@
   inset: 0;
 
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
-  border-radius: rem(16);
+  border-radius: rem(8);
 }
 
 .controlPanel {
@@ -58,7 +58,7 @@
   gap: rem(24);
   background-color: alpha(
     light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5)),
-    0.25
+    0.5
   );
   padding: rem(16) rem(8);
   align-items: center;
@@ -68,4 +68,13 @@
 
 .selectedNode {
   border: rem(1) solid white;
+}
+
+.dndIcon {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(22px, -14px);
+  opacity: 0.5;
 }
