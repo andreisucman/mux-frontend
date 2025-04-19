@@ -16,6 +16,7 @@
 }
 
 .content {
+  position: relative;
   max-width: clamp(rem(350), 90%, rem(400));
   padding: rem(24) rem(16);
   width: 100%;
@@ -25,6 +26,20 @@
 
   align-items: center;
   justify-content: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: -1;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 10px;
+    box-shadow: var(--mantine-shadow-sm);
+    pointer-events: none;
+    animation: unset;
+  }
 }
 
 .title {

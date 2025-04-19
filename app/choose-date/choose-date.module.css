@@ -22,7 +22,7 @@
 .date {
   cursor: default;
   padding: rem(6) rem(16);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   border-radius: var(--mantine-radius-lg);
   text-align: center;
@@ -34,7 +34,7 @@
 }
 
 .radioButton {
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   flex: 1;
   padding: 0 rem(16);

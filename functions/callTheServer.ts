@@ -7,13 +7,15 @@ type Props<T> = {
 };
 
 const callTheServer = async <T>({ endpoint, method, body }: Props<T>) => {
+  if (!document) return;
+
   try {
     const isFormData = body instanceof FormData;
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const headers: HeadersInit = isFormData ? {} : { "Content-Type": "application/json" };
 
-    const url = new URL(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/${endpoint}`);
-    url.searchParams.append("timeZone", timeZone);
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.cookie = `timeZone=${encodeURIComponent(timeZone)}; path=/; SameSite=Domain`;
 
     const fetchOptions: RequestInit = {
       method,
@@ -25,7 +27,10 @@ const callTheServer = async <T>({ endpoint, method, body }: Props<T>) => {
       fetchOptions.body = isFormData ? body : JSON.stringify(body);
     }
 
-    const response = await fetch(url.toString(), fetchOptions);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_SERVER_URL}/${endpoint}`,
+      fetchOptions
+    );
 
     if (response.status === 429) {
       openErrorModal({ description: "You're browsing too fast. Slow down." });

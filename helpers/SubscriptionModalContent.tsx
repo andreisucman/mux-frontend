@@ -45,9 +45,6 @@ export default function SubscriptionModalContent({
         icon={buttonIcon}
         buttonText={buttonText}
         underButtonText={underButtonText}
-        customHeadingStyles={{
-          borderRadius: 0,
-        }}
         onClick={handleClick}
       />
     </Stack>
