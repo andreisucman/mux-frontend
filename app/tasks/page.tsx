@@ -58,14 +58,14 @@ export default function Tasks() {
         .filter((t) => new Date(t.startsAt) < todayEnd)
         .map((fTask) => ({
           ...fTask,
-          onClick: () => getTaskClickHandler(fTask._id),
+          onClick: getTaskClickHandler(fTask._id),
         }));
 
       const tomorrowsTasksWithOnClick = tasks
         .filter((t) => new Date(t.startsAt) >= tomorrowStart && new Date(t.startsAt) < tomorrowEnd)
         .map((fTask) => ({
           ...fTask,
-          onClick: () => getTaskClickHandler(fTask._id),
+          onClick: getTaskClickHandler(fTask._id),
         }));
 
       const todaysConcerns = [...new Set(todaysTasksWithOnClick.map((t) => t.concern))];
