@@ -106,7 +106,6 @@ export type RoutineType = {
   type: string;
   part: string;
   concerns: string[];
-  finalSchedule: { [key: string]: any };
   status: RoutineStatusEnum;
   startsAt: string;
   lastDate: string;
@@ -122,8 +121,6 @@ export type AllTaskType = {
   color: string;
   completed: number;
   concern: string;
-  description: string;
-  instruction: string;
 };
 
 export type PurchaseOverlayDataType = {

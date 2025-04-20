@@ -55,7 +55,7 @@ export default function SelectConcernsPage() {
 
   const { _id: userId, email } = userDetails || {};
 
-  const disableAdd = nextNoConcern || selectedConcerns.length >= 3;
+  const disableAdd = nextNoConcern || selectedConcerns.length >= 5;
   const part = searchParams.get("part") || "face";
 
   const handleRedirect = useCallback(
@@ -196,13 +196,10 @@ export default function SelectConcernsPage() {
           }));
           setSelectedConcerns(transformed);
         } else {
-          const savedSelectedConcerns = getFromLocalStorage("selectedConcerns");
+          const savedSelectedConcerns: SelectedConcernItemType[] | null =
+            getFromLocalStorage("selectedConcerns");
           if (savedSelectedConcerns) {
-            setSelectedConcerns(
-              (savedSelectedConcerns as SelectedConcernItemType[]).filter((item) =>
-                exists(item, "value")
-              ) as SelectedConcernItemType[]
-            );
+            setSelectedConcerns(savedSelectedConcerns.filter((item) => exists(item, "value")));
           }
         }
       }

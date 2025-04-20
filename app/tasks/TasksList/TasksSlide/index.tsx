@@ -2,16 +2,12 @@ import React, { memo } from "react";
 import { Button, Divider, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import Link from "@/helpers/custom-router/patch-router/link";
-import { TaskType } from "@/types/global";
 import TaskRow from "../TaskRow";
 import classes from "./TasksSlide.module.css";
-
-export interface TaskTypeWithOnClick extends TaskType {
-  onClick: () => void;
-}
+import { TaskWithOnClickType } from "../../page";
 
 type Props = {
-  taskGroups: TaskTypeWithOnClick[][];
+  taskGroups: TaskWithOnClickType[][];
   canAddDiary?: boolean;
 };
 
