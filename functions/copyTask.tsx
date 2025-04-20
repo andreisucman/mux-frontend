@@ -4,7 +4,7 @@ import Link from "@/helpers/custom-router/patch-router/link";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
-import { RoutineType } from "@/types/global";
+import { AllTaskType, RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
 export type CopyTaskProps = {
@@ -57,10 +57,15 @@ const copyTask = async ({
 
     if (inform) {
       const routine = response.message;
+      const allTask = routine.allTasks.find((at: AllTaskType) => at.key === taskKey);
+      const earliestTask = allTask.ids[0];
+      const latestTask = allTask.ids[allTask.ids.length - 1];
+
       const dateRange = getReadableDateInterval(
-        new Date(routine.startsAt),
-        new Date(routine.lastDate)
+        new Date(earliestTask.startsAt),
+        new Date(latestTask.startsAt)
       );
+
       openInfoModal({
         title: "✔️ Success!",
         description: (

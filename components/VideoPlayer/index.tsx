@@ -57,9 +57,9 @@ export default function VideoPlayer({
         onClick={handlePlayerClick}
       >
         {playing ? (
-          <IconPlayerPause className={classes.playIcon} />
+          <IconPlayerPause size={40} className={classes.playIcon} />
         ) : (
-          <IconPlayerPlayFilled className={classes.playIcon} />
+          <IconPlayerPlayFilled size={40} className={classes.playIcon} />
         )}
       </div>
     ),

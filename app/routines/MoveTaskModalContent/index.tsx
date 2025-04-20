@@ -89,7 +89,7 @@ export default function MoveTaskModalContent({ buttonText, handleClick }: Props)
         ) : (
           <>
             {routinesOnTheChosenDate && routinesOnTheChosenDate.length > 0 ? (
-              <Accordion>
+              <Accordion classNames={{}}>
                 <Stack gap={0}>
                   <Text ml={8} size="sm" mb={8} c="dimmed">
                     Destination routine

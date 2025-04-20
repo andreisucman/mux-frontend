@@ -1,23 +1,15 @@
 .item {
   position: relative;
   border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
 
   &:last-child {
     margin-bottom: unset;
   }
 
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    z-index: -1;
-    transform: translateX(-50%);
-    width: 90%;
-    height: 10px;
-    box-shadow: var(--mantine-shadow-sm);
-    pointer-events: none;
+  &:hover {
+    background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   }
 }
 

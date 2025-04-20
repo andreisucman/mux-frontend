@@ -49,15 +49,15 @@ export default async function copyTaskInstance({
     const { routine, newTask } = message;
 
     if (inform) {
-      const dateRange = getReadableDateInterval(
-        new Date(routine.startsAt),
-        new Date(routine.lastDate)
+      const date = getReadableDateInterval(
+        new Date(newTask.startsAt),
+        new Date(newTask.startsAt)
       );
       openInfoModal({
         title: "✔️ Success!",
         description: (
           <Text>
-            Task copied and scheduled to {dateRange}.{" "}
+            Task copied and scheduled to {date}.{" "}
             <Link
               href="/routines"
               onClick={() => {

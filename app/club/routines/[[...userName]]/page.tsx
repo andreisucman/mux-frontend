@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
@@ -20,7 +19,7 @@ import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
-import copyRoutines from "@/functions/copyRoutines";
+import copyRoutine from "@/functions/copyRoutine";
 import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
@@ -121,15 +120,15 @@ export default function ClubRoutines(props: Props) {
     }
   }, [isCurrentCombinationPurchased]);
 
-  const handleCopyRoutines = useCallback(
-    (routineIds: string[]) => {
+  const handleCopyRoutine = useCallback(
+    (routineId: string) => {
       type HandleSubmitProps = { startDate: Date | null };
 
       const handleSubmit = ({ startDate }: HandleSubmitProps) => {
         modals.closeAll();
-        copyRoutines({
+        copyRoutine({
           userName,
-          routineIds,
+          routineId,
           startDate,
           inform: true,
           ignoreIncompleteTasks: true,
@@ -173,6 +172,7 @@ export default function ClubRoutines(props: Props) {
                 userName,
                 sort,
                 targetRoutineId: selectedRoutineId,
+                inform: true,
                 setRoutines,
               })
             }
@@ -205,6 +205,8 @@ export default function ClubRoutines(props: Props) {
                 targetRoutineId: selectedRoutineId,
                 startDate,
                 taskId,
+                inform: true,
+                returnTask: true,
               })
             }
           />
@@ -228,13 +230,13 @@ export default function ClubRoutines(props: Props) {
             selected={selected}
             isSelf={isSelf}
             copyTaskInstance={handleCopyTaskInstance}
-            copyRoutines={handleCopyRoutines}
+            copyRoutine={handleCopyRoutine}
             copyTask={handleCopyTask}
             setRoutines={setRoutines}
           />
         );
       }),
-    [routines, isSelf, handleCopyRoutines]
+    [routines, isSelf, handleCopyRoutine]
   );
 
   useEffect(() => {
@@ -318,12 +320,11 @@ export default function ClubRoutines(props: Props) {
                   onChange={setOpenValue}
                   chevron={false}
                   variant="separated"
-                  className={`${classes.accordion} scrollbar`}
                   classNames={{
-                    content: classes.routineContent,
-                    chevron: classes.chevron,
-                    label: classes.label,
-                    control: classes.control,
+                    root: "accordionRoot scrollbar",
+                    content: "accordionContent",
+                    chevron: "accordionChevron",
+                    item: "accordionItem",
                   }}
                 >
                   {accordionItems}

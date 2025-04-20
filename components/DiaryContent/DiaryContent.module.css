@@ -2,27 +2,3 @@
   position: absolute !important;
   inset: 0;
 }
-
-.accordion {
-  background-color: none !important;
-}
-
-.item {
-  /* border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5)); */
-  border-radius: var(--mantine-radius-lg);
-}
-
-.root {
-  border: none;
-  overflow: auto;
-  flex: 1;
-}
-
-.control {
-  border-radius: var(--mantine-radius-lg);
-  background: none !important;
-}
-
-.chevron {
-  display: none;
-}

@@ -1,6 +1,7 @@
 @import "./normalize.css";
 @import "./scrollbar.css";
 @import "./gradientSpin.css";
+@import "./accordion.css";
 
 * {
   box-sizing: border-box;

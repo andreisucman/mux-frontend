@@ -9,15 +9,6 @@
   flex: 1;
 }
 
-.content {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border-radius: rem(8);
-  overflow: hidden;
-}
-
 .routineContent {
   display: flex;
   flex-direction: column;
@@ -28,22 +19,8 @@
   background-color: var(--mantine-color-green-7);
 }
 
-.accordion {
-  background-color: none !important;
-  flex: 1;
-}
-
-.chevron {
-  display: none;
-}
-
 .label {
   padding: rem(16) 0;
-}
-
-.control {
-  cursor: pointer;
-  background: none !important;
 }
 
 .getMoreButton {

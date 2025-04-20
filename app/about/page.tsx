@@ -4,7 +4,6 @@ import React from "react";
 import { Accordion, Stack, Title } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { data } from "./data";
-import classes from "./about.module.css";
 
 export const runtime = "edge";
 
@@ -19,16 +18,15 @@ export default function AnswersPage() {
   ));
 
   return (
-    <Stack className={`${classes.container} mediumPage`}>
+    <Stack className={`mediumPage`}>
       <PageHeader title="About" />
       <Accordion
-        className={classes.accordion}
         variant="separated"
         classNames={{
-          root: classes.root,
-          item: classes.item,
-          control: classes.control,
-          content: classes.accordionContent,
+          root: "accordionRoot",
+          content: "accordionContent",
+          chevron: "accordionChevron",
+          item: "accordionItem",
         }}
         multiple
       >

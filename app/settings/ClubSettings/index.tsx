@@ -239,69 +239,71 @@ export default function ClubSettings() {
 
   return (
     <Skeleton className={classes.container} visible={showSkeleton}>
-      <Title order={2} fz={18}>
-        Club
-      </Title>
-      <Stack className={classes.list}>
-        <Stack gap={12}>
-          <Group>
-            <div className={classes.avatarWrapper} onClick={openAvatarEditor}>
-              <AvatarComponent avatar={avatar} size="md" />
-            </div>
+      <Stack className={classes.wrapper}>
+        <Title order={2} fz={18}>
+          Club
+        </Title>
+        <Stack className={classes.list}>
+          <Stack gap={12}>
+            <Group>
+              <div className={classes.avatarWrapper} onClick={openAvatarEditor}>
+                <AvatarComponent avatar={avatar} size="md" />
+              </div>
+              <TextInput
+                flex={1}
+                value={userName}
+                disabled={!canUpdateName}
+                onChange={(e) => setUserName(e.currentTarget.value)}
+                rightSection={
+                  <ActionIcon
+                    disabled={!isNameDirty || isLoading || !canUpdateName}
+                    onClick={() =>
+                      handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })
+                    }
+                  >
+                    <IconDeviceFloppy className="icon icon__small" />
+                  </ActionIcon>
+                }
+              />
+            </Group>
             <TextInput
               flex={1}
-              value={userName}
-              disabled={!canUpdateName}
-              onChange={(e) => setUserName(e.currentTarget.value)}
+              value={userIntro}
+              onChange={(e) => handleEnterIntro(e.currentTarget.value)}
+              leftSection={<Text size="xs">{introCharactersLeft}</Text>}
+              leftSectionWidth={50}
               rightSection={
                 <ActionIcon
-                  disabled={!isNameDirty || isLoading || !canUpdateName}
-                  onClick={() =>
-                    handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })
-                  }
+                  disabled={!isIntroDirty || userIntro.length === 0}
+                  onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
                 >
                   <IconDeviceFloppy className="icon icon__small" />
                 </ActionIcon>
               }
             />
-          </Group>
-          <TextInput
-            flex={1}
-            value={userIntro}
-            onChange={(e) => handleEnterIntro(e.currentTarget.value)}
-            leftSection={<Text size="xs">{introCharactersLeft}</Text>}
-            leftSectionWidth={50}
-            rightSection={
-              <ActionIcon
-                disabled={!isIntroDirty || userIntro.length === 0}
-                onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
-              >
-                <IconDeviceFloppy className="icon icon__small" />
-              </ActionIcon>
-            }
-          />
-        </Stack>
-        <AddClubSocials title="Socials" />
-        {country && (
-          <Stack gap={8}>
-            <Text size="sm" c="dimmed">
-              Country
-            </Text>
-            <TextInput
-              leftSection={<IconWorld className="icon" />}
-              value={country || ""}
-              readOnly
-              rightSection={
-                <ActionIcon variant="default" size="sm" onClick={openChangeCountryConfirmation}>
-                  <IconPencil className="icon icon__small" />
-                </ActionIcon>
-              }
-            />
           </Stack>
-        )}
-        <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
-          <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club
-        </UnstyledButton>
+          <AddClubSocials title="Socials" />
+          {country && (
+            <Stack gap={8}>
+              <Text size="sm" c="dimmed">
+                Country
+              </Text>
+              <TextInput
+                leftSection={<IconWorld className="icon" />}
+                value={country || ""}
+                readOnly
+                rightSection={
+                  <ActionIcon variant="default" size="sm" onClick={openChangeCountryConfirmation}>
+                    <IconPencil className="icon icon__small" />
+                  </ActionIcon>
+                }
+              />
+            </Stack>
+          )}
+          <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
+            <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club
+          </UnstyledButton>
+        </Stack>
       </Stack>
     </Skeleton>
   );

@@ -15,17 +15,17 @@ import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
-import copyRoutines from "@/functions/copyRoutines";
+import copyRoutine from "@/functions/copyRoutine";
 import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import rescheduleRoutines from "@/functions/rescheduleRoutines";
+import rescheduleRoutine from "@/functions/rescheduleRoutine";
 import rescheduleTask from "@/functions/rescheduleTask";
 import rescheduleTaskInstance from "@/functions/rescheduleTaskInstance";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
+import { saveToIndexedDb } from "@/helpers/indexedDb";
 import { getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
@@ -102,14 +102,14 @@ export default function MyRoutines() {
     setOpenValue(part);
   }, []);
 
-  const handleCopyRoutines = useCallback(
-    (routineIds: string[]) => {
+  const handleCopyRoutine = useCallback(
+    (routineId: string) => {
       type HandleSubmitProps = { startDate: Date | null };
 
       const handleSubmit = ({ startDate }: HandleSubmitProps) => {
         modals.closeAll();
-        copyRoutines({
-          routineIds,
+        copyRoutine({
+          routineId,
           startDate,
           setRoutines,
         });
@@ -131,8 +131,8 @@ export default function MyRoutines() {
     [sort, routines]
   );
 
-  const handleRescheduleRoutines = useCallback(
-    (routineIds: string[]) => {
+  const handleRescheduleRoutine = useCallback(
+    (routineId: string) => {
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
@@ -145,8 +145,8 @@ export default function MyRoutines() {
           <SelectDateModalContent
             buttonText={"Reschedule"}
             onSubmit={({ startDate }) =>
-              rescheduleRoutines({
-                routineIds,
+              rescheduleRoutine({
+                routineId,
                 startDate,
                 sort,
                 setRoutines,
@@ -161,11 +161,11 @@ export default function MyRoutines() {
     [sort, routines]
   );
 
-  const updateRoutines = useCallback(async (routineIds: string[], newStatus: string) => {
+  const updateRoutine = useCallback(async (routineId: string, newStatus: string) => {
     const response = await callTheServer({
-      endpoint: "updateRoutineStatuses",
+      endpoint: "updateRoutineStatus",
       method: "POST",
-      body: { routineIds, newStatus },
+      body: { routineId, newStatus },
     });
 
     if (response.status === 200) {
@@ -173,7 +173,7 @@ export default function MyRoutines() {
         prev
           ?.filter(Boolean)
           .map((obj) =>
-            routineIds.includes(obj._id)
+            routineId === obj._id
               ? response.message.find((r: RoutineType) => r._id === obj._id)
               : obj
           )
@@ -181,12 +181,12 @@ export default function MyRoutines() {
     }
   }, []);
 
-  const deleteRoutines = useCallback(
-    async (routineIds: string[]) => {
+  const deleteRoutine = useCallback(
+    async (routineId: string) => {
       const response = await callTheServer({
         endpoint: "deleteRoutines",
         method: "POST",
-        body: { routineIds },
+        body: { routineId },
       });
 
       if (response.status === 200) {
@@ -194,7 +194,7 @@ export default function MyRoutines() {
           prev
             ?.filter(Boolean)
             .map((obj) =>
-              routineIds.includes(obj._id)
+              routineId === obj._id
                 ? response.message.find((r: RoutineType) => r._id === obj._id)
                 : obj
             )
@@ -389,7 +389,7 @@ export default function MyRoutines() {
     [sort, routines]
   );
 
-  const handleUpdateRoutines = (args: { routine: RoutineType }) => {
+  const handleUpdateRoutine = (args: { routine: RoutineType }) => {
     const { routine } = args;
 
     const exists = routines?.some((r) => String(r._id) === String(routine._id));
@@ -416,10 +416,10 @@ export default function MyRoutines() {
               routine={routine}
               selected={selected}
               setRoutines={setRoutines}
-              deleteRoutines={deleteRoutines}
-              updateRoutines={updateRoutines}
-              copyRoutines={handleCopyRoutines}
-              rescheduleRoutines={handleRescheduleRoutines}
+              deleteRoutine={deleteRoutine}
+              updateRoutine={updateRoutine}
+              copyRoutine={handleCopyRoutine}
+              rescheduleRoutine={handleRescheduleRoutine}
               rescheduleTaskInstance={handleRescheduleTaskInstance}
               copyTask={handleCopyTask}
               deleteTask={deleteTask}
@@ -432,7 +432,7 @@ export default function MyRoutines() {
           );
         })
         .filter(Boolean),
-    [routines, handleCopyRoutines]
+    [routines, handleCopyRoutine]
   );
 
   useEffect(() => {
@@ -513,7 +513,7 @@ export default function MyRoutines() {
         <TasksButtons
           disableCreateTask={displayComponent === "wait"}
           handleSaveTask={(props: HandleSaveTaskProps) =>
-            saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutines })
+            saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutine })
           }
         />
         {displayComponent === "content" && (
@@ -523,12 +523,12 @@ export default function MyRoutines() {
               onChange={handleSetOpenValue}
               chevron={false}
               variant="separated"
-              className={`${classes.accordion} scrollbar`}
               classNames={{
-                content: classes.content,
-                chevron: classes.chevron,
-                label: classes.label,
-                control: classes.control,
+                root: "accordionRoot scrollbar",
+                content: "accordionContent",
+                chevron: "accordionChevron",
+                item: "accordionItem",
+                control: "accordionControl",
               }}
             >
               {accordionItems}
@@ -556,7 +556,7 @@ export default function MyRoutines() {
         {displayComponent === "createTaskOverlay" && (
           <CreateTaskOverlay
             handleSaveTask={(props: HandleSaveTaskProps) =>
-              saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutines })
+              saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutine })
             }
           />
         )}

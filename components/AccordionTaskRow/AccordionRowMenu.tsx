@@ -17,10 +17,10 @@ type Props = {
   taskKey?: string;
   isSelf?: boolean;
   routineStatus: RoutineStatusEnum;
-  copyRoutines?: (routineIds: string[]) => void;
-  rescheduleRoutines?: (routineIds: string[]) => void;
-  updateRoutines?: (routineIds: string[], newStatus: string) => void;
-  deleteRoutines?: (routineIds: string[]) => void;
+  copyRoutine?: (routineId: string) => void;
+  rescheduleRoutine?: (routineId: string) => void;
+  updateRoutine?: (routineId: string, newStatus: string) => void;
+  deleteRoutine?: (routineId: string) => void;
   redirectToTask: (args: { taskKey?: string; page: "calendar" | "diary" }) => void;
 };
 
@@ -29,10 +29,10 @@ export default function AccordionRowMenu({
   routineStatus,
   taskKey,
   isSelf,
-  deleteRoutines,
-  copyRoutines,
-  rescheduleRoutines,
-  updateRoutines,
+  deleteRoutine,
+  copyRoutine,
+  rescheduleRoutine,
+  updateRoutine,
   redirectToTask,
 }: Props) {
   return (
@@ -59,16 +59,16 @@ export default function AccordionRowMenu({
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
-        {copyRoutines && (
-          <Menu.Item onClick={() => copyRoutines([routineId])}>
+        {copyRoutine && (
+          <Menu.Item onClick={() => copyRoutine(routineId)}>
             <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
             Copy
           </Menu.Item>
         )}
         {isSelf && (
           <>
-            {routineStatus === RoutineStatusEnum.ACTIVE && rescheduleRoutines && (
-              <Menu.Item onClick={() => rescheduleRoutines([routineId])}>
+            {routineStatus === RoutineStatusEnum.ACTIVE && rescheduleRoutine && (
+              <Menu.Item onClick={() => rescheduleRoutine(routineId)}>
                 <IconCalendarClock className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Reschedule
               </Menu.Item>
@@ -81,20 +81,20 @@ export default function AccordionRowMenu({
               <IconNotebook className={`icon icon__small`} style={{ marginRight: rem(6) }} />
               See in diary
             </Menu.Item>
-            {routineStatus === RoutineStatusEnum.CANCELED && updateRoutines && (
-              <Menu.Item onClick={() => updateRoutines([routineId], RoutineStatusEnum.ACTIVE)}>
+            {routineStatus === RoutineStatusEnum.CANCELED && updateRoutine && (
+              <Menu.Item onClick={() => updateRoutine(routineId, RoutineStatusEnum.ACTIVE)}>
                 <IconBolt className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Activate
               </Menu.Item>
             )}
-            {routineStatus === RoutineStatusEnum.ACTIVE && updateRoutines && (
-              <Menu.Item onClick={() => updateRoutines([routineId], RoutineStatusEnum.CANCELED)}>
+            {routineStatus === RoutineStatusEnum.ACTIVE && updateRoutine && (
+              <Menu.Item onClick={() => updateRoutine(routineId, RoutineStatusEnum.CANCELED)}>
                 <IconCancel className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Cancel
               </Menu.Item>
             )}
-            {routineStatus === RoutineStatusEnum.CANCELED && deleteRoutines && (
-              <Menu.Item onClick={() => deleteRoutines([routineId])}>
+            {routineStatus === RoutineStatusEnum.CANCELED && deleteRoutine && (
+              <Menu.Item onClick={() => deleteRoutine(routineId)}>
                 <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
                 Delete
               </Menu.Item>

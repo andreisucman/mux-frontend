@@ -3,26 +3,26 @@ import openErrorModal from "@/helpers/openErrorModal";
 import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
-export type RescheduleRoutinesProps = {
-  routineIds: string[];
+export type RescheduleRoutineProps = {
+  routineId: string;
   startDate: Date | null;
   isReschedule?: boolean;
   sort?: string | null;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 
-const rescheduleRoutines = async ({
+const rescheduleRoutine = async ({
   sort,
-  routineIds,
+  routineId,
   startDate,
   setRoutines,
-}: RescheduleRoutinesProps) => {
+}: RescheduleRoutineProps) => {
   if (!startDate) return;
 
-  const body: { [key: string]: any } = { routineIds, startDate, sort };
+  const body: { [key: string]: any } = { routineId, startDate, sort };
 
   const response = await callTheServer({
-    endpoint: "rescheduleRoutines",
+    endpoint: "rescheduleRoutine",
     method: "POST",
     body,
   });
@@ -36,9 +36,7 @@ const rescheduleRoutines = async ({
     setRoutines((prev) => {
       const filtered = prev?.filter(Boolean) || [];
       return filtered?.map((obj) =>
-        routineIds.includes(obj._id)
-          ? response.message.find((r: RoutineType) => r._id === obj._id)
-          : obj
+        routineId === obj._id ? response.message.find((r: RoutineType) => r._id === obj._id) : obj
       );
     });
 
@@ -46,4 +44,4 @@ const rescheduleRoutines = async ({
   }
 };
 
-export default rescheduleRoutines;
+export default rescheduleRoutine;

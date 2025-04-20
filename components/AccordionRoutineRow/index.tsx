@@ -22,10 +22,10 @@ type Props = {
   index: number;
   isSelf: boolean;
   selected: boolean;
-  copyRoutines?: (routineIds: string[]) => void;
-  rescheduleRoutines?: (routineIds: string[]) => void;
-  updateRoutines?: (routineIds: string[], newStatus: string) => void;
-  deleteRoutines?: (routineIds: string[]) => void;
+  copyRoutine?: (routineId: string) => void;
+  rescheduleRoutine?: (routineId: string) => void;
+  updateRoutine?: (routineId: string, newStatus: string) => void;
+  deleteRoutine?: (routineId: string) => void;
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
   rescheduleTask?: (routineId: string, taskKey: string) => void;
   deleteTask?: (routineId: string, taskKey: string) => void;
@@ -42,10 +42,10 @@ export default function AccordionRoutineRow({
   isSelf,
   selected,
   copyTask,
-  deleteRoutines,
-  updateRoutines,
-  copyRoutines,
-  rescheduleRoutines,
+  deleteRoutine,
+  updateRoutine,
+  copyRoutine,
+  rescheduleRoutine,
   deleteTask,
   updateTask,
   rescheduleTask,
@@ -154,11 +154,9 @@ export default function AccordionRoutineRow({
           return;
         }
 
-        const { routine } = message;
-
-        if (routine && setRoutines) {
+        if (message && setRoutines) {
           setRoutines((prev) =>
-            prev?.filter(Boolean).map((obj) => (obj._id === routine._id ? routine : obj))
+            prev?.filter(Boolean).map((obj) => (obj._id === message._id ? message : obj))
           );
         }
       }
@@ -268,10 +266,10 @@ export default function AccordionRoutineRow({
                 routineId={routineId}
                 routineStatus={routine.status}
                 redirectToTask={redirectToTask}
-                deleteRoutines={deleteRoutines}
-                updateRoutines={updateRoutines}
-                copyRoutines={copyRoutines}
-                rescheduleRoutines={rescheduleRoutines}
+                deleteRoutine={deleteRoutine}
+                updateRoutine={updateRoutine}
+                copyRoutine={copyRoutine}
+                rescheduleRoutine={rescheduleRoutine}
                 isSelf={isSelf}
               />
             </Group>

@@ -11,10 +11,6 @@
   background-color: var(--mantine-color-gray-3);
 }
 
-.active {
-  background-color: var(--mantine-color-green-7);
-}
-
 .item {
   position: relative;
   border-radius: var(--mantine-radius-lg);
@@ -61,6 +57,7 @@
   flex: 1;
   max-width: rem(300);
   margin-left: auto;
+  flex-wrap: nowrap;
 
   @media (max-width: $mantine-breakpoint-xs) {
     max-width: unset;
@@ -68,9 +65,9 @@
 }
 
 .selected {
-  /* border-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-3)); */
+  border-color: light-dark(var(--mantine-color-dark-1), var(--mantine-color-dark-3));
 }
 
 .canceled {
-  border-color: alpha(var(--mantine-color-red-9), 0.5);
+  border-color: alpha(var(--mantine-color-red-9), 0.25);
 }

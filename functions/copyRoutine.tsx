@@ -7,8 +7,8 @@ import openInfoModal from "@/helpers/openInfoModal";
 import { RoutineType } from "@/types/global";
 import callTheServer from "./callTheServer";
 
-export type CopyRoutinesProps = {
-  routineIds: string[];
+export type CopyRoutineProps = {
+  routineId: string;
   startDate: Date | null;
   inform?: boolean;
   userName?: string;
@@ -17,19 +17,19 @@ export type CopyRoutinesProps = {
   setRoutines: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 
-const copyRoutines = async ({
-  routineIds,
+const copyRoutine = async ({
+  routineId,
   startDate,
   inform,
   sort,
   userName,
   ignoreIncompleteTasks,
   setRoutines,
-}: CopyRoutinesProps) => {
+}: CopyRoutineProps) => {
   if (!startDate) return;
 
   const body: { [key: string]: any } = {
-    routineIds,
+    routineId,
     startDate,
     sort,
     userName,
@@ -39,7 +39,7 @@ const copyRoutines = async ({
   modals.closeAll();
 
   const response = await callTheServer({
-    endpoint: "copyRoutines",
+    endpoint: "copyRoutine",
     method: "POST",
     body,
   });
@@ -88,4 +88,4 @@ const copyRoutines = async ({
   }
 };
 
-export default copyRoutines;
+export default copyRoutine;

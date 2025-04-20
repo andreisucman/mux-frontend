@@ -67,7 +67,7 @@ export default function Explain(props: Props) {
     completedAt,
     expiresAt,
     status,
-    recipe,
+    previousRecipe,
     status: taskStatus,
     name: taskName,
     instruction: taskInstruction,
@@ -98,23 +98,9 @@ export default function Explain(props: Props) {
     }
   }, [status, completedAt, startsAt, timeExpired]);
 
-  const {
-    name: recipeName,
-    examples: recipeExamples,
-    productTypes: recipeProductTypes,
-    description: recipeDescription,
-    instruction: recipeInstruction,
-  } = recipe || {};
-
-  const name = taskName || recipeName;
-  const instruction = taskInstruction || recipeInstruction;
-  const description = taskDescription || recipeDescription;
-  const finalProductTypes = recipeProductTypes || productTypes;
-  const finalExamples = recipeExamples?.length ? recipeExamples : examples;
-
   const productsNeeded = useMemo(
-    () => (finalProductTypes ? finalProductTypes.map((name) => upperFirst(name)).join(", ") : ""),
-    [finalProductTypes]
+    () => (productTypes ? productTypes.map((name) => upperFirst(name)).join(", ") : ""),
+    [productTypes]
   );
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
 
@@ -302,12 +288,12 @@ export default function Explain(props: Props) {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <SkeletonWrapper show={!name || !taskInfo}>
+      <SkeletonWrapper show={!taskName || !taskInfo}>
         <PageHeader
           title={
             <>
               <Title order={1} lineClamp={3}>
-                <span style={{ marginRight: rem(8) }}>{recipe?.name || name}</span>
+                <span style={{ marginRight: rem(8) }}>{taskName}</span>
                 {showBanner && (
                   <Badge
                     style={{ transform: "translateY(-2px)" }}
@@ -397,28 +383,25 @@ export default function Explain(props: Props) {
                 notStarted={!!futureStartDate}
                 expiresAt={taskInfo && taskInfo.expiresAt}
               />
-              <ExplanationContainer
-                title="Description:"
-                text={recipe?.description || description}
-              />
+              <ExplanationContainer title="Description:" text={taskDescription} />
               {productsNeeded.length > 0 && (
                 <ExplanationContainer title="Products needed:" text={productsNeeded} />
               )}
               {isDish && (
                 <CreateRecipeBox
                   taskId={taskId}
-                  recipe={recipe}
+                  recipe={previousRecipe}
                   isDisabled={status !== TaskStatusEnum.ACTIVE || timeExpired}
                   setShowWaitComponent={setShowWaitComponent}
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {finalExamples && finalExamples.length > 0 && (
-                  <ExampleContainer title="Example:" examples={finalExamples} />
+                {examples && examples.length > 0 && (
+                  <ExampleContainer title="Example:" examples={examples} />
                 )}
                 <ExplanationContainer
                   title="Steps:"
-                  text={recipe?.instruction || instruction}
+                  text={taskInstruction}
                   customStyles={{ borderRadius: "0 0 1rem 1rem" }}
                 />
               </Stack>

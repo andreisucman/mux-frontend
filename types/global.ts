@@ -329,7 +329,7 @@ export type TaskType = {
   proofEnabled: boolean;
   status: TaskStatusEnum;
   isDish: boolean;
-  recipe: RecipeType;
+  previousRecipe: RecipeType;
   productTypes: string[];
   isCreated?: boolean;
   proofId: string;

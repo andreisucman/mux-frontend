@@ -51,13 +51,11 @@ export default function DiaryContent({
       <Accordion
         value={openValue}
         onChange={setOpenValue}
-        className={classes.accordion}
         classNames={{
-          root: `${classes.root} scrollbar`,
-          item: classes.item,
-          control: classes.control,
-          content: classes.accordionContent,
-          chevron: classes.chevron,
+          root: "accordionRoot scrollbar",
+          content: "accordionContent",
+          chevron: "accordionChevron",
+          item: "accordionItem",
         }}
       >
         {diaryRecords && diaryRecords.length > 0 ? (

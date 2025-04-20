@@ -175,8 +175,9 @@ export default function AccountSettings() {
             icon={
               <IconEye
                 size={18}
+                stroke={1.5}
                 style={{
-                  color: "light-dark(var(--mantine-color-dark-2),var(--mantine-color-gray-2))",
+                  color: "light-dark(var(--mantine-color-dark-4),var(--mantine-color-gray-2))",
                 }}
               />
             }

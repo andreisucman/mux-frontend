@@ -72,7 +72,10 @@ function PurchaseRow(props: Props) {
 
   return (
     <Skeleton visible={showSkeleton}>
-      <Group className={cn(classes.container, { [classes.cursorDefault]: variant === "seller" })}>
+      <Group
+        onClick={onRowClick ? () => onRowClick(sellerName) : undefined}
+        className={cn(classes.container, { [classes.cursorDefault]: variant === "seller" })}
+      >
         <AvatarComponent avatar={buyerAvatar || sellerAvatar} size="sm" />
         <Text lineClamp={1} className={classes.name}>
           {name}

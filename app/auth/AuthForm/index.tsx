@@ -34,7 +34,6 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailLoading, setIsEmailLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const { setStatus, setUserDetails } = useContext(UserContext);
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
@@ -117,12 +116,9 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
         <>
           <Button
             onClick={() => {
-              setIsGoogleLoading(true);
               signIn({ stateObject });
             }}
             className={classes.button}
-            loading={isGoogleLoading}
-            disabled={isGoogleLoading}
             variant="default"
           >
             <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
