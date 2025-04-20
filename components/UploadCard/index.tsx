@@ -70,6 +70,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
 
     if (!partProgressImage) return [];
 
+
     const images = partProgressImage.map((obj) => obj.mainUrl.url);
 
     if (!toAnalyze || toAnalyze?.length === 0) return images;

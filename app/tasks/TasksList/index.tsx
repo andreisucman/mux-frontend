@@ -17,6 +17,7 @@ import CreateTaskOverlay from "./CreateTaskOverlay";
 import TasksButtons from "./TasksButtons";
 import TasksSlide from "./TasksSlide";
 import classes from "./TasksList.module.css";
+import useSWR from "swr";
 
 type Props = {
   customStyles?: { [key: string]: any };
@@ -79,8 +80,8 @@ export default function TasksList({
     }).then(() => setPageLoaded(true));
   }, [userId]);
 
-  // const fetcher = useCallback(() => fetchUserData({ setUserDetails }), [setUserDetails]);
-  // useSWR(userId, fetcher);
+  const fetcher = useCallback(() => fetchUserData({ setUserDetails }), [setUserDetails]);
+  useSWR(userId, fetcher);
 
   return (
     <Stack className={classes.container} style={customStyles ?? {}}>

@@ -2,8 +2,8 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCircleOff } from "@tabler/icons-react";
-import { Button, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { IconCheck, IconCheckbox, IconCircleOff } from "@tabler/icons-react";
+import { Button, rem, Skeleton, Stack, Text, ThemeIcon, Title } from "@mantine/core";
 import AnalysisCard from "@/components/AnalysisCard";
 import AnalysisLegend from "@/components/AnalysisCard/AnalysisLegend";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -150,8 +150,9 @@ export default function Analysis() {
               <>
                 {noConcerns && (
                   <>
-                    <Stack m={"1.5rem 0"}>
-                      <Title ta="center">Your {part} looks healthy!</Title>
+                    <Stack className={classes.healthy}>
+                      <IconCheckbox size={96} />
+                      <Title ta="center">Your {part} looks ok!</Title>
                       <Text ta="center">We couldn't find any concerns from your photos!</Text>
                     </Stack>
                   </>
@@ -161,25 +162,30 @@ export default function Analysis() {
                   <>
                     <AnalysisLegend color="var(--mantine-color-red-7)" text="Severity" />
                     {concernCards}
+
+                    <GlowingButton
+                      loading={isLoading}
+                      disabled={isLoading}
+                      text={"Create improvement routine"}
+                      containerStyles={{
+                        flex: 0,
+                        margin: "2rem auto",
+                        width: "100%",
+                        maxWidth: rem(300),
+                      }}
+                      onClick={handleClick}
+                    />
+                    <Disclaimer
+                      body="This information is not intended as
+                professional medical advice. It should not be used for diagnosing or treating any medical
+                condition."
+                      customStyles={{ marginBottom: rem(16) }}
+                      dimmed
+                    />
                   </>
                 )}
               </>
             )}
-
-            <GlowingButton
-              loading={isLoading}
-              disabled={isLoading}
-              text={"Create improvement routine"}
-              containerStyles={{ flex: 0, margin: "2rem auto", width: "100%", maxWidth: rem(300) }}
-              onClick={handleClick}
-            />
-            <Disclaimer
-              body="This information is not intended as
-                professional medical advice. It should not be used for diagnosing or treating any medical
-                condition."
-              customStyles={{ marginBottom: rem(16) }}
-              dimmed
-            />
           </Stack>
         )}
       </Skeleton>
