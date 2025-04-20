@@ -23,7 +23,7 @@ type Props = {
 
 function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: Props) {
   const router = useRouter();
-  const { _id: taskId, proofEnabled, status, proofId, name, recipe } = selectedTask || {};
+  const { _id: taskId, proofEnabled, status, proofId, name } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>
@@ -114,7 +114,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
       />
 
       <Group className={classes.nameGroup}>
-        <Text lineClamp={1}>{upperFirst(recipe?.name || name || "")}</Text>
+        <Text lineClamp={1}>{upperFirst(name || "")}</Text>
       </Group>
       <Button
         variant={"default"}
