@@ -168,7 +168,7 @@ export default function ScanProgress() {
               if (response.error === "not similar") {
                 openErrorModal({
                   description:
-                    "Your current photo is too different from the previous. Click 'Overlay previous' in the top left and try to match it when taking the new photo.",
+                    "Your current photo is too different from the previous. Click 'Overlay previous' in the top left and try to match the previouss image when taking the new photo.",
                 });
                 return;
               }
