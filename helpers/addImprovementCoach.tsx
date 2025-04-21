@@ -22,7 +22,7 @@ export default function addImprovementCoach({
 }: Props) {
   const { isTrialUsed } = improvementSubscription || {};
 
-  const buttonText = !!isTrialUsed ? "Add coach" : "Try free for 1 week";
+  const buttonText = !!isTrialUsed ? "Add coach" : "Try free for one week";
 
   const onClick = !!isTrialUsed
     ? async () =>

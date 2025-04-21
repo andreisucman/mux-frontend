@@ -48,8 +48,6 @@ function WaitComponent({
         });
 
         if (response.status === 200) {
-          console.log("response", response);
-
           if (response.error) {
             clearInterval(intervalId);
             if (onError) onError();

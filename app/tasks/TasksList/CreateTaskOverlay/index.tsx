@@ -36,7 +36,7 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
             You need to{" "}
             <UnstyledButton
               onClick={() => {
-                router.push("/scan");
+                router.push("/select-part");
                 modals.closeAll();
               }}
               style={{ textDecoration: "underline" }}

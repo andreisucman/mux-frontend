@@ -17,7 +17,7 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import setUtcMidnight from "@/helpers/setUtcMidnight";
-import { TaskStatusEnum, UserDataType } from "@/types/global";
+import { TaskStatusEnum, TaskType, UserDataType } from "@/types/global";
 import DiaryContent from "../../components/DiaryContent";
 import SelectPartModalContent from "../../components/SelectPartModalContent";
 import { DiaryRecordType } from "./type";
@@ -34,6 +34,7 @@ export type HandleFetchDiaryProps = {
 export default function DiaryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [tasks, setTasks] = useState<TaskType[]>();
   const [openValue, setOpenValue] = useState<string | null>(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
@@ -49,7 +50,7 @@ export default function DiaryPage() {
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
 
-  const { _id: userId, tasks } = userDetails || {};
+  const { _id: userId } = userDetails || {};
 
   const createDiaryRecord = useCallback(
     async (part: string) => {
@@ -205,8 +206,17 @@ export default function DiaryPage() {
     [diaryRecords, hasMore]
   );
 
+  const fetchTasks = useCallback(async () => {
+    const response = await callTheServer({ endpoint: "getTasks", method: "GET" });
+
+    if (response.status === 200) {
+      setTasks(response.message);
+    }
+  }, []);
+
   useEffect(() => {
     handleFetchDiaryRecords({ dateFrom, dateTo, part, concern, sort });
+    fetchTasks();
   }, [part, sort, concern, dateFrom, dateTo]);
 
   useEffect(() => {

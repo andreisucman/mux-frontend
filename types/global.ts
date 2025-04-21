@@ -232,7 +232,6 @@ export interface UserDataType extends DefaultUserType {
   latestProgressImages: LatestProgressImagesType;
   latestConcernScores: LatestScoresType;
   latestConcernScoresDifference: LatestScoresDifferenceType;
-  tasks: TaskType[];
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;
   nextDiaryRecordAfter: { [key: string]: Date | null } | null;

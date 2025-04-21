@@ -16,12 +16,10 @@ import {
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";
-import { Divider, rem, Stack, Text, Title, UnstyledButton } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openFeedbackModal from "@/helpers/openFeedbackModal";
-import FeedbackModalContent from "./FeedbackModalContent";
 import { NavigationLinkType } from "./LinkRow";
 import NavigationStack from "./NavigationStack";
 import classes from "./DrawerNavigation.module.css";

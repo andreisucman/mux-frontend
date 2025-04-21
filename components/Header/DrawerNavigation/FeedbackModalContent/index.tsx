@@ -4,10 +4,9 @@ import { Alert, Button, FileInput, rem, Stack } from "@mantine/core";
 import TextareaComponent from "@/components/TextAreaComponent";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import classes from "./FeedbackModalContent.module.css";
 
 const defaultMessage =
-  "We pay $1 for each idea that we find meaningful. The reward will be added to your Club balance and paid out to your connected bank account.";
+  "We pay $5 for each error or meaningful idea that you report. The reward will be added to your Club balance and paid out to your connected bank account.";
 
 export default function FeedbackModalContent() {
   const [message, setMessage] = useState(defaultMessage);

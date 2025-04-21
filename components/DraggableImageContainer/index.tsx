@@ -93,8 +93,8 @@ export default function DraggableImageContainer({
 
     const newDot = {
       id,
-      originalWidth: size,
-      originalHeight: size / 2,
+      originalWidth: size / 2,
+      originalHeight: size / 4,
       scaleX: 1,
       scaleY: 1,
       angle: 180,
@@ -169,7 +169,8 @@ export default function DraggableImageContainer({
             <>
               {blurDots.map((dot, i) => {
                 const nodeRefs = [nodeRef, secondNodeRef, thirdNodeRef];
-
+                const renderedWidth = imageRef.current?.clientWidth || 0;
+                const renderedHeight = imageRef.current?.clientHeight || 0;
                 return (
                   <Draggable
                     defaultClassName={classes.dragger}
@@ -180,6 +181,12 @@ export default function DraggableImageContainer({
                       y: defaultDotPosition.y,
                     }}
                     nodeRef={nodeRefs[i]}
+                    bounds={{
+                      left: 0,
+                      top: 0,
+                      right: renderedWidth - dot.originalWidth * dot.scaleX,
+                      bottom: renderedHeight - dot.originalHeight * dot.scaleY,
+                    }}
                     key={dot.id}
                   >
                     <div ref={nodeRefs[i]} className={classes.nodeWrapper}>
