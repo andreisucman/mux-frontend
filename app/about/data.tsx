@@ -63,6 +63,17 @@ export const data = [
     ),
   },
   {
+    question: "Do you have an app?",
+    answer: (
+      <Stack>
+        <Text>
+          You can use Muxout as a native app. To install the app open the menu of your browser and
+          click the 'Add to home screen' or 'Install app' button.
+        </Text>
+      </Stack>
+    ),
+  },
+  {
     question: "Will my images be listed on the home page?",
     answer: (
       <Stack>
