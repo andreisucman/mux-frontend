@@ -3,10 +3,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconDragDrop, IconHandGrab } from "@tabler/icons-react";
+import {  IconHandGrab } from "@tabler/icons-react";
 import Draggable from "react-draggable";
 import { ActionIcon, Button, Checkbox, Group, Progress, Stack, Text } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
 import { UploadProgressProps } from "@/app/select-part/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
@@ -282,7 +281,6 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                 handleCapture={(base64string: string) => handleCapture(base64string)}
                 handleCancel={showCancelCapture ? () => handleCancel() : undefined}
                 defaultFacingMode="user"
-                hideTimerButton
                 hideFlipCamera
               />
             </>
