@@ -10,7 +10,7 @@ type Props = {
   images: ProgressImageType[];
   onUpdate: (
     args: OnUpdateBlurProps
-  ) => Promise<{ images: ProgressImageType[]; initialImages: ProgressImageType[] }>;
+  ) => Promise<{ images: ProgressImageType[]; initialImages: ProgressImageType[] }[]>;
 };
 
 export default function BlurEditor({ images, onUpdate }: Props) {

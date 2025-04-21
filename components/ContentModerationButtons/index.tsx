@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import cn from "classnames";
 import { Group } from "@mantine/core";
 import { SimpleProgressType } from "@/app/results/types";
-import { ProgressImageType, ProgressType } from "@/types/global";
+import { ProgressImageType } from "@/types/global";
 import ContentBlurButton from "../ContentBlurButton";
 import DeleteContentButton from "../DeleteContentButton";
 import classes from "./ContentModerationButtons.module.css";

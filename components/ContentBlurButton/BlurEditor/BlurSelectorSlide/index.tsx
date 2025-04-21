@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
+import { SimpleProgressType } from "@/app/results/types";
 import { OffsetType } from "@/app/select-part/types";
 import DraggableImageContainer from "@/components/DraggableImageContainer";
 import { BlurDotType } from "@/components/UploadCard/types";
@@ -20,7 +21,7 @@ type Props = {
   setEditorImages: React.Dispatch<React.SetStateAction<ProgressImageType[]>>;
   onUpdate: (
     args: OnUpdateBlurProps
-  ) => Promise<{ images: ProgressImageType[]; initialImages: ProgressImageType[] }>;
+  ) => Promise<{ images: ProgressImageType[]; initialImages: ProgressImageType[] }[]>;
 };
 
 export default function BlurEditorSlide({
@@ -54,7 +55,8 @@ export default function BlurEditorSlide({
     });
     setIsLoading(false);
 
-    const { images } = response || {};
+    const firstObject = response[0];
+    const { images } = firstObject || {};
     const newRelevantImage = images?.find((io) =>
       io.urls.some((urlObj) => urlObj.url === selectedUrlObject?.url)
     );
@@ -62,7 +64,7 @@ export default function BlurEditorSlide({
     setEditorImages(images);
     setShowBlur(false);
     setBlurDots([]);
-  }, [originalUrlObject, blurDots, offsets, image]);
+  }, [originalUrlObject, blurDots, offsets, image, setEditorImages]);
 
   const disableSave =
     (selectedUrlObject?.name === mainUrl?.name && !blurDots.length) ||
