@@ -4,7 +4,6 @@ import {
   IconClock,
   IconGenderFemale,
   IconGenderMale,
-  IconMan,
   IconMoodNeutral,
   IconNotebook,
   IconRoute,

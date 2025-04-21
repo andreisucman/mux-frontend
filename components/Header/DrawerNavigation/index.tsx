@@ -106,7 +106,7 @@ const legalLinks = [
 
 const socialLinks = [
   {
-    title: "IG",
+    title: "Instagram",
     path: "https://www.instagram.com/muxout_com/",
     icon: <IconBrandInstagram stroke={1.25} className="icon icon__small" />,
   },

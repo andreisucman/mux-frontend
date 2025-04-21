@@ -2,8 +2,8 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconCheck, IconCheckbox, IconCircleOff } from "@tabler/icons-react";
-import { Button, rem, Skeleton, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import { IconCheckbox, IconCircleOff } from "@tabler/icons-react";
+import { Button, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import AnalysisCard from "@/components/AnalysisCard";
 import AnalysisLegend from "@/components/AnalysisCard/AnalysisLegend";
 import FilterDropdown from "@/components/FilterDropdown";

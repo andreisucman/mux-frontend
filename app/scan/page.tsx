@@ -2,12 +2,14 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconHourglass } from "@tabler/icons-react";
+import { IconHourglass, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
 import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
+import FilterDropdown from "@/components/FilterDropdown";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
+import { partItems } from "@/components/PageHeader/data";
 import UploadCard from "@/components/UploadCard";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
@@ -16,6 +18,7 @@ import createCheckoutSession from "@/functions/createCheckoutSession";
 import fetchUserData from "@/functions/fetchUserData";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
+import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openPaymentModal from "@/helpers/openPaymentModal";
@@ -25,6 +28,7 @@ import { UploadProgressProps } from "../select-part/types";
 import classes from "./scan.module.css";
 
 export const runtime = "edge";
+const validParts = ["face", "hair"];
 
 export default function ScanProgress() {
   const router = useRouter();
@@ -37,7 +41,6 @@ export default function ScanProgress() {
 
   const query = searchParams.toString();
   const part = searchParams.get("part") || "face";
-
   const { _id: userId, toAnalyze, nextScan } = userDetails || {};
 
   const { isScanAvailable, checkBackDate } = useCheckScanAvailability({
@@ -207,9 +210,10 @@ export default function ScanProgress() {
 
   useEffect(() => {
     if (!pageLoaded) return;
+    const invalidPart = !validParts.includes(part);
 
-    if (!userDetails) router.replace("/select-part");
-  }, [userDetails, pageLoaded]);
+    if (!userDetails || invalidPart) router.replace("/select-part");
+  }, [userDetails, part, pageLoaded]);
 
   useEffect(() => {
     setPageLoaded(true);
@@ -217,7 +221,22 @@ export default function ScanProgress() {
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Scan" />
+      <PageHeader
+        title="Scan"
+        children={
+          <FilterDropdown
+            selectedValue={part}
+            data={partItems}
+            icons={partIcons}
+            onSelect={(part) =>
+              router.push(part ? `/select-concerns?part=${part}` : "/select-part")
+            }
+            filterType="part"
+            placeholder="Select part"
+            addToQuery
+          />
+        }
+      />
       <SkeletonWrapper show={!toAnalyze}>
         {isScanAvailable ? (
           <UploadCard

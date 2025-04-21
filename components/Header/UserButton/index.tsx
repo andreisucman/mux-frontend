@@ -45,7 +45,7 @@ function UserButton({ isClubActive, avatar, handleSignOut }: Props) {
         <Menu.Item component={Link} href="/tasks">
           <IconListDetails className="icon icon__small" style={{ marginRight: rem(6) }} /> My tasks
         </Menu.Item>
-        <Menu.Item component={Link} href="/scan">
+        <Menu.Item component={Link} href="/select-part">
           <IconScan className={`icon icon__small`} style={{ marginRight: rem(6) }} />
           Scan
         </Menu.Item>
