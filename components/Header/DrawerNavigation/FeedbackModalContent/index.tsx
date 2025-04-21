@@ -15,8 +15,6 @@ export default function FeedbackModalContent() {
   const [text, setText] = useState("");
   const [files, setFiles] = useState<File[]>([]);
 
-  const disableSubmission = !text.trim() && (!files || files?.length === 0);
-
   const handleSubmitFeedback = async () => {
     const body: { [key: string]: any } = { text };
     setIsLoading(true);
@@ -66,9 +64,9 @@ export default function FeedbackModalContent() {
         clearable
       />
       <Button
+        ml="auto"
         loading={isLoading}
-        disabled={isLoading || disableSubmission}
-        className={classes.button}
+        disabled={isLoading || !text.trim()}
         onClick={handleSubmitFeedback}
       >
         Send
