@@ -1,5 +1,8 @@
 .container {
-  padding: rem(16);
-  border-radius: rem(16);
-  box-shadow: var(--mantine-shadows-md);
+  position: absolute;
+  top: rem(12);
+  right: rem(12);
+  width: rem(32);
+  box-shadow: var(--mantine-shadow-md);
+  z-index: 2;
 }

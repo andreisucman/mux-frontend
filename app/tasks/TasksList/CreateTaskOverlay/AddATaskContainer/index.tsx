@@ -104,6 +104,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
     if (response.status === 200) {
       if (response.error) {
         setError(response.error);
+        setIsLoading(false);
         return;
       }
       setRawTask({ ...response.message, exampleVideoId });

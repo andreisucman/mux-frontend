@@ -2,9 +2,9 @@
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconDoorEnter, IconRocket, IconScan } from "@tabler/icons-react";
+import { IconDoorEnter, IconMessageReply, IconRocket, IconScan } from "@tabler/icons-react";
 import cn from "classnames";
-import { Button, Drawer, Group, rem, Title } from "@mantine/core";
+import { ActionIcon, Button, Drawer, Group, rem, Title, UnstyledButton } from "@mantine/core";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
 import { createSpotlight } from "@mantine/spotlight";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -16,6 +16,7 @@ import { clearCookies } from "@/helpers/cookies";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import openAuthModal from "@/helpers/openAuthModal";
+import openFeedbackModal from "@/helpers/openFeedbackModal";
 import AvatarComponent from "../AvatarComponent";
 import SearchButton from "../SearchButton";
 import Burger from "./Burger";
@@ -192,11 +193,16 @@ function Header() {
                 />
 
                 {displayComponent === "userButton" && (
-                  <UserButton
-                    avatar={avatar}
-                    isClubActive={!!club && club.isActive}
-                    handleSignOut={handleSignOut}
-                  />
+                  <>
+                    <ActionIcon variant="default" onClick={openFeedbackModal} size="lg">
+                      <IconMessageReply className="icon" stroke={1.25} />
+                    </ActionIcon>
+                    <UserButton
+                      avatar={avatar}
+                      isClubActive={!!club && club.isActive}
+                      handleSignOut={handleSignOut}
+                    />
+                  </>
                 )}
               </>
             )}

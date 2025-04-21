@@ -26,6 +26,12 @@ export type RoutineDataType = {
   description: string;
   price: number;
   updatePrice: number;
+  stats?: {
+    routines: number;
+    completedTasks: number;
+    completedTasksWithProof: number;
+    diaryRecords: number;
+  };
 };
 
 export default function ManageRoutines() {

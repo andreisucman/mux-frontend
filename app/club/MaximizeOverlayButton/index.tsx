@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Button, Group, rem } from "@mantine/core";
+import { IconEye } from "@tabler/icons-react";
+import { ActionIcon, rem } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./MaximizeOverlayButton.module.css";
 
@@ -36,10 +37,8 @@ export default function MaximizeOverlayButton({
   }, [notPurchased, showOverlayComponent]);
 
   return (
-    <Group className={classes.container}>
-      <Button style={styles} onClick={handleShowOverlay}>
-        See info card
-      </Button>
-    </Group>
+    <ActionIcon className={classes.container} style={styles} onClick={handleShowOverlay}>
+      <IconEye size={24} />
+    </ActionIcon>
   );
 }

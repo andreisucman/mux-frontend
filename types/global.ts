@@ -123,6 +123,13 @@ export type AllTaskType = {
   concern: string;
 };
 
+export type RoutineDataStatsType = {
+  routines: number;
+  completedTasks: number;
+  completedTasksWithProof: number;
+  diaryRecords: number;
+};
+
 export type PurchaseOverlayDataType = {
   _id: string;
   name: string;
@@ -130,6 +137,7 @@ export type PurchaseOverlayDataType = {
   price: number;
   concern: string;
   part: string;
+  stats: RoutineDataStatsType;
 };
 
 export enum RoutineStatusEnum {

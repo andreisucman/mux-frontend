@@ -229,7 +229,7 @@ export default function AccordionRoutineRow({
     <Skeleton
       visible={showSkeleton}
       className={classes.skeleton}
-      style={focused ? { zIndex: 100 } : {}}
+      style={focused ? { zIndex: 2 } : {}}
       ref={ref}
     >
       <Accordion.Item

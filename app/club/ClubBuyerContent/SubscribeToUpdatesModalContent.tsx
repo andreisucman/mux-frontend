@@ -72,13 +72,24 @@ export default function SubscribeToUpdatesModalContent({
     }
   };
 
+  const jsx = (
+    <Stack>
+      {updateContent.map((item, index) => (
+        <Group wrap="nowrap" key={index} gap={12}>
+          {item.icon}
+          {item.description}
+        </Group>
+      ))}
+    </Stack>
+  );
+
   return (
     <Stack className={classes.container}>
       <PricingCard
         price={price}
         addGradient={true}
         isLoading={isLoading}
-        content={updateContent}
+        content={jsx}
         buttonText={"Subscribe"}
         onClick={() => onSubscribeClick(sellerId, part, concern)}
       />

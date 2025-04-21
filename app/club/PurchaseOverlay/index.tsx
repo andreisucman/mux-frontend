@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter as useDefaultRouter, usePathname, useSearchParams } from "next/navigation";
 import { Button, Group, Overlay, rem, Stack, Text, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import JoinClubConfirmation from "@/app/club/join/JoinClubConfirmation";
@@ -15,7 +14,9 @@ import modifyQuery from "@/helpers/modifyQuery";
 import openAuthModal from "@/helpers/openAuthModal";
 import { normalizeString } from "@/helpers/utils";
 import { PurchaseOverlayDataType, UserDataType } from "@/types/global";
+import PurchaseConfirmationModal from "./PurchaseConfirmationModal";
 import RoutineDescriptionModal from "./RoutineDescriptionModal";
+import RoutineStats from "./RoutineStats";
 import classes from "./PurchaseOverlay.module.css";
 
 type Props = {
@@ -23,6 +24,22 @@ type Props = {
   notPurchasedParts: string[];
   userName: string;
   handleCloseOverlay: () => void;
+};
+
+const getReferrer = (pathname: string) => {
+  if (pathname.includes("/club/routines")) {
+    return ReferrerEnum.CLUB_ROUTINES;
+  }
+  if (pathname.includes("/club/diary")) {
+    return ReferrerEnum.CLUB_DIARY;
+  }
+  if (pathname.includes("/club/progress")) {
+    return ReferrerEnum.CLUB_PROGRESS;
+  }
+  if (pathname.includes("/club/proof")) {
+    return ReferrerEnum.CLUB_PROOF;
+  }
+  return ReferrerEnum.CLUB_ROUTINES;
 };
 
 export default function PurchaseOverlay({
@@ -42,25 +59,6 @@ export default function PurchaseOverlay({
   const concern = searchParams.get("concern");
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
-
-  const getReferrer = useCallback(
-    (pathname: string) => {
-      if (pathname.includes("/club/routines")) {
-        return ReferrerEnum.CLUB_ROUTINES;
-      }
-      if (pathname.includes("/club/diary")) {
-        return ReferrerEnum.CLUB_DIARY;
-      }
-      if (pathname.includes("/club/progress")) {
-        return ReferrerEnum.CLUB_PROGRESS;
-      }
-      if (pathname.includes("/club/proof")) {
-        return ReferrerEnum.CLUB_PROOF;
-      }
-      return ReferrerEnum.CLUB_ROUTINES;
-    },
-    [pathname]
-  );
 
   const handleJoinClub = useCallback(async () => {
     if (!selectedCardData) return;
@@ -85,10 +83,7 @@ export default function PurchaseOverlay({
   }, [userDetails, selectedCardData, redirectUrl]);
 
   const handleAddSubscription = useCallback(
-    async (isLoading: boolean, setIsLoading: any) => {
-      if (isLoading) return;
-      setIsLoading(true);
-
+    async (setIsLoading: any) => {
       if (status !== "authenticated") {
         let parts = pathname.split("/").filter((p) => p);
         parts.pop();
@@ -109,7 +104,6 @@ export default function PurchaseOverlay({
           },
           title: "Start your change",
         });
-        setIsLoading(false);
         return;
       }
 
@@ -131,24 +125,47 @@ export default function PurchaseOverlay({
             </Title>
           ),
         });
-        setIsLoading(false);
         return;
       }
 
-      createCheckoutSession({
-        type: "connect",
-        body: {
-          dataId: selectedCardData?._id,
-          priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
-          redirectUrl,
-          cancelUrl: redirectUrl,
-          mode: "payment",
-        },
-        setIsLoading,
-        setUserDetails,
+      handleOpenSubscriptionConfirmation(setIsLoading);
+    },
+    [userId, redirectUrl, status, selectedCardData]
+  );
+
+  const handleOpenSubscriptionConfirmation = useCallback(
+    async (setIsLoading: any) => {
+      modals.openContextModal({
+        modal: "general",
+        centered: true,
+        classNames: { overlay: "overlay" },
+        innerProps: (
+          <PurchaseConfirmationModal
+            onButtonClick={() => {
+              modals.closeAll();
+              return createCheckoutSession({
+                type: "connect",
+                body: {
+                  dataId: selectedCardData?._id,
+                  priceId: process.env.NEXT_PUBLIC_PEEK_PRICE_ID!,
+                  redirectUrl,
+                  cancelUrl: redirectUrl,
+                  mode: "payment",
+                },
+                setIsLoading,
+                setUserDetails,
+              });
+            }}
+          />
+        ),
+        title: (
+          <Title component={"p"} order={5}>
+            Confirm purchase
+          </Title>
+        ),
       });
     },
-    [userId, isLoading, redirectUrl, status, selectedCardData]
+    [selectedCardData, redirectUrl]
   );
 
   const handleChangeCard = (concern?: string | null) => {
@@ -161,7 +178,6 @@ export default function PurchaseOverlay({
 
   const segments = useMemo(() => {
     return purchaseOverlayData.map((obj, i) => {
-      const label = upperFirst(obj.concern);
       return {
         label: normalizeString(obj.concern),
         value: obj.concern,
@@ -185,7 +201,7 @@ export default function PurchaseOverlay({
       innerProps: (
         <RoutineDescriptionModal
           text={selectedCardData?.description || ""}
-          onButtonClick={handleAddSubscription}
+          onButtonClick={handleOpenSubscriptionConfirmation}
         />
       ),
       title: (
@@ -209,6 +225,18 @@ export default function PurchaseOverlay({
     }
     setSelectedCardData(selectedData);
   }, [concern]);
+
+  const jsx = (
+    <Stack>
+      {selectedCardData && <RoutineStats stats={selectedCardData.stats} />}
+      {generalPlanContent.map((item, index) => (
+        <Group wrap="nowrap" key={index} gap={12}>
+          {item.icon}
+          {item.description}
+        </Group>
+      ))}
+    </Stack>
+  );
 
   return (
     <Stack className={classes.container}>
@@ -249,8 +277,8 @@ export default function PurchaseOverlay({
             </Text>
           }
           buttonText="Buy routines"
-          content={generalPlanContent}
-          onClick={() => handleAddSubscription(isLoading, setIsLoading)}
+          content={jsx}
+          onClick={() => handleAddSubscription(setIsLoading)}
           isLoading={isLoading}
           addGradient
           glow

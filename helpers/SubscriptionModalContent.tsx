@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stack, Text } from "@mantine/core";
+import { Group, Stack, Text } from "@mantine/core";
 import PricingCard from "@/components/PricingCard";
 
 type Props = {
@@ -33,6 +33,17 @@ export default function SubscriptionModalContent({
     setIsLoading(false);
   };
 
+  const jsx = (
+    <Stack>
+      {content.map((item, index) => (
+        <Group wrap="nowrap" key={index} gap={12}>
+          {item.icon}
+          {item.description}
+        </Group>
+      ))}
+    </Stack>
+  );
+
   return (
     <Stack flex={1}>
       {description && <Text size="sm">{description}</Text>}
@@ -41,7 +52,7 @@ export default function SubscriptionModalContent({
         price={price}
         addGradient={true}
         isLoading={isLoading}
-        content={content}
+        content={jsx}
         icon={buttonIcon}
         buttonText={buttonText}
         underButtonText={underButtonText}

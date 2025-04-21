@@ -1,13 +1,13 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   IconBrandInstagram,
-  IconBrandX,
   IconCalendar,
   IconDoorEnter,
   IconDoorExit,
   IconInfoSquareRounded,
   IconLicense,
   IconListDetails,
+  IconMessageReply,
   IconNotebook,
   IconRoute,
   IconScan,
@@ -16,9 +16,12 @@ import {
   IconTargetArrow,
   IconTrophy,
 } from "@tabler/icons-react";
-import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
+import { Divider, rem, Stack, Text, Title, UnstyledButton } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import openFeedbackModal from "@/helpers/openFeedbackModal";
+import FeedbackModalContent from "./FeedbackModalContent";
 import { NavigationLinkType } from "./LinkRow";
 import NavigationStack from "./NavigationStack";
 import classes from "./DrawerNavigation.module.css";
@@ -215,6 +218,10 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       {status === "authenticated" && (
         <>
           {finalAuthenticatedNavigation}
+          <UnstyledButton className={classes.signInButton} onClick={openFeedbackModal}>
+            <IconMessageReply className="icon" stroke={1.25} />
+            Feedback ($)
+          </UnstyledButton>
           <UnstyledButton
             className={classes.signInButton}
             onClick={() => handleRedirect("/settings")}

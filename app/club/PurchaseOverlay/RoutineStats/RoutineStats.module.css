@@ -1,0 +1,23 @@
+.container {
+  justify-content: center;
+}
+
+.group {
+  flex: 1;
+  flex-wrap: nowrap;
+}
+
+.box {
+  cursor: pointer;
+  gap: rem(4);
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  padding: rem(8);
+  border-radius: rem(8);
+  flex: 1;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.value {
+  font-size: rem(18);
+}

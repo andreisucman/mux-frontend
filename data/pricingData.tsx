@@ -3,6 +3,7 @@ import {
   IconCamera,
   IconChecklist,
   IconListCheck,
+  IconListDetails,
   IconNotebook,
   IconPencil,
 } from "@tabler/icons-react";
@@ -30,7 +31,7 @@ export const scanAnalysisContent = [
 
 export const generalPlanContent = [
   {
-    icon: <IconListCheck className="icon icon__large" />,
+    icon: <IconListDetails className="icon icon__large" />,
     description: "See and copy tasks from the routines.",
   },
   {

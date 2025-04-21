@@ -21,7 +21,7 @@ type Props = {
   glow?: boolean;
   underButtonText?: string;
   beforeButtonChild?: React.ReactNode;
-  content: { icon: React.ReactNode; description: string }[];
+  content?: React.ReactNode;
   onClick?: (props?: any) => void;
 };
 
@@ -71,17 +71,10 @@ export default function PricingCard({
         </Text>
       </Stack>
       <Stack className={classes.content} style={customContentStyles || {}}>
-        <Stack className={classes.list}>
-          {content.map((item, index) => (
-            <Group wrap="nowrap" key={index} gap={12}>
-              {item.icon}
-              {item.description}
-            </Group>
-          ))}
-        </Stack>
+        {content}
 
         {buttonText && (
-          <Stack gap={12}>
+          <Stack gap={12} mb={4}>
             {beforeButtonChild}
             <GlowingButton
               icon={icon}

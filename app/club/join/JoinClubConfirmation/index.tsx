@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { IconDoorExit, IconLock, IconRoute, IconTrophy } from "@tabler/icons-react";
+import { IconCash, IconCashBanknote, IconDoorExit, IconLock, IconMoneybag, IconRoute, IconTrophy } from "@tabler/icons-react";
 import { Alert, rem, Stack, Table, Text } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import TosCheckbox from "@/components/TosCheckbox";
@@ -15,7 +15,7 @@ const confirmData = {
       "All of your data remains private.",
     ],
     [
-      <IconRoute className="icon icon__big" style={{ display: "flex" }} />,
+      <IconCash className="icon icon__big" style={{ display: "flex" }} />,
       "You can buy other members' routines or sell yours.",
     ],
     [
