@@ -14,8 +14,8 @@ export type BeforeAfterType = {
   concern: string;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
-  concernScore?: ScoreType;
-  concernScoreDifference?: ScoreDifferenceType;
+  concernScore: ScoreType;
+  concernScoreDifference: ScoreDifferenceType;
   initialDate: string;
   isPublic: boolean;
   updatedAt?: Date;

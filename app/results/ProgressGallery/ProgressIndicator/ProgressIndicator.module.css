@@ -1,9 +1,0 @@
-.container {
-  gap: 0;
-  flex-wrap: nowrap;
-  overflow: hidden;
-
-  position: absolute;
-  bottom: rem(8);
-  left: rem(8);
-}

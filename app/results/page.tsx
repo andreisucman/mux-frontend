@@ -67,7 +67,7 @@ export default function ResultsProgress() {
         type: "progress",
         title: (
           <Title order={5} component={"p"}>
-            {normalizeString(data.concern)} progress
+            {normalizeString(data.part)} progress
           </Title>
         ),
       }),

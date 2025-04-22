@@ -32,7 +32,6 @@ export default function BlurSelectorMenu({
         <Checkbox
           key={i}
           checked={selectedDisplayType?.value === item.value}
-          size="md"
           label={item.label}
           onChange={(e) => {
             e.stopPropagation();

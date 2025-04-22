@@ -2,6 +2,7 @@ import React from "react";
 import { rem, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ProgressModalContent from "@/app/results/ProgressModalContent";
+import BeforeAfterModalContent from "@/app/results/ProgressModalContent/BeforeAfterModalContent";
 import ProofModalContent from "@/app/results/proof/ProofModalContent";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { SimpleProgressType } from "@/app/results/types";
@@ -15,17 +16,30 @@ type OpenViewModalProps = {
   record: BeforeAfterType | SimpleProofType | SimpleProgressType;
   title: React.ReactNode;
   isPublicPage?: boolean;
-  type: "proof" | "progress";
+  type: "proof" | "progress" | "ba";
   setRecords?: React.Dispatch<React.SetStateAction<any[] | undefined>>;
 };
 
 export default function openResultModal({ record, type, title, isPublicPage }: OpenViewModalProps) {
-  const content =
-    type === "progress" ? (
-      <ProgressModalContent record={record as BeforeAfterType} isPublicPage={isPublicPage} />
-    ) : (
-      <ProofModalContent record={record as SimpleProofType} isPublicPage={isPublicPage} />
-    );
+  let content: any;
+
+  switch (type) {
+    case "progress":
+      content = (
+        <ProgressModalContent record={record as SimpleProgressType} isPublicPage={isPublicPage} />
+      );
+      break;
+    case "ba":
+      content = (
+        <BeforeAfterModalContent record={record as BeforeAfterType} isPublicPage={isPublicPage} />
+      );
+      break;
+    case "proof":
+      content = (
+        <ProofModalContent record={record as SimpleProofType} isPublicPage={isPublicPage} />
+      );
+      break;
+  }
 
   modals.openContextModal({
     centered: true,

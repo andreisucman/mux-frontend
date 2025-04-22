@@ -28,6 +28,7 @@ type Props = {
 export default function TasksList({ customStyles }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const code = searchParams.get("code");
   const { userDetails } = useContext(UserContext);
   const [pageLoaded, setPageLoaded] = useState(false);
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
@@ -99,17 +100,14 @@ export default function TasksList({ customStyles }: Props) {
 
     try {
       const response = await callTheServer({ endpoint: "getTasks", method: "GET" });
-
       if (response.status === 200) {
         const tasks: TaskType[] = response.message;
 
-        if (tasks && tasks.length > 0) {
-          setTasks(tasks);
-          reply = processTasks(tasks);
-          setTodaysTasksGroups(reply.todaysTasks);
-          setTomorrowsTasksGroups(reply.tomorrowsTasks);
-          setCanAddDiary(reply.canAddDiary);
-        }
+        setTasks(tasks);
+        reply = processTasks(tasks);
+        setTodaysTasksGroups(reply.todaysTasks);
+        setTomorrowsTasksGroups(reply.tomorrowsTasks);
+        setCanAddDiary(reply.canAddDiary);
       }
     } catch (err) {}
   }, []);
@@ -125,8 +123,9 @@ export default function TasksList({ customStyles }: Props) {
   );
 
   useEffect(() => {
+    if (code) return;
     fetchTasks();
-  }, []);
+  }, [code]);
 
   useEffect(() => {
     if (!pageLoaded || !tasks) return;

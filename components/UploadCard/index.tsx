@@ -129,6 +129,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
           setLocalUrl(lastObject.mainUrl.url);
           setDisplayComponent("preview");
         } else {
+          setLocalUrl("");
           setDisplayComponent("capture");
           setShowStartAnalysis(false);
         }
@@ -146,6 +147,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
       setLocalUrl(latestImage.mainUrl.url);
     } else {
       setLocalUrl("");
+      console.log("line 149");
     }
 
     setDisplayComponent("capture");

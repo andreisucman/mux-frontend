@@ -6,7 +6,6 @@ import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import { formatDate } from "@/helpers/formatDate";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { SimpleProgressType } from "../../types";
-import ProgressIndicator from "../ProgressIndicator";
 import classes from "./ProgressCard.module.css";
 
 type Props = {
@@ -18,18 +17,16 @@ type Props = {
 };
 
 function ProgressCard({ data, isPublicPage, isSelf, setProgress, handleContainerClick }: Props) {
-  const { width: containerWidth, ref } = useElementSize();
   const { images, createdAt } = data;
   const firstImage = images?.[0];
 
-  const ringSize = useMemo(() => containerWidth * 0.35, [containerWidth]);
   const formattedDate = useMemo(() => formatDate({ date: createdAt }), [createdAt]);
 
   const showSkeleton = useShowSkeleton();
 
   return (
     <Skeleton visible={showSkeleton} className="skeleton">
-      <div className={classes.imageWrapper} ref={ref}>
+      <div className={classes.imageWrapper}>
         {isSelf && !isPublicPage && (
           <>
             <ContentModerationButtons
@@ -41,7 +38,7 @@ function ProgressCard({ data, isPublicPage, isSelf, setProgress, handleContainer
               showDelete
             />
             <span className={classes.date}>{formattedDate}</span>
-            <ContentPublicityIndicator isPublic={data.isPublic} />
+            <ContentPublicityIndicator isPublic={data.isPublic} withIcon />
           </>
         )}
         <Image
@@ -52,7 +49,6 @@ function ProgressCard({ data, isPublicPage, isSelf, setProgress, handleContainer
           alt=""
           onClick={() => handleContainerClick(data, !!isPublicPage)}
         />
-        <ProgressIndicator record={data} ringSize={ringSize} />
       </div>
     </Skeleton>
   );

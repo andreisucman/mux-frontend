@@ -1,42 +1,40 @@
 import React, { useContext, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { BeforeAfterType } from "@/app/types";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import LineProgressIndicators from "../LineProgressIndicators";
-import { SimpleProgressType } from "../types";
 import classes from "./ProgressModalContent.module.css";
 
 type Props = {
-  record: SimpleProgressType;
+  record: BeforeAfterType;
   isPublicPage?: boolean;
 };
 
-export default function ProgressModalContent({ record, isPublicPage }: Props) {
+export default function BeforeAfterModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const concern = searchParams.get("concern");
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
 
   const {
     userName,
-    concernScoresDifference,
+    concernScoreDifference,
     images,
     initialImages,
+    updatedAt,
     createdAt,
     isPublic,
     initialDate,
   } = record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
-  const formattedCompareDate = formatDate({ date: createdAt || new Date() });
+  const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
@@ -46,10 +44,6 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
     router.push(redirectUrl);
     modals.closeAll();
   };
-
-  const filteredDifferences = concern
-    ? concernScoresDifference.filter((obj) => obj.name === concern)
-    : concernScoresDifference;
 
   return (
     <Stack className={classes.container}>
@@ -62,7 +56,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      <LineProgressIndicators title="Improvement" concernScoresDifference={filteredDifferences} />
+      <LineProgressIndicators title="Improvement" concernScoresDifference={[concernScoreDifference]} />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

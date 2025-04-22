@@ -3,14 +3,16 @@ import { PartEnum, ProgressImageType, ScoreDifferenceType, ScoreType } from "@/t
 export type SimpleProgressType = {
   _id: string;
   userId: string;
-  concern: PartEnum;
+  concerns: PartEnum[];
+  part: string;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
-  concernScore?: ScoreType;
-  concernScoreDifference?: ScoreDifferenceType;
+  concernScores: ScoreType[];
+  concernScoresDifference: ScoreDifferenceType[];
   createdAt: string;
   initialDate: string;
   isPublic: boolean;
+  userName: string;
 };
 
 export type HandleUpdateProgressType = {

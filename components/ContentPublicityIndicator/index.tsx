@@ -1,16 +1,22 @@
 import React, { memo } from "react";
 import { IconLock, IconLockOpen } from "@tabler/icons-react";
 import cn from "classnames";
-import { Group } from "@mantine/core";
+import { Group, ThemeIcon } from "@mantine/core";
 import classes from "./ContentPublicityIndicator.module.css";
 
 type Props = {
   isPublic: boolean;
+  withIcon?: boolean;
   showText?: boolean;
   position?: "top-right" | "bottom-right" | "top-left" | "bottom-left";
 };
 
-function ContentPublicityIndicator({ showText, isPublic, position = "top-right" }: Props) {
+function ContentPublicityIndicator({
+  showText,
+  withIcon,
+  isPublic,
+  position = "top-right",
+}: Props) {
   const publicityText = isPublic ? "Public" : "Private";
   const publicityIcon = isPublic ? (
     <IconLockOpen className="icon" />
@@ -24,7 +30,7 @@ function ContentPublicityIndicator({ showText, isPublic, position = "top-right" 
         [classes[position]]: true,
       })}
     >
-      {publicityIcon}
+      {withIcon ? <ThemeIcon variant="default">{publicityIcon}</ThemeIcon> : publicityIcon}
       {showText && publicityText}
     </Group>
   );

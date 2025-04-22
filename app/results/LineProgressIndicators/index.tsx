@@ -6,7 +6,7 @@ import classes from "./LineProgressIndicators.module.css";
 
 type Props = {
   customStyles?: { [key: string]: any };
-  concernScoreDifference?: ScoreDifferenceType;
+  concernScoresDifference: ScoreDifferenceType[];
   title?: string;
 };
 
@@ -38,12 +38,11 @@ const renderIndicator = ([label, value]: [string, number], index: number) => {
 export default function LineProgressIndicators({
   title,
   customStyles,
-  concernScoreDifference,
+  concernScoresDifference,
 }: Props) {
   const concernIndicator = useMemo(() => {
-    if (!concernScoreDifference) return;
-    return renderIndicator([concernScoreDifference.name, concernScoreDifference.value], 0);
-  }, [concernScoreDifference]);
+    return concernScoresDifference.map((csdo) => renderIndicator([csdo.name, csdo.value], 0));
+  }, [concernScoresDifference]);
 
   return (
     <Stack className={classes.container} style={customStyles || {}}>

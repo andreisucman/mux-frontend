@@ -96,7 +96,7 @@ function ProofCard({
               isDisabled={isLoading}
               position="top-left"
             />
-            <ContentPublicityIndicator isPublic={!!isPublicPage} position="bottom-right" />
+            <ContentPublicityIndicator isPublic={!!isPublicPage} withIcon position="bottom-right" />
           </>
         )}
       </Stack>

@@ -43,6 +43,8 @@ export default function ProgressGallery({
   const concern = searchParams.get("concern");
   const sort = searchParams.get("sort");
 
+  console.log("progress", progress);
+
   const appliedBlurType = progress?.[0]?.images?.[0]?.mainUrl?.name;
 
   const memoizedProgressCard = useCallback(
@@ -67,7 +69,10 @@ export default function ProgressGallery({
         <InfiniteScroll
           loader={
             <Stack mb={rem(16)} key={0}>
-              <Loader m="auto" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"/>
+              <Loader
+                m="auto"
+                color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+              />
             </Stack>
           }
           loadMore={() =>

@@ -10,6 +10,8 @@
   align-items: center;
   justify-content: center;
   overflow: visible;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  border-radius: rem(16);
 }
 
 .deleteIcon {

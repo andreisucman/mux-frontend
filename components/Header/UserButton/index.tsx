@@ -31,7 +31,9 @@ function UserButton({ isClubActive, avatar, handleSignOut }: Props) {
               }}
             />
           ) : (
-            <Avatar size={36} />
+            <Avatar
+              size={36}
+            />
           )}
         </UnstyledButton>
       </Menu.Target>

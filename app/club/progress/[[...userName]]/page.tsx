@@ -97,7 +97,7 @@ export default function ClubProgress(props: Props) {
         type: "progress",
         title: (
           <Title order={5} component={"p"}>
-            {normalizeString(data.concern)} progress
+            {normalizeString(data.part)} progress
           </Title>
         ),
       }),

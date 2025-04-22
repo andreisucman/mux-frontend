@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { SimpleProgressType } from "@/app/results/types";
 import { OffsetType } from "@/app/select-part/types";
 import DraggableImageContainer from "@/components/DraggableImageContainer";
 import { BlurDotType } from "@/components/UploadCard/types";

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IconHandGrab, IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
@@ -43,7 +43,8 @@ export default function DraggableImageContainer({
   const [imageLoaded, setImageLoaded] = useState(false);
   const defaultDotPosition = { x: 100, y: 100 };
 
-  const imageStyles = () => {
+  const imageStyles = useMemo(() => {
+    if (!imageLoaded) return;
     let width = 0;
     let height = 0;
 
@@ -58,7 +59,7 @@ export default function DraggableImageContainer({
     }
 
     return { width, height };
-  };
+  }, [imageLoaded, image, imageRef.current, containerHeight, containerHeight]);
 
   const calculateOffsets = () => {
     let scaleHeight = 0;
@@ -148,7 +149,7 @@ export default function DraggableImageContainer({
     if (!imageLoaded) return;
     const offsets = calculateOffsets();
     setOffsets(offsets);
-  }, [imageLoaded, image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
+  }, [imageLoaded, typeof image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
 
   return (
     <Stack className={classes.container} ref={containerRef} style={customStyles || {}}>
@@ -164,7 +165,7 @@ export default function DraggableImageContainer({
       )}
 
       {image && (
-        <div className={classes.imageWrapper} style={imageStyles()}>
+        <div className={classes.imageWrapper} style={imageStyles}>
           {showBlur && image && (
             <>
               {blurDots.map((dot, i) => {

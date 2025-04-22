@@ -13,6 +13,7 @@
 .indicatorsWrapper {
   gap: rem(8);
   overflow: auto;
+  max-height: rem(100);
 }
 
 .labelGroup {

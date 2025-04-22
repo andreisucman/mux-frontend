@@ -261,10 +261,8 @@ export type ProgressType = {
   initialDate: string;
   images: ProgressImageType[];
   initialImages: ProgressImageType[];
-  concernScore?: ScoreType;
-  concernScoreDifference?: ScoreDifferenceType;
-  featureScores?: ScoreType[];
-  featureScoresDifference?: ScoreDifferenceType[];
+  concernScores: ScoreType[];
+  concernScoresDifference: ScoreDifferenceType[];
   explanation: string;
   specialConsiderations: string | null;
   avatar?: { [key: string]: string };

@@ -6,6 +6,7 @@ import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
 import classes from "./ClubProgressFilterCardContent.module.css";
+import { normalizeString } from "@/helpers/utils";
 
 type Props = {
   concernFilterItems?: FilterItemType[];
@@ -20,8 +21,8 @@ export default function ClubProgressFilterCardContent({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const part = searchParams.get("part");
-  const concern = searchParams.get("concern");
+  const part = searchParams.get("part") || "";
+  const concern = searchParams.get("concern") || "";
 
   return (
     <Stack className={classes.container}>
@@ -32,6 +33,7 @@ export default function ClubProgressFilterCardContent({
         placeholder="Filter by part"
         selectedValue={part}
         customStyles={{ maxWidth: "unset" }}
+        searchValue={normalizeString(part)}
         allowDeselect
         addToQuery
         closeOnSelect
@@ -42,6 +44,7 @@ export default function ClubProgressFilterCardContent({
         placeholder="Filter by concern"
         selectedValue={concern}
         customStyles={{ maxWidth: "unset" }}
+        searchValue={normalizeString(concern)}
         allowDeselect
         addToQuery
         closeOnSelect
