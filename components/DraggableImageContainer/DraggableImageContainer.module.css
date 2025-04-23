@@ -76,6 +76,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  transform: translate(22px, -14px);
+  transform: translate(0, -100%);
   opacity: 0.5;
+  border: none;
+  border-radius: rem(16) rem(16) 0 0;
 }

@@ -144,7 +144,7 @@ export default function TasksList({ customStyles }: Props) {
   );
 
   const canAddDiary = useMemo(() => {
-    if (!tasks) return false;
+    if (!tasks || tasks.length === 0) return false;
 
     const todayStart = tasks[0].startsAt;
     const todayEnd = new Date(todayStart);
@@ -296,7 +296,6 @@ export default function TasksList({ customStyles }: Props) {
                   fetchTasks(hideCompletedTasks, hideFutureTasks);
                   setIsAnalysisGoing(false);
                 }}
-                onError={() => setIsAnalysisGoing(false)}
                 customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
               />
             )}

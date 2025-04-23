@@ -187,7 +187,7 @@ export default function PurchaseOverlay({
 
   const controlledDescription = useMemo(() => {
     if (!selectedCardData) return;
-    const intro = selectedCardData.description.slice(0, 150);
+    const intro = selectedCardData.description.slice(0, 100);
     const isLong = intro !== selectedCardData.description;
 
     return { intro: isLong ? `${intro}...` : intro, isLong };

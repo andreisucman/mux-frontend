@@ -65,7 +65,7 @@ export default function MyRoutines() {
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
 
   const { userDetails } = useContext(UserContext);
-  const { _id: userId, specialConsiderations } = userDetails || {};
+  const { _id: userId } = userDetails || {};
 
   const concern = searchParams.get("concern");
   const part = searchParams.get("part");
@@ -566,9 +566,6 @@ export default function MyRoutines() {
                 sort,
                 part,
               });
-              setIsAnalysisGoing(false);
-            }}
-            onError={() => {
               setIsAnalysisGoing(false);
             }}
             customContainerStyles={{ margin: "unset", paddingTop: "15%" }}

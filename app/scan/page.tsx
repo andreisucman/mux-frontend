@@ -151,7 +151,7 @@ export default function ScanProgress() {
               blurDots: updatedBlurDots,
               beforeImage: beforeImageUrl,
               // image: originalImageUrl,
-              image: "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/rachel1.png",
+              image: "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/polina.png",
             },
           });
 
