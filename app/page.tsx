@@ -1,21 +1,18 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ComparisonCarousel from "@/components/ComparisonCarousel";
 import { ExistingFiltersType } from "@/components/FilterCardContent/FilterCardContent";
-import FilterDropdown from "@/components/FilterDropdown";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import { normalizeString } from "@/helpers/utils";
 import { BeforeAfterType } from "./types";
 import classes from "./page.module.css";
 
@@ -30,7 +27,6 @@ const collectionMap: { [key: string]: string } = {
 };
 
 export default function BeforeAftersPage() {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
@@ -113,35 +109,9 @@ export default function BeforeAftersPage() {
     });
 
     if (response.status === 200) {
-      const { concern } = response.message || {};
-
-      if (concern && concern[0]) {
-        const savedBaConcernFilter = getFromLocalStorage("baConcernFilter");
-
-        let query;
-
-        if (savedBaConcernFilter && concern.includes(savedBaConcernFilter)) {
-          query = `?concern=${savedBaConcernFilter}`;
-        } else {
-          query = `?concern=${concern[0]}`;
-        }
-
-        router.replace(query);
-      }
-
       setFilters(response.message);
     }
   }, []);
-
-  const handleChangeConcern = (value?: string | null) => {
-    if (!value) return;
-    saveToLocalStorage("baConcernFilter", value);
-  };
-
-  const concernFilters = useMemo(() => {
-    if (!filters) return [];
-    return filters.concerns.map((c) => ({ value: c, label: normalizeString(c) }));
-  }, [filters]);
 
   const noFilters = useMemo(() => {
     const { concerns, ...rest } = filters || {};
@@ -164,7 +134,7 @@ export default function BeforeAftersPage() {
     <Stack className={`${classes.container} mediumPage`} ref={ref}>
       <PageHeader
         title="Results"
-        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType","concern"]}
+        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType", "concern"]}
         disableFilter={noFilters}
         onFilterClick={() =>
           openFiltersCard({

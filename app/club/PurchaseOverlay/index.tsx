@@ -69,17 +69,6 @@ export default function PurchaseOverlay({
       setUserDetails((prev: UserDataType) => ({ ...prev, ...clubData }));
       handleOpenSubscriptionConfirmation(setIsLoading);
 
-      // createCheckoutSession({
-      //   type: "connect",
-      //   body: {
-      //     dataId: selectedCardData._id,
-      //     redirectUrl,
-      //     cancelUrl: redirectUrl,
-      //     mode: "payment",
-      //   },
-      //   setIsLoading,
-      //   setUserDetails,
-      // });
       modals.closeAll();
     }
   }, [userDetails, selectedCardData, redirectUrl]);
@@ -278,7 +267,7 @@ export default function PurchaseOverlay({
               {controlledDescription?.intro}
             </Text>
           }
-          buttonText="Buy routines"
+          buttonText="Buy the routines"
           content={jsx}
           onClick={() => handleAddSubscription(setIsLoading)}
           isLoading={isLoading}

@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button, rem } from "@mantine/core";
+import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./MaximizeOverlayButton.module.css";
 
@@ -32,11 +33,12 @@ export default function MaximizeOverlayButton({
       router.push(`${pathname}${newQuery ? `?${newQuery}` : ""}`);
     }
     setShowOverlayComponent("purchaseOverlay");
+    deleteFromLocalStorage("lastClosedPurchaseOverlay");
   }, [notPurchased, showOverlayComponent]);
 
   return (
     <Button size="compact-sm" className={classes.container} onClick={handleShowOverlay}>
-      Show info card
+      Buy the routines
     </Button>
   );
 }
