@@ -309,7 +309,7 @@ export default function ClubRoutines(props: Props) {
         <Stack className={classes.wrapper}>
           <Stack
             className={cn(classes.content, "scrollbar", {
-              [classes.relative]: showOverlayComponent !== "purchaseOverlay",
+              [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
             })}
           >
             {purchaseOverlayData && (

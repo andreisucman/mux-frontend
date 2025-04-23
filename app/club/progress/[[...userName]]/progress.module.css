@@ -4,16 +4,13 @@
 }
 
 .content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-
-  position: absolute;
   inset: 0;
   overflow: hidden;
+  flex: 1;
+  border-radius: rem(16);
+  max-height: rem(650);
 }
 
-.relative {
-  position: relative;
+.unbound {
+  max-height: unset;
 }

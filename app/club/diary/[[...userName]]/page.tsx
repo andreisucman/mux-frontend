@@ -180,7 +180,7 @@ export default function DiaryPage(props: Props) {
       <Stack className={classes.wrapper}>
         <Stack
           className={cn(classes.content, "scrollbar", {
-            [classes.relative]: showOverlayComponent !== "purchaseOverlay",
+            [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
           })}
         >
           {purchaseOverlayData && (

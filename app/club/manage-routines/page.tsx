@@ -145,7 +145,6 @@ export default function ManageRoutines() {
   const handleSelectConcern = (fieldName: "concern" | "part", value?: string | null) => {
     if (!routineData || !value) return;
     const relevantRoutineData = routineData.find((doItem) => doItem[fieldName] === value);
-    console.log("relevantRoutineData", relevantRoutineData);
     if (relevantRoutineData) {
       setFields(relevantRoutineData);
       setDefaultRoutineData(relevantRoutineData);
@@ -211,7 +210,7 @@ export default function ManageRoutines() {
               placeholder="Select concern"
               onSelect={(value) => handleSelectConcern("concern", value)}
               isDisabled={routineConcerns.length === 0}
-              customStyles={{flexBasis: "60%"}}
+              customStyles={{ flexBasis: "60%" }}
               addToQuery
             />
             <FilterDropdown

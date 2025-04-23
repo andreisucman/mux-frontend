@@ -35,7 +35,6 @@ export default function SelectPartModalContent({ userId, onClick }: Props) {
     ];
 
     if (part) filter.push(`part=${part}`);
-    if (concern) filter.push(`concern=${concern}&concern=${concern}`);
 
     getFilters({
       collection: "task",
@@ -52,7 +51,7 @@ export default function SelectPartModalContent({ userId, onClick }: Props) {
         setAvailableConcerns(concern);
       }
     });
-  }, [userId, part, concern]);
+  }, [userId, part]);
 
   const noTasks =
     availableParts && availableConcerns && availableParts.length + availableConcerns.length === 0;

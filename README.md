@@ -27,9 +27,9 @@ db["Routine"].aggregate([
   },
   {
     $addFields: {
-      createdAt: { $subtract: ["$createdAt", 22 * 24 * 60 * 60 * 1000] },
-      startsAt: { $subtract: ["$startsAt", 21 * 24 * 60 * 60 * 1000] },
-      lastDate: { $subtract: ["$lastDate", 21 * 24 * 60 * 60 * 1000] },
+      createdAt: { $subtract: ["$createdAt", 8 * 24 * 60 * 60 * 1000] },
+      startsAt: { $subtract: ["$startsAt", 7 * 24 * 60 * 60 * 1000] },
+      lastDate: { $subtract: ["$lastDate", 7 * 24 * 60 * 60 * 1000] },
       allTasks: {
         $map: {
           input: "$allTasks",
@@ -46,7 +46,7 @@ db["Routine"].aggregate([
                       $mergeObjects: [
                         "$$id",
                         {
-                          startsAt: { $subtract: ["$$id.startsAt", 21 * 24 * 60 * 60 * 1000] },
+                          startsAt: { $subtract: ["$$id.startsAt", 14 * 24 * 60 * 60 * 1000] },
                           status: "completed"
                         }
                       ]
@@ -78,8 +78,8 @@ db["Task"].updateMany(
   [
     {
       $set: {
-        startsAt: { $subtract: ["$startsAt", 21 * 24 * 60 * 60 * 1000] },
-        expiresAt: { $subtract: ["$expiresAt", 21 * 24 * 60 * 60 * 1000] },
+        startsAt: { $subtract: ["$startsAt", 7 * 24 * 60 * 60 * 1000] },
+        expiresAt: { $subtract: ["$expiresAt", 7 * 24 * 60 * 60 * 1000] },
         status: "completed",
         proofId: ObjectId("680775e278509beb8ecacf5b")
       }

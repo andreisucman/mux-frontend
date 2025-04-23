@@ -1,14 +1,17 @@
-.content {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
 .wrapper {
   position: relative;
   flex: 1;
+
 }
 
-.relative {
-  position: relative;
+.content {
+  inset: 0;
+  overflow: hidden;
+  flex: 1;
+  border-radius: rem(16);
+  max-height: rem(650);
+}
+
+.unbound {
+  max-height: unset;
 }

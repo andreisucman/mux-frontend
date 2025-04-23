@@ -19,7 +19,7 @@ type Props = {
   mediaRecorderRef: any;
   mediaStreamRef: any;
   setText?: React.Dispatch<React.SetStateAction<string>>;
-  setLocalUrl?: (props: string | null) => void;
+  setLocalUrl?: React.Dispatch<React.SetStateAction<string | null>>;
   setAudioBlobs?: React.Dispatch<React.SetStateAction<Blob[] | null>>;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 };

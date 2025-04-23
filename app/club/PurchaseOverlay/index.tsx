@@ -67,17 +67,19 @@ export default function PurchaseOverlay({
 
     if (clubData) {
       setUserDetails((prev: UserDataType) => ({ ...prev, ...clubData }));
-      createCheckoutSession({
-        type: "connect",
-        body: {
-          dataId: selectedCardData._id,
-          redirectUrl,
-          cancelUrl: redirectUrl,
-          mode: "payment",
-        },
-        setIsLoading,
-        setUserDetails,
-      });
+      handleOpenSubscriptionConfirmation(setIsLoading);
+
+      // createCheckoutSession({
+      //   type: "connect",
+      //   body: {
+      //     dataId: selectedCardData._id,
+      //     redirectUrl,
+      //     cancelUrl: redirectUrl,
+      //     mode: "payment",
+      //   },
+      //   setIsLoading,
+      //   setUserDetails,
+      // });
       modals.closeAll();
     }
   }, [userDetails, selectedCardData, redirectUrl]);
@@ -187,7 +189,7 @@ export default function PurchaseOverlay({
 
   const controlledDescription = useMemo(() => {
     if (!selectedCardData) return;
-    const intro = selectedCardData.description.slice(0, 100);
+    const intro = selectedCardData.description.slice(0, 150);
     const isLong = intro !== selectedCardData.description;
 
     return { intro: isLong ? `${intro}...` : intro, isLong };

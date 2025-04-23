@@ -23,6 +23,17 @@ export default function DiaryRow({ data, isPublic }: Props) {
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
   const [tasksOpen, { toggle: toggleTasksCollapse }] = useDisclosure(true);
   const [showRecordButton, setShowRecordButton] = useState(true);
+  const [audioBlobs, setAudioBlobs] = useState<Blob[] | null>(null);
+  const [localUrl, setLocalUrl] = useState<string | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  const handleResetRecoring = useCallback(() => {
+    setAudioBlobs(null);
+    setLocalUrl(null);
+    mediaRecorderRef.current?.stop();
+    mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+  }, [mediaRecorderRef.current, mediaStreamRef.current]);
 
   const { audio, transcriptions, activity } = diaryRecord;
 
@@ -76,6 +87,7 @@ export default function DiaryRow({ data, isPublic }: Props) {
           }
           setDiaryRecord(response.message);
           setShowRecordButton(true);
+          handleResetRecoring();
         } else {
           openErrorModal();
         }
@@ -91,7 +103,17 @@ export default function DiaryRow({ data, isPublic }: Props) {
   return (
     <Stack className={classes.container}>
       {showRecordButton && !isPublic && (
-        <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />
+        <ControlButtons
+          mediaRecorderRef={mediaRecorderRef}
+          mediaStreamRef={mediaStreamRef}
+          isLoading={isUploading}
+          audioBlobs={audioBlobs}
+          localUrl={localUrl}
+          onSubmit={handleSubmit}
+          setAudioBlobs={setAudioBlobs}
+          setLocalUrl={setLocalUrl}
+          handleResetRecoring={handleResetRecoring}
+        />
       )}
       {activity.length > 0 && (
         <>

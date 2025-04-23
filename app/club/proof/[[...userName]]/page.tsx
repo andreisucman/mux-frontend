@@ -171,39 +171,45 @@ export default function ClubProof(props: Props) {
           setShowOverlayComponent={setShowOverlayComponent}
         />
       )}
-      <Stack className={cn(classes.content, "scrollbar")}>
-        {purchaseOverlayData && (
-          <>
-            {showOverlayComponent === "purchaseOverlay" && (
-              <PurchaseOverlay
+      <Stack className={classes.wrapper}>
+        <Stack
+          className={cn(classes.content, "scrollbar", {
+            [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
+          })}
+        >
+          {purchaseOverlayData && (
+            <>
+              {showOverlayComponent === "purchaseOverlay" && (
+                <PurchaseOverlay
+                  userName={userName}
+                  notPurchasedParts={notPurchased}
+                  purchaseOverlayData={purchaseOverlayData}
+                  handleCloseOverlay={handleCloseOverlay}
+                />
+              )}
+            </>
+          )}
+          {proof ? (
+            <>
+              <ProofGallery
+                proof={proof}
+                hasMore={hasMore}
                 userName={userName}
-                notPurchasedParts={notPurchased}
-                purchaseOverlayData={purchaseOverlayData}
-                handleCloseOverlay={handleCloseOverlay}
+                handleFetchProof={handleFetchProof}
+                setProof={setProof}
+                isSelf={isSelf}
+                isPublicPage
+                columns={2}
               />
-            )}
-          </>
-        )}
-        {proof ? (
-          <>
-            <ProofGallery
-              proof={proof}
-              hasMore={hasMore}
-              userName={userName}
-              handleFetchProof={handleFetchProof}
-              setProof={setProof}
-              isSelf={isSelf}
-              isPublicPage
-              columns={2}
+            </>
+          ) : (
+            <Loader
+              m="0 auto"
+              pt="30%"
+              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
             />
-          </>
-        ) : (
-          <Loader
-            m="0 auto"
-            pt="30%"
-            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
-          />
-        )}
+          )}
+        </Stack>
       </Stack>
     </ClubModerationLayout>
   );

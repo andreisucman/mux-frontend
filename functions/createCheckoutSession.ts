@@ -12,12 +12,20 @@ type Props = {
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const testIds = ["680938f07f7ac77f62fb370c", "6808e20e7f7ac77f62fa370b"];
+
 export default async function createCheckoutSession({
   type,
   body,
   setUserDetails,
   setIsLoading,
 }: Props) {
+  if (testIds.includes(body.dataId)) {
+    openErrorModal({
+      description: `This is a test account for demonstration purposes. Purchases are disabled for this account.`,
+    });
+    return;
+  }
   const endpoint = type === "platform" ? "createCheckoutSession" : "createRoutineCheckoutSession";
   const response = await callTheServer({
     endpoint,

@@ -1,7 +1,16 @@
-.content {
-  flex: 1;
+.wrapper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  flex: 1;
+}
+
+.content {
+  inset: 0;
+  overflow: hidden;
+  flex: 1;
+  border-radius: rem(16);
+  max-height: rem(650);
+}
+
+.unbound {
+  max-height: unset;
 }
