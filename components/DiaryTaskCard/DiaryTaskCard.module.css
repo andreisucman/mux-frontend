@@ -7,7 +7,8 @@
   flex: 1;
   width: 100%;
   min-width: rem(200);
-  border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+  border: rem(1) solid light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
 }
 
 .head {

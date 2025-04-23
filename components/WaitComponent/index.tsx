@@ -54,7 +54,7 @@ function WaitComponent({
             openErrorModal({
               description: response.error,
               onClose: () => {
-                if (errorRedirectUrl) router.push(errorRedirectUrl);
+                if (errorRedirectUrl) router.replace(errorRedirectUrl);
               },
             });
             return;

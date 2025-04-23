@@ -20,7 +20,7 @@ type Props = {
   setEditorImages: React.Dispatch<React.SetStateAction<ProgressImageType[]>>;
   onUpdate: (
     args: OnUpdateBlurProps
-  ) => Promise<{ images: ProgressImageType[]; initialImages: ProgressImageType[] }[]>;
+  ) => Promise<{ images: ProgressImageType[]; initialImages: ProgressImageType[] }>;
 };
 
 export default function BlurEditorSlide({
@@ -54,8 +54,7 @@ export default function BlurEditorSlide({
     });
     setIsLoading(false);
 
-    const firstObject = response[0];
-    const { images } = firstObject || {};
+    const { images } = response || {};
     const newRelevantImage = images?.find((io) =>
       io.urls.some((urlObj) => urlObj.url === selectedUrlObject?.url)
     );

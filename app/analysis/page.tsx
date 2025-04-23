@@ -34,6 +34,9 @@ export default function Analysis() {
 
   const part = searchParams.get("part") || "face";
 
+  const ctaText =
+    status === AuthStateEnum.AUTHENTICATED ? "Go to routines" : "Create improvement routine";
+
   const {
     _id: userId,
     latestConcernScores,
@@ -166,7 +169,7 @@ export default function Analysis() {
                     <GlowingButton
                       loading={isLoading}
                       disabled={isLoading}
-                      text={"Create improvement routine"}
+                      text={ctaText}
                       containerStyles={{
                         flex: 0,
                         margin: "2rem auto",

@@ -24,7 +24,7 @@ export default function DiaryTaskCard({
         <Stack className={classes.imageWrapper}>
           <Image
             m="auto"
-            src={url}
+            src={url || "https://placehold.co"}
             className={classes.image}
             component={NextImage}
             alt=""
@@ -38,7 +38,7 @@ export default function DiaryTaskCard({
       return (
         <VideoPlayer
           url={url}
-          thumbnail={thumbnail}
+          thumbnail={thumbnail || "https://placehold.co"}
           createdAt={new Date().toISOString()}
           isRelative
         />

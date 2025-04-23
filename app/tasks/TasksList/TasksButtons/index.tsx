@@ -6,6 +6,7 @@ import {
   IconCalendar,
   IconCirclePlus,
   IconListDetails,
+  IconNotebook,
   IconRoute,
   IconTrophy,
 } from "@tabler/icons-react";
@@ -76,14 +77,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
         >
           <IconTrophy style={{ width: rem(20) }} />
         </Button>
-        <Button
-          className={classes.button}
-          variant="default"
-          size="xs"
-          onClick={() => router.push("/calendar")}
-        >
-          <IconCalendar style={{ width: rem(20) }} />
-        </Button>
+
         {pathname === "/tasks" && (
           <Button
             className={classes.button}
@@ -104,6 +98,14 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
             <IconListDetails style={{ width: rem(20) }} />
           </Button>
         )}
+        <Button
+          className={classes.button}
+          variant="default"
+          size="xs"
+          onClick={() => router.push("/diary")}
+        >
+          <IconNotebook style={{ width: rem(20) }} />
+        </Button>
         <Button
           className={classes.button}
           disabled={disableCreateTask}

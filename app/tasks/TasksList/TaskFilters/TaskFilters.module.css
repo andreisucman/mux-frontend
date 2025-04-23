@@ -1,0 +1,23 @@
+.container {
+}
+
+.button {
+  justify-content: center;
+}
+
+.checkboxes {
+  flex: 1;
+}
+
+.checkbox {
+  padding: rem(8) rem(16);
+  border-radius: rem(16);
+  flex: 1;
+  white-space: nowrap;
+
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+}
+
+.chevron {
+  margin-right: rem(8);
+}

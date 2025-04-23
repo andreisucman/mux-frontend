@@ -50,3 +50,8 @@
 .transcription {
   min-height: rem(200);
 }
+
+.audioStack,
+.trascriptionStack {
+  gap: rem(12);
+}

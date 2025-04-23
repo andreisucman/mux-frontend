@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import { Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
-import { UserContext } from "@/context/UserContext";
 import { TaskType } from "@/types/global";
-import { ConsiderationsInput } from "../../components/ConsiderationsInput";
 import SkeletonWrapper from "../SkeletonWrapper";
 import TasksList from "./TasksList";
 
@@ -21,18 +19,10 @@ export interface TaskWithOnClickType extends TaskType {
 }
 
 export default function Tasks() {
-  const { userDetails } = useContext(UserContext);
-  const { specialConsiderations } = userDetails || {};
-
   return (
     <Stack flex={1} className="smallPage">
       <SkeletonWrapper>
         <PageHeader titles={titles} />
-        <ConsiderationsInput
-          placeholder={"Special considerations"}
-          defaultValue={specialConsiderations || ""}
-          maxLength={300}
-        />
         <TasksList />
       </SkeletonWrapper>
     </Stack>

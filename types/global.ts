@@ -150,7 +150,6 @@ export type ScoreType = {
   value: number;
   explanation: string;
   name: string;
-  part: PartEnum;
 };
 
 export type LatestScoresType = {
@@ -160,7 +159,6 @@ export type LatestScoresType = {
 export type ScoreDifferenceType = {
   value: number;
   name: string;
-  part: PartEnum;
 };
 
 export type LatestScoresDifferenceType = {
@@ -234,7 +232,6 @@ export interface UserDataType extends DefaultUserType {
   latestConcernScoresDifference: LatestScoresDifferenceType;
   deleteOn: Date | null;
   canRejoinClubAfter: Date | null;
-  nextDiaryRecordAfter: { [key: string]: Date | null } | null;
 }
 
 export type SubscriptionType = {

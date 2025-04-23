@@ -1,8 +1,9 @@
-export type DiaryRecordType = {
+export type DiaryType = {
   _id: string | null;
-  audio: string | null;
+  audio: { createdAt: string; url: string }[];
   part: string | null;
-  transcription: string | null;
+  concern: string | null;
+  transcriptions: { createdAt: string; text: string }[];
   createdAt: string | Date;
   activity: DiaryActivityType[];
 };

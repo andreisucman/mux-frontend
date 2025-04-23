@@ -1,27 +1,28 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Collapse, Divider, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import openErrorModal from "@/helpers/openErrorModal";
-import { DiaryRecordType } from "../../app/diary/type";
+import { DiaryType } from "../../app/diary/type";
 import ControlButtons from "./ControlButtons";
 import DiaryActivityRow from "./DiaryActivityRow";
 import classes from "./DiaryRow.module.css";
 
 type Props = {
-  data: DiaryRecordType;
+  data: DiaryType;
   index: number;
 };
 
 export default function DiaryRow({ data }: Props) {
-  const [diaryRecord, setDiaryRecord] = useState<DiaryRecordType>(data);
+  const [diaryRecord, setDiaryRecord] = useState<DiaryType>(data);
   const [isUploading, setIsUploading] = useState(false);
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
   const [tasksOpen, { toggle: toggleTasksCollapse }] = useDisclosure(true);
+  const [showRecordButton, setShowRecordButton] = useState(true);
 
-  const { audio, transcription, activity } = diaryRecord;
+  const { audio, transcriptions, activity } = diaryRecord;
 
   const transcriptionChevron = transcriptionOpen ? (
     <IconChevronUp className="icon icon__small" />
@@ -51,7 +52,12 @@ export default function DiaryRow({ data }: Props) {
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",
           method: "POST",
-          body: { audio: audioUrls?.[0], part: data.part, activity: data.activity },
+          body: {
+            audio: audioUrls?.[0],
+            part: data.part,
+            concern: data.concern,
+            activity: data.activity,
+          },
         });
 
         if (response.status === 200) {
@@ -59,16 +65,15 @@ export default function DiaryRow({ data }: Props) {
             openErrorModal({ description: response.error });
             return;
           }
-          const { audio, transcription, part, createdAt } = response.message;
-          setDiaryRecord({ ...data, audio, transcription, part, createdAt });
-          toggleTranscriptionCollapse();
+          setDiaryRecord(response.message);
+          setShowRecordButton(true);
         } else {
-          setIsUploading(false);
           openErrorModal();
         }
       } catch (err) {
-        setIsUploading(false);
         openErrorModal();
+      } finally {
+        setIsUploading(false);
       }
     },
     [isUploading, data]
@@ -76,10 +81,13 @@ export default function DiaryRow({ data }: Props) {
 
   return (
     <Stack className={classes.container}>
-      {audio ? (
-        <audio src={audio || ""} controls className={classes.audio} />
-      ) : (
-        <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />
+      {showRecordButton && <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />}
+      {audio.length > 0 && (
+        <Stack className={classes.audoStack}>
+          {audio.map((obj, i) => (
+            <audio key={i} src={obj.url} controls className={classes.audio} />
+          ))}
+        </Stack>
       )}
       {activity.length > 0 && (
         <>
@@ -96,8 +104,7 @@ export default function DiaryRow({ data }: Props) {
           </Collapse>
         </>
       )}
-
-      {transcription && (
+      {transcriptions.length > 0 && (
         <>
           <Divider
             label={
@@ -112,7 +119,11 @@ export default function DiaryRow({ data }: Props) {
             }
           />
           <Collapse in={transcriptionOpen}>
-            <Text>{transcription}</Text>
+            <Stack className={classes.transcriptionStack}>
+              {transcriptions.map((obj, i) => (
+                <Text key={i}>{obj.text}</Text>
+              ))}
+            </Stack>
           </Collapse>
         </>
       )}

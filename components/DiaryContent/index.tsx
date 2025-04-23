@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo } from "react";
 import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Stack } from "@mantine/core";
-import { DiaryRecordType } from "@/app/diary/type";
+import { DiaryType } from "@/app/diary/type";
 import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
@@ -11,9 +11,9 @@ import classes from "./DiaryContent.module.css";
 
 type Props = {
   hasMore: boolean;
-  diaryRecords?: DiaryRecordType[];
+  diaryRecords?: DiaryType[];
   openValue: string | null;
-  setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryRecordType[] | undefined>>;
+  setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryType[] | undefined>>;
   setOpenValue: React.Dispatch<React.SetStateAction<string | null>>;
   handleFetchDiaryRecords: () => void;
 };
@@ -52,10 +52,11 @@ export default function DiaryContent({
         value={openValue}
         onChange={setOpenValue}
         classNames={{
-          root: "accordionRoot scrollbar",
+          root: `accordionRoot scrollbar ${classes.accordion}`,
           content: "accordionContent",
           chevron: "accordionChevron",
           item: "accordionItem",
+          control: "accordionControl",
         }}
       >
         {diaryRecords && diaryRecords.length > 0 ? (

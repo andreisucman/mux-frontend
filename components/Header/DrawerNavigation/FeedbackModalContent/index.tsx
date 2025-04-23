@@ -37,7 +37,7 @@ export default function FeedbackModalContent() {
       setFiles([]);
       setText("");
       setMessage(
-        "Thank you. We'll update your balance within 24 hours if your feedback is accepted."
+        "Thank you. We'll analyze your report within 7 days and inform you."
       );
     }
   };

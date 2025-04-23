@@ -25,6 +25,7 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
   const {
     userName,
     concernScoreDifference,
+    concernScore,
     images,
     initialImages,
     updatedAt,
@@ -56,7 +57,11 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      <LineProgressIndicators title="Improvement" concernScoresDifference={[concernScoreDifference]} />
+      <LineProgressIndicators
+        title="Improvement"
+        concernScores={[concernScore]}
+        concernScoresDifference={[concernScoreDifference]}
+      />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

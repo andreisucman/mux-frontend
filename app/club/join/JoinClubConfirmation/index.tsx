@@ -92,7 +92,7 @@ export default function JoinClubConfirmation({ handleJoinClub, description, type
           disabled={isLoading}
           loading={isLoading}
           iconPosition={type === "start" ? "left" : "right"}
-          containerStyles={{ margin: "auto", width: "100%", maxWidth: rem(300) }}
+          containerStyles={{ margin: "auto", width: "100%", maxWidth: rem(200) }}
           onClick={handleClick}
         />
       </Stack>

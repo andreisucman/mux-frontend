@@ -16,11 +16,11 @@ import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard
 import askConfirmation from "@/helpers/askConfirmation";
 import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
-import setUtcMidnight from "@/helpers/setUtcMidnight";
-import { TaskStatusEnum, TaskType, UserDataType } from "@/types/global";
+import { normalizeString } from "@/helpers/utils";
+import { TaskStatusEnum, TaskType } from "@/types/global";
 import DiaryContent from "../../components/DiaryContent";
 import SelectPartModalContent from "../../components/SelectPartModalContent";
-import { DiaryRecordType } from "./type";
+import { DiaryType } from "./type";
 import classes from "./diary.module.css";
 
 export type HandleFetchDiaryProps = {
@@ -36,8 +36,8 @@ export default function DiaryPage() {
   const router = useRouter();
   const [tasks, setTasks] = useState<TaskType[]>();
   const [openValue, setOpenValue] = useState<string | null>(null);
-  const { userDetails, setUserDetails } = useContext(UserContext);
-  const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
+  const { userDetails } = useContext(UserContext);
+  const [diaryRecords, setDiaryRecords] = useState<DiaryType[]>();
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [disableAddNew, setDisableAddNew] = useState(true);
@@ -53,7 +53,7 @@ export default function DiaryPage() {
   const { _id: userId } = userDetails || {};
 
   const createDiaryRecord = useCallback(
-    async (part: string) => {
+    async (part: string, concern: string) => {
       if (isLoading) return;
       setIsLoading(true);
       modals.closeAll();
@@ -62,7 +62,7 @@ export default function DiaryPage() {
         const response = await callTheServer({
           endpoint: "createDiaryRecord",
           method: "POST",
-          body: { part },
+          body: { part, concern },
         });
 
         setIsLoading(false);
@@ -73,34 +73,18 @@ export default function DiaryPage() {
             return;
           }
 
-          const emptyDiaryRecord = {
-            _id: "temp",
-            userId,
-            part,
-            audio: null,
-            transcription: null,
-            createdAt: new Date(),
-            activity: response.message,
-          };
+          const record = response.message;
 
-          setDiaryRecords((prev: DiaryRecordType[] | undefined) => [
-            emptyDiaryRecord,
-            ...(prev || []),
-          ]);
-          setOpenValue(emptyDiaryRecord._id);
-
-          const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-          const nextDate = setUtcMidnight({
-            date: new Date(),
-            isNextDay: true,
-            timeZone,
+          setDiaryRecords((prev: DiaryType[] | undefined) => {
+            const exists = (prev || []).some((rec) => rec._id === record._id);
+            if (exists) {
+              return (prev || []).map((rec) => (rec._id === record._id ? record : rec));
+            } else {
+              return [record, ...(prev || [])];
+            }
           });
 
-          setUserDetails((prev: UserDataType) => ({
-            ...prev,
-            nextDiaryRecordAfter: { ...prev.nextDiaryRecordAfter, [part]: nextDate },
-          }));
+          setOpenValue(record._id);
         }
       } catch (err) {
         setIsLoading(false);
@@ -110,17 +94,25 @@ export default function DiaryPage() {
   );
 
   const handleClickCreateRecord = useCallback(
-    (part: string) => {
-      if (!tasks) return;
+    (part: string, concern: string, tasks: TaskType[]) => {
+      const concernName = normalizeString(concern).toLowerCase();
+
+      if (!tasks || (tasks && tasks.length === 0)) {
+        openErrorModal({
+          description: `You don't have any tasks for ${part} - ${concernName} today.`,
+        });
+        return;
+      }
 
       const completedPartTasks = tasks.filter(
-        (t) => t.part === part && t.status === TaskStatusEnum.COMPLETED
+        (t) => t.part === part && t.concern === concern && t.status === TaskStatusEnum.COMPLETED
       );
 
       if (completedPartTasks.length === 0) {
         openErrorModal({
-          description: `You haven't completed any ${part} tasks today.`,
+          description: `You haven't completed any tasks for ${part} - ${concernName} today.`,
         });
+        modals.closeAll();
         return;
       }
 
@@ -133,28 +125,25 @@ export default function DiaryPage() {
           taskMidnight.setHours(0, 0, 0, 0);
 
           return (
-            t.status === "active" &&
+            t.status === TaskStatusEnum.ACTIVE &&
             t.part === part &&
+            t.concern === concern &&
             taskMidnight.toDateString() === todayMidnight.toDateString()
           );
         }) || [];
 
       if (activeTasks.length > 0) {
-        const activeParts = [...new Set(activeTasks.map((t) => t.part))];
-        if (activeParts.length > 1) activeParts.splice(activeParts.length - 1, 0, "and,");
-        const activePartsString = activeParts.join(", ").split(",,").join(" ");
-
         askConfirmation({
           title: "Confirm action",
-          body: `You still have active ${activePartsString} tasks. Would you like to complete them first?`,
+          body: `You still have active ${part} - ${concern} tasks. Would you like to complete them first?`,
           onConfirm: () => {
             router.push("/tasks");
             modals.closeAll();
           },
-          onCancel: () => createDiaryRecord(part),
+          onCancel: () => createDiaryRecord(part, concern),
         });
       } else {
-        createDiaryRecord(part);
+        createDiaryRecord(part, concern);
       }
     },
     [createDiaryRecord, tasks, userDetails]
@@ -168,7 +157,9 @@ export default function DiaryPage() {
       innerProps: (
         <SelectPartModalContent
           userId={userId}
-          onClick={(part: string) => handleClickCreateRecord(part)}
+          onClick={(part: string, concern: string) =>
+            handleClickCreateRecord(part, concern, tasks || [])
+          }
         />
       ),
       title: (
@@ -177,7 +168,7 @@ export default function DiaryPage() {
         </Title>
       ),
     });
-  }, [userId]);
+  }, [userId, tasks]);
 
   const handleFetchDiaryRecords = useCallback(
     async ({ dateFrom, dateTo, part, concern, sort }: HandleFetchDiaryProps) => {
@@ -232,9 +223,9 @@ export default function DiaryPage() {
       collection: "diary",
       fields: ["part", "concerns"],
     }).then((result) => {
-      const { availableParts, availableConcerns } = result;
-      setAvailableParts(availableParts);
-      setAvailableConcerns(availableConcerns);
+      const { part, concerns } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concerns);
     });
   }, []);
 
@@ -266,6 +257,7 @@ export default function DiaryPage() {
           disabled={disableAddNew || isLoading}
           loading={isLoading}
           size="compact-sm"
+          variant="default"
         >
           Add a note for today
         </Button>

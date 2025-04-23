@@ -2,3 +2,7 @@
   position: absolute !important;
   inset: 0;
 }
+
+.accordion {
+  flex:1;
+}

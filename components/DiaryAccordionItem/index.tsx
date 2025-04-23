@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Accordion, Group, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
 import DeleteContentButton from "@/components/DeleteContentButton";
 import { getPartIcon } from "@/helpers/icons";
-import { DiaryRecordType } from "../../app/diary/type";
+import { normalizeString } from "@/helpers/utils";
+import { DiaryType } from "../../app/diary/type";
 import DiaryRow from "../DiaryRow";
 import classes from "./DiaryAccordionItem.module.css";
 
 type Props = {
-  data: DiaryRecordType;
+  data: DiaryType;
   formattedDate: string;
 
   index: number;
   isSelf: boolean;
-  setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryRecordType[] | undefined>>;
+  setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryType[] | undefined>>;
 };
 
 export default function DiaryAccordionItem({
@@ -23,18 +23,18 @@ export default function DiaryAccordionItem({
   isSelf,
   setDiaryRecords,
 }: Props) {
-  const { _id: recordId, part } = data;
+  const { _id: recordId, part, concern } = data;
   const [isLoading, setIsLoading] = useState(false);
 
   const icon = getPartIcon(part || "");
-  const label = upperFirst(part || "");
+  const label = normalizeString(concern || "");
 
   return (
     <Accordion.Item value={recordId || "no_value"}>
       <Accordion.Control component={"div"}>
         <Group className={classes.container}>
           <Title order={5} className={classes.title}>
-            {icon} {label} note - {formattedDate}
+            {icon} {label} - {formattedDate}
           </Title>
           {isSelf && (
             <DeleteContentButton

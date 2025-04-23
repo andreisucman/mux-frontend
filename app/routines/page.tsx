@@ -6,7 +6,6 @@ import { IconArrowDown } from "@tabler/icons-react";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
-import { ConsiderationsInput } from "@/components/ConsiderationsInput";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
@@ -465,9 +464,9 @@ export default function MyRoutines() {
       collection: "routine",
       fields: ["part", "concerns"],
     }).then((result) => {
-      const { availableParts, availableConcerns } = result;
-      setAvailableParts(availableParts);
-      setAvailableConcerns(availableConcerns);
+      const { part, concerns } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concerns);
     });
   }, []);
 
@@ -505,11 +504,7 @@ export default function MyRoutines() {
             })
           }
         />
-        <ConsiderationsInput
-          placeholder={"Special considerations"}
-          defaultValue={specialConsiderations || ""}
-          maxLength={300}
-        />
+
         <TasksButtons
           disableCreateTask={displayComponent === "wait"}
           handleSaveTask={(props: HandleSaveTaskProps) =>

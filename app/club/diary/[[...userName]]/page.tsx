@@ -7,7 +7,7 @@ import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { HandleFetchDiaryProps } from "@/app/diary/page";
-import { DiaryRecordType } from "@/app/diary/type";
+import { DiaryType } from "@/app/diary/type";
 import DiaryContent from "@/components/DiaryContent";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeaderClub from "@/components/PageHeaderClub";
@@ -38,7 +38,7 @@ export default function DiaryPage(props: Props) {
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
   const [openValue, setOpenValue] = useState<string | null>(null);
-  const [diaryRecords, setDiaryRecords] = useState<DiaryRecordType[]>();
+  const [diaryRecords, setDiaryRecords] = useState<DiaryType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [purchaseOverlayData, setPurchaseOverlayData] = useState<
     PurchaseOverlayDataType[] | null

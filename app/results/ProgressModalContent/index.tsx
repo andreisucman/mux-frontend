@@ -27,6 +27,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
 
   const {
     userName,
+    concernScores,
     concernScoresDifference,
     images,
     initialImages,
@@ -47,6 +48,10 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
     modals.closeAll();
   };
 
+  const filteredScores = concern
+    ? concernScores.filter((obj) => obj.name === concern)
+    : concernScores;
+
   const filteredDifferences = concern
     ? concernScoresDifference.filter((obj) => obj.name === concern)
     : concernScoresDifference;
@@ -62,7 +67,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      <LineProgressIndicators title="Improvement" concernScoresDifference={filteredDifferences} />
+      <LineProgressIndicators title="Improvement" concernScores={filteredScores} concernScoresDifference={filteredDifferences} />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

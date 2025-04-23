@@ -16,8 +16,10 @@ type Props = {
   defaultRecordingMs?: number;
   customContainerStyles?: { [key: string]: any };
   customButtonStyles?: { [key: string]: any };
+  mediaRecorderRef: any;
+  mediaStreamRef: any;
   setText?: React.Dispatch<React.SetStateAction<string>>;
-  setLocalUrl?: React.Dispatch<React.SetStateAction<string | null>>;
+  setLocalUrl?: (props: string | null) => void;
   setAudioBlobs?: React.Dispatch<React.SetStateAction<Blob[] | null>>;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -30,21 +32,22 @@ export default function RecordingButton({
   customButtonStyles,
   customContainerStyles,
   isLoading,
+  mediaRecorderRef,
+  mediaStreamRef,
   setText,
   setLocalUrl,
   setAudioBlobs,
   setIsLoading,
 }: Props) {
   const [isRecording, setIsRecording] = useState(false);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
   const handleStartRecording = useCallback(async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: false,
       });
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      const mediaRecorder = new MediaRecorder(mediaStreamRef.current, { mimeType: "audio/webm" });
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
 
@@ -71,7 +74,7 @@ export default function RecordingButton({
       handleStopRecording();
       console.log("Error in handleStartRecording: ", err);
     }
-  }, [transcribeOnEnd]);
+  }, [transcribeOnEnd,mediaStreamRef.current]);
 
   const handleStopRecording = useCallback(async () => {
     const mediaRecorder = mediaRecorderRef.current;

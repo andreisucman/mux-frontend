@@ -83,9 +83,9 @@ export default function ResultsProgress() {
       collection: "progress",
       fields: ["part", "concern"],
     }).then((result) => {
-      const { availableParts, availableConcerns } = result;
-      setAvailableParts(availableParts);
-      setAvailableConcerns(availableConcerns);
+      const { part, concern } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concern);
     });
   }, []);
 

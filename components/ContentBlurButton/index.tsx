@@ -45,13 +45,18 @@ export default function ContentBlurButton({
       });
 
       if (response.status === 200) {
-        const newObjects: SimpleProgressType[] = response.message;
+        const updatedProgressRecord: {
+          _id: string;
+          images: ProgressImageType[];
+          initialImages: ProgressImageType[];
+        } = response.message;
 
         if (setRecords) {
           setRecords((prev: SimpleProgressType[] | undefined) => {
             const newData = (prev || [])?.map((rec) => {
-              const relevantRecord = newObjects.find((o) => o._id === rec._id);
-              return relevantRecord ? { ...rec, ...relevantRecord } : rec;
+              return rec._id === updatedProgressRecord._id
+                ? { ...rec, ...updatedProgressRecord }
+                : rec;
             });
 
             return newData;

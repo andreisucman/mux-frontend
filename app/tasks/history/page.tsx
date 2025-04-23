@@ -88,9 +88,9 @@ export default function RoutinesHistoryPage() {
       filter: ["status=canceled", "status=expired", "status=completed"],
       fields: ["part", "status"],
     }).then((result) => {
-      const { availableParts, availableStatuses } = result;
-      setAvailableParts(availableParts);
-      setAvailableStatuses(availableStatuses);
+      const { part, status } = result;
+      setAvailableParts(part);
+      setAvailableStatuses(status);
     });
   }, []);
 

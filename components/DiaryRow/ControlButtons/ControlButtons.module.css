@@ -24,4 +24,8 @@
 
 .loadingOverlay {
   border-radius: var(--mantine-radius-lg);
+  background-color: light-dark(
+    alpha(var(--mantine-color-gray-2), 0.5),
+    alpha(var(--mantine-color-dark-6), 0.5)
+  );
 }

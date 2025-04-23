@@ -72,9 +72,9 @@ export default function ResultsProof() {
       collection: "task",
       fields: ["part", "concern"],
     }).then((result) => {
-      const { availableParts, availableConcerns } = result;
-      setAvailableParts(availableParts);
-      setAvailableConcerns(availableConcerns);
+      const { part, concern } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concern);
     });
   }, []);
 

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
-import { Carousel } from "@mantine/carousel";
-import { Loader, Stack } from "@mantine/core";
+import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import WaitComponent from "@/components/WaitComponent";
 import CreateRoutineProvider from "@/context/CreateRoutineContext";
@@ -13,12 +13,12 @@ import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
 import { useRouter } from "@/helpers/custom-router";
-import { daysFrom } from "@/helpers/utils";
-import { TaskType } from "@/types/global";
-import { TaskWithOnClickType } from "../page";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateTaskOverlay from "./CreateTaskOverlay";
+import TaskFlters from "./TaskFilters";
+import TaskRow from "./TaskRow";
 import TasksButtons from "./TasksButtons";
-import TasksSlide from "./TasksSlide";
 import classes from "./TasksList.module.css";
 
 type Props = {
@@ -33,15 +33,27 @@ export default function TasksList({ customStyles }: Props) {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [isAnalysisGoing, setIsAnalysisGoing] = useState(false);
   const [displayComponent, setDisplayComponent] = useState<
-    "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
+    "loading" | "wait" | "createTaskOverlay" | "content" | "resetFilters"
   >("loading");
 
   const [tasks, setTasks] = useState<TaskType[]>();
-  const [todaysTasksGroups, setTodaysTasksGroups] = useState<TaskWithOnClickType[][]>();
-  const [tomorrowsTasksGroups, setTomorrowsTasksGroups] = useState<TaskWithOnClickType[][]>();
-  const [canAddDiary, setCanAddDiary] = useState<boolean>();
+  const [taskList, setTaskList] = useState<TaskType[]>();
+  const [hideCompletedTasks, setHideCompletedTasks] = useState<boolean>(false);
+  const [hideFutureTasks, setHideFutureTasks] = useState<boolean>(false);
+  const [groupTasksByConcerns, setGroupTasksByConcerns] = useState<boolean>(false);
+
+  const savedHideFutureTasks = getFromLocalStorage("hideFutureTasks");
+  const savedHideCompletedTasks = getFromLocalStorage("hideCompletedTasks");
+  const savedGroupTasksByConcern = getFromLocalStorage("groupTasksByConcern");
 
   const { _id: userId } = userDetails || {};
+
+  const handleResetFilters = useCallback(() => {
+    setHideCompletedTasks(false);
+    setHideFutureTasks(false);
+    saveToLocalStorage("hideFutureTasks", false);
+    saveToLocalStorage("hideCompletedTasks", false);
+  }, []);
 
   const getTaskClickHandler = useCallback(
     (taskId: string) => () => {
@@ -51,95 +63,186 @@ export default function TasksList({ customStyles }: Props) {
     [router, searchParams]
   );
 
-  const processTasks = useCallback((tasks: TaskType[]) => {
+  const getTasksAsGroups = useCallback(
+    (tasks: TaskType[], hideFuture: boolean, hideCompleted: boolean) => {
+      let tasksWithOnClick = tasks.map((fTask) => ({
+        ...fTask,
+        onClick: getTaskClickHandler(fTask._id),
+      }));
+
+      const concerns = [...new Set(tasksWithOnClick.map((t) => t.concern))];
+      const taskGroups = concerns
+        .map((concern) => tasksWithOnClick.filter((t) => t.concern === concern))
+        .filter((gr) => gr.length);
+
+      return taskGroups.map((group, index) => {
+        const name = group?.[0]?.concern;
+        const label = name.split("_").join(" ");
+        return (
+          <Stack key={index}>
+            <Divider
+              label={
+                <Text c="dimmed" size="sm">
+                  {upperFirst(label)}
+                </Text>
+              }
+            />
+            {group.map((t, i) => (
+              <TaskRow
+                key={i}
+                icon={t.icon}
+                onClick={t.onClick}
+                description={t.description}
+                color={t.color}
+                name={t.name}
+                startsAt={t.startsAt}
+                expiresAt={t.expiresAt}
+                status={t.status}
+              />
+            ))}
+          </Stack>
+        );
+      });
+    },
+    [getTaskClickHandler]
+  );
+
+  const getTasksWthoutGroups = useCallback(
+    (tasks: TaskType[], hideFuture: boolean, hideCompleted: boolean) => {
+      let tasksWithOnClick = tasks.map((fTask) => ({
+        ...fTask,
+        onClick: getTaskClickHandler(fTask._id),
+      }));
+
+      if (hideFuture) {
+        const todayStart = new Date(tasks[0].startsAt);
+        const todayEnd = new Date(todayStart);
+        todayEnd.setHours(23, 59, 59, 59);
+
+        tasksWithOnClick = tasksWithOnClick.filter((t) => new Date(t.startsAt) < todayEnd);
+      }
+
+      if (hideCompleted) {
+        tasksWithOnClick = tasksWithOnClick.filter((t) => t.status !== TaskStatusEnum.COMPLETED);
+      }
+
+      return tasksWithOnClick.map((t, i) => (
+        <TaskRow
+          key={i}
+          icon={t.icon}
+          onClick={t.onClick}
+          description={t.description}
+          color={t.color}
+          name={t.name}
+          startsAt={t.startsAt}
+          expiresAt={t.expiresAt}
+          status={t.status}
+        />
+      ));
+    },
+    []
+  );
+
+  const canAddDiary = useMemo(() => {
+    if (!tasks) return false;
+
     const todayStart = tasks[0].startsAt;
-    const tomorrowStart = daysFrom({ date: new Date(tasks[0].startsAt), days: 1 });
-
     const todayEnd = new Date(todayStart);
-    todayEnd.setHours(23, 59, 59, 0);
+    todayEnd.setHours(23, 59, 59, 59);
 
-    const tomorrowEnd = daysFrom({ date: new Date(tomorrowStart), days: 1 });
-    tomorrowEnd.setHours(23, 59, 59, 0);
+    const todayTasksCompleted = tasks.filter(
+      (task) => new Date(task.startsAt) < todayEnd && task.status === TaskStatusEnum.COMPLETED
+    );
 
-    const todaysTasksWithOnClick = tasks
-      .filter((t) => new Date(t.startsAt) < todayEnd)
-      .map((fTask) => ({
-        ...fTask,
-        onClick: getTaskClickHandler(fTask._id),
-      }));
+    return todayTasksCompleted.length >= 1;
+  }, [tasks]);
 
-    const tomorrowsTasksWithOnClick = tasks
-      .filter((t) => new Date(t.startsAt) >= tomorrowStart && new Date(t.startsAt) < tomorrowEnd)
-      .map((fTask) => ({
-        ...fTask,
-        onClick: getTaskClickHandler(fTask._id),
-      }));
-
-    const todaysConcerns = [...new Set(todaysTasksWithOnClick.map((t) => t.concern))];
-    const tomorrowsConcerns = [...new Set(tomorrowsTasksWithOnClick.map((t) => t.concern))];
-
-    const todaysTasks = todaysConcerns
-      .map((concern) => todaysTasksWithOnClick.filter((t) => t.concern === concern))
-      .filter((gr) => gr.length);
-
-    const tomorrowsTasks = tomorrowsConcerns
-      .map((concern) => tomorrowsTasksWithOnClick.filter((t) => t.concern === concern))
-      .filter((gr) => gr.length);
-
-    const todayTasksCompleted =
-      todaysTasksWithOnClick?.filter((task) => task.status === "completed").map((r) => r.part) ||
-      [];
-
-    const canAddDiary = tasks && tasks.length > 0 && todayTasksCompleted.length > 1;
-
-    return { todaysTasks, tomorrowsTasks, canAddDiary };
-  }, []);
-
-  const fetchTasks = useCallback(async () => {
-    let reply;
-
+  const fetchTasks = useCallback(async (hideCompletedTasks: boolean, hideFutureTasks: boolean) => {
     try {
       const response = await callTheServer({ endpoint: "getTasks", method: "GET" });
       if (response.status === 200) {
         const tasks: TaskType[] = response.message;
-
         setTasks(tasks);
-        reply = processTasks(tasks);
-        setTodaysTasksGroups(reply.todaysTasks);
-        setTomorrowsTasksGroups(reply.tomorrowsTasks);
-        setCanAddDiary(reply.canAddDiary);
+
+        handleUpdateTasks({ tasks }, hideCompletedTasks, hideFutureTasks);
       }
     } catch (err) {}
   }, []);
 
-  const handleUpdateTasks = useCallback((response: { tasks: TaskType[] }) => {
-    processTasks(response.tasks);
-  }, []);
+  const handleUpdateTasks = useCallback(
+    (response: { tasks: TaskType[] }, hideCompletedTasks: boolean, hideFutureTasks: boolean) => {
+      let tasks = response.tasks;
+      if (hideFutureTasks) {
+        const todayStart = new Date(tasks[0].startsAt);
+        const todayEnd = new Date(todayStart);
+        todayEnd.setHours(23, 59, 59, 59);
+
+        tasks = tasks.filter((t) => new Date(t.startsAt) < todayEnd);
+      }
+
+      if (hideCompletedTasks) {
+        tasks = tasks.filter((t) => t.status !== TaskStatusEnum.COMPLETED);
+      }
+
+      setTaskList(tasks);
+    },
+    []
+  );
 
   const handleSaveTask = useCallback(
     (props: HandleSaveTaskProps) =>
-      saveTaskFromDescription({ ...props, returnTasks: true, cb: handleUpdateTasks }),
-    [handleUpdateTasks]
+      saveTaskFromDescription({
+        ...props,
+        returnTasks: true,
+        cb: ({ tasks }) => handleUpdateTasks({ tasks }, hideCompletedTasks, hideFutureTasks),
+      }),
+    [handleUpdateTasks, hideCompletedTasks, hideFutureTasks, groupTasksByConcerns]
   );
+
+  const taskItems = useMemo(() => {
+    if (!taskList) return <></>;
+    if (groupTasksByConcerns) {
+      return getTasksAsGroups(taskList, hideFutureTasks, hideCompletedTasks);
+    } else {
+      return getTasksWthoutGroups(taskList, hideFutureTasks, hideCompletedTasks);
+    }
+  }, [taskList, groupTasksByConcerns, hideFutureTasks, hideCompletedTasks]);
 
   useEffect(() => {
     if (code) return;
-    fetchTasks();
+    const savedHideFutureTasks = getFromLocalStorage("hideFutureTasks");
+    const savedHideCompletedTasks = getFromLocalStorage("hideCompletedTasks");
+    fetchTasks(!!savedHideFutureTasks, !!savedHideCompletedTasks);
   }, [code]);
 
   useEffect(() => {
-    if (!pageLoaded || !tasks) return;
+    setHideFutureTasks(!!savedHideFutureTasks);
+    setHideCompletedTasks(!!savedHideCompletedTasks);
+    setGroupTasksByConcerns(!!savedGroupTasksByConcern);
+  }, []);
+
+  useEffect(() => {
+    if (!tasks) return;
+    handleUpdateTasks({ tasks }, hideCompletedTasks, hideFutureTasks);
+  }, [tasks, hideCompletedTasks, hideFutureTasks, groupTasksByConcerns]);
+
+  useEffect(() => {
+    if (!pageLoaded || !taskList) return;
+
+    const hasFilters = hideCompletedTasks || hideFutureTasks;
 
     if (isAnalysisGoing) {
       setDisplayComponent("wait");
-    } else if (tasks.length === 0) {
+    } else if (taskList.length === 0 && hasFilters) {
+      setDisplayComponent("resetFilters");
+    } else if (taskList.length === 0) {
       setDisplayComponent("createTaskOverlay");
-    } else if (tasks.length > 0) {
+    } else if (taskList.length > 0) {
       setDisplayComponent("content");
     } else {
       setDisplayComponent("loading");
     }
-  }, [isAnalysisGoing, todaysTasksGroups, tomorrowsTasksGroups, tasks, pageLoaded]);
+  }, [isAnalysisGoing, taskList, pageLoaded]);
 
   useEffect(() => {
     if (!userId) return;
@@ -148,7 +251,9 @@ export default function TasksList({ customStyles }: Props) {
       userId,
       operationKey: "routine",
       setShowWaitComponent: setIsAnalysisGoing,
-    }).then(() => setPageLoaded(true));
+    });
+
+    setPageLoaded(true);
   }, [userId]);
 
   return (
@@ -157,9 +262,29 @@ export default function TasksList({ customStyles }: Props) {
         disableCreateTask={displayComponent === "wait"}
         handleSaveTask={handleSaveTask}
       />
+      <TaskFlters
+        canAddDiary={canAddDiary}
+        hideCompletedTasks={hideCompletedTasks}
+        groupTasksByConcerns={groupTasksByConcerns}
+        hideFutureTasks={hideFutureTasks}
+        setGroupTasksByConcerns={setGroupTasksByConcerns}
+        setHideCompletedTasks={setHideCompletedTasks}
+        setHideFutureTasks={setHideFutureTasks}
+      />
       {displayComponent !== "loading" && (
         <CreateRoutineProvider>
           <Stack className={`${classes.content} scrollbar`}>
+            {displayComponent === "resetFilters" && (
+              <OverlayWithText
+                text="Nothing found"
+                icon={<IconCircleOff size={18} />}
+                button={
+                  <Button variant="default" onClick={handleResetFilters}>
+                    Reset filters
+                  </Button>
+                }
+              />
+            )}
             {displayComponent === "createTaskOverlay" && (
               <CreateTaskOverlay handleSaveTask={handleSaveTask} />
             )}
@@ -168,7 +293,7 @@ export default function TasksList({ customStyles }: Props) {
                 operationKey="routine"
                 description="Creating your task(s)"
                 onComplete={() => {
-                  fetchTasks();
+                  fetchTasks(hideCompletedTasks, hideFutureTasks);
                   setIsAnalysisGoing(false);
                 }}
                 onError={() => setIsAnalysisGoing(false)}
@@ -176,33 +301,7 @@ export default function TasksList({ customStyles }: Props) {
               />
             )}
             {displayComponent === "content" && (
-              <Carousel
-                align="start"
-                slideGap={16}
-                slidesToScroll={1}
-                classNames={{
-                  root: classes.root,
-                  controls: classes.controls,
-                  control: `carouselControl`,
-                  viewport: classes.viewport,
-                  container: classes.container,
-                }}
-              >
-                <Carousel.Slide>
-                  {todaysTasksGroups && todaysTasksGroups?.length > 0 ? (
-                    <TasksSlide taskGroups={todaysTasksGroups} canAddDiary={!!canAddDiary} />
-                  ) : (
-                    <OverlayWithText text="No tasks" icon={<IconCircleOff className="icon" />} />
-                  )}
-                </Carousel.Slide>
-                {tomorrowsTasksGroups && tomorrowsTasksGroups?.length > 0 ? (
-                  <Carousel.Slide>
-                    <TasksSlide taskGroups={tomorrowsTasksGroups} />
-                  </Carousel.Slide>
-                ) : (
-                  <></>
-                )}
-              </Carousel>
+              <Stack className={classes.listWrapper}>{taskItems}</Stack>
             )}
           </Stack>
         </CreateRoutineProvider>

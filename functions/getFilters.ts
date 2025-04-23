@@ -1,21 +1,20 @@
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import { partItems, taskStatuses } from "@/components/PageHeader/data";
 import { normalizeString } from "@/helpers/utils";
 import callTheServer from "./callTheServer";
 
 type GetUsersFiltersProps = {
   userName?: string | string[];
   collection: string;
-  fields?: string[];
+  fields: string[];
   filter?: string[];
 };
 
 const getFilters = async ({ userName, filter, collection, fields }: GetUsersFiltersProps) => {
-  let result = {
-    availableStatuses: [] as FilterItemType[],
-    availableParts: [] as FilterItemType[],
-    availableConcerns: [] as FilterItemType[],
-  };
+  let result = fields.reduce((a: { [key: string]: FilterItemType[] }, c) => {
+    a[c] = [];
+    return a;
+  }, {});
+
   try {
     if (!collection) throw new Error("Collection is missing");
 
@@ -27,7 +26,7 @@ const getFilters = async ({ userName, filter, collection, fields }: GetUsersFilt
 
     if (filter) parts.push(...filter);
     if (collection) parts.push(`collection=${collection}`);
-    if (fields) parts.push(`fields=${fields.join(",")}`);
+    parts.push(`fields=${fields.join(",")}`);
 
     const query = parts.join("&");
 
@@ -39,23 +38,17 @@ const getFilters = async ({ userName, filter, collection, fields }: GetUsersFilt
     });
 
     if (response.status === 200) {
-      const { concern, part, status } = response.message || {};
-
       if (response.message) {
-        if (part) {
-          result.availableParts = partItems.filter((item) => part.includes(item.value));
-        }
+        const data: { [key: string]: string[] } = response.message;
 
-        if (concern) {
-          result.availableConcerns = concern.map((c: string) => ({
-            value: c,
-            label: normalizeString(c),
-          }));
-        }
-
-        if (status) {
-          result.availableStatuses = taskStatuses.filter((item) => status.includes(item.value));
-        }
+        result = Object.fromEntries(
+          Object.entries(data)
+            .filter((gr) => Boolean(gr[1]))
+            .map(([label, value]) => [
+              label,
+              value.map((v: string) => ({ label: normalizeString(v), value: v })),
+            ])
+        );
       }
     }
   } catch (err) {

@@ -51,7 +51,7 @@ export default function ComparisonCarousel({ data }: Props) {
       record: data,
       isPublicPage: true,
       title: modalTitle,
-      type: "progress",
+      type: "ba",
     });
   }, [userName, part, routineName, redirectUrl, formattedDate]);
 
