@@ -2,6 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
@@ -169,46 +170,52 @@ export default function DiaryPage(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      <Stack className={classes.content}>
-        {purchaseOverlayData && (
-          <>
-            {showOverlayComponent === "purchaseOverlay" && (
-              <PurchaseOverlay
-                userName={userName}
-                notPurchasedParts={notPurchased}
-                purchaseOverlayData={purchaseOverlayData}
-                handleCloseOverlay={handleCloseOverlay}
+      {showButton && (
+        <MaximizeOverlayButton
+          showOverlayComponent={showOverlayComponent}
+          notPurchased={notPurchased}
+          setShowOverlayComponent={setShowOverlayComponent}
+        />
+      )}
+      <Stack className={classes.wrapper}>
+        <Stack
+          className={cn(classes.content, "scrollbar", {
+            [classes.relative]: showOverlayComponent !== "purchaseOverlay",
+          })}
+        >
+          {purchaseOverlayData && (
+            <>
+              {showOverlayComponent === "purchaseOverlay" && (
+                <PurchaseOverlay
+                  userName={userName}
+                  notPurchasedParts={notPurchased}
+                  purchaseOverlayData={purchaseOverlayData}
+                  handleCloseOverlay={handleCloseOverlay}
+                />
+              )}
+            </>
+          )}
+          {diaryRecords ? (
+            <>
+              <DiaryContent
+                diaryRecords={diaryRecords}
+                openValue={openValue}
+                setOpenValue={setOpenValue}
+                hasMore={hasMore}
+                handleFetchDiaryRecords={() =>
+                  handleFetchDiaryRecords({ dateFrom, dateTo, sort, part, concern })
+                }
+                isPublic={true}
               />
-            )}
-          </>
-        )}
-        {diaryRecords ? (
-          <>
-            <DiaryContent
-              diaryRecords={diaryRecords}
-              openValue={openValue}
-              setOpenValue={setOpenValue}
-              hasMore={hasMore}
-              handleFetchDiaryRecords={() =>
-                handleFetchDiaryRecords({ dateFrom, dateTo, sort, part, concern })
-              }
+            </>
+          ) : (
+            <Loader
+              m="0 auto"
+              pt="30%"
+              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
             />
-
-            {showButton && (
-              <MaximizeOverlayButton
-                showOverlayComponent={showOverlayComponent}
-                notPurchased={notPurchased}
-                setShowOverlayComponent={setShowOverlayComponent}
-              />
-            )}
-          </>
-        ) : (
-          <Loader
-            m="0 auto"
-            pt="30%"
-            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
-          />
-        )}
+          )}
+        </Stack>
       </Stack>
     </ClubModerationLayout>
   );

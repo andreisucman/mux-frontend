@@ -10,7 +10,7 @@
 .box {
   cursor: pointer;
   gap: rem(4);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   padding: rem(8);
   border-radius: rem(8);
   flex: 1;

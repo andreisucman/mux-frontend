@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Carousel } from "@mantine/carousel";
-import { Skeleton, Stack, Title } from "@mantine/core";
+import { rem, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
 import Link from "@/helpers/custom-router/patch-router/link";
@@ -75,6 +75,7 @@ export default function ComparisonCarousel({ data }: Props) {
           position={index % 2 === 0 ? "right" : "left"}
           showDate
           isRelative
+          limitMaxHeight
         />
       </Carousel.Slide>
     ));

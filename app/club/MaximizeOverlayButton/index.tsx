@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { IconEye } from "@tabler/icons-react";
-import { ActionIcon, rem } from "@mantine/core";
+import { Button, rem } from "@mantine/core";
 import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./MaximizeOverlayButton.module.css";
 
@@ -20,7 +19,6 @@ export default function MaximizeOverlayButton({
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const styles = { maxWidth: rem(300), margin: "auto" };
 
   const handleShowOverlay = useCallback(() => {
     if (showOverlayComponent === "showOtherRoutinesButton") {
@@ -37,8 +35,8 @@ export default function MaximizeOverlayButton({
   }, [notPurchased, showOverlayComponent]);
 
   return (
-    <ActionIcon className={classes.container} style={styles} onClick={handleShowOverlay}>
-      <IconEye size={24} />
-    </ActionIcon>
+    <Button size="compact-sm" className={classes.container} onClick={handleShowOverlay}>
+      Show info card
+    </Button>
   );
 }

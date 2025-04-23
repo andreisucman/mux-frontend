@@ -12,17 +12,25 @@ import classes from "./DiaryRow.module.css";
 
 type Props = {
   data: DiaryType;
+  isPublic: boolean;
   index: number;
 };
 
-export default function DiaryRow({ data }: Props) {
+export default function DiaryRow({ data, isPublic }: Props) {
   const [diaryRecord, setDiaryRecord] = useState<DiaryType>(data);
   const [isUploading, setIsUploading] = useState(false);
+  const [recordingsOpen, { toggle: toggleRecordingCollapse }] = useDisclosure(false);
   const [transcriptionOpen, { toggle: toggleTranscriptionCollapse }] = useDisclosure(false);
   const [tasksOpen, { toggle: toggleTasksCollapse }] = useDisclosure(true);
   const [showRecordButton, setShowRecordButton] = useState(true);
 
   const { audio, transcriptions, activity } = diaryRecord;
+
+  const recordingChevron = recordingsOpen ? (
+    <IconChevronUp className="icon icon__small" />
+  ) : (
+    <IconChevronDown className="icon icon__small" />
+  );
 
   const transcriptionChevron = transcriptionOpen ? (
     <IconChevronUp className="icon icon__small" />
@@ -38,6 +46,7 @@ export default function DiaryRow({ data }: Props) {
 
   const tasksLabel = tasksOpen ? "Hide activity" : "Show activity";
   const transcriptionLabel = transcriptionOpen ? "Hide transcription" : "Show transcription";
+  const recordingLabel = transcriptionOpen ? "Hide recording" : "Show recordings";
 
   const handleSubmit = useCallback(
     async (blobs: Blob[] | null) => {
@@ -81,13 +90,8 @@ export default function DiaryRow({ data }: Props) {
 
   return (
     <Stack className={classes.container}>
-      {showRecordButton && <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />}
-      {audio.length > 0 && (
-        <Stack className={classes.audoStack}>
-          {audio.map((obj, i) => (
-            <audio key={i} src={obj.url} controls className={classes.audio} />
-          ))}
-        </Stack>
+      {showRecordButton && !isPublic && (
+        <ControlButtons isLoading={isUploading} onSubmit={handleSubmit} />
       )}
       {activity.length > 0 && (
         <>
@@ -101,6 +105,25 @@ export default function DiaryRow({ data }: Props) {
           />
           <Collapse in={tasksOpen}>
             <DiaryActivityRow activities={activity} />
+          </Collapse>
+        </>
+      )}
+      {audio.length > 0 && (
+        <>
+          <Divider
+            label={
+              <Group c="dimmed" className={classes.labelGroup} onClick={toggleRecordingCollapse}>
+                {recordingChevron}
+                {recordingLabel}
+              </Group>
+            }
+          />
+          <Collapse in={recordingsOpen}>
+            <Stack className={classes.audoStack}>
+              {audio.map((obj, i) => (
+                <audio key={i} src={obj.url} controls className={classes.audio} />
+              ))}
+            </Stack>
           </Collapse>
         </>
       )}

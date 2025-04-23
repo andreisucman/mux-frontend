@@ -3,7 +3,6 @@
 
   flex: 1;
   width: 100%;
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
   gap: 0;

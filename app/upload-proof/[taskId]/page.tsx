@@ -214,7 +214,7 @@ export default function UploadProof(props: Props) {
       color = "var(--mantine-color-green-7)";
       text = (
         <Group gap={6} style={{ color }}>
-          <IconCheckbox className="icon" color={color} /> Set as task example
+          <IconCheckbox size={16} color={color} /> Set as task example
         </Group>
       );
       response.onClick = () =>
@@ -228,7 +228,7 @@ export default function UploadProof(props: Props) {
     } else {
       text = (
         <Group gap={6} color={color}>
-          <IconCirclePlus className="icon" /> Set as task example
+          <IconCirclePlus size={16} /> Set as task example
         </Group>
       );
       response.onClick = () => {
@@ -260,6 +260,7 @@ export default function UploadProof(props: Props) {
                 {setExampleButtonInfo?.text && (
                   <Button
                     variant="default"
+                    size="compact-sm"
                     onClick={setExampleButtonInfo?.onClick}
                     loading={isSetTaskExampleLoading}
                     disabled={isSetTaskExampleLoading}

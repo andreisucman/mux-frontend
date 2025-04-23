@@ -1,19 +1,6 @@
 .container {
   position: relative;
   border-radius: var(--mantine-radius-lg);
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    z-index: -1;
-    transform: translateX(-50%);
-    width: 90%;
-    height: 10px;
-    box-shadow: var(--mantine-shadow-sm);
-    pointer-events: none;
-  }
 }
 
 .labelGroup {

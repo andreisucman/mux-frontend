@@ -4,6 +4,7 @@
 @import "./accordion.css";
 
 * {
+  --header-height: rem(70);
   box-sizing: border-box;
 }
 

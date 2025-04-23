@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -8,6 +8,7 @@ import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
+import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import LineProgressIndicators from "../LineProgressIndicators";
 import classes from "./ProgressModalContent.module.css";
 
@@ -35,7 +36,8 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
   } = record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
-  const formattedCompareDate = formatDate({ date: updatedAt || createdAt || new Date() });
+  const formattedCompareDate = formatDate({ date: updatedAt || new Date() });
+  const dateInterval = useMemo(() => getReadableDateInterval(initialDate, updatedAt || new Date()), []);
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
@@ -58,7 +60,7 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
         isSelf={isSelf}
       />
       <LineProgressIndicators
-        title="Improvement"
+        title={`Improvement (${dateInterval})`}
         concernScores={[concernScore]}
         concernScoresDifference={[concernScoreDifference]}
       />

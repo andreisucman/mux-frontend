@@ -164,6 +164,13 @@ export default function ClubProof(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
+      {showButton && (
+        <MaximizeOverlayButton
+          showOverlayComponent={showOverlayComponent}
+          notPurchased={notPurchased}
+          setShowOverlayComponent={setShowOverlayComponent}
+        />
+      )}
       <Stack className={cn(classes.content, "scrollbar")}>
         {purchaseOverlayData && (
           <>
@@ -189,13 +196,6 @@ export default function ClubProof(props: Props) {
               isPublicPage
               columns={2}
             />
-            {showButton && (
-              <MaximizeOverlayButton
-                showOverlayComponent={showOverlayComponent}
-                notPurchased={notPurchased}
-                setShowOverlayComponent={setShowOverlayComponent}
-              />
-            )}
           </>
         ) : (
           <Loader

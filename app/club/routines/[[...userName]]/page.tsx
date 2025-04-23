@@ -298,9 +298,20 @@ export default function ClubRoutines(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
+      {showButton && (
+        <MaximizeOverlayButton
+          showOverlayComponent={showOverlayComponent}
+          notPurchased={notPurchased}
+          setShowOverlayComponent={setShowOverlayComponent}
+        />
+      )}
       {accordionItems ? (
         <Stack className={classes.wrapper}>
-          <Stack className={cn(classes.content, "scrollbar")}>
+          <Stack
+            className={cn(classes.content, "scrollbar", {
+              [classes.relative]: showOverlayComponent !== "purchaseOverlay",
+            })}
+          >
             {purchaseOverlayData && (
               <>
                 {showOverlayComponent === "purchaseOverlay" && (
@@ -314,7 +325,7 @@ export default function ClubRoutines(props: Props) {
               </>
             )}
             {accordionItems.length > 0 ? (
-              <Stack className={classes.content}>
+              <>
                 <Accordion
                   value={openValue}
                   onChange={setOpenValue}
@@ -348,14 +359,7 @@ export default function ClubRoutines(props: Props) {
                     <IconArrowDown />
                   </ActionIcon>
                 )}
-                {showButton && (
-                  <MaximizeOverlayButton
-                    showOverlayComponent={showOverlayComponent}
-                    notPurchased={notPurchased}
-                    setShowOverlayComponent={setShowOverlayComponent}
-                  />
-                )}
-              </Stack>
+              </>
             ) : (
               <OverlayWithText text={"Nothing found"} icon={<IconCircleOff className="icon" />} />
             )}

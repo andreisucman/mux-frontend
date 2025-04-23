@@ -13,6 +13,7 @@ type Props = {
   hasMore: boolean;
   diaryRecords?: DiaryType[];
   openValue: string | null;
+  isPublic?: boolean;
   setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryType[] | undefined>>;
   setOpenValue: React.Dispatch<React.SetStateAction<string | null>>;
   handleFetchDiaryRecords: () => void;
@@ -22,6 +23,7 @@ export default function DiaryContent({
   hasMore,
   diaryRecords,
   openValue,
+  isPublic,
   setDiaryRecords,
   setOpenValue,
   handleFetchDiaryRecords,
@@ -38,16 +40,17 @@ export default function DiaryContent({
           data={props.data}
           index={props.index}
           isSelf={isSelf}
+          isPublic={!!isPublic}
           setDiaryRecords={setDiaryRecords}
           formattedDate={formattedDate}
         />
       );
     },
-    [diaryRecords, userId]
+    [diaryRecords, userId, isPublic]
   );
 
   return (
-    <Stack className={classes.container}>
+    <>
       <Accordion
         value={openValue}
         onChange={setOpenValue}
@@ -79,6 +82,6 @@ export default function DiaryContent({
           <IconArrowDown />
         </ActionIcon>
       )}
-    </Stack>
+    </>
   );
 }

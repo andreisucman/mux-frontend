@@ -29,5 +29,13 @@
 }
 
 .content {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
   flex: 1;
+  border-radius: rem(16);
+}
+
+.relative {
+  position: relative !important;
 }

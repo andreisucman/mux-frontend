@@ -261,7 +261,7 @@ export default function PurchaseOverlay({
             )
           }
           beforeButtonChild={
-            <Button onClick={handleCloseOverlay} variant="outline">
+            <Button onClick={handleCloseOverlay} variant="outline" style={{ borderWidth: rem(2) }}>
               Preview
             </Button>
           }

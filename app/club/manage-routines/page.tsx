@@ -145,18 +145,19 @@ export default function ManageRoutines() {
   const handleSelectConcern = (fieldName: "concern" | "part", value?: string | null) => {
     if (!routineData || !value) return;
     const relevantRoutineData = routineData.find((doItem) => doItem[fieldName] === value);
-
+    console.log("relevantRoutineData", relevantRoutineData);
     if (relevantRoutineData) {
       setFields(relevantRoutineData);
       setDefaultRoutineData(relevantRoutineData);
     }
   };
 
-  useEffect(() => {
-    if (!pageLoaded) return;
-    callTheServer({ endpoint: "getRoutineData", method: "GET" }).then((res) => {
-      if (res.status === 200) {
-        const { concerns, parts, routineData } = res.message;
+  const fetchRoutineData = async () => {
+    try {
+      const response = await callTheServer({ endpoint: "getRoutineData", method: "GET" });
+
+      if (response.status === 200) {
+        const { concerns, parts, routineData } = response.message;
 
         const concernsItems = concerns.map((c: string) => ({
           value: c,
@@ -187,7 +188,12 @@ export default function ManageRoutines() {
           setDefaultRoutineData(data);
         }
       }
-    });
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    if (!pageLoaded) return;
+    fetchRoutineData();
   }, [pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
@@ -203,8 +209,9 @@ export default function ManageRoutines() {
               selectedValue={concern}
               filterType="concern"
               placeholder="Select concern"
-              onSelect={() => handleSelectConcern("concern", concern)}
+              onSelect={(value) => handleSelectConcern("concern", value)}
               isDisabled={routineConcerns.length === 0}
+              customStyles={{flexBasis: "60%"}}
               addToQuery
             />
             <FilterDropdown
@@ -212,7 +219,7 @@ export default function ManageRoutines() {
               selectedValue={part}
               filterType="part"
               placeholder="Select part"
-              onSelect={() => handleSelectConcern("part", part)}
+              onSelect={(value) => handleSelectConcern("part", value)}
               isDisabled={routineParts.length === 0}
               addToQuery
             />
@@ -229,13 +236,13 @@ export default function ManageRoutines() {
               price={price}
               updatePrice={updatePrice}
               status={status}
+              concern={concern}
+              defaultRoutineData={defaultRoutineData}
               setName={setName}
               setDescription={setDescription}
               setPrice={setPrice}
               setUpdatePrice={setUpdatePrice}
               setStatus={setStatus}
-              concern={concern}
-              defaultRoutineData={defaultRoutineData}
               saveRoutineData={saveRoutineData}
             />
           ) : (

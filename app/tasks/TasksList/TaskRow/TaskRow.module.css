@@ -13,24 +13,10 @@
   width: 100%;
   max-height: rem(80);
   min-height: rem(80);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
 
   &:hover {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    z-index: -1;
-    transform: translateX(-50%);
-    width: 90%;
-    height: 10px;
-    box-shadow: var(--mantine-shadow-sm);
-    pointer-events: none;
-    animation: unset;
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   }
 }
 

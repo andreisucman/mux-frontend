@@ -180,6 +180,13 @@ export default function ClubProgress(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
+      {showButton && (
+        <MaximizeOverlayButton
+          showOverlayComponent={showOverlayComponent}
+          notPurchased={notPurchased}
+          setShowOverlayComponent={setShowOverlayComponent}
+        />
+      )}
       <Stack className={classes.wrapper}>
         {progress ? (
           <Stack
@@ -208,13 +215,6 @@ export default function ClubProgress(props: Props) {
               setProgress={setProgress}
               isPublicPage
             />
-            {showButton && (
-              <MaximizeOverlayButton
-                showOverlayComponent={showOverlayComponent}
-                notPurchased={notPurchased}
-                setShowOverlayComponent={setShowOverlayComponent}
-              />
-            )}
           </Stack>
         ) : (
           <Loader

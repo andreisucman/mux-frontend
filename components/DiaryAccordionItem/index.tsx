@@ -10,7 +10,7 @@ import classes from "./DiaryAccordionItem.module.css";
 type Props = {
   data: DiaryType;
   formattedDate: string;
-
+  isPublic: boolean;
   index: number;
   isSelf: boolean;
   setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryType[] | undefined>>;
@@ -21,6 +21,7 @@ export default function DiaryAccordionItem({
   formattedDate,
   index,
   isSelf,
+  isPublic,
   setDiaryRecords,
 }: Props) {
   const { _id: recordId, part, concern } = data;
@@ -50,7 +51,7 @@ export default function DiaryAccordionItem({
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
-        <DiaryRow data={data} index={index} />
+        <DiaryRow data={data} isPublic={!!isPublic} index={index} />
       </Accordion.Panel>
     </Accordion.Item>
   );

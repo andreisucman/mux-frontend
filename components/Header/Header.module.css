@@ -10,7 +10,7 @@
   flex-wrap: nowrap;
   align-items: center;
   padding: 0 rem(16);
-  min-height: rem(70);
+  min-height: var(--header-height);
 
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
 
@@ -21,6 +21,7 @@
 
 .sticky {
   position: sticky;
+  z-index: 5;
 }
 
 .wrapper {

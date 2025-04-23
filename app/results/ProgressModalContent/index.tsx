@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
@@ -8,6 +8,7 @@ import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
+import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import LineProgressIndicators from "../LineProgressIndicators";
 import { SimpleProgressType } from "../types";
 import classes from "./ProgressModalContent.module.css";
@@ -38,6 +39,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: createdAt || new Date() });
+  const dateInterval = useMemo(() => getReadableDateInterval(initialDate, createdAt), []);
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
@@ -67,7 +69,11 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      <LineProgressIndicators title="Improvement" concernScores={filteredScores} concernScoresDifference={filteredDifferences} />
+      <LineProgressIndicators
+        title={`Improvement (${dateInterval})`}
+        concernScores={filteredScores}
+        concernScoresDifference={filteredDifferences}
+      />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

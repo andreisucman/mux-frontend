@@ -13,8 +13,10 @@ type Props = {
   position?: "right" | "left";
   datePosition?: "top-left" | "bottom-right";
   onClick?: () => void;
+  limitMaxHeight?: boolean;
   customStyles?: { [key: string]: any };
   customWrapperStyles?: { [key: string]: any };
+  customImageStyles?: { [key: string]: any };
 };
 
 export default function ImageCard({
@@ -22,10 +24,12 @@ export default function ImageCard({
   date,
   child,
   isRelative,
+  limitMaxHeight,
   showDate,
   position,
   datePosition = "bottom-right",
   customWrapperStyles,
+  customImageStyles,
   customStyles,
   onClick,
 }: Props) {
@@ -41,7 +45,9 @@ export default function ImageCard({
             [classes.relative]: isRelative,
             [classes.left]: position === "left",
             [classes.right]: position === "right",
+            [classes.limitMaxHeight]: limitMaxHeight,
           })}
+          style={customImageStyles ? customImageStyles : {}}
           src={image || ""}
           width={300}
           height={400}

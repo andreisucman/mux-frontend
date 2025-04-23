@@ -164,19 +164,8 @@ export default function BeforeAftersPage() {
     <Stack className={`${classes.container} mediumPage`} ref={ref}>
       <PageHeader
         title="Results"
-        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType"]}
+        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType","concern"]}
         disableFilter={noFilters}
-        children={
-          <FilterDropdown
-            data={concernFilters}
-            selectedValue={concern}
-            isDisabled={concernFilters.length === 0}
-            filterType="concern"
-            placeholder="Select concern"
-            onSelect={handleChangeConcern}
-            addToQuery
-          />
-        }
         onFilterClick={() =>
           openFiltersCard({
             cardName: FilterCardNamesEnum.FilterCardContent,
