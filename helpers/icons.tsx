@@ -2,8 +2,7 @@ import {
   IconCancel,
   IconCheckbox,
   IconClock,
-  IconGenderFemale,
-  IconGenderMale,
+  IconMan,
   IconMoodNeutral,
   IconNotebook,
   IconRoute,
@@ -15,6 +14,7 @@ import {
 export const partIcons: { [key: string]: React.ReactNode } = {
   face: <IconMoodNeutral className="icon" />,
   hair: <IconWhirl className="icon" />,
+  body: <IconMan className="icon" />,
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
@@ -22,11 +22,6 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
   progress: <IconTargetArrow className="icon" />,
   proof: <IconVideo className="icon" />,
   diary: <IconNotebook className="icon" />,
-};
-
-export const sexIcons = {
-  female: <IconGenderFemale className="icon" style={{ display: "flex" }} />,
-  male: <IconGenderMale className="icon" style={{ display: "flex" }} />,
 };
 
 export const statusIcons = {

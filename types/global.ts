@@ -88,6 +88,7 @@ export type ToAnalyzeType = {
 export type UserProgressRecordType = {
   face: ProgressType | null;
   hair: ProgressType | null;
+  body: ProgressType | null;
 };
 
 export type UserConcernType = {
@@ -204,6 +205,7 @@ export type AvatarType = {
 export enum PartEnum {
   FACE = "face",
   HAIR = "hair",
+  BODY = "body",
 }
 
 export type LatestProgressImagesType = {

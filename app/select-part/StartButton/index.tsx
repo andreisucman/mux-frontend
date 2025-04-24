@@ -2,19 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import cn from "classnames";
 import { Skeleton, Text, UnstyledButton, useComputedColorScheme } from "@mantine/core";
+import { upperFirst } from "@mantine/hooks";
 import { UserContext } from "@/context/UserContext";
 import { placeholders } from "@/data/placeholders";
-import { getPartIcon } from "@/helpers/icons";
 import classes from "./StartButton.module.css";
-import { upperFirst } from "@mantine/hooks";
 
 type Props = {
   onClick: () => void;
-  part: "face" | "hair";
+  part: "face" | "hair" | "body";
   isFirst?: boolean;
 };
 
-export default function StartButton({ onClick, part, isFirst }: Props) {
+export default function StartButton({ onClick, part }: Props) {
   const computedColorScheme = useComputedColorScheme("light");
 
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -38,8 +37,6 @@ export default function StartButton({ onClick, part, isFirst }: Props) {
   useEffect(() => {
     setPageLoaded(true);
   }, []);
-
-  const icon = getPartIcon(part);
 
   return (
     <UnstyledButton className={classes.container} onClick={onClick}>

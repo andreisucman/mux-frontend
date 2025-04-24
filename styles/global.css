@@ -59,7 +59,7 @@ body::-webkit-scrollbar-thumb {
   @media (max-width: $mantine-breakpoint-xs) {
     background-image:
       repeating-linear-gradient(
-        22deg,
+        20deg,
         transparent 40%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 40%,
         light-dark(var(--mantine-color-gray-0), lighten(var(--mantine-color-dark-7), 0.0125)) 75%,
