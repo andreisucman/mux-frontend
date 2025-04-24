@@ -167,7 +167,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     setShowBlur(false);
   }, [part, localUrl, offsets, blurDots, somethingUploaded]);
 
-  const handleStartAnalysis = useCallback(async () => {
+const handleStartAnalysis = useCallback(async () => {
     if (!userId || !somethingUploaded || isButtonLoading) return;
     setIsButtonLoading(true);
 
