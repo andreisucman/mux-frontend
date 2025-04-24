@@ -142,12 +142,18 @@ export default function ManageRoutines() {
     setStatus(status || "hidden");
   };
 
-  const handleSelectConcern = (fieldName: "concern" | "part", value?: string | null) => {
+  const handleSelectConcern = (
+    fieldName: "concern" | "part",
+    routineData: RoutineDataType[],
+    value?: string | null
+  ) => {
     if (!routineData || !value) return;
     const relevantRoutineData = routineData.find((doItem) => doItem[fieldName] === value);
     if (relevantRoutineData) {
       setFields(relevantRoutineData);
-      setDefaultRoutineData(relevantRoutineData);
+    } else {
+      setFields(defaultRoutineData);
+      setDefaultRoutineData(defaultRoutineData);
     }
   };
 
@@ -180,11 +186,12 @@ export default function ManageRoutines() {
 
         if (relevantRoutineData) {
           data = relevantRoutineData;
+        } else {
+          data = defaultRoutineData;
         }
 
         if (data) {
           setFields(data);
-          setDefaultRoutineData(data);
         }
       }
     } catch (err) {}
@@ -208,7 +215,7 @@ export default function ManageRoutines() {
               selectedValue={concern}
               filterType="concern"
               placeholder="Select concern"
-              onSelect={(value) => handleSelectConcern("concern", value)}
+              onSelect={(value) => handleSelectConcern("concern", routineData || [], value)}
               isDisabled={routineConcerns.length === 0}
               customStyles={{ flexBasis: "60%" }}
               addToQuery
@@ -218,7 +225,7 @@ export default function ManageRoutines() {
               selectedValue={part}
               filterType="part"
               placeholder="Select part"
-              onSelect={(value) => handleSelectConcern("part", value)}
+              onSelect={(value) => handleSelectConcern("part", routineData || [], value)}
               isDisabled={routineParts.length === 0}
               addToQuery
             />
