@@ -38,7 +38,7 @@ export default function MaximizeOverlayButton({
 
   return (
     <Button size="compact-sm" className={classes.container} onClick={handleShowOverlay}>
-      Buy the routines
+      Show info card
     </Button>
   );
 }

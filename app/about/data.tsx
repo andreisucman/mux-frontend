@@ -97,8 +97,8 @@ export const data = [
           transformation.
         </Text>
         <Text>
-          2. You can complete your tasks and earn achievements (&apos;Streaks&apos;). When you have
-          the necessary achievements you can claim rewards on the Rewards page.
+          2. You can complete your tasks to get achievements. When you have the necessary
+          achievements you can claim rewards on the Rewards page.
         </Text>
       </Stack>
     ),
@@ -112,17 +112,13 @@ export const data = [
           opt-in service that lets you buy or sell routines.
         </Text>
         <Text>
-          Next, you have to have at least one set of before-after images taken via our platform.
-          This means that you&apos;ll have to follow your routine for at least one week.
+          Next, you have to have at least one set of before-after images taken via our platform with
+          some improvement on the after image. This means that you&apos;ll have to follow your
+          routine for at least one week and it will have to be effectve.
         </Text>
         <Text>
-          Then, the routine you&apos;re publishing has to have at least 80% of proven task
-          completions. This means that 80% of the tasks you&apos;ve completed within the routine
-          must have either an image or video proof.
-        </Text>
-        <Text>
-          Lastly, you have to have at least 10 points of improvement between your before and after
-          images, i.e. you can only publish for sale effective routines.
+          Lastly, you will have to add at least one diary record for each routine you have. This
+          means that you should be adding a feedback note into your diary once a week or more.
         </Text>
       </Stack>
     ),
@@ -150,8 +146,8 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To hide your features from progress scans you can click the &apos;Blur features&apos;
-          checkbox at the top left.
+          To hide your identifiable features from progress scans you can click the &apos;Blur features&apos;
+          checkbox at the top left of the scan page.
         </Text>
         <Text>
           This will allow you to drag and drop shapes on your image to blur the underlying areas.
@@ -202,7 +198,7 @@ export const data = [
         You can delete your content at any time by clicking the trash button near your uploaded
         content. You can also delete your account in the settings. Please note that while your
         information dissappears from the public view immediately, the deletion of your data from our
-        servers may take some time as outlined in our{" "}
+        servers may take time as outlined in our{" "}
         <Link href="/legal/terms" style={{ textDecoration: "underline" }}>
           Terms of Service
         </Link>
@@ -210,10 +206,9 @@ export const data = [
       </Text>
     ),
   },
-
   {
     question: "How can I contact you?",
-    answer: <Text>Send your emails to info@muxout.com</Text>,
+    answer: <Text>Send an email to info@muxout.com</Text>,
   },
   {
     question: "Attributions",

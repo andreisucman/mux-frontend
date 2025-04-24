@@ -268,6 +268,25 @@ export default function Explain(props: Props) {
     }
   };
 
+  const handleFindExamples = useCallback(
+    async (isLoading: boolean, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+      if (isLoading || !taskInfo) return;
+
+      setIsLoading(true);
+      const response = await callTheServer({
+        endpoint: "findExamples",
+        method: "POST",
+        body: { taskId: taskInfo._id },
+      });
+      setIsLoading(false);
+
+      if (response.status === 200) {
+        setTaskInfo((prev: any) => ({ ...(prev || {}), examples: response.message }));
+      }
+    },
+    [taskInfo]
+  );
+
   useEffect(() => {
     if (!taskId || !userId) return;
     handleFetchTaskInfo(taskId);
@@ -391,14 +410,17 @@ export default function Explain(props: Props) {
                 <CreateRecipeBox
                   taskId={taskId}
                   recipe={previousRecipe}
-                  isDisabled={status !== TaskStatusEnum.ACTIVE || timeExpired}
+                  isDisabled={status !== TaskStatusEnum.ACTIVE || timeExpired || !!futureStartDate}
                   setShowWaitComponent={setShowWaitComponent}
                 />
               )}
               <Stack className={classes.exampleWrapper}>
-                {examples && examples.length > 0 && (
-                  <ExampleContainer title="Example:" examples={examples} />
-                )}
+                <ExampleContainer
+                  title="Example:"
+                  examples={examples}
+                  timeExpired={timeExpired || !!futureStartDate}
+                  findExamples={handleFindExamples}
+                />
                 <ExplanationContainer
                   title="Steps:"
                   text={taskInstruction}

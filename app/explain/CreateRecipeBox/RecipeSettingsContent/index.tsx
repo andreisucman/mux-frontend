@@ -73,6 +73,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
               htmlFor="upload_products_photo"
               variant={"default"}
               className={classes.imageButton}
+              disabled={isLoading}
             >
               Upload products
               <input
@@ -86,7 +87,7 @@ export default function RecipeSettingsContent({ onSubmit }: Props) {
           )}
         </Stack>
       </Stack>
-      <Button loading={isLoading} disabled={isLoading} onClick={handleGenerate}>
+      <Button loading={isLoading} disabled={isLoading || isLoadingOverlay} onClick={handleGenerate}>
         Generate recipe
       </Button>
     </Stack>
