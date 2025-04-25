@@ -2,7 +2,7 @@
   width: 100%;
   margin: auto;
 
-  max-width: clamp(rem(1280), 38.5%, rem(1440));
+  max-width: clamp(rem(1080), 38.5%, rem(1280));
   box-shadow: var(--mantine-shadows-md);
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
 

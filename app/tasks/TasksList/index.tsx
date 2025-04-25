@@ -223,6 +223,10 @@ export default function TasksList({ customStyles }: Props) {
 
   useEffect(() => {
     if (!tasks) return;
+    if (tasks.length === 0) {
+      handleResetFilters();
+      return;
+    }
     handleUpdateTasks({ tasks }, hideCompletedTasks, hideFutureTasks);
   }, [tasks, hideCompletedTasks, hideFutureTasks, groupTasksByConcerns]);
 
@@ -263,6 +267,7 @@ export default function TasksList({ customStyles }: Props) {
         handleSaveTask={handleSaveTask}
       />
       <TaskFlters
+      isDisabled={!tasks || tasks.length === 0}
         canAddDiary={canAddDiary}
         hideCompletedTasks={hideCompletedTasks}
         groupTasksByConcerns={groupTasksByConcerns}

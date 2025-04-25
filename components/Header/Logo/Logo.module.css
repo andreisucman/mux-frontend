@@ -6,6 +6,10 @@
 .logo {
   width: 100%;
   margin-bottom: rem(8);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    max-width: rem(130);
+  }
 }
 
 .dark {

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { IconHourglass, IconMoodNeutral, IconWhirl } from "@tabler/icons-react";
+import { IconHourglass } from "@tabler/icons-react";
 import { Button, Group, Stack, Text, Title } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -28,7 +28,7 @@ import { UploadProgressProps } from "../select-part/types";
 import classes from "./scan.module.css";
 
 export const runtime = "edge";
-const validParts = ["face", "hair"];
+const validParts = [PartEnum.BODY, PartEnum.FACE, PartEnum.HAIR];
 
 export default function ScanProgress() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function ScanProgress() {
   const [pageLoaded, setPageLoaded] = useState(false);
 
   const query = searchParams.toString();
-  const part = searchParams.get("part") || "face";
+  const part = searchParams.get("part") || PartEnum.FACE;
   const { _id: userId, toAnalyze, nextScan } = userDetails || {};
 
   const { isScanAvailable, checkBackDate } = useCheckScanAvailability({
@@ -210,7 +210,7 @@ export default function ScanProgress() {
 
   useEffect(() => {
     if (!pageLoaded) return;
-    const invalidPart = !validParts.includes(part);
+    const invalidPart = !validParts.includes(part as PartEnum);
 
     if (!userDetails || invalidPart) router.replace("/select-part");
   }, [userDetails, part, pageLoaded]);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { rem, Select, Stack, Text, TextInput } from "@mantine/core";
+import { Select, Stack, Text, TextInput } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import ToCompleteInput from "@/components/ToCompleteInput";
 import { normalizeString } from "@/helpers/utils";
 import { UserConcernType } from "@/types/global";
 
@@ -166,15 +165,6 @@ export default function CreateATaskContent({
         }}
         placeholder="Enter task name"
         withAsterisk
-      />
-      <ToCompleteInput
-        title={"Embeddable video id (optional)"}
-        placeholder="Video id"
-        prefix="https://www.youtube.com/embed/"
-        value={exampleVideoId}
-        setValue={setExampleVideoId}
-        customStyles={{ marginTop: rem(6) }}
-        isDisabled={relevantParts.length === 0}
       />
     </Stack>
   );

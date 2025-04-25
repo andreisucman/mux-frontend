@@ -167,7 +167,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     setShowBlur(false);
   }, [part, localUrl, offsets, blurDots, somethingUploaded]);
 
-const handleStartAnalysis = useCallback(async () => {
+  const handleStartAnalysis = useCallback(async () => {
     if (!userId || !somethingUploaded || isButtonLoading) return;
     setIsButtonLoading(true);
 
@@ -236,6 +236,7 @@ const handleStartAnalysis = useCallback(async () => {
               {!isAbsolute && (
                 <Group className={classes.checkboxWrapper}>
                   <Checkbox
+                    disabled={isLoading}
                     className={classes.checkbox}
                     checked={showBlur}
                     onChange={handleToggleBlur}

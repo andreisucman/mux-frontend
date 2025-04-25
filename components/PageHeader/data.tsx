@@ -1,4 +1,5 @@
 export const partItems = [
+  { label: "Body", value: "body" },
   { label: "Face", value: "face" },
   { label: "Hair", value: "hair" },
 ];

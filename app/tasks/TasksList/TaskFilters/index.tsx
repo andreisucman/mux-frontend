@@ -7,6 +7,7 @@ import { saveToLocalStorage } from "@/helpers/localStorage";
 import classes from "./TaskFilters.module.css";
 
 type Props = {
+  isDisabled: boolean;
   canAddDiary: boolean;
   groupTasksByConcerns: boolean;
   setGroupTasksByConcerns: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export default function TaskFlters({
+  isDisabled,
   canAddDiary,
   groupTasksByConcerns,
   setGroupTasksByConcerns,
@@ -65,7 +67,8 @@ export default function TaskFlters({
             onChange={(e) =>
               handleChange("groupTasksByConcern", e.currentTarget.checked, setGroupTasksByConcerns)
             }
-            checked={groupTasksByConcerns}
+            disabled={isDisabled}
+            checked={groupTasksByConcerns && !isDisabled}
             label="Group by concerns"
             className={classes.checkbox}
           />
@@ -73,7 +76,8 @@ export default function TaskFlters({
             onChange={(e) =>
               handleChange("hideCompletedTasks", e.currentTarget.checked, setHideCompletedTasks)
             }
-            checked={hideCompletedTasks}
+            disabled={isDisabled}
+            checked={hideCompletedTasks && !isDisabled}
             label="Hide completed"
             className={classes.checkbox}
           />
@@ -81,8 +85,9 @@ export default function TaskFlters({
             onChange={(e) =>
               handleChange("hideFutureTasks", e.currentTarget.checked, setHideFutureTasks)
             }
+            disabled={isDisabled}
             label="Hide future"
-            checked={hideFutureTasks}
+            checked={hideFutureTasks && !isDisabled}
             className={classes.checkbox}
           />
         </Group>
