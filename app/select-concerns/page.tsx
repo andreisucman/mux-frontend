@@ -11,7 +11,7 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,

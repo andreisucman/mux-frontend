@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import addImprovementCoach from "@/helpers/addImprovementCoach";
-import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { daysFrom } from "@/helpers/utils";
-import { PartEnum, UserConcernType, UserSubscriptionsType } from "@/types/global";
+import { UserConcernType } from "@/types/global";
 import classes from "./choose-date.module.css";
 
 export const runtime = "edge";
@@ -19,7 +17,6 @@ export const runtime = "edge";
 type CreateRoutineProps = {
   startDate: Date | null;
   concerns?: UserConcernType[];
-  subscriptions?: UserSubscriptionsType;
   specialConsiderations: string;
 };
 
@@ -28,9 +25,9 @@ export default function ChooseDatePage() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [creationMode, setCreationMode] = useState("scratch");
-  const { specialConsiderations, concerns, subscriptions, nextRoutine } = userDetails || {};
+  const { specialConsiderations, concerns, nextRoutine } = userDetails || {};
 
   const part = searchParams.get("part") || "face";
 
@@ -44,10 +41,9 @@ export default function ChooseDatePage() {
   const createRoutine = async ({
     startDate,
     concerns = [],
-    subscriptions,
     specialConsiderations,
   }: CreateRoutineProps) => {
-    if (isLoading || !startDate || !subscriptions) return;
+    if (isLoading || !startDate) return;
     setIsLoading(true);
 
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/tasks?${searchParams.toString()}`;
@@ -67,20 +63,6 @@ export default function ChooseDatePage() {
     });
 
     if (response.status === 200) {
-      if (response.error === "subscription expired") {
-        const { improvement } = subscriptions || {};
-
-        addImprovementCoach({
-          improvementSubscription: improvement,
-          onComplete: () =>
-            createRoutine({ concerns, startDate, subscriptions, specialConsiderations }),
-          redirectUrl,
-          cancelUrl: redirectUrl,
-          setUserDetails,
-        });
-
-        return;
-      }
       router.replace(redirectUrl);
     } else {
       setIsLoading(false);
@@ -151,7 +133,6 @@ export default function ChooseDatePage() {
           createRoutine({
             concerns,
             startDate,
-            subscriptions,
             specialConsiderations: specialConsiderations || "",
           })
         }

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import OverlayWithText from "@/components/OverlayWithText";
 import fetchPurchases from "@/functions/fetchPurchases";
-import { useRouter } from "@/helpers/custom-router";
-import Link from "@/helpers/custom-router/patch-router/link";
 import openErrorModal from "@/helpers/openErrorModal";
 import { PurchaseType } from "@/types/global";
 import PurchasesList from "../PurchasesList";

@@ -8,7 +8,7 @@ import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
 import { getCookieValue } from "@/helpers/cookies";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { useRouter } from "next/navigation";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import { protectedPaths } from "./protectedPaths";

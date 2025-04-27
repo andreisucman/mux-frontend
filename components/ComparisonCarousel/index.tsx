@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { Carousel } from "@mantine/carousel";
 import { rem, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
 import { getPartIcon, partIcons } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";

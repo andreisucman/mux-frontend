@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import Link from "@/helpers/custom-router/patch-router/link";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
@@ -49,10 +49,7 @@ export default async function copyTaskInstance({
     const { routine, newTask } = message;
 
     if (inform) {
-      const date = getReadableDateInterval(
-        new Date(newTask.startsAt),
-        new Date(newTask.startsAt)
-      );
+      const date = getReadableDateInterval(new Date(newTask.startsAt), new Date(newTask.startsAt));
       openInfoModal({
         title: "✔️ Success!",
         description: (

@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 import { Alert, Button, Checkbox, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import addImprovementCoach from "@/helpers/addImprovementCoach";
-import checkSubscriptionActivity from "@/helpers/checkSubscriptionActivity";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/helpers/formatDate";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import { getFromLocalStorage } from "@/helpers/localStorage";
+import openSelectRoutineType from "@/helpers/openSelectRoutineType";
 import { daysFrom } from "@/helpers/utils";
 import CreateATaskContent from "../CreateATaskContent";
 import EditATaskContent from "../EditATaskContent";
@@ -16,16 +14,14 @@ import { RawTaskType } from "./types";
 import classes from "./AddATaskContainer.module.css";
 
 type Props = {
-  onCreateRoutineClick: (args?: any) => void;
   handleSaveTask: (args: any) => Promise<void>;
 };
 
-export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick }: Props) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+export default function AddATaskContainer({ handleSaveTask }: Props) {
   const router = useRouter();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRoutineButtonLoading, setIsRoutineButtonLoading] = useState(false);
   const [error, setError] = useState("");
   const [rawTask, setRawTask] = useState<RawTaskType>();
   const [frequency, setFrequency] = useState<number>(1);
@@ -54,12 +50,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
     return dates;
   }, [date, frequency]);
 
-  const { nextRoutine, latestProgressImages, subscriptions, concerns } = userDetails || {};
-
-  const { isSubscriptionActive, isTrialUsed } = checkSubscriptionActivity(
-    ["improvement"],
-    subscriptions
-  );
+  const { nextRoutine, latestProgressImages, concerns } = userDetails || {};
 
   const partsScanned = useMemo(() => {
     const entries = Object.entries(latestProgressImages || {}).filter((gr) => Boolean(gr[1]));
@@ -69,18 +60,6 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
   const isCreateRoutineInCooldown = nextRoutine?.every(
     (ro) => ro.date && new Date(ro.date || 0) > new Date()
   );
-
-  const earliestCreateRoutineDate =
-    nextRoutine && nextRoutine.length
-      ? Math.min(...nextRoutine.map((r) => (r.date ? new Date(r.date).getTime() : Infinity)))
-      : null;
-
-  const nextRoutineDate = formatDate({
-    date: new Date(earliestCreateRoutineDate || new Date()),
-    hideYear: true,
-  });
-
-  const cooldownButtonText = `Next weekly routine after ${nextRoutineDate}`;
 
   const handleCreateTask = async () => {
     if (isLoading) return;
@@ -129,29 +108,27 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
 
   const handleEnableDrafting = async (enable: boolean) => {
     setEnableDrafting(enable);
-
-    if (isSubscriptionActive) {
-      saveToLocalStorage("enableDrafting", enable);
-    } else {
-      if (enable) {
-        const { subscriptions } = userDetails || {};
-        const { improvement } = subscriptions || {};
-        const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
-
-        addImprovementCoach({
-          improvementSubscription: improvement,
-          onComplete: () => handleEnableDrafting(true),
-          redirectUrl,
-          cancelUrl: redirectUrl,
-          setUserDetails,
-        });
-      }
-    }
   };
 
   const handleRedirectToScan = () => {
     router.push("/select-part");
     modals.closeAll();
+  };
+
+  const onCreateRoutineClick = () => {
+    if (!nextRoutine || isRoutineButtonLoading) return;
+
+    const partsScanned = Object.entries(latestProgressImages || {})
+      .filter(([key, value]) => Boolean(value))
+      .map(([key, _]) => key);
+
+    if (partsScanned.length > 1) {
+      const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
+      if (relevantRoutines) openSelectRoutineType(relevantRoutines);
+    } else if (partsScanned.length === 1) {
+      setIsRoutineButtonLoading(true);
+      router.push(`/add-details?part=${partsScanned[0]}`);
+    }
   };
 
   useEffect(() => {
@@ -160,7 +137,6 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
 
   const notScanned = partsScanned.length === 0;
   const noDescriptionAndInstruction = !rawTask?.description && !rawTask?.instruction;
-  const disableWeeklyRoutine = !!isCreateRoutineInCooldown || notScanned;
   const disableCreate = !taskName || !selectedConcern || !selectedPart || notScanned;
   const disableSave =
     !selectedConcern ||
@@ -233,7 +209,7 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
             {step === 1 && noDescriptionAndInstruction && (
               <>
                 <Button
-                  variant={isSubscriptionActive ? "filled" : "default"}
+                  variant={"default"}
                   loading={isLoading}
                   disabled={disableCreate}
                   onClick={onCreateManuallyClick}
@@ -241,13 +217,12 @@ export default function AddATaskContainer({ handleSaveTask, onCreateRoutineClick
                   Create task manually
                 </Button>
                 <Button
-                  variant={isSubscriptionActive ? "default" : "filled"}
-                  disabled={disableWeeklyRoutine}
-                  onClick={() => {
-                    onCreateRoutineClick({ isSubscriptionActive, isTrialUsed });
-                  }}
+                  variant={"filled"}
+                  loading={isRoutineButtonLoading}
+                  disabled={isRoutineButtonLoading}
+                  onClick={onCreateRoutineClick}
                 >
-                  {isCreateRoutineInCooldown ? cooldownButtonText : "Create weekly routine"}
+                  Suggest me a routine
                 </Button>
               </>
             )}

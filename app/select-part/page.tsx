@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Group, Stack, Title } from "@mantine/core";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import StartButton from "./StartButton";
 import classes from "./select-part.module.css";
 

@@ -15,11 +15,11 @@ import { UserContext } from "@/context/UserContext";
 import authenticate from "@/functions/authenticate";
 import signIn, { SignInStateType } from "@/functions/signIn";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
-import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import openLegalBody from "@/helpers/openLegalBody";
 import { validateEmail } from "@/helpers/utils";
 import classes from "./AuthForm.module.css";
+import { useRouter } from "next/navigation";
 
 type Props = {
   stateObject: SignInStateType;

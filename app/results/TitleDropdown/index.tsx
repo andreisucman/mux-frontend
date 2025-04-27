@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Group, HoverCard, Stack, Title } from "@mantine/core";
 import { useDisclosure, useElementSize } from "@mantine/hooks";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import classes from "./TitleDropdown.module.css";
 
 export type TitleType = { label: string; value: string; method?: string; addQuery?: boolean };

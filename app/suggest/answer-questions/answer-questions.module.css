@@ -1,0 +1,32 @@
+.container {
+  flex: 1;
+}
+
+.messageContainer {
+  position: relative;
+  flex: 1;
+}
+
+.text {
+  position: absolute;
+  inset: 0;
+}
+
+.button {
+  margin-left: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin: unset;
+  }
+}
+
+.alert {
+  cursor: default;
+  font-size: var(--mantine-font-size-sm);
+
+  & span {
+    cursor: pointer;
+    font-size: var(--mantine-font-size-sm);
+    text-decoration: underline;
+  }
+}

@@ -4,15 +4,10 @@ import AddATaskContainer from "./AddATaskContainer";
 
 type OpenCreateNewTaskProps = {
   handleSaveTask: (...args: any) => Promise<void>;
-  onCreateRoutineClick: (args?: any) => void;
   onClose?: () => void;
 };
 
-export default function openCreateNewTask({
-  handleSaveTask,
-  onCreateRoutineClick,
-  onClose,
-}: OpenCreateNewTaskProps) {
+export default function openCreateNewTask({ handleSaveTask, onClose }: OpenCreateNewTaskProps) {
   modals.openContextModal({
     centered: true,
     modal: "general",
@@ -23,12 +18,7 @@ export default function openCreateNewTask({
         Add a task
       </Title>
     ),
-    innerProps: (
-      <AddATaskContainer
-        handleSaveTask={handleSaveTask}
-        onCreateRoutineClick={onCreateRoutineClick}
-      />
-    ),
+    innerProps: <AddATaskContainer handleSaveTask={handleSaveTask} />,
     styles: {
       content: { width: "100%", height: "auto", maxWidth: rem(400) },
     },

@@ -12,7 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateTaskOverlay from "./CreateTaskOverlay";
@@ -64,7 +64,7 @@ export default function TasksList({ customStyles }: Props) {
   );
 
   const getTasksAsGroups = useCallback(
-    (tasks: TaskType[], hideFuture: boolean, hideCompleted: boolean) => {
+    (tasks: TaskType[]) => {
       let tasksWithOnClick = tasks.map((fTask) => ({
         ...fTask,
         onClick: getTaskClickHandler(fTask._id),
@@ -107,41 +107,26 @@ export default function TasksList({ customStyles }: Props) {
     [getTaskClickHandler]
   );
 
-  const getTasksWthoutGroups = useCallback(
-    (tasks: TaskType[], hideFuture: boolean, hideCompleted: boolean) => {
-      let tasksWithOnClick = tasks.map((fTask) => ({
-        ...fTask,
-        onClick: getTaskClickHandler(fTask._id),
-      }));
+  const getTasksWthoutGroups = useCallback((tasks: TaskType[]) => {
+    let tasksWithOnClick = tasks.map((fTask) => ({
+      ...fTask,
+      onClick: getTaskClickHandler(fTask._id),
+    }));
 
-      if (hideFuture) {
-        const todayStart = new Date(tasks[0].startsAt);
-        const todayEnd = new Date(todayStart);
-        todayEnd.setHours(23, 59, 59, 59);
-
-        tasksWithOnClick = tasksWithOnClick.filter((t) => new Date(t.startsAt) < todayEnd);
-      }
-
-      if (hideCompleted) {
-        tasksWithOnClick = tasksWithOnClick.filter((t) => t.status !== TaskStatusEnum.COMPLETED);
-      }
-
-      return tasksWithOnClick.map((t, i) => (
-        <TaskRow
-          key={i}
-          icon={t.icon}
-          onClick={t.onClick}
-          description={t.description}
-          color={t.color}
-          name={t.name}
-          startsAt={t.startsAt}
-          expiresAt={t.expiresAt}
-          status={t.status}
-        />
-      ));
-    },
-    []
-  );
+    return tasksWithOnClick.map((t, i) => (
+      <TaskRow
+        key={i}
+        icon={t.icon}
+        onClick={t.onClick}
+        description={t.description}
+        color={t.color}
+        name={t.name}
+        startsAt={t.startsAt}
+        expiresAt={t.expiresAt}
+        status={t.status}
+      />
+    ));
+  }, []);
 
   const canAddDiary = useMemo(() => {
     if (!tasks || tasks.length === 0) return false;
@@ -202,11 +187,11 @@ export default function TasksList({ customStyles }: Props) {
   const taskItems = useMemo(() => {
     if (!taskList) return <></>;
     if (groupTasksByConcerns) {
-      return getTasksAsGroups(taskList, hideFutureTasks, hideCompletedTasks);
+      return getTasksAsGroups(taskList);
     } else {
-      return getTasksWthoutGroups(taskList, hideFutureTasks, hideCompletedTasks);
+      return getTasksWthoutGroups(taskList);
     }
-  }, [taskList, groupTasksByConcerns, hideFutureTasks, hideCompletedTasks]);
+  }, [taskList]);
 
   useEffect(() => {
     if (code) return;
@@ -267,7 +252,7 @@ export default function TasksList({ customStyles }: Props) {
         handleSaveTask={handleSaveTask}
       />
       <TaskFlters
-      isDisabled={!tasks || tasks.length === 0}
+        isDisabled={!tasks || tasks.length === 0}
         canAddDiary={canAddDiary}
         hideCompletedTasks={hideCompletedTasks}
         groupTasksByConcerns={groupTasksByConcerns}

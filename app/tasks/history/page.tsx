@@ -14,7 +14,7 @@ import { historySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
 import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";

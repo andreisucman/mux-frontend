@@ -6,7 +6,7 @@ import { modals } from "@mantine/modals";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/helpers/formatDate";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import LineProgressIndicators from "../LineProgressIndicators";

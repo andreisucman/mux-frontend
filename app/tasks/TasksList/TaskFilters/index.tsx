@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Checkbox, Collapse, Group, Stack } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { saveToLocalStorage } from "@/helpers/localStorage";
 import classes from "./TaskFilters.module.css";
 

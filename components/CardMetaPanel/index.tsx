@@ -1,6 +1,6 @@
 import React from "react";
+import Link from "next/link";
 import { Group, Text, UnstyledButton } from "@mantine/core";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { AvatarType } from "@/types/global";
 import AvatarComponent from "../AvatarComponent";
 import classes from "./CardMetaPanel.module.css";

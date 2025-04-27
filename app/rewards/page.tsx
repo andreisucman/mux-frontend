@@ -11,7 +11,7 @@ import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";

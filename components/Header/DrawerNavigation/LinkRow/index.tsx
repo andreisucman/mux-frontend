@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from "react";
+import Link from "next/link";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Collapse, Group, Stack } from "@mantine/core";
-import Link from "@/helpers/custom-router/patch-router/link";
 import classes from "./LinkRow.module.css";
 
 export type NavigationLinkType = {

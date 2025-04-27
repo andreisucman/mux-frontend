@@ -10,7 +10,7 @@ import { UploadProgressProps } from "@/app/select-part/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { PartEnum, ToAnalyzeType, UserDataType } from "@/types/global";

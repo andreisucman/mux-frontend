@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import cn from "classnames";
 import { Button, Group, rem } from "@mantine/core";
 import Timer from "@/components/Timer";
@@ -12,13 +12,15 @@ type Props = {
   variant?: "default" | "filled";
   size?: "compact-xs" | "compact-sm" | "sm";
   transcribeOnEnd?: boolean;
+  isDisabled?: boolean;
+  buttonText?: string;
   isLoading?: boolean;
   defaultRecordingMs?: number;
   customContainerStyles?: { [key: string]: any };
   customButtonStyles?: { [key: string]: any };
-  mediaRecorderRef: any;
-  mediaStreamRef: any;
-  setText?: React.Dispatch<React.SetStateAction<string>>;
+  mediaRecorderRef: React.MutableRefObject<MediaRecorder | null>;
+  mediaStreamRef: React.MutableRefObject<MediaStream | null>;
+  setText?: (text: string) => void;
   setLocalUrl?: React.Dispatch<React.SetStateAction<string | null>>;
   setAudioBlobs?: React.Dispatch<React.SetStateAction<Blob[] | null>>;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,8 +34,10 @@ export default function RecordingButton({
   customButtonStyles,
   customContainerStyles,
   isLoading,
+  isDisabled,
   mediaRecorderRef,
   mediaStreamRef,
+  buttonText = "Record",
   setText,
   setLocalUrl,
   setAudioBlobs,
@@ -42,6 +46,7 @@ export default function RecordingButton({
   const [isRecording, setIsRecording] = useState(false);
 
   const handleStartRecording = useCallback(async () => {
+    if (isDisabled) return;
     try {
       mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -74,13 +79,14 @@ export default function RecordingButton({
       handleStopRecording();
       console.log("Error in handleStartRecording: ", err);
     }
-  }, [transcribeOnEnd,mediaStreamRef.current]);
+  }, [transcribeOnEnd, isDisabled, mediaStreamRef.current]);
 
   const handleStopRecording = useCallback(async () => {
     const mediaRecorder = mediaRecorderRef.current;
 
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
       mediaRecorder.stop();
+      mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
       setIsRecording(false);
       console.log("Recording stopped");
     } else {
@@ -101,7 +107,7 @@ export default function RecordingButton({
       });
 
       if (response.status === 200) {
-        if (setText) setText((prev: string) => prev + ` ${response.message}`);
+        if (setText) setText(response.message);
       }
       if (setIsLoading) setIsLoading(false);
     } catch (err) {
@@ -120,7 +126,7 @@ export default function RecordingButton({
   return (
     <Group className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
       <Button
-        disabled={!!isLoading}
+        disabled={!!isLoading || isDisabled}
         size={size}
         variant={variant}
         className={classes.button}
@@ -134,7 +140,7 @@ export default function RecordingButton({
             [classes.indicatorActive]: isRecording,
           })}
         />
-        {isRecording ? "Stop" : "Record"}
+        {isRecording ? "Stop" : buttonText}
         {isRecording && (
           <Timer
             date={defaultRecordingMs}

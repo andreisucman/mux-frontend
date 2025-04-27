@@ -1,0 +1,40 @@
+.container {
+  flex: 1;
+}
+
+.content {
+  cursor: default;
+  border-radius: rem(16);
+
+  position: relative;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  padding: rem(16);
+
+  & p {
+    margin: 0;
+  }
+}
+
+.summaryContainer {
+  cursor: default;
+  margin-bottom: 25%;
+}
+
+.button {
+  margin-left: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin: unset;
+  }
+}
+
+.alert {
+  cursor: default;
+  font-size: var(--mantine-font-size-sm);
+
+  & span {
+    cursor: pointer;
+    font-size: var(--mantine-font-size-sm);
+    text-decoration: underline;
+  }
+}

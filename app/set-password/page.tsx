@@ -1,14 +1,13 @@
 "use client";
 
 import { useCallback, useContext, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import { protectedPaths } from "@/context/UserContext/protectedPaths";
 import callTheServer from "@/functions/callTheServer";
 import { clearCookies } from "@/helpers/cookies";
-import { useRouter } from "@/helpers/custom-router";
 import getPasswordStrength from "@/helpers/getPasswordStrength";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";

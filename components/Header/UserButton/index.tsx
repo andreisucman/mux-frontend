@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   IconDoorExit,
   IconListDetails,
@@ -7,7 +8,6 @@ import {
 } from "@tabler/icons-react";
 import { Avatar, Menu, rem, UnstyledButton } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { AvatarType } from "@/types/global";
 import classes from "./UserButton.module.css";
 
@@ -31,9 +31,7 @@ function UserButton({ isClubActive, avatar, handleSignOut }: Props) {
               }}
             />
           ) : (
-            <Avatar
-              size={36}
-            />
+            <Avatar size={36} />
           )}
         </UnstyledButton>
       </Menu.Target>

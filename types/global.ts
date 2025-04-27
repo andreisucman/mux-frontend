@@ -226,7 +226,7 @@ export interface UserDataType extends DefaultUserType {
   demographics: DemographicsType;
   toAnalyze: ToAnalyzeType[];
   streaks: StreaksType;
-  subscriptions: UserSubscriptionsType;
+  nextRoutineSuggestion: NextActionType[];
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
   latestProgressImages: LatestProgressImagesType;
@@ -242,9 +242,11 @@ export type SubscriptionType = {
   validUntil: Date | null;
 };
 
-export type UserSubscriptionsType = {
-  improvement: SubscriptionType;
-};
+export enum AnalysisStatusEnum {
+  ROUTINE = "routine",
+  ANALYSIS = "analysis",
+  ROUTINE_SUGGESTION = "routineSuggestion",
+}
 
 export type ProgressImageType = {
   mainUrl: BlurredUrlType;

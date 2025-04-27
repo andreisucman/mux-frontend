@@ -1,9 +1,9 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Button, Group, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import Timer from "@/components/Timer";
-import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 
 type Props = {

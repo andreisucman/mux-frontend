@@ -15,7 +15,7 @@ type Props = {
   isLoading?: boolean;
   placeholder: string;
   customStyles?: { [key: string]: any };
-  setText: React.Dispatch<React.SetStateAction<string>>;
+  setText: (text: string) => void;
 };
 
 const Textarea = dynamic(() => import("@mantine/core").then((mod) => mod.Textarea), {

@@ -9,8 +9,8 @@ import { SimpleProgressType } from "@/app/results/types";
 import { BeforeAfterType } from "@/app/types";
 import AvatarComponent from "@/components/AvatarComponent";
 import { AvatarType } from "@/types/global";
-import Link from "../custom-router/patch-router/link";
 import classes from "./openResultModal.module.css";
+import Link from "next/link";
 
 type OpenViewModalProps = {
   record: BeforeAfterType | SimpleProofType | SimpleProgressType;

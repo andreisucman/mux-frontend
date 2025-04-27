@@ -13,10 +13,10 @@ import {
 import TextareaComponent from "@/components/TextAreaComponent";
 import { UserContext } from "@/context/UserContext";
 import askConfirmation from "@/helpers/askConfirmation";
-import { useRouter } from "@/helpers/custom-router";
 import { normalizeString } from "@/helpers/utils";
 import { RoutineDataType } from "../page";
 import classes from "./RoutineModerationCard.module.css";
+import { useRouter } from "next/navigation";
 
 type Props = {
   name: string;

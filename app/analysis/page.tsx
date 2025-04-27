@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconCheckbox, IconCircleOff } from "@tabler/icons-react";
 import { Button, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import AnalysisCard from "@/components/AnalysisCard";
@@ -14,7 +14,6 @@ import { partItems } from "@/components/PageHeader/data";
 import Disclaimer from "@/components/WaitComponent/Disclaimer";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
-import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import { ReferrerEnum } from "../auth/AuthForm/types";

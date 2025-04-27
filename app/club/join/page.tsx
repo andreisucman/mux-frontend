@@ -8,13 +8,13 @@ import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import joinClub from "@/functions/joinClub";
-import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import JoinClubConfirmation from "./JoinClubConfirmation";
 import SlidingImages from "./SlidingImages";
 import classes from "./join.module.css";
+import { useRouter } from "next/navigation";
 
 export const runtime = "edge";
 

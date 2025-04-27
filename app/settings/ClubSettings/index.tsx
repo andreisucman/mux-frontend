@@ -17,7 +17,7 @@ import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AvatarType, UserDataType } from "@/types/global";

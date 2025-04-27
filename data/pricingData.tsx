@@ -1,31 +1,19 @@
-import {
-  IconAnalyze,
-  IconCamera,
-  IconChecklist,
-  IconListCheck,
-  IconListDetails,
-  IconNotebook,
-  IconPencil,
-} from "@tabler/icons-react";
+import { IconAnalyze, IconCamera, IconListDetails, IconNotebook } from "@tabler/icons-react";
 import { rem } from "@mantine/core";
 
 const style = { minWidth: rem(24), minHeight: rem(24) };
 
-export const improvementCoachContent = [
+export const routineSuggestionContent = [
   {
-    icon: <IconChecklist className="icon icon__large" style={style} />,
-    description: "Creates weekly routines based on your physical condition and concerns.",
-  },
-  {
-    icon: <IconPencil className="icon icon__large" style={style} />,
-    description: "Drafts your manual task description and instructions.",
+    icon: <IconAnalyze className="icon icon__large" style={style} />,
+    description: "Resets your routine suggestion timer to today.",
   },
 ];
 
 export const scanAnalysisContent = [
   {
     icon: <IconAnalyze className="icon icon__large" style={style} />,
-    description: "Resets your scan timer to today",
+    description: "Resets your scan timer to today.",
   },
 ];
 

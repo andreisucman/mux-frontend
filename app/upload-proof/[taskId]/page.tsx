@@ -14,7 +14,7 @@ import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/helpers/formatDate";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import openErrorModal from "@/helpers/openErrorModal";

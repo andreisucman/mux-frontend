@@ -3,7 +3,6 @@
 import React, { useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import {
-  IconCalendar,
   IconCirclePlus,
   IconListDetails,
   IconNotebook,
@@ -14,10 +13,9 @@ import { Button, Group, rem, Text, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { defaultStreaks } from "@/app/rewards/RewardCard/defaultStreaks";
 import StreaksButton from "@/components/StreaksButton";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import openErrorModal from "@/helpers/openErrorModal";
 import openCreateNewTask from "../CreateTaskOverlay/openCreateNewTask";
 import classes from "./TasksButtons.module.css";
@@ -32,8 +30,6 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
   const pathname = usePathname();
   const { userDetails } = useContext(UserContext);
   const { latestProgressImages } = userDetails || {};
-
-  const { onCreateRoutineClick } = useContext(CreateRoutineContext);
 
   const notScanned = useMemo(() => {
     const values = Object.keys(latestProgressImages || {});
@@ -62,7 +58,7 @@ export default function TasksButtons({ handleSaveTask, disableCreateTask }: Prop
       });
       return;
     }
-    openCreateNewTask({ handleSaveTask, onCreateRoutineClick });
+    openCreateNewTask({ handleSaveTask });
   };
 
   return (

@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Button, Stack, Text, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import openErrorModal from "@/helpers/openErrorModal";
+import openSelectRoutineType from "@/helpers/openSelectRoutineType";
 import openCreateNewTask from "./openCreateNewTask";
 import classes from "./CreateTaskOverlay.module.css";
 
@@ -17,10 +17,9 @@ type Props = {
 export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Props) {
   const router = useRouter();
   const [showWeeklyButton, setShowWeeklyButton] = useState(false);
-  const { isTrialUsed, isSubscriptionActive, isLoading, onCreateRoutineClick } =
-    useContext(CreateRoutineContext);
   const { userDetails } = useContext(UserContext);
-  const { latestProgressImages } = userDetails || {};
+  const { latestProgressImages, nextRoutine } = userDetails || {};
+  const [isLoading, setIsLoading] = useState(false);
 
   const nothingScanned = useMemo(() => {
     const values = Object.values(latestProgressImages || {});
@@ -52,6 +51,22 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
     cb();
   };
 
+  const onCreateRoutineClick = useCallback(() => {
+    if (!nextRoutine || isLoading) return;
+
+    const partsScanned = Object.entries(latestProgressImages || {})
+      .filter(([key, value]) => Boolean(value))
+      .map(([key, _]) => key);
+
+    if (partsScanned.length > 1) {
+      const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
+      if (relevantRoutines) openSelectRoutineType(relevantRoutines);
+    } else if (partsScanned.length === 1) {
+      setIsLoading(true);
+      router.push(`/suggest/add-details?part=${partsScanned[0]}`);
+    }
+  }, [isLoading, nextRoutine, latestProgressImages]);
+
   useEffect(() => {
     if (!userDetails) return;
 
@@ -68,9 +83,7 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
           variant="default"
           disabled={isLoading}
           className={classes.button}
-          onClick={() =>
-            handleClick(() => openCreateNewTask({ handleSaveTask, onCreateRoutineClick }))
-          }
+          onClick={() => handleClick(() => openCreateNewTask({ handleSaveTask }))}
         >
           Create a task manually
         </Button>
@@ -79,11 +92,9 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
             disabled={isLoading}
             loading={isLoading}
             className={classes.button}
-            onClick={() =>
-              handleClick(() => onCreateRoutineClick({ isSubscriptionActive, isTrialUsed }))
-            }
+            onClick={() => handleClick(onCreateRoutineClick)}
           >
-            Create weekly routine
+            Suggest me a routine
           </Button>
         )}
       </Stack>

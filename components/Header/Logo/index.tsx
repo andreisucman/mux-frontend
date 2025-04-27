@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import cn from "classnames";
-import Link from "@/helpers/custom-router/patch-router/link";
 import logoDarkSrc from "@/public/logo-dark.svg";
 import logoLightSrc from "@/public/logo-light.svg";
 import classes from "./Logo.module.css";

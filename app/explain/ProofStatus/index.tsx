@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";

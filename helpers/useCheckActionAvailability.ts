@@ -4,10 +4,10 @@ import { parseScanDate } from "./utils";
 
 type Props = {
   part?: string | null;
-  nextScan?: NextActionType[];
+  nextAction?: NextActionType[];
 };
 
-function useCheckScanAvailability({ part, nextScan }: Props) {
+function useCheckActionAvailability({ part, nextAction }: Props) {
   let result: {
     isScanAvailable: boolean;
     checkBackDate: string | null;
@@ -16,9 +16,9 @@ function useCheckScanAvailability({ part, nextScan }: Props) {
     checkBackDate: formatDate({ date: new Date() }),
   };
 
-  if (!nextScan || !part) return result;
+  if (!nextAction || !part) return result;
 
-  const availableParts = nextScan.find((p) => p.part === part);
+  const availableParts = nextAction.find((p) => p.part === part);
 
   const partDate = parseScanDate(availableParts);
 
@@ -32,4 +32,4 @@ function useCheckScanAvailability({ part, nextScan }: Props) {
   return result;
 }
 
-export default useCheckScanAvailability;
+export default useCheckActionAvailability;

@@ -1,9 +1,7 @@
 .container {
   position: relative;
   z-index: 3;
-
   flex: 1;
-
   border-radius: var(--mantine-radius-lg);
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
 }

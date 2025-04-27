@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Stack, Text } from "@mantine/core";
 import { useScrollIntoView } from "@mantine/hooks";
 import { nprogress } from "@mantine/nprogress";
@@ -10,7 +10,6 @@ import PageHeader from "@/components/PageHeader";
 import TosCheckbox from "@/components/TosCheckbox";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openLegalBody from "@/helpers/openLegalBody";
 import { decodeAndCheckUriComponent } from "@/helpers/utils";

@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
 import TitleDropdown from "@/app/results/TitleDropdown";
-import { useRouter } from "@/helpers/custom-router";
+import { useRouter } from "next/navigation";
 import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
 import { pageTypeIcons } from "@/helpers/icons";
 import FilterButton from "../FilterButton";

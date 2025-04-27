@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconHourglass } from "@tabler/icons-react";
-import { Button, Group, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -14,15 +14,12 @@ import UploadCard from "@/components/UploadCard";
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
-import createCheckoutSession from "@/functions/createCheckoutSession";
-import fetchUserData from "@/functions/fetchUserData";
+import openResetTimerModal from "@/functions/resetTimer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
-import openPaymentModal from "@/helpers/openPaymentModal";
-import useCheckScanAvailability from "@/helpers/useCheckScanAvailability";
+import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { PartEnum, UserDataType } from "@/types/global";
 import { UploadProgressProps } from "../select-part/types";
 import classes from "./scan.module.css";
@@ -43,9 +40,9 @@ export default function ScanProgress() {
   const part = searchParams.get("part") || PartEnum.FACE;
   const { _id: userId, toAnalyze, nextScan } = userDetails || {};
 
-  const { isScanAvailable, checkBackDate } = useCheckScanAvailability({
+  const { isScanAvailable, checkBackDate } = useCheckActionAvailability({
     part,
-    nextScan,
+    nextAction: nextScan,
   });
 
   const nextScanText = useMemo(() => {
@@ -54,33 +51,8 @@ export default function ScanProgress() {
 
   const handleResetTimer = useCallback(() => {
     const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${query ? `?${query}` : ""}`;
-
-    openPaymentModal({
-      title: `Reset ${part} scan`,
-      price: (
-        <Group className="priceGroup">
-          <Title order={4}>$1</Title>/<Text>one time</Text>
-        </Group>
-      ),
-      isCentered: true,
-      modalType: "scan",
-      buttonText: "Reset scan timer",
-      description: `You can scan your ${part} for free once a week. If you want more you can reset the timer now.`,
-      onClick: () =>
-        createCheckoutSession({
-          type: "platform",
-          body: {
-            mode: "payment",
-            priceId: process.env.NEXT_PUBLIC_SCAN_PRICE_ID!,
-            redirectUrl,
-            cancelUrl: redirectUrl,
-            part,
-          },
-          setUserDetails,
-        }),
-      onClose: () => fetchUserData({ setUserDetails }),
-    });
-  }, [query]);
+    openResetTimerModal("scan", part, redirectUrl, setUserDetails);
+  }, [query, part, setUserDetails]);
 
   const scanButtons = useMemo(() => {
     if (status === AuthStateEnum.AUTHENTICATED) {

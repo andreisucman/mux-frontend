@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import Link from "@/helpers/custom-router/patch-router/link";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";

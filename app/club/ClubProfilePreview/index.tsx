@@ -1,9 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
-import { useRouter } from "@/helpers/custom-router";
 import { getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
 import { ClubUserType } from "@/types/global";
 import SocialsDisplayLine from "./SocialsDisplayLine";

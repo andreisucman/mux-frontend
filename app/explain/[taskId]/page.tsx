@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Badge, Button, Group, rem, Stack, Switch, Title } from "@mantine/core";
 import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -16,7 +16,6 @@ import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import updateTaskInstance, { UpdateTaskInstanceProps } from "@/functions/updateTaskInstance";
-import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { daysFrom } from "@/helpers/utils";
 import { TaskStatusEnum, TaskType } from "@/types/global";

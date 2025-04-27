@@ -1,20 +1,17 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconCancel, IconClock, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useShallowEffect } from "@mantine/hooks";
-import SkeletonWrapper from "@/app/SkeletonWrapper";
 import DateSelector from "@/components/DateSelector";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
-import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { convertUTCToLocal } from "@/helpers/convertUTCToLocal";
-import { useRouter } from "@/helpers/custom-router";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import CalendarRow from "./CalendarRow";
 import DayRenderer from "./DayRenderer";
@@ -33,7 +30,6 @@ type LoadTasksProps = {
 export default function Calendar() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userDetails } = useContext(UserContext);
 
   const givenTaskKey = searchParams.get("key");
   const givenMode = searchParams.get("mode");
@@ -51,8 +47,6 @@ export default function Calendar() {
   const [selectedTaskKey, setSelectedTaskKey] = useState<string | undefined>(
     givenTaskKey as string
   );
-
-  const { timeZone } = userDetails || {};
 
   const keysToBeDeleted = useMemo(
     () =>
@@ -75,18 +69,6 @@ export default function Calendar() {
       })
       .filter(Boolean);
   }, [mode, selectedTasks && selectedTasks.length, tasks?.length]);
-
-  const selectTask = useCallback(
-    (task: TaskType) => {
-      const exists = tasksToUpdate.map((t) => t._id).includes(task._id);
-      if (exists) {
-        setTasksToUpdate(tasksToUpdate.filter((t) => t._id !== task._id));
-      } else {
-        setTasksToUpdate([...tasksToUpdate, task]);
-      }
-    },
-    [tasksToUpdate.length]
-  );
 
   const changeMode = useCallback(
     (mode: string, taskKey?: string) => {

@@ -18,7 +18,7 @@ import {
 } from "@tabler/icons-react";
 import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "@/helpers/custom-router/patch-router/router";
+import { useRouter } from "next/navigation";
 import openFeedbackModal from "@/helpers/openFeedbackModal";
 import { NavigationLinkType } from "./LinkRow";
 import NavigationStack from "./NavigationStack";

@@ -1,11 +1,8 @@
 import React, { useCallback, useContext } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 import { Button, Group, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import addImprovementCoach from "@/helpers/addImprovementCoach";
-import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { RecipeType, UserDataType } from "@/types/global";
 import RecipeSettingsContent from "./RecipeSettingsContent";
@@ -25,10 +22,7 @@ export default function CreateRecipeBox({
   isDisabled,
   setShowWaitComponent,
 }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const { _id: userId } = userDetails || {};
   const { canPersonalize } = recipe || {};
 
@@ -47,22 +41,6 @@ export default function CreateRecipeBox({
 
         if (response.status === 200) {
           if (response.error) {
-            if (response.error === "subscription expired") {
-              const { subscriptions } = userDetails || {};
-              const { improvement } = subscriptions || {};
-              const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}?${searchParams.toString()}`;
-
-              addImprovementCoach({
-                improvementSubscription: improvement,
-                onComplete: () => generateRecipe(constraints, productsImage),
-                redirectUrl,
-                cancelUrl: redirectUrl,
-                setUserDetails,
-              });
-
-              return;
-            }
-
             openErrorModal({
               description: response.error,
             });

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -14,7 +14,6 @@ import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import askConfirmation from "@/helpers/askConfirmation";
-import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { normalizeString } from "@/helpers/utils";
 import { TaskStatusEnum, TaskType } from "@/types/global";
