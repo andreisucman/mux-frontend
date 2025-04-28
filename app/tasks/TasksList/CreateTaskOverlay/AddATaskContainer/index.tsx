@@ -3,7 +3,6 @@ import { Alert, Button, Checkbox, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "next/navigation";
 import { formatDate } from "@/helpers/formatDate";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import openSelectRoutineType from "@/helpers/openSelectRoutineType";
@@ -11,6 +10,7 @@ import { daysFrom } from "@/helpers/utils";
 import CreateATaskContent from "../CreateATaskContent";
 import EditATaskContent from "../EditATaskContent";
 import { RawTaskType } from "./types";
+import { useRouter } from "@/helpers/custom-router";
 import classes from "./AddATaskContainer.module.css";
 
 type Props = {
@@ -56,10 +56,6 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
     const entries = Object.entries(latestProgressImages || {}).filter((gr) => Boolean(gr[1]));
     return entries.map((gr) => gr[0]);
   }, [latestProgressImages]);
-
-  const isCreateRoutineInCooldown = nextRoutine?.every(
-    (ro) => ro.date && new Date(ro.date || 0) > new Date()
-  );
 
   const handleCreateTask = async () => {
     if (isLoading) return;
@@ -127,7 +123,8 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
       if (relevantRoutines) openSelectRoutineType(relevantRoutines);
     } else if (partsScanned.length === 1) {
       setIsRoutineButtonLoading(true);
-      router.push(`/add-details?part=${partsScanned[0]}`);
+      router.push(`/suggest/add-details?part=${partsScanned[0]}`);
+      modals.closeAll();
     }
   };
 

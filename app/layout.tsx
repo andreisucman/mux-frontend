@@ -16,6 +16,8 @@ import ThemeColorSetter from "@/components/ThemeColorSetter";
 import UserContextProvider from "@/context/UserContext";
 import { theme } from "../theme";
 import classes from "./layout.module.css";
+import { HandleOnComplete } from "@/helpers/custom-router";
+import { NavigationProgress } from "@mantine/nprogress";
 
 export const metadata = {
   title: "Muxout - Max you out!",
@@ -49,6 +51,9 @@ export default function RootLayout({ children }: Props) {
       <body>
         <div className="bgPattern" />
         <MantineProvider theme={theme} defaultColorScheme="auto">
+          <NavigationProgress />
+          <HandleOnComplete />
+
           <ThemeColorSetter />
           <CookieDisclaimer />
           <Suspense

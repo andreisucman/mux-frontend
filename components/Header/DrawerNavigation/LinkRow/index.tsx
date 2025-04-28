@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Collapse, Group, Stack } from "@mantine/core";
 import classes from "./LinkRow.module.css";

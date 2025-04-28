@@ -9,5 +9,16 @@
   flex-wrap: nowrap;
   flex: 1;
   width: 100%;
+  gap: 0;
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+}
+
+.content {
+  margin-right: auto;
+  flex-wrap: nowrap;
+  padding: 0 rem(16);
+}
+
+.count {
+  white-space: nowrap;
 }

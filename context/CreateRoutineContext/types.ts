@@ -21,4 +21,5 @@ export type RoutineSuggestionType = {
   previousExperience: {
     [key: string]: string;
   };
+  isRevised: boolean;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import openResetTimerModal from "@/functions/resetTimer";
+import { useRouter } from "@/helpers/custom-router";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { AnalysisStatusEnum } from "@/types/global";
 import AnswerBox from "./AnswerBox";
@@ -22,15 +23,13 @@ export const runtime = "edge";
 export default function AnswerQuestions() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setUserDetails } = useContext(UserContext);
   const [showDisplayComponent, setShowDisplayComponent] = useState<
     "loading" | "wait" | "questions"
   >("loading");
-  const { setUserDetails } = useContext(UserContext);
-  const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } =
-    useContext(CreateRoutineContext);
+  const routineContext = useContext(CreateRoutineContext);
+  const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } = routineContext;
 
   const questionsAndAnswers = routineSuggestion?.questionsAndAnswers;
 
@@ -38,7 +37,7 @@ export default function AnswerQuestions() {
 
   const part = searchParams.get("part") || "face";
 
-  const { isScanAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
     nextAction: nextRoutineSuggestion,
   });
@@ -79,11 +78,11 @@ export default function AnswerQuestions() {
 
   const query = searchParams.toString();
   const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${query ? `?${query}` : ""}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/add-details${query ? `?${query}` : ""}`;
     openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
   }, [query, part, setUserDetails]);
 
-  const checkBackNotice = isScanAvailable ? undefined : (
+  const checkBackNotice = isActionAvailable ? undefined : (
     <Text className={classes.alert}>
       Next routine suggestion is after {new Date(checkBackDate || new Date()).toDateString()}.{" "}
       <span onClick={handleResetTimer}>Reset</span>
@@ -96,37 +95,36 @@ export default function AnswerQuestions() {
       return (
         <AnswerBox
           key={index}
-          isDisabled={!isScanAvailable}
+          isDisabled={!isActionAvailable}
           textObject={questionsAndAnswers}
           textObjectKey={question}
           handleType={(answer) => handleType(question, answer)}
         />
       );
     });
-  }, [concerns, isScanAvailable, part, questionsAndAnswers]);
+  }, [concerns, isActionAvailable, part, questionsAndAnswers]);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !routineSuggestion) return;
 
     checkIfAnalysisRunning({
       userId,
       operationKey: AnalysisStatusEnum.ROUTINE_SUGGESTION,
-      setShowWaitComponent: () => setShowDisplayComponent("wait"),
+      setShowWaitComponent: (verdict?: boolean) => {
+        if (!verdict) {
+          if (!questionsAndAnswers) {
+            router.replace(`/suggest/add-details${query ? `?${query}` : ""}`);
+            return;
+          }
+        }
+        setShowDisplayComponent(verdict ? "wait" : "questions");
+      },
     });
-  }, [userId]);
-
-  useEffect(() => {
-    if (!questionsAndAnswers) return;
-
-    const questionAndANswersExist = Object.entries(questionsAndAnswers).length > 0;
-    if (questionAndANswersExist) {
-      setShowDisplayComponent("questions");
-    }
-  }, [questionsAndAnswers]);
+  }, [userId, routineSuggestion]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Additional questions" />
+      <PageHeader title="Answer questions" />
       {showDisplayComponent === "loading" && (
         <Loader
           m="0 auto"
@@ -141,7 +139,7 @@ export default function AnswerQuestions() {
           onComplete={() => {
             fetchRoutineSuggestion().finally(() => setShowDisplayComponent("questions"));
           }}
-          errorRedirectUrl={`/create?part=${part}`}
+          errorRedirectUrl={`/suggest/add-details${query ? `?${query}` : ""}`}
           customContainerStyles={{ paddingBottom: "20%" }}
         />
       )}
@@ -160,7 +158,7 @@ export default function AnswerQuestions() {
             onClick={() => updateRoutineSuggestions(questionsAndAnswers || {})}
             loading={isLoading}
             disabled={isLoading}
-            mb={"25%"}
+            mb={"20%"}
             className={classes.button}
           >
             Next

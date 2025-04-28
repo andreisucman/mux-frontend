@@ -1,3 +1,4 @@
+import { clearCookies } from "@/helpers/cookies";
 import openErrorModal from "@/helpers/openErrorModal";
 
 type Props<T> = {

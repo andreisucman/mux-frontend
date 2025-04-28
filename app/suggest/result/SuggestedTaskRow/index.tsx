@@ -36,9 +36,9 @@ export default function SuggestedTaskRow({ color, name, icon, numberOfTimesInAMo
             minWidth: rem(50),
           }}
         />
-        <Group mr="auto">
-          <Text lineClamp={1}>{normalizedData.name}</Text>
-          <Text>{countText}</Text>
+        <Group className={classes.content}>
+          <Text lineClamp={2}>{normalizedData.name}</Text>
+          <Text className={classes.count}>{countText}</Text>
         </Group>
       </Group>
     </Skeleton>

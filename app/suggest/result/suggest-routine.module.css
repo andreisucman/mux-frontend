@@ -17,14 +17,22 @@
 
 .summaryContainer {
   cursor: default;
-  margin-bottom: 25%;
 }
 
-.button {
+.buttonWrapper {
+  margin-top: rem(8);
+  margin-bottom: 20%;
   margin-left: auto;
 
   @media (max-width: $mantine-breakpoint-xs) {
-    margin: unset;
+    margin-left: unset;
+    justify-content: center;
+  }
+}
+
+.button {
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 100%;
   }
 }
 

@@ -40,7 +40,7 @@ export default function ScanProgress() {
   const part = searchParams.get("part") || PartEnum.FACE;
   const { _id: userId, toAnalyze, nextScan } = userDetails || {};
 
-  const { isScanAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
     nextAction: nextScan,
   });
@@ -210,7 +210,7 @@ export default function ScanProgress() {
         }
       />
       <SkeletonWrapper show={!toAnalyze}>
-        {isScanAvailable ? (
+        {isActionAvailable ? (
           <UploadCard
             part={part as PartEnum}
             progress={progress}

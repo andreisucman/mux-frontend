@@ -15,7 +15,7 @@ const fetchUserData = async (props?: FetchUerDataProps): Promise<UserDataType | 
   let data = null;
   if (!isLoggedInCookie) return data;
 
-  const { setStatus, setUserDetails } = props || {};
+  const { setUserDetails } = props || {};
 
   try {
     const response = await callTheServer({
@@ -27,10 +27,6 @@ const fetchUserData = async (props?: FetchUerDataProps): Promise<UserDataType | 
       data = response.message;
 
       if (setUserDetails && data) setUserDetails(data);
-    }
-
-    if (response.status === 404) {
-      if (setStatus) setStatus(AuthStateEnum.UNAUTHENTICATED);
     }
 
     if (response.status === 402) {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IconAnalyze, IconRoute } from "@tabler/icons-react";
 import { Alert, Button, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -9,10 +9,12 @@ import { modals } from "@mantine/modals";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import PageHeader from "@/components/PageHeader";
 import { CreateRoutineContext } from "@/context/CreateRoutineContext";
+import { RoutineSuggestionType } from "@/context/CreateRoutineContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchUserData from "@/functions/fetchUserData";
 import openResetTimerModal from "@/functions/resetTimer";
+import { useRouter } from "@/helpers/custom-router";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -21,23 +23,29 @@ import {
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { PartEnum } from "@/types/global";
+import ReviseRoutineModalContent from "./ReviseRoutineModalContent";
 import SuggestedTaskRow from "./SuggestedTaskRow";
 import classes from "./suggest-routine.module.css";
 
 export const runtime = "edge";
 
-type CreateRoutineProps = {
+export type CreateRoutineProps = {
   startDate: Date | null;
   part: PartEnum;
+  revisionText?: string;
 };
+
+function processInput(inputString: string) {
+  return inputString.replace("data: ", "").replace("\n\n", "");
+}
 
 export default function SuggestRoutine() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const offsetRef = useRef(0);
   const sourceRef = useRef<EventSource | null>(null);
-  const { routineSuggestion, fetchRoutineSuggestion } = useContext(CreateRoutineContext);
+  const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } =
+    useContext(CreateRoutineContext);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [thoughts, setThoughts] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);
@@ -45,16 +53,24 @@ export default function SuggestRoutine() {
   const [createRoutineLoading, setCreateRoutineLoading] = useState(false);
 
   const part = searchParams.get("part") || "face";
+  const query = searchParams.toString();
 
-  const { _id: routineSuggestionId, summary, tasks, reasoning } = routineSuggestion || {};
-  const { nextRoutine } = userDetails || {};
+  const { _id: routineSuggestionId, summary, tasks, isRevised } = routineSuggestion || {};
+  const { nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
-  const { isScanAvailable, checkBackDate } = useCheckActionAvailability({
-    part,
-    nextAction: nextRoutine,
-  });
+  const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
+    useCheckActionAvailability({
+      part,
+      nextAction: nextRoutineSuggestion,
+    });
 
-  const streamRoutineSuggestions = async (routineSuggestionId: string) => {
+  const { isActionAvailable: isCreationAvailable, checkBackDate: creationCheckBackDate } =
+    useCheckActionAvailability({
+      part,
+      nextAction: nextRoutine,
+    });
+
+  const streamRoutineSuggestions = async (routineSuggestionId: string, revisionText?: string) => {
     const API = process.env.NEXT_PUBLIC_API_SERVER_URL;
     const storedId = getFromLocalStorage("routineStreamId");
     const storedOffset = Number(getFromLocalStorage("routineStreamOffset") || 0);
@@ -62,11 +78,22 @@ export default function SuggestRoutine() {
     const endpoint = storedId
       ? `${API}/resumeRoutineSuggestionStream/${storedId}?offset=${storedOffset}`
       : `${API}/startRoutineSuggestionStream/${routineSuggestionId}`;
+
     const method = storedId ? "GET" : "POST";
     const headers = storedId ? {} : ({ "Content-Type": "application/json" } as any);
 
     try {
-      const response = await fetch(endpoint, { method, headers, credentials: "include" });
+      const body = revisionText ? JSON.stringify({ revisionText }) : undefined;
+      const response = await fetch(endpoint, { method, body, headers, credentials: "include" });
+
+      if (revisionText) {
+        modals.closeAll();
+        setRoutineSuggestion((prev: RoutineSuggestionType) => {
+          const { tasks, summary, reasoning, ...other } = prev;
+          setThoughts("");
+          return other;
+        });
+      }
 
       setIsStreaming(true);
       setDisplayComponent("result");
@@ -83,33 +110,27 @@ export default function SuggestRoutine() {
         }
 
         const chunk = decoder.decode(value, { stream: true });
-        const idMatch = chunk.match(/id: (.+)/);
+        const idMatch = chunk.match(/id:\s*(\S+)/);
         if (idMatch && !id) {
           id = idMatch[1];
           saveToLocalStorage("routineStreamId", id);
         }
 
-        const dataMatches = chunk.match(/data: (.+)/g);
-        if (dataMatches) {
-          const cleaned = dataMatches.map((d) => d.replace("data: ", "")).join("");
+        if (!idMatch) {
+          const cleaned = processInput(chunk);
           offset += cleaned.length;
           offsetRef.current += cleaned.length;
           setThoughts((prev) => prev + cleaned);
-          console.log("chunk", chunk);
-          console.log("cleaned length", cleaned.length);
           saveToLocalStorage("routineStreamOffset", offset.toString());
         }
       }
 
       fetchUserData({ setUserDetails });
       fetchRoutineSuggestion();
-    } catch (err) {
-      console.error(err);
-    } finally {
       setIsStreaming(false);
       deleteFromLocalStorage("routineStreamId");
       deleteFromLocalStorage("routineStreamOffset");
-    }
+    } catch (err: any) {}
   };
 
   const taskRows = useMemo(() => {
@@ -145,15 +166,15 @@ export default function SuggestRoutine() {
     });
   }, [tasks]);
 
-  const query = searchParams.toString();
   const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${query ? `?${query}` : ""}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/add-details${query ? `?${query}` : ""}`;
     openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
   }, [query, part, setUserDetails]);
 
-  const checkBackNotice = isScanAvailable ? undefined : (
+  const checkBackNotice = isSuggestionAvailable ? undefined : (
     <Text className={classes.alert}>
-      Next routine suggestion is after {new Date(checkBackDate || new Date()).toDateString()}.{" "}
+      Next routine suggestion is after{" "}
+      {new Date(suggestionCheckBackDate || new Date()).toDateString()}.{" "}
       <span onClick={handleResetTimer}>Reset</span>
     </Text>
   );
@@ -179,13 +200,36 @@ export default function SuggestRoutine() {
         setCreateRoutineLoading(false);
         return;
       }
+      modals.closeAll();
       router.replace(redirectUrl);
     } else {
       setCreateRoutineLoading(false);
     }
   };
 
-  const handleCloneTaskInstance = useCallback(() => {
+  const handleOpenReviseRoutine = useCallback(() => {
+    if (!routineSuggestionId) return;
+
+    modals.openContextModal({
+      title: (
+        <Title order={5} component={"p"}>
+          Revise routine
+        </Title>
+      ),
+      size: "sm",
+      classNames: { overlay: "overlay" },
+      innerProps: (
+        <ReviseRoutineModalContent
+          routineSuggestionId={routineSuggestionId}
+          streamRoutineSuggestions={streamRoutineSuggestions}
+        />
+      ),
+      modal: "general",
+      centered: true,
+    });
+  }, [routineSuggestionId]);
+
+  const handleOpenSelectRoutineDate = useCallback(() => {
     modals.openContextModal({
       title: (
         <Title order={5} component={"p"}>
@@ -211,21 +255,29 @@ export default function SuggestRoutine() {
   }, [part]);
 
   useEffect(() => {
-    if (!routineSuggestionId || !isScanAvailable) return;
+    if (!routineSuggestionId) return;
     streamRoutineSuggestions(routineSuggestionId);
 
     return () => {
       sourceRef.current?.close();
     };
-  }, [routineSuggestionId, isScanAvailable]);
+  }, [routineSuggestionId]);
 
   useEffect(() => {
-    if (tasks) setDisplayComponent("result");
-    if (reasoning) {
-      setThoughts(reasoning);
+    if (tasks) {
+      setDisplayComponent("result");
       setIsStreaming(false);
     }
-  }, [tasks, reasoning]);
+  }, [tasks]);
+
+  useEffect(() => {
+    const tId = setTimeout(() => {
+      if (!routineSuggestion) router.replace(`/suggest/add-details${query ? `?${query}` : ""}`);
+      clearTimeout(tId);
+    }, 5000);
+
+    return () => clearTimeout(tId);
+  }, [routineSuggestion, query]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>
@@ -235,17 +287,8 @@ export default function SuggestRoutine() {
           {checkBackNotice && <Alert p="0.5rem 1rem">{checkBackNotice}</Alert>}
           <Stack className={classes.content}>
             <Group align="center" gap={8}>
-              {isStreaming ? (
-                <>
-                  <Loader size={18} type="bars" />
-                  <Text fw={600}>Reasoning</Text>
-                </>
-              ) : (
-                <>
-                  <IconAnalyze size={18} />
-                  <Text fw={600}>Reasoning</Text>
-                </>
-              )}
+              {isStreaming ? <Loader size={18} type="bars" /> : <IconAnalyze size={18} />}
+              <Text fw={600}>Reasoning</Text>
             </Group>
             <Text>{thoughts}</Text>
             {isStreaming && <Loader size={16} m="0 auto" />}
@@ -260,13 +303,30 @@ export default function SuggestRoutine() {
                 <Text>{summary}</Text>
               </Stack>
               {taskRows}
-              <Button
-                onClick={handleCloneTaskInstance}
-                disabled={!isScanAvailable}
-                className={classes.button}
-              >
-                Create routine
-              </Button>
+              <Group className={classes.buttonWrapper}>
+                {!isCreationAvailable && (
+                  <Text size="sm" ta="center" c="dimmed">
+                    You can create this routine after {creationCheckBackDate}
+                  </Text>
+                )}
+                {!isRevised && isCreationAvailable && (
+                  <Button
+                    className={classes.button}
+                    onClick={handleOpenReviseRoutine}
+                    disabled={isRevised}
+                    variant="default"
+                  >
+                    Revise
+                  </Button>
+                )}
+                <Button
+                  className={classes.button}
+                  onClick={handleOpenSelectRoutineDate}
+                  disabled={!isCreationAvailable}
+                >
+                  Create routine
+                </Button>
+              </Group>
             </Stack>
           )}
         </>

@@ -3,7 +3,7 @@ import cn from "classnames";
 import { Accordion, Group, Skeleton } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";

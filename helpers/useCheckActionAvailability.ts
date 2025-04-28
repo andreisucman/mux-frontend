@@ -9,10 +9,10 @@ type Props = {
 
 function useCheckActionAvailability({ part, nextAction }: Props) {
   let result: {
-    isScanAvailable: boolean;
+    isActionAvailable: boolean;
     checkBackDate: string | null;
   } = {
-    isScanAvailable: false,
+    isActionAvailable: false,
     checkBackDate: formatDate({ date: new Date() }),
   };
 
@@ -24,9 +24,9 @@ function useCheckActionAvailability({ part, nextAction }: Props) {
 
   if (partDate) {
     result.checkBackDate = partDate.toDateString();
-    result.isScanAvailable = partDate < new Date();
+    result.isActionAvailable = partDate < new Date();
   } else {
-    result.isScanAvailable = true;
+    result.isActionAvailable = true;
   }
 
   return result;

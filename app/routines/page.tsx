@@ -476,7 +476,7 @@ export default function MyRoutines() {
     checkIfAnalysisRunning({
       userId,
       operationKey: `routine`,
-      setShowWaitComponent: setIsAnalysisGoing,
+      setShowWaitComponent: (verdict?: boolean) => setIsAnalysisGoing(!!verdict),
     }).then((res) => {
       setPageLoaded(true);
     });
@@ -568,7 +568,7 @@ export default function MyRoutines() {
               });
               setIsAnalysisGoing(false);
             }}
-            customContainerStyles={{ margin: "unset", paddingTop: "15%" }}
+            customContainerStyles={{ paddingBottom: "20%" }}
           />
         )}
         {displayComponent === "loading" && (

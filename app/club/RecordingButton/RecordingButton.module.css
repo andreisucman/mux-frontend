@@ -40,3 +40,16 @@
     opacity: 1;
   }
 }
+
+.compact-xs {
+  max-width: rem(6);
+  max-height: rem(6);
+}
+.compact-sm {
+  max-width: rem(10);
+  max-height: rem(10);
+}
+.sm {
+  width: rem(12);
+  height: rem(12);
+}

@@ -3,7 +3,7 @@ import callTheServer from "./callTheServer";
 type Props = {
   userId: string;
   operationKey: string;
-  setShowWaitComponent: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowWaitComponent: (verdict?: boolean) => void;
 };
 
 export default async function checkIfAnalysisRunning({
@@ -18,10 +18,7 @@ export default async function checkIfAnalysisRunning({
   }).then((res) => {
     if (res.status === 200) {
       const { isRunning } = res.message || {};
-
-      if (isRunning) {
-        setShowWaitComponent(true);
-      }
+      setShowWaitComponent(isRunning);
     }
   });
 }

@@ -123,6 +123,8 @@ export default function RecordingButton({
     }
   }, [isRecording]);
 
+  const timerFontSize = size === "compact-xs" ? rem(11) : rem(14);
+
   return (
     <Group className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
       <Button
@@ -138,6 +140,7 @@ export default function RecordingButton({
         <div
           className={cn(classes.indicator, {
             [classes.indicatorActive]: isRecording,
+            [classes[size]]: true,
           })}
         />
         {isRecording ? "Stop" : buttonText}
@@ -145,7 +148,7 @@ export default function RecordingButton({
           <Timer
             date={defaultRecordingMs}
             onComplete={handleStopRecording}
-            customStyles={{ fontSize: rem(14) }}
+            customStyles={{ fontSize: timerFontSize }}
             onlyMinutes
             onlyCountdown
           />

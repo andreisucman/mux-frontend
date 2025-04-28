@@ -15,7 +15,7 @@ import { defaultStreaks } from "@/app/rewards/RewardCard/defaultStreaks";
 import StreaksButton from "@/components/StreaksButton";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import openCreateNewTask from "../CreateTaskOverlay/openCreateNewTask";
 import classes from "./TasksButtons.module.css";

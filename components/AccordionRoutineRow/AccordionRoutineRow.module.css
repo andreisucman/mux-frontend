@@ -34,6 +34,10 @@
   margin-bottom: rem(16);
   height: unset;
   flex: 0;
+
+  &:last-child {
+    margin-bottom: 20%;
+  }
 }
 
 .control {

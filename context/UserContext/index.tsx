@@ -1,14 +1,13 @@
 "use client";
 
 import React, { createContext, useCallback, useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { nprogress } from "@mantine/nprogress";
 import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
 import { getCookieValue } from "@/helpers/cookies";
-import { useRouter } from "next/navigation";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import { protectedPaths } from "./protectedPaths";
@@ -139,6 +138,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
   useSWR(`${status}-${code}-${error}`, () => {
     if (code) return;
     if (error) return;
+    if (status !== AuthStateEnum.AUTHENTICATED) return;
     fetchUserData({ setUserDetails });
   });
 

@@ -17,7 +17,6 @@ export default function SelectBodyPart({ onClick }: Props) {
       collection: "concern",
       fields: ["parts"],
     }).then((result) => {
-      console.log("result.parts", result.parts);
       setAvailableParts(result.parts.filter((p) => !["face", "hair"].includes(p.value)));
     });
   }, []);

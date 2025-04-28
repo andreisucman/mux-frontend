@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -12,7 +12,6 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "next/navigation";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import CreateTaskOverlay from "./CreateTaskOverlay";
@@ -239,7 +238,7 @@ export default function TasksList({ customStyles }: Props) {
     checkIfAnalysisRunning({
       userId,
       operationKey: "routine",
-      setShowWaitComponent: setIsAnalysisGoing,
+      setShowWaitComponent: (verdict?: boolean) => setIsAnalysisGoing(!!verdict),
     });
 
     setPageLoaded(true);
@@ -286,11 +285,11 @@ export default function TasksList({ customStyles }: Props) {
                   fetchTasks(hideCompletedTasks, hideFutureTasks);
                   setIsAnalysisGoing(false);
                 }}
-                customContainerStyles={{ margin: "unset", paddingTop: "20%" }}
+                customContainerStyles={{ paddingBottom: "20%" }}
               />
             )}
             {displayComponent === "content" && (
-              <Stack className={classes.listWrapper}>{taskItems}</Stack>
+              <Stack className={classes.listWrapper} mb="20%">{taskItems}</Stack>
             )}
           </Stack>
         </CreateRoutineProvider>

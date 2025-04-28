@@ -48,7 +48,7 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
             variant="default"
             key={index}
             disabled={!!isCooldown}
-            onClick={() => handleClick(`/add-details?part=${key}`)}
+            onClick={() => handleClick(`/suggest/add-details?part=${key}`)}
           >
             {render}
           </Button>

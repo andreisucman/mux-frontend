@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
@@ -29,7 +30,7 @@ export default function AddDetails() {
 
   const { concerns, nextRoutineSuggestion } = userDetails || {};
 
-  const { isScanAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
     nextAction: nextRoutineSuggestion,
   });
@@ -76,7 +77,7 @@ export default function AddDetails() {
     return partConcerns.map((co, index) => {
       return (
         <AnswerBox
-          isDisabled={!isScanAvailable}
+          isDisabled={!isActionAvailable}
           key={index}
           textObject={previousExperience || {}}
           textObjectKey={co.name}
@@ -84,7 +85,7 @@ export default function AddDetails() {
         />
       );
     });
-  }, [concerns, isScanAvailable, part, previousExperience]);
+  }, [concerns, isActionAvailable, part, previousExperience]);
 
   const query = searchParams.toString();
   const handleResetTimer = useCallback(() => {
@@ -92,7 +93,7 @@ export default function AddDetails() {
     openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
   }, [query, part, setUserDetails]);
 
-  const checkBackNotice = isScanAvailable ? undefined : (
+  const checkBackNotice = isActionAvailable ? undefined : (
     <Text className={classes.alert}>
       Next routine suggestion is after {new Date(checkBackDate || new Date()).toDateString()}.{" "}
       <span onClick={handleResetTimer}>Reset</span>
@@ -117,7 +118,7 @@ export default function AddDetails() {
             disabled={!concerns || isLoading}
             loading={isLoading}
             onClick={() => updateRoutineSuggestions(previousExperience || {})}
-            mb={"25%"}
+            mb={"20%"}
             className={classes.button}
           >
             Next
