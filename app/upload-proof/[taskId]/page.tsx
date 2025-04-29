@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconCheckbox, IconCirclePlus } from "@tabler/icons-react";
 import { Button, Group, Skeleton, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -14,7 +14,6 @@ import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
 import fetchTaskInfo from "@/functions/fetchTaskInfo";
 import uploadToSpaces from "@/functions/uploadToSpaces";
-import { useRouter } from "next/navigation";
 import { formatDate } from "@/helpers/formatDate";
 import { deleteFromIndexedDb } from "@/helpers/indexedDb";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -173,7 +172,7 @@ export default function UploadProof(props: Props) {
     checkIfAnalysisRunning({
       userId,
       operationKey: taskId,
-      setShowWaitComponent: setIsAnalysisGoing,
+      setShowWaitComponent: (verdict?: boolean) => setIsAnalysisGoing(!!verdict),
     });
   }, [userId, taskId]);
 

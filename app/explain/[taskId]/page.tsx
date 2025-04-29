@@ -293,7 +293,7 @@ export default function Explain(props: Props) {
     checkIfAnalysisRunning({
       userId,
       operationKey: `createRecipe-${taskId}`,
-      setShowWaitComponent,
+      setShowWaitComponent: (verdict?: boolean) => setShowWaitComponent(!!verdict),
     }).then((res) => {
       setPageLoaded(true);
     });

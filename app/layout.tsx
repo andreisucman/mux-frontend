@@ -9,15 +9,15 @@ import "@mantine/charts/styles.layer.css";
 import React, { Suspense } from "react";
 import { ColorSchemeScript, Loader, MantineProvider, Stack } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
+import { NavigationProgress } from "@mantine/nprogress";
 import CookieDisclaimer from "@/components/CookieDisclaimer";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
 import ThemeColorSetter from "@/components/ThemeColorSetter";
 import UserContextProvider from "@/context/UserContext";
+import { HandleOnComplete } from "@/helpers/custom-router";
 import { theme } from "../theme";
 import classes from "./layout.module.css";
-import { HandleOnComplete } from "@/helpers/custom-router";
-import { NavigationProgress } from "@mantine/nprogress";
 
 export const metadata = {
   title: "Muxout - Max you out!",
@@ -51,9 +51,6 @@ export default function RootLayout({ children }: Props) {
       <body>
         <div className="bgPattern" />
         <MantineProvider theme={theme} defaultColorScheme="auto">
-          <NavigationProgress />
-          <HandleOnComplete />
-
           <ThemeColorSetter />
           <CookieDisclaimer />
           <Suspense
@@ -64,6 +61,8 @@ export default function RootLayout({ children }: Props) {
               />
             }
           >
+            <NavigationProgress />
+            <HandleOnComplete />
             <UserContextProvider>
               <ModalsProvider
                 modals={{
