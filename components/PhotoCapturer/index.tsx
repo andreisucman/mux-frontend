@@ -131,7 +131,7 @@ export default function PhotoCapturer({
     } catch (err) {
       openErrorModal({
         title: "An error occurred",
-        description: "Failed to access camera",
+        description: "You need to grant camera access to be able to scan yourself",
         onClose: () => modals.closeAll(),
       });
     }

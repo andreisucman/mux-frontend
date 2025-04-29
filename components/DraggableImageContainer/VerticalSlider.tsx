@@ -36,7 +36,7 @@ function VerticalSlier({ value, setValue }: Props) {
         <div
           style={{
             position: "absolute",
-            bottom: `calc(${value * 100}% - 8px)`,
+            bottom: `calc(${value * 100}% - 16px)`,
             left: 0,
             width: 16,
             height: 16,

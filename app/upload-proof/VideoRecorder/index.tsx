@@ -422,7 +422,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
         setHasMultipleCameras(true);
       }
     } catch (err) {
-      console.log("Failed to access camera");
+      console.log("You need to grant camera access to be able to record proof");
     }
   }, [videoRef.current, streamRef.current, isRecording, isVideoLoading, facingMode, aspectRatio]);
 

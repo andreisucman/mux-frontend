@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IconHandGrab, IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
-import { ActionIcon, AngleSlider, Group, rem, Stack } from "@mantine/core";
+import { ActionIcon, AngleSlider, Button, Group, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { OffsetType } from "@/app/select-part/types";
 import { BlurDotType } from "../UploadCard/types";
@@ -214,24 +214,26 @@ export default function DraggableImageContainer({
                   <ActionIcon variant="default" className={classes.dndIcon}>
                     <IconHandGrab size={16} />
                   </ActionIcon>
-                  <Group>
-                    <ActionIcon
+                  <Stack gap={8}>
+                    <Button
                       className="no-drag"
                       disabled={blurDots.length >= 3}
                       variant="default"
+                      size="compact-sm"
                       onClick={handleAddDot}
                     >
-                      <IconPlus className="icon icon__small" />
-                    </ActionIcon>
-                    <ActionIcon
+                      <IconPlus size={16} style={{ marginRight: rem(4) }} /> Add
+                    </Button>
+                    <Button
                       className="no-drag"
                       disabled={blurDots.length - 1 < 0 || !selectedDotId}
                       variant="default"
+                      size="compact-sm"
                       onClick={handleRemoveDot}
                     >
-                      <IconMinus className="icon icon__small" />
-                    </ActionIcon>
-                  </Group>
+                      <IconMinus size={16} style={{ marginRight: rem(4) }} /> Remove
+                    </Button>
+                  </Stack>
                   <Group className="no-drag">
                     <VerticalSlider
                       value={selectedDot?.scaleX || 1}

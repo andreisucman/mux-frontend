@@ -109,7 +109,7 @@ export default function ComparisonCarousel({ data }: Props) {
         >
           {slides}
         </Carousel>
-        <ActionIcon onClick={handleClickCarousel} className={classes.viewButton}>
+        <ActionIcon onClick={handleClickCarousel} size="lg" className={classes.viewButton} variant="light">
           <IconSeparatorVertical size={24} />
         </ActionIcon>
         <CardMetaPanel

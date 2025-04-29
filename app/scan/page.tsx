@@ -2,7 +2,6 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "@/helpers/custom-router";
 import { IconHourglass } from "@tabler/icons-react";
 import { Button, Group, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
@@ -17,6 +16,7 @@ import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import openResetTimerModal from "@/functions/resetTimer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
+import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
@@ -26,7 +26,7 @@ import { UploadProgressProps } from "../select-part/types";
 import classes from "./scan.module.css";
 
 export const runtime = "edge";
-const validParts = [PartEnum.BODY, PartEnum.FACE, PartEnum.HAIR];
+const validParts = [PartEnum.FACE, PartEnum.HAIR, PartEnum.BODY];
 
 export default function ScanProgress() {
   const router = useRouter();
