@@ -70,9 +70,10 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isSelf={isSelf}
       />
       <LineProgressIndicators
-        title={`Improvement (${dateInterval})`}
+        title={`Severity (${dateInterval})`}
         concernScores={filteredScores}
         concernScoresDifference={filteredDifferences}
+        showScores
       />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>

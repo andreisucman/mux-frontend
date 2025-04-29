@@ -5,24 +5,27 @@ import { ScoreDifferenceType, ScoreType } from "@/types/global";
 import classes from "./LineProgressIndicators.module.css";
 
 type Props = {
+  showScores?: boolean;
   customStyles?: { [key: string]: any };
   concernScores: ScoreType[];
   concernScoresDifference: ScoreDifferenceType[];
   title?: string;
 };
 
-const renderIndicator = ([label, value]: [string, number], index: number) => {
+const renderIndicator = ([label, value]: [string, number], isPercent = true) => {
   const color = value < 0 ? "var(--mantine-color-green-7)" : "var(--mantine-color-red-7)";
 
-  const displayValue =
+  let displayValue =
     value < 0
       ? `${Math.abs(value).toFixed(0)}%`
       : value > 0
         ? `-${Math.abs(value).toFixed(0)}%`
-        : undefined;
+        : "";
+
+  if (isPercent) displayValue = displayValue.slice(1, -1);
 
   return (
-    <Group key={`${label}-${index}`} gap="sm">
+    <Group key={`${label}-${value}`} gap="sm">
       <Text size="sm" lineClamp={1}>
         {normalizeString(label)}
       </Text>
@@ -30,7 +33,7 @@ const renderIndicator = ([label, value]: [string, number], index: number) => {
       <Progress.Root
         className={classes.barRoot}
         size={18}
-        styles={{ label: { minWidth: rem(30) } }}
+        styles={{ label: { minWidth: rem(40), textAlign: "center" } }}
       >
         <Progress.Section value={Math.abs(value)} color={color}>
           <Progress.Label>{displayValue}</Progress.Label>
@@ -42,6 +45,7 @@ const renderIndicator = ([label, value]: [string, number], index: number) => {
 
 export default function LineProgressIndicators({
   title,
+  showScores,
   customStyles,
   concernScores,
   concernScoresDifference,
@@ -52,9 +56,14 @@ export default function LineProgressIndicators({
         value: 0,
       };
       const initialValue = csdo.value - relevantDifference.value;
-      let percent = Math.round((1 - csdo.value / initialValue) * 100);
+      let percent = initialValue > 0 ? Math.round((1 - csdo.value / initialValue) * 100) : 0;
       if (relevantDifference.value < 0) percent = percent * -1;
-      return renderIndicator([csdo.name, percent], 0);
+      console.log(
+        "csdo.name, showScores ? csdo.value : percent",
+        csdo.name,
+        showScores ? csdo.value : percent
+      );
+      return renderIndicator([csdo.name, showScores ? csdo.value : percent], showScores);
     });
   }, [concernScores]);
 
