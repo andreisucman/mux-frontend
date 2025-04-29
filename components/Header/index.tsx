@@ -177,7 +177,7 @@ function Header() {
                 onClick={() => handleRedirect("signInButton")}
               >
                 <IconDoorEnter stroke={1.75} className="icon" style={{ marginRight: rem(6) }} />
-                Sign in / Sign up
+                Sign in / up
               </Button>
             )}
             {displayComponent !== "none" && (

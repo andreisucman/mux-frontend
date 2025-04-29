@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -97,6 +97,11 @@ export default function AddDetails() {
       <span onClick={handleResetTimer}>Reset</span>
     </Text>
   );
+
+  useEffect(() => {
+    if (!routineSuggestion) return;
+    if (!concernScores) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
+  }, [concernScores, routineSuggestion]);
 
   return (
     <Stack className={`${classes.container} smallPage`}>

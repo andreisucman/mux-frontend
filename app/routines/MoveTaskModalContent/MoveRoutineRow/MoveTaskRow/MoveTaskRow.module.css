@@ -1,11 +1,12 @@
 .container {
   cursor: default;
   border-radius: rem(4) rem(8) rem(8) rem(4);
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
   overflow: hidden;
 }
 
 .title {
   position: relative;
   padding: 0 rem(4);
+  flex-wrap: nowrap;
 }

@@ -28,8 +28,6 @@ export default function SuggestSelectConcerns() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineContext);
 
-  console.log("selectedConcerns", selectedConcerns);
-
   const part = searchParams.get("part") || "face";
 
   const { concerns, latestConcernScores, nextRoutineSuggestion } = userDetails || {};
@@ -62,10 +60,7 @@ export default function SuggestSelectConcerns() {
 
   const handleSelectConcerns = async (item: ScoreType) => {
     let newSelected = null;
-    console.log("item", item, "selectedConcerns", selectedConcerns);
     const exists = selectedConcerns.some((i) => i.name === item.name);
-
-    console.log("exists", exists);
 
     if (exists) {
       newSelected = selectedConcerns.filter((i) => i.name !== item.name);

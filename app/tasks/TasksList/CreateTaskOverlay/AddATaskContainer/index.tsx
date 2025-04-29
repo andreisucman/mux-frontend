@@ -198,7 +198,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
             {step === 1 && (
               <Checkbox
                 disabled={notScanned}
-                label="Let the coach draft it for me"
+                label="Enable drafting"
                 checked={enableDrafting}
                 onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
               />

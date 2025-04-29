@@ -36,7 +36,7 @@ export type CreateRoutineProps = {
 };
 
 function processInput(inputString: string) {
-  return inputString.replace("data: ", "").replace("\n\n", "");
+  return inputString.replace(/^data:\s*/i, "");
 }
 
 export default function SuggestRoutine() {
@@ -49,6 +49,7 @@ export default function SuggestRoutine() {
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [thoughts, setThoughts] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);
+  const [loaderText, setLoaderText] = useState("");
   const [displayComponent, setDisplayComponent] = useState<"loading" | "result">("loading");
   const [createRoutineLoading, setCreateRoutineLoading] = useState(false);
 
@@ -116,7 +117,14 @@ export default function SuggestRoutine() {
           saveToLocalStorage("routineStreamId", id);
         }
 
-        if (!idMatch) {
+        const eventMatch = chunk.match(/event:\s*(\S+)/);
+        if (eventMatch) {
+          if (eventMatch[1] === "end") {
+            setLoaderText("Finalizing...");
+          }
+        }
+
+        if (!idMatch && !eventMatch) {
           const cleaned = processInput(chunk);
           offset += cleaned.length;
           offsetRef.current += cleaned.length;
@@ -128,6 +136,7 @@ export default function SuggestRoutine() {
       fetchUserData({ setUserDetails });
       fetchRoutineSuggestion();
       setIsStreaming(false);
+      setLoaderText("");
       deleteFromLocalStorage("routineStreamId");
       deleteFromLocalStorage("routineStreamOffset");
     } catch (err: any) {}
@@ -285,23 +294,40 @@ export default function SuggestRoutine() {
       {displayComponent !== "loading" && (
         <>
           {checkBackNotice && <Alert p="0.5rem 1rem">{checkBackNotice}</Alert>}
-          <Stack className={classes.content}>
-            <Group align="center" gap={8}>
-              {isStreaming ? <Loader size={18} type="bars" /> : <IconAnalyze size={18} />}
-              <Text fw={600}>Reasoning</Text>
-            </Group>
-            <Text>{thoughts}</Text>
-            {isStreaming && <Loader size={16} m="0 auto" />}
+          <Stack className={classes.reasoningWrapper}>
+            {!isStreaming && (
+              <Group align="center" gap={8}>
+                <IconAnalyze size={18} />
+                <Text fw={600}>Analysis</Text>
+              </Group>
+            )}
+            {isStreaming && (
+              <Group align="center" gap={8}>
+                <Loader size={18} type="bars" />
+                <Text fw={600}>Thinking</Text>
+              </Group>
+            )}
+            <Stack className={classes.streamingContent}>
+              {isStreaming && (
+                <Group align="center" gap={8}>
+                  <Loader size={16} />
+                  {loaderText && (
+                    <Text fz="sm" fw={600}>
+                      {loaderText}
+                    </Text>
+                  )}
+                </Group>
+              )}
+              <Text style={{ whiteSpace: "pre-wrap" }}>{thoughts}</Text>
+            </Stack>
           </Stack>
           {summary && (
-            <Stack className={classes.summaryContainer}>
-              <Stack className={classes.content}>
-                <Group align="center" gap={8}>
-                  <IconRoute size={18} />
-                  <Text fw={600}>Suggested routine for the week</Text>
-                </Group>
-                <Text>{summary}</Text>
-              </Stack>
+            <Stack className={classes.content} style={{ flexDirection: "column", height: "unset" }}>
+              <Group align="center" gap={8}>
+                <IconRoute size={18} />
+                <Text fw={600}>Suggested routine for the week</Text>
+              </Group>
+              <Text>{summary}</Text>
               {taskRows}
               <Group className={classes.buttonWrapper}>
                 {!isCreationAvailable && (
