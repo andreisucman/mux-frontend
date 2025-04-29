@@ -208,7 +208,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         {status !== "authenticated" && (
           <UnstyledButton className={classes.signInButton} onClick={() => handleRedirect("/auth")}>
             <IconDoorEnter className="icon" stroke={1.25} />
-            Sign in
+            Sign in / Sign up
           </UnstyledButton>
         )}
       </>

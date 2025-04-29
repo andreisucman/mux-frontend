@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 import { IconBrandGoogle, IconMail } from "@tabler/icons-react";
 import {
   Button,
@@ -19,7 +20,6 @@ import getPasswordStrength from "@/helpers/getPasswordStrength";
 import openLegalBody from "@/helpers/openLegalBody";
 import { validateEmail } from "@/helpers/utils";
 import classes from "./AuthForm.module.css";
-import { useRouter } from "next/navigation";
 
 type Props = {
   stateObject: SignInStateType;
@@ -38,7 +38,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
   const secondaryButtonText = showResetPassword ? "Return" : "Reset password";
-  const buttonText = showResetPassword ? "Reset password" : "Sign in with email";
+  const buttonText = showResetPassword ? "Reset password" : "Sign in / Sign up with email";
 
   const handleEnterEmail = (e: React.FormEvent<HTMLInputElement>) => {
     if (emailError) setEmailError("");
@@ -122,7 +122,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             variant="default"
           >
             <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
-            Sign in with Google
+            Sign in / Sign up with Google
           </Button>
           <Text c="dimmed" size="xs" ta="center">
             or using email...

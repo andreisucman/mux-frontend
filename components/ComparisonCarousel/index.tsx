@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { IconSeparatorVertical } from "@tabler/icons-react";
 import { Carousel } from "@mantine/carousel";
-import { rem, Skeleton, Stack, Title } from "@mantine/core";
+import { ActionIcon, Button, Skeleton, Stack, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { BeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
-import { getPartIcon, partIcons } from "@/helpers/icons";
+import { getPartIcon } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import CardMetaPanel from "../CardMetaPanel";
@@ -108,7 +109,9 @@ export default function ComparisonCarousel({ data }: Props) {
         >
           {slides}
         </Carousel>
-
+        <ActionIcon onClick={handleClickCarousel} className={classes.viewButton}>
+          <IconSeparatorVertical size={24} />
+        </ActionIcon>
         <CardMetaPanel
           redirectUrl={redirectUrl}
           name={userName || ""}

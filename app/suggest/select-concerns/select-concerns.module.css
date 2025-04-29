@@ -1,0 +1,33 @@
+.container {
+  flex: 1;
+}
+
+.wrapper {
+  flex: 1;
+}
+
+.box {
+  gap: rem(12);
+  padding: rem(16);
+  border-radius: rem(16);
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+}
+
+.button {
+  margin-left: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin: unset;
+  }
+}
+
+.alert {
+  cursor: default;
+  font-size: var(--mantine-font-size-sm);
+
+  & span {
+    cursor: pointer;
+    font-size: var(--mantine-font-size-sm);
+    text-decoration: underline;
+  }
+}

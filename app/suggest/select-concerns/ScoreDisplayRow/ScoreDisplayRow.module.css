@@ -1,0 +1,11 @@
+.row {
+  cursor: pointer;
+  border-radius: rem(16);
+  padding: rem(8) rem(16);
+  gap: 0;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+}
+
+.rowLabel {
+  font-size: rem(14);
+}

@@ -167,7 +167,7 @@ export default function SuggestRoutine() {
   }, [tasks]);
 
   const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/add-details${query ? `?${query}` : ""}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/select-concerns${query ? `?${query}` : ""}`;
     openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
   }, [query, part, setUserDetails]);
 
@@ -272,7 +272,7 @@ export default function SuggestRoutine() {
 
   useEffect(() => {
     const tId = setTimeout(() => {
-      if (!routineSuggestion) router.replace(`/suggest/add-details${query ? `?${query}` : ""}`);
+      if (!routineSuggestion) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
       clearTimeout(tId);
     }, 5000);
 

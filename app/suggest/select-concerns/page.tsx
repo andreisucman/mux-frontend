@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -11,24 +11,28 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openResetTimerModal from "@/functions/resetTimer";
 import { useRouter } from "@/helpers/custom-router";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
-import AnswerBox from "../answer-questions/AnswerBox";
-import classes from "./add-details.module.css";
+import { ScoreType } from "@/types/global";
+import ScoreDisplayRow from "./ScoreDisplayRow";
+import classes from "./select-concerns.module.css";
 
 export const runtime = "edge";
 
-export default function AddDetails() {
+export default function SuggestSelectConcerns() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedConcerns, setSelectedConcerns] = useState<ScoreType[]>([]);
   const { userDetails, setUserDetails } = useContext(UserContext);
   const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineContext);
 
+  console.log("selectedConcerns", selectedConcerns);
+
   const part = searchParams.get("part") || "face";
 
-  const { previousExperience, concernScores } = routineSuggestion || {};
-  const { nextRoutineSuggestion } = userDetails || {};
+  const { concerns, latestConcernScores, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -36,54 +40,69 @@ export default function AddDetails() {
   });
 
   const updateRoutineSuggestions = useCallback(
-    async (previousExperience: { [key: string]: string }) => {
+    async (concernScores: ScoreType[]) => {
       if (isLoading) return;
       setIsLoading(true);
 
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, previousExperience },
+        body: { part, concernScores },
       });
 
       if (response.status === 200) {
-        setRoutineSuggestion((prev: RoutineSuggestionType) => ({ ...prev, previousExperience }));
+        setRoutineSuggestion((prev: RoutineSuggestionType) => ({ ...prev, concernScores }));
 
         const stringParams = searchParams.toString();
-        router.push(`/suggest/answer-questions${stringParams ? `?${stringParams}` : ""}`);
+        router.push(`/suggest/add-details${stringParams ? `?${stringParams}` : ""}`);
       }
     },
-    [router, part, isLoading]
+    [router, part, routineSuggestion, isLoading]
   );
 
-  const handleType = (concern: string, text: string) => {
-    setRoutineSuggestion((prev: RoutineSuggestionType) => {
-      const previousExperience = (prev || {}).previousExperience;
-      return {
-        ...prev,
-        ["previousExperience"]: {
-          ...previousExperience,
-          [concern]: text,
-        },
-      };
-    });
+  const handleSelectConcerns = async (item: ScoreType) => {
+    let newSelected = null;
+    console.log("item", item, "selectedConcerns", selectedConcerns);
+    const exists = selectedConcerns.some((i) => i.name === item.name);
+
+    console.log("exists", exists);
+
+    if (exists) {
+      newSelected = selectedConcerns.filter((i) => i.name !== item.name);
+    } else {
+      if (!isActionAvailable) return;
+      newSelected = [...selectedConcerns, item];
+    }
+
+    saveToLocalStorage("selectedRoutineConcerns", newSelected);
+    setSelectedConcerns(newSelected);
   };
 
-  const boxes = useMemo(() => {
-    if (!concernScores) return;
+  const rows = useMemo(() => {
+    if (!latestConcernScores) return;
 
-    return concernScores.map((co, index) => {
+    const relevantScores = latestConcernScores[part];
+
+    return relevantScores.map((cso, i) => {
+      const isSelected = selectedConcerns?.some((co) => co.name === cso.name);
+
       return (
-        <AnswerBox
+        <ScoreDisplayRow
+          key={i}
+          item={cso}
+          isChecked={!!isSelected}
+          handleSelectConcerns={handleSelectConcerns}
           isDisabled={!isActionAvailable}
-          key={index}
-          textObject={previousExperience || {}}
-          textObjectKey={co.name}
-          handleType={(answer) => handleType(co.name, answer)}
         />
       );
     });
-  }, [concernScores, isActionAvailable, previousExperience]);
+  }, [
+    handleSelectConcerns,
+    selectedConcerns,
+    routineSuggestion,
+    isActionAvailable,
+    latestConcernScores?.[part],
+  ]);
 
   const query = searchParams.toString();
   const handleResetTimer = useCallback(() => {
@@ -98,24 +117,34 @@ export default function AddDetails() {
     </Text>
   );
 
+  useEffect(() => {
+    if (!latestConcernScores) return;
+    const exists = (item: { [key: string]: any }, key: string) =>
+      latestConcernScores[part].some((obj) => obj.name === item[key]);
+
+    const savedSelectedConcerns: ScoreType[] | null =
+      getFromLocalStorage("selectedRoutineConcerns");
+
+    if (savedSelectedConcerns)
+      setSelectedConcerns(savedSelectedConcerns.filter((item) => exists(item, "name")));
+  }, [part, latestConcernScores]);
+
   return (
     <Stack className={`${classes.container} smallPage`}>
-      <PageHeader title="Tell your experience" />
-      {concernScores ? (
+      <PageHeader title="Select concerns" />
+      {concerns ? (
         <>
           {checkBackNotice && <Alert p="0.5rem 1rem">{checkBackNotice}</Alert>}
           <InstructionContainer
             title="Description"
-            instruction={
-              "Describe what you have already tried and what were the results. This will help avoid ineffective solutions and include more promising tasks for you."
-            }
+            instruction={"Select the concerns for your next routine"}
             customStyles={{ flex: 0 }}
           />
-          {boxes}
+          {rows}
           <Button
-            disabled={!concernScores || isLoading}
+            disabled={!concerns || isLoading}
             loading={isLoading}
-            onClick={() => updateRoutineSuggestions(previousExperience || {})}
+            onClick={() => updateRoutineSuggestions(selectedConcerns || [])}
             mb={"20%"}
             className={classes.button}
           >

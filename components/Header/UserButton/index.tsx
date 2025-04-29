@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/helpers/custom-router/patch-router/link";
 import {
   IconDoorExit,
   IconListDetails,

@@ -63,7 +63,7 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
       if (relevantRoutines) openSelectRoutineType(relevantRoutines);
     } else if (partsScanned.length === 1) {
       setIsLoading(true);
-      router.push(`/suggest/add-details?part=${partsScanned[0]}`);
+      router.push(`/suggest/select-concerns?part=${partsScanned[0]}`);
     }
   }, [isLoading, nextRoutine, latestProgressImages]);
 

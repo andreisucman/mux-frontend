@@ -123,7 +123,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
       if (relevantRoutines) openSelectRoutineType(relevantRoutines);
     } else if (partsScanned.length === 1) {
       setIsRoutineButtonLoading(true);
-      router.push(`/suggest/add-details?part=${partsScanned[0]}`);
+      router.push(`/suggest/select-concerns?part=${partsScanned[0]}`);
       modals.closeAll();
     }
   };

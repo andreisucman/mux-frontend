@@ -60,7 +60,7 @@ export default function AnswerQuestions() {
         router.push(`/suggest/result${stringParams ? `?${stringParams}` : ""}`);
       }
     },
-    [router, isLoading]
+    [router, part, isLoading]
   );
 
   const handleType = (question: string, text: string) => {
@@ -78,7 +78,7 @@ export default function AnswerQuestions() {
 
   const query = searchParams.toString();
   const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/add-details${query ? `?${query}` : ""}`;
+    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/select-concerns${query ? `?${query}` : ""}`;
     openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
   }, [query, part, setUserDetails]);
 
@@ -113,7 +113,7 @@ export default function AnswerQuestions() {
       setShowWaitComponent: (verdict?: boolean) => {
         if (!verdict) {
           if (!questionsAndAnswers) {
-            router.replace(`/suggest/add-details${query ? `?${query}` : ""}`);
+            router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
             return;
           }
         }
@@ -139,7 +139,7 @@ export default function AnswerQuestions() {
           onComplete={() => {
             fetchRoutineSuggestion().finally(() => setShowDisplayComponent("questions"));
           }}
-          errorRedirectUrl={`/suggest/add-details${query ? `?${query}` : ""}`}
+          errorRedirectUrl={`/suggest/select-concerns${query ? `?${query}` : ""}`}
           customContainerStyles={{ paddingBottom: "20%" }}
         />
       )}
