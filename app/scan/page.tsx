@@ -124,8 +124,7 @@ export default function ScanProgress() {
               part,
               blurDots: updatedBlurDots,
               beforeImage: beforeImageUrl,
-              // image: originalImageUrl,
-              image: "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/polina1.png",
+              image: originalImageUrl,
             },
           });
 
