@@ -58,8 +58,16 @@ export default function SuggestRoutine() {
   const part = searchParams.get("part") || "face";
   const query = searchParams.toString();
 
-  const { _id: routineSuggestionId, summary, tasks, isRevised } = routineSuggestion || {};
+  const {
+    _id: routineSuggestionId,
+    summary,
+    reasoning,
+    tasks,
+    isRevised,
+  } = routineSuggestion || {};
   const { nextRoutine, nextRoutineSuggestion } = userDetails || {};
+
+  console.log("routineSuggestion", routineSuggestion);
 
   const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
     useCheckActionAvailability({
@@ -267,6 +275,7 @@ export default function SuggestRoutine() {
 
   useEffect(() => {
     if (!routineSuggestionId) return;
+
     streamRoutineSuggestions(routineSuggestionId);
 
     return () => {
@@ -279,7 +288,11 @@ export default function SuggestRoutine() {
       setDisplayComponent("result");
       setIsStreaming(false);
     }
-  }, [tasks]);
+
+    if (!isStreaming && reasoning) {
+      setThoughts(reasoning);
+    }
+  }, [tasks, isStreaming]);
 
   useEffect(() => {
     const tId = setTimeout(() => {
@@ -300,7 +313,7 @@ export default function SuggestRoutine() {
             {!isStreaming && (
               <Group align="center" gap={8}>
                 <IconAnalyze size={18} />
-                <Text fw={600}>Analysis</Text>
+                <Text fw={600}>Reasoning</Text>
               </Group>
             )}
             {isStreaming && (

@@ -1,9 +1,8 @@
 .row {
   cursor: pointer;
-  border: rem(1) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   border-radius: rem(16);
   padding: rem(8) rem(16);
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
 
   &:hover {
     background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));

@@ -6,25 +6,10 @@
   width: 100%;
   min-width: rem(200);
   overflow: hidden;
-  border: rem(4) solid light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
-
-  background-image: linear-gradient(
-    45deg,
-    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 49.9%,
-    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 50%,
-    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 94.9%,
-    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)) 95%
-  );
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
 
   &:hover {
-    border: rem(4) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8));
-    background-image: linear-gradient(
-      45deg,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 49.9%,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 50%,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 94.9%,
-      light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8)) 95%
-    );
+    border: rem(2) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
   }
 }
 

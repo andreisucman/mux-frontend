@@ -37,11 +37,9 @@ export default function RewardCard({ data, claimReward }: Props) {
     <Skeleton visible={showSkeleton} className={cn(classes.skeleton, "skeleton")}>
       <Stack className={classes.container}>
         <Group className={classes.heading}>
-          {value && <Text>${value}</Text>}
           <Title order={5}>{title}</Title>
-          <Text>
-            ({left}/{count})
-          </Text>
+          {value && <Text>${value}</Text>}
+          <Text>({left} left)</Text>
         </Group>
         <Stack className={classes.content}>
           <Text>{condition}</Text>

@@ -14,8 +14,8 @@
 .item {
   position: relative;
   border-radius: var(--mantine-radius-lg);
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
-  border: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));
+  background-color: transparent;
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
 
   &:last-child {
     margin-bottom: unset;

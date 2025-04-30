@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox, Group, Stack, Text } from "@mantine/core";
+import { Checkbox, Group, Stack, Text, Title } from "@mantine/core";
 import { normalizeString } from "@/helpers/utils";
 import { ScoreType } from "@/types/global";
 import classes from "./ScoreDisplayRow.module.css";
@@ -20,9 +20,9 @@ export default function ScoreDisplayRow({
     <Stack key={item.value} className={classes.row} onClick={() => handleSelectConcerns(item)}>
       <Group>
         <Checkbox disabled={isDisabled && !isChecked} checked={isChecked} readOnly />
-        <Text c={isDisabled && !isChecked ? "dimmed" : undefined} className={classes.rowLabel}>
+        <Title order={5} c={isDisabled && !isChecked ? "dimmed" : undefined} className={classes.rowLabel}>
           {normalizeString(item.name)}
-        </Text>
+        </Title>
         <Text>{item.value}/100</Text>
       </Group>
       <Text c={isDisabled && !isChecked ? "dimmed" : undefined} className={classes.rowLabel}>

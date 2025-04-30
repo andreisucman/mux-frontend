@@ -59,7 +59,7 @@ export default function ScanProgress() {
   const scanButtons = useMemo(() => {
     if (status === AuthStateEnum.AUTHENTICATED) {
       return (
-        <Group mt={8} gap={12}>
+        <Group mt={8} gap={12} pb="15%">
           <Button flex={1} miw={175} variant="default" onClick={handleResetTimer}>
             Reset scan timer
           </Button>

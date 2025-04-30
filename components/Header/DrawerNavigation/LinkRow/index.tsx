@@ -48,7 +48,7 @@ function LinkRow({ linkClicked, clickLink, closeDrawer, link }: Props) {
             <Link
               key={index}
               href={child.path}
-              className={cn(classes.link, classes.link)}
+              className={cn(classes.link, classes.child)}
               onClick={closeDrawer}
             >
               {child.title}

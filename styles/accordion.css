@@ -19,7 +19,8 @@
 }
 
 .accordionItem {
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  background-color: transparent;
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   border-radius: var(--mantine-radius-lg);
 }
 

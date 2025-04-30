@@ -6,7 +6,7 @@ import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 
 const defaultMessage =
-  "We pay $5 for each error or meaningful idea that you report. The reward will be added to your Club balance and paid out to your connected bank account.";
+  "Get $5 for each error or meaningful idea that you report. The reward will be added to your Club balance and paid out to your connected bank account.";
 
 export default function FeedbackModalContent() {
   const [message, setMessage] = useState(defaultMessage);
@@ -36,9 +36,7 @@ export default function FeedbackModalContent() {
       setMessage(response.message);
       setFiles([]);
       setText("");
-      setMessage(
-        "Thank you. We'll analyze your report within 7 days and inform you."
-      );
+      setMessage("Thank you. We'll analyze your report within 7 days and inform you.");
     }
   };
 
