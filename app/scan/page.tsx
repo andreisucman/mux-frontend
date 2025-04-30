@@ -84,7 +84,7 @@ export default function ScanProgress() {
 
       setIsLoading(true);
 
-      const totalDuration = Math.random() * 25000 + 15000;
+      const totalDuration = Math.random() * 25000 + 25000;
       const updateInterval = 1000;
       const incrementValue = 100 / (totalDuration / 1000);
 
@@ -125,7 +125,7 @@ export default function ScanProgress() {
               blurDots: updatedBlurDots,
               beforeImage: beforeImageUrl,
               // image: originalImageUrl,
-              image: "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/polina.png",
+              image: "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/polina1.png",
             },
           });
 

@@ -40,9 +40,12 @@ export default function AnalysisCard({
 
   const change = useMemo(() => {
     if (!changeScore) return;
+    const denominator = currentScore - changeScore;
+    const percent = currentScore > 0 && denominator !== 0 ? 1 - currentScore / denominator : 0;
+    const displayValue = `${changeScore < 0 ? "-" : "+"}${Math.round(percent * 100)}%`;
     return (
       <span className={cn(classes.change, { [classes.positive]: changeScore < 0 })}>
-        {changeScore}
+        {displayValue}
       </span>
     );
   }, [changeScore]);

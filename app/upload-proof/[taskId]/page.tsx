@@ -284,7 +284,6 @@ export default function UploadProof(props: Props) {
                   setDisplayComponent("videoRecorder");
                   setIsAnalysisGoing(false);
                 }}
-                customWrapperStyles={{ transform: "translateY(-50%)" }}
               />
             )}
             {componentToDisplay === "videoRecorder" && status === "authenticated" && (

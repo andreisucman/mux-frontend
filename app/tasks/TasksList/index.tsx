@@ -242,9 +242,11 @@ export default function TasksList({ customStyles }: Props) {
       operationKey: "routine",
       setShowWaitComponent: (verdict?: boolean) => setIsAnalysisGoing(!!verdict),
     });
-
-    setPageLoaded(true);
   }, [userId]);
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
 
   return (
     <Stack className={classes.container} style={customStyles ?? {}}>
@@ -289,7 +291,6 @@ export default function TasksList({ customStyles }: Props) {
                   fetchTasks(hideCompletedTasks, hideFutureTasks);
                   setIsAnalysisGoing(false);
                 }}
-                customContainerStyles={{ paddingBottom: "20%" }}
               />
             )}
             {displayComponent === "content" && (

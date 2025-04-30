@@ -141,7 +141,6 @@ export default function AnswerQuestions() {
             fetchRoutineSuggestion().finally(() => setShowDisplayComponent("questions"));
           }}
           errorRedirectUrl={`/suggest/select-concerns${query ? `?${query}` : ""}`}
-          customContainerStyles={{ paddingBottom: "20%" }}
         />
       )}
       {showDisplayComponent === "questions" && (

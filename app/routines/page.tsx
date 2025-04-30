@@ -572,7 +572,6 @@ export default function MyRoutines() {
               });
               setIsAnalysisGoing(false);
             }}
-            customContainerStyles={{ paddingBottom: "20%" }}
           />
         )}
         {displayComponent === "loading" && (

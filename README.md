@@ -23,13 +23,13 @@
 // shift routine dates and task ids in all tasks
 db["Routine"].aggregate([
   {
-    $match: { userId: ObjectId("6807818b78509beb8ecacf5c"), createdAt: {$gte: ISODate("2025-04-20T10:46:33.303+00:00")} }
+    $match: { userId: ObjectId("6811ccafd1f488e685f15784"), createdAt: {$gte: ISODate("2025-04-29T10:46:33.303+00:00")} }
   },
   {
     $addFields: {
-      createdAt: { $subtract: ["$createdAt", 8 * 24 * 60 * 60 * 1000] },
-      startsAt: { $subtract: ["$startsAt", 7 * 24 * 60 * 60 * 1000] },
-      lastDate: { $subtract: ["$lastDate", 7 * 24 * 60 * 60 * 1000] },
+      createdAt: { $subtract: ["$createdAt", 31 * 24 * 60 * 60 * 1000] },
+      startsAt: { $subtract: ["$startsAt", 30 * 24 * 60 * 60 * 1000] },
+      lastDate: { $subtract: ["$lastDate", 30 * 24 * 60 * 60 * 1000] },
       allTasks: {
         $map: {
           input: "$allTasks",
@@ -46,7 +46,7 @@ db["Routine"].aggregate([
                       $mergeObjects: [
                         "$$id",
                         {
-                          startsAt: { $subtract: ["$$id.startsAt", 14 * 24 * 60 * 60 * 1000] },
+                          startsAt: { $subtract: ["$$id.startsAt", 30 * 24 * 60 * 60 * 1000] },
                           status: "completed"
                         }
                       ]
@@ -72,14 +72,14 @@ db["Routine"].aggregate([
 // shift task dates
 db["Task"].updateMany(
   { 
-    userId: ObjectId("6807818b78509beb8ecacf5c"),
-    startsAt: {$gte: ISODate("2025-04-20T10:46:33.303+00:00")}
+    userId: ObjectId("6811ccafd1f488e685f15784"),
+    startsAt: {$gte: ISODate("2025-04-29T10:46:33.303+00:00")}
   },
   [
     {
       $set: {
-        startsAt: { $subtract: ["$startsAt", 7 * 24 * 60 * 60 * 1000] },
-        expiresAt: { $subtract: ["$expiresAt", 7 * 24 * 60 * 60 * 1000] },
+        startsAt: { $subtract: ["$startsAt", 30 * 24 * 60 * 60 * 1000] },
+        expiresAt: { $subtract: ["$expiresAt", 30 * 24 * 60 * 60 * 1000] },
         status: "completed",
         proofId: ObjectId("680775e278509beb8ecacf5b")
       }

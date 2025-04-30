@@ -342,7 +342,6 @@ export default function Explain(props: Props) {
               onError={() => {
                 setShowWaitComponent(false);
               }}
-              customContainerStyles={{ margin: "unset", paddingTop: "25%" }}
             />
           ) : (
             <>
