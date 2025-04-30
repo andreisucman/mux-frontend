@@ -335,7 +335,7 @@ export default function Calendar() {
         </Button>
       </Group>
 
-      <Stack className={`${classes.content} scrollbar`}>
+      <Stack className={cn(classes.content, "scrollbar")}>
         {displayComponent === "loading" && (
           <Loader
             m="30% auto 0"

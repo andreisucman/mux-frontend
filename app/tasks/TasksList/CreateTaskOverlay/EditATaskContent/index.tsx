@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { IconCalendar } from "@tabler/icons-react";
+import cn from "classnames";
 import { Group, NumberInput, rem, Stack, Text } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -62,7 +63,7 @@ function EditATaskContent({
   todayMidnight.setHours(0, 0, 0, 0);
 
   const previewBody = previewIsTasks ? (
-    <Stack className={`${classes.tasksPreviewContainer} scrollbar`}>
+    <Stack className={cn(classes.taskPreviewContainer, "scrolbar")}>
       {previewData.map((data, index) => {
         return <NewTaskPreviewRow {...(data as TaskPreviewRecord)} key={index} />;
       })}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import cn from "classnames";
 import { rem, SegmentedControl, Stack } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
@@ -34,7 +35,7 @@ export default function Club() {
   };
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Club profile" />
       <SkeletonWrapper>
         <SegmentedControl

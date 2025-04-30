@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
+import cn from "classnames";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -14,7 +15,6 @@ import { historySortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { useRouter } from "next/navigation";
 import InactiveTaskRow from "../TasksList/TaskRow/InactiveTaskRow";
 import { InactiveTaskType } from "./type";
 import classes from "./history.module.css";
@@ -99,7 +99,7 @@ export default function RoutinesHistoryPage() {
   }, [status, part, sort]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <SkeletonWrapper>
         <PageHeader
           title="Task history"

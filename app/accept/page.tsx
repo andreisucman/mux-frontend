@@ -2,6 +2,7 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Button, Stack, Text } from "@mantine/core";
 import { useScrollIntoView } from "@mantine/hooks";
 import { nprogress } from "@mantine/nprogress";
@@ -95,9 +96,9 @@ export default function AcceptIndexPage() {
   );
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Review terms" />
-      <Stack className={`${classes.content} scrollbar`}>
+      <Stack className={cn(classes.content, "scrollbar")}>
         <TermsLegalBody />
       </Stack>
       <TosCheckbox

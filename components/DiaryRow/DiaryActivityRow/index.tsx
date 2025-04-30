@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import cn from "classnames";
 import { DiaryActivityType } from "../../../app/diary/type";
 import DiaryTaskCard from "../../DiaryTaskCard";
 import classes from "./DiaryActivityRow.module.css";
@@ -9,7 +10,7 @@ type Props = {
 
 function DiaryActivityRow({ activities }: Props) {
   return (
-    <div className={`${classes.container} scrollbar`}>
+    <div className={cn(classes.container, "scrollbar")}>
       <div className={classes.wrapper}>
         {activities.map((activity, index) => (
           <DiaryTaskCard {...activity} key={index} />

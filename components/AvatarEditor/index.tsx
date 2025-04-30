@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { micah } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
+import cn from "classnames";
 import { Button, ColorInput, Fieldset, Loader, rem, Stack, Text } from "@mantine/core";
 import { UpdateClubInfoProps } from "@/app/settings/ClubSettings";
 import { AvatarType } from "@/types/global";
@@ -106,7 +107,7 @@ export default function AvatarEditor({ canUpdateAvatar, avatar, handleUpdateClub
         >
           Save
         </Button>
-        <Stack className={`${classes.content} scrollbar`}>
+        <Stack className={cn(classes.content, "scrollbar")}>
           <Fieldset legend="Skin color" className={classes.filedset}>
             <ColorInput
               flex={1}

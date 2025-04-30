@@ -1,5 +1,6 @@
 import React from "react";
 import { IconPlus, IconX } from "@tabler/icons-react";
+import cn from "classnames";
 import { ActionIcon, Group, Image, Stack } from "@mantine/core";
 import classes from "./UploadedImages.module.css";
 
@@ -11,7 +12,7 @@ type Props = {
 };
 export default function UploadedImages({ images, onClick, handleRemove, handleAddMore }: Props) {
   return (
-    <Group className={`scrollbar ${classes.container} `}>
+    <Group className={cn("scrollbar", classes.container)}>
       {images.map((image) => (
         <Stack className={classes.imageWrapper} key={image}>
           <ActionIcon size="xs" className={classes.close} onClick={() => handleRemove(image)}>

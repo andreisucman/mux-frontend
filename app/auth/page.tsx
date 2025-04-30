@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
+import cn from "classnames";
 import { Stack } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import AuthForm from "./AuthForm";
@@ -14,7 +15,7 @@ export default function AuthPage() {
   const { _id: userId } = userDetails || {};
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <Stack className={classes.wrapper}>
         <AuthForm
           stateObject={{

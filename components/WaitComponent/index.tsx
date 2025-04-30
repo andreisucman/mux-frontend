@@ -1,10 +1,10 @@
 "use client";
 
 import React, { memo, useCallback, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Loader, Progress, rem, Stack, Text } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "next/navigation";
 import openErrorModal from "@/helpers/openErrorModal";
 import Disclaimer from "./Disclaimer";
 import classes from "./WaitComponent.module.css";
@@ -93,7 +93,7 @@ function WaitComponent({
     };
   }, [userId, operationKey]);
 
-  const finalDescription = !progress ? "Loading..." : description;
+  const finalDescription = progress ? description : "Loading...";
 
   return (
     <Stack className={classes.container} style={customContainerStyles ? customContainerStyles : {}}>
@@ -101,7 +101,7 @@ function WaitComponent({
         <Loader type="bars" mb={rem(8)} />
         <Progress className={classes.progress} size={12} w="100%" value={progress || 0} animated />
         <Text c="dimmed" size="sm">
-          {finalDescription} {progress && <span>({progress}%)</span>}
+          {finalDescription} {progress ?<span>({progress}%)</span> : ""}
         </Text>
         {!hideDisclaimer && (
           <Disclaimer

@@ -29,7 +29,7 @@ export default function NotFoundPage() {
   };
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <div className={classes.inner}>
         <Image
           className={cn(classes.image, { [classes.dark]: true })}

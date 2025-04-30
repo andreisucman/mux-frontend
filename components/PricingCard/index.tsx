@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import { Group, Loader, rem, Stack, Text, Title } from "@mantine/core";
+import { Loader, rem, Stack, Text, Title } from "@mantine/core";
 import GlowingButton from "@/components/GlowingButton";
 import classes from "./PricingCard.module.css";
 
@@ -8,7 +8,6 @@ type Props = {
   headerChildren?: React.ReactNode;
   addGradient?: boolean;
   price?: React.ReactNode;
-  showFooter?: boolean;
   customContentStyles?: { [key: string]: any };
   customContainerStyles?: { [key: string]: any };
   customHeadingStyles?: { [key: string]: any };
@@ -27,7 +26,6 @@ type Props = {
 
 export default function PricingCard({
   content,
-  showFooter = true,
   addGradient = false,
   customContentStyles,
   customHeadingStyles,
@@ -50,7 +48,7 @@ export default function PricingCard({
       style={customContainerStyles || {}}
     >
       <Stack
-        className={`${classes.heading} gradient`}
+        className={cn(classes.heading, "gradient")}
         style={customHeadingStyles ? customHeadingStyles : {}}
       >
         {headerChildren}
@@ -93,7 +91,6 @@ export default function PricingCard({
           </Stack>
         )}
       </Stack>
-      {showFooter && <Stack className={`${classes.footer} gradient`} />}
     </Stack>
   );
 }

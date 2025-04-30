@@ -2,6 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -231,7 +232,7 @@ export default function DiaryPage() {
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <SkeletonWrapper>
         <PageHeader
           disableFilter={!diaryRecords}

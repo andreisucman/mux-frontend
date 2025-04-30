@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
+import cn from "classnames";
 import { Button, Group, rem, Stack } from "@mantine/core";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import FilterDropdown from "@/components/FilterDropdown";
@@ -204,7 +205,7 @@ export default function ManageRoutines() {
   useEffect(() => setPageLoaded(true), []);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader
         title="Manage routines"
         children={

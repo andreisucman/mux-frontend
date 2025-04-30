@@ -216,10 +216,10 @@ export default function AccountSettings() {
               })
             }
           >
-            <IconAsterisk className={`${classes.icon} icon`} /> Reset password
+            <IconAsterisk className={cn(classes.icon, "icon")} /> Reset password
           </UnstyledButton>
           <UnstyledButton className={classes.item} onClick={redirectToBillingPortal}>
-            <IconCreditCard className={`${classes.icon} icon`} /> Manage subscriptions
+            <IconCreditCard className={cn(classes.icon, "icon")} /> Manage subscriptions
           </UnstyledButton>
           {!deleteOn && (
             <UnstyledButton
@@ -232,7 +232,7 @@ export default function AccountSettings() {
                 })
               }
             >
-              <IconInfoCircle className={`${classes.icon} icon`} /> Delete account
+              <IconInfoCircle className={cn(classes.icon, "icon")} /> Delete account
             </UnstyledButton>
           )}
         </Stack>

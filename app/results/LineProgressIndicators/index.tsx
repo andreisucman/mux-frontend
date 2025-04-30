@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import cn from "classnames";
 import { Group, Progress, rem, Stack, Text } from "@mantine/core";
 import { normalizeString } from "@/helpers/utils";
 import { ScoreDifferenceType, ScoreType } from "@/types/global";
@@ -74,7 +75,7 @@ export default function LineProgressIndicators({
           </Text>
         )}
 
-        <Stack className={`${classes.indicatorsWrapper} scrollbar`}>
+        <Stack className={cn(classes.indicatorsWrapper, "scrollbar")}>
           <Stack gap={8}>{concernIndicator}</Stack>
         </Stack>
       </Stack>

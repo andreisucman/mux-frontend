@@ -1,5 +1,7 @@
 import React, { useCallback, useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 import { IconDeviceFloppy, IconPencil, IconTargetOff, IconWorld } from "@tabler/icons-react";
+import cn from "classnames";
 import {
   ActionIcon,
   Group,
@@ -17,7 +19,6 @@ import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import askConfirmation from "@/helpers/askConfirmation";
-import { useRouter } from "next/navigation";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { AvatarType, UserDataType } from "@/types/global";
@@ -301,7 +302,7 @@ export default function ClubSettings() {
             </Stack>
           )}
           <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
-            <IconTargetOff className={`${classes.icon} icon`} /> Leave the Club
+            <IconTargetOff className={cn(classes.icon, "icon")} /> Leave the Club
           </UnstyledButton>
         </Stack>
       </Stack>

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
@@ -104,7 +105,7 @@ export default function AddDetails() {
   }, [concernScores, routineSuggestion]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Tell your experience" />
       {concernScores ? (
         <>

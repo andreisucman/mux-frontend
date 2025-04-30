@@ -2,6 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Button, Group, Radio, Stack, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import PageHeader from "@/components/PageHeader";
@@ -85,7 +86,7 @@ export default function ChooseDatePage() {
   }, [savedCreationMode]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Choose start date" />
       <Stack className={classes.wrapper}>
         <DatePicker

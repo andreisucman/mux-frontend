@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
+import cn from "classnames";
 import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -263,7 +264,7 @@ export default function TasksList({ customStyles }: Props) {
       />
       {displayComponent !== "loading" && (
         <CreateRoutineSuggestionProvider>
-          <Stack className={`${classes.content} scrollbar`}>
+          <Stack className={cn(classes.content, "scrollbar")}>
             {displayComponent === "resetFilters" && (
               <OverlayWithText
                 text="Nothing found"

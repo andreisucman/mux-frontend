@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import cn from "classnames";
 import { Overlay, rem, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -14,7 +16,6 @@ import { UserDataType } from "@/types/global";
 import JoinClubConfirmation from "./JoinClubConfirmation";
 import SlidingImages from "./SlidingImages";
 import classes from "./join.module.css";
-import { useRouter } from "next/navigation";
 
 export const runtime = "edge";
 
@@ -62,7 +63,7 @@ export default function ClubJoin() {
   }, [club]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <SkeletonWrapper>
         <PageHeader title="Join the Club" />
         <Stack className={classes.wrapper}>

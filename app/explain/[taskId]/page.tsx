@@ -2,6 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Badge, Button, Group, rem, Stack, Switch, Title } from "@mantine/core";
 import { upperFirst, useShallowEffect } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -305,7 +306,7 @@ export default function Explain(props: Props) {
   }, [searchParams.toString(), pageLoaded]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <SkeletonWrapper show={!taskName || !taskInfo}>
         <PageHeader
           title={

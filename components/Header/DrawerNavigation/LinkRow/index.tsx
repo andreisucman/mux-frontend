@@ -1,7 +1,8 @@
 import React, { memo, useMemo } from "react";
-import Link from "@/helpers/custom-router/patch-router/link";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import cn from "classnames";
 import { Collapse, Group, Stack } from "@mantine/core";
+import Link from "@/helpers/custom-router/patch-router/link";
 import classes from "./LinkRow.module.css";
 
 export type NavigationLinkType = {
@@ -47,7 +48,7 @@ function LinkRow({ linkClicked, clickLink, closeDrawer, link }: Props) {
             <Link
               key={index}
               href={child.path}
-              className={`${classes.link} ${classes.child}`}
+              className={cn(classes.link, classes.link)}
               onClick={closeDrawer}
             >
               {child.title}

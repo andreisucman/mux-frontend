@@ -2,6 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -79,7 +80,7 @@ export default function ResultsProof() {
   }, []);
 
   return (
-    <Stack className={`${classes.container} mediumPage`}>
+    <Stack className={cn(classes.container, "mediumPage")}>
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}

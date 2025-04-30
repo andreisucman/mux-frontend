@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import cn from "classnames";
 import { LoadingOverlay, rem, Skeleton, Stack } from "@mantine/core";
 import classes from "./TextAreaComponent.module.css";
 
@@ -40,7 +41,7 @@ export default function TextareaComponent({
   return (
     <Stack className={classes.container} style={customStyles || {}}>
       {heading}
-      <Stack className={`${classes.wrapper} scrollbar`}>
+      <Stack className={cn(classes.wrapper, "scrollbar")}>
         <LoadingOverlay visible={isLoading} className={classes.loadingOverlay} />
         <Textarea
           placeholder={placeholder}

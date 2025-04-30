@@ -2,6 +2,7 @@
 
 import { useCallback, useContext, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import cn from "classnames";
 import { Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { UserContext } from "@/context/UserContext";
@@ -84,7 +85,7 @@ export default function SetPassword() {
   );
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <Stack className={classes.wrapper}>
         <Stack className={classes.content}>
           <Title order={1}>Set new password</Title>

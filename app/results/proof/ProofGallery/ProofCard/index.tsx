@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
+import cn from "classnames";
 import { Group, Skeleton, Stack, Title } from "@mantine/core";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import DeleteContentButton from "@/components/DeleteContentButton";
@@ -63,7 +64,7 @@ function ProofCard({
   const showSkeleton = useShowSkeleton();
 
   return (
-    <Skeleton visible={showSkeleton} className={`${classes.container} skeleton`}>
+    <Skeleton visible={showSkeleton} className={cn(classes.container, "skeleton")}>
       <ProofCardHeader concernName={concernName} icon={icon} taskName={taskName} />
       <Stack className={classes.content}>
         {contentChildren}

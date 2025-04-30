@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import cn from "classnames";
 import { Button, Group, Progress, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import checkRewardCompletion from "@/helpers/checkRewardCompletion";
@@ -33,7 +34,7 @@ export default function RewardCard({ data, claimReward }: Props) {
   const finalValue = Math.round(Number(completion) > 100 ? 100 : Number(completion)) || 0;
 
   return (
-    <Skeleton visible={showSkeleton} className={`${classes.skeleton} skeleton`}>
+    <Skeleton visible={showSkeleton} className={cn(classes.skeleton, "skeleton")}>
       <Stack className={classes.container}>
         <Group className={classes.heading}>
           {value && <Text>${value}</Text>}

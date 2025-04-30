@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCheckbox, IconCircleOff } from "@tabler/icons-react";
+import cn from "classnames";
 import { Button, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import AnalysisCard from "@/components/AnalysisCard";
 import AnalysisLegend from "@/components/AnalysisCard/AnalysisLegend";
@@ -118,7 +119,7 @@ export default function Analysis() {
   }, []);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader
         title="Analysis"
         children={
@@ -132,7 +133,10 @@ export default function Analysis() {
           />
         }
       />
-      <Skeleton visible={displayComponent === "loading"} className={`${classes.skeleton} skeleton`}>
+      <Skeleton
+        visible={displayComponent === "loading"}
+        className={cn(classes.skeleton, "skeleton")}
+      >
         {displayComponent === "upload" ? (
           <OverlayWithText
             icon={<IconCircleOff size={24} />}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import cn from "classnames";
 import { MasonryScroller, useContainerPosition, usePositioner, useResizeObserver } from "masonic";
 import { useViewportSize } from "@mantine/hooks";
 import classes from "./ListComponent.module.css";
@@ -36,7 +37,7 @@ export default function ListComponent({ rowGutter, items, className, render }: P
       offset={offset}
       items={items}
       render={render}
-      className={`${classes.container} ${className}`}
+      className={cn(classes.container, className)}
     />
   );
 }

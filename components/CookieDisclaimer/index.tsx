@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Clarity from "@microsoft/clarity";
 import { GoogleTagManager } from "@next/third-parties/google";
+import cn from "classnames";
 import { Button, Group, Text } from "@mantine/core";
 import callTheServer from "@/functions/callTheServer";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
@@ -46,7 +47,7 @@ export default function CookieDisclaimer() {
       {showBanner && (
         <>
           <Group className={classes.container}>
-            <Group className={`${classes.wrapper} mediumPage`}>
+            <Group className={cn(classes.wrapper, "mediumPage")}>
               <Text className={classes.text}>
                 We use cookies to understand how you use our site and enable account functionality.
                 Do you consent to the use of these cookies?

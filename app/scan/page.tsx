@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconHourglass } from "@tabler/icons-react";
+import cn from "classnames";
 import { Button, Group, Stack } from "@mantine/core";
 import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
@@ -194,7 +195,7 @@ export default function ScanProgress() {
   }, []);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader
         title="Scan"
         children={

@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconAnalyze, IconRoute } from "@tabler/icons-react";
+import cn from "classnames";
 import { Alert, Button, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -35,8 +36,8 @@ export type CreateRoutineProps = {
   revisionText?: string;
 };
 
-function processInput(inputString: string) {
-  return inputString.replace(/^data:\s*/i, "");
+function cleanDataString(inputString: string) {
+  return inputString.replace("data: ", "");
 }
 
 export default function SuggestRoutine() {
@@ -126,7 +127,7 @@ export default function SuggestRoutine() {
         }
 
         if (!idMatch && !eventMatch) {
-          const cleaned = processInput(chunk);
+          const cleaned = cleanDataString(chunk);
           offset += cleaned.length;
           offsetRef.current += cleaned.length;
           setThoughts((prev) => prev + cleaned);
@@ -290,7 +291,7 @@ export default function SuggestRoutine() {
   }, [routineSuggestion, query]);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title={"Result"} />
       {displayComponent !== "loading" && (
         <>
@@ -308,7 +309,7 @@ export default function SuggestRoutine() {
                 <Text fw={600}>Thinking</Text>
               </Group>
             )}
-            <Stack className={classes.streamingContent}>
+            <Stack className={cn(classes.streamingContent, "scrollbar")}>
               {isStreaming && (
                 <Group align="center" gap={8}>
                   <Loader size={16} />

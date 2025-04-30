@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconCircleOff, IconSearch } from "@tabler/icons-react";
+import cn from "classnames";
 import InfiniteScroll from "react-infinite-scroller";
 import { Alert, Button, Group, Loader, Pill, rem, Stack, TextInput } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
@@ -11,7 +12,6 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "next/navigation";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
@@ -210,7 +210,7 @@ export default function SelectConcernsPage() {
   const disableNext = !nextNoConcern && (isButtonLoading || !selectedConcerns.length);
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Select concerns" />
       <Stack className={classes.content}>
         <Alert p={"0.5rem 1rem"}>What concern are you targeting?</Alert>
@@ -230,7 +230,7 @@ export default function SelectConcernsPage() {
           nextNoConcern={nextNoConcern}
           toggleNoConcern={handleSetNextNoConcern}
         />
-        <Stack className={`${classes.listWrapper} scrollbar`}>
+        <Stack className={cn(classes.listWrapper, "scrollbar")}>
           {isLoading ? (
             <Stack>
               <Loader

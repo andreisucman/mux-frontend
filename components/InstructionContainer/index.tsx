@@ -1,5 +1,6 @@
 import React from "react";
 import { IconExclamationCircle } from "@tabler/icons-react";
+import cn from "classnames";
 import { Group, Skeleton, Stack, Text } from "@mantine/core";
 import classes from "./InstructionContainer.module.css";
 
@@ -33,7 +34,7 @@ export default function InstructionContainer({
           <Group className={classes.note} style={instruction ? {} : { visibility: "hidden" }}>
             <IconExclamationCircle
               color="var(--mantine-color-orange-6)"
-              className={`${classes.icon} icon`}
+              className={cn(classes.icon, "icon")}
             />
             <Text size="sm" c="orange.6">
               {description}

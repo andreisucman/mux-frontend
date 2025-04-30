@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
+import cn from "classnames";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
@@ -131,7 +132,7 @@ export default function BeforeAftersPage() {
   }, [part, sex, ageInterval, ethnicity, bodyType, concern]);
 
   return (
-    <Stack className={`${classes.container} mediumPage`} ref={ref}>
+    <Stack className={cn(classes.container, "mediumPage")} ref={ref}>
       <PageHeader
         title="Results"
         filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType", "concern"]}

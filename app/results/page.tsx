@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
+import cn from "classnames";
 import { Loader, Stack, Title } from "@mantine/core";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -90,7 +91,7 @@ export default function ResultsProgress() {
   }, []);
 
   return (
-    <Stack className={`${classes.container} mediumPage`}>
+    <Stack className={cn(classes.container, "mediumPage")}>
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}

@@ -3,6 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
+import cn from "classnames";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
@@ -486,7 +487,7 @@ export default function MyRoutines() {
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       <SkeletonWrapper>
         <PageHeader
           title="My routines"

@@ -2,7 +2,8 @@
 
 import React, { useContext } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader, Skeleton, Stack } from "@mantine/core";
+import cn from "classnames";
+import { Loader, Stack } from "@mantine/core";
 import { ClubContext } from "@/context/ClubDataContext";
 import classes from "./ClubModerationLayout.module.css";
 
@@ -22,9 +23,16 @@ export default function ClubModerationLayout({ children, header }: Props) {
   const showLoader = !publicUserData || !!code;
 
   return (
-    <Stack className={`${classes.container} smallPage`}>
+    <Stack className={cn(classes.container, "smallPage")}>
       {header}
-      {showLoader ? <Loader m="auto" color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))" /> : children}
+      {showLoader ? (
+        <Loader
+          m="auto"
+          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+        />
+      ) : (
+        children
+      )}
     </Stack>
   );
 }
