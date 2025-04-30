@@ -67,8 +67,6 @@ export default function SuggestRoutine() {
   } = routineSuggestion || {};
   const { nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
-  console.log("routineSuggestion", routineSuggestion);
-
   const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
     useCheckActionAvailability({
       part,

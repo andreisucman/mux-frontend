@@ -1,6 +1,6 @@
 .container {
   cursor: pointer;
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   border-radius: var(--mantine-radius-lg);
   justify-content: center;
 }
@@ -32,12 +32,8 @@
 }
 
 .carouselControl {
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   color: light-dark(var(--mantine-color-dark-8), var(--mantine-color-white));
-
-  &:hover {
-    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-  }
 }
 
 .titleLink {

@@ -38,8 +38,6 @@ export default function SuggestSelectConcerns() {
     nextAction: nextRoutineSuggestion,
   });
 
-  console.log("nextRoutineSuggestion", nextRoutineSuggestion);
-
   const updateRoutineSuggestions = useCallback(
     async (concernScores: ScoreType[]) => {
       if (isLoading) return;

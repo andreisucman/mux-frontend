@@ -1,5 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
+  Alert,
   Button,
   Group,
   NumberInput,
@@ -16,7 +18,6 @@ import askConfirmation from "@/helpers/askConfirmation";
 import { normalizeString } from "@/helpers/utils";
 import { RoutineDataType } from "../page";
 import classes from "./RoutineModerationCard.module.css";
-import { useRouter } from "next/navigation";
 
 type Props = {
   name: string;
@@ -138,6 +139,10 @@ export default function RoutineModerationCard({
       <Title order={5} className={classes.title}>
         {label} routines
       </Title>
+      <Alert p="0.5rem 1rem">
+        This info will appear on your routines sale card. It will be displayed when someone clicks
+        on your before-after photos and then the 'Show routines' button.
+      </Alert>
       <TextInput
         placeholder="The name for your routines"
         value={name}

@@ -82,11 +82,11 @@ export default function ResultsProgress() {
   useEffect(() => {
     getFilters({
       collection: "progress",
-      fields: ["part", "concern"],
+      fields: ["part", "concerns"],
     }).then((result) => {
-      const { part, concern } = result;
+      const { part, concerns } = result;
       setAvailableParts(part);
-      setAvailableConcerns(concern);
+      setAvailableConcerns(concerns);
     });
   }, []);
 

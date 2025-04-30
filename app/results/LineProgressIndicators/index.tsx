@@ -13,7 +13,7 @@ type Props = {
   title?: string;
 };
 
-const renderIndicator = ([label, value]: [string, number], isPercent = true) => {
+const renderIndicator = ([label, value]: [string, number], isPercent = false) => {
   const color = value < 0 ? "var(--mantine-color-green-7)" : "var(--mantine-color-red-7)";
 
   let displayValue =

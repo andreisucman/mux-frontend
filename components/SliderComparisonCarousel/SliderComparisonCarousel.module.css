@@ -2,7 +2,7 @@
   position: relative;
   flex: 1;
   gap: 0;
-  background-color: alpha(light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6)));
+  background-color: alpha(light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6)));
   border-radius: rem(16);
   overflow: hidden;
 }
