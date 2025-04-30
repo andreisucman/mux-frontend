@@ -496,7 +496,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
         customStyles={{ flex: 0 }}
       />
       <SegmentedControl
-        classNames={{ root: "segmentControlRoot" }}
+        classNames={{ root: "segmentControlRoot", indicator: "segmentControlIndicator" }}
         value={captureType}
         onChange={handleChangeCaptureType}
         data={segments}

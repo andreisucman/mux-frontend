@@ -122,10 +122,6 @@ body::-webkit-scrollbar-thumb {
   justify-content: center;
 }
 
-.segmentControlRoot {
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
-}
-
 .overlay {
   @mixin dark {
     background-color: alpha(var(--mantine-color-black), 0.5);

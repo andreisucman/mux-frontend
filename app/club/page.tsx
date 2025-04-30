@@ -42,6 +42,7 @@ export default function Club() {
           classNames={{
             label: "segmentControlLabel",
             root: "segmentControlRoot",
+            indicator: "segmentControlIndicator"
           }}
           value={selectedSegment}
           data={segments}

@@ -10,13 +10,8 @@ export const streaksDescription = [
     description: "Complete all hair related tasks within the day with proofs.",
   },
   {
-    key: "clubFaceStreak",
-    name: "Club face streaks",
-    description: "Complete all face related tasks within the day and share proofs in the Club.",
-  },
-  {
-    key: "clubHairStreak",
-    name: "Club hair streaks",
-    description: "Complete all hair related tasks within the day and share proofs in the Club.",
+    key: "bodyStreak",
+    name: "Body streaks",
+    description: "Complete all body related tasks within the day with proofs.",
   },
 ];
