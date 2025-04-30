@@ -1,10 +1,10 @@
 import React from "react";
-import CreateRoutineProvider from "@/context/CreateRoutineContext";
+import CreateRoutineSuggestionProvider from "@/context/CreateRoutineSuggestionContext";
 
 type Props = {
   children: React.ReactNode;
 };
 
 export default function TasksLayout({ children }: Props) {
-  return <CreateRoutineProvider>{children}</CreateRoutineProvider>;
+  return <CreateRoutineSuggestionProvider>{children}</CreateRoutineSuggestionProvider>;
 }

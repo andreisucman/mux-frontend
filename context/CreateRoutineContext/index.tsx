@@ -1,45 +1,46 @@
 "use client";
 
-import React, { createContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import callTheServer from "@/functions/callTheServer";
-import { PartEnum } from "@/types/global";
-import { RoutineSuggestionType } from "./types";
+import React, { createContext, useContext, useState } from "react";
+import { modals } from "@mantine/modals";
+import { useRouter } from "@/helpers/custom-router";
+import openSelectRoutineType from "@/helpers/openSelectRoutineType";
+import { UserContext } from "../UserContext";
 
-const defaultCreateRoutineContext = {
-  routineSuggestion: null as RoutineSuggestionType | null,
-  setRoutineSuggestion: (args: any) => {},
-  fetchRoutineSuggestion: async () => {},
+const defaultUploadPartsChoices = {
+  isLoading: false,
+  onCreateRoutineClick: () => {},
 };
 
-export const CreateRoutineContext = createContext(defaultCreateRoutineContext);
+export const CreateRoutineContext = createContext(defaultUploadPartsChoices);
 
-export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
-  const searchParams = useSearchParams();
-  const [routineSuggestion, setRoutineSuggestion] = useState<RoutineSuggestionType | null>(null);
+export default function CreateRoutineContextProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { userDetails } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const { nextRoutine, latestProgressImages } = userDetails || {};
 
-  const part = searchParams.get("part") || PartEnum.FACE;
+  const onCreateRoutineClick = () => {
+    if (!nextRoutine || isLoading) return;
 
-  const fetchRoutineSuggestion = async () => {
-    const response = await callTheServer({
-      endpoint: `getRoutineSuggestion/${part}`,
-      method: "GET",
-    });
-    if (response.status === 200) {
-      setRoutineSuggestion(response.message);
+    const partsScanned = Object.entries(latestProgressImages || {})
+      .filter(([key, value]) => Boolean(value))
+      .map(([key, _]) => key);
+
+    if (partsScanned.length > 1) {
+      const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
+      if (relevantRoutines) openSelectRoutineType(relevantRoutines);
+    } else if (partsScanned.length === 1) {
+      setIsLoading(true);
+      router.push(`/suggest/select-concerns?part=${partsScanned[0]}`);
+      modals.closeAll();
     }
   };
-
-  useEffect(() => {
-    fetchRoutineSuggestion();
-  }, []);
 
   return (
     <CreateRoutineContext.Provider
       value={{
-        routineSuggestion,
-        setRoutineSuggestion,
-        fetchRoutineSuggestion,
+        isLoading,
+        onCreateRoutineClick,
       }}
     >
       {children}

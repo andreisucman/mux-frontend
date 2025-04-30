@@ -39,7 +39,7 @@ export default function ScanProgress() {
 
   const query = searchParams.toString();
   const part = searchParams.get("part") || PartEnum.FACE;
-  const { _id: userId, toAnalyze, nextScan } = userDetails || {};
+  const { _id: userId, nextScan } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -123,7 +123,8 @@ export default function ScanProgress() {
               part,
               blurDots: updatedBlurDots,
               beforeImage: beforeImageUrl,
-              image: originalImageUrl,
+              // image: originalImageUrl,
+              image: "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/polina.png",
             },
           });
 
@@ -210,7 +211,7 @@ export default function ScanProgress() {
           />
         }
       />
-      <SkeletonWrapper show={!toAnalyze}>
+      <SkeletonWrapper>
         {isActionAvailable ? (
           <UploadCard
             part={part as PartEnum}

@@ -18,9 +18,15 @@
 }
 
 .content {
-  max-height: calc(100vh- 548px);
-
   @media (max-width: $mantine-breakpoint-xs) {
     flex-direction: column;
+  }
+}
+
+.titleWrapper {
+  align-items: center;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    gap: rem(12);
   }
 }

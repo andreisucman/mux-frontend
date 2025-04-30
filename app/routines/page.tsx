@@ -10,6 +10,7 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
+import CreateRoutineContextProvider from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
 import callTheServer from "@/functions/callTheServer";
@@ -549,11 +550,13 @@ export default function MyRoutines() {
         )}
         {displayComponent === "empty" && <OverlayWithText text="Nothing found" />}
         {displayComponent === "createTaskOverlay" && (
-          <CreateTaskOverlay
-            handleSaveTask={(props: HandleSaveTaskProps) =>
-              saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutine })
-            }
-          />
+          <CreateRoutineContextProvider>
+            <CreateTaskOverlay
+              handleSaveTask={(props: HandleSaveTaskProps) =>
+                saveTaskFromDescription({ ...props, returnRoutine: true, cb: handleUpdateRoutine })
+              }
+            />
+          </CreateRoutineContextProvider>
         )}
         {displayComponent === "wait" && (
           <WaitComponent

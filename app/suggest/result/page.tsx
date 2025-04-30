@@ -8,8 +8,8 @@ import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import PageHeader from "@/components/PageHeader";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
-import { RoutineSuggestionType } from "@/context/CreateRoutineContext/types";
+import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
+import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchUserData from "@/functions/fetchUserData";
@@ -44,8 +44,9 @@ export default function SuggestRoutine() {
   const searchParams = useSearchParams();
   const offsetRef = useRef(0);
   const sourceRef = useRef<EventSource | null>(null);
-  const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } =
-    useContext(CreateRoutineContext);
+  const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } = useContext(
+    CreateRoutineSuggestionContext
+  );
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [thoughts, setThoughts] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);

@@ -7,7 +7,8 @@ import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import OverlayWithText from "@/components/OverlayWithText";
 import WaitComponent from "@/components/WaitComponent";
-import CreateRoutineProvider from "@/context/CreateRoutineContext";
+import CreateRoutineContextProvider from "@/context/CreateRoutineContext";
+import CreateRoutineSuggestionProvider from "@/context/CreateRoutineSuggestionContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
@@ -261,7 +262,7 @@ export default function TasksList({ customStyles }: Props) {
         setHideFutureTasks={setHideFutureTasks}
       />
       {displayComponent !== "loading" && (
-        <CreateRoutineProvider>
+        <CreateRoutineSuggestionProvider>
           <Stack className={`${classes.content} scrollbar`}>
             {displayComponent === "resetFilters" && (
               <OverlayWithText
@@ -275,7 +276,9 @@ export default function TasksList({ customStyles }: Props) {
               />
             )}
             {displayComponent === "createTaskOverlay" && (
-              <CreateTaskOverlay handleSaveTask={handleSaveTask} />
+              <CreateRoutineContextProvider>
+                <CreateTaskOverlay handleSaveTask={handleSaveTask} />
+              </CreateRoutineContextProvider>
             )}
             {displayComponent === "wait" && (
               <WaitComponent
@@ -289,10 +292,12 @@ export default function TasksList({ customStyles }: Props) {
               />
             )}
             {displayComponent === "content" && (
-              <Stack className={classes.listWrapper} mb="20%">{taskItems}</Stack>
+              <Stack className={classes.listWrapper} mb="20%">
+                {taskItems}
+              </Stack>
             )}
           </Stack>
-        </CreateRoutineProvider>
+        </CreateRoutineSuggestionProvider>
       )}
       {displayComponent === "loading" && (
         <Loader

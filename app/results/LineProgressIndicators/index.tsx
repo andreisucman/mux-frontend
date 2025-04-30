@@ -51,19 +51,17 @@ export default function LineProgressIndicators({
   concernScoresDifference,
 }: Props) {
   const concernIndicator = useMemo(() => {
-    return concernScores.map((csdo) => {
-      const relevantDifference = concernScoresDifference.find((co) => co.name === csdo.name) || {
+    if (showScores) concernScores = concernScores.filter((cso) => cso.value !== 0);
+
+    return concernScores.map((cso) => {
+      const relevantDifference = concernScoresDifference.find((co) => co.name === cso.name) || {
         value: 0,
       };
-      const initialValue = csdo.value - relevantDifference.value;
-      let percent = initialValue > 0 ? Math.round((1 - csdo.value / initialValue) * 100) : 0;
+      const initialValue = cso.value - relevantDifference.value;
+      let percent = initialValue > 0 ? Math.round((1 - cso.value / initialValue) * 100) : 0;
       if (relevantDifference.value < 0) percent = percent * -1;
-      console.log(
-        "csdo.name, showScores ? csdo.value : percent",
-        csdo.name,
-        showScores ? csdo.value : percent
-      );
-      return renderIndicator([csdo.name, showScores ? csdo.value : percent], showScores);
+
+      return renderIndicator([cso.name, showScores ? cso.value : percent], showScores);
     });
   }, [concernScores]);
 

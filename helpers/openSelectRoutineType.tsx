@@ -1,6 +1,6 @@
 import { Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import SelectPartForRoutineModalContent from "@/context/CreateRoutineContext/SelectPartForRoutineModalContent";
+import SelectPartForRoutineModalContent from "@/context/CreateRoutineSuggestionContext/SelectPartForRoutineModalContent";
 
 const openSelectRoutineType = (parts: { part: string; date: Date | null }[]) => {
   modals.openContextModal({

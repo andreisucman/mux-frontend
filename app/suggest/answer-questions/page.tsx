@@ -6,8 +6,8 @@ import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
-import { RoutineSuggestionType } from "@/context/CreateRoutineContext/types";
+import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
+import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
@@ -28,7 +28,7 @@ export default function AnswerQuestions() {
   const [showDisplayComponent, setShowDisplayComponent] = useState<
     "loading" | "wait" | "questions"
   >("loading");
-  const routineContext = useContext(CreateRoutineContext);
+  const routineContext = useContext(CreateRoutineSuggestionContext);
   const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } = routineContext;
 
   const questionsAndAnswers = routineSuggestion?.questionsAndAnswers;

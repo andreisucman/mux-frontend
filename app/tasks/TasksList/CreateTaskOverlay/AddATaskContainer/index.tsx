@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Alert, Button, Checkbox, Loader, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
 import { getFromLocalStorage } from "@/helpers/localStorage";
-import openSelectRoutineType from "@/helpers/openSelectRoutineType";
 import { daysFrom } from "@/helpers/utils";
 import CreateATaskContent from "../CreateATaskContent";
 import EditATaskContent from "../EditATaskContent";
 import { RawTaskType } from "./types";
-import { useRouter } from "@/helpers/custom-router";
 import classes from "./AddATaskContainer.module.css";
 
 type Props = {
@@ -20,8 +20,9 @@ type Props = {
 export default function AddATaskContainer({ handleSaveTask }: Props) {
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
+  const { isLoading: isRoutineButtonLoading, onCreateRoutineClick } =
+    useContext(CreateRoutineContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRoutineButtonLoading, setIsRoutineButtonLoading] = useState(false);
   const [error, setError] = useState("");
   const [rawTask, setRawTask] = useState<RawTaskType>();
   const [frequency, setFrequency] = useState<number>(1);
@@ -109,23 +110,6 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
   const handleRedirectToScan = () => {
     router.push("/select-part");
     modals.closeAll();
-  };
-
-  const onCreateRoutineClick = () => {
-    if (!nextRoutine || isRoutineButtonLoading) return;
-
-    const partsScanned = Object.entries(latestProgressImages || {})
-      .filter(([key, value]) => Boolean(value))
-      .map(([key, _]) => key);
-
-    if (partsScanned.length > 1) {
-      const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
-      if (relevantRoutines) openSelectRoutineType(relevantRoutines);
-    } else if (partsScanned.length === 1) {
-      setIsRoutineButtonLoading(true);
-      router.push(`/suggest/select-concerns?part=${partsScanned[0]}`);
-      modals.closeAll();
-    }
   };
 
   useEffect(() => {

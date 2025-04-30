@@ -1,5 +1,6 @@
 import { rem, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import CreateRoutineContextProvider, { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import AddATaskContainer from "./AddATaskContainer";
 
 type OpenCreateNewTaskProps = {
@@ -18,7 +19,11 @@ export default function openCreateNewTask({ handleSaveTask, onClose }: OpenCreat
         Add a task
       </Title>
     ),
-    innerProps: <AddATaskContainer handleSaveTask={handleSaveTask} />,
+    innerProps: (
+      <CreateRoutineContextProvider>
+        <AddATaskContainer handleSaveTask={handleSaveTask} />
+      </CreateRoutineContextProvider>
+    ),
     styles: {
       content: { width: "100%", height: "auto", maxWidth: rem(400) },
     },

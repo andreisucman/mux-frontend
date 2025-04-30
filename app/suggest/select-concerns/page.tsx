@@ -5,8 +5,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
-import { CreateRoutineContext } from "@/context/CreateRoutineContext";
-import { RoutineSuggestionType } from "@/context/CreateRoutineContext/types";
+import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
+import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import openResetTimerModal from "@/functions/resetTimer";
@@ -26,7 +26,7 @@ export default function SuggestSelectConcerns() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedConcerns, setSelectedConcerns] = useState<ScoreType[]>([]);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineContext);
+  const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineSuggestionContext);
 
   const part = searchParams.get("part") || "face";
 

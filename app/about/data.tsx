@@ -51,14 +51,6 @@ export const data = [
     answer: (
       <Stack>
         <Text>Muxout is entirely free.</Text>
-        <Text>
-          We have an optional paid addon - the &apos;Improvement Coach&apos; that creates personal
-          routines for you based on your details.
-        </Text>
-        <Text>
-          This addon can improve your experience and save you time on research, but you don&apos;t
-          have to buy it to use the platform.
-        </Text>
       </Stack>
     ),
   },
@@ -114,7 +106,7 @@ export const data = [
         <Text>
           Next, you have to have at least one set of before-after images taken via our platform with
           some improvement on the after image. This means that you&apos;ll have to follow your
-          routine for at least one week and it will have to be effectve.
+          routine for at least one week and it will have to be effectve before you can sell it.
         </Text>
         <Text>
           Lastly, you will have to add at least one diary record for each routine you have. This
@@ -132,7 +124,7 @@ export const data = [
           and it doesn&apos;t make your data public (unless you publish your routines for sale).
         </Text>
         <Text>
-          During the onboarding you provide the legally required information and your bank account.
+          During the onboarding you provide your name, date of birth and your bank account number (or IBAN).
         </Text>
         <Text>
           After your information is verified your earnings will be automatically sent to your bank
@@ -146,8 +138,8 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To hide your identifiable features from progress scans you can click the &apos;Blur features&apos;
-          checkbox at the top left of the scan page.
+          To hide your identifiable features (such as eyes or mouth) from progress images you can click the &apos;Blur
+          features&apos; checkbox at the top left of the scan page.
         </Text>
         <Text>
           This will allow you to drag and drop shapes on your image to blur the underlying areas.

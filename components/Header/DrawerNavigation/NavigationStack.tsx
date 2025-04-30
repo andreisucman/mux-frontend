@@ -22,7 +22,7 @@ export default function NavigationStack({
   closeDrawer,
 }: Props) {
   return (
-    <Stack style={customStyles || {}}>
+    <Stack style={customStyles || {}} gap={14}>
       {showUpperDivider && <Divider />}
       {links.map((link, index) => (
         <LinkRow

@@ -208,8 +208,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   }, [userId, isLoading, pathname, somethingUploaded]);
 
   useEffect(() => {
-    if (!toAnalyze) return;
-    const lastObject = toAnalyze[toAnalyze.length - 1];
+    const lastObject = toAnalyze?.[toAnalyze.length - 1];
     if (lastObject) {
       setLocalUrl(lastObject.mainUrl.url);
       setDisplayComponent("preview");

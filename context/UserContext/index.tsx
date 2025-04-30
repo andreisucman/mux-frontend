@@ -41,7 +41,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
 
   const code = searchParams.get("code");
   const error = searchParams.get("error");
-  const onProtectedPage = protectedPaths.some((path) => path.includes(pathname));
+  const onProtectedPage = protectedPaths.some((path) => path.includes(pathname) || pathname.includes(path));
   const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
 
   const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);

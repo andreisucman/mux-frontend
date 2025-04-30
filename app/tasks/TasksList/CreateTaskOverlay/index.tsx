@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button, Stack, Text, UnstyledButton } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { CreateRoutineContext } from "@/context/CreateRoutineContext";
 import { UserContext } from "@/context/UserContext";
 import { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { useRouter } from "next/navigation";
 import openErrorModal from "@/helpers/openErrorModal";
-import openSelectRoutineType from "@/helpers/openSelectRoutineType";
 import openCreateNewTask from "./openCreateNewTask";
 import classes from "./CreateTaskOverlay.module.css";
 
@@ -18,8 +18,8 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
   const router = useRouter();
   const [showWeeklyButton, setShowWeeklyButton] = useState(false);
   const { userDetails } = useContext(UserContext);
-  const { latestProgressImages, nextRoutine } = userDetails || {};
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, onCreateRoutineClick } = useContext(CreateRoutineContext);
+  const { latestProgressImages } = userDetails || {};
 
   const nothingScanned = useMemo(() => {
     const values = Object.values(latestProgressImages || {});
@@ -50,22 +50,6 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
     }
     cb();
   };
-
-  const onCreateRoutineClick = useCallback(() => {
-    if (!nextRoutine || isLoading) return;
-
-    const partsScanned = Object.entries(latestProgressImages || {})
-      .filter(([key, value]) => Boolean(value))
-      .map(([key, _]) => key);
-
-    if (partsScanned.length > 1) {
-      const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
-      if (relevantRoutines) openSelectRoutineType(relevantRoutines);
-    } else if (partsScanned.length === 1) {
-      setIsLoading(true);
-      router.push(`/suggest/select-concerns?part=${partsScanned[0]}`);
-    }
-  }, [isLoading, nextRoutine, latestProgressImages]);
 
   useEffect(() => {
     if (!userDetails) return;

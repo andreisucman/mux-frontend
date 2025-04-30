@@ -1,6 +1,6 @@
 import React from "react";
-import CreateRoutineProvider from "@/context/CreateRoutineContext";
+import CreateRoutineSuggestionProvider from "@/context/CreateRoutineSuggestionContext";
 
 export default function RoutinesLayout({ children }: { children: React.ReactNode }) {
-  return <CreateRoutineProvider>{children}</CreateRoutineProvider>;
+  return <CreateRoutineSuggestionProvider>{children}</CreateRoutineSuggestionProvider>;
 }
