@@ -69,7 +69,7 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
           className={classes.button}
           onClick={() => handleClick(() => openCreateNewTask({ handleSaveTask }))}
         >
-          Create a task manually
+          Create a single task
         </Button>
         {showWeeklyButton && (
           <Button

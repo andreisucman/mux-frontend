@@ -17,7 +17,7 @@ type Props = {
   setHideFutureTasks: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function TaskFlters({
+export default function TaskFilters({
   isDisabled,
   canAddDiary,
   groupTasksByConcerns,
@@ -53,7 +53,8 @@ export default function TaskFlters({
           className={classes.button}
           onClick={() => setShowMenu((prev) => !prev)}
         >
-          {chevron} {showMenu ? "Hide" : "Show"} filters {taskCount ? `(${taskCount})` : undefined}
+          {chevron} {showMenu ? "Hide filters" : "Filter list"}{" "}
+          {taskCount ? `(${taskCount})` : undefined}
         </Button>
         {canAddDiary && (
           <Button size="compact-sm" flex={1} variant="default" component={Link} href={"/diary"}>

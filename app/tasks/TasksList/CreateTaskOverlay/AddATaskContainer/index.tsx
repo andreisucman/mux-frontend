@@ -182,7 +182,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
             {step === 1 && (
               <Checkbox
                 disabled={notScanned}
-                label="Enable drafting"
+                label="Enable automatic drafting"
                 checked={enableDrafting}
                 onChange={(e) => handleEnableDrafting(e.currentTarget.checked)}
               />
@@ -195,7 +195,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
                   disabled={disableCreate}
                   onClick={onCreateManuallyClick}
                 >
-                  Create task manually
+                  Create a single task
                 </Button>
                 <Button
                   variant={"filled"}

@@ -21,8 +21,8 @@ export const data = [
         </Text>
         <Text>
           After you get your feedback you create a routine for improving your concerns. You can
-          create a routine manually by adding individual tasks or use our Improvement Coach - the AI
-          addon that creates it for you based on your details.
+          create a routine from scratch by adding individual tasks or use our free routine
+          suggestion service that will suggest you a routine based on your analysis.
         </Text>
         <Text>After you have your routine you can start completing the tasks in it.</Text>
         <Text>
@@ -124,7 +124,8 @@ export const data = [
           and it doesn&apos;t make your data public (unless you publish your routines for sale).
         </Text>
         <Text>
-          During the onboarding you provide your name, date of birth and your bank account number (or IBAN).
+          During the onboarding you provide your name, date of birth and your bank account number
+          (or IBAN).
         </Text>
         <Text>
           After your information is verified your earnings will be automatically sent to your bank
@@ -138,8 +139,8 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To hide your identifiable features (such as eyes or mouth) from progress images you can click the &apos;Blur
-          features&apos; checkbox at the top left of the scan page.
+          To hide your identifiable features (such as eyes or mouth) from progress images you can
+          click the &apos;Blur features&apos; checkbox at the top left of the scan page.
         </Text>
         <Text>
           This will allow you to drag and drop shapes on your image to blur the underlying areas.
