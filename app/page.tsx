@@ -143,6 +143,7 @@ export default function BeforeAftersPage() {
             childrenProps: { filters },
           })
         }
+        hideReturn
         center
       />
       {beforeAfters ? (

@@ -50,6 +50,7 @@ export default function ControlButtons({
         <RecordingButton
           size="sm"
           variant="default"
+          buttonText="Record note"
           setLocalUrl={setLocalUrl}
           setAudioBlobs={setAudioBlobs}
           defaultRecordingMs={300000}

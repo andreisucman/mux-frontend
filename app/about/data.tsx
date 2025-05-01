@@ -21,7 +21,7 @@ export const data = [
         </Text>
         <Text>
           After you get your feedback you create a routine for improving your concerns. You can
-          create a routine from scratch by adding individual tasks or use our free routine
+          either create your routine yourself from scratch by adding individual tasks or use our free routine
           suggestion service that will suggest you a routine based on your analysis.
         </Text>
         <Text>After you have your routine you can start completing the tasks in it.</Text>
@@ -55,6 +55,23 @@ export const data = [
     ),
   },
   {
+    question: "How can I earn on Muxout?",
+    answer: (
+      <Stack>
+        <Text>You can earn on Muxout in 2 ways.</Text>
+        <Text>
+          1. You can create an effective routine and complete its tasks to improve your appearance.
+          You can then list your routine for sale to help other people have a similar
+          transformation.
+        </Text>
+        <Text>
+          2. You can complete your tasks to get achievements. When you have the necessary
+          achievements you can claim rewards on the Rewards page.
+        </Text>
+      </Stack>
+    ),
+  },
+  {
     question: "Do you have an app?",
     answer: (
       <Stack>
@@ -74,23 +91,6 @@ export const data = [
           To display your before-afters on the home page you will have to join &apos;the Club&apos;
           and list a routine for sale. Only accounts that explicitly listed their routines for sale
           are publicly displayed on the home page.
-        </Text>
-      </Stack>
-    ),
-  },
-  {
-    question: "How can I earn on Muxout?",
-    answer: (
-      <Stack>
-        <Text>You can earn on Muxout in 2 ways.</Text>
-        <Text>
-          1. You can create an effective routine and complete its tasks to improve your appearance.
-          You can then list your routine for sale to help other people have a similar
-          transformation.
-        </Text>
-        <Text>
-          2. You can complete your tasks to get achievements. When you have the necessary
-          achievements you can claim rewards on the Rewards page.
         </Text>
       </Stack>
     ),

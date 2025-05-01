@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
@@ -10,7 +10,6 @@ import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestio
 import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import openResetTimerModal from "@/functions/resetTimer";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
@@ -23,10 +22,9 @@ export const runtime = "edge";
 export default function SuggestSelectConcerns() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedConcerns, setSelectedConcerns] = useState<ScoreType[]>([]);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineSuggestionContext);
 
   const part = searchParams.get("part") || "face";
@@ -100,16 +98,10 @@ export default function SuggestSelectConcerns() {
     latestConcernScores?.[part],
   ]);
 
-  const query = searchParams.toString();
-  const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}${pathname}${query ? `?${query}` : ""}`;
-    openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
-  }, [query, part, setUserDetails]);
-
   const checkBackNotice = isActionAvailable ? undefined : (
     <Text className={classes.alert}>
-      Next routine suggestion is after {new Date(checkBackDate || new Date()).toDateString()}.{" "}
-      <span onClick={handleResetTimer}>Reset</span>
+      The next {part} routine suggestion is after{" "}
+      {new Date(checkBackDate || new Date()).toDateString()}.{" "}
     </Text>
   );
 

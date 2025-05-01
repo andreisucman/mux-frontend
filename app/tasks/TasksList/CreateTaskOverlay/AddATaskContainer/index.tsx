@@ -31,7 +31,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
   const [selectedConcern, setSelectedConcern] = useState<string | null>(null);
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
   const [taskName, setTaskName] = useState<string>("");
-  const [enableDrafting, setEnableDrafting] = useState(false);
+  const [enableDrafting, setEnableDrafting] = useState(true);
   const [exampleVideoId, setExampleVideoId] = useState("");
   const [selectedDestinationRoutine, setSelectedDestinationRoutine] = useState("");
   const savedEnableDrafting = getFromLocalStorage("enableDrafting");

@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { Button, Group, Stack } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import Timer from "@/components/Timer";
 import { partIcons } from "@/helpers/icons";
 
 type Props = {
@@ -21,23 +20,12 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
   return (
     <Stack flex={1}>
       {parts.map((part, index) => {
-        const { part: key, date } = part;
+        const { part: key } = part;
 
-        const isCooldown = date && new Date(date) > new Date();
         const icon = partIcons[key];
         const text = upperFirst(key);
 
-        const render = !!isCooldown ? (
-          <Timer
-            date={date}
-            children={
-              <Group gap={8}>
-                {icon} Next {key} after
-              </Group>
-            }
-            showDays
-          />
-        ) : (
+        const render = (
           <Group gap={8}>
             {icon} {text}
           </Group>
@@ -47,7 +35,6 @@ export default function SelectPartForRoutineModalContent({ parts }: Props) {
           <Button
             variant="default"
             key={index}
-            disabled={!!isCooldown}
             onClick={() => handleClick(`/suggest/select-concerns?part=${key}`)}
           >
             {render}

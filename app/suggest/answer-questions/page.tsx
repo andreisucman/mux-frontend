@@ -12,7 +12,6 @@ import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
-import openResetTimerModal from "@/functions/resetTimer";
 import { useRouter } from "@/helpers/custom-router";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { AnalysisStatusEnum } from "@/types/global";
@@ -25,7 +24,7 @@ export default function AnswerQuestions() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [showDisplayComponent, setShowDisplayComponent] = useState<
     "loading" | "wait" | "questions"
   >("loading");
@@ -78,15 +77,11 @@ export default function AnswerQuestions() {
   };
 
   const query = searchParams.toString();
-  const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/select-concerns${query ? `?${query}` : ""}`;
-    openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
-  }, [query, part, setUserDetails]);
 
   const checkBackNotice = isActionAvailable ? undefined : (
     <Text className={classes.alert}>
-      Next routine suggestion is after {new Date(checkBackDate || new Date()).toDateString()}.{" "}
-      <span onClick={handleResetTimer}>Reset</span>
+      The next {part} routine suggestion is after{" "}
+      {new Date(checkBackDate || new Date()).toDateString()}.{" "}
     </Text>
   );
 
@@ -114,7 +109,7 @@ export default function AnswerQuestions() {
       setShowWaitComponent: (verdict?: boolean) => {
         if (!verdict) {
           if (!questionsAndAnswers) {
-            router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
+            router.replace(`/suggest/add-details${query ? `?${query}` : ""}`);
             return;
           }
         }

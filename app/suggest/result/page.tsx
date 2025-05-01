@@ -14,7 +14,6 @@ import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import fetchUserData from "@/functions/fetchUserData";
-import openResetTimerModal from "@/functions/resetTimer";
 import { useRouter } from "@/helpers/custom-router";
 import {
   deleteFromLocalStorage,
@@ -183,16 +182,10 @@ export default function SuggestRoutine() {
     });
   }, [tasks]);
 
-  const handleResetTimer = useCallback(() => {
-    const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/suggest/select-concerns${query ? `?${query}` : ""}`;
-    openResetTimerModal("suggestion", part, redirectUrl, setUserDetails);
-  }, [query, part, setUserDetails]);
-
   const checkBackNotice = isSuggestionAvailable ? undefined : (
     <Text className={classes.alert}>
-      Next routine suggestion is after{" "}
+      The next {part} routine suggestion is after{" "}
       {new Date(suggestionCheckBackDate || new Date()).toDateString()}.{" "}
-      <span onClick={handleResetTimer}>Reset</span>
     </Text>
   );
 

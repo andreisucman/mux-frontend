@@ -21,6 +21,7 @@ type Props = {
   children?: React.ReactNode;
   onFilterClick?: () => void;
   center?: boolean;
+  hideReturn?: boolean;
 };
 
 export default function PageHeader({
@@ -35,6 +36,7 @@ export default function PageHeader({
   filterNames = [],
   children,
   center,
+  hideReturn,
   onFilterClick,
 }: Props) {
   const router = useRouter();
