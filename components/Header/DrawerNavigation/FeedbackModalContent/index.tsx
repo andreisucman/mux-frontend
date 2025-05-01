@@ -42,7 +42,7 @@ export default function FeedbackModalContent() {
 
   return (
     <Stack>
-      {/* <Alert p="0.5rem 1rem">{message}</Alert> */}
+      <Alert p="0.5rem 1rem">{message}</Alert>
       <TextareaComponent
         text={text}
         placeholder={
