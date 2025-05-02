@@ -34,7 +34,6 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
   const [enableDrafting, setEnableDrafting] = useState(true);
   const [exampleVideoId, setExampleVideoId] = useState("");
   const [selectedDestinationRoutine, setSelectedDestinationRoutine] = useState("");
-  const savedEnableDrafting = getFromLocalStorage("enableDrafting");
 
   const datesPreview = useMemo(() => {
     const dates: string[] = [];
@@ -114,8 +113,9 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
   };
 
   useEffect(() => {
+    const savedEnableDrafting = getFromLocalStorage("enableDrafting");
     setEnableDrafting(!!savedEnableDrafting);
-  }, [savedEnableDrafting]);
+  }, []);
 
   const notScanned = partsScanned.length === 0;
   const noDescriptionAndInstruction = !rawTask?.description && !rawTask?.instruction;
