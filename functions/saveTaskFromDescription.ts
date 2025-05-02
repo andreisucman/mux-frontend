@@ -10,7 +10,6 @@ export type HandleSaveTaskProps = {
   isLoading: boolean;
   frequency: number;
   date: Date | null;
-  exampleVideoId?: string;
   rawTask?: RawTaskType;
   selectedDestinationRoutine: string;
   setError: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +26,6 @@ const saveTaskFromDescription = async ({
   rawTask,
   isLoading,
   frequency,
-  exampleVideoId,
   selectedDestinationRoutine,
   setError,
   setIsLoading,
@@ -52,7 +50,6 @@ const saveTaskFromDescription = async ({
       frequency,
       description,
       instruction,
-      exampleVideoId,
       selectedDestinationRoutine,
       startDate: date,
     },

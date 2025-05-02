@@ -82,6 +82,7 @@ export default function FilterCardContent({ filters }: Props) {
               data={concernFilters}
               selectedValue={concern}
               isDisabled={concernFilters.length === 0}
+              customStyles={styles}
               filterType="concern"
               placeholder="Select concern"
               searchValue={normalizeString(concern || "")}

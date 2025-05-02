@@ -6,7 +6,6 @@ import classes from "./StreaksModalContent.module.css";
 type Props = { streaksSections: { key: string; value: number }[] };
 
 export default function StreaksModalContent({ streaksSections }: Props) {
-  console.log("streaksSections", streaksSections);
   const rows = streaksSections.map((obj, index) => {
     const { key, value } = obj;
     const sections = [];

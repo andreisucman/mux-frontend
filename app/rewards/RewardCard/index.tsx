@@ -39,7 +39,7 @@ export default function RewardCard({ data, claimReward }: Props) {
         <Group className={classes.heading}>
           <Title order={5}>{title}</Title>
           {value && <Text>${value}</Text>}
-          <Text>({left} left)</Text>
+          <Text ml="auto">({left} left)</Text>
         </Group>
         <Stack className={classes.content}>
           <Text>{condition}</Text>

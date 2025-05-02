@@ -9,7 +9,7 @@ const openSelectRoutineType = (parts: { part: string; date: Date | null }[]) => 
     classNames: { overlay: "overlay" },
     title: (
       <Title order={5} component={"p"}>
-        Which routine to create?
+        Which routine?
       </Title>
     ),
     innerProps: <SelectPartForRoutineModalContent parts={parts} />,

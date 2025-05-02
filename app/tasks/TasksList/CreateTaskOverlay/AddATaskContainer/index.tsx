@@ -6,7 +6,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { formatDate } from "@/helpers/formatDate";
-import { getFromLocalStorage } from "@/helpers/localStorage";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { daysFrom } from "@/helpers/utils";
 import CreateATaskContent from "../CreateATaskContent";
 import EditATaskContent from "../EditATaskContent";
@@ -51,7 +51,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
     return dates;
   }, [date, frequency]);
 
-  const { nextRoutine, latestProgressImages, concerns } = userDetails || {};
+  const { latestProgressImages, concerns } = userDetails || {};
 
   const partsScanned = useMemo(() => {
     const entries = Object.entries(latestProgressImages || {}).filter((gr) => Boolean(gr[1]));
@@ -105,6 +105,7 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
 
   const handleEnableDrafting = async (enable: boolean) => {
     setEnableDrafting(enable);
+    saveToLocalStorage("enableDrafting", enable);
   };
 
   const handleRedirectToScan = () => {

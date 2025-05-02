@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconChevronLeft } from "@tabler/icons-react";
@@ -11,6 +13,7 @@ import classes from "./PageHeader.module.css";
 type Props = {
   title?: string | React.ReactNode;
   titles?: TitleType[];
+  hideReturn?: boolean;
   nowrapTitle?: boolean;
   nowrapContainer?: boolean;
   disableSort?: boolean;
@@ -21,7 +24,6 @@ type Props = {
   children?: React.ReactNode;
   onFilterClick?: () => void;
   center?: boolean;
-  hideReturn?: boolean;
 };
 
 export default function PageHeader({
@@ -34,9 +36,9 @@ export default function PageHeader({
   sortItems,
   defaultSortValue,
   filterNames = [],
+  hideReturn,
   children,
   center,
-  hideReturn,
   onFilterClick,
 }: Props) {
   const router = useRouter();
@@ -77,9 +79,11 @@ export default function PageHeader({
         [classes.center]: center,
       })}
     >
-      <ActionIcon variant="default" onClick={() => router.back()}>
-        <IconChevronLeft className="icon" />
-      </ActionIcon>
+      {!hideReturn && (
+        <ActionIcon variant="default" onClick={() => router.back()}>
+          <IconChevronLeft className="icon" />
+        </ActionIcon>
+      )}
       {finalTitle}
       {children}
       {sortItems && (

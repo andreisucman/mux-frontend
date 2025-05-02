@@ -18,6 +18,7 @@ export type RoutineSuggestionType = {
   summary: string;
   reasoning: string;
   concernScores: ScoreType[];
+  specialConsiderations?: string;
   previousExperience: {
     [key: string]: string;
   };

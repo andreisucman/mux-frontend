@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
+import { normalizeString } from "@/helpers/utils";
 import AnswerBox from "../answer-questions/AnswerBox";
 import classes from "./add-details.module.css";
 
@@ -26,7 +27,7 @@ export default function AddDetails() {
 
   const part = searchParams.get("part") || "face";
 
-  const { previousExperience, concernScores } = routineSuggestion || {};
+  const { previousExperience, concernScores, specialConsiderations } = routineSuggestion || {};
   const { nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
@@ -35,14 +36,14 @@ export default function AddDetails() {
   });
 
   const updateRoutineSuggestions = useCallback(
-    async (previousExperience: { [key: string]: string }) => {
+    async (previousExperience: { [key: string]: string }, specialConsiderations: string) => {
       if (isLoading) return;
       setIsLoading(true);
 
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, previousExperience },
+        body: { part, previousExperience, specialConsiderations },
       });
 
       if (response.status === 200) {
@@ -68,14 +69,26 @@ export default function AddDetails() {
     });
   };
 
+  const handleAddSpecialConsideration = (text: string) => {
+    setRoutineSuggestion((prev: RoutineSuggestionType) => {
+      return {
+        ...prev,
+        specialConsiderations: text,
+      };
+    });
+  };
+
   const boxes = useMemo(() => {
     if (!concernScores) return;
 
     return concernScores.map((co, index) => {
+      const title = normalizeString(co.name || "");
+
       return (
         <AnswerBox
-          isDisabled={!isActionAvailable}
           key={index}
+          title={title}
+          isDisabled={!isActionAvailable}
           textObject={previousExperience || {}}
           textObjectKey={co.name}
           handleType={(answer) => handleType(co.name, answer)}
@@ -96,7 +109,7 @@ export default function AddDetails() {
   const allIsEmpty =
     Object.values(previousExperience || {})
       .map((str) => str.trim())
-      .filter(Boolean).length === 0;
+      .filter(Boolean).length === 0 && !specialConsiderations?.trim();
 
   useEffect(() => {
     if (!routineSuggestion) return;
@@ -117,10 +130,18 @@ export default function AddDetails() {
             customStyles={{ flex: 0 }}
           />
           {boxes}
+          <AnswerBox
+            isDisabled={!isActionAvailable}
+            textObject={routineSuggestion || {}}
+            title="Special considerations"
+            textObjectKey={"specialConsiderations"}
+            placeholder="Anything special about your health or lifestyle? (e.g. pregnancy, vegetarianism, medication, allergies etc...)"
+            handleType={(text) => handleAddSpecialConsideration(text)}
+          />
           <Button
             disabled={!concernScores || isLoading || allIsEmpty}
             loading={isLoading}
-            onClick={() => updateRoutineSuggestions(previousExperience || {})}
+            onClick={() => updateRoutineSuggestions(previousExperience || {}, specialConsiderations || "")}
             mb={"20%"}
             className={classes.button}
           >

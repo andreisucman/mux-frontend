@@ -5,7 +5,7 @@
 .reasoningWrapper {
   max-height: 55vh;
   border-radius: rem(16);
-  padding: rem(16);
+  padding: rem(16) rem(16) 0 rem(16);
   border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
 }
 

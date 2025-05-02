@@ -140,8 +140,8 @@ export default function RoutineModerationCard({
         {label} routines
       </Title>
       <Alert p="0.5rem 1rem">
-        This info will appear on your routines sale card. It will be displayed when someone clicks
-        on your before-after photos and then the 'Show routines' button.
+        This info will appear on your routines sale card. It should help the buyers understand if
+        you routines are a good fit for them.
       </Alert>
       <TextInput
         placeholder="The name for your routines"

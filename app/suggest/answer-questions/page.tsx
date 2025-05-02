@@ -94,6 +94,7 @@ export default function AnswerQuestions() {
           isDisabled={!isActionAvailable}
           textObject={questionsAndAnswers}
           textObjectKey={question}
+          title={question}
           handleType={(answer) => handleType(question, answer)}
         />
       );
