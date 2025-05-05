@@ -1,7 +1,7 @@
 import { Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ClubLegalBody from "@/app/legal/club/ClubLegalBody";
-import PrivacyLegalBody from "@/app/legal/privacy/PrivacyLegalBody olrd";
+import PrivacyLegalBody from "@/app/legal/privacy/PrivacyLegalBody";
 import TermsLegalBody from "@/app/legal/terms/TermsLegalBody";
 
 export default function openLegalBody(type: "club" | "terms" | "privacy") {

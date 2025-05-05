@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { rem, Stack, Text, Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 
 type Props = {
   addTitle?: boolean;
