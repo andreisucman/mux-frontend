@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { rem, Stack, Text, Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 
 type Props = {
   addTitle?: boolean;
@@ -11,1198 +11,1466 @@ export default function TermsLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Terms of Service</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: Match 16, 2025
+        Last updated: 5 May, 2025
       </Text>
       <Stack>
         <Text mt={0}>
-          This website is owned and operated by Bettermax LLC ("Company," "we," "us," "our"), a
-          company incorporated in Wyoming, United States, with its registered address at 30 N Gould
-          St, Sheridan, WY 82801.
+          Muxout is a self-improvement platform focused on skin and hair care. These Terms of
+          Service (“Terms”) form a legal agreement between you (the user of our Services) and
+          Bettermax LLC (referred to as “Company,” “we,” “us,” or “our”), the owner and operator of
+          the website muxout.com (the “Site”). Bettermax LLC is a company registered in Wyoming, USA
+          (address: 30 N Gould St, Sheridan, WY 82801). If you have any questions about these Terms,
+          you can contact us at info@muxout.com or by mail at the above address.
         </Text>
         <Text>
-          We operate the website muxout.com (the "Site"), along with any related products and
-          services that reference or link to these terms (the "Terms") (collectively, the
-          "Services"), which include the collection, analysis, and storage of user-provided
-          information for AI-based assessments and personalized guidance about physical appearance
-          and products.
-        </Text>
-        <Text>
-          You can contact us by email at info@muxout.com, or by mail at Bettermax LLC, 30 N Gould
-          St, Sheridan, WY 82801, United States.
-        </Text>
-        <Text>
-          These Terms constitute a legally binding agreement between you, whether as an individual
-          or on behalf of an organization ("you"), and Bettermax LLC, regarding your access to and
-          use of the Services.
-        </Text>
-        <Text>
-          By accessing the Site, you acknowledge that you have read, understood, and agree to be
-          bound by these Terms, including the collection, analysis, and processing of your images,
-          videos, and personal information as described in our Privacy Policy. IF YOU DO NOT AGREE
-          TO ALL OF THESE TERMS, YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND MUST CEASE
-          USE IMMEDIATELY.
-        </Text>
-        <Text>
-          Supplemental terms or documents that may be posted on the Site from time to time are
-          incorporated by reference into these Terms. We reserve the right to modify these Terms at
-          our discretion, with updates indicated by a change in the "Last updated" date. You waive
-          any right to receive individual notice of such changes.
-        </Text>
-        <Text>
-          It is your responsibility to review these Terms periodically for any updates. Continued
-          use of the Site after any revised Terms are posted signifies your acceptance of the
-          updated Terms.
-        </Text>
-        <Text>
-          The Services are intended for users who are at least 18 years old. Users under the age of
-          18 are not permitted to use or register for the Services.
-        </Text>
-        <Text>
-          By using the Services, you affirm that you are at least 18 years of age. In the event of a
-          dispute arising from these Terms or the use of the Services, the laws of the State of
-          Wyoming will govern, and you agree to submit to the exclusive jurisdiction of the state
-          and federal courts located in Wyoming for the resolution of any disputes.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>1. OUR SERVICES</Title>
-        <Text>
-          The Services we provide are intended solely for personal, non-commercial use, and the
-          information and assessments offered through our Services are for general informational
-          purposes only. Our Services, including AI-based image analysis and the personalized tasks
-          created based on them, are not a substitute for professional, medical, or health-related
-          advice or services. The results provided are based on our proprietary algorithms that have
-          not been reviewed by medical professionals and are not intended to diagnose, treat, cure,
-          or prevent any condition. Users should seek professional advice before making any
-          decisions based on the information received from our Services.
-        </Text>
-        <Text>
-          The information provided through our Services is not intended for use or distribution in
-          any jurisdiction or country where such actions would be unlawful or require special
-          registration. Users accessing the Services from locations outside the United States do so
-          at their own risk and are responsible for complying with any local laws that may apply,
-          including but not limited to, data privacy regulations such as the General Data Protection
-          Regulation (GDPR) or any other regional laws concerning data collection and processing.
-        </Text>
-        <Text>
-          Our Services are not designed to meet specific industry regulations, including, but not
-          limited to, the Health Insurance Portability and Accountability Act (HIPAA), the Federal
-          Information Security Management Act (FISMA), or the General Data Protection Regulation
-          (GDPR).
-        </Text>
-        <Text>
-          If your activities are governed by such regulations, you must not use the Services.
-          Additionally, you are responsible for ensuring that your use of the Services does not
-          contravene the Gramm-Leach-Bliley Act (GLBA) or any similar financial privacy laws. By
-          using our Services, you agree that you will not hold the Company liable for any failure to
-          meet regulatory compliance if such compliance is required for your activities. You are
-          solely responsible for determining whether your use of the Services is appropriate and
-          lawful based on your jurisdiction’s regulations.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>2. INTELLECTUAL PROPERTY RIGHTS</Title>
-        <Title order={3}>Our Intellectual Property</Title>
-        <Text>
-          We own or license all intellectual property rights related to our Services, including but
-          not limited to the source code, databases, functionalities, software, website designs,
-          audio, video, text, photographs, and graphics (collectively referred to as the "Content"),
-          as well as the trademarks, service marks, and logos (referred to as the "Marks"). These
-          intellectual property rights are protected under copyright, trademark laws, and other
-          intellectual property regulations and treaties both in the United States and
-          internationally. The Content and Marks are provided through our Services "AS IS" for your
-          personal, non-commercial use only. Access to the Services does not grant you any ownership
-          rights in the Content or Marks. All rights not expressly granted to you are reserved by
-          us.
-        </Text>
-        <Title order={3}>Your Use of Our Services</Title>
-        <Text>
-          {`Provided you comply with these Legal Terms, including the "PROHIBITED
-          ACTIVITIES" section below, we grant you a limited, non-exclusive,
-          non-transferable, and revocable license to:`}
-        </Text>
-        <ul>
-          <li>Access the Services; and</li>
-          <li>
-            Download or print portions of the Content that you have lawfully accessed, exclusively
-            for your personal, non-commercial use.
-          </li>
-        </ul>
-        <Text>
-          Except as explicitly provided in this section or elsewhere in our Legal Terms, you may
-          not:
-        </Text>
-        <ul>
-          <li>
-            Copy, reproduce, aggregate, republish, upload, post, publicly display, encode,
-            translate, transmit, distribute, sell, license, or otherwise exploit any part of the
-            Services, Content, or Marks for commercial purposes without our prior written consent.
-          </li>
-        </ul>
-        <Text>
-          If you wish to use any part of the Services, Content, or Marks beyond the scope provided
-          here, please contact us at: info@muxout.com.
-        </Text>
-        <Text>
-          If we grant permission to use any part of our Services or Content, you must acknowledge us
-          as the owner or licensor, and ensure that any copyright or proprietary notices remain
-          intact.
-        </Text>
-        <Text>
-          Violations of these Intellectual Property Rights constitute a serious breach of our Legal
-          Terms and may result in the immediate termination of your right to use our Services.
-        </Text>
-        <Title order={3}>Your Submissions</Title>
-        <Text>
-          Please carefully read this section, along with the "PROHIBITED ACTIVITIES" section, to
-          understand your rights and obligations when submitting content, including images and
-          videos through our Services.
-        </Text>
-        <Text>
-          Submissions: By uploading images, videos to the platform or sending us us any questions,
-          comments, suggestions, ideas, feedback, or other information related to the Services
-          (collectively, "Submissions"), you grant us an irrevocable, worldwide, exclusive,
-          fully-paid, royalty-free, perpetual, transferable, and sub-licensable right to use,
-          reproduce, modify, adapt, publish, distribute, and otherwise exploit your Submissions for
-          any purpose, including commercial purposes, without acknowledgment or compensation to you.
-          This includes using your Submissions in any media or platform, whether now known or later
-          developed.
-        </Text>
-        <Text>
-          You agree that we have no obligation to use or respond to any Submissions, and any use of
-          Submissions is entirely at our discretion.
-        </Text>
-        <Title id="responsibility-for-your-submissions" order={3}>
-          Responsibility for Your Submissions
-        </Title>
-        <Text>
-          By submitting content, including images and videos of your body and head, through our
-          Services, you:
-        </Text>
-        <ol>
-          <li>
-            1. Confirm that you have read and agree with our "PROHIBITED ACTIVITIES" section and
-            will not post or transmit any content that is illegal, harassing, hateful, harmful,
-            defamatory, obscene, abusive, discriminatory, threatening, sexually explicit, false,
-            inaccurate, deceptive, or misleading;
-          </li>
-          <li>
-            2. Waive any moral rights associated with your Submissions, to the extent permitted by
-            applicable law;
-          </li>
-          <li>
-            3. Guarantee that the Submissions are original to you, or that you have obtained the
-            necessary rights, licenses, or permissions to submit them, and that you have full
-            authority to grant the rights described above; and
-          </li>
-          <li>
-            4. Confirm that your Submissions do not contain confidential or proprietary information
-            from any third party.
-          </li>
-        </ol>
-        <Text>
-          You remain solely responsible for your Submissions and any consequences arising from your
-          breach of (a) this section, (b) third-party intellectual property rights, or (c) any
-          applicable laws. You agree to indemnify us for any losses, claims, or damages resulting
-          from your Submissions or your violation of these Legal Terms.
-        </Text>
-        <Title order={3}>Sensitive Data Handling</Title>
-        <Text>
-          We collect and process personal data as outlined in our{" "}
+          By accessing or using Muxout (including any related services, mobile or web applications,
+          or programs we offer), you acknowledge that you have read, understood, and agree to be
+          bound by these Terms and our{" "}
           <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
             Privacy Policy
           </Link>
-          . This may include sensitive data, such as images and videos of your body, descriptions of
-          your appearance, and audio recordings of your voice.
+          . This includes consent to the collection and processing of your images and personal data
+          as described in these Terms and in our Privacy Policy. If you do not agree with any part
+          of these Terms or our Privacy Policy, you must not use the Site or Services. Your use of
+          Muxout signifies acceptance of these Terms.
         </Text>
         <Text>
-          By using our services, you consent to the collection, storage, and processing of this
-          sensitive data as required to fulfill the services offered on our platform.
+          We may update these Terms from time to time. If we make changes, we will update the “Last
+          Updated” date and provide notice as required by law. Your continued use of Muxout after
+          any update means you accept the revised Terms. It is your responsibility to periodically
+          review these Terms for changes.
         </Text>
-        <Title order={3}>Consent for Data Processing and Sharing</Title>
         <Text>
-          By using our services and uploading any personal content, including sensitive data such as
-          the images and videos of your body and audio recordings of your voice, you consent to the
-          following:
+          Important: Muxout&apos;s Services are intended for adults 18 years of age or older. No one
+          under 18 may register for an account or use our Services in any way.
         </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Eligibility and User Accounts</Title>
         <ul>
-          <li>The analysis of your appearance using AI technologies.</li>
           <li>
-            Making this information accessible to other users of the site with your explicit
-            consent.
+            <b>Age Requirement:</b> You must be at least 18 years old (or the age of legal majority
+            in your jurisdiction, if higher) to create an account or use Muxout. By using our
+            Services, you represent and warrant that you meet this age requirement and are legally
+            capable of entering into this agreement. We do not knowingly collect data from or allow
+            use of the Services by any person under 18.
           </li>
           <li>
-            The processing of your data for suggesting third-party products and services that we
-            believe may be of interest to you. No personal data will be shared with third-party
-            product providers.
+            <b>Account Setup:</b> To access certain features of Muxout, you will need to create a
+            user account. You agree to provide accurate, current, and complete information during
+            registration and to keep your information updated (for example, if you change your email
+            address or payment details). You are responsible for maintaining the confidentiality of
+            your account login credentials and for all activities that occur under your account. If
+            you suspect any unauthorized use of your account, you must notify us immediately. We are
+            not liable for any loss or damage resulting from your failure to safeguard your account
+            information.
+          </li>
+          <li>
+            <b>Personal Use Only:</b> Muxout is for your personal, non-commercial use. You must not
+            share your account with anyone or use another person&apos;s account without permission.
+            Automated access (such as bots or scripts) is prohibited - you may use the platform only
+            as an individual human user. You agree to use the Services only for lawful purposes and
+            in compliance with all applicable laws. This means you will not engage in any illegal
+            activity through Muxout, and you will not violate the rights of others (for example, do
+            not upload content that infringes someone else&apos;s intellectual property or privacy
+            rights).
+          </li>
+        </ul>
+      </Stack>
+      <Stack>
+        <Title order={2}>Services Overview</Title>
+        <Text>
+          Muxout provides tools and features to help users improve skin or hair concerns through
+          personalized analysis, recommendations, and progress tracking. Key features of our
+          Services include:
+        </Text>
+        <ul>
+          <li>
+            <b>Personalized Analysis:</b> You can select a particular skin or hair concern (e.g.,
+            acne, wrinkles, hyperpigmentation) and securely upload photos of the affected area. Our
+            system uses artificial intelligence (AI) to analyze your images and provide a severity
+            score (on a scale of 0 to 100) for your chosen concern. This score is intended to help
+            you understand the current status of your skin or hair condition. Note: This analysis is
+            for informational and tracking purposes only and is not medical or professional advice.
+            The AI results are generated by proprietary algorithms and are not reviewed or approved
+            by medical professionals.
+          </li>
+          <li>
+            <b>Personalized Routines:</b> Based on your input and analysis results, Muxout may
+            suggest a customized set of tasks, tips, or product recommendations tailored to you.
+            This routine is intended to help address your selected concern over time (for example, a
+            step-by-step skincare regimen or hair care routine). Suggestions might include
+            over-the-counter products or lifestyle changes. These recommendations are general
+            wellness and self-improvement suggestions, not medical prescriptions or treatments.
+          </li>
+          <li>
+            <b>Progress Tracking:</b> After following your routine for a period of time (we require
+            at least one week before re-scanning to allow for noticeable changes), you can upload
+            new photos to monitor your progress. Muxout&apos;s AI will rescore your updated photos
+            so you can compare results over time. This helps you see if your skin or hair
+            concern&apos;s severity score is improving. Progress tracking is a key part of our
+            Service, intended to keep you informed and motivated.
+          </li>
+          <li>
+            <b>Community and “Club” Program:</b> Muxout offers an optional community feature called
+            the Club (detailed later in these Terms). In the Club, users who have achieved
+            improvements can choose to share their before-and-after photos and detailed routines
+            with other users. You can publish your routine for others to purchase access to,
+            potentially earning income through a revenue-sharing program. Participation in the Club
+            is entirely voluntary - if you do not join the Club, your personal routines and photos
+            remain private to you.
           </li>
         </ul>
         <Text>
-          IF YOU DO NOT CONSENT TO THE COLLECTION, PROCESSING AND SHARING OF YOUR SENSITIVE DATA AS
-          DESCRIBED ABOVE, YOU MUST CEASE TO USE THE SERVICES IMMEDIATELY.
+          <b>Global Availability:</b> We aim to make Muxout available to users worldwide. However,
+          we do not guarantee that all features of the Service (for example, certain product
+          recommendations or the Club program) will be available in every region or at all times. If
+          you access the Services from outside the United States, you do so at your own risk, and
+          you are responsible for complying with any local laws that apply to your use of Muxout.
         </Text>
-        <Stack>
-          <Title order={2}>3. USER REPRESENTATIONS</Title>
-          <Text>By using the Services, you represent, warrant, and affirm that:</Text>
-          <ol>
-            <li>You possess the legal capacity to agree to and adhere to these Legal Terms;</li>
-            <li>
-              You are not considered a minor under the laws of your jurisdiction and are at least 18
-              years of age;
-            </li>
-            <li>
-              You will not access the Services through automated methods or non-human means,
-              including but not limited to bots, scripts, or other forms of automated technology;
-            </li>
-            <li>
-              You will not use the Services for any unlawful or unauthorized purposes, including in
-              violation of any applicable data privacy, intellectual property, or other laws in your
-              jurisdiction;
-            </li>
-            <li>Your use of the Services will comply with all applicable laws and regulations;</li>
-            <li>
-              All information you provide to us, including during registration or account creation,
-              is true, accurate, current, and complete to the best of your knowledge;
-            </li>
-            <li>
-              You will promptly update any information provided to us to ensure that it remains
-              accurate and current at all times; and
-            </li>
-            <li>
-              You have the necessary rights and permissions to upload any images, videos, audio or
-              text through the Services, and such content does not infringe the intellectual
-              property, privacy, or other rights of any third party.
-            </li>
-          </ol>
-          <Text>
-            You acknowledge that providing false, inaccurate, outdated, or incomplete information is
-            a breach of these Legal Terms and may result in the immediate suspension or termination
-            of your account, as well as the denial of any current or future access to the Services
-            (or any part thereof).
-          </Text>
-          <Text>
-            In cases of unlawful or unauthorized use of the Services, we reserve the right to take
-            additional actions, including reporting such activity to law enforcement or other
-            relevant authorities, and pursuing any other legal remedies available to us.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>4. PURCHASES AND PAYMENT</Title>
-          <Title order={3}>Payment Methods</Title>
-          <Text>
-            We accept various payment methods for purchases made through our Services. This
-            includes, but is not limited to, credit cards, debit cards, and other methods permitted
-            by out payment processing services.
-          </Text>
-          <Title order={3}>Accurate Information and Updates</Title>
-          <Text>
-            You agree to provide accurate, current, and complete information for all transactions
-            and account details, including payment information. You are responsible for promptly
-            updating your account details, such as your email address, payment method, and card
-            expiration date, to ensure the successful processing of your transactions. Failure to do
-            so may result in transaction failures or service interruptions.
-          </Text>
-          <Title order={3}>Subscription Services</Title>
-          <Text>
-            When you subscribe to our paid services you agree to pay the applicable subscription
-            fee, which may be subject to changes at our discretion. Subscription fees are billed on
-            a recurring basis unless canceled. By subscribing, you authorize us to charge your
-            selected payment method automatically for each subscription period without further
-            approval.
-          </Text>
-          <Title order={3}>Currency and Sales Tax</Title>
-          <Text>
-            All prices listed on our platform are in US dollars, unless otherwise specified. You are
-            responsible for any applicable sales, use, or similar taxes imposed by applicable laws.
-            Taxes will be added to your purchase where required by law.
-          </Text>
-          <Title order={3}>Pricing and Errors</Title>
-          <Text>
-            We reserve the right to modify pricing for any products or services at any time. In the
-            event of a pricing error, we reserve the right to correct the error and adjust the
-            transaction accordingly, even after payment has been processed. If you are not satisfied
-            with the corrected price, you may choose to cancel your subscription by contacting us at
-            info@muxout.com.
-          </Text>
-          <Title order={3}>Order Refusal</Title>
-          <Text>
-            We retain the right to refuse any subscription placed through our Services at our sole
-            discretion. This may include, but is not limited to, cases where we suspect fraudulent
-            activity, incorrect account information, or violations of our terms.
-          </Text>
-          <Title order={3}>Revenue sharing ("Club")</Title>
-          <Text>
-            We offer you the right to join our revenue sharing program - the "Club" and earn from
-            making your image, video, description, and audio data accessible to other users.
-          </Text>
-          <Text>
-            If you choose to participate in the "Club", you will be required to complete an
-            onboarding process and provide accurate bank account information. You are solely
-            responsible for any fees associated with receiving payments, and we disclaim any
-            liability for issues arising from inaccurate payment details or the onboarding process.
-            The full terms and conditions of the "Club" are detailed in a separate document, which
-            can be accessed{" "}
-            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
-              here
-            </Link>
-            .
-          </Text>
-          <Title order={3}>Purchases Access Duration</Title>
-          <Text>
-            By purchasing routines from the Club members, you are granted access to the information
-            purchased for a minimum period of 365 days from the date of purchase. We do not
-            guarantee the availability of the information you purchased beyond this period, and
-            access may be discontinued at our discretion or the discretion of the seller after 365
-            days without liability or obligation for refunds or continued service.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>5. FREE TRIAL</Title>
-          <Title order={3}>Eligibility</Title>
-          <Text>
-            We offer a 1-day free trial for some of our services to new users. The free trial is
-            available only once per user and is intended to help explore the platform.
-          </Text>
-          <Title order={3}>Trial Period and Subscription</Title>
-          <Text>
-            You can start the free trial by clicking the corresponding button on a specific service
-            you intend to try. The trial period lasts for 24 hours at the end of which, your access
-            to related service will be restricted until you pay the applicable subscription fee.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>6. CANCELLATION</Title>
-          <Title order={3}>Non-Refundable Purchases</Title>
-          <Text>
-            All purchases, including subscription fees, are non-refundable. Once a payment has been
-            processed, we do not offer refunds or credits, whether for partial subscription periods,
-            unused features, or any other reason.
-          </Text>
-          <Title order={3}>Subscription Cancellation</Title>
-          <Text>
-            You may cancel your subscription at any time. Cancellation will take effect at the end
-            of the current billing period, meaning you will retain access to the Services until the
-            end of the subscription cycle. After this period, you will no longer be billed, and your
-            access to paid features will be terminated.
-          </Text>
-          <Title order={3}>No Prorated Refunds</Title>
-          <Text>
-            We do not provide prorated refunds for canceled subscriptions. For example, if you
-            cancel midway through a billing period, you will continue to have access until the end
-            of that period, but no refunds or credits will be issued for unused time.
-          </Text>
-          <Title order={3}>How to Cancel</Title>
-          <Text>
-            You can cancel your subscription through your account settings on our platform. If you
-            encounter difficulties or need assistance, you may contact our support team for help
-            with the cancellation process.
-          </Text>
-          <Title order={3}>Customer Support</Title>
-          <Text>
-            If you have any concerns, technical issues, or are dissatisfied with our Services, we
-            encourage you to contact us at info@muxout.com.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>7. USE OF SOFTWARE</Title>
-          <Text>
-            We may provide software as part of our Services, including but not limited to
-            Progressive Web Apps (PWA) or other web-based applications. Your use of such software is
-            subject to the following terms:
-          </Text>
-          <Title order={3}>License Grant</Title>
-          <Text>
-            We grant you a limited, non-exclusive, revocable, personal, non-transferable, and
-            non-sublicensable license to access and use the software provided as part of our
-            Services, including any PWAs, solely for the purpose of interacting with or benefiting
-            from our Services and in compliance with these Terms of Service. This license is granted
-            only for your personal, non-commercial use.
-          </Text>
-          <Title order={3}>Restrictions</Title>
-          <Text>
-            You agree that, except as expressly permitted by these Terms of Service, you will not:
-          </Text>
-          <ul>
-            <li>Reproduce, distribute, publicly display, or perform the software.</li>
-            <li>
-              Modify, adapt, translate, reverse-engineer, decompile, disassemble, or attempt to
-              discover the source code of the software.
-            </li>
-            <li>
-              Rent, lease, lend, sell, sublicense, or otherwise transfer rights to the software. Any
-              unauthorized use of the software or PWA constitutes a violation of these Terms of
-              Service and may result in termination of your access to the Services.
-            </li>
-          </ul>
-
-          <Title order={3}>Disclaimer of Warranties</Title>
-          <Text>
-            {`All software, including any PWA, is provided "AS IS" and "AS
-            AVAILABLE" without any warranties of any kind, whether express or
-            implied, including but not limited to implied warranties of
-            merchantability, fitness for a particular purpose, and
-            non-infringement. We do not guarantee that the software will be
-            error-free, secure, or free of defects, viruses, or other harmful
-            components.`}
-          </Text>
-          <Title order={3}>Limitation of Liability</Title>
-          <Text>
-            To the fullest extent permitted by law, we disclaim any liability arising from your use
-            or inability to use the software, including any direct, indirect, incidental,
-            consequential, special, or punitive damages, even if we have been advised of the
-            possibility of such damages. You assume all risks associated with your use of the
-            software and any PWA.
-          </Text>
-          <Title order={3}>Termination of License</Title>
-          <Text>
-            We reserve the right to terminate or suspend your license to use the software, including
-            any PWA, at any time and for any reason, including but not limited to a breach of these
-            Terms of Service. Upon termination, you must immediately stop using the software and, if
-            applicable, delete all copies from your device.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>8. PROHIBITED ACTIVITIES</Title>
-          <Text>
-            You are prohibited from using the Services for any purposes other than those for which
-            they are intended. The Services may not be used for commercial purposes unless
-            explicitly authorized by us. As a user, you agree not to:
-          </Text>
-          <ul>
-            <li>
-              Systematically retrieve data or other content from the Services to create, compile, or
-              populate a collection, database, or directory without our written permission.
-            </li>
-            <li>
-              Deceive, defraud, or mislead us or other users, especially in attempts to obtain
-              sensitive information such as passwords or account details.
-            </li>
-            <li>
-              Bypass, disable, or interfere with security-related features of the Services,
-              including those restricting the use or copying of content.
-            </li>
-            <li>Damage, disparage, or harm our reputation or the functionality of the Services.</li>
-            <li>
-              Use information obtained from the Services to harass, abuse, or harm another person.
-            </li>
-            <li>Misuse our support services or submit false reports of abuse or misconduct.</li>
-            <li>Violate any applicable laws, regulations, or rules while using the Services.</li>
-            <li>Engage in unauthorized linking to or framing of the Services.</li>
-            <li>
-              Upload or transmit viruses, malware, or any other malicious code, or use excessive
-              capital letters or spam that interferes with the operation of the Services.
-            </li>
-            <li>
-              Use any automated system, such as scripts, bots, or scrapers, to interact with the
-              Services without our prior approval.
-            </li>
-            <li>Remove or alter any copyright or other proprietary notices within the Services.</li>
-            <li>
-              Upload or transmit any material that acts as an unauthorized data collection
-              mechanism, such as tracking pixels, web bugs, cookies, or similar tools.
-            </li>
-            <li>
-              Interfere with, disrupt, or impose an undue burden on the Services or the networks
-              connected to the Services.
-            </li>
-            <li>Harass, intimidate, or threaten our employees, agents, or users.</li>
-            <li>
-              Attempt to circumvent any measures designed to restrict or prevent access to the
-              Services.
-            </li>
-            <li>
-              Copy, modify, reverse-engineer, decompile, or disassemble any aspect of the software
-              that powers the Services, except as permitted by applicable law.
-            </li>
-            <li>
-              Employ unauthorized purchasing agents or otherwise make commercial transactions
-              through the Services without authorization.
-            </li>
-            <li>
-              Collect or harvest usernames, email addresses, or other user data for the purpose of
-              sending unsolicited communications.
-            </li>
-            <li>
-              Use the Services for any competitive or revenue-generating purposes, unless expressly
-              permitted.
-            </li>
-            <li>
-              Advertise or offer to sell goods or services via the Services without our permission.
-            </li>
-            <li>Transfer or sell your user account or profile to another party.</li>
-          </ul>
-        </Stack>
-        <Stack>
-          <Title order={2}>9. USER GENERATED CONTRIBUTIONS</Title>
-          <Text>
-            By making any Contributions to our site including image, video and audio content of
-            yourself, you agree that your Contributions will be governed by our Privacy Policy, and
-            you further represent and warrant that:
-          </Text>
-          <ul>
-            <li>
-              You own or control all rights in and to your Contributions, or you have obtained the
-              necessary licenses, rights, consents, releases, and permissions to grant us and your
-              Followers the right to view, use, and distribute your Contributions, as permitted by
-              these Legal Terms.
-            </li>
-            <li>
-              Your Contributions do not infringe upon any intellectual property rights, including
-              but not limited to copyrights, trademarks, patents, trade secrets, or moral rights of
-              any third party.
-            </li>
-            <li>
-              You have obtained the necessary consent from each identifiable person featured in your
-              Contributions to use their name, likeness, or image as part of your Contributions, and
-              to allow us and other users to use such material in accordance with these Legal Terms.
-            </li>
-            <li>Your Contributions are accurate, truthful, and not misleading.</li>
-            <li>
-              Your Contributions are not intended to deceive, defraud, or mislead users,
-              particularly regarding any financial or personal information.
-            </li>
-            <li>
-              Your Contributions do not include unauthorized advertising, promotional materials,
-              spam, chain letters, pyramid schemes, or other forms of solicitation.
-            </li>
-            <li>
-              Your Contributions do not contain any unlawful, offensive, or otherwise objectionable
-              material, including but not limited to obscene, lewd, violent, harassing, defamatory,
-              or inappropriate content, as determined by us.
-            </li>
-            <li>
-              Your Contributions are not used to harass, threaten, intimidate, or incite violence
-              against any individual or group.
-            </li>
-            <li>Your Contributions comply with all applicable laws, rules, and regulations.</li>
-            <li>
-              Your Contributions do not violate any privacy or publicity rights of any third party.
-            </li>
-            <li>
-              Your Contributions do not include material that violates laws protecting minors,
-              including but not limited to child pornography or exploitation laws.
-            </li>
-            <li>
-              Your Contributions do not contain offensive or discriminatory content related to race,
-              ethnicity, gender, sexual orientation, religion, or disability.
-            </li>
-            <li>
-              Your Contributions do not violate, or link to material that violates, any provisions
-              of these Legal Terms, applicable laws, or regulations.
-            </li>
-          </ul>
-          <Title order={3}>Financial Compensation and Rights</Title>
-          <Text>
-            If you choose to participate in our content sharing program ("Club"), you may be
-            eligible to receive compensation from each sale of your Contributions. By uploading your
-            Contributions and making them publicly available through the "Club", you grant us a
-            limited, non-exclusive, transferable, royalty-free license to display your Contributions
-            to other users of the site.
-          </Text>
-          <Text>
-            You understand and agree that this license continues for as long as your Contributions
-            are made available through the Services and the "Club", and that we may retain copies of
-            your Contributions as required for legal, compliance, or operational purposes.
-          </Text>
-          <Title order={3}>Management and Removal of Contributions</Title>
-          <Text>
-            We reserve the right to monitor, edit and remove any Contributions at our sole
-            discretion if they violate these Legal Terms or are otherwise deemed inappropriate by
-            us. We also reserve the right to block or terminate your participation in the "Club" if
-            your Contributions violate these Legal Terms, applicable laws, or regulations.
-          </Text>
-          <Title order={3}>Consequences of Violations</Title>
-          <Text>
-            Violations of these conditions may result in the suspension or termination of your
-            rights to use the Services and/or participate in the "Club". In such cases, you may lose
-            access to any financial compensation or pending payments, and we may report any unlawful
-            activity to the relevant authorities.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>10. CONTRIBUTION LICENSE</Title>
-          <Text>
-            By uploading or submitting any Contributions as part of the Services, including but not
-            limited to your participation in the "Club", you acknowledge and agree that we may
-            access, store, process, and use any information and personal data you provide in
-            accordance with our Privacy Policy. This includes the right to use your Contributions to
-            provide the Services, display your content to other users with your explicit consent,
-            and facilitate any related payment or compensation.
-          </Text>
-          <Text>
-            While we do not claim ownership of your Contributions. By submitting your Contributions,
-            you grant us a worldwide, non-exclusive, royalty-free, transferable, sublicensable
-            license to use, reproduce, distribute, display, and perform your Contributions in
-            connection with the Services. This license is necessary to operate, promote, and improve
-            the Services and to enable the functionality of the "Club", including displaying your
-            public content to the site vistors.
-          </Text>
-          <Text>
-            You retain full ownership of your Contributions and any intellectual property or
-            proprietary rights associated with them. This license does not transfer ownership of
-            your Contributions to us. However, you understand that by submitting Contributions, you
-            are granting us permission to use them as described above without additional
-            compensation, aside from any financial compensation agreed upon through in the{" "}
-            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
-              {"Club's terms of service"}
-            </Link>
-            .
-          </Text>
-          <Text>
-            If you provide suggestions, ideas, or feedback regarding the Services, you agree that we
-            may use and share such feedback for any purpose without compensating you. Such feedback
-            is considered non-confidential and non-proprietary.
-          </Text>
-          <Text>
-            You are solely responsible for your Contributions and for any consequences that arise
-            from their posting or distribution. We are not liable for any statements or
-            representations made in your Contributions, and you agree to release us from any
-            liability and refrain from initiating any legal action related to your Contributions.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>11. GUIDELINES FOR REVIEWS</Title>
-          <Text>
-            We may offer areas on the Services where users can leave reviews or scores of
-            individuals, entities, or the Services themselves. When posting a review, you agree to
-            comply with the following guidelines:
-          </Text>
-          <ul>
-            <li>
-              You must have firsthand experience with the person, entity, or Service being reviewed.
-            </li>
-            <li>
-              Your review must not contain offensive language, profanity, or any form of abusive,
-              racist, or hateful remarks.
-            </li>
-            <li>
-              Your review must not include discriminatory comments based on religion, race, gender,
-              nationality, age, marital status, sexual orientation, or disability.
-            </li>
-            <li>Your review must not reference or endorse illegal activities.</li>
-            <li>
-              You must not be affiliated with competitors of the person, entity, or Service being
-              reviewed if you are posting a negative review.
-            </li>
-            <li>
-              You must not make legal conclusions or accusations regarding conduct in your review.
-            </li>
-            <li>
-              Your review must be truthful and not contain any false, misleading, or inaccurate
-              information.
-            </li>
-            <li>
-              You are prohibited from organizing or participating in campaigns that encourage others
-              to post reviews, whether positive or negative.
-            </li>
-          </ul>
-          <Text>
-            We reserve the right to accept, reject, or remove reviews at our sole discretion. We are
-            under no obligation to screen or remove reviews, even if someone considers them
-            objectionable or inaccurate. Reviews reflect the opinions of individual users and do not
-            represent our views or those of our affiliates or partners.
-          </Text>
-          <Text>
-            We disclaim all liability for any reviews posted on the Services, and we are not
-            responsible for any claims, liabilities, or damages that arise from reviews. You
-            acknowledge that by posting a review, you grant us an irrevocable, perpetual,
-            non-exclusive, worldwide, royalty-free, fully paid, assignable, and sublicensable
-            license to use, reproduce, modify, translate, transmit, display, perform, and distribute
-            any content related to your review in any format or through any media channels.
-          </Text>
-
-          <Title order={2} id="third-part-websites-and-content">
-            12. THIRD-PARTY WEBSITES AND CONTENT
-          </Title>
-          <Text>
-            The Services may include links to third-party websites ("Third-Party Websites") and
-            content, including but not limited to articles, photographs, text, graphics, designs,
-            music, sound, video, information, applications, software, and other materials
-            originating from third parties ("Third-Party Content"). We do not investigate, monitor,
-            or verify the accuracy, appropriateness, or completeness of any Third-Party Websites or
-            Third-Party Content. This includes links or recommendations for third-party products and
-            services made based on the information you provide or content uploaded to the Services.
-            We are not responsible for any Third-Party Websites accessed through the Services or any
-            Third-Party Content posted on, available through, or installed from the Services,
-            including the content, accuracy, opinions, reliability, privacy practices, or other
-            policies of such Third-Party Websites or Third-Party Content.
-          </Text>
-          <Text>
-            Specifically, the Services may include materials created by third parties and made
-            available through YouTube. By using the Services, you agree to be bound by the{" "}
-            <Link
-              href="https://www.youtube.com/static?template=terms"
-              style={{ textDecoration: "underline" }}
-            >
-              YouTube Terms of Service
-            </Link>
-            . Your continued use of our services constitutes acceptance of these terms.
-          </Text>
-          <Text>
-            The inclusion of links to, or use of, Third-Party Websites or Third-Party Content does
-            not imply our endorsement or approval of the third party, its website, or its content.
-            If you choose to leave the Services to visit Third-Party Websites, or use or install
-            Third-Party Content, you do so at your own risk. Once you leave the Services, our Terms
-            of Service and Privacy Policy no longer apply. It is your responsibility to review the
-            applicable terms, policies, and privacy practices of any Third-Party Website or
-            application, including those suggested to you by our Services.
-          </Text>
-          <Text>
-            Any transactions or purchases made through Third-Party Websites are solely between you
-            and the third party. We assume no responsibility for such transactions, products,
-            services, or content offered by Third-Party Websites. If you purchase any products or
-            services based on recommendations or links provided through our Services, we are not
-            liable for any issues, damages, or losses arising from those transactions. You agree to
-            hold us harmless from any harm, losses, or claims arising from your interaction with
-            Third-Party Websites or Third-Party Content.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>13. SERVICES MANAGEMENT</Title>
-          <Text>We reserve the right, though we are not obligated, to:</Text>
-          <ol>
-            <li>
-              <Text>
-                Monitor the Services to ensure compliance with these Legal Terms, applicable laws,
-                and our internal policies. This includes reviewing user activity, Contributions (as
-                defined in these Terms), and any content shared within the Services.
-              </Text>
-            </li>
-            <li>
-              <Text>
-                Take appropriate action against any individual who, in our sole judgment, violates
-                applicable laws or these Legal Terms. Such actions may include, but are not limited
-                to:
-              </Text>
-              <ul>
-                <li>Reporting the user to law enforcement or other relevant authorities,</li>
-                <li>Restricting, suspending, or terminating access to the Services,</li>
-                <li>Disabling the ability to upload content or interact with certain features.</li>
-              </ul>
-            </li>
-            <li>
-              <Text>
-                At our sole discretion, refuse, limit access to, or restrict the availability of any
-                Contributions, or any part thereof, to the extent technologically possible. This
-                includes, but is not limited to, restricting or disabling images, videos, audio and
-                text content you upload or share with other users within the Services, especially if
-                such content violates these Legal Terms or is deemed inappropriate.
-              </Text>
-            </li>
-            <li>
-              <Text>
-                Without prior notice or liability, remove or disable any files or content that we
-                determine to be excessively large, burdensome to our systems, or otherwise harmful
-                to the operation or security of the Services.
-              </Text>
-            </li>
-            <li>
-              <Text>
-                Manage the Services in a manner designed to protect our rights, property, and ensure
-                the efficient and secure operation of the platform. This may involve the removal of
-                harmful content, maintaining system integrity, and implementing technical
-                limitations to safeguard users and the Services.
-              </Text>
-            </li>
-            <li>
-              <Text>
-                We may undertake any of the above actions at our sole discretion and without prior
-                notice to you, although we will endeavor to notify users where appropriate and
-                feasible.
-              </Text>
-            </li>
-          </ol>
-        </Stack>
-        <Stack>
-          <Title order={2}>14. TERM AND TERMINATION</Title>
-          <Text>
-            These Legal Terms will remain in full force and effect for as long as you use the
-            Services. We reserve the right, at our sole discretion and without prior notice or
-            liability, to deny access to or use of the Services (including blocking specific IP
-            addresses) to any individual or entity, for any reason or no reason, including but not
-            limited to:
-          </Text>
-          <ul>
-            <li>
-              A violation of any representation, warranty, covenant, or agreement contained in these
-              Legal Terms;
-            </li>
-            <li>A breach of applicable laws or regulations;</li>
-            <li>
-              Any behavior that, in our sole judgment, interferes with the proper operation of the
-              Services or negatively impacts other users.
-            </li>
-          </ul>
-          <Text>
-            {`We may, at any time, terminate your use of the Services or
-            participation in any part of the Services (including your membership
-            in the "Club") without prior notice. This includes deleting or
-            removing any content, Contributions, or information you have posted
-            to the Services.`}
-          </Text>
-
-          <Title order={3}>Account Suspension and Termination</Title>
-          <Text>If we terminate or suspend your account for any reason:</Text>
-          <ul>
-            <li>
-              You are prohibited from registering or creating a new account under your name, a false
-              name, or the name of any third party, even if you are acting on behalf of that third
-              party.
-            </li>
-            <li>
-              We may, at our discretion, take additional legal actions, including pursuing civil,
-              criminal, or injunctive remedies, to protect our rights and interests.
-            </li>
-          </ul>
-          <Text>
-            You understand that any termination of your access to the Services may involve the
-            deletion of your user account, associated data, and Contributions (including image,
-            video, audio and text content you have uploaded) without the possibility of recovery. We
-            are not liable for any loss of data or other information resulting from such
-            termination.
-          </Text>
-
-          <Title order={3}>Account Deletion & Data Retention</Title>
-          <Text>
-            You can request account deletion and removal of all associated personal data anytime via
-            the settings page under the Account section.
-          </Text>
-          <Text>
-            Upon request, your data will be immediately hidden from public view, except for users
-            who have purchased it through our revenue-sharing program (Club).
-          </Text>
-          <Text>
-            If your data hasn't been sold, it will be permanently deleted within 7 days per our{" "}
-            <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
-              Privacy Policy
-            </Link>
-            .
-          </Text>
-          <Text>
-            If your data was sold, buyers will retain access for 365 days before deletion, ensuring
-            the minimum access period per our
-            <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
-              Privacy Policy
-            </Link>
-            .
-          </Text>
-
-          <Title order={2}>15. MODIFICATIONS AND INTERRUPTIONS</Title>
-          <Text>
-            {`We reserve the right, at our sole discretion, to alter, modify,
-            update, suspend, or remove any aspect of the Services, at any time
-            and for any reason, without prior notice to you. This includes, but
-            is not limited to, changes in the Services' features, functionality,
-            content, or pricing. We are not obligated to update any information
-            on the Services and shall not be liable to you or any third party
-            for any modifications, price changes, suspensions, or
-            discontinuations of the Services.`}
-          </Text>
-
-          <Title order={3}>Service Availability</Title>
-          <Text>
-            We do not guarantee that the Services will be available at all times. You acknowledge
-            that the Services may experience interruptions due to technical issues, such as hardware
-            or software failures, or may require maintenance or updates, which could result in
-            delays, interruptions, or errors in accessing the Services.
-          </Text>
-          <Text>
-            We reserve the right to revise, update, suspend, discontinue, or otherwise modify the
-            Services at any time or for any reason without prior notice. You agree that we will not
-            be liable for any loss, damage, or inconvenience resulting from your inability to access
-            or use the Services during any period of downtime or discontinuation.
-          </Text>
-
-          <Title order={3}>No Obligation to Maintain</Title>
-          <Text>These Legal Terms do not create an obligation for us to:</Text>
-          <ul>
-            <li>Maintain or support the Services continuously,</li>
-            <li>Provide any corrections, bug fixes, updates, or releases for the Services.</li>
-          </ul>
-          <Text>
-            By using the Services, you accept that service interruptions may occur, and we are not
-            responsible for any adverse effects caused by such interruptions or changes.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>16. GOVERNING LAW</Title>
-          <Text>
-            These Legal Terms and your use of the Services will be governed by and interpreted in
-            accordance with the laws of the State of Wyoming, without regard to its conflict of law
-            principles. Any disputes or claims arising out of or relating to these Legal Terms or
-            your use of the Services shall be exclusively subject to the jurisdiction of the state
-            and federal courts located in the State of Wyoming.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>17. DISPUTE RESOLUTION</Title>
-          <Title order={3}>Binding Arbitration</Title>
-          <Text>
-            If informal negotiations fail to resolve any disputes between you and us (except for
-            disputes expressly excluded below), such disputes will be resolved exclusively through
-            binding arbitration. By agreeing to arbitration, you waive your right to file a lawsuit
-            in court or have a jury trial. Arbitration will follow the Commercial Arbitration Rules
-            of the American Arbitration Association (AAA) and, where applicable, the AAA&apos;s
-            Supplementary Procedures for Consumer Related Disputes (AAA Consumer Rules). These rules
-            can be found on the AAA&apos;s website.
-          </Text>
-          <Text>
-            Arbitration fees and arbitrator compensation will be governed by, and where applicable,
-            limited by, the AAA Consumer Rules. The arbitration may occur in person, via document
-            submission, by phone, or online. The arbitrator will issue a written decision, but is
-            not required to provide an explanation unless requested by either party. The arbitrator
-            must apply applicable law, and any arbitration award can be contested if the arbitrator
-            fails to do so.
-          </Text>
-          <Text>
-            Unless otherwise required by the AAA rules or applicable law, arbitration will take
-            place in Sheridan County, Wyoming. Either party may, however, seek to enforce
-            arbitration, stay court proceedings, or challenge an arbitration award in court as
-            permitted under law.
-          </Text>
-
-          <Title order={3}>Court Proceedings</Title>
-          <Text>
-            If, for any reason, a dispute proceeds in court rather than through arbitration, it must
-            be filed in the state or federal courts located in Sheridan County, Wyoming. Both
-            parties consent to the exclusive jurisdiction of these courts and waive any defense
-            related to lack of personal jurisdiction or inconvenient forum. The United Nations
-            Convention on Contracts for the International Sale of Goods (CISG) and the Uniform
-            Computer Information Transaction Act (UCITA) are expressly excluded from these Legal
-            Terms.
-          </Text>
-
-          <Title order={3}>Time Limit</Title>
-          <Text>
-            All claims and disputes related to the Services must be initiated within one (1) year
-            after the cause of action arises. If this time limit is not met, the claim is
-            permanently barred. If any part of this provision is found to be illegal or
-            unenforceable, that portion will be handled by a court with proper jurisdiction, and the
-            remaining parts of this provision will remain in effect.
-          </Text>
-
-          <Title order={3}>Restrictions</Title>
-          <Text>
-            Arbitration will be limited to disputes between you and us individually. To the fullest
-            extent permitted by law:
-          </Text>
-          <ul>
-            <li>No arbitration will be combined with any other proceedings;</li>
-            <li>
-              Disputes cannot be arbitrated on a class-action basis or as part of a class-action
-              proceeding;
-            </li>
-            <li>
-              Disputes cannot be brought in a representative capacity on behalf of the public or
-              other individuals.
-            </li>
-          </ul>
-
-          <Title order={3}>Exceptions to Arbitration</Title>
-          <Text>
-            The following disputes are excluded from binding arbitration and may be brought in
-            court:
-          </Text>
-          <ul>
-            <li>Disputes seeking to enforce or protect intellectual property rights;</li>
-            <li>Disputes related to theft, piracy, invasion of privacy, or unauthorized use;</li>
-            <li>Claims for injunctive relief.</li>
-          </ul>
-          <Text>
-            If any part of this arbitration provision is found to be illegal or unenforceable, the
-            remaining portions will still apply, and disputes not subject to arbitration will be
-            resolved in the courts specified above, with both parties agreeing to submit to that
-            {"court's"} jurisdiction.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>18. CORRECTIONS</Title>
-          <Text>
-            The Services may contain typographical errors, inaccuracies, or omissions, including but
-            not limited to descriptions, pricing, availability, and other information. We reserve
-            the right to correct any errors, inaccuracies, or omissions and to modify or update the
-            information on the Services at any time, without prior notice. We do not guarantee the
-            accuracy, completeness, or timeliness of any information on the Services and are not
-            liable for any resulting inaccuracies.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>19. DISCLAIMER</Title>
-          <Text>
-            {`THE SERVICES ARE PROVIDED ON AN "AS-IS" AND "AS-AVAILABLE" BASIS.
-            YOUR USE OF THE SERVICES IS AT YOUR SOLE RISK. TO THE FULLEST EXTENT
-            PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
-            INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
-            MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-            NON-INFRINGEMENT. WE MAKE NO REPRESENTATIONS OR WARRANTIES REGARDING
-            THE ACCURACY, COMPLETENESS, OR RELIABILITY OF THE CONTENT ON THE
-            SERVICES OR ANY WEBSITES, MOBILE APPLICATIONS, OR THIRD-PARTY
-            PLATFORMS LINKED TO THE SERVICES.`}
-          </Text>
-          <Text>WE WILL NOT BE LIABLE FOR ANY:</Text>
-          <ol>
-            <li>ERRORS, MISTAKES, OR INACCURACIES IN CONTENT OR MATERIALS;</li>
-            <li>
-              PERSONAL INJURY OR PROPERTY DAMAGE RESULTING FROM YOUR ACCESS TO OR USE OF THE
-              SERVICES;
-            </li>
-            <li>
-              UNAUTHORIZED ACCESS TO OR USE OF OUR SECURE SERVERS AND/OR ANY PERSONAL OR FINANCIAL
-              INFORMATION STORED THEREIN;
-            </li>
-            <li>INTERRUPTION OR CESSATION OF TRANSMISSION TO OR FROM THE SERVICES;</li>
-            <li>
-              BUGS, VIRUSES, TROJAN HORSES, OR SIMILAR HARMFUL MATERIALS TRANSMITTED TO OR THROUGH
-              THE SERVICES BY ANY THIRD PARTY;
-            </li>
-            <li>
-              ERRORS OR OMISSIONS IN CONTENT OR MATERIALS, OR ANY LOSS OR DAMAGE INCURRED AS A
-              RESULT OF THE USE OF ANY CONTENT POSTED, TRANSMITTED, OR OTHERWISE MADE AVAILABLE VIA
-              THE SERVICES.
-            </li>
-          </ol>
-          <Text>
-            WE DO NOT WARRANT, ENDORSE, GUARANTEE, OR ASSUME RESPONSIBILITY FOR ANY PRODUCT OR
-            SERVICE ADVERTISED OR OFFERED BY A THIRD PARTY THROUGH THE SERVICES, ANY HYPERLINKED
-            WEBSITE, OR ANY WEBSITE OR MOBILE APPLICATION FEATURED IN ANY BANNER OR OTHER
-            ADVERTISING. WE ARE NOT A PARTY TO OR RESPONSIBLE FOR MONITORING ANY TRANSACTION BETWEEN
-            YOU AND ANY THIRD-PARTY PROVIDERS OF PRODUCTS OR SERVICES. AS WITH ANY PURCHASE OF A
-            PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU SHOULD USE YOUR BEST
-            JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>20. INDEMNIFICATION</Title>
-          <Text>
-            You agree to defend, indemnify, and hold us harmless, including our subsidiaries,
-            affiliates, and all of our respective officers, agents, partners, and employees, from
-            and against any loss, damage, liability, claim, or demand, including reasonable
-            {"attorneys'"} fees and expenses, made by any third party due to or arising out of:
-          </Text>
-          <ul>
-            <li>Your use of the Services.</li>
-            <li>Any breach of these Legal Terms.</li>
-            <li>
-              Any breach of your representations and warranties set forth in these Legal Terms.
-            </li>
-            <li>
-              Your violation of the rights of a third party, including but not limited to
-              intellectual property rights.
-            </li>
-            <li>
-              Any overt harmful act toward any other user of the Services with whom you connected
-              via the Services.
-            </li>
-          </ul>
-          <Text>
-            Notwithstanding the foregoing, we reserve the right, at your expense, to assume the
-            exclusive defense and control of any matter for which you are required to indemnify us,
-            and you agree to cooperate, at your expense, with our defense of such claims. We will
-            use reasonable efforts to notify you of any such claim, action, or proceeding which is
-            subject to this indemnification upon becoming aware of it.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>21. USER DATA</Title>
-          <Text>
-            {`We collect and store certain data that you transmit to the Services
-            for the purpose of operating, maintaining, and improving the
-            Services, as well as data related to your use of the Services. This
-            includes, but is not limited to, personal information (such as your
-            age, sex, and country of residence), image, video, audio and text you
-            upload, and interactions within the "Club". We also collect data for analytical
-            purposes.`}
-          </Text>
-          <Text>
-            While we implement regular routine backups of data, you are solely responsible for
-            maintaining copies of any data or images or videos that you upload or otherwise transmit
-            through the Services. We will not be liable for any loss, corruption, or deletion of
-            data, images, videos, or other content you provide. By using the Services, you waive any
-            claims against us arising from any such loss, corruption, or destruction of this data.
-          </Text>
-          <Text>
-            To the extent permitted by applicable law, you agree that we are not responsible for
-            ensuring the ongoing availability, integrity, or accuracy of any data you have
-            transmitted via the Services. If required by law, we will notify you of any significant
-            data breaches affecting your personal information.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>22. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES</Title>
-          <Text>
-            By accessing and using the Services, sending us emails, submitting online forms, or
-            interacting with the platform in any way, you consent to receive communications from us
-            electronically. These communications may include, but are not limited to, agreements,
-            notices, disclosures, updates, and other important information. You agree that all such
-            communications, whether delivered via email or made available through the Services,
-            satisfy any legal requirement that such communications be in writing.
-          </Text>
-          <Text>
-            {`YOU HEREBY CONSENT TO THE USE OF ELECTRONIC SIGNATURES AND
-            ELECTRONIC RECORDS FOR ALL AGREEMENTS, CONTRACTS, ORDERS, AND
-            TRANSACTIONS ENTERED INTO THROUGH THE SERVICES. This includes, but
-            is not limited to, any documents related to your use of the
-            platform, financial transactions, and the delivery of related
-            notices and policies.`}
-          </Text>
-          <Text>
-            You expressly waive any rights or requirements under applicable laws, rules, or
-            regulations in any jurisdiction that may require an original (non-electronic) signature,
-            the delivery of non-electronic records, or payments to be made through non-electronic
-            means, to the fullest extent permitted by law.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>23. CALIFORNIA USERS AND RESIDENTS</Title>
-          <Text>
-            If any complaint with us is not satisfactorily resolved, you can contact the Complaint
-            Assistance Unit of the Division of Consumer Services of the California Department of
-            Consumer Affairs in writing at 1625 North Market Blvd., Suite N 112, Sacramento,
-            California 95834, or by telephone at (800) 952-5210 or (916) 445-1254.
-          </Text>
-        </Stack>
-        <Stack>
-          <Title order={2}>24. MISCELLANEOUS</Title>
-          <Text>
-            These Legal Terms, along with any policies or operating rules posted by us on the
-            Services or in relation to the Services, constitute the entire agreement and
-            understanding between you and us. Our failure to exercise or enforce any right or
-            provision of these Legal Terms shall not be considered a waiver of that right or
-            provision. These Legal Terms will be enforced to the fullest extent permitted by law.
-          </Text>
-          <Text>
-            We may assign any or all of our rights and obligations to others at any time without
-            prior notice to you. We will not be liable for any loss, damage, delay, or failure to
-            act due to causes beyond our reasonable control.
-          </Text>
-          <Text>
-            If any provision or part of a provision of these Legal Terms is found to be unlawful,
-            void, or unenforceable, that provision or part shall be deemed severable from these
-            Legal Terms and will not affect the validity and enforceability of the remaining
-            provisions.
-          </Text>
-          <Text>
-            No joint venture, partnership, employment, or agency relationship is created between you
-            and us as a result of these Legal Terms or your use of the Services. You agree that
-            these Legal Terms will not be construed against us merely because we drafted them.
-          </Text>
-          <Text>
-            You hereby waive any and all defenses you may have based on the electronic form of these
-            Legal Terms and the absence of physical signing by the parties to execute these Legal
-            Terms.
-          </Text>
-        </Stack>
-        <Stack style={{ marginBottom: rem(48) }}>
-          <Title order={2}>25. CONTACT US</Title>
-          <Text>
-            To resolve a complaint regarding the Services or to receive further information about
-            their use, please contact us at:
-          </Text>
-          <Text>Bettermax LLC, 30 N Gould St. Sheridan, Wyoming 82801, United States</Text>
-          <Text>info@muxout.com</Text>
-        </Stack>
+      </Stack>
+      <Stack>
+        <Title order={2}>No Medical or Professional Advice</Title>
+        <Text>
+          Muxout is not a medical or healthcare service. The information and AI assessments provided
+          through our platform are for general informational and self-improvement purposes only.
+          They are not intended to diagnose, treat, cure, or prevent any disease or medical
+          condition. We are not healthcare professionals, and our AI-generated severity scores or
+          routine suggestions do not constitute medical advice. You should always consult a
+          qualified healthcare provider (such as a dermatologist or physician) for any medical or
+          health-related concerns - especially before trying any new product or regimen, or if you
+          have any underlying health conditions.
+        </Text>
+        <Text>By using Muxout, you acknowledge and agree to the following:</Text>
+        <ul>
+          <li>
+            <b>No Doctor-Patient Relationship:</b> Using our Services does not create any
+            doctor-patient or other health professional relationship between you and Muxout (or
+            Bettermax LLC).
+          </li>
+          <li>
+            <b>Consult Professionals:</b> Muxout is not a substitute for professional medical advice
+            or treatment. If you have any health-related questions, concerns, or if your condition
+            worsens, you will seek advice from a licensed healthcare professional. Do not rely on
+            information from Muxout as your sole source of guidance for medical decisions.
+          </li>
+          <li>
+            <b>Personal Responsibility:</b> Any actions you take based on information or
+            recommendations provided by Muxout are at your own risk. We make no guarantee that
+            following suggested routines or using recommended products will achieve your desired
+            results. Similarly, the AI-generated scores may not be completely accurate or
+            appropriate for your specific situation. You are responsible for using your own judgment
+            and, when in doubt, seeking professional advice.
+          </li>
+        </ul>
+        <Text>
+          Muxout expressly disclaims any liability for outcomes related to the use of our Services
+          for medical or health purposes. (See the Disclaimers of Warranties and Limitation of
+          Liability sections below for additional details.)
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Privacy and Data Protection</Title>
+        <Text>
+          Protecting your privacy and personal data is extremely important to us. Muxout collects
+          and uses your information in accordance with our Privacy Policy (which is incorporated
+          into these Terms by reference). This section provides an overview of how we handle your
+          data and highlights your rights as a user. We comply with applicable data protection laws,
+          including the EU General Data Protection Regulation (GDPR), the California Consumer
+          Privacy Act (CCPA), and laws regarding biometric data (which may treat facial images and
+          scans as sensitive personal information).
+        </Text>
+        <Text>
+          <b>Data We Collect:</b> When you use Muxout, we may collect various types of personal
+          data, including:
+        </Text>
+        <ul>
+          <li>
+            <b>Profile Information:</b> Information you provide about yourself, such as your email
+            address, and other account registration details.
+          </li>
+          <li>
+            <b>Appearance Data (Biometric Data):</b> Photos or videos of your skin, hair, or body
+            that you upload to the platform. These images may contain biometric identifiers (for
+            example, your facial features) and are considered sensitive personal data under laws
+            like the GDPR. We use these images only to analyze your stated concern (e.g., to measure
+            acne severity) and to provide the Services to you (including showing you comparisons
+            over time in your account).
+          </li>
+          <li>
+            <b>Descriptions and Other Inputs:</b> Any textual information you provide about your
+            concerns (such as descriptions of your skin/hair issues or the routines you follow) and
+            any data we derive from your content (for example, notes on your skin type or the
+            products you use).
+          </li>
+          <li>
+            <b>Audio Data:</b> Any voice notes or audio recordings you submit (for example, verbally
+            describing your routine or progress).
+          </li>
+          <li>
+            <b>Usage Data:</b> Information about how you use Muxout, such as features you interact
+            with, pages or screens you visit, and clicks or actions within the app. We collect this
+            to understand usage patterns and improve the Service.
+          </li>
+          <li>
+            <b>Device Data:</b> Technical information from the devices and browsers you use to
+            access Muxout, such as your IP address, browser type, device type, operating system, and
+            time zone. This information helps with security, troubleshooting, and optimizing our
+            Services.
+          </li>
+        </ul>
+        <Text>
+          <b>Use of Data:</b> We use your personal data solely to operate and improve Muxout's
+          Services for you. We do not sell your personal data to third parties for their own
+          marketing or profit. For example, we may use your information to personalize your
+          experience, to improve our AI algorithms using aggregated data, or to provide customer
+          support. We may analyze user data in an aggregated or de-identified form (stripped of
+          personal identifiers) to improve our services and understand trends, but we will not share
+          your identifiable photos, videos, audio, or contact information with advertisers or other
+          third parties without your explicit consent. If we suggest third-party skincare or hair
+          products to you within the Service, those suggestions are based on your data and our
+          analysis, and we do not give your personal data to those third-party product providers
+          without your permission.
+        </Text>
+        <Text>
+          <b>Consent to Data Processing:</b> By using Muxout and uploading sensitive personal data
+          (such as your photos or other biometric information), you are giving us your explicit
+          consent to collect, analyze, store, and process this data for the purposes of providing
+          our Services as described in these Terms and in our Privacy Policy. This includes
+          processing your images with AI tools to generate scores, storing your data in our
+          databases, and - if you choose to share content via optional features like the Club -
+          displaying your content to others with your further permission. We will only make your
+          sensitive data visible to other users if you actively opt-in to such sharing (for example,
+          by joining the Club and publishing content). If you are uncomfortable with our analysis or
+          data practices, do not upload sensitive photos or use features that involve such data.
+        </Text>
+        <Text>
+          You have the right to withdraw your consent to our processing of your personal data at any
+          time (to the extent provided by laws like GDPR). Withdrawal of consent will not affect the
+          legality of any processing we carried out prior to withdrawal, but once you withdraw
+          consent we will stop processing your data going forward and will take appropriate steps
+          regarding your data (such as deletion or anonymization, as described in the “Data Deletion
+          and Account Closure” section below). Please be aware that if you withdraw consent for
+          essential data processing (for example, if you no longer allow us to analyze your images),
+          we may not be able to continue providing Services to you.
+        </Text>
+        <Text>
+          <b>Your Privacy Rights:</b> Depending on your jurisdiction, you may have some or all of
+          the following rights regarding your personal data:
+        </Text>
+        <ul>
+          <li>
+            <b>Access and Portability:</b> You may have the right to request a copy of the personal
+            information we hold about you, and to receive it in a commonly used, machine-readable
+            format (so you can port it to another service if you wish).
+          </li>
+          <li>
+            <b>Correction:</b> You have the right to ask us to correct or update any of your
+            personal information that is inaccurate or incomplete. (You can also correct basic
+            account information yourself at any time via your profile settings.)
+          </li>
+          <li>
+            <b>Deletion:</b> You have the right to request deletion of the personal information we
+            have collected from you. (See the “Data Deletion and Account Closure” section of these
+            Terms for details on how deletion works, particularly with regard to photos you have
+            uploaded.)
+          </li>
+          <li>
+            <b>Opt-Out of Sale of Personal Information:</b> We do not sell personal data to third
+            parties in the traditional sense. If you are a California resident and exercising your
+            rights under the CCPA to request an “opt-out” of the sale of personal information, we
+            confirm that we do not sell your personal data. The only time data may be transferred to
+            other users is when you choose to share it (for example, by participating in the Club
+            program), which is considered a disclosure authorized by you, not a sale by us. If our
+            practices change in the future, we will provide a mechanism for you to opt out as
+            required by law.
+          </li>
+          <li>
+            <b>Limit Use of Sensitive Data:</b> If applicable law (for instance, the California
+            Privacy Rights Act) grants you the right to limit the use or disclosure of sensitive
+            personal information, please note that we already limit our use of your sensitive data
+            to what is necessary to provide the services you signed up for. We do not use your
+            sensitive data (like photos or biometric data) for purposes such as cross-context
+            behavioral advertising without your consent. If you still wish to request further
+            limitations, you may contact us to discuss how we can accommodate your request.
+          </li>
+          <li>
+            <b>Non-Discrimination:</b> We will not discriminate against you for exercising any of
+            your privacy rights. This means we will not deny you the Service, provide you a
+            different level or quality of Service, or charge you different prices or fees simply
+            because you exercised your rights. (However, please note that if the exercise of your
+            rights prevents us from processing data necessary for certain features, those features
+            may become unavailable to you as a result. For example, if you request deletion of all
+            your data, you will no longer be able to use features that rely on that data.)
+          </li>
+        </ul>
+        <Text>
+          To exercise any of your privacy rights, you can contact us at privacy@muxout.com or follow
+          the instructions in our Privacy Policy. We will need to verify your identity before
+          fulfilling certain requests (to protect your information from unauthorized access). We
+          will respond to your request as required by applicable law. Keep in mind that these rights
+          may be subject to legal exceptions; for example, we might retain certain data if required
+          by law (like records of purchases for tax purposes), or we might decline to provide data
+          that would violate another person&apos;s privacy or safety.
+        </Text>
+        <Text>
+          <b>Data Security:</b> We take reasonable measures to secure your personal data and protect
+          it from unauthorized access, alteration, disclosure, or destruction. This includes using
+          technical, administrative, and physical safeguards appropriate to the sensitivity of the
+          data. However, no system can be 100% secure. We therefore cannot guarantee absolute
+          security of your information. You should also do your part by using a strong password and
+          keeping your account credentials confidential. If we become aware of a data breach that
+          compromises your personal data, we will notify you and any applicable regulatory
+          authorities as required by law (for example, certain breaches under GDPR must be reported
+          to authorities within 72 hours).
+        </Text>
+        <Text>
+          For full details on how we handle your data, please refer to our{" "}
+          <Link href="/legal/privacy" style={{ textDecoration: "underline" }}>
+            Privacy Policy
+          </Link>
+          . By agreeing to these Terms, you confirm that you have read and understood our Privacy
+          Policy.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Your Content and Contributions</Title>
+        <Text>
+          Muxout allows you to upload, post, and create content as part of using the Service - for
+          example, photos, videos, audio clips, progress updates, personal routines, task records,
+          “proof” snapshots, and diary notes. We will refer to all of this content collectively as
+          your “User Content” or “Contributions.” This section explains your rights and
+          responsibilities regarding the content you provide, and how we may use that content.
+        </Text>
+        <Text>
+          <b>Ownership:</b> You retain ownership of all User Content that you create or upload on
+          Muxout. Your photos, videos, routine details, and any other materials you submit remain
+          yours. We do not claim ownership of your personal content.
+        </Text>
+        <Text>
+          <b>License to Muxout:</b> In order for us to provide the Service, we need certain
+          permissions from you regarding your User Content. By uploading or submitting content on
+          Muxout, you grant Bettermax LLC a license to use your content for the purpose of
+          operating, improving, and promoting the Muxout platform and Services. This license is
+          worldwide, non-exclusive, royalty-free, and includes the right for us to sublicense the
+          content to our service providers or affiliates solely for those purposes. In plain terms,
+          this license allows us to host, store, reproduce, modify, create derivative works from,
+          display, and distribute your content within the Muxout Service as needed to run the
+          Service. For example:
+        </Text>
+        <ul>
+          <li>
+            We may store your photos on our servers and display them to you through your account
+            (including side-by-side before-and-after comparisons).
+          </li>
+          <li>
+            We may process your images through our AI algorithm to generate analysis results and
+            create derivative works like cropped thumbnails or graphical overlays indicating skin
+            areas or scores.
+          </li>
+          <li>
+            If you choose to share content with others (for instance, by posting a public review or
+            joining the Club program to share your routine), we will distribute and display that
+            content to the audience you authorize (such as other users who purchase access to your
+            routine in the Club).
+          </li>
+        </ul>
+        <Text>
+          This license to us is necessary solely to operate and provide the Muxout Services. We will
+          not use your content for unrelated purposes without your consent. For example, we will not
+          sell your photos or personal content to third parties, and we will not use your images in
+          our external marketing materials unless you have given us permission to do so. (If we ever
+          wanted to use your content for marketing, we would obtain your consent separately.)
+        </Text>
+        <Text>
+          The license you grant to us is non-exclusive (meaning you are free to use your content
+          elsewhere or allow others to use it), royalty-free (meaning we do not owe you fees for
+          using it within the Service), and sublicensable (but only to third parties working on our
+          behalf, such as cloud storage providers or content delivery networks, and always under
+          protections consistent with these Terms and our Privacy Policy).
+        </Text>
+        <Text>
+          Content Removal and License Termination: If you delete any of your User Content from
+          Muxout or if you delete your account entirely, the license you granted us for that content
+          will generally end for future use of the content. However, please note the following
+          exceptions:
+        </Text>
+        <ul>
+          <li>
+            We may retain copies of your content on our backup servers or archives for a brief
+            period of time, to the extent permitted by law. These backups exist for disaster
+            recovery and are usually deleted on a rolling basis. During this interim, your content
+            would not be available to other users, but might still exist in secure storage until the
+            backups are updated.
+          </li>
+          <li>
+            We may retain content as necessary to comply with legal obligations or resolve disputes.
+            For example, if your account was suspended or terminated for violating our Terms, we
+            might keep a record of the offending content to demonstrate the violation. Similarly, if
+            there's an ongoing legal issue (like a subpoena or a dispute involving your content), we
+            may retain relevant content until it is resolved.
+          </li>
+          <li>
+            If you have shared your content with others through the Service, those individuals may
+            still have access to your content in accordance with the permissions you granted. For
+            example, if you sold access to a routine in the Club program, users who purchased it
+            will retain access for the period they paid for (typically 365 days), even if you delete
+            your account in the meantime. (See the “The Club Program” section for more details.)
+          </li>
+          <li>
+            Once content is fully deleted from our active systems, it will no longer be accessible
+            through Muxout. However, you understand that removal from our live database does not
+            obligate us to prevent all possible archival or residual uses outside the Service (for
+            instance, if a user who had access to your content took a screenshot while it was
+            available, we cannot erase that).
+          </li>
+        </ul>
+        <Text>
+          Your Responsibilities (Content Guidelines): You are solely responsible for all content
+          that you upload, post, or share on Muxout. By submitting content, you agree that your
+          content and your conduct on the platform will comply with the following guidelines:
+        </Text>
+        <ul>
+          <li>
+            <b>Rights to Content:</b> You must own the content you upload or have obtained all
+            necessary rights and permissions to use it and to allow us to use it as described in
+            these Terms. Do not upload content that you do not have the right to use. For example,
+            do not upload photographs of other people without their consent, and do not copy someone
+            else&apos;s copyrighted text or images into your posts unless you have permission.
+          </li>
+          <li>
+            <b>No Infringement of Others&apos; Rights:</b> Your content must not infringe upon or
+            misappropriate the intellectual property or privacy rights of any other person or
+            entity. This includes copyright, trademark, trade secret, privacy, publicity, or any
+            other proprietary rights. If your content includes personal data or images of anyone
+            other than yourself, you must have a lawful basis (such as their explicit consent) to
+            include it.
+          </li>
+          <li>
+            <b>Lawful and Appropriate Use:</b> Do not post content that is illegal, harmful, or
+            offensive. Examples of prohibited content include, but are not limited to:
+            <ul>
+              <li>
+                Content that is obscene, pornographic, or sexually explicit (especially if it
+                exploits or endangers anyone).
+              </li>
+              <li>
+                Hate speech, harassment, or content that advocates violence or discrimination
+                against any individual or group.
+              </li>
+              <li>
+                Content that is defamatory or fraudulent, or that promotes illegal activities.
+              </li>
+              <li>Any material that would violate any applicable law or regulation.</li>
+            </ul>
+          </li>
+          <li>
+            <b>No Health or Medical Misinformation:</b> Because Muxout involves health and wellness
+            topics, do not share false or misleading health information. For example, do not claim
+            that an unproven product or routine will cure a medical condition, and do not provide
+            medical advice if you are not qualified to do so. All advice or claims you share should
+            be truthful and responsible.
+          </li>
+          <li>
+            <b>Authenticity and Honesty:</b> Only share content (including reviews or routine
+            results) that reflects your genuine experience. Do not impersonate others or
+            misrepresent yourself. If you participate in the Club program or provide testimonials,
+            you must present your results and content honestly. Fabricating results or posting
+            content that is intentionally deceptive is prohibited.
+          </li>
+          <li>
+            <b>No Spam or Unauthorized Promotion:</b> Muxout is not a platform for unsolicited
+            advertising or promotional content unrelated to the purpose of the Service. You should
+            not post content primarily aimed at promoting a business, product, or service that is
+            not relevant to skin/hair improvement or that is unrelated to sharing your personal
+            routine. For example, do not use your routine description or posts to advertise an
+            unrelated product or website without our permission. (Legitimate discussions of products
+            as part of your routine or experience are fine, but constant self-promotion or posting
+            referral links for personal gain is not allowed.)
+          </li>
+        </ul>
+        <Text>
+          We reserve the right to remove or moderate any User Content that violates these guidelines
+          or any other provision of these Terms, or for any other reason in our sole discretion. We
+          may also suspend or terminate your account if you repeatedly or egregiously violate these
+          content standards (see the Termination and Suspension section below for more details).
+          However, note that we do not pre-screen all user content, and we are not responsible for
+          what users post. If you encounter content on Muxout that you believe violates these Terms
+          or is otherwise inappropriate, please report it to us so we can review and take action as
+          necessary.
+        </Text>
+        <Text>
+          <b>License to Other Users (Club Content):</b> If you choose to participate in the Club
+          program (explained later) and sell access to your routine and results, you are granting
+          each purchaser a limited license to view and use your shared content for their personal,
+          non-commercial purposes during the access period (generally 365 days). Purchasers are not
+          allowed to copy, redistribute, or use your content outside of the platform except as
+          needed for personal use. All users who buy Club content are bound by these Terms, which
+          prohibit misuse of your content. We will take action against users who violate those
+          rules, but we cannot guarantee that misuse will never occur. (The{" "}
+          <Link href="/legal/club" style={{ textDecoration: "underline" }}>
+            Club Terms & Conditions
+          </Link>
+          will provide more specific details about buyers&apos; obligations.)
+        </Text>
+        <Text>
+          <b>Feedback:</b> We welcome and appreciate feedback, ideas, and suggestions from users
+          about how to improve Muxout. If you choose to submit feedback or suggestions to us, you
+          agree that we are free to use them without any compensation to you. This means we may
+          incorporate your ideas into Muxout or develop new features based on your suggestions, and
+          we will own any resulting improvements or features. You waive any claim to intellectual
+          property rights or compensation for any feedback or ideas that you provide to us.
+        </Text>
+        <Text>
+          <b>User Liability:</b> You are responsible for any consequences (including legal
+          consequences) that result from the content you share on Muxout. If your content causes
+          harm to us or to any third party, you may be required to bear the costs or damages. (See
+          the Indemnification section below, in which you agree to indemnify us for certain claims
+          resulting from your content or use of the Service.)
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Purchases, Payments, and Subscriptions</Title>
+        <Text>
+          Some features of Muxout may require payment, such as lifting limitations or gaining access
+          to certain content (including content shared by other users in the Club). This section
+          outlines how purchases, payments, and subscriptions are handled.
+        </Text>
+        <ul>
+          <li>
+            <b>Pricing and Currency:</b> All prices for Services (whether for subscriptions,
+            one-time purchases, or content access fees) are listed in United States Dollars (USD),
+            unless explicitly stated otherwise. If you are using Muxout from outside the United
+            States, be aware that your payment provider (such as your credit card issuer or bank)
+            may convert charges into your local currency and might charge foreign transaction or
+            conversion fees. You are responsible for any such fees. You are also responsible for any
+            taxes applicable to your purchases. We will add any required taxes (e.g., sales tax or
+            VAT) at checkout in accordance with applicable law.
+          </li>
+          <li>
+            <b>Payment Methods:</b> We accept common payment methods, such as major credit cards,
+            debit cards, and possibly third-party payment services, for processing transactions. By
+            providing a payment method, you represent that you are authorized to use that payment
+            method and you authorize us (and our designated payment processor) to charge the full
+            amount of your purchase (including any applicable taxes) to that payment method. You
+            agree to provide current, complete, and accurate billing information and to promptly
+            update that information if it changes (for example, if your credit card expiration date
+            or billing address changes). If your payment fails or is declined (e.g., due to
+            expiration, insufficient funds, or other issues), we may suspend or cancel the
+            transaction or your access to paid Services. You agree to resolve any payment issues
+            promptly, and you acknowledge that we may suspend your access to paid features until
+            payment is successfully processed.
+          </li>
+          <li>
+            <b>Subscriptions:</b> Certain Services or content on Muxout may be offered on a
+            subscription basis (for example, a monthly or annual subscription to access premium
+            features or content libraries). If you enroll in a subscription, you will be charged the
+            subscription fee at the interval stated (e.g., every month or every year) until you
+            cancel. By starting a subscription, you expressly authorize us to charge your provided
+            payment method automatically at the beginning of each subscription period, without
+            additional notice, until you cancel. We will inform you of the subscription terms at the
+            time of sign-up, including the billing cycle and price. If we later change the price of
+            your subscription or materially change the subscribed Services, we will give you advance
+            notice of the new price or changes (generally via email or via the Service) and the
+            opportunity to cancel before the next billing. If you do not cancel, the new pricing
+            will apply at the start of the next subscription term.
+          </li>
+          <li>
+            <b>Order Acceptance and Right to Refuse Service:</b> When you make a purchase or
+            commence a subscription through Muxout, your order is an offer to us to buy the Service
+            or content. We reserve the right to accept or decline your order or request at our
+            discretion. Confirmation of payment does not obligate us to provide the Service if we
+            subsequently determine we must decline the order. For example, we might refuse or cancel
+            a purchase if: (a) we suspect the order is fraudulent or unauthorized, (b) you are
+            located in a territory where we are legally unable to offer the Service or content, or
+            (c) there was an obvious error in pricing or description at the time of order. If we
+            cancel an order after you have been charged, we will provide a prompt refund for any
+            amounts paid for which you did not receive the corresponding Service.
+          </li>
+          <li>
+            <b>No Refunds (All Sales Final):</b> All purchases and payments are final and
+            non-refundable, except as required by law or expressly stated otherwise. This applies to
+            subscription fees, one-time purchases, and fees to access content (such as buying
+            another user&apos;s routine in the Club). Once you have been charged, you will not be
+            refunded for that charge if you decide to stop using the Service or content, or if you
+            are dissatisfied with it, except in extraordinary circumstances. We may, in our sole
+            discretion, consider a refund or credit in cases of documented technical issues or
+            serious failures on our part (for example, if the Service was unavailable for an
+            extended period due to our fault, or if there was a billing error). Any such refund or
+            credit will be on a case-by-case basis and should not be expected or relied upon.
+          </li>
+          <li>
+            <b>Cancellation of Subscriptions:</b> You may cancel a recurring subscription at any
+            time. If you cancel your subscription, you will continue to have access to the
+            subscribed Services or content until the end of your current billing period (since you
+            have already paid for that period). At the end of the current period, the subscription
+            will terminate and will not automatically renew. To avoid being charged for the next
+            period, make sure you cancel before your next billing date. Note: Simply uninstalling
+            the app or stopping use of the Service will not cancel a subscription – you must follow
+            the cancellation procedure (usually accessible through your account settings or by
+            contacting support). If you have any issues canceling, you should contact us for
+            assistance.
+          </li>
+          <li>
+            <b>Changes to Services or Fees:</b> Muxout is an evolving service, and we may add,
+            modify, or remove features and content over time. We reserve the right to change our
+            Service offerings or adjust our pricing for any Services or content. We may, for
+            example, introduce new features that are only available as part of a premium package or
+            change the price of an existing subscription plan. If you are subscribed to a Service
+            that we decide to change or discontinue, or if we plan to adjust its price, we will give
+            you advance notice. If a change or price increase affects something you&apos;re already
+            paying for, you will have the chance to cancel before the change takes effect. If you
+            continue your subscription or usage after the change, it means you have accepted the new
+            terms or pricing. In cases where we discontinue a service or feature entirely, and you
+            have already paid for it, we will provide a prorated refund for any period of your
+            subscription that you can no longer use.
+          </li>
+          <li>
+            <b>Errors and Corrections:</b> We strive to ensure that all information on our Site and
+            Services (including prices, descriptions, and availability of content) is accurate.
+            However, errors can occur. We reserve the right to correct any errors or
+            omissions—including pricing errors—at any time. If you have already initiated a purchase
+            and we discover an error (for example, a price was listed incorrectly), we will contact
+            you with the correct information. If the corrected information or price is not
+            acceptable to you, we will cancel the order and (if you have already paid) issue you a
+            refund. We also reserve the right to update information and rectify mistakes on the Site
+            without prior notice.
+          </li>
+        </ul>
+      </Stack>
+      <Stack>
+        <Title order={2}>The Club Program (Revenue Sharing)</Title>
+        <Text>
+          Muxout offers an optional program called the Club, which is a revenue-sharing platform for
+          users who wish to monetize their successful routines and results. Participation in the
+          Club is not required for general use of Muxout; it is an extra feature for those who
+          choose to share content with others for compensation. Below are the key terms for the Club
+          program for both content sellers (users sharing routines) and buyers (users purchasing
+          access to those routines).
+        </Text>
+        <ul>
+          <li>
+            <b>What is the Club?</b> The Club is a community marketplace within Muxout where users
+            who have achieved improvements using the platform can share their personal routines and
+            results with others for a fee. If you have a routine that worked well for you (for
+            example, a skincare regimen that significantly improved your acne), you can publish
+            details of that routine, along with before-and-after photos and any commentary, in the
+            Club section of Muxout. Other users can then purchase access to your shared content to
+            learn from your experience. In return, you (as the sharing user) will earn a portion of
+            the revenue from those purchases. The Club enables knowledgeable users to help others
+            and potentially earn income from their success stories.
+          </li>
+          <li>
+            <b>Joining the Club:</b> Joining the Club as a content provider is completely voluntary.
+            If you want to participate and share your routine for sale, you must meet a few
+            requirements:
+            <ul>
+              <li>
+                <b>Eligibility:</b> You must have a Muxout account in good standing (i.e., no
+                ongoing violations or suspensions) and, as with all users, you must be 18 or older.
+              </li>
+              <li>
+                <b>Onboarding and Verification:</b> We may require additional steps before you can
+                start selling content. This could include verifying your identity (to prevent fraud
+                and ensure payouts go to the correct person) and providing payment or banking
+                information so we can pay out your earnings. It is your responsibility to provide
+                accurate and up-to-date information for payouts. We are not responsible for missed
+                or failed payments if the information you provided is incorrect or not kept current.
+              </li>
+              <li>
+                <b>Content Standards:</b> The content you plan to share in the Club (photos, routine
+                details, notes, etc.) must comply with our content guidelines (see Your Content and
+                Contributions above). Because Club content is something others will pay for, we may
+                impose additional quality standards. We reserve the right to approve or reject your
+                participation or any specific content you submit to the Club. This is to ensure that
+                buyers have a good experience and that content offered in the Club is helpful,
+                authentic, and in line with Muxout&apos;s standards.
+              </li>
+              <li></li>
+            </ul>
+          </li>
+          <li>
+            <b>Club Agreement:</b> When you opt into the Club, you will be required to agree to a
+            separate Club Terms & Conditions document (the specific agreement for the
+            revenue-sharing program). The Club Terms will provide detailed provisions regarding how
+            revenue is split, how and when payments are made, any additional rules for content, and
+            other program-specific requirements. You must agree to and abide by the Club Terms to
+            participate in the program. (If there is ever a conflict between the Club Terms and
+            these Terms of Service regarding the Club program, the Club Terms will generally govern
+            for issues specific to the Club.)
+          </li>
+          <li>
+            <b>Global Availability:</b> We strive to make the Club program accessible to users
+            around the world. In general, you can join and earn through the Club from any country,
+            provided that doing so is legal in your jurisdiction and that our payment processors
+            support making payouts to your country. It is your responsibility to ensure that you
+            comply with any local laws when earning income online. For example, you may need to
+            report your earnings for tax purposes, or there might be restrictions on receiving
+            payments from abroad. All payouts for the Club program will be made in U.S. Dollars
+            (USD) (unless we explicitly support other currencies in the future). If your local
+            currency is different, the amount you receive will depend on the exchange rate and any
+            conversion fees your bank applies.
+          </li>
+          <li>
+            <b>Earnings and Payouts:</b> As a Club content provider, you will earn a share of the
+            revenue every time a user purchases access to your routine/content. The specific
+            percentage or amount of the revenue share will be stated in the Club Terms & Conditions
+            (for example, Muxout might take a commission, with the remainder going to you).
+            Muxout&apos;s Club program is designed so that there is no minimum payout threshold -
+            any earnings you accumulate will be paid out to you, even small amounts. Payouts are
+            processed on a regular schedule (for example, daily or weekly) to the payment method or
+            account you have provided. Keep in mind that third-party banking or payment fees (such
+            as wire transfer fees or intermediary bank charges) may apply and are your
+            responsibility. We are not liable for delays or failures in payment that are outside our
+            control (for instance, issues caused by inaccurate information you provided or problems
+            within the banking system). If you decide to stop participating in the Club or even
+            delete your Muxout account, we will still send you any remaining earnings that you are
+            owed, provided you have not violated the terms in a manner that would cause you to
+            forfeit those earnings (see “Club Rules and Termination” below).
+          </li>
+          <li>
+            <b>Club Content and License to Buyers:</b> By uploading content to the Club (for
+            example, your routine details, photos, progress notes, etc.), you are giving Muxout
+            permission to offer that content to other users for purchase and to display it to those
+            users who buy access. This is effectively a specific extension of the license you grant
+            us for your content, allowing us to show it to paying customers. Users who purchase
+            access to your Club content (“buyers”) receive a personal, non-transferable license to
+            view and use your content for their own personal benefit. Buyers are not permitted to
+            copy, share, or redistribute your content outside of the Muxout platform. We implement
+            technical measures (such as disabling downloads or watermarking images) to discourage
+            and prevent unauthorized distribution of Club content, but no system is foolproof. If a
+            buyer misuses your content in violation of these Terms (for instance, shares it publicly
+            without permission), that user would be in breach of our Terms and could face
+            consequences, but you acknowledge that Muxout is not able to guarantee absolute
+            protection of your content once it is accessible to others.
+          </li>
+          <li>
+            <b>Access Period for Buyers:</b> When a buyer purchases access to a Club routine or
+            content, the buyer is guaranteed access to that content for at least 365 days (one year)
+            from the date of purchase. We will maintain the content on the platform and accessible
+            to the buyer for that period (subject to the content not being removed for a violation
+            of Terms, etc.). After 365 days, continued access is not guaranteed. The content may be
+            removed by the seller (the user who provided it) or by Muxout at any time after the
+            one-year period. In other words, purchasing Club content should be viewed as a one-year
+            subscription to that specific content, not a perpetual purchase. If we or the seller
+            decide to remove the content after the guaranteed access period, we are not liable to
+            the buyer (though if a buyer's access is cut short within the guaranteed period due to
+            our action, we would provide an appropriate remedy such as a refund). We also reserve
+            the right to discontinue or alter the Club program in the future; however, any such
+            change would not retroactively shorten the access for content already purchased without
+            providing compensation.
+          </li>
+          <li>
+            <b>Leaving the Club or Removing Content:</b> As a content seller, you may choose to
+            withdraw from the Club program or remove your content from the Club at any time. If you
+            decide to stop offering a particular piece of content (such as your routine) for sale,
+            new users will no longer be able to purchase it. However, any existing buyers who have
+            already paid for access will retain access to that content for the remainder of their
+            365-day access period.
+          </li>
+        </ul>
+        <Text>
+          If you choose to delete your entire Muxout account (or if your account is deleted or
+          terminated for any reason) while you still have active buyers with remaining access
+          periods, we will take steps to preserve your Club content for those buyers until their
+          access periods expire. Specifically, as explained in the Data Deletion section, your
+          content will be retained in a read-only state for up to 365 days from each purchase date,
+          so that existing purchasers are not left without the content they paid for. After the last
+          buyer&apos;s access expires, we will delete the Club content. If keeping the content
+          available is not feasible (for example, due to legal reasons or a serious violation), we
+          may choose to refund the buyers for the unused portion of their access period instead, in
+          which case you may forfeit the equivalent earnings.
+        </Text>
+        <ul>
+          <li>
+            <b>Club Rules and Termination:</b> By participating in the Club, you are entering a
+            business-like arrangement with other users; therefore, we expect a high level of
+            integrity and compliance with our rules. All the rules in the Your Content and
+            Contributions section apply fully to Club content. In addition, if you are selling
+            content in the Club, you must ensure that your content is truthful and not misleading,
+            as people are paying based on the expectation that your routine yielded genuine results
+            for you. If you violate our Terms or the Club agreement in connection with the Club
+            program, we may take action including, but not limited to: removing or un-publishing
+            your content, revoking your rights to participate in the Club, withholding or forfeiting
+            your earnings, and suspending or terminating your Muxout account. For example,
+            violations that could lead to such actions include (but are not limited to) posting
+            someone else&apos;s photos as if they were your own, falsifying your results, providing
+            content that is fraudulent or dangerous, repeatedly receiving user complaints of
+            scam-like behavior, or engaging in any illegal activity through the platform. In severe
+            cases (such as fraud, theft, or other illegal conduct), we reserve the right to escalate
+            the matter by informing law enforcement authorities. If you are removed from the Club
+            due to a breach of terms, you may forfeit any pending or future earnings from the Club.
+            We might use those funds to refund affected users or as compensation for any harm done
+            to the platform or its users. We might also temporarily hold payouts if we are
+            investigating potential misconduct, until the investigation is resolved.
+          </li>
+          <li>
+            <b>Relationship (Independent Content Creator):</b> Participating in the Club does not
+            make you an employee, agent, or representative of Muxout or Bettermax LLC. You are
+            acting as an independent content creator. You are solely responsible for reporting and
+            paying any taxes or fees due on the earnings you receive from the Club program, in
+            accordance with the laws in your jurisdiction. Nothing in the Club program is intended
+            to create any partnership, joint venture, or employment relationship between you and the
+            Company.
+          </li>
+        </ul>
+      </Stack>
+      <Stack>
+        <Title order={2}>Data Deletion and Account Closure</Title>
+        <Text>
+          You have the right to stop using Muxout and to delete your account and personal data at
+          any time. This section explains how you can delete your account and what happens to your
+          data (especially your photos and other content) when you do so.
+        </Text>
+        <ul>
+          <li>
+            <b>How to Delete Your Account:</b> You can request deletion of your Muxout account (and
+            associated personal data) at any time. The easiest method is through the Muxout platform
+            itself: in your account settings, there is usually an option to delete your account.
+            Initiating deletion through this interface will guide you through the process. If you
+            are unable to delete your account via the settings (for example, if you no longer have
+            access to the app), you may send a deletion request to us at support@muxout.com. For
+            your security, we may require you to verify your identity or ownership of the account
+            making the request (for instance, by contacting us from the email address registered to
+            your account or providing other identifying information). Once we receive a verifiable
+            deletion request, we will proceed with the deletion process.
+          </li>
+          <li>
+            <b>Immediate Effects of Deletion:</b> When you confirm that you want to delete your
+            account, we will deactivate your account promptly. Deactivation means you will no longer
+            be able to log in, and your profile will no longer be visible to other users. We will
+            then begin the process of removing your personal data and content from the active parts
+            of our Service. Immediately upon account deletion:
+            <ul>
+              <li>
+                Your profile information and presence on the platform will be removed from public
+                view. Other users will not see your username or profile details anymore.
+              </li>
+              <li>
+                Any content you have posted (photos, routines, updates, etc.) will be taken down
+                from areas where other users can see it. For example, your contributions will not
+                appear in any feeds, and other users&apos; access to your content will be restricted
+                (with the limited exception noted below for Club content).
+              </li>
+              <li>
+                Essentially, from a user perspective, it will be as if you are no longer active on
+                Muxout.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <b>Content Visibility for Purchasers (Club Exception):</b> If you have been a
+            participant in the Club program and have sold access to your content (your routines,
+            before-and-after photos, etc.), there is an exception to the immediate removal of
+            content. Users who have already purchased your Club content will continue to have access
+            to that content for the duration that was promised to them (up to 365 days from their
+            purchase). This means that even after you delete your account, the content they paid for
+            will remain accessible to those specific users until their access periods expire, unless
+            we decide to issue refunds to those users. During this period, your content is
+            essentially put into a “read-only” state for those buyers: it remains available in their
+            purchase history, but it is not visible to anyone who did not already have access. Your
+            public profile will no longer appear, and no new sales of your content will occur, but
+            we honor existing transactions by keeping the content available to purchasers. After the
+            last buyer&apos;s access period ends, the content will be permanently deleted from our
+            systems (as described below).
+          </li>
+          <li>
+            <b>Permanent Deletion Timeline:</b> We aim to permanently delete or irreversibly
+            anonymize your personal data from our active databases within approximately 7 days of
+            your confirmed deletion request, with the exception of the Club content caveat mentioned
+            above. In practice:
+            <ul>
+              <li>
+                If you have not sold any content through the Club program, then typically all of
+                your personal content (photos, routines, notes) and personal information will be
+                removed from our production systems within about one week of your deletion request.
+              </li>
+              <li>
+                If you have sold Club content, we will schedule the deletion of that content to
+                occur shortly after the last purchaser&apos;s one-year access period concludes. For
+                example, if your most recent sale was on January 1 (and thus the buyer&apos;s access
+                would normally last until December 31 of that year), we will delete the content as
+                soon as possible after December 31. During that interim, as noted, the content
+                remains only for the existing buyer(s). We do this solely to fulfill our commitment
+                to those who bought access; we do not use your content for any other purpose during
+                this time.
+              </li>
+              <li>
+                We will also remove any references to you in the Service (such as unfulfilled
+                follower relationships, etc.), so that no data linked to your identity remains
+                accessible.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <b>Retention of Certain Data:</b> In some cases, we may need or be obligated to retain
+            certain information even after account deletion:
+            <ul>
+              <li>
+                <b>Transactional Records:</b> If you made any purchases through Muxout or if you
+                earned money through the Club, we may retain records of those transactions for
+                financial reporting, tax, and accounting purposes. For instance, we may keep
+                invoices, receipts, or payout records as required by law or financial regulations
+                (often for a certain number of years as mandated by tax authorities).
+              </li>
+              <li>
+                <b>Legal Compliance and Dispute Resolution:</b> We may retain information if needed
+                to comply with legal obligations or to resolve or defend any disputes. For example,
+                if we received a legal order (like a subpoena) related to your account, or if
+                there&apos;s an ongoing issue such as a chargeback dispute or a claim that you
+                violated these Terms, we might keep relevant data to address that issue. Similarly,
+                if you were banned for violating our Terms, we might keep evidence of the misconduct
+                and your communications with us regarding that issue.
+              </li>
+              <li>
+                <b>Backup Systems:</b> Muxout&apos;s systems may include routine data backups. It is
+                possible that some of your personal data could remain in encrypted backup files for
+                a short period even after deletion from our active database. These backups are
+                typically overwritten or deleted on a rolling basis. We have policies in place to
+                ensure that deleted data in backups is not retained longer than necessary. Any such
+                data in backups is not immediately accessible to others and is protected by our
+                security measures. We do not use backup data except for restoration purposes in
+                disaster recovery scenarios.
+              </li>
+              <li></li>
+            </ul>
+            Any data that we retain for the reasons above will continue to be protected under our
+            Privacy Policy. We will not use it for any new or unrelated purposes once your account
+            is deleted. For instance, if we retain a transaction record for tax purposes, we will
+            not use that information to, say, market to you in the future.
+          </li>
+          <li>
+            <b>Reopening an Account:</b> Account deletion is intended to be a permanent action. If
+            you delete your account and later wish to rejoin Muxout, you will need to create a new
+            account. Your old user name or data might not be available, and we generally cannot
+            restore a deleted account or its content. (In rare cases, if you contact us immediately
+            after deletion, we might be able to reverse it if the data hasn&apos;t been purged yet,
+            but we cannot guarantee this.) We encourage you to be certain that you want to delete
+            your account before confirming the deletion request.
+          </li>
+        </ul>
+        <Text>
+          We value your right to control your personal data and will assist you in the deletion
+          process. If you have any questions or concerns about deleting your account or data, please
+          contact our support team. We will provide information and support to ensure your request
+          is handled properly, and we will confirm with you once your account deletion is completed.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Our Intellectual Property</Title>
+        <Text>
+          Muxout (including its software, design, and content provided by us) is protected by
+          intellectual property laws. This section explains what we own and how you are allowed to
+          use our materials.
+        </Text>
+        <Text>
+          <b>Muxout Content and Brand:</b> All content provided by Muxout - including the software
+          code, algorithms, design elements, text, graphics, logos, videos, and other materials we
+          supply - is the property of Bettermax LLC or its licensors and is protected by copyright,
+          trademark, and other intellectual property laws. For example:
+        </Text>
+        <ul>
+          <li>The Muxout name and logo are trademarks of Bettermax LLC.</li>
+          <li>
+            The look and feel of our website and app (including layouts, color schemes, and graphics
+            we created) are protected by copyright and other intellectual property rights.
+          </li>
+          <li>
+            The software and AI algorithms that power Muxout are proprietary to us (or are used by
+            us under license).
+          </li>
+        </ul>
+        <Text>
+          <b>License to Use Our Service:</b> We grant you a limited, non-exclusive,
+          non-transferable, revocable license to access and use the Muxout Service and our content
+          for your personal, non-commercial use, as intended by the normal functionality of the
+          platform. This means you may use our app and site, view and interact with the content we
+          make available to you, and print or download your own information from the Service for
+          personal use. This license does not give you any ownership of our intellectual property,
+          and it doesn&apos;t allow you to use our content outside of Muxout except as explicitly
+          permitted.
+        </Text>
+        <Text>
+          <b>Restrictions on Use:</b> You agree that you will not do any of the following without
+          our prior written consent:
+        </Text>
+        <ul>
+          <li>
+            <b>Copy or Distribute Our Content:</b> Do not copy, reproduce, distribute, or publicly
+            display any substantial portion of Muxout&apos;s content or Services (other than your
+            own User Content). For example, you should not scrape or download content from our site
+            to publish elsewhere, and you should not copy our training materials or code to create a
+            competing service.
+          </li>
+          <li>
+            <b>Modify or Reverse Engineer:</b> Do not modify, adapt, translate, reverse engineer,
+            decompile, or create derivative works based on any part of the Muxout platform. (This
+            prohibition does not apply to any open-source components we may use, which would be
+            subject to their own licenses.)
+          </li>
+          <li>
+            <b>Misuse Trademarks:</b> Do not use the name “Muxout,” our logos, or any of our
+            trademarks in a way that could confuse people into thinking you are associated with us
+            or that we endorse you or your content when that is not the case. For instance, you
+            can&apos;t use our logo on your own website or product without permission. (You are
+            allowed to make factual, nominative references to Muxout - like in a review or blog post
+            - as long as it&apos;s clear you are not claiming any official affiliation.)
+          </li>
+          <li>
+            <b>Commercial Exploitation:</b> Do not exploit or use any part of the Service or content
+            for commercial purposes outside the scope of these Terms. For example, you are not
+            allowed to resell access to Muxout, or use our platform or content to build a competing
+            product or service.
+          </li>
+        </ul>
+        <Text>
+          Any unauthorized use of Muxout&apo;s intellectual property is a breach of these Terms and
+          may also violate applicable law. We reserve the right to suspend or terminate any account
+          involved in infringement or unauthorized use of our content. We may also take legal action
+          to enforce our intellectual property rights if necessary.
+        </Text>
+        <Text>
+          <b>Third-Party Content:</b> Sometimes, Muxout may display or use content that is owned by
+          third parties (for example, a library or tool licensed for use in our app, or
+          user-generated content from others). All such third-party content remains the property of
+          its respective owners and may be subject to additional terms from those owners. You must
+          respect any proprietary notices and usage rules set by the owners of third-party content.
+          Additionally, our platform may contain links or references to third-party websites or
+          services (explained more in the next section). Interacting with third-party content or
+          sites is subject to those third parties&apos; terms and policies.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Third-Party Links and Services</Title>
+        <Text>
+          For convenience or to enhance your experience, Muxout may include links to third-party
+          websites or services, or integrate third-party functionalities (for example, linking to
+          purchase a recommended product on another site, or allowing you to log in via Google).
+          Please note:
+        </Text>
+        <ul>
+          <li>
+            <b>No Endorsement or Control:</b> If we link to or integrate a third-party service, it
+            does not mean we endorse or control that third party. We provide third-party links for
+            reference or convenience. Clicking on a third-party link or using a third-party service
+            is at your own risk, and that third party is responsible for its content and services.
+          </li>
+          <li>
+            <b>Different Terms and Privacy Policies:</b> Once you leave the Muxout platform or
+            engage with a third-party service, these Terms (and our Privacy Policy) no longer apply.
+            The terms of use and privacy policy of the third party will govern your use of their
+            services. For example, if you follow a link from Muxout to an external e-commerce site
+            to buy a skincare product, the terms and policies of that external site (like Amazon or
+            another retailer) apply to that purchase, not Muxout&apos;s. Likewise, if you use a
+            feature that allows posting content to a third-party platform, that platform&apos;s
+            rules apply to the content once it&apos;s posted there.
+          </li>
+          <li>
+            <b>No Liability for Third-Party Actions:</b> Muxout is not responsible or liable for any
+            third-party websites, services, products, or content. If you choose to provide personal
+            information to a third-party site or to transact with a third party, you do so as an
+            independent interaction between you and that third party. Any dispute or issue arising
+            from a third-party interaction (for example, if you purchase a product through a link
+            and it&apos;s defective, or a third-party site misuses your data) is between you and the
+            third party. You agree that Muxout will not be held liable for any loss or damage of any
+            sort incurred as a result of your dealings with third parties.
+          </li>
+        </ul>
+      </Stack>
+      <Stack>
+        <Title order={2}>Termination and Suspension</Title>
+        <Text>
+          <b>Termination by You:</b> You are free to stop using Muxout at any time. If you want to
+          terminate your account, you can simply discontinue use of the Services and/or delete your
+          account (see Data Deletion and Account Closure above for instructions).
+        </Text>
+        <Text>
+          <b>Termination or Suspension by Us:</b> We reserve the right to suspend or terminate your
+          access to Muxout (in whole or in part) at our discretion, with or without notice, if you
+          violate these Terms or if we suspect that your use of the Service could cause harm or
+          liability to other users, us, or any third party. For example, if we discover that you are
+          engaging in fraud, harassing others, uploading illicit content, or otherwise misusing the
+          platform, we may disable or terminate your account. In serious cases of misconduct (such
+          as illegal activity), we may do so immediately without advance warning.
+        </Text>
+        <Text>
+          We may also suspend your account temporarily while investigating suspected violations of
+          these Terms or suspicious activities. During such a suspension, you may not be able to
+          access your account or content until the investigation is concluded (after which either
+          your access will be restored or the account will be terminated, depending on the outcome).
+        </Text>
+        <ul>
+          <li>
+            <b>Effect of Termination:</b> If your account is terminated or suspended:
+            <ul>
+              <li>
+                You will lose access to your account and all data associated with it (subject to the
+                data retention policies described earlier). You will not be able to log in or use
+                any services that require an account.
+              </li>
+              <li>
+                Any rights or licenses granted to you under these Terms will immediately end. For
+                example, your license to use our app or any premium content ceases upon termination.
+              </li>
+              <li>
+                We may delete or deactivate your User Content from our live systems. We are not
+                obligated to provide you with copies of your content upon termination (so please
+                keep backups of any content you want to retain).
+              </li>
+              <li>
+                If you were participating in the Club program, any unpaid earnings may be forfeited
+                if your account is terminated due to a breach of these Terms. (For example, funds
+                might be used to refund your buyers or cover potential liabilities caused by your
+                actions.)
+              </li>
+              <li>
+                We will not be liable to you for any compensation, reimbursement, or damages in
+                connection with the termination of your access. This includes, for instance, any
+                lost potential earnings, lost data, or other losses you might claim from being
+                unable to use the Service.
+              </li>
+              <li>
+                Certain provisions of these Terms will survive termination of your account. Any
+                terms that by their nature should continue to apply after termination (such as
+                intellectual property clauses, disclaimers, limitation of liability,
+                indemnification, and dispute resolution provisions) will remain in effect.
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <Text>
+          <b>Account Inactivity:</b> If an account is completely inactive for an extended period, we
+          reserve the right to take action to manage our systems (for example, to free up your
+          username or reduce unused storage). This could include deactivating or deleting an
+          inactive account. If we choose to delete an account due to prolonged inactivity
+          (typically, inactivity for a year or more), we will attempt to provide notice to the email
+          associated with the account before deletion. No account will be deleted for inactivity
+          without prior notice. (This does not mean we will delete your account simply because you
+          take a break from using the Service; it&apos;s primarily to handle abandoned accounts.)
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Disclaimers of Warranties</Title>
+        <Text>
+          Muxout is provided to you on an “as is” and “as available” basis, without warranties of
+          any kind. While we strive to provide a great service, we cannot promise that everything
+          will always work perfectly or meet your expectations.{" "}
+          <b>
+            To the fullest extent permitted by law, we disclaim all warranties, express or implied,
+            regarding Muxout and the Services.
+          </b>{" "}
+          In particular:
+        </Text>
+        <ul>
+          <li>
+            <b>No Guaranteed Results:</b> Muxout makes no guarantee that using the Services will
+            yield any particular result for your skin, hair, or health. Every individual&apos;s
+            results are different. Success stories or testimonials on our platform (including
+            content in the Club) reflect individual experiences and are not promises of what you
+            will experience. Any routines, products, or tips suggested by the Service may not be
+            effective for you specifically.
+          </li>
+          <li>
+            <b>Service Availability:</b> We do not warrant that Muxout will be uninterrupted,
+            timely, secure, or error-free. There may be occasions when the Service is unavailable
+            (for example, for maintenance or due to technical issues). We do not guarantee that the
+            Service will be free from bugs, viruses, or that it will function without errors or
+            delays at all times.
+          </li>
+          <li>
+            <b>Information Accuracy:</b> We aim for accuracy in the information we provide, but
+            Muxout&apos;s content (including AI-generated analysis, scores, recommendations, and
+            user-contributed content) may contain errors or inaccuracies. For example, our AI might
+            misclassify something, or a user&apos;s advice might not be applicable to you. We do not
+            warrant that any information provided through the Service is complete, reliable, or
+            accurate. Use the information at your own discretion and risk, and remember to consult
+            professionals when appropriate (see No Medical Advice section above).
+          </li>
+          <li>
+            <b>Implied Warranties:</b> We expressly disclaim any implied warranties, including (but
+            not limited to) implied warranties of merchantability, fitness for a particular purpose,
+            and non-infringement. This means, for example, we do not guarantee that the Service is
+            fit for your specific needs, or that it will operate in an uninterrupted or error-free
+            manner, or that using the Service will not infringe rights (though of course we do our
+            best to respect others&apos; rights).
+          </li>
+          <li>
+            <b>User and Third-Party Conduct:</b> We have no control over, and do not guarantee, the
+            behavior of our users or third-party partners. Therefore, we make no warranty regarding
+            the conduct of any other users or third parties you interact with through Muxout. We are
+            not responsible for content posted by users – such content is the sole responsibility of
+            the user who provided it. Any advice or information obtained from another user is theirs
+            alone and not provided with any warranty from us. Additionally, if you interact with any
+            third-party services (such as purchasing a product through a link, or logging in via
+            another platform), we make no warranties regarding those third-party services.
+          </li>
+          <li>
+            <b>Jurisdictional Limitations:</b> Some jurisdictions do not allow certain warranty
+            disclaimers. If you live in an area that prohibits some of the warranty disclaimers
+            above, those disclaimers may not fully apply to you. In such cases, Muxout&apos;s
+            warranties will be limited to the extent permitted by law.
+          </li>
+        </ul>
+      </Stack>
+      <Stack>
+        <Title order={2}>Limitation of Liability</Title>
+        <Text>
+          <b>Use Muxout at your own risk.</b> To the maximum extent permitted by law, Bettermax LLC
+          and its owners, officers, employees, and agents will not be liable for any indirect,
+          incidental, special, consequential, or punitive damages, or any loss of profits or
+          revenues, whether incurred directly or indirectly, or any loss of data, goodwill, or other
+          intangible losses, arising from or related to your use of (or inability to use) Muxout. In
+          particular:
+        </Text>
+        <ul>
+          <li>
+            <b>No Indirect or Consequential Damages:</b> We are not responsible for any losses that
+            are not a direct result of our actions. This includes losses like lost opportunities,
+            lost profits, business interruption, or damage to your personal relationships or
+            reputation. For example, if you spend money on products recommended by Muxout and they
+            don&apos;t work for you, or if you have an adverse reaction and incur costs, we will not
+            be liable for those costs or any related losses.
+          </li>
+          <li>
+            <b>Third-Party and User Actions:</b> We are not liable for issues caused by other users
+            or third parties. If another user misuses your content, harasses you, or otherwise
+            violates your rights, any resulting dispute is between you and that user (though we
+            encourage you to report such behavior to us so we can take appropriate action).
+            Similarly, if you follow a suggestion to visit or buy from a third-party service and
+            something goes wrong (for instance, the product is defective or causes harm), that is a
+            matter between you and the third party, not Muxout.
+          </li>
+          <li>
+            <b>Service Issues:</b> While we strive to maintain a reliable Service, we are not liable
+            for damages resulting from service interruptions, technical failures, data loss,
+            security breaches, or other issues inherent in operating a digital service, provided we
+            have taken reasonable precautions. For example, if our Service is temporarily
+            unavailable or if data you stored on Muxout is lost or compromised despite our security
+            measures, we will work to fix the issue, but we will not owe you damages for any
+            resulting inconvenience or losses.
+          </li>
+          <li>
+            <b>Monetary Cap:</b> To the extent that we are found liable for anything despite the
+            above disclaimers, our liability to you will be limited to USD $100. This cap on
+            liability is cumulative – it applies to all claims combined, not per claim. Some
+            jurisdictions do not allow the limitation of liability in this manner, so if you are in
+            such a jurisdiction, this cap will apply to the fullest extent permitted by law.
+          </li>
+          <li>
+            <b>No Liability for Health Outcomes:</b> Because Muxout deals with skin and hair health,
+            it&apos;s important to note that we are not liable for any health issues or adverse
+            effects that may occur from following advice or routines from our Service. Always use
+            common sense and, if in doubt, consult a healthcare professional. For example, if you
+            try a new product suggested by Muxout and experience an allergic reaction or other side
+            effect, we are not responsible for that outcome. Always patch-test new products and
+            follow the guidance of healthcare professionals for any serious conditions.
+          </li>
+        </ul>
+        <Text>
+          This allocation of risk is an essential part of our agreement. In jurisdictions that do
+          not allow the exclusion or limitation of certain damages, our liability will be limited to
+          the fullest extent permitted by law.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Indemnification (Your Responsibility)</Title>
+        <Text>
+          You agree to indemnify, defend, and hold harmless Bettermax LLC, its affiliates, and their
+          officers, directors, employees, and agents, from and against any and all claims,
+          liabilities, damages, losses, and expenses (including reasonable attorneys&apos; fees)
+          that arise out of or relate to (a) your User Content, (b) your use of the Service, (c)
+          your violation of these Terms, or (d) your participation in the Club program (including
+          any content you sold or activities related to it).
+        </Text>
+        <Text>
+          In simpler terms, if your actions or content cause someone else (or us) to sue or hold us
+          responsible, you will cover the cost. For example:
+        </Text>
+        <ul>
+          <li>
+            If you upload content that infringes someone&apos;s copyright and we get sued because of
+            it, you agree to pay for our defense and any resulting damages.
+          </li>
+          <li>
+            If you misuse Muxout (say, by using it to harass someone or do something illegal) and we
+            face a claim or investigation as a result, you will bear the costs.
+          </li>
+          <li>
+            If you provided a routine in the Club and a buyer claims it caused them harm and takes
+            action against us, you will be responsible for any costs or damages arising from that
+            claim.
+          </li>
+        </ul>
+        <Text>
+          We reserve the right to assume control of our legal defense in any matter for which you
+          have agreed to indemnify us, and you agree to cooperate with us in such cases. You also
+          agree not to settle any such claim without our prior written consent, if the settlement
+          would impose any obligation on Bettermax LLC or admit any fault on our behalf.
+        </Text>
+        <Text>
+          Your indemnification obligations will survive the termination of your account or these
+          Terms.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Governing Law</Title>
+        <Text>
+          These Terms and any dispute or claim arising out of or relating to these Terms or your use
+          of Muxout will be governed by the laws of the State of Wyoming, USA, without regard to its
+          conflict of law principles (meaning Wyoming law will apply even if you reside elsewhere).
+        </Text>
+        <Text>
+          If you are a consumer residing in a jurisdiction with mandatory consumer protection laws
+          (for example, in the European Union or other regions), you may be entitled to the
+          protection of those laws in addition to the laws of Wyoming. Nothing in this section is
+          intended to override any rights you have under your local law that cannot be waived by
+          contract. However, to the extent permitted, any disputes will be resolved under Wyoming
+          law.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Dispute Resolution and Arbitration</Title>
+        <Text>
+          We hope any concerns can be resolved amicably by contacting us, but if there is a dispute
+          that cannot be resolved informally, this section explains how we agree to resolve it.
+        </Text>
+        <ul>
+          <li>
+            <b>Initial Dispute Resolution:</b> Most issues can be resolved quickly by contacting our
+            support team at info@muxout.com. You agree to try to resolve any dispute or claim
+            against us by first contacting us and providing a brief written description of the issue
+            along with your contact information. Both you and we agree to make a good-faith effort
+            to resolve the dispute informally before pursuing other avenues.
+          </li>
+          <li>
+            <b>Binding Arbitration Agreement:</b> If we cannot resolve a dispute informally, you and
+            Muxout (Bettermax LLC) agree to resolve all disputes and claims between us through
+            binding arbitration on an individual basis, not in court. This includes any claims
+            arising out of or relating to these Terms or your use of the Service. Arbitration is a
+            method of resolving disputes privately, without a judge or jury, where a neutral
+            arbitrator&apos;s decision is final and binding. By agreeing to arbitration, both you
+            and we are waiving the right to a jury trial and to participate in a class action.
+          </li>
+          <li>
+            <b>Arbitration Procedure:</b> The arbitration will be administered by the American
+            Arbitration Association (AAA) under its Consumer Arbitration Rules (or a similar set of
+            rules if AAA is not available). The arbitration may take place in person in Wyoming,
+            USA, or another mutually agreed location, or via teleconference/videoconference or
+            written submissions if an in-person hearing is not practical. The arbitrator will have
+            the authority to grant the same damages and relief as a court would (subject to the
+            limitations and exclusions in these Terms). The arbitrator must follow these Terms and
+            can award attorneys&apos; fees and costs if the law or applicable rules allow it. The
+            arbitration will be in English, unless otherwise agreed.
+          </li>
+          <li>
+            <b>Arbitration Fees:</b> Each party will pay its own attorneys&apos; fees and expenses.
+            Arbitration filing fees and arbitrator&apos;s fees will be allocated as required by the
+            AAA&apos;s rules. If required by law or the arbitration rules, we will pay certain costs
+            that are our responsibility. Likewise, the arbitrator may require one party to cover all
+            or a portion of the other&apos;s fees if the arbitrator determines that the party&apos;s
+            claim or defense was frivolous or made in bad faith.
+          </li>
+          <li>
+            <b>Exceptions:</b> Small Claims Option – Either party has the option to bring an
+            individual claim in small claims court instead of proceeding with arbitration, for
+            disputes that qualify for small claims court and so long as the matter remains in that
+            court and on an individual (non-class) basis. Injunctive Relief – Notwithstanding the
+            arbitration agreement, either party may seek temporary equitable relief (such as a
+            preliminary injunction or temporary restraining order) in a court of competent
+            jurisdiction to prevent immediate and irreparable harm, like stopping someone from
+            misusing intellectual property or data. This type of request will not waive the right to
+            arbitration for the underlying dispute (aside from the need for immediate action).
+          </li>
+          <li>
+            <b>No Class Actions; Individual Relief Only:</b> You and Muxout agree that any
+            arbitration (or, if arbitration is unenforceable, any court action) will be conducted
+            only on an individual basis and not as a class, collective, or representative action.
+            You further agree that the arbitrator (or court) may not consolidate or join the claims
+            of other persons or parties who may be similarly situated, and may not otherwise preside
+            over any form of a class, collective, or representative proceeding. You and Muxout
+            expressly waive the right to a jury trial and the right to participate in a class action
+            or class-wide arbitration.
+          </li>
+          <li>
+            <b>Severability (Arbitration):</b> If any portion of this arbitration agreement is found
+            to be invalid or unenforceable, it shall be severed, and the remaining provisions shall
+            still be enforceable, except that if the class action waiver above is found
+            unenforceable, then the entire arbitration agreement shall be null and void (but only in
+            that specific case; the rest of these Terms will remain in effect). In the event the
+            arbitration agreement is deemed unenforceable, you agree that disputes shall be resolved
+            exclusively in a court of competent jurisdiction as described in the next paragraph.
+          </li>
+          <li>
+            <b>Jurisdiction for Litigation:</b> In the unlikely event that a dispute arises and it
+            is determined that arbitration is not applicable or enforceable, you agree that any
+            litigation (court proceeding) shall be brought exclusively in the state or federal
+            courts located in the State of Wyoming, USA. You and Muxout both consent to the personal
+            jurisdiction of those courts. You also agree that those courts are a convenient forum
+            and waive any objection to venue in those courts for any litigation of permitted
+            disputes (such as claims not subject to arbitration).
+          </li>
+        </ul>
+      </Stack>
+      <Stack>
+        <Title order={2}>Miscellaneous</Title>
+        <ul>
+          <li>
+            <b>Entire Agreement:</b> These Terms (along with any additional terms we provide when
+            you use certain features, and our Privacy Policy) constitute the entire agreement
+            between you and Bettermax LLC regarding your use of Muxout. They supersede all prior
+            agreements or communications (whether oral or written) between you and us related to
+            Muxout. Any additional terms for specific services (like the Club Terms & Conditions)
+            are incorporated by reference when you agree to them.
+          </li>
+          <li>
+            <b>Severability:</b> If any provision of these Terms is held to be illegal, invalid, or
+            unenforceable by a court or arbitrator, that provision will be severed from the Terms
+            and the remaining provisions will remain in full effect. In other words, the invalid
+            part will be removed, but the rest of the Terms will still apply.
+          </li>
+          <li>
+            <b>No Waiver:</b> If we fail to enforce any part of these Terms or delay in enforcing
+            it, that does not mean we waive our right to enforce it later. Any waiver of any
+            provision of these Terms will be effective only if in writing and signed by an
+            authorized representative of Bettermax LLC. Even if we waive a particular breach or
+            provision, it does not mean we waive it for the future.
+          </li>
+          <li>
+            <b>Assignment:</b> You may not assign or transfer your rights or obligations under these
+            Terms to anyone else without our prior written consent. Any attempt to do so without
+            consent is void. Bettermax LLC may assign or transfer its rights and obligations under
+            these Terms (for example, in the event of a merger, acquisition, reorganization, or sale
+            of assets, or by operation of law) to an affiliate or successor entity. These Terms will
+            bind and benefit any permitted successors or assigns.
+          </li>
+          <li>
+            <b>Force Majeure:</b> We will not be liable for any delay or failure to perform our
+            obligations under these Terms if such delay or failure is caused by circumstances beyond
+            our reasonable control. This includes events like natural disasters, acts of God, war,
+            terrorism, riots, government actions, national or regional emergencies, pandemics,
+            strikes or labor disputes, power or internet outages, or other events beyond our
+            control. During such events, our obligations will be suspended to the extent affected by
+            the event.
+          </li>
+          <li>
+            <b>Relationship:</b> These Terms do not create any partnership, joint venture,
+            employment, or agency relationship between you and Bettermax LLC. You are using Muxout
+            as an independent user. Neither party has the authority to bind the other or act on the
+            other&apos;s behalf in any way.
+          </li>
+          <li>
+            <b>Headings:</b> Section headings in these Terms are provided for organization and
+            convenience only and have no legal effect. They do not affect the meaning or
+            interpretation of any provision of these Terms.
+          </li>
+          <li>
+            <b>Contact Information:</b> If you have any questions, concerns, or feedback regarding
+            these Terms or the Muxout Service, please contact us at info@muxout.com or by mail at
+            Bettermax LLC, 30 N Gould St, Sheridan, WY 82801, USA. We will do our best to respond to
+            your inquiries and address your concerns. Your satisfaction and trust are important to
+            us, and we welcome communication from our users.
+          </li>
+        </ul>
       </Stack>
     </>
   );

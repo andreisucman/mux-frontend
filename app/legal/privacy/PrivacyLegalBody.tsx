@@ -11,1108 +11,1373 @@ export default function PrivacyLegalBody({ addTitle }: Props) {
     <>
       {addTitle && <Title order={1}>Privacy Policy</Title>}
       <Text size="sm" c="dimmed">
-        Last updated: March 16, 2025
+        Last updated: 5 May, 2025
       </Text>
       <Stack>
         <Text mt={0}>
-          This privacy policy explains how Bettermax LLC, operating as muxout.com ("we," "us," or
-          "our") uses and shares your data when you use our website ("Site") and services
-          ("Services").
+          Bettermax LLC, doing business as Muxout (“Muxout,” “we,” “us,” or “our”), is committed to
+          protecting your privacy. This Privacy Policy describes how we collect, use, share, and
+          protect your personal information when you use the Muxout website and services (the “Site”
+          or “Services”). It also explains your rights and choices regarding your personal data. We
+          adhere to applicable privacy laws worldwide, including the EU General Data Protection
+          Regulation (GDPR), the California Consumer Privacy Act and California Privacy Rights Act
+          (CCPA/CPRA), Brazil&apos;s Lei Geral de Proteção de Dados (LGPD), Canada&apos;s Personal
+          Information Protection and Electronic Documents Act (PIPEDA), and other relevant data
+          protection regulations.
         </Text>
         <Text>
-          By using our Site or Services, you agree to our privacy practices outlined here. If you
-          disagree with our policies, please refrain from using our Site or Services. You may
-          contact us at info@muxout.com with any questions.
-        </Text>
-
-        <Title order={2}>SUMMARY</Title>
-        <Text>
-          This summary highlights key aspects of our privacy policy. For a detailed understanding,
-          please navigate through specific sections.
-        </Text>
-
-        <Title order={4}>What personal information do we collect?</Title>
-        <Text>
-          We may collect information such as your name, email, gender, age, country, images and
-          videos of your body, audio recordings of your voice, and any other information you
-          voluntarily provide when using our Services.
-        </Text>
-
-        <Title order={4}>Do we process any sensitive personal information?</Title>
-        <Text>
-          Yes, we collect and process sensitive information, such as your images, videos and voice,
-          which are used for AI-driven analysis of your appearance and if explicitely enabled by
-          you, for the purpose of sharing this data with other users of the site. Your data is
-          processed only with your explicit consent or in compliance with applicable law.
-        </Text>
-
-        <Title order={4}>Do we share any information from third parties?</Title>
-        <Text>
-          We may share certain personal information with third-party service providers as necessary
-          to deliver the Services to you. This may include, but is not limited to, payment
-          processing, data management, and data storage.
-        </Text>
-
-        <Title order={4}>How do we process your information?</Title>
-        <ul>
-          <li>Provide appearance analysis based on your images.</li>
-          <li>Provide personalized recommendations based on your images and videos.</li>
-          <li>
-            If you choose to participate in our revenue sharing program (the "Club") we display your
-            graphical, audio and textual information to other suitable users as outlined in the{" "}
-            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
-              Club&apos;s terms of service
-            </Link>
-            .
-          </li>
-          <li>Process payments and payouts.</li>
-          <li>Suggest relevant third-party products based on your data.</li>
-          <li>Communicate with you and improve our Services.</li>
-        </ul>
-
-        <Title order={4}>When and with whom do we share your information?</Title>
-        <ul>
-          <li>With our payment processors when you subscribe to our plans</li>
-          <li>
-            With other eligible members of the Club if you opt into our revenue sharing program as
-            outline by the{" "}
-            <Link href="/legal/club" style={{ textDecoration: "underline" }}>
-              Club&apos;s terms of service
-            </Link>
-          </li>
-          <li>With our third-party service providers for data analysis, hosting, and marketing.</li>
-          <li>
-            With affiliates, business partners, and legal authorities, if required by law or as part
-            of a business transaction (e.g., a merger).
-          </li>
-        </ul>
-
-        <Title order={4}>How do we keep your information safe?</Title>
-        <Text>
-          We apply reasonable technical and organizational security measures to protect your
-          personal information. However, no method of data transmission or storage is completely
-          secure, and we cannot guarantee absolute security.
-        </Text>
-
-        <Title order={4}>What are your rights?</Title>
-        <ul>
-          <li>Access, update, or delete your personal information.</li>
-          <li>Withdraw consent for the processing of your sensitive data.</li>
-          <li>Restrict the processing of your data or object to certain uses.</li>
-          <li>Request portability of your data.</li>
-        </ul>
-
-        <Title order={4}>How do you exercise your rights?</Title>
-        <Text>
-          To exercise your rights, contact us at info@muxout.com. We will process your request in
-          line with relevant data protection laws.
+          By using our Site or Services, you agree to the practices described in this Privacy Policy
+          and in our Terms of Service. If you do not agree with any part of this Policy, please do
+          not use Muxout. If you have questions, you can contact us at privacy@muxout.com or by mail
+          at the address provided in the “Contact Us” section below.
         </Text>
       </Stack>
       <Stack>
-        <Title order={2}>1. WHAT PERSONAL INFORMATION WE COLLECT?</Title>
-        <Title>Personal Information You Provide</Title>
+        <Title order={2}>Information We Collect</Title>
         <Text>
-          When you express interest in our products or services, engage in activities on our
-          website, or communicate with us, we collect the personal information you provide directly
-          to us. The type of information we collect depends on your interactions with us, the
-          choices you make, and the features you use.
+          We collect various types of personal information from you in order to provide and improve
+          our Services. The information we collect falls into a few categories:
         </Text>
-        <Title>Types of Personal Information</Title>
-        <Text>The personal information we collect may include:</Text>
-        <ul>
-          <li>
-            Images: Images of your body, which are uploaded to our platform for appearance analysis
-            using AI and as your content Contributions for the purpose of completing the tasks.
-          </li>
-          <li>
-            Videos: Videos of your body, uploaded as your content Contributions for the purpose of
-            completing the tasks.
-          </li>
-          <li>
-            Audio: Recordings of your voice, uploaded as your content Contributions for the purpose
-            of creating progress diary records.
-          </li>
-          <li>
-            Text: Textual content, uploaded as your content Contributions for the purpose of
-            personalizing tasks and creating your public Club profile when you opt into our revenue
-            sharing program (the Club).
-          </li>
-        </ul>
-        <Title>Sensitive Information</Title>
+        <Title order={3}>Personal Information You Provide to Us</Title>
         <Text>
-          We collect and handle certain types of sensitive information, only with your explicit
-          consent or as legally permitted. This includes:
+          When you create an account, use Muxout&apos;s features, participate in the Club program,
+          or communicate with us, you may provide personal information, including:
         </Text>
         <ul>
           <li>
-            Biometric Data: Data from the images, videos and audio files you upload that may be
-            classified as biometric under certain laws. This data is used to analyze your appearance
-            and enable you to access the Services of the site.
+            <b>Profile Information:</b> Your contact and account details such as name, email
+            address, and other profile details. We may also ask for optional demographic information
+            like your age or gender and your country of residence (to personalize your experience
+            and ensure compliance with local laws).
+          </li>
+          <li>
+            <b>Photos and Videos of Your Appearance:</b> Images or videos of your skin, hair, or
+            body that you upload for analysis. Our platform uses AI to analyze these images (for
+            example, to generate a severity score from 0–100 for a skin or hair concern you select,
+            and to track your progress over time). These photos or videos may contain biometric
+            identifiers (e.g. your facial features) and are treated as sensitive personal data under
+            laws like GDPR. We only use them to analyze your stated concerns and provide the
+            Services (including showing you comparisons over time, as well as enabling you to share
+            before-and-after results if you choose).
+          </li>
+          <li>
+            <b>Textual Inputs:</b> Any text information you provide, such as descriptions of your
+            skin or hair concerns, notes about your routines, or other journal entries. This can
+            include the routines or regimen details you input on the platform. If you choose to
+            participate in our community revenue-sharing program (the Club), certain textual content
+            (like routine descriptions or diary entries) that you designate for sharing will become
+            part of your public profile in the Club.
+          </li>
+          <li>
+            <b>Audio Recordings:</b> If you use voice features, we may collect audio clips (for
+            example, voice notes describing your progress or routine). These recordings, like other
+            content you provide, can help personalize your experience (and if you opt-in, can be
+            shared with others in the Club or community features).
+          </li>
+          <li>
+            <b>Payment and Financial Information:</b> If you make purchases (such as subscribing to
+            a premium plan) or earn revenue through the Club, we (or our payment processor) collect
+            payment information. This may include your credit or debit card number, expiration date,
+            and security code, or bank account details for payouts. Note: Muxout uses a secure
+            third-party payment processor (such as Stripe) to handle payment transactions, so we
+            generally do not store your full payment card details on our systems. We keep records of
+            your transactions (e.g. subscription details, payout records) as needed for billing and
+            compliance.
           </li>
         </ul>
-        <Title>Payment Data</Title>
+        <Title order={3}>Sensitive Personal Data</Title>
         <Text>
-          If you subscribe to services, we collect payment-related information, such as your payment
-          card details (e.g., card number, expiration date, and security code) as necessary to
-          process the transaction.
+          Some of the information you provide is considered sensitive under various privacy laws.
+          This includes any biometric data (like facial images or scans from your photos/videos) and
+          potentially health-related information inferred from your content. We only collect or
+          process sensitive personal data with your explicit consent or as otherwise permitted by
+          law. For example, when you upload your photos for analysis, we obtain your explicit
+          consent to process those images using AI algorithms to assess your skin/hair condition. If
+          you enable certain features (such as sharing your content in the Club), you are explicitly
+          consenting to share that sensitive data with other users as you direct. We handle all
+          sensitive information with a high level of care and security, as described in this Policy.
         </Text>
-        <Title>Information Automatically Collected</Title>
+        <Title order={3}>Information Collected Automatically</Title>
         <Text>
-          We automatically collect certain information when you interact with our services. This
-          information doesn&apos;t identify you directly but helps us maintain the functionality,
-          security, and performance of our website.
-        </Text>
-        <Text>
-          In Summary, when you visit or use our website, we automatically gather data about your
-          interactions with our services. This may include:
-        </Text>
-        <ul>
-          <li>Ip address: Your unique internet protocol address.</li>
-          <li>
-            Browser and device characteristics: Type of browser, device name, and device details.
-          </li>
-          <li>Operating system: The operating system of your device.</li>
-          <li>Language preferences: Your preferred language settings.</li>
-          <li>Referring URLs: Web pages that referred you to our website.</li>
-          <li>Device name and location: The name of your device and its general location.</li>
-          <li>
-            Usage information and technical details: Data on how you use our services, including
-            performance details and system diagnostics.
-          </li>
-        </ul>
-        <Title>Types of Automatically Collected Information</Title>
-        <ul>
-          <li>
-            Log and usage data: Our servers automatically collect service-related data to monitor,
-            diagnose, and enhance service performance. This log data includes your IP address,
-            device information, cookies, browser type, and details of your activities on our
-            website, such as the pages you view, searches you conduct, and timestamps of your
-            interactions.
-          </li>
-          <li>
-            System and error reports: Information about your activity and any errors encountered
-            while using our services.
-          </li>
-        </ul>
-        <Text>
-          This information is primarily used to maintain the security and performance of our
-          services, as well as for internal analytics to improve your experience.
-        </Text>
-      </Stack>
-      <Stack id="how-do-we-process-your-information">
-        <Title order={2}>2. HOW DO WE PROCESS YOUR INFORMATION?</Title>
-        <Text>
-          We process your personal information for several purposes, depending on your interactions
-          with our Services. These include:
+          Like most online services, we and our service providers automatically collect certain
+          technical and usage data when you use Muxout. This information helps us operate, secure,
+          and improve our Site and does not usually identify you directly. It includes:
         </Text>
         <ul>
           <li>
-            <strong>To provide and manage services:</strong>
-            We use your personal information, such as the images you upload, to analyze your
-            appearance and offer personalized tasks aimed at helping you improve your appearance.
-            This and other information is also used for enabling your participation in our revenue
-            sharing program and payment processing.
+            <b>Device and Browser Information:</b> Details about the device and browser you use to
+            access Muxout, such as your IP address, device type, operating system, browser type,
+            language preferences, and time zone.
           </li>
           <li>
-            <strong>For communication:</strong> We may use your contact information to send you
-            important notifications regarding your account, updates about our Services, or to
-            respond to any inquiries you have made.
+            <b>Usage Data:</b> Information about how you interact with our Site and app, including
+            the pages or screens you view, features you use, links or buttons you click, the time
+            and date of your visits, and error/crash reports. For example, we may log that you
+            visited a particular routine page or how long you spent on a certain feature. This helps
+            us understand usage trends and improve service performance.
           </li>
           <li>
-            <strong>For security and fraud prevention:</strong> We process your information to
-            safeguard our website, detect and prevent fraud, unauthorized access, or other illegal
-            activities that may compromise the integrity of our Services.
-          </li>
-          <li>
-            <strong>To comply with legal obligations:</strong> We process personal information as
-            required by applicable laws, including compliance with tax, financial, and data
-            protection regulations. This may include sharing data with regulatory or law enforcement
-            bodies.
-          </li>
-          <li>
-            <strong>For vital interests:</strong> In some cases, we may process your information to
-            protect the vital interests of you or another person. This may apply to emergency
-            situations where harm needs to be prevented or addressed.
-          </li>
-        </ul>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?</Title>
-        <Text>
-          For users located in the European Union (EU) or United Kingdom (UK), under the General
-          Data Protection Regulation (GDPR) and UK GDPR, we must explain the legal bases that
-          justify our processing of your personal data. These legal bases include:
-        </Text>
-        <ul>
-          <li>
-            Consent: We rely on your explicit consent to process your personal information. You can
-            withdraw your consent at any time.
-          </li>
-          <li>
-            Legal obligations: We may process your information to fulfill legal requirements, such
-            as tax obligations, compliance with data protection laws, or cooperating with
-            authorities in case of legal disputes.
-          </li>
-          <li>
-            Vital interests: In situations where someone&apos;s safety or health is at risk, we may
-            process your information to protect those vital interests. For example, this might apply
-            in emergency situations where prompt action is required.
+            <b>Cookies and Tracking Technologies:</b> We use cookies and similar technologies (like
+            web beacons or pixels) to collect and analyze usage data. Cookies are small data files
+            stored on your browser or device that help our site function and remember your
+            preferences. For instance, cookies enable you to stay logged in and help us track
+            aggregate usage statistics. You can control cookies through your browser settings, but
+            disabling cookies may affect the functionality of Muxout. (For more details, you can
+            refer to our Cookies Policy if available.)
           </li>
         </ul>
         <Text>
-          For users located in Canada, we process your personal information under the following
-          bases, in accordance with Canadian privacy laws:
-        </Text>
-        <ul>
-          <li>
-            Express consent: We process your information if you have given explicit permission for
-            specific uses, such as sharing images for appearance analysis. You can withdraw your
-            consent at any time.
-          </li>
-          <li>
-            Implied consent: In certain situations, your consent may be implied based on your
-            actions, such as when you voluntarily upload images, audio, videos or text to our
-            platform.
-          </li>
-        </ul>
-        <Text>
-          In exceptional circumstances, we may process your information without consent, including:
-        </Text>
-        <ul>
-          <li>
-            In an individual&apos;s best interest: When it is clearly in your or someone else&apos;s
-            interest to process information, but obtaining consent is impractical or not feasible
-            (e.g., in emergencies).
-          </li>
-          <li>
-            For investigations or fraud prevention: To detect and prevent fraud or other illegal
-            activities.
-          </li>
-          <li>
-            For business transactions: Under specific conditions, we may process your information
-            during business transactions such as mergers, acquisitions, or transfers of assets.
-          </li>
-          <li>
-            For legal demands: When necessary to comply with subpoenas, court orders, or legal
-            investigations.
-          </li>
-          <li>
-            Professional or employment context: If the information was collected in the course of
-            employment, business, or a profession, and processing aligns with its original purpose.
-          </li>
-          <li>
-            Publicly available information: If your information is publicly available and its
-            collection and use are permitted under relevant regulations.
-          </li>
-        </ul>
-        <Text>
-          If you are a Canadian resident, you may withdraw consent at any time, unless specific
-          exceptions apply.
-        </Text>
-      </Stack>
-      <Stack id="when-and-with-whom-do-we-share-your-personal-information">
-        <Title order={2}>4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</Title>
-        <Text>
-          We share your personal information with trusted third parties in specific circumstances to
-          provide and improve our services. Below are the types of entities with whom we may share
-          your data and the contexts in which this sharing occurs:
-        </Text>
-        <Title order={3}>Third-Party Service Providers</Title>
-        <Text>
-          We use Google OAuth to enable easy sign-up and sign-in to Site. This service allows you to
-          authenticate your account securely through your Google account. By using Google OAuth, you
-          acknowledge and agree that your data may be handled in accordance with Google's privacy
-          practices. For more details on how Google handles your information, please review the{" "}
-          <Link href="https://policies.google.com/privacy" style={{ textDecoration: "underline" }}>
-            Google Privacy Policy
-          </Link>
-          .
-        </Text>
-        <Text>
-          We also utilize YouTube API Services to provide relevant example videos for the tasks that
-          you create. By using the Site, you acknowledge and agree that your data may be collected
-          and processed according to YouTube's policies and{" "}
-          <Link
-            href="https://www.youtube.com/static?template=terms"
-            style={{ textDecoration: "underline" }}
-          >
-            YouTube Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="https://policies.google.com/privacy" style={{ textDecoration: "underline" }}>
-            Google Privacy Policy
-          </Link>
-          .
-        </Text>
-        <Text>
-          We partner with Microsoft Clarity and Microsoft Advertising to capture how you use and
-          interact with our website through behavioral metrics, heatmaps, and session replay to
-          improve and market our products/services. Website usage data is captured using first and
-          third-party cookies and other tracking technologies to determine the popularity of
-          products/services and online activity. Additionally, we use this information for site
-          optimization, fraud/security purposes, and advertising. For more information about how
-          Microsoft collects and uses your data, visit the{" "}
-          <Link href="https://www.microsoft.com/en-us/privacy/privacystatement">
-            Microsoft Privacy Statement
-          </Link>
-          .
-        </Text>
-        <Text>
-          We use Google Analytics, to collect and analyze information about how users interact with
-          our Site. This helps us understand user behavior, traffic patterns, and overall site
-          performance. Google Analytics collects data such as IP addresses, browser types, and usage
-          data. By using our Site, you consent to the processing of this data by Google in
-          accordance with{" "}
-          <Link
-            href="https://marketingplatform.google.com/about/analytics/terms/us/"
-            style={{ textDecoration: "underline" }}
-          >
-            Google Analytics Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="https://policies.google.com/privacy" style={{ textDecoration: "underline" }}>
-            Google Privacy Policy
-          </Link>
-          .
-        </Text>
-        <Text>
-          We use Stripe to process payments securely on our Site. When you make a purchase, your
-          payment information is handled by Stripe. By using our services, you acknowledge and agree
-          that your data may be processed in accordance with{" "}
-          <Link href="https://stripe.com/legal/ssa" style={{ textDecoration: "underline" }}>
-            Stripe's Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="https://stripe.com/privacy" style={{ textDecoration: "underline" }}>
-            Stripe's Privacy Policy
-          </Link>
-          .
-        </Text>
-        <Text>
-          In addition we may share your information with other third-party vendors, consultants, or
-          service providers ("third parties") who perform services on our behalf. These third
-          parties help us operate and improve our services by performing essential functions like
-          data storage, email notification, and security.
-        </Text>
-        <Title>Business Transfers</Title>
-        <Text>
-          If we undergo a business transaction such as a merger, acquisition, sale of assets, or
-          financing, we may share or transfer your personal information as part of that process.
-          This includes situations where your personal information may be shared during the
-          negotiation phase or after the transaction is completed.
-        </Text>
-        <Text>
-          In such cases, the acquiring entity or any new business entity created as a result of the
-          transaction will be bound by the commitments we make in this privacy policy regarding your
-          personal information, unless otherwise agreed upon.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>5. WHAT IS OUR STANCE ON THIRD PARTY WEBSITES?</Title>
-        <Text>
-          Our Services may include links to third-party websites, online services, or mobile
-          applications, as well as advertisements from parties that are not affiliated with us. It
-          is important to note that:
-        </Text>
-        <ul>
-          <li>
-            No endorsement: We do not endorse or have any control over the content, products, or
-            services provided by third-party websites or apps. The presence of links or
-            advertisements within our Services does not imply that we endorse those third parties.
-          </li>
-          <li>
-            No liability: We are not liable for any losses, damages, or issues you may encounter as
-            a result of interacting with third-party websites, services, or applications. Any use of
-            such third-party platforms is at your own risk.
-          </li>
-          <li>
-            Privacy and security risks: We cannot guarantee the safety or privacy of any personal
-            information you choose to share with third-party websites or services. Third-party data
-            collection and privacy practices are not governed by this privacy policy. We encourage
-            you to review the privacy policies of any third-party websites or apps you visit to
-            understand how they handle your personal information.
-          </li>
-          <li>
-            Your responsibility: You are responsible for reviewing the privacy policies of
-            third-party websites, services, or applications linked from our platform. If you have
-            any concerns or questions regarding their data practices, you should contact those third
-            parties directly.
-          </li>
-        </ul>
-        <Text>
-          In summary, while we may provide access to third-party content or services, we are not
-          responsible for their privacy practices, content, or actions. Always exercise caution when
-          interacting with third-party websites or sharing your personal data with them.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>6. IS YOUR INFORMATION TRANSFERRED INTERNATIONALLY?</Title>
-        <Text>
-          Our servers are based in the United States. If you access our services from outside the
-          U.S., your personal information, including images, audio, videos an text you upload, may
-          be transferred to, stored, and processed by us in the U.S. and other countries where we or
-          our third-party service providers operate. This also applies to third parties with whom we
-          share your information as outlined in the section titled{" "}
-          <Link
-            href="/legal/privacy#when-and-with-whom-do-we-share-your-personal-information"
-            style={{ textDecoration: "underline" }}
-          >
-            {" "}
-            WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
-          </Link>
-        </Text>
-        <Title>For Residents of the EEA, UK, or Switzerland:</Title>
-        <Text>
-          If you are located in the European Economic Area (EEA), the United Kingdom (UK), or
-          Switzerland, please be aware that the privacy and data protection laws of the U.S. and
-          other jurisdictions may not be as comprehensive as the laws in your country of residence.
-          However, we are committed to ensuring that your personal information is adequately
-          protected in accordance with applicable data protection laws.
-        </Text>
-        <Text>
-          To protect your personal data during transfers, we rely on mechanisms such as the European
-          Commission&apos;s Standard Contractual Clauses (SCCs). These clauses ensure that any
-          transfer of personal information from the EEA, UK, or Switzerland to non-EEA countries
-          complies with European data protection standards. We have also implemented similar
-          safeguards with third-party service providers and partners to whom your data may be
-          transferred.
-        </Text>
-        <Title>Additional Safeguards:</Title>
-        <Text>
-          In addition to the SCCs, we take appropriate steps to ensure that international transfers
-          of your personal data comply with applicable laws, including assessing the legal framework
-          of recipient countries and ensuring any service provider or partner involved in processing
-          your data follows appropriate security and privacy standards.
+          Note: The automatically collected data is primarily used for maintaining the security and
+          performance of our services, and for internal analytics. We do not use this data to
+          identify you personally, and we do not collect precise geolocation (GPS-level location)
+          without your permission. We may infer a general location (e.g. country or city) from your
+          IP address to customize your experience (such as content language) and for fraud
+          prevention.
         </Text>
       </Stack>
       <Stack>
-        <Title order={2}>7. HOW LONG DO WE KEEP YOUR INFORMATION?</Title>
+        <Title order={2}>How We Use Your Information</Title>
         <Text>
-          We retain your personal information, including your body images and videos, audio and
-          text, for as long as necessary to fulfill the purposes for which it was collected,
-          including providing you access to your previous scan results, maintaining your account,
-          and ensuring compliance with our legal obligations.
-        </Text>
-        <Text>Specifically:</Text>
-        <ul>
-          <li>
-            Facial and body scan data: Your scan data (images) is retained for a maximum of ten (10)
-            years unless a longer retention period is required by law or to resolve disputes.
-          </li>
-          <li>
-            Other personal information: Other personal information, such as your account details
-            (e.g., name, email, location) and any related data, will be retained as long as your
-            account is active and for a reasonable period thereafter in case you decide to
-            reactivate your account or as necessary for legitimate business purposes, including
-            fulfilling legal, tax, or accounting requirements.
-          </li>
-        </ul>
-        <Text>
-          Once we no longer have an ongoing legitimate business need to retain your information (for
-          example, if you request the deletion of your account or after two years of inactivity), we
-          will either delete or anonymize your personal information. If deletion is not feasible
-          (for instance, if your information is stored in backup archives), we will securely store
-          your personal information and isolate it from any further processing until deletion is
-          possible.
-        </Text>
-        <Text>
-          Retention of Club members: If you participate in our revenue sharing program (the Club) we
-          may retain certain information (such as reward withdrawal, purchases and sales records)
-          for the duration of your club membership and for a reasonable time after to comply with
-          legal obligations, including financial regulations.
-        </Text>
-        <Text>
-          If you have any questions regarding the retention of your information, please contact us
-          at info@muxout.com.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>8. HOW DO WE KEEP YOUR INFORMATION SAFE?</Title>
-        <Text>
-          We have implemented a range of technical, organizational, and administrative security
-          measures designed to protect the data we process from unauthorized access, misuse,
-          disclosure, loss, or alteration. This includes the use of:
+          Muxout processes your personal information to operate our platform, provide you with
+          services, and improve your user experience. Specifically, we use personal data for the
+          following purposes:
         </Text>
         <ul>
           <li>
-            Encryption: We use encryption protocols (such as HTTPS) to protect data transmitted to
-            and from our services. We also encrypt your data at rest in our databases.
+            <b>Providing and Personalizing Our Services:</b> We use the information you provide
+            (especially your photos, videos, and routine inputs) to deliver Muxout&apos;s core
+            services. This includes analyzing your appearance through our AI algorithms to generate
+            a severity score for your chosen skin or hair concern, creating a personalized
+            improvement plan or routine for you, and tracking your progress over time. We also use
+            your data to personalize the content you see (for example, suggesting tips, articles, or
+            product recommendations tailored to your profile and concerns).
           </li>
           <li>
-            Access controls: We limit access to your personal information to only those employees,
-            contractors, and third parties who need access to perform essential functions, and who
-            are subject to strict confidentiality obligations.
+            <b>Enabling the Club Program (Content Sharing and Revenue Sharing):</b> If you choose to
+            join the optional “Club” program, we will use and display your relevant personal
+            information as needed for that feature. For example, if you opt-in, we will publish the
+            content you choose to share (such as your before-and-after photos, routine details, and
+            progress notes) to other users of Muxout. We will also use your information to
+            facilitate transactions related to the Club (allowing other users to purchase access to
+            your shared routines, and tracking any revenue share payouts to you). Participation in
+            the Club is entirely voluntary and opt-in; if you do not join, your photos and routines
+            remain private.
           </li>
           <li>
-            Secure data storage: Your personal data, including images, videos, audio and text is
-            stored on secure servers with up-to-date security technologies.
+            <b>Account Management and Communication:</b> We use your contact information (such as
+            email address) to create and manage your account, to communicate with you about
+            important service-related matters, and to respond to inquiries or support requests. For
+            example, we may send you administrative emails to confirm your registration, notify you
+            of changes to our terms or policies, provide password reset instructions, or inform you
+            about updates or improvements to the Service.
           </li>
           <li>
-            Regular security audits: We regularly review our security practices and systems to
-            identify potential vulnerabilities and implement necessary improvements.
+            <b>Payments and Transactions:</b> We process payment information to handle subscription
+            fees, purchases, and any payouts. For instance, if you subscribe to a premium plan or
+            make a purchase through Muxout, we (through our payment processor) will use your payment
+            details to complete the transaction. Similarly, if you earn money through the Club, we
+            will use your payout information to send you payments.
+          </li>
+          <li>
+            <b>Improving and Developing Our Services:</b> We analyze usage data, feedback, and
+            aggregated user content to improve Muxout&apos;s functionality and to develop new
+            features. For example, we might review aggregated, de-identified data from many users to
+            refine our AI algorithms (ensuring the skin/hair analysis becomes more accurate over
+            time) or to understand what features are most popular. We may also use analytics tools
+            to troubleshoot issues, test out new features, and enhance user experience. Any use of
+            your data for development purposes will either be in an aggregated form or in a manner
+            that does not personally identify you, unless we obtain your consent.
+          </li>
+          <li>
+            <b>Security and Fraud Prevention:</b> Your information (both the data you provide and
+            data collected automatically) is used to protect the integrity of our platform and our
+            users. We monitor usage and account activity to detect, investigate, and prevent
+            fraudulent behavior, security incidents, and other malicious or unauthorized activities.
+            For example, we may use IP addresses and log-in history to identify potential
+            unauthorized logins, or use cookies to implement security features.
+          </li>
+          <li>
+            <b>Compliance with Legal Obligations:</b> We may process and retain your personal
+            information as needed to comply with applicable laws and regulations. This includes
+            fulfilling our obligations under tax and financial laws (for instance, maintaining
+            transaction records for accounting), responding to legally binding requests from
+            authorities (such as court orders or lawful subpoenas), or handling legal claims. If
+            required by law, we might also disclose information to law enforcement or regulatory
+            agencies (for example, providing information to authorities if properly required for an
+            investigation).
+          </li>
+          <li>
+            <b>Protection of Vital Interests:</b> In rare cases, we might need to process personal
+            information to protect someone&apos;s vital interests, such as in an emergency. For
+            example, if we became aware that a user was in immediate danger and personal data could
+            help notify emergency services, we might use or disclose data to attempt to prevent
+            harm. This kind of processing would only occur under urgent circumstances where it is
+            necessary to protect life or safety.
+          </li>
+          <li>
+            <b>Other Purposes with Your Consent:</b> If we ever need to use your personal
+            information for a purpose not covered above, we will explain the purpose to you and, if
+            required, ask for your consent before proceeding. For example, if we wanted to use your
+            testimonial or before/after photos in our marketing materials, we would only do so with
+            your explicit permission.
           </li>
         </ul>
         <Text>
-          Despite these safeguards, no security system or method of data transmission over the
-          Internet is 100% secure. We cannot guarantee that unauthorized third parties, such as
-          hackers or cybercriminals, will never be able to bypass our security measures or
-          improperly access, steal, or alter your personal information.
-        </Text>
-        <Title>Transmission of Data</Title>
-        <Text>
-          While we strive to protect your personal information, you are responsible for ensuring
-          that the devices and networks you use to access our services are secure. Data transmitted
-          to and from our services, including image, video and audio uploads, is done at your own
-          risk. We recommend accessing our services only from a trusted and secure network and using
-          up-to-date security software to protect your own devices.
-        </Text>
-        <Title>Incident Response</Title>
-        <Text>
-          In the event of a data breach or security incident, we have procedures in place to notify
-          affected individuals and the relevant authorities as required by applicable laws. We will
-          take immediate steps to mitigate any potential damage and prevent further unauthorized
-          access.
-        </Text>
-        <Text>
-          If you have any concerns or believe your account may have been compromised, please contact
-          us immediately at info@muxout.com.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>9. DO WE COLLECT INFORMATION FROM MINORS?</Title>
-        <Text>
-          We do not knowingly or intentionally collect personal information from individuals under
-          the age of 18, nor do we market our services to minors. By using our services, you
-          represent and confirm that you are at least 18 years of age. If you are under 18, you are
-          not permitted to create an account or use our services in any capacity.
-        </Text>
-        <Title>Parental Consent</Title>
-        <Text>
-          If you are a parent or guardian and believe your minor child is using our services without
-          your consent, or if we inadvertently collected personal information from someone under 18,
-          please contact us immediately at info@muxout.com. We will take swift action to deactivate
-          the account and delete the relevant information from our systems.
-        </Text>
-        <Title>Steps We Take:</Title>
-        <ul>
-          <li>
-            Account deactivation and data deletion: Upon discovering that personal data from a minor
-            has been collected, we will deactivate the associated account and take appropriate steps
-            to delete the information from our records as quickly as possible.
-          </li>
-          <li>
-            Age verification: While we do not actively verify the age of all users during
-            registration, we reserve the right to request age verification at any point if we
-            suspect or are informed that a user may be under the age of 18.
-          </li>
-        </ul>
-        <Text>
-          For any questions or concerns about our policies regarding minors, or if you need
-          assistance with the removal of information, please contact us at info@muxout.com.
+          <b>No Automated Decisions with Legal Effect:</b> While Muxout uses AI-based automated
+          analysis to evaluate your skin/hair images and generate recommendations, we do not make
+          any decisions about you that have legal or similarly significant effects solely by
+          automated means. The AI-generated severity scores and suggestions are provided for your
+          information and self-improvement only - they do not determine your access to our Service
+          or result in any formal denial of service or rights. You always have the option to not use
+          the recommendations. We maintain transparency about our AI processes and are accountable
+          for their results. If you believe an automated processing of your data is impacting you
+          significantly, you have the right to contact us and request review or explanation (see
+          Your Privacy Rights below for more details).
         </Text>
       </Stack>
       <Stack>
-        <Title order={2}>10. WHAT ARE YOUR PRIVACY RIGHTS?</Title>
+        <Title order={2}>Legal Bases for Processing (GDPR, LGPD, etc.)</Title>
         <Text>
-          If you are located in the European Economic Area (EEA), United Kingdom (UK), Switzerland,
-          or Canada, you have certain rights under applicable data protection laws. Depending on the
-          specific jurisdiction, these rights may include:
+          We process personal data only when we have a valid legal basis to do so. The appropriate
+          legal basis depends on how and where you are using our Services:
         </Text>
         <ul>
           <li>
-            Access: You have the right to request and obtain a copy of the personal information we
-            hold about you.
+            <b>Consent:</b> In many cases, we rely on your consent. By providing us with certain
+            data, you consent to our processing of that data for the purposes explained. For
+            example, because photos of your face or body can be considered biometric and sensitive
+            information, we will only use the images and videos you upload for AI analysis with your
+            explicit consent. You may withdraw your consent at any time (see Your Privacy Rights),
+            though note that doing so will not undo any processing already performed and may mean we
+            can no longer provide some Services to you.
           </li>
           <li>
-            Correction: You can request corrections to any inaccurate or incomplete personal
-            information we have about you.
+            <b>Contractual Necessity:</b> When we enter into a contract with you (for instance, when
+            you agree to our Terms of Service by creating an account and using Muxout), we will
+            process certain personal data as needed to perform that contract. In other words, we use
+            your information to deliver the Services you have requested. For example, processing
+            your photos to generate analysis results, or using your email to log you in and send
+            service communications, is necessary for us to provide the service you expect. If you
+            are a Club member, processing your relevant data (content, payout info, etc.) is
+            necessary to carry out the Club services and payments as agreed.
           </li>
           <li>
-            Deletion: You can ask us to delete your personal information in certain circumstances,
-            such as when it is no longer necessary for the purposes for which it was collected, or
-            if you withdraw consent where consent is the legal basis for processing.
+            <b>Legitimate Interests:</b> We may process some information for our legitimate business
+            interests, provided that those interests are not overridden by your data-protection
+            rights. This legal basis covers uses that are fundamental to running and improving our
+            business - such as securing our platform, preventing fraud, analyzing and improving our
+            services, and providing customer support - in cases where those uses are not strictly
+            required by a contract or law but still important for our service quality. For example,
+            we have a legitimate interest in understanding how users interact with Muxout (through
+            analytics) to improve functionality, and in keeping our platform secure. When we rely on
+            legitimate interests, we will ensure our processing is proportional and respects your
+            privacy. You have the right to object to processing based on our legitimate interests
+            (see Your Privacy Rights below).
           </li>
           <li>
-            Restriction: You have the right to request that we limit the processing of your personal
-            information, for example, if you contest the accuracy of the information or object to
-            its processing.
+            <b>Legal Obligation:</b> We will process and retain personal information as necessary
+            for us to comply with our legal obligations. For instance, we may keep transaction
+            records to meet financial reporting laws, or disclose information if required by
+            government authorities under applicable law. In such cases, the law is the basis for
+            processing.
           </li>
           <li>
-            Data portability: In certain cases, you have the right to receive your personal data in
-            a structured, commonly used, and machine-readable format and request that we transfer it
-            to another entity where technically feasible.
+            <b>Vital Interests:</b> In extreme circumstances, we may process data to protect vital
+            interests - either yours or another person&apos;s. This could apply in life-threatening
+            situations (as described above in how we use information) where we need to process or
+            disclose data to prevent serious harm. This basis is rarely invoked and only in critical
+            situations.
           </li>
           <li>
-            Automated decision-making: You have the right not to be subject to decisions based
-            solely on automated processing, including profiling, that produces legal effects
-            concerning you or significantly affects you.
-          </li>
-          <li>
-            Objection: You have the right to object to the processing of your personal information,
-            including when processing is for direct marketing purposes or based on legitimate
-            interests.
+            <b>Public Interest:</b> In the unlikely event we need to perform a task in the public
+            interest or exercise official authority (for example, public health reporting
+            requirements), we would rely on that basis as provided by law. (This is generally not
+            applicable to Muxout&apos;s usual activities, but we include it for completeness.)
           </li>
         </ul>
-        <Text>
-          To exercise your rRights: To exercise any of these rights, please contact us using the
-          details provided in the{" "}
-          <Link
-            href="/legal/club#how-can-you-contact-us-about-this-notice"
-            style={{ textDecoration: "underline" }}
-          >
-            HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-          </Link>{" "}
-          section below. We will review and address your requests in accordance with applicable data
-          protection laws, and may ask for verification of your identity to process your request.
-        </Text>
-        <Title>Complaints:</Title>
+        <Title order={4}>Special Notes for Certain Jurisdictions:</Title>
         <ul>
           <li>
-            EEA or UK residents: If you believe we are processing your personal information
-            unlawfully or in violation of your rights, you have the right to lodge a complaint with
-            your local data protection authority.
+            <b>European Union/United Kingdom/Switzerland:</b> If you are in the EU, UK, or a similar
+            jurisdiction, we will ensure we have one of the above legal bases (as defined under GDPR
+            or equivalent laws) for all processing of your personal data. Notably, when we process
+            “special category” data like biometric information in your photos, we do so based on
+            your explicit consent (GDPR Art. 9(2)(a)), unless another exception applies. We will
+            also respect additional principles like data minimization, and we honor your rights as
+            described in the Your Privacy Rights section.
           </li>
           <li>
-            Switzerland residents: You may file a complaint with the Federal Data Protection and
-            Information Commissioner (FDPIC).
+            <b>Canada:</b> We process personal data of Canadian users in accordance with PIPEDA and
+            other applicable provincial laws. In practice, this means we obtain your express consent
+            for most collection and uses of your personal information (for example, when you upload
+            images for analysis or join the Club). In some cases, your consent may be implied by
+            your actions (for instance, if you voluntarily provide information or use a feature, we
+            infer you consent to the associated use of that information). We may also process data
+            without consent in certain exceptional circumstances allowed by law – for example, if
+            required by subpoena, for an investigation of fraud, or if it&apos;s clearly in your
+            interests and consent cannot be obtained in a timely way (such as an emergency). PIPEDA
+            also permits use of personal information for reasonable purposes that a reasonable
+            person would consider appropriate in the circumstances, but we will not use your data
+            for unexpected purposes without informing you.
           </li>
           <li>
-            Canada residents: You may contact the Office of the Privacy Commissioner of Canada (OPC)
-            with any privacy concerns.
+            Brazil: For users in Brazil, we comply with the LGPD. We primarily rely on your consent
+            to process personal data, especially for sensitive personal data like biometric
+            information (as defined in LGPD). We may also process your data on other legal bases
+            permitted by LGPD, such as when processing is necessary to fulfill a legal obligation,
+            to execute a contract with you or at your request (e.g., providing our services), to
+            exercise our rights in judicial or administrative proceedings, to protect life and
+            safety in emergencies, or for legitimate interests of Muxout or third parties (balanced
+            against your fundamental rights). Where we rely on legitimate interests under LGPD, it
+            will be in situations similar to those described above (security, service improvement,
+            etc.), and not for uses that require consent by law. You have rights to know and control
+            how your data is processed under LGPD - see Your Privacy Rights for more information.
+          </li>
+          <li>
+            <b>United States (General):</b> In the U.S., the above GDPR-style legal basis framework
+            does not formally apply, but we still strive to collect and use data responsibly and
+            only as outlined in this Policy or as otherwise permitted by law. For certain types of
+            data (like biometric identifiers), some U.S. state laws require consent - in those
+            cases, we will obtain consent as needed (for example, Illinois law requires consent for
+            biometric data usage, which we obtain from you when you upload your photos for
+            analysis). We also adhere to state-specific privacy laws as detailed later in this
+            Policy.
           </li>
         </ul>
-        <Title>Withdrawing Consent:</Title>
         <Text>
-          You have the right to withdraw your consent for your data processing at any time. To do
-          so, please contact us using the information provided below. Please note that withdrawing
-          your consent will not affect the lawfulness of any processing carried out before the
-          withdrawal, nor will it impact processing based on other legal grounds (e.g., contractual
-          necessity).
-        </Text>
-        <Title>Opting Out of Marketing Communications:</Title>
-        <Text>
-          You have the right to opt out of receiving marketing and promotional communications from
-          us. To do so, you can follow the opt-out instructions in any marketing emails you receive,
-          or you may contact us directly at info@muxout.com. Please note that opting out of
-          marketing communications will not prevent you from receiving essential service-related
-          communications, such as those related to your account or transactions.
-        </Text>
-        <Text>
-          For any further questions or concerns about your privacy rights, feel free to contact us
-          at info@muxout.com.
-        </Text>
-      </Stack>
-
-      <Stack>
-        <Title order={2}>11. CONTROLS FOR DO NOT TRACK FEATURES</Title>
-        <Text>
-          We do not currently respond to Do-Not-Track (DNT) signals or similar mechanisms that may
-          be sent by your web browser or mobile application to indicate a preference not to be
-          tracked online.
-        </Text>
-        <Title>What is Do-Not-Track (DNT)?</Title>
-        <Text>
-          Most web browsers, some mobile operating systems, and certain mobile applications offer a
-          Do-Not-Track (DNT) feature. This feature allows you to signal your preference to websites
-          and online services that you do not want your online browsing activities to be tracked.
-          However, no consistent industry standard has been established for how websites should
-          recognize and respond to DNT signals.
-        </Text>
-        <Title>Our Current Policy:</Title>
-        <Text>
-          At this time, because there is no uniform standard for interpreting and implementing DNT
-          signals, we do not respond to DNT signals or other mechanisms that provide a similar
-          preference for not being tracked. This means that even if you enable the DNT feature on
-          your browser or device, our site may still collect information about your browsing
-          behavior as described in this Privacy Notice.
-        </Text>
-        <Title>Future Updates:</Title>
-        <Text>
-          Should an industry-wide or legal standard for recognizing and responding to DNT signals be
-          established, and if we are required to comply with that standard, we will update this
-          Privacy Notice to reflect how we handle DNT signals and implement such requirements.
-        </Text>
-        <Text>
-          For further information about our data collection practices or to exercise your privacy
-          rights, please refer to the relevant sections of this Privacy Notice or contact us at
-          info@muxout.com.
+          If you ever have questions about the legal basis for any specific processing of your data,
+          please contact us and we will be happy to provide additional information.
         </Text>
       </Stack>
       <Stack>
-        <Title order={2}>12. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</Title>
+        <Title order={2}>How We Share Your Information</Title>
         <Text>
-          Residents of California, Colorado, Connecticut, Utah, and Virginia have specific rights
-          regarding their personal information. Here&apos;s what we&apos;ve collected in the past:
-        </Text>
-        <Title>Categories of Personal Information We Collect:</Title>
-        <table>
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Examples</th>
-              <th>Collected</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>A. Identifiers</td>
-              <td>
-                Contact details like name, postal address, phone number, online identifiers, IP
-                address, email, and account name
-              </td>
-              <td>YES</td>
-            </tr>
-            <tr>
-              <td>B. Personal Information</td>
-              <td>
-                Name, contact information, education, employment history, and financial details
-              </td>
-              <td>YES</td>
-            </tr>
-            <tr>
-              <td>C. Protected Classification</td>
-              <td>Gender and date of birth</td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>D. Commercial Information</td>
-              <td>Transaction details, purchase history, and payment information</td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>E. Biometric Information</td>
-              <td>Fingerprints and voiceprints</td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>F. Internet or Network Activity</td>
-              <td>
-                Browsing history, search history, online behavior, and interactions with our and
-                other websites
-              </td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>G. Geolocation Data</td>
-              <td>Device location</td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>H. Audio, Electronic, Visual Information</td>
-              <td>Images, videos, and audio related to our business activities</td>
-              <td>YES</td>
-            </tr>
-            <tr>
-              <td>I. Professional or Employment-Related Information</td>
-              <td>
-                Business contact details, job title, work history, and qualifications if applying
-                for a job
-              </td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>J. Education Information</td>
-              <td>Student records and directory information</td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>K. Inferences</td>
-              <td>
-                Profiles or summaries about preferences and characteristics based on collected
-                personal information
-              </td>
-              <td>NO</td>
-            </tr>
-            <tr>
-              <td>L. Sensitive Personal Information</td>
-              <td>Biometric data</td>
-              <td>YES</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <Text>
-          If you are a resident of these states, you have specific rights related to your personal
-          information. You can request access, correction, or deletion of your data, among other
-          rights. For more details on exercising these rights or if you have any concerns, please
-          contact us.
-        </Text>
-        <Title>Retention and Use of Collected Personal Information:</Title>
-        <ul>
-          <li>
-            Category B (Personal Information): We retain this information as long as you have an
-            active account with us.
-          </li>
-          <li>
-            Category L (Sensitive Personal Information): We retain this information for as long as
-            you have an active account with us. This information may also be used or disclosed to a
-            service provider or contractor for specific purposes. You have the right to limit the
-            use or disclosure of your sensitive personal information.
-          </li>
-        </ul>
-
-        <Title>Additional Personal Information Collection:</Title>
-        <Text>
-          We may collect other personal information when you interact with us in person, online, by
-          phone, or by mail. This may include:
-        </Text>
-        <ul>
-          <li>Receiving support through our customer service channels.</li>
-          <li>Participation in customer surveys or contests.</li>
-          <li>Facilitating the delivery of our Services and responding to your inquiries.</li>
-        </ul>
-
-        <Title>How We Use and Share Your Personal Information:</Title>
-        <Text>
-          <strong>Use:</strong> We use your personal information as described in the section{" "}
-          <Link href="how-do-we-process-your-information" style={{ textDecoration: "underline" }}>
-            HOW DO WE PROCESS YOUR INFORMATION?
-          </Link>{" "}
-          for purposes such as providing and improving our Services.
-        </Text>
-        <Text>
-          <strong>Sharing:</strong> We may share your personal information with our service
-          providers under written contracts. For details, see the section{" "}
-          <Link
-            href="when-and-with-whom-do-we-share-your-personal-information"
-            style={{ textDecoration: "underline" }}
-          >
-            WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
-          </Link>
-        </Text>
-
-        <Title>Disclosure for Business or Commercial Purposes:</Title>
-        <ul>
-          <li>
-            We have not sold or shared any personal information to third parties for business or
-            commercial purposes in the past twelve (12) months.
-          </li>
-          <li>
-            We have disclosed the following categories of personal information for business or
-            commercial purposes in the past twelve (12) months: Identifiers, Personal Information,
-            Sensistive Personal Information, Audio, Electronic, Visual Information.
-          </li>
-        </ul>
-
-        <Title>California Residents</Title>
-        <Text>
-          California Civil Code Section 1798.83 (Shine The Light Law): California residents have the
-          right to request and obtain, once per year and free of charge, information regarding the
-          categories of personal information (if any) that we have disclosed to third parties for
-          direct marketing purposes. Additionally, you can request the names and addresses of those
-          third parties with whom we shared personal information in the previous calendar year. To
-          make such a request, please contact us in writing using the contact information provided
-          below.
-        </Text>
-        <Text>
-          California Minors (Under 18): If you are under 18 years old, reside in California, and
-          have a registered account with our Services, you have the right to request the removal of
-          any unwanted data you have posted. To request removal, contact us using the information
-          provided below.
-        </Text>
-      </Stack>
-      <Stack>
-        <Title order={2}>13. DO OTHER REGIONS HAVE SPECIFIC PRIVACY RIGHTS?</Title>
-        <Text>
-          Yes, depending on the country you reside in, there may be additional privacy rights and
-          regulations that apply to the collection and processing of your personal information.
-          Here&apos;s an overview for residents in Australia, New Zealand, and South Africa:
-        </Text>
-
-        <Title>Australia</Title>
-        <Text>
-          In Australia, we are committed to complying with the Privacy Act 1988 and the Australian
-          Privacy Principles (APPs).
+          We do not sell your personal information to third-party companies for their own marketing
+          or profit. We only share your data in a few specific circumstances, outlined below, and
+          always with appropriate protections in place. When we disclose personal information, we do
+          so either at your direction or to support the purposes described in this Privacy Policy.
+          The types of third parties with whom we may share information include:
         </Text>
         <ul>
           <li>
-            <strong>Access and correction:</strong> You have the right to request access to your
-            personal information and to request its correction if it is inaccurate. To make such a
-            request, please contact us using the contact details provided in the section{" "}
-            <Link
-              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
-              style={{ textDecoration: "underline" }}
-            >
-              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-            </Link>
-          </li>
-          <li>
-            <strong>Complaints:</strong> If you believe we are not complying with the Australian
-            Privacy Principles, you can lodge a complaint with the Office of the Australian
-            Information Commissioner (OAIC).
-          </li>
-        </ul>
-
-        <Title>New Zealand</Title>
-        <Text>In New Zealand, we are bound by the Privacy Act 2020.</Text>
-        <ul>
-          <li>
-            <strong>Access and correction:</strong> You have the right to request access to and
-            correction of your personal information. To make such a request, please contact us using
-            the contact details provided in the section{" "}
-            <Link
-              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
-              style={{ textDecoration: "underline" }}
-            >
-              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-            </Link>
-          </li>
-          <li>
-            <strong>Complaints:</strong> If you believe we are not complying with New Zealand&apos;s
-            Privacy Principles, you can file a complaint with the Office of the Privacy Commissioner
-            (OPC).
-          </li>
-        </ul>
-
-        <Title>Key Points for Australia and New Zealand:</Title>
-        <ul>
-          <li>
-            <strong>Providing information:</strong> If you choose not to provide the necessary
-            personal information, it may impact our ability to offer the products or services you
-            request or to respond to your inquiries.
-          </li>
-          <li>
-            <strong>Rights and contacts:</strong> For any questions or to exercise your rights,
-            please reach out to us via the contact details in the section{" "}
-            <Link
-              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
-              style={{ textDecoration: "underline" }}
-            >
-              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-            </Link>
-          </li>
-        </ul>
-
-        <Title>Republic of South Africa</Title>
-        <Text>
-          In South Africa, we are committed to adhering to the Protection of Personal Information
-          Act (POPIA).
-        </Text>
-        <ul>
-          <li>
-            <strong>Access and correction:</strong> You have the right to request access to your
-            personal information and to request its correction if it is inaccurate. To exercise
-            these rights, please contact us using the contact details provided in the section{" "}
-            <Link
-              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
-              style={{ textDecoration: "underline" }}
-            >
-              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-            </Link>
-          </li>
-          <li>
-            <strong>Complaints:</strong> If you are not satisfied with how we handle your complaint
-            regarding our processing of personal information, you may contact the Information
-            Regulator for South Africa.
+            <b>Service Providers and Contractors:</b> We share personal information with trusted
+            third-party companies that perform services on our behalf and under our instructions.
+            These providers help us operate and enhance Muxout - for example, cloud hosting
+            providers that store data, analytics providers that help us understand how users use our
+            site, email providers that send out communications, and customer support tools that help
+            us respond to inquiries. We have agreements with these parties to ensure your data is
+            protected and used only for the agreed-upon purposes. Key service partners include:
             <ul>
               <li>
-                <strong>General enquiries:</strong> enquiries@inforegulator.org.za
+                <b>Authentication and Login:</b> We offer convenient login options like Google OAuth
+                for signing into Muxout. If you choose to register or log in via a third-party
+                account (e.g., your Google account), the authentication process will route through
+                that provider. We receive information such as your name and email from your Google
+                profile (as permitted by your Google privacy settings) to create or sign into your
+                Muxout account. Using Google OAuth means you also agree to{" "}
+                <Link
+                  href="https://policies.google.com/privacy"
+                  style={{ textDecoration: "underline" }}
+                >
+                  Google&apos;s Privacy Policy
+                </Link>
+                .
               </li>
               <li>
-                <strong>Complaints:</strong>
-                <ul>
-                  <li>
-                    <strong>PAIA Complaints:</strong>{" "}
-                    <span style={{ wordBreak: "break-all" }}>
-                      PAIAComplaints@inforegulator.org.za
-                    </span>
-                  </li>
-                  <li>
-                    <strong>POPIA Complaints:</strong>{" "}
-                    <span style={{ wordBreak: "break-all" }}>
-                      POPIAComplaints@inforegulator.org.za
-                    </span>
-                  </li>
-                </ul>
+                <b>Analytics and User Experience Tools:</b> We use tools like Google Analytics to
+                collect information about Site traffic and usage patterns. Google Analytics may set
+                cookies or similar identifiers to gather data such as your IP address, browser type,
+                pages visited, and time spent on pages. This helps us understand user engagement and
+                improve our Services. (Learn more in Google&apos;s Privacy Policy.) We also use
+                Microsoft Clarity (a user behavior analytics tool) which can record page interaction
+                information (like clicks, scrolls, and heatmaps of usage) to help us optimize our
+                user interface. Microsoft Clarity may use cookies and other tracking technologies
+                for these purposes. Data collected through these analytics services is generally
+                aggregated and does not directly identify individuals. However, these providers
+                might have access to certain device identifiers or IP addresses in the process of
+                providing their services. Please refer to the{" "}
+                <Link href="https://www.microsoft.com/en-us/privacy/privacystatement">
+                  Microsoft Privacy Statement
+                </Link>{" "}
+                and Google Privacy Policy for details on their handling of data.
               </li>
+              <li>
+                <b>Video Content Integration:</b> As part of enhancing your routine recommendations,
+                Muxout may show you relevant tutorial videos or content. Some of this content may be
+                provided through YouTube API Services. For example, if a recommended task in your
+                routine has a related demonstration video, it might be embedded via YouTube. If you
+                view such a video, YouTube/Google may collect usage data under their policies. By
+                using this aspect of our Services, you agree to be bound by the YouTube Terms of
+                Service, and{" "}
+                <Link
+                  href="https://policies.google.com/privacy"
+                  style={{ textDecoration: "underline" }}
+                >
+                  Google&apos;s Privacy Policy
+                </Link>{" "}
+                will apply to the data they collect.
+              </li>
+              <li>
+                <b>Payment Processors:</b> When you make a purchase or receive a payout, we rely on
+                third-party payment processors like Stripe to handle your financial transactions
+                securely. These processors will receive your payment details to process
+                transactions. We share the minimum necessary information with them (for instance, we
+                might pass your email and payment amount, while you enter your card details directly
+                into Stripe&apos;s form). Stripe&apos;s handling of your information is governed by
+                <Link href="https://stripe.com/privacy" style={{ textDecoration: "underline" }}>
+                  Stripe&apos;s Privacy Policy
+                </Link>
+                . We do not store your full payment card numbers on our own servers; that
+                information is tokenized or stored by the payment processor.
+              </li>
+              <li></li>
+              <li></li>
+              <li></li>
             </ul>
           </li>
-        </ul>
-
-        <Title>Key Points for South Africa:</Title>
-        <ul>
           <li>
-            <strong>Providing information:</strong> Failure to provide the required personal
-            information might affect our ability to deliver the services you request or address your
-            inquiries effectively.
+            <b>Other Users and the Public (at Your Direction):</b> We will only share your personal
+            content with other users if you actively choose to do so. By default, the photos,
+            routines, and other data you upload to Muxout are private to your account. If you choose
+            to participate in community features or the Club revenue-sharing program, you are giving
+            us permission to share certain information with others: for example, if you publish a
+            routine in the Club, other users will be able to see your submitted content (such as
+            your before-and-after images, your routine steps, and progress diary entries) and your
+            chosen display name or profile. Likewise, if you post a review or comment in a public
+            forum on our Site, any personal information you include in that post (including any
+            images) will be visible to others who access that forum. We will never make your
+            sensitive data (like your images or full name) visible to other users unless you opt-in
+            by using a feature that clearly involves sharing that information. Please exercise
+            caution when opting to share any personal data publicly, as we cannot control what other
+            users may do with content you make public. If you change your mind, you may delete
+            shared content or end your participation in the Club, and we will cease further sharing
+            of your content; however, note that we cannot retroactively undo views or access that
+            already occurred.
           </li>
           <li>
-            <strong>Rights and contacts:</strong> For further details or to exercise your rights,
-            please reach out to us via the contact information in the section{" "}
-            <Link
-              href={"how-can-you-review-update-or-delete-the-data-we-collect-from-you"}
-              style={{ textDecoration: "underline" }}
-            >
-              HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-            </Link>
+            <b>Business Transfers:</b> If Muxout (Bettermax LLC) is involved in a significant
+            business transaction, such as a merger, acquisition, reorganization, financing, or sale
+            of some or all of our assets, your personal information may be transferred to the
+            acquiring or successor entity as part of that transaction. We will ensure that any such
+            entity is bound by confidentiality and privacy obligations consistent with this Policy.
+            If a transfer results in a material change in how your personal data will be handled, we
+            will notify you and/or give you choices as required by law.
+          </li>
+          <li>
+            <b>Legal Compliance and Protection:</b> We may disclose your personal information when
+            we believe in good faith that such disclosure is necessary to comply with a legal
+            obligation or request. This includes responding to court orders, warrants or subpoenas,
+            cooperating with government investigations, or meeting law enforcement or national
+            security requirements. We may also disclose information if we believe it is necessary or
+            appropriate to protect the rights, property, or safety of Muxout, our users, or the
+            public. For example, we might share information with law enforcement agencies to
+            investigate fraud, harassment, or other violations of law or our Terms of Service. We
+            will endeavor to notify you of any such disclosure, if permitted by law.
+          </li>
+          <li>
+            <b>Affiliates and Partners:</b> We might share information with our corporate affiliates
+            (such as a parent company, subsidiaries, or entities under common ownership) if any
+            exist in the future, in which case they will honor this Privacy Policy. We do not
+            currently have separate affiliate companies, but if that changes, we would ensure any
+            affiliate handling personal data applies protections equivalent to ours. We do not
+            currently share personal data with any third-party business partners for their
+            independent use, except as described above (service providers acting on our behalf). If
+            we ever engage in joint offerings with a partner where sharing of user data is involved,
+            we will only do so with your consent or with clear notice and opt-out opportunities.
           </li>
         </ul>
+        <Text>
+          <b>No Selling of Personal Data:</b> Muxout does not sell or rent your personal information
+          to data brokers or third parties for monetary consideration. We also do not share your
+          personal information with third parties for their own direct marketing purposes unless you
+          explicitly agree. In the past 12 months, we have not sold any personal information, and we
+          have only shared personal information with third parties in ways consistent with the
+          purposes described above (such as with service providers processing data for us). If this
+          ever changes, we will update this Policy and provide any required notices or opt-out
+          mechanisms.
+        </Text>
+        <Text>
+          <b>Aggregated or De-Identified Data:</b> We may share information that has been aggregated
+          (combined with information about many users) or de-identified (stripped of personal
+          identifiers) in such a way that it cannot reasonably be used to identify you. For example,
+          we might publish trends about user improvement (e.g., “80% of users saw a reduction in
+          acne score after 8 weeks”) or share statistics with researchers or business partners. Such
+          aggregated or anonymized information is not considered personal information and may be
+          used freely, but we will ensure that it cannot be traced back to individual users.
+        </Text>
       </Stack>
       <Stack>
-        <Title order={2}>14. DO WE MAKE UPDATES TO THIS NOTICE?</Title>
+        <Title order={2}>Third-Party Websites and Content</Title>
         <Text>
-          We may update this privacy notice periodically to reflect changes in our practices,
-          technologies, legal requirements, or other factors. When we make updates, we will indicate
-          the updated "Updated at" date at the top of the notice. The new version will become
-          effective as soon as it is accessible.
-        </Text>
-        <Text>
-          If we make significant changes to this privacy notice, we may inform you either by
-          prominently posting a notice about the changes on our Services or by sending you a direct
-          notification. We encourage you to review this notice regularly to stay informed about how
-          we are protecting your information and any changes to our practices.
-        </Text>
-        <Text>
-          If you have any questions or concerns about the updates, please reach out to us.
-        </Text>
-      </Stack>
-
-      <Stack id="how-can-you-contact-us-about-this-notice">
-        <Title order={2}>15. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</Title>
-        <Text>
-          If you have any questions, comments, or concerns about this privacy notice, you can reach
-          out to us through the following methods:
+          Muxout may contain links to external websites or integrate third-party services and
+          content that we do not operate. For example, our platform might link to an article on a
+          skincare blog, redirect you to an e-commerce site to purchase a recommended product, or
+          show embedded content (like a YouTube video, as mentioned above). This section explains
+          how these third-party links and integrations work and cautions that their privacy
+          practices are separate from ours:
         </Text>
         <ul>
-          <li>Email: info@muxout.com</li>
-          <li>Postal Mail:</li>
-          <Text>
-            Bettermax LLC
-            <br />
-            30 N Gould St Ste,
-            <br />
-            Sheridan, WY 82801
-            <br />
-            United States
-          </Text>
+          <li>
+            <b>Independent Privacy Policies:</b> If you click a link to a third-party website or
+            service, or interact with third-party content through Muxout, you will be governed by
+            that third party&apos;s own privacy policy and terms of use. We do not control the data
+            collection or handling practices of third parties. For instance, if you follow a link
+            from Muxout to purchase a product on another site (say, Amazon or a skincare
+            brand&apos;s site), any information you provide on that site will be subject to their
+            rules, not Muxout&apos;s Privacy Policy. We recommend you review the privacy policy of
+            any external site or service you visit.
+          </li>
+          <li>
+            <b>No Endorsement or Control:</b> A link to or integration with a third-party service is
+            not an endorsement by Muxout of that third party&apos;s content, products, or data
+            practices. We provide these links or features for your convenience or to enhance your
+            experience, but we have no control over the content, accuracy, or availability of
+            external services. You use them at your own discretion and risk.
+          </li>
+          <li>
+            <b>Third-Party Data Collection:</b> Third-party sites or services may independently
+            collect information about you when you interact with them. For example, if we embed a
+            YouTube video, Google/YouTube might record your views or clicks on that video. If we use
+            Microsoft Clarity, Microsoft may collect certain usage data from your browser. Such
+            information is collected directly by those third parties and is subject to their privacy
+            practices. Muxout does not receive all data that those third parties may collect (for
+            example, we see aggregated analytics from Google Analytics, but we don&apos;t see raw
+            data that personally identifies you collected by Google). We cannot guarantee the
+            privacy or security of information you provide to any outside website.
+          </li>
+          <li>
+            <b>Your Choices with Third Parties:</b> You are never required to click on a link or use
+            an integrated third-party service when using Muxout. If you prefer not to share data
+            with third-party content providers, you may choose not to engage with those features
+            (for instance, you can skip watching an embedded video or not use a social login option
+            and register with email instead). If you have questions or concerns about a third-party
+            integration on our Site, feel free to contact us for more information.
+          </li>
         </ul>
         <Text>
-          We are here to assist you and address any inquiries related to your personal information
-          and our privacy practices.
+          In summary, once you leave our Site or interact with a separate service, this Privacy
+          Policy will no longer apply to any data collected by that third party. We encourage you to
+          be cautious and to read the privacy policies of any other websites or services you visit
+          through links on Muxout.
         </Text>
       </Stack>
-
-      <Stack
-        style={{ marginBottom: rem(48) }}
-        id="how-can-you-review-update-or-delete-the-data-we-collect-from-you"
-      >
-        <Title order={2}>
-          16. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-        </Title>
+      <Stack>
+        <Title order={2}>International Data Transfers</Title>
         <Text>
-          Depending on the laws applicable in your country, you may have the right to access,
-          update, or delete your personal information that we collect. To exercise these rights, you
-          can reach out to us directly via email at info@muxout.com or by post at:
+          Muxout is a global platform, and your personal information may be transferred to or stored
+          on servers in countries different from your own. Primarily, our data servers are located
+          in the United States (since Bettermax LLC is a U.S.-based company). Additionally, some of
+          our service providers may process data in other countries. This means that if you use
+          Muxout from outside the U.S., your personal data (including images, text, and other
+          content you upload) might be transferred to and processed in the United States or other
+          jurisdictions that may not have the same level of data protection laws as in your home
+          country.
         </Text>
-        <Text>Bettermax LLC, 30 N Gould St Ste, Sheridan, WY 82801, United States</Text>
         <Text>
-          We will process your request in accordance with applicable data protection laws and make
-          any necessary updates or deletions as required.
+          However, we take steps to ensure that your personal information remains protected
+          according to the standards of your home jurisdiction:
+        </Text>
+        <ul>
+          <li>
+            <b>Transfers from the EEA/UK/Switzerland:</b> If you are located in the European
+            Economic Area (EEA), United Kingdom, or Switzerland, we will ensure that appropriate
+            safeguards are in place for transfers of personal data out of those regions. For
+            example, we may rely on the European Commission&apos;s Standard Contractual Clauses
+            (SCCs) or equivalent legal mechanisms as a legal basis for data transfers. These SCCs
+            are contractual commitments between parties transferring personal data, binding them to
+            protect the privacy and security of the data in line with EU law. We have implemented
+            SCCs where required (such as between us and our U.S. service providers) to cover your
+            data moving from the EEA/UK to the U.S. or other countries. In some cases, we may also
+            rely on your explicit consent for certain cross-border transfers if that is more
+            appropriate (though generally SCCs or other measures will be used).
+          </li>
+          <li>
+            <b>Additional Safeguards:</b> In addition to legal transfer mechanisms, we apply
+            technical measures like encryption and strict access controls to protect your data
+            during transit and in storage (see Data Security below). We also carefully vet our
+            vendors and require that they uphold privacy and security obligations regardless of
+            where they operate. We monitor developments in international data transfer law (such as
+            new frameworks or rulings) and will adjust our practices as needed to remain compliant.
+            If a given country&apos;s legal environment is deemed inadequate to protect personal
+            data, we will take supplementary measures or cease transfers as required.
+          </li>
+          <li>
+            <b>Your Consent & Acknowledgment:</b> By using Muxout and providing us with information,
+            you acknowledge that your data may be transferred to and processed in the United States
+            and other jurisdictions as explained. We will always handle your personal information in
+            accordance with this Privacy Policy and applicable law, wherever it is processed. If you
+            prefer not to have your data transferred to other countries, please do not use our
+            Services or contact us to discuss your concerns; we may be able to accommodate certain
+            arrangements, but in general cross-border data flows are integral to our operations (for
+            example, if you are in the EU, we cannot provide the service without transferring your
+            data to our U.S. servers).
+          </li>
+        </ul>
+        <Text>
+          If you have questions about our international data transfer practices or need more
+          information about the safeguards we have in place, please contact us (see Contact Us
+          section below). We can provide copies of relevant contractual protections upon request.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Data Retention: How Long We Keep Your Information</Title>
+        <Text>
+          We retain personal information only as long as necessary to fulfill the purposes described
+          in this Privacy Policy, unless a longer retention period is required or permitted by law.
+          This means we keep your data for the duration of your relationship with us and for a
+          period afterward where there is an ongoing legitimate need or legal obligation to do so.
+          Below are our general retention practices for different types of data:
+        </Text>
+        <ul>
+          <li>
+            <b>Account Information and Content:</b> As long as you maintain an active account on
+            Muxout, we will retain the personal information you have provided (such as your profile
+            info, images, routines, and other content in your account) so that we can provide the
+            Services to you. Your data is used to show your historical scan results and progress,
+            enable you to resume your routines, etc. If you decide to delete your account or if your
+            account becomes inactive for an extended period, we will initiate the deletion process
+            for your personal data (after any mandatory retention periods).
+          </li>
+          <li>
+            <b>Appearance Photos and Scan Data:</b> The images and analysis data you upload (e.g.,
+            your “before” and “after” photos and the associated AI-generated scores) are retained
+            while your account is active so that you can review your progress over time. After your
+            account is deleted or becomes inactive, we will generally retain your photos and related
+            biometric analysis data for no more than ten (10) years, unless a longer period is
+            required for legal reasons or to resolve disputes. Note: In some jurisdictions, laws may
+            require a shorter retention period for biometric information - we comply with any such
+            requirements. For example, if applicable law mandates deletion of biometric data within
+            a certain timeframe (such as 3 years after your last interaction, under Illinois law),
+            we will follow that rule for users from that jurisdiction.
+          </li>
+          <li>
+            <b>Other Personal Data:</b> Other data you have provided (like your name, contact info,
+            text notes, etc.) and records of your use of the Service are retained while your account
+            is active. After you stop using Muxout, we typically keep this information for a
+            reasonable period (for example, a few years) in case you return and wish to reactivate
+            your account or if we need the data for our legitimate business purposes. “Legitimate
+            purposes” may include things like maintaining accurate financial records, handling any
+            disputes or requests from you, or demonstrating our compliance with laws. For instance,
+            if you delete your account, we might keep a backup of your account data for a short time
+            in case you contact us to restore it, and we might retain transactional records for a
+            longer period as needed for auditing or tax purposes.
+          </li>
+          <li>
+            <b>Club Participation Records:</b> If you participate in the Club (our revenue-sharing
+            program), we will keep certain records related to that program for the duration of your
+            participation and for an appropriate time afterward. For example, we will retain
+            information about routine purchases and sales, payout transactions, and other
+            Club-related activities to comply with financial reporting and tax laws. These records
+            may be kept for several years as required by statutes of limitations for tax or
+            accounting regulations. They will be maintained even if you leave the Club or delete
+            your account, strictly for compliance purposes.
+          </li>
+          <li>
+            <b>Automatically Collected Data:</b> Logs and analytics data are generally retained for
+            a shorter period, unless needed longer for security analysis. For example, our server
+            logs and Clarity/Analytics data might be kept for a few months up to a couple of years,
+            depending on the type of data, after which they are deleted or anonymized. We use
+            aggregated analytics reports (which do not identify you personally) for business
+            planning and those may be kept indefinitely.
+          </li>
+          <li>
+            <b>Backup and Archival Copies:</b> Please note that when we delete data from our live
+            systems, it may still persist in our backups or archival systems for a period of time
+            until those backups rotate out or are overwritten. We maintain backups for disaster
+            recovery and business continuity purposes. Access to any personal data in backups is
+            limited, and we will ensure deleted data is not restored except as needed for system
+            recovery or required by law. If it is restored (for example, in recovering from a system
+            failure), we will re-delete the data as appropriate.
+          </li>
+        </ul>
+        <Text>
+          When we no longer have a legitimate need to keep your personal information, we will
+          securely delete, anonymize, or isolate it. Anonymization means we alter the data so it can
+          no longer be associated with you (for example, we might remove identifiers from a dataset
+          but keep aggregate statistics). If immediate deletion of certain data is not technically
+          feasible (e.g., data stored in long-term backups), we will safeguard that data and
+          restrict any further use until deletion is possible.
+        </Text>
+        <Text>
+          <b>Your Deletion Requests:</b> You have the right to request deletion of your data at any
+          time (see Your Privacy Rights below). We will honor such requests in accordance with
+          applicable law, which may involve retaining certain information if necessary (for example,
+          to complete a transaction you initiated, or to comply with a legal obligation to keep
+          records). In the event we must retain some data after a deletion request, we will inform
+          you of what we are keeping and why.
+        </Text>
+        <Text>
+          If you have any specific questions about our data retention practices (for example, if you
+          want to know if we still have certain information about you), you can contact us at
+          privacy@muxout.com.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Data Security Measures</Title>
+        <Text>
+          We take the security of your personal information very seriously. Muxout has implemented a
+          variety of technical, administrative, and physical security measures to protect your data
+          from unauthorized access, alteration, disclosure, or destruction. While no website or
+          internet transmission is completely secure, we strive to protect your information to the
+          best of our abilities. Our security practices include:
+        </Text>
+        <ul>
+          <li>
+            <b>Encryption:</b> We protect data in transit between your device and our servers by
+            using encryption protocols like HTTPS/TLS. This means that when you send us information
+            (such as uploading photos or entering your password), it is encrypted so that third
+            parties cannot easily intercept it. We also employ encryption or pseudonymization for
+            certain sensitive data at rest in our databases. For example, passwords are stored in a
+            hashed form (not in plain text), and other sensitive fields may be encrypted on our
+            servers.
+          </li>
+          <li>
+            <b>Access Controls:</b> We limit access to personal information strictly to those
+            employees, contractors, and service providers who need it to perform their work. Access
+            to sensitive data (like user photos or payment info) is restricted to authorized
+            personnel under the principle of least privilege. All staff with such access are bound
+            by confidentiality obligations. We also use authentication measures (such as
+            multi-factor authentication and unique credentials) to prevent unauthorized access to
+            our systems.
+          </li>
+          <li>
+            <b>Secure Infrastructure:</b> We host data with reputable cloud service providers that
+            maintain robust security standards and certifications. Our servers are protected by
+            firewalls, network security monitoring, and other hardening measures. We keep our
+            software and systems updated to address security vulnerabilities, and we use anti-virus
+            and anti-malware tools where appropriate.
+          </li>
+          <li>
+            <b>Monitoring and Testing:</b> We monitor our platform for suspicious activities and
+            have systems in place to detect and automatically block abnormal or malicious behavior
+            (for example, multiple failed login attempts might trigger a temporary lock). We conduct
+            regular security assessments and audits of our systems to identify potential weaknesses.
+            This may include penetration testing by security experts and code reviews focused on
+            security.
+          </li>
+          <li>
+            <b>Employee Training and Policies:</b> Our team is trained on data protection best
+            practices. We have internal policies governing how to handle user data, and procedures
+            for reporting and responding to security incidents. Only authorized individuals are
+            allowed to handle sensitive user data, and they must follow strict guidelines.
+          </li>
+          <li>
+            <b>Payment Security:</b> For financial transactions, we comply with industry standards
+            such as PCI-DSS (Payment Card Industry Data Security Standard) via our payment
+            processor. Sensitive payment information is handled by the processor&apos;s secure
+            systems, and any interaction on our site that involves payment data is done through
+            secure, encrypted channels.
+          </li>
+        </ul>
+        <Text>
+          Despite all these precautions, it&apos;s important to note that no method of transmission
+          over the Internet or method of electronic storage is 100% secure. We cannot guarantee
+          absolute security of your information. However, we continuously review and enhance our
+          security protocols to mitigate risks of unauthorized access.
+        </Text>
+        <Text>
+          <b>User Responsibility:</b> You also play a role in keeping your information secure. We
+          urge you to choose a strong, unique password for your Muxout account and to keep your
+          login credentials confidential. Do not share your password with others and be cautious of
+          phishing attempts or other scams that might trick you into divulging personal information.
+          Always log out of your account on shared devices. If you use our mobile app, enabling a
+          device lock (PIN, fingerprint, etc.) adds another layer of protection. When uploading
+          images or content, consider what you are comfortable storing on the platform. While we
+          secure your uploads, avoid using Muxout over unsecured public Wi-Fi networks if possible,
+          or use a VPN on such networks.
+        </Text>
+        <Text>
+          <b>Data Transmission Warnings:</b> We encrypt data to protect it, but please be aware that
+          emails or other communications you send to us may not be encrypted on your end. Avoid
+          sending highly sensitive information (like full payment card numbers or passwords) via
+          email or other unsecured channels. When you are using the Site, ensure your browser shows
+          a secure connection (look for “https://” and a lock icon in the address bar).
+        </Text>
+        <Text>
+          <b>Incident Response and Data Breach Notification:</b> In the event of a data breach or
+          security incident that affects your personal information, we have a response plan to
+          address and mitigate the issue promptly. This includes investigating the scope of the
+          breach, securing the system, and notifying affected users and relevant authorities as
+          required by law. For example, GDPR requires us to notify the appropriate data protection
+          authority within 72 hours of discovering certain significant breaches, and to inform
+          impacted individuals without undue delay. If such an incident occurs, we will provide you
+          with information on what happened, what data might be involved, and recommendations on
+          steps you can take to protect yourself. We will also take necessary measures to prevent
+          any further unauthorized access to your data.
+        </Text>
+        <Text>
+          If you believe that your Muxout account or information has been compromised (for instance,
+          if you notice suspicious activity in your account or you lose access to your account),
+          please contact us immediately at privacy@muxout.com. We will work with you to investigate
+          and address the issue.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Children&apos;s Privacy (Minors)</Title>
+        <Text>
+          Muxout&apos;s Services are not intended for anyone under the age of 18. We do not
+          knowingly collect or solicit personal information from minors (children under 18 years of
+          age). If you are under 18, you are not permitted to create an account on Muxout or use our
+          platform in any way.
+        </Text>
+        <Text>
+          We explicitly restrict usage in our Terms of Service to individuals 18 or older (or the
+          age of majority in your jurisdiction, if higher). By using Muxout, you represent and
+          warrant that you meet this age requirement.
+        </Text>
+        <Text>
+          Parental Involvement: If you are a parent or legal guardian and you become aware that your
+          minor child has registered for Muxout or otherwise provided us with personal information
+          without your consent, please contact us right away at privacy@muxout.com. We will take
+          prompt steps to delete the child&apos;s account and remove any personal data we may have
+          collected. We appreciate your cooperation in monitoring your children&apos;s internet
+          usage and in helping enforce our age restrictions.
+        </Text>
+        <Title order={4}></Title>
+        <ul>
+          <li>
+            If we learn that we have inadvertently collected personal data from a person under 18,
+            we will immediately deactivate the account and cease any further processing of the
+            minor&apos;s information.
+          </li>
+          <li>
+            We will delete the minor&apos;s personal information from our records as soon as
+            reasonably practicable. In circumstances where deletion is complex (for example, data
+            stored in backups), we will ensure the data is isolated from any active use and then
+            purge it when feasible.
+          </li>
+          <li>
+            In cases of uncertainty about a user&apos;s age, we reserve the right to request proof
+            of age or perform age verification checks. If we suspect a user may be underage, we may
+            suspend the account and seek confirmation of age. Failure to provide satisfactory proof
+            of age will result in account termination.
+          </li>
+        </ul>
+        <Text>
+          We are committed to complying with all applicable laws concerning children&apos;s privacy,
+          such as the U.S. Children&apos;s Online Privacy Protection Act (COPPA), even though our
+          Service is not directed at children. If you have any questions or concerns about our
+          practices in relation to children&apos;s personal information, please contact us.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Your Privacy Rights and Choices</Title>
+        <Text>
+          You have a number of rights regarding your personal information, which may vary depending
+          on your location and the applicable privacy laws. Muxout is committed to honoring these
+          rights and providing you with control over your data. Below is an overview of the rights
+          you may have and how you can exercise them:
+        </Text>
+        <Title order={4}>
+          General Data Subject Rights (Applicable to EU/EEA, UK, Switzerland, Canada, and similar
+          jurisdictions):
+        </Title>
+        <ul>
+          <li>
+            <b>Right to Access:</b> You have the right to request confirmation of whether we are
+            processing your personal information, and if so, to request a copy of the data we hold
+            about you. This allows you to know what information we have collected and to verify that
+            we are processing it in accordance with the law. We will provide your data in a common
+            digital format (typically electronically) unless otherwise requested.
+          </li>
+          <li>
+            <b>Right to Rectification (Correction):</b> If any of your personal information is
+            inaccurate or incomplete, you have the right to request that we correct or update it.
+            You can also correct some of your basic information directly by logging into your
+            account (for example, you can update your email or other profile details in your account
+            settings). We appreciate it if you keep your information up to date.
+          </li>
+          <li>
+            <b>Right to Erasure (Deletion):</b> You have the right to request deletion of your
+            personal data in certain circumstances. For example, you can ask us to delete
+            information if it&apos;s no longer necessary for the purposes for which it was
+            collected, if you withdraw consent (where consent was the legal basis for processing),
+            or if you object to processing and we have no overriding legitimate grounds to continue.
+            We will honor valid deletion requests and will also instruct any service providers
+            processing your data on our behalf to delete the data. Keep in mind that we might retain
+            certain information if required by law or for legitimate business purposes (we will
+            inform you if so). Deleting your data may also mean we cannot provide you with some
+            Services moving forward.
+          </li>
+          <li>
+            <b>Right to Restrict Processing:</b> You have the right to request that we limit the
+            processing of your personal information in certain situations. This can apply, for
+            example, if you contest the accuracy of your data (you can ask us to pause processing
+            until we verify or correct it), or if you have objected to processing (and we are
+            weighing whether our legitimate grounds override yours). When processing is restricted,
+            we will store your data but not use it until the restriction is lifted (unless for legal
+            reasons).
+          </li>
+          <li>
+            <b>Right to Data Portability:</b> Where applicable (generally for data processed by
+            automated means on the basis of your consent or performance of a contract), you have the
+            right to obtain a copy of certain personal information in a structured, commonly used,
+            machine-readable format (for instance, CSV or JSON). You can also request that we
+            transfer this data to another controller, where technically feasible. Essentially, this
+            is your right to take your data with you. For example, you could request an export of
+            the personal data you provided to us and the analysis results we generated, to port to
+            another service.
+          </li>
+          <li>
+            <b>Right to Object:</b> You have the right to object to our processing of your personal
+            information in some cases. If we are processing your data based on legitimate interests,
+            you can object if you feel our processing impacts your rights and freedoms unfairly. If
+            you object, we will review the reasons for your objection and stop or adjust processing
+            unless we have a compelling legitimate ground to continue or the processing is needed
+            for legal claims. You also have an unconditional right to object to the processing of
+            your data for direct marketing purposes (see below).
+          </li>
+          <li>
+            <b>Right to Withdraw Consent:</b> If we rely on your consent to process personal data,
+            you have the right to withdraw that consent at any time. This will not affect the
+            lawfulness of any processing done before your withdrawal, but it will mean we stop the
+            processing that was based on consent. For example, you can withdraw your consent for us
+            to use your biometric data (photos) and we will cease using and delete those images
+            (subject to any legal retention needs). However, please note that if you withdraw
+            consent for us to process information that is necessary to provide Muxout&apos;s core
+            features, you may no longer be able to use those features. We will advise you if that is
+            the case. Withdrawing consent for optional uses (like marketing) will not affect your
+            ability to use the Service.
+          </li>
+          <li>
+            <b>Right not to be subject to Automated Decisions:</b> Muxout does not make any legally
+            significant decisions about you solely by automated means without human involvement.
+            However, if that were to occur, you would have the right not to be subject to a decision
+            based solely on automated processing (including profiling) that produces legal effects
+            or similarly significantly affects you. You would also have the right to request human
+            intervention, to express your point of view, and to contest the decision. (As noted, our
+            AI analysis is intended for informational purposes and does not fit this criterion, but
+            we include this right for completeness under GDPR and similar laws.)
+          </li>
+          <li>
+            <b>Right to Lodge a Complaint:</b> If you believe that we have infringed your data
+            protection rights or processed your information unlawfully, you have the right to lodge
+            a complaint with a supervisory authority. For individuals in the EU, this would be your
+            country&apos;s Data Protection Authority (DPA). In the UK, this is the Information
+            Commissioner&apos;s Office (ICO). In Switzerland, you can contact the Federal Data
+            Protection and Information Commissioner (FDPIC). In Canada, you can reach out to the
+            Office of the Privacy Commissioner (OPC). We would appreciate the chance to address your
+            concerns directly before you do this, so please consider contacting us first, but you
+            are fully entitled to contact the regulators at any time.
+          </li>
+        </ul>
+        <Text>
+          These rights are not absolute - they may not apply in all situations and may be subject to
+          certain exemptions or limitations under applicable law. For example, we might not be able
+          to delete data that we are legally required to keep, or we might decline a request if it
+          jeopardizes the rights of others. But our policy is to be as responsive as possible to
+          your requests and to explain our reasoning if we cannot comply with a request in full.
+        </Text>
+        <Title order={4}>U.S. State Privacy Rights (California and Others):</Title>
+        <Text>
+          If you are a resident of certain U.S. states, you may have additional privacy rights under
+          state laws. In particular, the California Consumer Privacy Act (CCPA), as amended by the
+          California Privacy Rights Act (CPRA), provides specific rights to California residents.
+          Other states such as Colorado, Connecticut, Utah, and Virginia have also enacted privacy
+          laws (largely similar in scope to CCPA) that grant rights to their residents. Muxout is
+          committed to extending relevant rights to users in these states as well. Key rights and
+          disclosures under these laws include:
+        </Text>
+        <ul>
+          <li>
+            <b>Right to Know (Access) - Categories and Specific Pieces:</b> California residents
+            have the right to request that we disclose what personal information we have collected,
+            used, disclosed, and (if applicable) sold or shared about them over the past 12 months.
+            This includes the categories of personal information, the sources of that information,
+            the business or commercial purposes for collecting it, and the third parties with whom
+            we share it. You also have the right to request the specific pieces of personal
+            information we have collected about you. We will provide this information in a portable
+            and, if possible, readily usable format (usually within the account or via email).
+          </li>
+          <li>
+            <b>Right to Delete:</b> You can request that we delete personal information we have
+            collected from you. We will honor such requests except where the information is
+            necessary for us or our service providers to retain for certain permitted purposes (for
+            example, completing a transaction you initiated, detecting security incidents, complying
+            with a legal obligation, etc., as allowed by CCPA/CPRA). If we must deny a deletion
+            request in part (due to an exception), we will let you know.
+          </li>
+          <li>
+            <b>Right to Correct:</b> California (under CPRA) and some other states grant you the
+            right to request correction of inaccurate personal information we hold about you. Upon
+            verification of your identity and considering the nature of the information and purpose
+            of processing, we will correct any confirmed inaccuracies. In many cases, you can also
+            correct your information directly in your account settings.
+          </li>
+          <li>
+            <b>Right to Opt-Out of Sale or Sharing:</b> You have the right to opt out of the “sale”
+            of your personal information or the “sharing” of your personal information for
+            cross-context behavioral advertising (as those terms are defined in law). Note: Muxout
+            does not sell personal information for monetary consideration. We also do not share your
+            personal information with third parties for targeted advertising in the conventional
+            sense (where data about your browsing on our site is shared with advertisers to target
+            you on other sites). The only “sharing” of data with third parties is with service
+            providers for our own purposes (which the law does not treat as a sale) or when you opt
+            to share information via the Club or public content (which is at your direction).
+            Therefore, there is no need to opt out as we do not engage in selling or monetizing your
+            data in that way. If our practices change, we will implement a “Do Not Sell or Share My
+            Personal Information” link or a similar mechanism for you to exercise this right.
+          </li>
+          <li>
+            <b>Right to Limit Use of Sensitive Personal Information:</b> Under the CPRA, California
+            residents can direct businesses to limit the use or disclosure of “sensitive personal
+            information” to what is necessary to perform the services or provide the goods
+            reasonably expected, or for certain allowed purposes. Muxout&apos;s use of sensitive
+            personal information (for example, your biometric data in images, or any health-related
+            info inferred) is already limited to what is necessary to provide our Services
+            (appearance analysis and related features) and to comply with law. We do not use
+            sensitive information for secondary purposes like targeted advertising, nor do we
+            disclose it to third parties except as described (service providers, or if you opt to
+            share it). Thus, by default we are in compliance with this requirement. If you still
+            wish to request that we further limit or cease any use of your sensitive data, you may
+            contact us and we will evaluate your request in light of applicable law. For instance,
+            you might request that we not retain your photos any longer than needed to produce the
+            immediate analysis result - we could accommodate that by deleting images right after
+            analysis if you do not want them stored for progress tracking (though you would lose the
+            ability to see comparisons over time). We will work with you to address any such
+            concerns.
+          </li>
+          <li>
+            <b>Right of No Retaliation/Non-Discrimination:</b> We will not discriminate against you
+            for exercising any of your privacy rights. This means we will not deny you services,
+            charge you a different price, or provide a lesser quality of service just because you
+            exercised your rights under CCPA or other state laws. (However, note that if the
+            exercise of your rights renders us unable to provide certain features - for example, if
+            you ask us to delete all your data, we cannot continue to offer you personalized
+            analysis - that outcome is a natural consequence and not unlawful discrimination. We
+            will inform you if such a situation arises.)
+          </li>
+        </ul>
+        <Text>
+          <b>Categories of Personal Information Collected:</b> For transparency under CCPA, below
+          are the categories of personal information (as enumerated in the law) that Muxout has
+          collected in the past 12 months, and whether we have disclosed them for a business
+          purpose:
+        </Text>
+        <ul>
+          <li>
+            <i>Identifiers:</i> Yes - We collect identifiers like your name, email address, account
+            username, and IP address. We disclose some identifiers to our service providers (e.g.,
+            your email is shared with our email service to send notifications, and IP address is
+            processed by analytics/security tools).
+          </li>
+          <li>
+            <i>Customer Records Information:</i> Yes - This refers to personal information such as
+            contact details, payment card information, or other information described in Cal. Civ.
+            Code §1798.80(e). We do collect contact details and (through our payment processor)
+            payment information when you engage in transactions. We may share necessary elements of
+            this with processors (e.g., Stripe for payments).
+          </li>
+          <li>
+            <i>Protected Classification Characteristics:</i> Limited - We do not require sensitive
+            protected characteristics like race, ethnic origin, or religion. We may collect age
+            (date of birth or confirmation that you are over 18) and gender if you choose to provide
+            them in your profile; these can be considered protected characteristics under California
+            law. We only use age and gender to personalize your experience or ensure compliance
+            (e.g., age verification). We do not use this information for discriminatory purposes. We
+            do not disclose this information except as needed for the service (and typically it
+            remains internal).
+          </li>
+          <li>
+            <i>Commercial Information:</i> Yes - If you make purchases or participate in Club
+            transactions, we maintain records of those transactions (e.g., subscription purchase
+            history or sales of routines). This is considered commercial information. We use it for
+            providing receipts, customer support, and financial recordkeeping. We share transaction
+            data with payment processors and retain records for legal compliance. We have not “sold”
+            this information.
+          </li>
+          <li>
+            <i>Biometric Information:</i> Yes - We collect biometric identifiers/information in the
+            form of facial images and possibly facial measurements (the AI might derive features
+            from your images to compute the severity score). Under CCPA, a “biometric identifier”
+            includes imagery of the face and data generated from it. We use this biometric data
+            solely to provide the analysis service to you (and for you to track progress) and, if
+            you consent, to allow others to see your results (Club). We protect this data as
+            sensitive and do not disclose it to third parties except service providers assisting
+            with our AI processing or storage (and they are bound to use it only for us). We do not
+            use biometric data for any commercial purpose beyond providing the service to you.
+          </li>
+          <li>
+            <i>Internet or Network Activity:</i> Yes - We collect information about your
+            interactions with our website/app, which falls under this category (e.g., browsing
+            history on our Site, search queries within Muxout, clickstream data). This is done via
+            logs and cookies/analytics as described earlier. We use this data internally for
+            analytics and security. We may share some with analytics providers (like Google
+            Analytics, Microsoft Clarity) as a business purpose, but this is not sold and is
+            typically in aggregate form.
+          </li>
+          <li>
+            <i>Geolocation Data:</i> No (with a caveat) - We do not specifically collect precise
+            geolocation (like GPS coordinates) from your device. We do infer general location (city,
+            country) from your IP address for purposes like language settings and fraud prevention.
+            General region info is considered personal data but not “geolocation” in the sense of
+            tracking your exact movements. We do not collect or store any precise location history
+            of users.
+          </li>
+          <li>
+            <i>Audio, Electronic, Visual, or Similar Information:</i> Yes - Audio recordings (if you
+            use that feature) and visual information (photos/videos) are key parts of our Service.
+            As explained, we collect and use these only with your consent, and they are shared only
+            as needed (e.g., storing on cloud servers, processing through AI algorithms, or sharing
+            with other users if you opt-in). These have been disclosed to service providers (for
+            example, our cloud storage provider has your images stored on their servers, though
+            under our control) but not sold to any third party.
+          </li>
+          <li>
+            <i>Professional or Employment Information:</i> No - We do not collect professional or
+            employment-related info from users (unless you separately apply for a job with us, which
+            would be outside the scope of this consumer Privacy Policy).
+          </li>
+          <li>
+            <i>Education Information:</i> No - We do not collect educational records or information
+            about students in the context of our consumer services.
+          </li>
+          <li>
+            <i>Inferences:</i> Limited - We generate certain inferences from your data internally to
+            personalize your experience (for instance, inferring your skin type from your inputs, or
+            deriving a severity score from your images). These inferences are used to tailor the
+            Service to you. We do not create broad marketing profiles or personality profiles for
+            exploitation - any inference stays tightly related to your self-improvement goals on
+            Muxout. We treat these inferences as part of your personal data and protect them
+            accordingly. We do not sell these inferences or share them except with service providers
+            for internal purposes (like storing the scores in our database, etc.)
+          </li>
+        </ul>
+        <Text>
+          <b>California “Shine the Light” Disclosure:</b> Separate from CCPA, California Civil Code
+          §1798.83 (the “Shine the Light” law) allows California residents to request information
+          about what personal information is shared with third parties for those third parties&apos;
+          direct marketing purposes. Muxout&apos;s policy is that we do not share your personal
+          information with unaffiliated third parties for their own direct marketing use without
+          your consent. Therefore, we believe we have no disclosures to make under that law. If you
+          are a California resident and would like to make an inquiry under Shine the Light, you can
+          contact us and we will provide the required information if applicable. Typically, such an
+          inquiry would confirm that we do not disclose personal data to third parties for their
+          direct marketing, in line with this Policy.
+        </Text>
+        <Text>
+          <b>California Minors (Online Content Removal):</b> If you are under 18 and a California
+          resident (and if, contrary to our intent, you have created an account on Muxout),
+          California Business & Professions Code §22581 allows you to request removal of content or
+          information you have publicly posted. Since our platform is 18+, we expect this scenario
+          to not occur. However, if it does, please contact us to remove the content you posted. We
+          will make sure any content you publicly posted is taken down (although this doesn&apos;t
+          guarantee complete erasure if it was copied by others, but we will do our best to remove
+          it from our Site).
+        </Text>
+        <Text>
+          <b>Other U.S. States:</b> Users in states like Colorado, Connecticut, Utah, and Virginia
+          have rights similar to those described above (right to access, correct, delete, opt-out of
+          certain processing, etc.). We extend the same core rights and procedures to you. For
+          example, Colorado residents can request access or deletion of their data and opt-out of
+          profiling for significant decisions; Virginia residents can appeal a decision we make
+          about a privacy request within a defined time; etc. If you are a resident of one of these
+          states and contact us with a privacy rights request, we will treat it in accordance with
+          the applicable state law requirements.
+        </Text>
+        <Text>
+          <b>Exercising Your Rights (U.S. States):</b> To exercise any of the rights above (access,
+          deletion, correction, etc.), please reach out to us through the methods listed in the
+          “Contact Us” section. For California and other state requests, we will need to verify your
+          identity to a reasonable degree of certainty before fulfilling the request. This is to
+          protect your privacy - we wouldn&apos;t want to release or delete someone&apos;s data just
+          because an impostor asked us. Verification may involve confirming information that we have
+          on file about you (for example, responding from the email associated with your account and
+          providing some identifier or recent activity that matches our records). If you have an
+          account, verification will likely be through your logging in or responding to a verified
+          email. If you are not a registered user, we might ask for additional proof. In certain
+          cases, you can designate an authorized agent to make a request on your behalf (California
+          allows this). If you do so, we will need proof of the agent&apos;s identity and authority
+          (such as a signed permission from you). We will respond to requests within the timeframe
+          required by law (for example, CCPA generally requires initial response within 10 business
+          days and fulfillment within 45 calendar days, with possible extensions). We will inform
+          you if we need more time.
+        </Text>
+        <Text>
+          We reiterate that we will not retaliate or discriminate against you for exercising any of
+          these rights. Our goal is to be transparent and helpful in addressing your privacy
+          concerns.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Additional Privacy Rights in Other Regions</Title>
+        <Text>
+          Beyond the EU, North America, and the specific U.S. states already discussed, Muxout also
+          strives to comply with privacy regulations in other jurisdictions. Below we provide
+          information for users in a few other regions where data protection laws apply:
+        </Text>
+        <ul>
+          <li>
+            <b>Brazil (LGPD):</b> If you are in Brazil, the LGPD grants you several rights regarding
+            your personal data. These include: (i) the right to confirm whether we process your
+            personal data, and to access the data we have about you; (ii) the right to request
+            correction of incomplete, inaccurate, or outdated data; (iii) the right to request
+            anonymization, blocking, or deletion of unnecessary or excessive data or data processed
+            in noncompliance with the law; (iv) the right to request data portability to another
+            service or product provider, by means of an express request, in accordance with the
+            regulations of the national authority (note: as of the last update, detailed regulations
+            on portability are pending, but we will cooperate with legitimate requests to transfer
+            your data in a usable format); (v) if we process your data based on your consent, the
+            right to withdraw consent at any time; (vi) the right to request information about
+            public and private entities with which we have shared your data; (vii) the right to
+            information about the possibility of denying consent and the consequences of such denial
+            (for instance, if you don&apos;t consent to us processing your photos, we cannot provide
+            the AI analysis feature); and (viii) the right to oppose processing that is not being
+            carried out in compliance with the law. To exercise your LGPD rights, you can contact us
+            (see Contact Us below). We will respond in accordance with the timeframes and procedures
+            set out by the ANPD (Brazil&apos;s National Data Protection Authority). If you believe
+            your data rights have been violated, you have the right to petition the ANPD. We note
+            that we process sensitive personal data (e.g., biometric data from your photos) under
+            the legal basis of your consent (Art. 11, I of LGPD), and you can revoke that consent as
+            described. We will not process your sensitive data for discriminatory or illicit
+            purposes.
+          </li>
+          <li>
+            <b>Australia:</b> We are committed to protecting personal information in accordance with
+            the Australian Privacy Act 1988 and the Australian Privacy Principles (APPs). Australian
+            users have the right to access the personal information we hold about them and to
+            request correction of any inaccuracies. To make such a request, please contact us. We
+            may ask you to verify your identity and specify what information you require. We will
+            respond within a reasonable time and provide the information except in limited
+            circumstances where we are permitted by law to refuse access. If you believe we have
+            breached the APPs or mishandled your personal information, you have the right to
+            complain. Please direct any complaints to us first - we will investigate and respond to
+            your complaint. If you are not satisfied with our response, you can escalate the issue
+            to the Office of the Australian Information Commissioner (OAIC). We note that providing
+            certain information is optional, but if you choose not to provide personal data that we
+            need to deliver a service, we may not be able to provide you with that service. We do
+            not typically transfer Australian users&apos; data overseas except to our U.S. servers
+            and other processors as stated; by using our service, you consent to these overseas
+            transfers, but we ensure they are protected as described in this Policy.
+          </li>
+          <li>
+            <b>New Zealand:</b> We handle personal information of New Zealand users in accordance
+            with the New Zealand Privacy Act 2020 and its Information Privacy Principles (IPPs). As
+            a New Zealand user, you have the right to access the personal information we hold about
+            you and to request correction of any personal information that is inaccurate,
+            incomplete, or out-of-date. You can contact us to exercise these rights. If you request
+            a correction and we do not make it (for example, if we disagree that the information is
+            wrong), you have the right to request that we attach a statement of correction sought
+            but not made to the information. We will respond to access requests as soon as
+            practicable and no later than 20 working days after receiving the request, as required
+            by law. If you have a complaint about your privacy or how we handled your request, you
+            can lodge a complaint with the Office of the Privacy Commissioner (OPC) in New Zealand.
+            As with Australia, providing certain data is often voluntary, but without it we might
+            not be able to fulfill certain services.
+          </li>
+          <li>
+            <b>South Africa:</b> We respect the rights of South African users under the Protection
+            of Personal Information Act, 2013 (POPIA). South African users have the right to request
+            access to their personal information and to request correction or deletion of personal
+            information that is inaccurate, irrelevant, excessive, out-of-date, incomplete, or
+            obtained unlawfully. You also have rights to object to processing of personal
+            information under certain circumstances (for instance, for purposes of direct marketing
+            not consented to) and to withdraw consent where processing was based on consent. If you
+            would like to exercise your POPIA rights, please contact us. We may require proof of
+            identity and a completed request form (if applicable under South African regulations)
+            for processing your request. We will respond within a reasonable time. Additionally, if
+            you have a complaint regarding our compliance with POPIA, you may lodge a complaint with
+            South Africa&apos;s Information Regulator. The Information Regulator&apos;s contact
+            details can be found on their official website (for general inquiries you can email
+            inquiries@inforegulator.org.za, and for complaints, they have dedicated addresses such
+            as POPIAComplaints@inforegulator.org.za). We encourage you to contact us first to
+            resolve any issue. Finally, note that if you do not provide certain personal
+            information, we may not be able to provide you with the services or responses you
+            expect, which we will inform you about at the time.
+          </li>
+        </ul>
+        <Text>
+          These region-specific notes are intended to ensure transparency and compliance. Regardless
+          of where you are located, we strive to uphold high standards of privacy protection. If you
+          are in a country not explicitly listed above but have questions about how we handle your
+          data in light of your local laws, please reach out to us. We are continually monitoring
+          international privacy developments and adjusting our practices as needed to comply with
+          new requirements (for example, new regulations in other countries or states).
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Do-Not-Track Signals and Online Tracking</Title>
+        <Text>
+          <b>Do Not Track (DNT):</b> Some web browsers and devices offer a “Do Not Track” setting or
+          signal that you can enable to indicate your preference regarding online tracking. At this
+          time, Muxout does not respond to Do Not Track signals in a standardized way. The reason is
+          that there is currently no consistent industry standard or legal requirement for
+          interpreting DNT signals. Different browsers send DNT signals differently, and many
+          websites, including ours, have not adopted a uniform response to those signals.
+        </Text>
+        <Text>
+          When you have DNT enabled in your browser, our Site will still collect usage information
+          as described in this Policy (for example, via cookies or analytics scripts) because we
+          have not implemented a separate mechanism to alter our data collection in response to that
+          signal. We treat all users&apos; data according to this Privacy Policy, whether or not a
+          DNT signal is present. If a clear industry standard for honoring Do Not Track is
+          established in the future, or if laws require us to respond to DNT signals, we will update
+          our practices and this Privacy Policy accordingly. In the meantime, if you wish to limit
+          online tracking, you can manage cookie preferences (e.g., use browser settings or plugins
+          to block or delete cookies and trackers). Note that doing so may affect your experience
+          with Muxout (for instance, some features might not work correctly without certain
+          cookies).
+        </Text>
+        <Text>
+          For more information about Do Not Track, you may visit allaboutdnt.com, which provides a
+          helpful explanation. Keep in mind that DNT is different from the “Do Not Sell/Share”
+          opt-outs under privacy laws (which we discussed in the U.S. State Privacy Rights section).
+          If you have any questions about our online tracking practices, feel free to contact us.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Updates to This Privacy Policy</Title>
+        <Text>
+          We may update or revise this Privacy Policy from time to time to reflect changes in our
+          practices, technologies, legal requirements, or for other operational reasons. When we
+          make changes, we will update the “Last Updated” date at the top of this Policy. Any
+          changes will become effective when we post the revised Privacy Policy on the Site, unless
+          otherwise required by applicable law.
+        </Text>
+        <Text>
+          If we make any material changes to this Policy - meaning changes that significantly affect
+          how we collect or use your personal information or your rights - we will take additional
+          steps to notify you. This might include prominently posting a notice of the changes on our
+          website, sending you a direct notification (e.g., via email or an in-app message), or any
+          other method required by law. We will describe the key changes in the notice so you can
+          understand what&apos;s different.
+        </Text>
+        <Text>
+          We encourage you to review this Privacy Policy periodically to stay informed about how we
+          are protecting your information. Your continued use of Muxout after any update to this
+          Policy will signify your acceptance of the changes, to the extent permitted by law. If you
+          do not agree with any updates or modifications, you should stop using the Site and
+          Services and may contact us if you wish to delete your account or have concerns.
+        </Text>
+      </Stack>
+      <Stack>
+        <Title order={2}>Contact Us</Title>
+        <Text>
+          If you have any questions, comments, or requests regarding this Privacy Policy or about
+          how Muxout handles your personal information, please do not hesitate to contact us. We are
+          here to help and address any privacy-related concerns you may have.
+        </Text>
+        <ul>
+          <li>
+            <b>Email:</b> You can reach our privacy team at privacy@muxout.com. This is the
+            dedicated email address for privacy inquiries, including questions about your data,
+            requests to exercise your rights, or complaints. We strive to respond promptly to all
+            legitimate inquiries.
+          </li>
+          <li>
+            <b>Postal Mail:</b> If you prefer to contact us by mail, you can write to: <br />
+            <i>Bettermax LLC 30 N Gould St, Sheridan, WY 82801 United States</i>
+          </li>
+        </ul>
+        <Text>
+          We will do our best to respond to your inquiry or request within a reasonable timeframe
+          and in accordance with any applicable laws. When you contact us to exercise a privacy
+          right (such as accessing or deleting your data), we may need to verify your identity for
+          security purposes, as described earlier.
+        </Text>
+        <Text>
+          Thank you for entrusting Muxout with your skin and hair improvement journey. Your privacy
+          is important to us, and we are committed to safeguarding your personal information.
         </Text>
       </Stack>
     </>

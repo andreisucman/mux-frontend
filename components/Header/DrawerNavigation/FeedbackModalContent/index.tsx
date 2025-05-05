@@ -6,7 +6,7 @@ import callTheServer from "@/functions/callTheServer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 
 const defaultMessage =
-  "Get cash reward for each error or meaningful idea that you report. The reward will be added to your Club balance and paid out to your connected bank account.";
+  "Get cash reward for each error that you report. The reward will be added to your Club balance and paid out to your connected bank account.";
 
 export default function FeedbackModalContent() {
   const [message, setMessage] = useState(defaultMessage);
