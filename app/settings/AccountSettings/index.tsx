@@ -46,19 +46,6 @@ export default function AccountSettings() {
 
   const isEmailDirty = currentEmail !== email.trim();
 
-  const redirectToBillingPortal = useCallback(async () => {
-    try {
-      const response = await callTheServer({
-        endpoint: "createBillingPortalSession",
-        method: "POST",
-      });
-
-      if (response.status === 200) {
-        location.replace(response.message);
-      }
-    } catch (err) {}
-  }, []);
-
   const deleteAccount = async (isDelete: boolean) => {
     try {
       const response = await callTheServer({
@@ -217,9 +204,6 @@ export default function AccountSettings() {
             }
           >
             <IconAsterisk className={cn(classes.icon, "icon")} /> Reset password
-          </UnstyledButton>
-          <UnstyledButton className={classes.item} onClick={redirectToBillingPortal}>
-            <IconCreditCard className={cn(classes.icon, "icon")} /> Manage subscriptions
           </UnstyledButton>
           {!deleteOn && (
             <UnstyledButton

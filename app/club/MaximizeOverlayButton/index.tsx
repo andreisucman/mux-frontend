@@ -6,6 +6,7 @@ import modifyQuery from "@/helpers/modifyQuery";
 import classes from "./MaximizeOverlayButton.module.css";
 
 type Props = {
+  isDisabled: boolean;
   notPurchased: string[];
   showOverlayComponent: "none" | "maximizeButton" | "purchaseOverlay" | "showOtherRoutinesButton";
   setShowOverlayComponent: React.Dispatch<
@@ -15,6 +16,7 @@ type Props = {
 
 export default function MaximizeOverlayButton({
   notPurchased,
+  isDisabled,
   showOverlayComponent,
   setShowOverlayComponent,
 }: Props) {
@@ -37,7 +39,7 @@ export default function MaximizeOverlayButton({
   }, [notPurchased, showOverlayComponent]);
 
   return (
-    <Button size="compact-sm" className={classes.container} onClick={handleShowOverlay}>
+    <Button disabled={isDisabled} size="compact-sm" className={classes.container} onClick={handleShowOverlay}>
       Show info card
     </Button>
   );

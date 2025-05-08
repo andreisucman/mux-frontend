@@ -6,8 +6,8 @@ export const data = [
     question: "What is Muxout?",
     answer: (
       <Text>
-        Muxout is a place where you can create a routine to improve your appearance and share it to
-        inspire and earn.
+        Muxout is a place where you can create routines for improving your appearance and share them
+        to inspire and earn.
       </Text>
     ),
   },
@@ -21,8 +21,8 @@ export const data = [
         </Text>
         <Text>
           After you get your feedback you create a routine for improving your concerns. You can
-          either create your routine yourself from scratch by adding individual tasks or use our free routine
-          suggestion service that will suggest you a routine based on your analysis.
+          either create your routine yourself from scratch by adding individual tasks or use our
+          free routine suggestion service that will suggest you a routine based on your analysis.
         </Text>
         <Text>After you have your routine you can start completing the tasks in it.</Text>
         <Text>
@@ -34,12 +34,12 @@ export const data = [
           your scans are privately stored on your results page.
         </Text>
         <Text>
-          After you make visible progress you may choose to sell your routine to help others achieve
-          a similar transformation. When you do that your before-after images will appear on the
-          home page.
+          After you make visible progress you may choose to sell your routines to help others
+          achieve a similar transformation. When you do that your before-after images will appear on
+          the home page.
         </Text>
         <Text>
-          In addition to selling your routine, you can earn rewards for consistently working on
+          In addition to selling your routines, you can earn rewards for consistently working on
           improving your appearance.
         </Text>
         <Text>Visit the rewards page for more information.</Text>
@@ -60,8 +60,8 @@ export const data = [
       <Stack>
         <Text>You can earn on Muxout in 2 ways.</Text>
         <Text>
-          1. You can create an effective routine and complete its tasks to improve your appearance.
-          You can then list your routine for sale to help other people have a similar
+          1. You can create effective routines and complete their tasks to improve your appearance.
+          You can then list your routines for sale to help other people have a similar
           transformation.
         </Text>
         <Text>
@@ -88,19 +88,19 @@ export const data = [
       <Stack>
         <Text>None of your images is listed automatically when you start using Muxout.</Text>
         <Text>
-          To display your before-afters on the home page you will have to join &apos;the Club&apos;
-          and list a routine for sale. Only accounts that explicitly listed their routines for sale
-          are publicly displayed on the home page.
+          To display your before-afters on the home page you will have to join the Club and list
+          your routines for sale. Only accounts that explicitly listed their routines for sale are
+          publicly displayed on the home page.
         </Text>
       </Stack>
     ),
   },
   {
-    question: "How can I publish my routine for sale?",
+    question: "How can I publish my routines for sale?",
     answer: (
       <Stack>
         <Text>
-          To be able to publish your routine for sale you have to join the Club. The Club is a free
+          To be able to publish your routines for sale you have to join the Club. The Club is a free
           opt-in service that lets you buy or sell routines.
         </Text>
         <Text>
@@ -110,7 +110,7 @@ export const data = [
         </Text>
         <Text>
           Lastly, you will have to add at least one diary record for each routine you have. This
-          means that you should be adding a feedback note into your diary once a week or more.
+          means that you should be adding a feedback note into your diary every week.
         </Text>
       </Stack>
     ),
@@ -201,7 +201,7 @@ export const data = [
   },
   {
     question: "How can I contact you?",
-    answer: <Text>Send an email to info@muxout.com</Text>,
+    answer: <Text>Send an email to info@muxout.com.</Text>,
   },
   {
     question: "Attributions",

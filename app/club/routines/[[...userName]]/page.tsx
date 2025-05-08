@@ -298,13 +298,12 @@ export default function ClubRoutines(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      {showButton && (
-        <MaximizeOverlayButton
-          showOverlayComponent={showOverlayComponent}
-          notPurchased={notPurchased}
-          setShowOverlayComponent={setShowOverlayComponent}
-        />
-      )}
+      <MaximizeOverlayButton
+        isDisabled={!!showButton}
+        showOverlayComponent={showOverlayComponent}
+        notPurchased={notPurchased}
+        setShowOverlayComponent={setShowOverlayComponent}
+      />
       {accordionItems ? (
         <Stack className={classes.wrapper}>
           <Stack

@@ -2,7 +2,6 @@
   position: relative;
   max-width: rem(450);
   padding: rem(24) rem(16) rem(20);
-  margin-bottom: rem(8);
   width: 100%;
 
   border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));

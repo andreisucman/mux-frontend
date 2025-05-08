@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconHandGrab } from "@tabler/icons-react";
 import Draggable from "react-draggable";
 import { ActionIcon, Button, Checkbox, Group, Progress, Stack, Text } from "@mantine/core";
@@ -10,7 +10,6 @@ import { UploadProgressProps } from "@/app/select-part/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "next/navigation";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { PartEnum, ToAnalyzeType, UserDataType } from "@/types/global";
@@ -272,7 +271,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                       className={classes.checkbox}
                       checked={!!overlayImage}
                       onChange={() => handleOverlayPrevious(imagesMissingUpdates[0])}
-                      label="Overlay previous"
+                      label="Overlay"
                     />
                   </Group>
                 </>
@@ -282,7 +281,6 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                 handleCancel={showCancelCapture ? () => handleCancel() : undefined}
                 defaultFacingMode="user"
                 hide15s
-                hideFlipCamera
               />
             </>
           )}

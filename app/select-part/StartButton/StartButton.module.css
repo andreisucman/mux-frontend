@@ -6,10 +6,10 @@
   width: 100%;
   min-width: rem(200);
   overflow: hidden;
-  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
 
   &:hover {
-    border: rem(2) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+    border: rem(2) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));
   }
 }
 
