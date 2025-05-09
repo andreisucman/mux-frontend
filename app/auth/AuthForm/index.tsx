@@ -34,7 +34,9 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailLoading, setIsEmailLoading] = useState(false);
-  const { setStatus, setUserDetails } = useContext(UserContext);
+  const { userDetails, setStatus, setUserDetails } = useContext(UserContext);
+
+  const { email: savedEmail } = userDetails || {};
 
   const title = showResetPassword ? "Password reset" : "Sign in to continue";
   const secondaryButtonText = showResetPassword ? "Return" : "Reset password";
@@ -83,7 +85,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
 
       const { score, requirement } = getPasswordStrength(password);
 
-      if (score < 100) {
+      if (score < 100 && !savedEmail) {
         setPasswordError(requirement);
         return;
       }

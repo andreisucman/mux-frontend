@@ -299,7 +299,7 @@ export default function ClubRoutines(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <MaximizeOverlayButton
-        isDisabled={!!showButton}
+        isDisabled={!showButton}
         showOverlayComponent={showOverlayComponent}
         notPurchased={notPurchased}
         setShowOverlayComponent={setShowOverlayComponent}

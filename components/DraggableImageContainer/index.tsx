@@ -94,8 +94,8 @@ export default function DraggableImageContainer({
 
     const newDot = {
       id,
-      originalWidth: size / 2,
-      originalHeight: size / 4,
+      originalWidth: size,
+      originalHeight: size / 2,
       scaleX: 1,
       scaleY: 1,
       angle: 180,

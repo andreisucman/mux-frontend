@@ -181,7 +181,7 @@ export default function ClubProgress(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <MaximizeOverlayButton
-        isDisabled={!!showButton}
+        isDisabled={!showButton}
         showOverlayComponent={showOverlayComponent}
         notPurchased={notPurchased}
         setShowOverlayComponent={setShowOverlayComponent}
