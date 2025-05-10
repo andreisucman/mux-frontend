@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -19,6 +19,7 @@ type Props = {
 
 export default function BeforeAfterModalContent({ record, isPublicPage }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
@@ -47,7 +48,8 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
   const handleRedirect = () => {
     if (isLoading) return;
     setIsLoading(true);
-    router.push(redirectUrl);
+    const query = searchParams.toString();
+    router.push(`${redirectUrl}${query ? `?${query}` : ""}`);
     modals.closeAll();
   };
 

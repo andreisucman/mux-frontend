@@ -1,12 +1,11 @@
 import React, { useContext, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
 import { formatDate } from "@/helpers/formatDate";
 import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import LineProgressIndicators from "../LineProgressIndicators";
@@ -39,14 +38,15 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: createdAt || new Date() });
-  const dateInterval = useMemo(() => getReadableDateInterval(initialDate, createdAt), []);
+  const dateInterval = useMemo(() => getReadableDateInterval(createdAt, createdAt), []);
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
   const handleRedirect = () => {
     if (isLoading) return;
     setIsLoading(true);
-    router.push(redirectUrl);
+    const query = searchParams.toString();
+    router.push(`${redirectUrl}${query ? `?${query}` : ""}`);
     modals.closeAll();
   };
 

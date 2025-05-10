@@ -3,7 +3,6 @@ import { IconChevronDown, IconChevronUp, IconCirclePlus } from "@tabler/icons-re
 import { ActionIcon, Collapse, Divider, Group, Stack, Text, TextInput } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
-import openErrorModal from "@/helpers/openErrorModal";
 import { validateUrl } from "@/helpers/utils";
 import { UserDataType } from "@/types/global";
 import SocialLink from "./SocialLink";

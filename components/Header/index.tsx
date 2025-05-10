@@ -195,7 +195,7 @@ function Header() {
                 {displayComponent === "userButton" && (
                   <>
                     <ActionIcon variant="default" onClick={openFeedbackModal} size="lg">
-                      <IconMessageReply className="icon" stroke={1.25} />
+                      <IconMessageReply size={24} stroke={1.25} />
                     </ActionIcon>
                     <UserButton
                       avatar={avatar}
