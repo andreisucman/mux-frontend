@@ -7,15 +7,27 @@ import { modals } from "@mantine/modals";
 import openErrorModal from "@/helpers/openErrorModal";
 import classes from "./PhotoCapturer.module.css";
 
-type Props = {
-  defaultFacingMode?: "user" | "environment";
+/**
+ * Which camera to request from `getUserMedia`.
+ */
+export type FacingMode = "user" | "environment";
+
+export interface PhotoCapturerProps {
+  /** Preferred camera on first mount. */
+  defaultFacingMode?: FacingMode;
+  /** Hide the 5‑second delay button. */
   hide5s?: boolean;
+  /** Hide the 15‑second delay button. */
   hide15s?: boolean;
+  /** Hide the flip‑camera button (useful on devices with just one camera). */
   hideFlipCamera?: boolean;
+  /** (Reserved for future) path to a PNG to overlay as silhouette. */
   silhouette?: string;
+  /** Called when the user presses ✕. */
   handleCancel?: () => void;
+  /** Called with the captured JPEG (base64 data‑URL). */
   handleCapture: (base64string: string) => void;
-};
+}
 
 const audioUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
@@ -26,133 +38,141 @@ export default function PhotoCapturer({
   hide5s,
   hide15s,
   hideFlipCamera,
-}: Props) {
-  const [facingMode, setFacingMode] = useState<"user" | "environment">(defaultFacingMode);
+}: PhotoCapturerProps) {
+  const [facingMode, setFacingMode] = useState<FacingMode>(defaultFacingMode);
+
+  /** Viewport & responsive helpers */
   const { height: viewportHeight, width: viewportWidth } = useViewportSize();
+  const isMobile = useMediaQuery("(max-width: 36em)");
+
+  /** DOM + media‑stream refs */
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const timeoutIdRef = useRef<NodeJS.Timeout>();
+  const timerIdRef = useRef<number>();
+
+  /** State */
   const [secondsLeft, setSecondsLeft] = useState(5);
   const [timerStarted, setTimerStarted] = useState(false);
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 36em)");
 
-  const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
+  /** Stop every live track of `stream`, swallowing any errors. */
+  const stopStream = useCallback((stream: MediaStream | null) => {
+    if (!stream) return;
     stream.getTracks().forEach((track) => {
-      if (track.readyState === "live") {
+      try {
         track.stop();
+      } catch {
+        /* ignore */
       }
     });
   }, []);
 
-  const startDelayedCapture = (seconds: number) => {
-    if (timerStarted) return;
-    setTimerStarted(true);
-    try {
-      setSecondsLeft(seconds);
+  /** Play the shutter sound (ignore autoplay errors). */
+  const playShutter = () => audioRef.current?.play().catch(() => {});
 
-      timeoutIdRef.current = setInterval(() => {
-        setSecondsLeft((prev) => {
-          if (prev <= 0) {
-            clearInterval(timeoutIdRef.current);
-            setTimerStarted(false);
-            capturePhoto();
-            return seconds;
-          } else {
-            return prev - 1;
-          }
-        });
-      }, 1000);
-    } catch (err) {
-      if (timeoutIdRef.current) {
-        setTimerStarted(false);
-        clearInterval(timeoutIdRef.current);
-      }
-      console.log("Error in startDelayedCapture: ", err);
-    }
-  };
+  /** Capture current frame → JPEG → parent */
+  const capturePhoto = useCallback(() => {
+    const video = videoRef.current;
+    if (!video?.videoWidth || !video.videoHeight) return;
 
-  const capturePhoto = useCallback(async () => {
-    if (!videoRef.current) return;
     const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-    try {
-      const video = videoRef.current;
-      if (!video.videoWidth || !video.videoHeight) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const imageData = canvas.toDataURL("image/jpeg");
-
-      const audio = new Audio(audioUrl);
-      audio.play();
-
-      handleCapture(imageData);
-    } catch (err) {
-      console.log("Error in capturePhoto: ", err);
-    }
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    playShutter();
+    handleCapture(canvas.toDataURL("image/jpeg"));
   }, [handleCapture]);
 
+  /** Countdown helper before `capturePhoto()` */
+  const startDelayedCapture = (delay: number) => {
+    if (timerStarted) return;
+
+    setTimerStarted(true);
+    setSecondsLeft(delay);
+
+    timerIdRef.current = window.setInterval(() => {
+      setSecondsLeft((prev) => {
+        const next = prev - 1;
+        if (next <= 0) {
+          window.clearInterval(timerIdRef.current);
+          timerIdRef.current = undefined;
+          setTimerStarted(false);
+          capturePhoto();
+          return delay; // reset for next time
+        }
+        return next;
+      });
+    }, 1_000);
+  };
+
+  /** Swap between front & back cameras */
   const flipCamera = useCallback(() => {
-    setFacingMode((prevFacingMode) => (prevFacingMode === "user" ? "environment" : "user"));
-  }, [facingMode]);
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+  }, []);
 
-  const aspectRatio = isMobile ? viewportHeight / viewportWidth : 1;
+  /** On mobile we keep the aspect the same as the screen, on desktop we prefer square. */
+  const idealAspectRatio = isMobile ? viewportHeight / viewportWidth : 1;
 
+  /** (Re)start the camera stream. Runs on mount + when constraints change. */
   const startVideoPreview = useCallback(async () => {
+    stopStream(streamRef.current); // dispose previous stream first
+
     try {
       const constraints: MediaStreamConstraints = {
         audio: false,
         video: {
           facingMode,
-          aspectRatio: { ideal: aspectRatio },
+          aspectRatio: { ideal: idealAspectRatio },
           frameRate: { max: 30 },
         },
       };
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
+      streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-        videoRef.current.play();
+        await videoRef.current.play();
       }
 
-      // Check available cameras
+      /* Determine if the device exposes more than one camera */
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter((device) => device.kind === "videoinput");
-      setHasMultipleCameras(videoDevices.length > 1);
+      const numCams = devices.filter((d) => d.kind === "videoinput").length;
+      setHasMultipleCameras(numCams > 1);
     } catch (err) {
-      openErrorModal({
-        title: "An error occurred",
-        description: "You need to grant camera access to be able to scan yourself",
-        onClose: () => modals.closeAll(),
-      });
+      const error = err as DOMException;
+      if (error?.name === "NotAllowedError" || error?.name === "PermissionDeniedError") {
+        // User explicitly denied camera access
+        openErrorModal({
+          title: "Camera access required",
+          description: "Please allow access to your camera to take a photo.",
+          onClose: () => modals.closeAll(),
+        });
+      } else {
+        // Other errors (e.g. no camera, already in use, etc.)
+        console.error("Unable to start camera:", err);
+      }
     }
-  }, [facingMode, aspectRatio]);
+  }, [facingMode, idealAspectRatio, stopStream]);
 
+  /* Boot up preview and clean up on unmount */
   useEffect(() => {
     startVideoPreview();
+
     return () => {
-      if (timeoutIdRef.current) {
-        clearTimeout(timeoutIdRef.current);
-      }
+      if (timerIdRef.current) window.clearInterval(timerIdRef.current);
+      stopStream(streamRef.current);
+      streamRef.current = null;
       if (videoRef.current) {
         videoRef.current.pause();
         videoRef.current.srcObject = null;
       }
-      if (streamRef.current) {
-        stopBothVideoAndAudio(streamRef.current);
-        streamRef.current = null;
-      }
     };
-  }, [startVideoPreview, facingMode]);
+  }, [startVideoPreview, stopStream]);
 
   return (
     <Stack
@@ -161,7 +181,7 @@ export default function PhotoCapturer({
         [classes.desktopVideo]: !isMobile,
       })}
     >
-      <video ref={videoRef} autoPlay muted></video>
+      <video ref={videoRef} autoPlay muted playsInline />
 
       {timerStarted && (
         <div className={classes.timerOverlay}>
@@ -170,14 +190,20 @@ export default function PhotoCapturer({
           </Text>
         </div>
       )}
+
       <div className={classes.grid} />
+
+      {/* Controls */}
       <Group className={classes.buttonGroup}>
-        <audio hidden ref={audioRef} src={audioUrl} preload="auto" />
+        {/* hidden <audio> for shutter sound */}
+        <audio ref={audioRef} hidden preload="auto" src={audioUrl} />
+
         {handleCancel && (
           <ActionIcon variant="default" className={classes.close} onClick={handleCancel}>
             <IconX className="icon" />
           </ActionIcon>
         )}
+
         {!hide5s && (
           <Button
             variant="default"
@@ -191,6 +217,7 @@ export default function PhotoCapturer({
             <IconStopwatch className="icon" />
           </Button>
         )}
+
         {!hide15s && (
           <Button
             variant="default"
@@ -204,11 +231,12 @@ export default function PhotoCapturer({
             <IconStopwatch className="icon" />
           </Button>
         )}
+
         {!hideFlipCamera && hasMultipleCameras && (
           <Button
             variant="default"
-            onClick={flipCamera}
             disabled={timerStarted}
+            onClick={flipCamera}
             className={classes.button}
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
@@ -216,10 +244,11 @@ export default function PhotoCapturer({
             <IconCameraRotate className="icon" />
           </Button>
         )}
+
         <Button
+          variant="filled"
           disabled={timerStarted}
           onClick={capturePhoto}
-          variant="filled"
           className={classes.button}
         >
           <IconCamera className="icon" />

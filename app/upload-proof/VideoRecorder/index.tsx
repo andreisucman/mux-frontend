@@ -21,25 +21,15 @@ import RecordingStatus from "./RecordingStatus";
 import VideoRecorderResult from "./VideoRecorderResult";
 import classes from "./VideoRecorder.module.css";
 
-type StartRecordingProps = {
-  facingMode: "user" | "environment";
-  aspectRatio: number;
-  videoRef: any;
-  streamRef: any;
-  isVideoLoading: boolean;
-  setIsVideoLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  stopBothVideoAndAudio: (props: any) => void;
-};
-
 type Props = {
   sex: SexEnum;
   taskId: string;
   taskExpired: boolean;
   instruction: string;
-  uploadProof: (props: any) => Promise<void>;
+  uploadProof: (props: { recordedBlob: Blob | null; captureType: string }) => Promise<void>;
 };
 
-const RECORDING_TIME = 30000;
+const RECORDING_TIME = 30_000;
 const beepUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/beep.mp3`;
 const shutterUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
 
@@ -68,424 +58,332 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   const [componentLoaded, setComponentLoaded] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(5);
-
-  const parts = useRef<Blob[]>([]);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
-  const [recordingTime, setRecordingTime] = useState(RECORDING_TIME);
   const [isRecording, setIsRecording] = useState(false);
   const [captureType, setCaptureType] = useState<string>("image");
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [orientation, setOrientation] = useState<"vertical" | "horizontal">("vertical");
 
-  const { width: viewportWidth, height: viewportHeight } = useViewportSize();
-  const isMobile = useMediaQuery("(max-width: 36em)");
+  // ─── Refs ──────────────────────────────────────────────────────────────────
+  const parts = useRef<Blob[]>([]);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const countdownRef = useRef<NodeJS.Timeout | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
 
-  const savedCaptureType: string | null = getFromLocalStorage("captureType");
+  // ─── Helpers ───────────────────────────────────────────────────────────────
+  const { width: vpW, height: vpH } = useViewportSize();
+  const isMobile = useMediaQuery("(max-width: 36em)");
+  const savedCaptureType = getFromLocalStorage<string>("captureType");
 
   const aspectRatio = useMemo(() => {
     let ratio = 0;
     if (orientation === "vertical") {
-      ratio = isMobile ? viewportHeight / viewportWidth : 1;
+      ratio = isMobile ? vpH / vpW : 1;
     } else {
       ratio = 9 / 16;
     }
-    return isNaN(ratio) ? 20 / 9 : ratio;
-  }, [viewportWidth, viewportHeight, isMobile, orientation]);
+    return Number.isNaN(ratio) ? 20 / 9 : ratio;
+  }, [vpW, vpH, isMobile, orientation]);
 
   const showStartRecording = !isRecording && !isVideoLoading && !localUrl;
 
+  // ─── Callbacks ─────────────────────────────────────────────────────────────
+  const stopTracks = useCallback((stream: MediaStream) => {
+    stream.getTracks().forEach((track) => track.stop());
+  }, []);
+
   const handleChangeOrientation = useCallback(() => {
     setOrientation((prev) => {
-      let newOrientation: "vertical" | "horizontal" = "vertical";
-
-      if (prev === "vertical") {
-        newOrientation = "horizontal";
-      }
-
-      saveToLocalStorage("orientation", newOrientation);
-      return newOrientation;
-    });
-  }, [orientation]);
-
-  const stopBothVideoAndAudio = useCallback((stream: MediaStream) => {
-    stream.getTracks().forEach((track) => {
-      if (track.readyState === "live") {
-        track.stop();
-      }
+      const next = prev === "vertical" ? "horizontal" : "vertical";
+      saveToLocalStorage("orientation", next);
+      return next;
     });
   }, []);
 
-  const startRecording = useCallback(
-    ({
-      facingMode,
-      aspectRatio,
-      videoRef,
-      streamRef,
-      isVideoLoading,
-      setIsVideoLoading,
-      stopBothVideoAndAudio,
-    }: StartRecordingProps) => {
-      if (isVideoLoading) return;
-      setIsVideoLoading(true);
+  const startRecording = useCallback(async () => {
+    if (isVideoLoading) return;
+    setIsVideoLoading(true);
+    parts.current = [];
 
-      parts.current = [];
+    const mimeType = getSupportedMimeType() ?? "";
 
-      let constraints: MediaStreamConstraints = {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode,
           frameRate: { ideal: 30 },
           aspectRatio: { ideal: aspectRatio },
         },
         audio: true,
+      });
+
+      if (!videoRef.current) return;
+
+      new Audio(beepUrl).play();
+      videoRef.current.srcObject = stream;
+      streamRef.current = stream;
+
+      videoRef.current.onloadedmetadata = () => {
+        videoRef.current?.play();
+        setIsRecording(true);
+        setIsVideoLoading(false);
       };
 
-      const mimeType = getSupportedMimeType();
+      mediaRecorder.current = new MediaRecorder(stream, { mimeType });
+      mediaRecorder.current.ondataavailable = (e) => parts.current.push(e.data);
+      mediaRecorder.current.onstop = () => finalizeRecording(mimeType);
+      mediaRecorder.current.start();
 
-      navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((stream) => {
-          if (!videoRef.current) return;
-          const beep = new Audio(beepUrl);
-
-          beep.play();
-          videoRef.current.srcObject = stream;
-          streamRef.current = stream;
-
-          videoRef.current.onloadedmetadata = () => {
-            if (!videoRef.current) return;
-            videoRef.current.play();
-            setIsRecording(true);
-            setIsVideoLoading(false);
-          };
-
-          const options: MediaRecorderOptions = {
-            mimeType,
-          };
-
-          mediaRecorder.current = new MediaRecorder(stream, options);
-
-          mediaRecorder.current.ondataavailable = (e) => {
-            parts.current.push(e.data);
-          };
-
-          mediaRecorder.current.onstop = async () => {
-            await finalize(parts.current);
-          };
-
-          mediaRecorder.current.start();
-
-          timeoutIdRef.current = setTimeout(() => {
-            if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
-              mediaRecorder.current.stop();
-            }
-
-            clearTimeout(timeoutIdRef.current as NodeJS.Timeout);
-            timeoutIdRef.current = null;
-          }, RECORDING_TIME);
-        })
-        .catch((err) => {
-          setIsVideoLoading(false);
-          openErrorModal({
-            description: "Failed to access camera and microphone",
-            onClose: () => modals.closeAll(),
-          });
-        });
-
-      async function finalize(parts: Blob[]) {
-        const blob = new Blob(parts, {
-          type: mimeType,
-        });
-
-        setRecordedBlob(blob);
-        saveVideo(blob);
-
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          const base64data = reader.result as string;
-          setLocalUrl(base64data);
-        };
-
-        if (videoRef.current) {
-          videoRef.current.pause();
-          videoRef.current.srcObject = null;
+      countdownRef.current = setTimeout(() => {
+        if (mediaRecorder.current?.state !== "inactive") {
+          mediaRecorder.current?.stop();
         }
+      }, RECORDING_TIME);
+    } catch (err) {
+      setIsVideoLoading(false);
+      openErrorModal({
+        description: "Failed to access camera and microphone",
+        onClose: () => modals.closeAll(),
+      });
+    }
+  }, [aspectRatio, facingMode, isVideoLoading, stopTracks]);
 
-        if (streamRef.current) {
-          stopBothVideoAndAudio(streamRef.current);
-          streamRef.current = null;
-        }
+  const finalizeRecording = async (mimeType: string) => {
+    const blob = new Blob(parts.current, { type: mimeType });
+    setRecordedBlob(blob);
+    saveVideo(blob);
 
-        setIsRecording(false);
-      }
-    },
-    [aspectRatio]
-  );
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setLocalUrl(reader.result as string);
+    };
+    reader.readAsDataURL(blob);
+
+    videoRef.current?.pause();
+    videoRef.current && (videoRef.current.srcObject = null);
+    streamRef.current && stopTracks(streamRef.current);
+    streamRef.current = null;
+    setIsRecording(false);
+  };
 
   const capturePhoto = useCallback(async () => {
-    if (captureType === "video") return;
-    if (!videoRef.current) return;
+    if (captureType === "video" || !videoRef.current) return;
 
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-
-    if (!context) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     try {
-      const shutter = new Audio(shutterUrl);
+      new Audio(shutterUrl).play();
 
-      shutter.play();
-      const video = videoRef.current;
-      if (!video.videoWidth || !video.videoHeight) return;
+      const { videoWidth: w, videoHeight: h } = videoRef.current;
+      if (!w || !h) return;
 
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
+      canvas.width = w;
+      canvas.height = h;
+      ctx.drawImage(videoRef.current, 0, 0, w, h);
 
-      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL("image/jpeg");
+      setLocalUrl(dataUrl);
 
-      const imageData = canvas.toDataURL("image/jpeg");
-
-      const res = await fetch(imageData);
-      const blob = await res.blob();
-
-      setLocalUrl(imageData);
+      const blob = await (await fetch(dataUrl)).blob();
       setRecordedBlob(blob);
-      saveToIndexedDb(`proofImage-${taskId}`, imageData);
+      saveToIndexedDb(`proofImage-${taskId}`, dataUrl);
     } catch (err) {
-      console.log("Error in capturePhoto: ", err);
+      console.error("capturePhoto error:", err);
     }
-  }, [videoRef.current, captureType, aspectRatio]);
+  }, [captureType, taskId]);
 
-  const startDelayedCapture = (seconds: number) => {
-    if (timerStarted) return;
-    setTimerStarted(true);
-    setSecondsLeft(seconds);
+  const startCountdown = useCallback(
+    (secs: number) => {
+      if (timerStarted) return;
+      setTimerStarted(true);
+      setSecondsLeft(secs);
 
-    const tick = (remaining: number) => {
-      if (remaining <= 0) {
-        setTimerStarted(false);
-        if (captureType === "image") capturePhoto();
-        if (captureType === "video")
-          startRecording({
-            facingMode,
-            aspectRatio,
-            videoRef,
-            streamRef,
-            isVideoLoading,
-            setIsVideoLoading,
-            stopBothVideoAndAudio,
-          });
-        setSecondsLeft(seconds);
-      } else {
-        setSecondsLeft(remaining);
-        setTimeout(() => tick(remaining - 1), 1000);
-      }
-    };
-    tick(seconds);
-  };
+      const intId = setInterval(() => {
+        setSecondsLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(intId);
+            setTimerStarted(false);
+
+            if (captureType === "image") capturePhoto();
+            else startRecording();
+
+            return secs;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      countdownRef.current = intId;
+    },
+    [timerStarted, captureType, capturePhoto, startRecording]
+  );
 
   const handleStop = useCallback(() => {
     if (isVideoLoading) return;
-    const beep = new Audio(beepUrl);
-    beep.play();
+    new Audio(beepUrl).play();
 
-    if (timeoutIdRef.current) {
-      clearTimeout(timeoutIdRef.current);
-      timeoutIdRef.current = null;
-    }
+    countdownRef.current && clearTimeout(countdownRef.current);
 
-    if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
-      mediaRecorder.current.stop();
+    if (mediaRecorder.current?.state !== "inactive") {
+      mediaRecorder.current!.stop();
     }
-
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.srcObject = null;
-    }
-
-    if (streamRef.current) {
-      stopBothVideoAndAudio(streamRef.current);
-      streamRef.current = null;
-    }
+    videoRef.current?.pause();
+    videoRef.current && (videoRef.current.srcObject = null);
+    streamRef.current && stopTracks(streamRef.current);
 
     setIsRecording(false);
     setLocalUrl("");
     setRecordedBlob(null);
     parts.current = [];
-  }, [isVideoLoading, stopBothVideoAndAudio]);
+  }, [isVideoLoading, stopTracks]);
 
-  const handleResetRecording = useCallback(() => {
-    if (isVideoLoading) return;
-
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.srcObject = null;
-    }
-
-    if (streamRef.current) {
-      stopBothVideoAndAudio(streamRef.current);
-      streamRef.current = null;
-    }
-
-    setIsRecording(false);
+  const resetImage = useCallback(() => {
     setLocalUrl("");
     setRecordedBlob(null);
-    setRecordingTime(RECORDING_TIME);
-    deleteFromIndexedDb(`proofVideo-${taskId}`);
-
-    parts.current = [];
-  }, [isVideoLoading, stopBothVideoAndAudio]);
-
-  const handleResetImage = useCallback(() => {
-    setLocalUrl("");
-    setRecordedBlob(null);
-    setIsRecording(false);
     deleteFromIndexedDb(`proofImage-${taskId}`);
-  }, [captureType]);
+  }, [taskId]);
+
+  const resetRecording = useCallback(() => {
+    if (isVideoLoading) return;
+    videoRef.current?.pause();
+    videoRef.current && (videoRef.current.srcObject = null);
+    streamRef.current && stopTracks(streamRef.current);
+
+    setIsRecording(false);
+    setLocalUrl("");
+    setRecordedBlob(null);
+    deleteFromIndexedDb(`proofVideo-${taskId}`);
+    parts.current = [];
+  }, [isVideoLoading, stopTracks, taskId]);
 
   const saveVideo = useCallback(
     (blob: Blob) => {
       const reader = new FileReader();
+      reader.onloadend = () => saveToIndexedDb(`proofVideo-${taskId}`, reader.result);
       reader.readAsDataURL(blob);
-      reader.onloadend = function () {
-        saveToIndexedDb(`proofVideo-${taskId}`, reader.result);
-      };
     },
-    [captureType]
+    [taskId]
   );
 
   const handleSubmit = useCallback(async () => {
-    await uploadProof({
-      recordedBlob,
-      captureType,
-    });
+    await uploadProof({ recordedBlob, captureType });
     setLocalUrl("");
     setRecordedBlob(null);
   }, [recordedBlob, uploadProof, captureType]);
 
   const flipCamera = useCallback(() => {
-    handleResetRecording();
+    resetRecording();
     setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
-  }, [facingMode, facingMode]);
+  }, [resetRecording]);
 
-  const handleChangeCaptureType = useCallback(
-    async (captureType: string) => {
-      try {
-        if (isRecording) return;
-        setCaptureType(captureType as string);
-        saveToLocalStorage("captureType", captureType);
+  const changeCaptureType = useCallback(
+    async (type: string) => {
+      if (isRecording) return;
+      setCaptureType(type);
+      saveToLocalStorage("captureType", type);
 
-        const savedVideo = await getFromIndexedDb(`proofVideo-${taskId}`);
-        const savedImage = await getFromIndexedDb(`proofImage-${taskId}`);
-        const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
+      const [savedImage, savedVideo] = await Promise.all([
+        getFromIndexedDb(`proofImage-${taskId}`),
+        getFromIndexedDb(`proofVideo-${taskId}`),
+      ]);
 
-        if (savedRecords) {
-          const newTypeRecord = savedRecords[captureType];
-          const newUrl = newTypeRecord ? newTypeRecord : "";
-          setLocalUrl(newUrl);
-        }
-      } catch (err) {}
+      const map: Record<string, string | null> = {
+        image: savedImage,
+        video: savedVideo,
+      };
+      const url = map[type] ?? "";
+      setLocalUrl(url);
     },
-    [isRecording]
+    [isRecording, taskId]
   );
 
   const startVideoPreview = useCallback(async () => {
-    if (streamRef.current) {
-      stopBothVideoAndAudio(streamRef.current);
-    }
     try {
-      const constraints: MediaStreamConstraints = {
+      streamRef.current && stopTracks(streamRef.current);
+
+      const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode,
           frameRate: { max: 30 },
           aspectRatio: { ideal: aspectRatio },
         },
         audio: true,
-      };
-
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      });
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        streamRef.current = stream;
         videoRef.current.play();
       }
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter((device) => device.kind === "videoinput");
-      if (videoDevices.length > 1) {
-        setHasMultipleCameras(true);
-      }
-    } catch (err) {
-      console.log("You need to grant camera access to be able to record proof");
-    }
-  }, [videoRef.current, streamRef.current, isRecording, isVideoLoading, facingMode, aspectRatio]);
+      streamRef.current = stream;
 
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      setHasMultipleCameras(devices.filter((d) => d.kind === "videoinput").length > 1);
+    } catch (err) {
+      const e = err as DOMException;
+      if (e?.name === "NotAllowedError" || e?.name === "PermissionDeniedError") {
+        openErrorModal({
+          title: "Camera access required",
+          description: "Please allow access to your camera.",
+          onClose: () => modals.closeAll(),
+        });
+      } else {
+        console.error("Unable to start camera:", err);
+      }
+    }
+  }, [facingMode, aspectRatio, stopTracks]);
+
+  // ─── Effects ───────────────────────────────────────────────────────────────
   useEffect(() => {
-    setCaptureType(savedCaptureType ? savedCaptureType : "image");
+    setCaptureType(savedCaptureType ?? "image");
   }, [savedCaptureType]);
 
   useEffect(() => {
     if (!captureType || !taskId) return;
 
     const loadSaved = async () => {
-      try {
-        const savedImage = await getFromIndexedDb(`proofImage-${taskId}`);
-        const savedVideo = await getFromIndexedDb(`proofVideo-${taskId}`);
-        const savedRecords: { [key: string]: any } = { image: savedImage, video: savedVideo };
+      const [savedImage, savedVideo] = await Promise.all([
+        getFromIndexedDb(`proofImage-${taskId}`),
+        getFromIndexedDb(`proofVideo-${taskId}`),
+      ]);
 
-        let typeRecord;
-        let blob = null;
+      const map: Record<string, string | null> = {
+        image: savedImage,
+        video: savedVideo,
+      };
+      const url = map[captureType] ?? "";
+      setLocalUrl(url);
 
-        if (savedRecords) {
-          typeRecord = savedRecords[captureType];
-
-          if (typeRecord) {
-            blob = base64ToBlob(typeRecord, captureType === "image" ? "image/jpeg" : "video/webm");
-          }
-        }
-
-        const savedUrl = typeRecord ? typeRecord : "";
-
-        setLocalUrl(savedUrl);
-        setRecordedBlob(blob);
-      } catch (err) {}
+      if (url) {
+        const mime = captureType === "image" ? "image/jpeg" : "video/webm";
+        setRecordedBlob(base64ToBlob(url, mime));
+      } else {
+        setRecordedBlob(null);
+      }
     };
-
     loadSaved();
   }, [captureType, taskId]);
 
+  // Start preview whenever conditions allow
   useEffect(() => {
-    if (!componentLoaded) return;
-    if (!showStartRecording) return;
-    startVideoPreview();
-  }, [facingMode, componentLoaded, showStartRecording, aspectRatio]);
+    if (componentLoaded && showStartRecording) startVideoPreview();
+  }, [componentLoaded, showStartRecording, startVideoPreview]);
 
   useEffect(() => {
     setComponentLoaded(true);
-
     return () => {
-      if (timeoutIdRef.current) {
-        clearTimeout(timeoutIdRef.current);
-      }
-      if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
-        mediaRecorder.current.stop();
-      }
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.srcObject = null;
-      }
-      if (streamRef.current) {
-        stopBothVideoAndAudio(streamRef.current);
-      }
+      countdownRef.current && clearTimeout(countdownRef.current);
+      mediaRecorder.current?.state !== "inactive" && mediaRecorder.current?.stop();
+      videoRef.current?.pause();
+      videoRef.current && (videoRef.current.srcObject = null);
+      streamRef.current && stopTracks(streamRef.current);
     };
-  }, []);
+  }, [stopTracks]);
 
+  // ─── Render ────────────────────────────────────────────────────────────────
   const startText = captureType === "image" ? "Capture" : "Start";
 
   return (
@@ -495,21 +393,24 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
         instruction={instruction}
         customStyles={{ flex: 0 }}
       />
+
       <SegmentedControl
         classNames={{ root: "segmentControlRoot", indicator: "segmentControlIndicator" }}
         value={captureType}
-        onChange={handleChangeCaptureType}
+        onChange={changeCaptureType}
         data={segments}
       />
+
       <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
         {!localUrl && (
           <>
-            {isRecording && <RecordingStatus recordingTime={recordingTime} />}
+            {isRecording && <RecordingStatus recordingTime={RECORDING_TIME} />}
             {timerStarted && (
               <div className={classes.timerOverlay}>
                 <Text fz={40}>{secondsLeft}</Text>
               </div>
             )}
+
             <div className={classes.videoWrapper}>
               <video
                 ref={videoRef}
@@ -517,9 +418,11 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                 style={{ aspectRatio }}
                 autoPlay
                 muted
-              ></video>
+              />
             </div>
+
             <Group className={classes.buttonGroup}>
+              {/* Left button cluster */}
               <Group>
                 {!isRecording && (
                   <>
@@ -535,6 +438,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                         <IconCameraRotate className="icon" />
                       </Button>
                     )}
+
                     <Button
                       variant="default"
                       disabled={timerStarted}
@@ -552,33 +456,27 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                 )}
               </Group>
 
+              {/* Right button cluster */}
               <Group>
                 {showStartRecording && (
                   <>
-                    <Button
-                      variant="default"
-                      disabled={timerStarted}
-                      onClick={() => startDelayedCapture(5)}
-                      className={classes.button}
-                      style={{ flexGrow: 0, padding: 0 }}
-                      miw={rem(50)}
-                    >
-                      <Text mr={2}>5</Text>
-                      <IconStopwatch className="icon" />
-                    </Button>
-                    <Button
-                      variant="default"
-                      disabled={timerStarted}
-                      onClick={() => startDelayedCapture(15)}
-                      className={classes.button}
-                      style={{ flexGrow: 0, padding: 0 }}
-                      miw={rem(50)}
-                    >
-                      <Text mr={2}>15</Text>
-                      <IconStopwatch className="icon" />
-                    </Button>
+                    {[5, 15].map((s) => (
+                      <Button
+                        key={s}
+                        variant="default"
+                        disabled={timerStarted}
+                        onClick={() => startCountdown(s)}
+                        className={classes.button}
+                        style={{ flexGrow: 0, padding: 0 }}
+                        miw={rem(50)}
+                      >
+                        <Text mr={2}>{s}</Text>
+                        <IconStopwatch className="icon" />
+                      </Button>
+                    ))}
                   </>
                 )}
+
                 {isRecording && (
                   <Button
                     variant="default"
@@ -586,25 +484,14 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                     onClick={handleStop}
                     className={classes.button}
                   >
-                    <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} /> Finish
+                    <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} />
+                    Finish
                   </Button>
                 )}
+
                 {showStartRecording && (
                   <Button
-                    onClick={
-                      captureType === "image"
-                        ? capturePhoto
-                        : () =>
-                            startRecording({
-                              facingMode,
-                              aspectRatio,
-                              videoRef,
-                              streamRef,
-                              isVideoLoading,
-                              setIsVideoLoading,
-                              stopBothVideoAndAudio,
-                            })
-                    }
+                    onClick={captureType === "image" ? capturePhoto : startRecording}
                     className={classes.button}
                     disabled={taskExpired || timerStarted}
                   >
@@ -615,13 +502,14 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
             </Group>
           </>
         )}
+
         {localUrl && (
           <VideoRecorderResult
             captureType={captureType}
             isVideoLoading={isVideoLoading}
             localUrl={localUrl}
-            handleResetImage={handleResetImage}
-            handleResetRecording={handleResetRecording}
+            handleResetImage={resetImage}
+            handleResetRecording={resetRecording}
             handleSubmit={handleSubmit}
             setLocalUrl={setLocalUrl}
           />
