@@ -115,9 +115,6 @@ export default function PhotoCapturer({
     setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
   }, []);
 
-  /** On mobile we keep the aspect the same as the screen, on desktop we prefer square. */
-  const idealAspectRatio = isMobile ? viewportHeight / viewportWidth : 1;
-
   /** (Re)start the camera stream. Runs on mount + when constraints change. */
   const startVideoPreview = useCallback(async () => {
     stopStream(streamRef.current); // dispose previous stream first
@@ -127,7 +124,7 @@ export default function PhotoCapturer({
         audio: false,
         video: {
           facingMode,
-          aspectRatio: { ideal: idealAspectRatio },
+          aspectRatio: { ideal: isMobile ? 2 : 1 },
           frameRate: { max: 30 },
         },
       };
@@ -154,10 +151,9 @@ export default function PhotoCapturer({
         });
       } else {
         // Other errors (e.g. no camera, already in use, etc.)
-        console.error("Unable to start camera:", err);
       }
     }
-  }, [facingMode, idealAspectRatio, stopStream]);
+  }, [facingMode, isMobile, stopStream]);
 
   /* Boot up preview and clean up on unmount */
   useEffect(() => {

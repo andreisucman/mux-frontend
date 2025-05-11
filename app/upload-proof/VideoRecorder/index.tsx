@@ -193,7 +193,6 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
       setRecordedBlob(blob);
       saveToIndexedDb(`proofImage-${taskId}`, dataUrl);
     } catch (err) {
-      console.error("capturePhoto error:", err);
     }
   }, [captureType, taskId]);
 

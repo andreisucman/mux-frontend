@@ -1,10 +1,10 @@
 .container {
   position: relative;
   flex: 1;
-  height: 100%;
 }
 
 .buttons {
+  display: flex;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -19,7 +19,6 @@
     0.5
   );
   border-radius: rem(16) 0 rem(16) rem(16);
-  display: flex;
   gap: rem(16);
 }
 
@@ -38,8 +37,6 @@
   position: relative;
   gap: rem(8);
   flex: 1;
-  height: 100%;
-  width: 100%;
   border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   border-radius: var(--mantine-radius-lg);
   overflow: hidden;
