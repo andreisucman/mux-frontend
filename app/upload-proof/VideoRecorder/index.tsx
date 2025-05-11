@@ -81,9 +81,9 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   const aspectRatio = useMemo(() => {
     let ratio = 0;
     if (orientation === "vertical") {
-      ratio = isMobile ? vpH / vpW : 1;
+      ratio = isMobile ? 2 / 1 : 1 / 2;
     } else {
-      ratio = 9 / 16;
+      ratio = 1 / 2;
     }
     return Number.isNaN(ratio) ? 20 / 9 : ratio;
   }, [vpW, vpH, isMobile, orientation]);
@@ -192,8 +192,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
       const blob = await (await fetch(dataUrl)).blob();
       setRecordedBlob(blob);
       saveToIndexedDb(`proofImage-${taskId}`, dataUrl);
-    } catch (err) {
-    }
+    } catch (err) {}
   }, [captureType, taskId]);
 
   const startCountdown = useCallback(

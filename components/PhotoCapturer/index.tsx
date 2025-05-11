@@ -40,12 +40,8 @@ export default function PhotoCapturer({
   hideFlipCamera,
 }: PhotoCapturerProps) {
   const [facingMode, setFacingMode] = useState<FacingMode>(defaultFacingMode);
-
-  /** Viewport & responsive helpers */
-  const { height: viewportHeight, width: viewportWidth } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 36em)");
 
-  /** DOM + media‑stream refs */
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
