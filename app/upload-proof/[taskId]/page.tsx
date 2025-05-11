@@ -26,11 +26,8 @@ export const runtime = "edge";
 
 type HandleUploadProps = {
   taskId: string;
-  blurType: BlurTypeEnum;
   captureType: "image" | "video";
-  recordedBlob: Blob;
-  publishToClub: boolean;
-  removeFromLocalStorage: () => Promise<void>;
+  recordedBlob: Blob | null;
 };
 
 type Props = {
@@ -77,12 +74,7 @@ export default function UploadProof(props: Props) {
     [taskId]
   );
 
-  const uploadProof = async ({
-    taskId,
-    recordedBlob,
-    captureType,
-    blurType,
-  }: HandleUploadProps) => {
+  const uploadProof = async ({ taskId, recordedBlob, captureType }: HandleUploadProps) => {
     if (!taskId || !captureType || !recordedBlob) return;
 
     try {
@@ -93,15 +85,13 @@ export default function UploadProof(props: Props) {
         mime: finalMime,
       });
 
-      const finalBlurType = captureType === "image" ? blurType : BlurTypeEnum.ORIGINAL;
-
       const response = await callTheServer({
         endpoint: "uploadProof",
         method: "POST",
         body: {
           taskId,
           url: urlArray[0],
-          blurType: finalBlurType,
+          blurType: BlurTypeEnum.ORIGINAL,
         },
       });
 
@@ -292,7 +282,13 @@ export default function UploadProof(props: Props) {
                 taskExpired={taskExpired}
                 instruction={requisite || ""}
                 taskId={taskId}
-                uploadProof={(otherArgs) => uploadProof({ taskId, ...otherArgs })}
+                uploadProof={(otherArgs) =>
+                  uploadProof({
+                    taskId,
+                    captureType: otherArgs.captureType as "image",
+                    recordedBlob: otherArgs.recordedBlob,
+                  })
+                }
               />
             )}
             {componentToDisplay === "expired" && (
