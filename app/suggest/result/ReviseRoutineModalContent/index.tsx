@@ -5,7 +5,7 @@ import TextareaComponent from "@/components/TextAreaComponent";
 
 type Props = {
   routineSuggestionId: string;
-  streamRoutineSuggestions: (routineSuggestionId: string, revisionText?: string) => Promise<void>;
+  streamRoutineSuggestions: (routineSuggestionId: string, revisionText?: string) => void;
 };
 
 export default function ReviseRoutineModalContent({

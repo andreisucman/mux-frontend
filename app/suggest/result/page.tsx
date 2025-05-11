@@ -35,10 +35,6 @@ export type CreateRoutineProps = {
   revisionText?: string;
 };
 
-function cleanDataString(inputString: string) {
-  return inputString.replace("data: ", "");
-}
-
 export default function SuggestRoutine() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -132,42 +128,39 @@ export default function SuggestRoutine() {
         }
 
         if (!idMatch && !eventMatch) {
-          const cleaned = cleanDataString(chunk);
-          offset += cleaned.length;
-          offsetRef.current += cleaned.length;
-          setThoughts((prev) => prev + cleaned);
+          offset += chunk.length;
+          offsetRef.current += chunk.length;
+          setThoughts((prev) => prev + chunk);
           saveToLocalStorage("routineStreamOffset", offset.toString());
         }
       }
-
       fetchUserData({ setUserDetails });
-      fetchRoutineSuggestion();
-      setIsStreaming(false);
-      setLoaderText("");
-      deleteFromLocalStorage("routineStreamId");
-      deleteFromLocalStorage("routineStreamOffset");
+      fetchRoutineSuggestion().then(() => {
+        setIsStreaming(false);
+        setLoaderText("");
+        deleteFromLocalStorage("routineStreamId");
+        deleteFromLocalStorage("routineStreamOffset");
+      });
     } catch (err: any) {}
   };
 
   const taskRows = useMemo(() => {
     if (!tasks) return;
     const concerns = Object.keys(tasks);
-    const taskGroups = concerns.map((concern) => tasks[concern]);
+    const taskGroups = concerns.map((concern) => tasks[concern]).filter((gr) => gr.length > 0);
 
     return taskGroups.map((group, index) => {
       const name = group?.[0]?.concern;
       const label = name.split("_").join(" ");
       return (
         <Stack key={index}>
-          {taskGroups.length > 1 && (
-            <Divider
-              label={
-                <Text c="dimmed" size="sm">
-                  {upperFirst(label)}
-                </Text>
-              }
-            />
-          )}
+          <Divider
+            label={
+              <Text c="dimmed" size="sm">
+                {upperFirst(label)}
+              </Text>
+            }
+          />
           {group.map((t, i) => (
             <SuggestedTaskRow
               key={i}
