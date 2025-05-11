@@ -127,7 +127,6 @@ export default function PhotoCapturer({
         video: {
           facingMode,
           frameRate: { max: 30 },
-          aspectRatio: { ideal: isMobile ? 1 / 2 : 16 / 9 },
         },
       };
 
@@ -156,7 +155,7 @@ export default function PhotoCapturer({
         console.error("Unable to start camera:", err);
       }
     }
-  }, [facingMode, isMobile, stopStream]);
+  }, [facingMode, stopStream]);
 
   /* Boot up preview and clean up on unmount */
   useEffect(() => {
