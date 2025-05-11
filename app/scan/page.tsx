@@ -77,7 +77,15 @@ export default function ScanProgress() {
   }, [status, pathname, handleResetTimer]);
 
   const handleUpload = useCallback(
-    async ({ url, beforeImageUrl, part, blurDots, offsets }: UploadProgressProps) => {
+    async ({
+      url,
+      beforeImageUrl,
+      part,
+      blurDots,
+      offsets,
+      onErrorCb,
+      onCompleteCb,
+    }: UploadProgressProps) => {
       if (!userDetails || !url) return;
 
       let intervalId: NodeJS.Timeout;
@@ -130,6 +138,8 @@ export default function ScanProgress() {
 
           if (response.status === 200) {
             if (response.error) {
+              onErrorCb();
+
               if (response.error === "must login") {
                 openAuthModal({
                   title: "Sign in to continue",
@@ -145,7 +155,7 @@ export default function ScanProgress() {
               if (response.error === "not similar") {
                 openErrorModal({
                   description:
-                    "Your current photo is too different from the previous. Click 'Overlay' in the top left and try to match the previouss image when taking the new photo.",
+                    "Your current photo is too different from the previous. Click 'Overlay' in the top left and try to match the previous image when taking the new photo.",
                 });
                 return;
               }
@@ -165,7 +175,7 @@ export default function ScanProgress() {
 
               const lastImage = response.message[response.message.length - 1];
 
-              return lastImage;
+              onCompleteCb(lastImage);
             }
           } else {
             openErrorModal();

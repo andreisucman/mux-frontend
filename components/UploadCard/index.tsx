@@ -23,7 +23,7 @@ type Props = {
   part: PartEnum;
   progress: number;
   isLoading?: boolean;
-  handleUpload: (args: UploadProgressProps) => Promise<ToAnalyzeType>;
+  handleUpload: (args: UploadProgressProps) => void;
 };
 
 export default function UploadCard({ part, progress, isLoading, handleUpload }: Props) {
@@ -153,18 +153,21 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
 
   const handleClickUpload = useCallback(async () => {
     const finalOverlayImage = overlayImage || imagesMissingUpdates[0];
-    const lastToAnalyzeObject = await handleUpload({
+    await handleUpload({
       part,
       url: localUrl,
       beforeImageUrl: finalOverlayImage,
       blurDots,
       offsets,
+      onErrorCb: handleDeleteLocalImage,
+      onCompleteCb: (lastToAnalyzeObject: ToAnalyzeType) => {
+        if (lastToAnalyzeObject) setLocalUrl(lastToAnalyzeObject.mainUrl.url);
+        setDisplayComponent("preview");
+        setShowStartAnalysis(true);
+        setShowBlur(false);
+      },
     });
-    if (lastToAnalyzeObject) setLocalUrl(lastToAnalyzeObject.mainUrl.url);
-    setDisplayComponent("preview");
-    setShowStartAnalysis(true);
-    setShowBlur(false);
-  }, [part, localUrl, offsets, blurDots, somethingUploaded]);
+  }, [part, localUrl, offsets, blurDots, somethingUploaded, toAnalyze]);
 
   const handleStartAnalysis = useCallback(async () => {
     if (!userId || !somethingUploaded || isButtonLoading) return;

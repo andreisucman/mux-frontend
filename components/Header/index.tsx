@@ -1,8 +1,8 @@
 "use client";
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { IconDoorEnter, IconMessageReply, IconRocket } from "@tabler/icons-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { IconBug, IconDoorEnter, IconMessageDollar, IconRocket } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Button, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
@@ -13,7 +13,6 @@ import DrawerNavigation from "@/components/Header/DrawerNavigation";
 import Logo from "@/components/Header/Logo";
 import { UserContext } from "@/context/UserContext";
 import { clearCookies } from "@/helpers/cookies";
-import { useRouter } from "next/navigation";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import openAuthModal from "@/helpers/openAuthModal";
 import openFeedbackModal from "@/helpers/openFeedbackModal";
@@ -195,7 +194,7 @@ function Header() {
                 {displayComponent === "userButton" && (
                   <>
                     <ActionIcon variant="default" onClick={openFeedbackModal} size="lg">
-                      <IconMessageReply size={24} stroke={1.25} />
+                      <IconMessageDollar size={22} stroke={1.25} />
                     </ActionIcon>
                     <UserButton
                       avatar={avatar}

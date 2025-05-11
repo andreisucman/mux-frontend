@@ -1,13 +1,45 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { IconHandGrab, IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {
+  IconHandGrab,
+  IconMinus,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
-import { ActionIcon, AngleSlider, Button, Group, rem, Stack } from "@mantine/core";
+import {
+  ActionIcon,
+  AngleSlider,
+  Button,
+  Group,
+  rem,
+  Stack,
+} from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { OffsetType } from "@/app/select-part/types";
 import { BlurDotType } from "../UploadCard/types";
 import VerticalSlider from "./VerticalSlider";
 import classes from "./DraggableImageContainer.module.css";
+
+/**
+ * Per-dot refs are stored here so React-Draggable gets a stable nodeRef.
+ */
+function useDotRefs() {
+  const map = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
+    {}
+  );
+  const get = useCallback((id: string) => {
+    if (!map.current[id]) map.current[id] = React.createRef();
+    return map.current[id];
+  }, []);
+  return get;
+}
 
 type Props = {
   setBlurDots: React.Dispatch<React.SetStateAction<BlurDotType[]>>;
@@ -33,130 +65,114 @@ export default function DraggableImageContainer({
   handleDelete,
   setBlurDots,
 }: Props) {
-  const nodeRef = useRef(null);
-  const secondNodeRef = useRef(null);
-  const thirdNodeRef = useRef(null);
-  const controlPaneRef = useRef(null);
+  /* --------------------------- basic refs & state -------------------------- */
+  const getDotRef = useDotRefs();
+  const controlPaneRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const { width: containerWidth, height: containerHeight, ref: containerRef } = useElementSize();
+  const { width: containerWidth, height: containerHeight, ref: containerRef } =
+    useElementSize();
   const [selectedDotId, setSelectedDotId] = useState<string>();
   const [imageLoaded, setImageLoaded] = useState(false);
-  const defaultDotPosition = { x: 100, y: 100 };
 
+  /**
+   * Reset the loaded flag whenever the source image changes so size
+   * calculations rerun after the new image finishes loading.
+   */
+  useEffect(() => setImageLoaded(false), [image]);
+
+  /* ---------------------- derived style for <img> wrapper ------------------ */
   const imageStyles = useMemo(() => {
-    if (!imageLoaded) return;
-    let width = 0;
-    let height = 0;
+    if (!imageLoaded || !containerWidth || !containerHeight) return undefined;
+    const naturalH = imageRef.current?.naturalHeight ?? 1;
+    const naturalW = imageRef.current?.naturalWidth ?? 1;
+    if (!naturalW) return undefined; // corrupt image safety-net
 
-    const ratio = (imageRef.current?.naturalHeight || 1) / (imageRef.current?.naturalWidth || 1);
+    const ratio = naturalH / naturalW;
+    return ratio > 1
+      ? { height: containerHeight, width: containerHeight / ratio }
+      : { width: containerWidth, height: containerWidth * ratio };
+  }, [imageLoaded, containerWidth, containerHeight]);
 
-    if (ratio > 1) {
-      height = containerHeight;
-      width = (containerHeight || 0) / ratio;
-    } else {
-      width = containerWidth;
-      height = (containerWidth || 0) * ratio;
-    }
+  /* ---------------------------- offset helper ----------------------------- */
+  const calculateOffsets = useCallback((): OffsetType => {
+    const naturalW = imageRef.current?.naturalWidth ?? 0;
+    const naturalH = imageRef.current?.naturalHeight ?? 0;
+    if (!naturalW || !naturalH) return { scaleHeight: 0, scaleWidth: 0 };
 
-    return { width, height };
-  }, [imageLoaded, image, imageRef.current, containerHeight, containerHeight]);
-
-  const calculateOffsets = () => {
-    let scaleHeight = 0;
-    let scaleWidth = 0;
-
-    if (!imageRef.current) return { scaleHeight, scaleWidth };
-    const naturalWidth = imageRef.current.naturalWidth;
-    const naturalHeight = imageRef.current.naturalHeight;
-
-    if (naturalWidth === 0 || naturalHeight === 0) return { scaleHeight, scaleWidth };
-
-    const renderedWidth = imageRef.current.clientWidth || 0;
-    const renderedHeight = imageRef.current.clientHeight || 0;
-
-    scaleWidth = renderedWidth / naturalWidth;
-    scaleHeight = renderedHeight / naturalHeight;
+    const renderedW = imageRef.current?.clientWidth ?? 0;
+    const renderedH = imageRef.current?.clientHeight ?? 0;
 
     return {
-      scaleHeight,
-      scaleWidth,
+      scaleWidth: renderedW / naturalW,
+      scaleHeight: renderedH / naturalH,
     };
-  };
+  }, []);
+
+  /* -------------------------- sync offsets upward ------------------------- */
+  useEffect(() => {
+    if (!imageLoaded) return;
+    setOffsets(calculateOffsets());
+  }, [imageLoaded, containerWidth, containerHeight, calculateOffsets, setOffsets]);
+
+  /* ---------------------- dot add / remove / update ----------------------- */
+  const defaultDotPosition = { x: 100, y: 100 };
 
   const handleAddDot = () => {
-    if (!imageRef.current) return;
-    if (blurDots.length > 3) return;
+    if (!imageLoaded || !imageRef.current) return;
+    if (blurDots.length >= 3) return;
+
+    const renderedW = imageRef.current.clientWidth;
+    const renderedH = imageRef.current.clientHeight;
+    if (!renderedW || !renderedH) return; // dimensions not ready yet
 
     const id = Math.random().toString(36).slice(2, 9);
-    const renderedWidth = imageRef.current.clientWidth;
-    const renderedHeight = imageRef.current.clientHeight;
-    const size = Math.max(renderedWidth, renderedHeight) / 2;
+    const size = Math.min(renderedW, renderedH) / 3; // friendlier default size
 
-    const newDot = {
+    const newDot: BlurDotType = {
       id,
       originalWidth: size,
       originalHeight: size / 2,
-      scaleX: 1,
-      scaleY: 1,
-      angle: 180,
+      scaleX: blurDots.at(-1)?.scaleX ?? 1,
+      scaleY: blurDots.at(-1)?.scaleY ?? 1,
+      angle: blurDots.at(-1) ? 360 - blurDots.at(-1)!.angle : 180,
       x: defaultDotPosition.x,
       y: defaultDotPosition.y,
     };
 
-    if (blurDots.length) {
-      newDot.scaleX = blurDots[blurDots.length - 1].scaleX;
-      newDot.scaleY = blurDots[blurDots.length - 1].scaleY;
-      newDot.angle = 360 - blurDots[blurDots.length - 1].angle;
-    }
-
-    setSelectedDotId(newDot.id);
+    // state update in two steps – no side-effects inside a setter
     setBlurDots((prev) => [...prev, newDot]);
+    setSelectedDotId(id);
   };
 
   const handleRemoveDot = () => {
-    if (blurDots.length === 0 || !selectedDotId) return;
-
+    if (!selectedDotId) return;
     setBlurDots((prev) => {
-      const newDots = prev.filter((obj) => obj.id !== selectedDotId);
-      if (newDots.length) setSelectedDotId(newDots[0].id);
-      return newDots;
+      const next = prev.filter((d) => d.id !== selectedDotId);
+      if (next.length) setSelectedDotId(next[0].id);
+      else setSelectedDotId(undefined);
+      return next;
     });
   };
 
-  const handleChangeWidth = (scale: number, dotId?: string) => {
-    if (!dotId) return;
-    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, scaleX: scale } : d)));
-  };
+  /* generic field setters */
+  const updateDot = useCallback(
+    (id: string | undefined, patch: Partial<BlurDotType>) => {
+      if (!id) return;
+      setBlurDots((prev) => prev.map((d) => (d.id === id ? { ...d, ...patch } : d)));
+    },
+    [setBlurDots]
+  );
 
-  const handleChangeHeight = (scale: number, dotId?: string) => {
-    if (!dotId) return;
-    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, scaleY: scale } : d)));
-  };
-
-  const handleChangeCoordinates = (x: number, y: number, dotId?: string) => {
-    if (!dotId) return;
-    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, x, y } : d)));
-  };
-
-  const handleChangeAngle = (angle: number, dotId?: string) => {
-    if (!dotId) return;
-    setBlurDots((prevDots) => prevDots.map((d) => (d.id === dotId ? { ...d, angle } : d)));
-  };
-
-  const selectedDot = blurDots.find((dot) => dot.id === selectedDotId);
-
-  useEffect(() => {
-    if (!imageLoaded) return;
-    const offsets = calculateOffsets();
-    setOffsets(offsets);
-  }, [imageLoaded, typeof image, imageRef.current?.naturalHeight, imageRef.current?.naturalHeight]);
+  /* ------------------------------ render ---------------------------------- */
+  const selectedDot = blurDots.find((d) => d.id === selectedDotId);
 
   return (
-    <Stack className={classes.container} ref={containerRef} style={customStyles || {}}>
+    <Stack className={classes.container} ref={containerRef} style={customStyles}>
+      {/* delete button */}
       {handleDelete && image && (
         <ActionIcon
           className={classes.deleteIcon}
-          disabled={!!disableDelete}
+          disabled={disableDelete}
           variant="default"
           onClick={handleDelete}
         >
@@ -164,33 +180,36 @@ export default function DraggableImageContainer({
         </ActionIcon>
       )}
 
+      {/* image + dots */}
       {image && (
         <div className={classes.imageWrapper} style={imageStyles}>
-          {showBlur && image && (
+          {showBlur && (
             <>
-              {blurDots.map((dot, i) => {
-                const nodeRefs = [nodeRef, secondNodeRef, thirdNodeRef];
-                const renderedWidth = imageRef.current?.clientWidth || 0;
-                const renderedHeight = imageRef.current?.clientHeight || 0;
+              {blurDots.map((dot) => {
+                const nodeRef = getDotRef(dot.id);
+                const renderedW = imageRef.current?.clientWidth ?? 0;
+                const renderedH = imageRef.current?.clientHeight ?? 0;
+
                 return (
                   <Draggable
+                    key={dot.id}
+                    nodeRef={nodeRef}
                     defaultClassName={classes.dragger}
-                    onStop={() => setSelectedDotId(dot.id)}
-                    onDrag={(e, data) => handleChangeCoordinates(data.x, data.y, dot.id)}
-                    defaultPosition={{
-                      x: defaultDotPosition.x,
-                      y: defaultDotPosition.y,
-                    }}
-                    nodeRef={nodeRefs[i]}
                     bounds={{
                       left: 0,
                       top: 0,
-                      right: renderedWidth - dot.originalWidth * dot.scaleX,
-                      bottom: renderedHeight - dot.originalHeight * dot.scaleY,
+                      right: renderedW - dot.originalWidth * dot.scaleX,
+                      bottom: renderedH - dot.originalHeight * dot.scaleY,
                     }}
-                    key={dot.id}
+                    position={{ x: dot.x, y: dot.y }}
+                    onDrag={(_, data) => updateDot(dot.id, { x: data.x, y: data.y })}
+                    onStop={() => setSelectedDotId(dot.id)}
                   >
-                    <div ref={nodeRefs[i]} className={classes.nodeWrapper}>
+                    <div
+                      ref={nodeRef}
+                      className={classes.nodeWrapper}
+                      onMouseDown={() => setSelectedDotId(dot.id)}
+                    >
                       <div
                         className={cn(classes.node, {
                           [classes.selectedNode]: dot.id === selectedDotId,
@@ -200,20 +219,23 @@ export default function DraggableImageContainer({
                           height: dot.originalHeight * dot.scaleY,
                           transform: `rotate(${dot.angle}deg)`,
                         }}
-                      ></div>
+                      />
                     </div>
                   </Draggable>
                 );
               })}
+
+              {/* control panel */}
               <Draggable
+                nodeRef={controlPaneRef}
                 defaultClassName={classes.dragger}
                 cancel=".no-drag"
-                nodeRef={controlPaneRef}
               >
                 <Stack className={classes.controlPanel} ref={controlPaneRef}>
                   <ActionIcon variant="default" className={classes.dndIcon}>
                     <IconHandGrab size={16} />
                   </ActionIcon>
+
                   <Stack gap={8}>
                     <Button
                       className="no-drag"
@@ -226,7 +248,7 @@ export default function DraggableImageContainer({
                     </Button>
                     <Button
                       className="no-drag"
-                      disabled={blurDots.length - 1 < 0 || !selectedDotId}
+                      disabled={!selectedDotId}
                       variant="default"
                       size="compact-sm"
                       onClick={handleRemoveDot}
@@ -234,21 +256,22 @@ export default function DraggableImageContainer({
                       <IconMinus size={16} style={{ marginRight: rem(4) }} /> Remove
                     </Button>
                   </Stack>
+
                   <Group className="no-drag">
                     <VerticalSlider
-                      value={selectedDot?.scaleX || 1}
-                      setValue={(value) => handleChangeWidth(value, selectedDotId)}
+                      value={selectedDot?.scaleX ?? 1}
+                      setValue={(v) => updateDot(selectedDotId, { scaleX: v })}
                     />
                     <VerticalSlider
-                      value={selectedDot?.scaleY || 1}
-                      setValue={(value) => handleChangeHeight(value, selectedDotId)}
+                      value={selectedDot?.scaleY ?? 1}
+                      setValue={(v) => updateDot(selectedDotId, { scaleY: v })}
                     />
                   </Group>
 
                   <AngleSlider
                     className="no-drag"
-                    value={selectedDot?.angle || 180}
-                    onChange={(value) => handleChangeAngle(value, selectedDotId)}
+                    value={selectedDot?.angle ?? 180}
+                    onChange={(v) => updateDot(selectedDotId, { angle: v })}
                     size={60}
                     thumbSize={8}
                   />
@@ -256,12 +279,14 @@ export default function DraggableImageContainer({
               </Draggable>
             </>
           )}
+
+          {/* the image itself */}
           <img
             ref={imageRef}
             src={image || "https://placehold.co/169x300?text=Your+photo"}
             className={classes.image}
-            style={customImageStyles ? customImageStyles : {}}
-            alt=""
+            style={customImageStyles}
+            alt="uploaded"
             onLoad={() => setImageLoaded(true)}
           />
         </div>
