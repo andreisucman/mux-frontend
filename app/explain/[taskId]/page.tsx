@@ -61,7 +61,6 @@ export default function Explain(props: Props) {
   const {
     isDish,
     startsAt,
-    productTypes,
     examples,
     proofEnabled,
     completedAt,
@@ -99,10 +98,6 @@ export default function Explain(props: Props) {
     }
   }, [status, completedAt, startsAt, timeExpired]);
 
-  const productsNeeded = useMemo(
-    () => (productTypes ? productTypes.map((name) => upperFirst(name)).join(", ") : ""),
-    [productTypes]
-  );
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
 
   const switchProofUpload = async (proofEnabled: boolean, taskId?: string | null) => {
@@ -405,9 +400,7 @@ export default function Explain(props: Props) {
                 expiresAt={taskInfo && taskInfo.expiresAt}
               />
               <ExplanationContainer title="Description:" text={taskDescription} />
-              {productsNeeded.length > 0 && (
-                <ExplanationContainer title="Products needed:" text={productsNeeded} />
-              )}
+
               {isDish && (
                 <CreateRecipeBox
                   taskId={taskId}
@@ -417,16 +410,25 @@ export default function Explain(props: Props) {
                 />
               )}
               <Stack className={classes.exampleWrapper}>
+                <ExplanationContainer
+                  title="Steps:"
+                  text={taskInstruction}
+                  customStyles={{
+                    borderBottom: "none",
+                    paddingBottom: 0,
+                    borderRadius: "1rem 1rem 0 0",
+                  }}
+                />
                 <ExampleContainer
                   title="Example:"
                   examples={examples}
                   timeExpired={timeExpired || !!futureStartDate}
                   findExamples={handleFindExamples}
-                />
-                <ExplanationContainer
-                  title="Steps:"
-                  text={taskInstruction}
-                  customStyles={{ borderRadius: "0 0 1rem 1rem" }}
+                  customStyles={{
+                    borderRadius: "0 0 1rem 1rem",
+                    paddingBottom: "1rem",
+                    borderTop: "none",
+                  }}
                 />
               </Stack>
             </>

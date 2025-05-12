@@ -53,7 +53,7 @@ const segments = [
 ];
 
 export default function VideoRecorder({ taskId, taskExpired, instruction, uploadProof }: Props) {
-  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [localUrl, setLocalUrl] = useState("");
   const [componentLoaded, setComponentLoaded] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);

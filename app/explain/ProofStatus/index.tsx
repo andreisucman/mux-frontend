@@ -68,12 +68,12 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
       label = "Expired";
       icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
-      if (proofEnabled && requiresProof) {
+      label = "Mark done";
+      icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />;
+
+      if (proofEnabled && proofEnabled) {
         label = "Upload proof";
         icon = <IconCamera className="icon" style={{ marginRight: rem(6) }} />;
-      } else {
-        label = "Mark done";
-        icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />;
       }
     }
 

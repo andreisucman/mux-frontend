@@ -9,19 +9,11 @@ type Props = {
   customStyles?: { [key: string]: any };
 };
 
-export default function ExplanationContainer({
-  title,
-  text,
-  customStyles,
-  size = "md",
-}: Props) {
+export default function ExplanationContainer({ title, text, customStyles, size = "md" }: Props) {
   const textArray = useMemo(() => text?.split("\n"), [text]);
 
   return (
-    <Stack
-      className={classes.container}
-      style={customStyles ? customStyles : {}}
-    >
+    <Stack className={classes.container} style={customStyles ? customStyles : {}}>
       {title && (
         <Text className={classes.title} c="dimmed">
           {title}
