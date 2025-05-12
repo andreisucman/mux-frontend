@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import {
   IconArrowBackUp,
   IconCamera,
@@ -8,7 +9,6 @@ import {
 } from "@tabler/icons-react";
 import { Button, Group, rem, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
 import modifyQuery from "@/helpers/modifyQuery";
 import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
@@ -23,7 +23,7 @@ type Props = {
 
 function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: Props) {
   const router = useRouter();
-  const { _id: taskId, proofEnabled, status, proofId, name } = selectedTask || {};
+  const { _id: taskId, requiresProof, proofEnabled, status, proofId, name } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>
@@ -68,7 +68,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
       label = "Expired";
       icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
     } else {
-      if (proofEnabled) {
+      if (proofEnabled && requiresProof) {
         label = "Upload proof";
         icon = <IconCamera className="icon" style={{ marginRight: rem(6) }} />;
       } else {

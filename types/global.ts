@@ -336,5 +336,6 @@ export type TaskType = {
   productTypes: string[];
   isCreated?: boolean;
   proofId: string;
+  requiresProof: boolean;
   examples: TaskExampleType[];
 };

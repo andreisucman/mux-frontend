@@ -67,6 +67,7 @@ export default function Explain(props: Props) {
     completedAt,
     expiresAt,
     status,
+    requiresProof,
     previousRecipe,
     status: taskStatus,
     name: taskName,
@@ -346,12 +347,14 @@ export default function Explain(props: Props) {
           ) : (
             <>
               <Group className={classes.buttonsGroup}>
-                <Switch
-                  label={"Enable proof"}
-                  disabled={taskStatus === TaskStatusEnum.COMPLETED}
-                  checked={proofEnabled || false}
-                  onChange={() => switchProofUpload(!proofEnabled, taskId)}
-                />
+                {requiresProof && (
+                  <Switch
+                    label={"Enable proof"}
+                    disabled={taskStatus === TaskStatusEnum.COMPLETED}
+                    checked={proofEnabled || false}
+                    onChange={() => switchProofUpload(!proofEnabled, taskId)}
+                  />
+                )}
                 {(taskStatus === TaskStatusEnum.ACTIVE ||
                   taskStatus === TaskStatusEnum.CANCELED) && (
                   <>
