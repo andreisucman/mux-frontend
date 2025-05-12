@@ -8,7 +8,7 @@ import {
   IconVideo,
 } from "@tabler/icons-react";
 import { Button, Group, rem, SegmentedControl, Stack, Text } from "@mantine/core";
-import { useMediaQuery, useViewportSize } from "@mantine/hooks";
+import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import base64ToBlob from "@/helpers/base64ToBlob";
@@ -65,7 +65,6 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [orientation, setOrientation] = useState<"vertical" | "horizontal">("vertical");
 
-  // ─── Refs ──────────────────────────────────────────────────────────────────
   const parts = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -73,8 +72,6 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
 
-  // ─── Helpers ───────────────────────────────────────────────────────────────
-  const { width: vpW, height: vpH } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 36em)");
   const savedCaptureType = getFromLocalStorage<string>("captureType");
 
@@ -86,11 +83,10 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
       ratio = 1 / 2;
     }
     return Number.isNaN(ratio) ? 20 / 9 : ratio;
-  }, [vpW, vpH, isMobile, orientation]);
+  }, [isMobile, orientation]);
 
   const showStartRecording = !isRecording && !isVideoLoading && !localUrl;
 
-  // ─── Callbacks ─────────────────────────────────────────────────────────────
   const stopTracks = useCallback((stream: MediaStream) => {
     stream.getTracks().forEach((track) => track.stop());
   }, []);

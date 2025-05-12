@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import cn from "classnames";
-import { Button, Loader, Stack, Title } from "@mantine/core";
+import { Alert, Button, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import { FilterItemType } from "@/components/FilterDropdown/types";
@@ -135,7 +135,7 @@ export default function DiaryPage() {
       if (activeTasks.length > 0) {
         askConfirmation({
           title: "Confirm action",
-          body: `You still have active ${part} - ${concern} tasks. Would you like to complete them first?`,
+          body: `You still have active ${part} - ${normalizeString(concern).toLowerCase()} tasks. Would you like to complete them first?`,
           onConfirm: () => {
             router.push("/tasks");
             modals.closeAll();
@@ -252,6 +252,9 @@ export default function DiaryPage() {
           }
           nowrapTitle
         />
+        <Alert p="0.5rem 1rem">
+          To add a diary note you have to complete at least one task for today.
+        </Alert>
         <Button
           onClick={openSelectPartModal}
           disabled={disableAddNew || isLoading}
