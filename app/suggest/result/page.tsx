@@ -334,7 +334,7 @@ export default function SuggestRoutine() {
                     You can create this routine after {creationCheckBackDate}
                   </Text>
                 )}
-                {!isRevised && isCreationAvailable && (
+                {!isRevised && (
                   <Button
                     className={classes.button}
                     onClick={handleOpenReviseRoutine}

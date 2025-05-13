@@ -117,8 +117,6 @@ export default function SuggestSelectConcerns() {
       setSelectedConcerns(savedSelectedConcerns.filter((item) => exists(item, "name")));
   }, [part, latestConcernScores]);
 
-  const disableNext = !concerns || selectedConcerns.length === 0;
-
   return (
     <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Select concerns" />
@@ -132,7 +130,7 @@ export default function SuggestSelectConcerns() {
           />
           {rows}
           <Button
-            disabled={disableNext || isLoading}
+            disabled={!concerns || isLoading}
             loading={isLoading}
             onClick={() => updateRoutineSuggestions(selectedConcerns || [])}
             mb={"20%"}

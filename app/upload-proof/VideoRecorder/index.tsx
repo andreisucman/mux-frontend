@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  IconCamera,
   IconCameraRotate,
   IconPlayerStopFilled,
   IconRotateRectangle,
   IconStopwatch,
-  IconVideo,
 } from "@tabler/icons-react";
 import { Button, Group, rem, Stack, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
