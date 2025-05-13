@@ -1,11 +1,10 @@
 import React, { memo, useCallback, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { ActionIcon, Button, Group, rem, Stack } from "@mantine/core";
-import ResultDisplayContainer from "./ResultDisplayContainer";
+import VideoPlayer from "@/components/VideoPlayer";
 import classes from "./VideoRecorderResult.module.css";
 
 type Props = {
-  captureType?: string;
   isVideoLoading: boolean;
   localUrl: string;
   handleSubmit: () => void;
@@ -15,11 +14,9 @@ type Props = {
 };
 
 function VideoRecorderResult({
-  captureType,
   isVideoLoading,
   localUrl,
   handleSubmit,
-  handleResetImage,
   handleResetRecording,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +26,18 @@ function VideoRecorderResult({
     handleSubmit();
   }, []);
 
+  const videoExtension =
+    localUrl?.endsWith(".mp4") ||
+    localUrl?.endsWith(".webm") ||
+    localUrl?.startsWith("data:video/");
+
   return (
     <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
       <Group className={classes.buttonGroup}>
         <ActionIcon
           variant="default"
           disabled={isLoading}
-          onClick={captureType === "image" ? handleResetImage : handleResetRecording}
+          onClick={handleResetRecording}
           className={classes.button}
           style={{ flex: 0, minWidth: rem(40) }}
         >
@@ -50,11 +52,16 @@ function VideoRecorderResult({
           Upload
         </Button>
       </Group>
-      <ResultDisplayContainer
-        createdAt={new Date().toString()}
-        captureType={captureType}
-        url={localUrl}
-      />
+      <div className={classes.videoPlayerWrapper}>
+        {videoExtension && (
+          <VideoPlayer
+            url={localUrl}
+            createdAt={new Date().toString()}
+            customStyles={{ borderRadius: rem(16), overflow: "hidden" }}
+            isRelative
+          />
+        )}
+      </div>
     </Stack>
   );
 }

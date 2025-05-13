@@ -28,3 +28,16 @@
   right: rem(16);
   z-index: 1;
 }
+
+.videoPlayerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border-radius: var(--mantine-radius-lg);
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}

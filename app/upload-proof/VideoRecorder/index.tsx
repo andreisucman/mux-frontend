@@ -7,13 +7,13 @@ import {
   IconStopwatch,
   IconVideo,
 } from "@tabler/icons-react";
-import { Button, Group, rem, SegmentedControl, Stack, Text } from "@mantine/core";
+import { Button, Group, rem, Stack, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import InstructionContainer from "@/components/InstructionContainer";
 import base64ToBlob from "@/helpers/base64ToBlob";
 import { deleteFromIndexedDb, getFromIndexedDb, saveToIndexedDb } from "@/helpers/indexedDb";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import { saveToLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
 import { getSupportedMimeType } from "@/helpers/utils";
 import { SexEnum } from "@/types/global";
@@ -26,31 +26,11 @@ type Props = {
   taskId: string;
   taskExpired: boolean;
   instruction: string;
-  uploadProof: (props: { recordedBlob: Blob | null; captureType: string }) => Promise<void>;
+  uploadProof: (props: { recordedBlob: Blob | null }) => Promise<void>;
 };
 
 const RECORDING_TIME = 30_000;
 const beepUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/beep.mp3`;
-const shutterUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/assets/shutter.mp3`;
-
-const segments = [
-  {
-    value: "image",
-    label: (
-      <span className={classes.indicatorLabel}>
-        <IconCamera className="icon" style={{ marginRight: rem(6) }} /> Photo
-      </span>
-    ),
-  },
-  {
-    value: "video",
-    label: (
-      <span className={classes.indicatorLabel}>
-        <IconVideo className="icon" style={{ marginRight: rem(6) }} /> Video
-      </span>
-    ),
-  },
-];
 
 export default function VideoRecorder({ taskId, taskExpired, instruction, uploadProof }: Props) {
   const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
@@ -61,7 +41,6 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [captureType, setCaptureType] = useState<string>("image");
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [orientation, setOrientation] = useState<"vertical" | "horizontal">("vertical");
 
@@ -70,10 +49,8 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(document.createElement("canvas"));
 
   const isMobile = useMediaQuery("(max-width: 36em)");
-  const savedCaptureType = getFromLocalStorage<string>("captureType");
 
   const aspectRatio = useMemo(() => {
     let ratio = 0;
@@ -165,32 +142,6 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
     setIsRecording(false);
   };
 
-  const capturePhoto = useCallback(async () => {
-    if (captureType === "video" || !videoRef.current) return;
-
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    try {
-      new Audio(shutterUrl).play();
-
-      const { videoWidth: w, videoHeight: h } = videoRef.current;
-      if (!w || !h) return;
-
-      canvas.width = w;
-      canvas.height = h;
-      ctx.drawImage(videoRef.current, 0, 0, w, h);
-
-      const dataUrl = canvas.toDataURL("image/jpeg");
-      setLocalUrl(dataUrl);
-
-      const blob = await (await fetch(dataUrl)).blob();
-      setRecordedBlob(blob);
-      saveToIndexedDb(`proofImage-${taskId}`, dataUrl);
-    } catch (err) {}
-  }, [captureType, taskId]);
-
   const startCountdown = useCallback(
     (secs: number) => {
       if (timerStarted) return;
@@ -203,8 +154,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
             clearInterval(intId);
             setTimerStarted(false);
 
-            if (captureType === "image") capturePhoto();
-            else startRecording();
+            startRecording();
 
             return secs;
           }
@@ -213,7 +163,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
       }, 1000);
       countdownRef.current = intId;
     },
-    [timerStarted, captureType, capturePhoto, startRecording]
+    [timerStarted, startRecording]
   );
 
   const handleStop = useCallback(() => {
@@ -264,36 +214,15 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
   );
 
   const handleSubmit = useCallback(async () => {
-    await uploadProof({ recordedBlob, captureType });
+    await uploadProof({ recordedBlob });
     setLocalUrl("");
     setRecordedBlob(null);
-  }, [recordedBlob, uploadProof, captureType]);
+  }, [recordedBlob, uploadProof]);
 
   const flipCamera = useCallback(() => {
     resetRecording();
     setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
   }, [resetRecording]);
-
-  const changeCaptureType = useCallback(
-    async (type: string) => {
-      if (isRecording) return;
-      setCaptureType(type);
-      saveToLocalStorage("captureType", type);
-
-      const [savedImage, savedVideo] = await Promise.all([
-        getFromIndexedDb(`proofImage-${taskId}`),
-        getFromIndexedDb(`proofVideo-${taskId}`),
-      ]);
-
-      const map: Record<string, string | null> = {
-        image: savedImage,
-        video: savedVideo,
-      };
-      const url = map[type] ?? "";
-      setLocalUrl(url);
-    },
-    [isRecording, taskId]
-  );
 
   const startVideoPreview = useCallback(async () => {
     try {
@@ -330,36 +259,23 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
     }
   }, [facingMode, aspectRatio, stopTracks]);
 
-  // ─── Effects ───────────────────────────────────────────────────────────────
   useEffect(() => {
-    setCaptureType(savedCaptureType ?? "image");
-  }, [savedCaptureType]);
-
-  useEffect(() => {
-    if (!captureType || !taskId) return;
+    if (!taskId) return;
 
     const loadSaved = async () => {
-      const [savedImage, savedVideo] = await Promise.all([
-        getFromIndexedDb(`proofImage-${taskId}`),
-        getFromIndexedDb(`proofVideo-${taskId}`),
-      ]);
+      const savedVideo = await getFromIndexedDb(`proofVideo-${taskId}`);
 
-      const map: Record<string, string | null> = {
-        image: savedImage,
-        video: savedVideo,
-      };
-      const url = map[captureType] ?? "";
-      setLocalUrl(url);
+      const url = savedVideo;
+      setLocalUrl(savedVideo);
 
       if (url) {
-        const mime = captureType === "image" ? "image/jpeg" : "video/webm";
-        setRecordedBlob(base64ToBlob(url, mime));
+        setRecordedBlob(base64ToBlob(url, "video/webm"));
       } else {
         setRecordedBlob(null);
       }
     };
     loadSaved();
-  }, [captureType, taskId]);
+  }, [taskId]);
 
   // Start preview whenever conditions allow
   useEffect(() => {
@@ -377,22 +293,12 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
     };
   }, [stopTracks]);
 
-  // ─── Render ────────────────────────────────────────────────────────────────
-  const startText = captureType === "image" ? "Capture" : "Start";
-
   return (
     <Stack className={classes.container}>
       <InstructionContainer
         title="Instructions"
         instruction={instruction}
         customStyles={{ flex: 0 }}
-      />
-
-      <SegmentedControl
-        classNames={{ root: "segmentControlRoot", indicator: "segmentControlIndicator" }}
-        value={captureType}
-        onChange={changeCaptureType}
-        data={segments}
       />
 
       <Stack className={classes.content} style={isVideoLoading ? { visibility: "hidden" } : {}}>
@@ -485,21 +391,19 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
 
                 {showStartRecording && (
                   <Button
-                    onClick={captureType === "image" ? capturePhoto : startRecording}
+                    onClick={startRecording}
                     className={classes.button}
                     disabled={taskExpired || timerStarted}
                   >
-                    {startText}
+                    Record
                   </Button>
                 )}
               </Group>
             </Group>
           </>
         )}
-
         {localUrl && (
           <VideoRecorderResult
-            captureType={captureType}
             isVideoLoading={isVideoLoading}
             localUrl={localUrl}
             handleResetImage={resetImage}

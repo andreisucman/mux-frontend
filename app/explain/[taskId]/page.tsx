@@ -426,7 +426,6 @@ export default function Explain(props: Props) {
                   findExamples={handleFindExamples}
                   customStyles={{
                     borderRadius: "0 0 1rem 1rem",
-                    paddingBottom: "1rem",
                     borderTop: "none",
                   }}
                 />

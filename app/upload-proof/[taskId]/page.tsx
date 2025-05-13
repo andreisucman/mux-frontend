@@ -26,7 +26,6 @@ export const runtime = "edge";
 
 type HandleUploadProps = {
   taskId: string;
-  captureType: "image" | "video";
   recordedBlob: Blob | null;
 };
 
@@ -74,15 +73,13 @@ export default function UploadProof(props: Props) {
     [taskId]
   );
 
-  const uploadProof = async ({ taskId, recordedBlob, captureType }: HandleUploadProps) => {
-    if (!taskId || !captureType || !recordedBlob) return;
+  const uploadProof = async ({ taskId, recordedBlob }: HandleUploadProps) => {
+    if (!taskId || !recordedBlob) return;
 
     try {
-      const finalMime = captureType === "image" ? "image/jpeg" : "video/webm";
-
       const urlArray = await uploadToSpaces({
         itemsArray: [recordedBlob],
-        mime: finalMime,
+        mime: "video/webm",
       });
 
       const response = await callTheServer({
@@ -285,7 +282,6 @@ export default function UploadProof(props: Props) {
                 uploadProof={(otherArgs) =>
                   uploadProof({
                     taskId,
-                    captureType: otherArgs.captureType as "image",
                     recordedBlob: otherArgs.recordedBlob,
                   })
                 }
