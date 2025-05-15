@@ -53,6 +53,8 @@ export default function SelectPartModalContent({ userId, onClick }: Props) {
     });
   }, [userId, part]);
 
+  console.log("availableParts", availableParts, "availableConcerns", availableConcerns);
+
   const noTasks =
     availableParts && availableConcerns && availableParts.length + availableConcerns.length === 0;
 

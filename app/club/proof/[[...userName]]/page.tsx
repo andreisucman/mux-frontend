@@ -6,19 +6,18 @@ import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { proofSortItems } from "@/data/sortItems";
 import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
+import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { PurchaseOverlayDataType } from "@/types/global";
-import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./proof.module.css";
 
 export const runtime = "edge";
@@ -34,29 +33,19 @@ type Props = {
 export default function ClubProof(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
+  const searchParams = useSearchParams();
 
   const { userDetails } = useContext(UserContext);
   const { publicUserData } = useContext(ClubContext);
   const [proof, setProof] = useState<SimpleProofType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const searchParams = useSearchParams();
-  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
-  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
-    PurchaseOverlayDataType[] | null
-  >();
-  const [showOverlayComponent, setShowOverlayComponent] = useState<
-    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
-  >("none");
-  const [notPurchased, setNotPurchased] = useState<string[]>([]);
+  const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
 
   const query = searchParams.get("query");
   const part = searchParams.get("part");
   const sort = searchParams.get("sort");
   const concern = searchParams.get("concern");
-
-  const currentCombination = [part, concern].filter(Boolean).join("-");
-  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
 
   const { name } = userDetails || {};
   const isSelf = name === userName;
@@ -73,10 +62,7 @@ export default function ClubProof(props: Props) {
         skip,
       });
 
-      const { priceData, data, notPurchased } = message || {};
-
-      setPurchaseOverlayData(priceData ? priceData : null);
-      setNotPurchased(notPurchased);
+      const { data } = message || {};
 
       if (skip) {
         setProof([...(proof || []), ...data.slice(0, 20)]);
@@ -89,70 +75,44 @@ export default function ClubProof(props: Props) {
     [proof]
   );
 
-  const manageOverlays = useCallback(() => {
-    if (!proof || proof.length === 0) {
-      setShowOverlayComponent("none");
-      return;
-    }
-
-    if (isCurrentCombinationPurchased) {
-      if (notPurchased.length > 0) {
-        setShowOverlayComponent("showOtherRoutinesButton");
-      } else {
-        setShowOverlayComponent("none");
-      }
-    } else if (notPurchased.length > 0) {
-      setShowOverlayComponent("purchaseOverlay");
-    }
-  }, [proof, notPurchased, isCurrentCombinationPurchased]);
-
-  const handleCloseOverlay = useCallback(() => {
-    if (isCurrentCombinationPurchased) {
-      setShowOverlayComponent("showOtherRoutinesButton");
-    } else {
-      setShowOverlayComponent("maximizeButton");
-    }
-  }, [isCurrentCombinationPurchased]);
-
   useEffect(() => {
-    manageOverlays();
-  }, [proof, notPurchased, isCurrentCombinationPurchased]);
+    getFilters({
+      collection: "proof",
+      fields: ["part", "concern"],
+    }).then((result) => {
+      const { part, concern } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concern);
+    });
+  }, []);
 
   useEffect(() => {
     handleFetchProof({ userName, sort, part, concern, query });
   }, [userName, part, concern, sort, concern, query]);
 
-  useGetAvailablePartsAndConcerns({
-    purchaseOverlayData,
-    setConcerns: setAvailableConcerns,
-    setParts: setAvailableParts,
-    userName,
-  });
+  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 
-  const showButton =
-    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
-    proof &&
-    proof.length > 0;
+  const titles = clubPageTypeItems.map((item) => ({
+    label: item.label,
+    addQuery: true,
+    value: `club/${item.value}/${userName}`,
+  }));
 
   return (
     <ClubModerationLayout
       header={
         <PageHeaderClub
           pageType="proof"
-          title={"Club"}
+          titles={titles}
           userName={userName}
           filterNames={["part"]}
+          disableFilter={!availableConcerns && !availableParts}
+          disableSort={noPartsAndConcerns}
           sortItems={proofSortItems}
           defaultSortValue="-_id"
-          disableFilter={!availableParts}
-          disableSort={availableParts.length === 0}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
-              childrenProps: {
-                partFilterItems: availableParts,
-                concernFilterItems: availableConcerns,
-              },
             })
           }
         />
@@ -164,23 +124,7 @@ export default function ClubProof(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.wrapper}>
-        <Stack
-          className={cn(classes.content, "scrollbar", {
-            [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
-          })}
-        >
-          {purchaseOverlayData && (
-            <>
-              {showOverlayComponent === "purchaseOverlay" && (
-                <PurchaseOverlay
-                  userName={userName}
-                  notPurchasedParts={notPurchased}
-                  purchaseOverlayData={purchaseOverlayData}
-                  handleCloseOverlay={handleCloseOverlay}
-                />
-              )}
-            </>
-          )}
+        <Stack className={cn(classes.content, "scrollbar")}>
           {proof ? (
             <>
               <ProofGallery

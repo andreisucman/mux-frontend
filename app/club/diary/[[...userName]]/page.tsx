@@ -10,14 +10,14 @@ import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { DiaryType } from "@/app/diary/type";
 import DiaryContent from "@/components/DiaryContent";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
+import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
-import { PurchaseOverlayDataType } from "@/types/global";
-import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./diary.module.css";
 
 export const runtime = "edge";
@@ -39,24 +39,14 @@ export default function DiaryPage(props: Props) {
   const [openValue, setOpenValue] = useState<string | null>(null);
   const [diaryRecords, setDiaryRecords] = useState<DiaryType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
-    PurchaseOverlayDataType[] | null
-  >();
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
-  const [showOverlayComponent, setShowOverlayComponent] = useState<
-    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
-  >("none");
-  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
   const sort = searchParams.get("sort") || "-createdAt";
   const dateFrom = searchParams.get("dateFrom");
   const dateTo = searchParams.get("dateTo");
   const concern = searchParams.get("concern");
   const part = searchParams.get("part");
-
-  const currentCombination = [part, concern].filter(Boolean).join("-");
-  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
 
   const handleFetchDiaryRecords = useCallback(
     async ({ dateFrom, dateTo, concern, part, sort }: HandleFetchDiaryProps) => {
@@ -71,13 +61,9 @@ export default function DiaryPage(props: Props) {
         skip: hasMore,
       });
 
-      const { priceData, data, notPurchased } = message || {};
-
-      setPurchaseOverlayData(priceData ? priceData : null);
+      const { data } = message || {};
 
       if (message) {
-        setNotPurchased(notPurchased);
-
         if (hasMore) {
           setDiaryRecords((prev) => [...(prev || []), ...data.slice(0, 20)]);
         } else {
@@ -90,48 +76,37 @@ export default function DiaryPage(props: Props) {
     [diaryRecords, hasMore, userName]
   );
 
-  const manageOverlays = useCallback(() => {
-    if (!diaryRecords || diaryRecords.length === 0) {
-      setShowOverlayComponent("none");
-      return;
-    }
-
-    if (isCurrentCombinationPurchased) {
-      if (notPurchased.length > 0) {
-        setShowOverlayComponent("showOtherRoutinesButton");
-      } else {
-        setShowOverlayComponent("none");
-      }
-    } else if (notPurchased.length > 0) {
-      setShowOverlayComponent("purchaseOverlay");
-    }
-  }, [diaryRecords, notPurchased, isCurrentCombinationPurchased]);
-
-  useEffect(() => {
-    manageOverlays();
-  }, [isCurrentCombinationPurchased]);
-
   useEffect(() => {
     if (!userName) return;
 
     handleFetchDiaryRecords({ dateTo, dateFrom, sort, part, concern });
   }, [sort, concern, userName, dateFrom, dateTo, authStatus]);
 
-  useGetAvailablePartsAndConcerns({
-    purchaseOverlayData,
-    setConcerns: setAvailableConcerns,
-    setParts: setAvailableParts,
-    userName,
-  });
+  useEffect(() => {
+    getFilters({
+      collection: "diary",
+      fields: ["part", "concern"],
+    }).then((result) => {
+      const { part, concern } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concern);
+    });
+  }, []);
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
+  const titles = clubPageTypeItems.map((item) => ({
+    label: item.label,
+    addQuery: true,
+    value: `club/${item.value}/${userName}`,
+  }));
 
   return (
     <ClubModerationLayout
       header={
         <PageHeaderClub
           pageType="diary"
-          title={"Club"}
+          titles={titles}
           userName={userName}
           sortItems={diarySortItems}
           defaultSortValue={"-_id"}
@@ -156,11 +131,7 @@ export default function DiaryPage(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.wrapper}>
-        <Stack
-          className={cn(classes.content, "scrollbar", {
-            [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
-          })}
-        >
+        <Stack className={cn(classes.content, "scrollbar")}>
           {diaryRecords ? (
             <>
               <DiaryContent

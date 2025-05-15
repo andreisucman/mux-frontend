@@ -1,24 +1,19 @@
-import React, { useCallback, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { IconChevronLeft } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Group, Title } from "@mantine/core";
-import TitleDropdown from "@/app/results/TitleDropdown";
-import { useRouter } from "next/navigation";
-import getPageTypeRedirect from "@/helpers/getPageTypeRedirect";
-import { pageTypeIcons } from "@/helpers/icons";
+import TitleDropdown, { TitleType } from "@/app/results/TitleDropdown";
 import FilterButton from "../FilterButton";
-import FilterDropdown from "../FilterDropdown";
-import { clubPageTypeItems } from "../PageHeader/data";
 import SortButton from "../SortButton";
 import classes from "./PageHeaderClub.module.css";
-import { IconChevronLeft } from "@tabler/icons-react";
 
 type Props = {
   title?: string;
-  titles?: { label: string; value: string }[];
+  titles?: TitleType[];
   nowrap?: boolean;
   disableFilter?: boolean;
-  disableSort?:boolean;
+  disableSort?: boolean;
   sortItems?: { value: string; label: string }[];
   filterNames?: string[];
   defaultSortValue?: string;
@@ -39,8 +34,6 @@ export default function PageHeaderClub({
   filterNames = [],
   defaultSortValue,
   children,
-  userName,
-  pageType,
   childrenPosition = "last",
   onFilterClick,
 }: Props) {
@@ -65,17 +58,6 @@ export default function PageHeaderClub({
     }
   }, [titles, title]);
 
-  const handleRedirect = useCallback(
-    (value?: string | null) => {
-      if (!value) return;
-
-      const path = getPageTypeRedirect(value, userName);
-
-      router.push(`${path}?${searchParams.toString()}`);
-    },
-    [userName, searchParams.toString()]
-  );
-
   return (
     <Group className={classes.container}>
       <ActionIcon variant="default" onClick={() => router.back()}>
@@ -97,14 +79,6 @@ export default function PageHeaderClub({
           activeFiltersCount={activeFiltersCount}
         />
       )}
-      <FilterDropdown
-        icons={pageTypeIcons}
-        data={clubPageTypeItems}
-        selectedValue={pageType}
-        onSelect={handleRedirect}
-        placeholder="Select page"
-        filterType="page"
-      />
       {childrenPosition === "last" && children}
     </Group>
   );

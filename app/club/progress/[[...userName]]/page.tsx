@@ -6,20 +6,19 @@ import cn from "classnames";
 import { Loader, Stack, Title } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { progressSortItems } from "@/data/sortItems";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
+import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
-import { PurchaseOverlayDataType } from "@/types/global";
-import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
@@ -43,23 +42,12 @@ export default function ClubProgress(props: Props) {
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
-  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
-    PurchaseOverlayDataType[] | null
-  >();
-  const [showOverlayComponent, setShowOverlayComponent] = useState<
-    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
-  >("none");
-  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
-  const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const sort = searchParams.get("sort");
 
   const { name } = userDetails || {};
   const isSelf = userName === name;
-
-  const currentCombination = [part, concern].filter(Boolean).join("-");
-  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
 
   const handleFetchProgress = useCallback(
     async ({ concern, currentArray, sort, userName, skip }: HandleFetchProgressProps) => {
@@ -71,13 +59,9 @@ export default function ClubProgress(props: Props) {
         skip,
       });
 
-      const { priceData, data, notPurchased } = message || {};
-
-      setPurchaseOverlayData(priceData ? priceData : null);
+      const { data } = message || {};
 
       if (message) {
-        setNotPurchased(notPurchased);
-
         if (skip) {
           setProgress([...(currentArray || []), ...data.slice(0, 20)]);
         } else {
@@ -103,54 +87,35 @@ export default function ClubProgress(props: Props) {
     []
   );
 
-  const manageOverlays = useCallback(() => {
-    if (!progress || progress.length === 0) {
-      setShowOverlayComponent("none");
-      return;
-    }
-
-    if (isCurrentCombinationPurchased) {
-      if (notPurchased.length > 0) {
-        setShowOverlayComponent("showOtherRoutinesButton");
-      } else {
-        setShowOverlayComponent("none");
-      }
-    } else if (notPurchased.length > 0) {
-      setShowOverlayComponent("purchaseOverlay");
-    }
-  }, [progress, isCurrentCombinationPurchased, notPurchased]);
-
-  const handleCloseOverlay = useCallback(() => {
-    if (isCurrentCombinationPurchased) {
-      setShowOverlayComponent("showOtherRoutinesButton");
-    } else {
-      setShowOverlayComponent("maximizeButton");
-    }
-  }, [isCurrentCombinationPurchased]);
-
-  useEffect(() => {
-    manageOverlays();
-  }, [progress, isCurrentCombinationPurchased, notPurchased]);
-
   useEffect(() => {
     handleFetchProgress({ concern, sort, userName });
   }, [authStatus, userName, sort, concern]);
 
-  useGetAvailablePartsAndConcerns({
-    purchaseOverlayData,
-    setConcerns: setAvailableConcerns,
-    setParts: setAvailableParts,
-    userName,
-  });
+  useEffect(() => {
+    getFilters({
+      collection: "progress",
+      fields: ["part", "concerns"],
+    }).then((result) => {
+      const { part, concerns } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concerns);
+    });
+  }, []);
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
+  const titles = clubPageTypeItems.map((item) => ({
+    label: item.label,
+    addQuery: true,
+    value: `club/${item.value}/${userName}`,
+  }));
 
   return (
     <ClubModerationLayout
       header={
         <PageHeaderClub
           pageType="progress"
-          title={"Club"}
+          titles={titles}
           userName={userName}
           filterNames={["part", "concern"]}
           defaultSortValue="-_id"
@@ -176,23 +141,7 @@ export default function ClubProgress(props: Props) {
       />
       <Stack className={classes.wrapper}>
         {progress ? (
-          <Stack
-            className={cn(classes.content, "scrollbar", {
-              [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
-            })}
-          >
-            {purchaseOverlayData && (
-              <>
-                {showOverlayComponent === "purchaseOverlay" && (
-                  <PurchaseOverlay
-                    userName={userName}
-                    notPurchasedParts={notPurchased}
-                    purchaseOverlayData={purchaseOverlayData}
-                    handleCloseOverlay={handleCloseOverlay}
-                  />
-                )}
-              </>
-            )}
+          <Stack className={cn(classes.content, "scrollbar")}>
             <ProgressGallery
               progress={progress}
               hasMore={hasMore}

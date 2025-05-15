@@ -252,9 +252,6 @@ export default function DiaryPage() {
           }
           nowrapTitle
         />
-        <Alert p="0.5rem 1rem">
-          To add a diary note you have to complete at least one task for today.
-        </Alert>
         <Button
           onClick={openSelectPartModal}
           disabled={disableAddNew || isLoading}

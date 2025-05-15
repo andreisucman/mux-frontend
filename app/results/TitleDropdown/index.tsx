@@ -1,14 +1,19 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Group, HoverCard, Stack, Title } from "@mantine/core";
 import { useDisclosure, useElementSize } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
 import classes from "./TitleDropdown.module.css";
 
-export type TitleType = { label: string; value: string; method?: string; addQuery?: boolean };
+export type TitleType = {
+  label: string;
+  value: string;
+  onClick?: () => void;
+  method?: string;
+  addQuery?: boolean;
+};
 
 type Props = {
   titles: TitleType[];
@@ -22,7 +27,10 @@ export default function TitleDropdown({ titles, customDropdownStyles, customHead
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
   const [collapseOpened, { toggle, close }] = useDisclosure(false);
-  const currentPage = useMemo(() => titles.find((record) => record.value === pathname), [pathname]);
+  const currentPage = useMemo(
+    () => titles.find((record) => pathname.includes(record.value)),
+    [pathname]
+  );
 
   const icon = collapseOpened ? (
     <IconChevronUp className="icon" stroke={1.5} />
@@ -32,12 +40,13 @@ export default function TitleDropdown({ titles, customDropdownStyles, customHead
 
   const handleRedirect = useCallback(
     (pathname: string, method = "replace", addQuery = false) => {
-      let url = pathname;
+      let url = `/${pathname}`;
       if (addQuery) {
         if (searchParams.toString()) {
           url += `?${searchParams.toString()}`;
         }
       }
+      console.log("url", url);
 
       if (method === "push") {
         router.push(url);

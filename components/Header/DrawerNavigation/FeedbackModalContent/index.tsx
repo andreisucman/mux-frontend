@@ -7,6 +7,7 @@ import uploadToSpaces from "@/functions/uploadToSpaces";
 
 const defaultMessage =
   "Get cash reward for each error that you report. The reward will be added to your Club balance and paid out to your connected bank account.";
+const imageExtensions = ["png", "jpg", "webp"];
 
 export default function FeedbackModalContent() {
   const [message, setMessage] = useState(defaultMessage);
@@ -19,9 +20,17 @@ export default function FeedbackModalContent() {
     setIsLoading(true);
 
     if (files) {
-      const urls = await uploadToSpaces({ itemsArray: files, imageSize: 1024 });
+      const urls: string[] = await uploadToSpaces({ itemsArray: files, imageSize: 1024 });
 
-      body.screenShots = urls;
+      const images = urls.filter((url) => {
+        const parts = url.split(".");
+        const extension = parts[parts.length - 1].toLowerCase();
+        return imageExtensions.includes(extension);
+      });
+      const videos = urls.filter((url) => !images.includes(url));
+
+      body.screenShots = images;
+      body.videos = videos;
     }
 
     const response = await callTheServer({ endpoint: "submitFeedback", method: "POST", body });
@@ -52,8 +61,8 @@ export default function FeedbackModalContent() {
         setText={setText}
       />
       <FileInput
-        accept="image/png,image/jpeg"
-        placeholder="Screenshots (optional)"
+        accept="image/*,video/*"
+        placeholder="Files (optional)"
         onChange={setFiles}
         value={files}
         leftSection={<IconPhoto size={18} />}

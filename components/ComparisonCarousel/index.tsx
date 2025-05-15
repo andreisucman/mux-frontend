@@ -85,7 +85,7 @@ export default function ComparisonCarousel({ data }: Props) {
   }, [updatedAt, images && images.length]);
 
   const showSkeleton = useShowSkeleton();
-  const icon = getPartIcon(part, "icon__large");
+  const icon = getPartIcon(part, 24);
 
   return (
     <Skeleton className={"skeleton shadow"} visible={showSkeleton || !slides}>

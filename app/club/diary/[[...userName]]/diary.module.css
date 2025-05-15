@@ -1,7 +1,6 @@
 .wrapper {
   position: relative;
   flex: 1;
-
 }
 
 .content {
@@ -9,9 +8,4 @@
   overflow: hidden;
   flex: 1;
   border-radius: rem(16);
-  max-height: rem(650);
-}
-
-.unbound {
-  max-height: unset;
 }

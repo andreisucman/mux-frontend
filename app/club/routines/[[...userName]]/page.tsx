@@ -8,13 +8,13 @@ import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
 import MoveTaskModalContent from "@/app/routines/MoveTaskModalContent";
 import { GetRoutinesProps, HandleModifyTaskProps } from "@/app/routines/page";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
+import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
@@ -23,10 +23,10 @@ import copyRoutine from "@/functions/copyRoutine";
 import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
+import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { getIsRoutineActive } from "@/helpers/utils";
-import { PurchaseOverlayDataType, RoutineType } from "@/types/global";
-import useGetAvailablePartsAndConcerns from "./useGetAvailablePartsAndConcerns";
+import { RoutineType } from "@/types/global";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -46,13 +46,6 @@ export default function ClubRoutines(props: Props) {
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
-  const [purchaseOverlayData, setPurchaseOverlayData] = useState<
-    PurchaseOverlayDataType[] | null
-  >();
-  const [showOverlayComponent, setShowOverlayComponent] = useState<
-    "none" | "purchaseOverlay" | "maximizeButton" | "showOtherRoutinesButton"
-  >("none");
-  const [notPurchased, setNotPurchased] = useState<string[]>([]);
 
   const { name } = userDetails || {};
 
@@ -60,9 +53,6 @@ export default function ClubRoutines(props: Props) {
   const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const isSelf = name === userName;
-
-  const currentCombination = [part, concern].filter(Boolean).join("-");
-  const isCurrentCombinationPurchased = !notPurchased.includes(currentCombination);
 
   const handleFetchRoutines = useCallback(
     async ({ skip, sort, concern, part, userName, routinesLength }: GetRoutinesProps) => {
@@ -78,10 +68,7 @@ export default function ClubRoutines(props: Props) {
       const { message } = response || {};
 
       if (message) {
-        const { priceData, data, notPurchased } = message;
-
-        setPurchaseOverlayData(priceData ? priceData : null);
-        setNotPurchased(notPurchased);
+        const { data } = message;
 
         if (skip) {
           setRoutines((prev) => [...(prev || []), ...data.slice(0, 20)]);
@@ -93,31 +80,6 @@ export default function ClubRoutines(props: Props) {
     },
     [routines]
   );
-
-  const manageOverlays = useCallback(() => {
-    if (!routines || routines.length === 0) {
-      setShowOverlayComponent("none");
-      return;
-    }
-
-    if (isCurrentCombinationPurchased) {
-      if (notPurchased.length > 0) {
-        setShowOverlayComponent("showOtherRoutinesButton");
-      } else {
-        setShowOverlayComponent("none");
-      }
-    } else if (notPurchased.length > 0) {
-      setShowOverlayComponent("purchaseOverlay");
-    }
-  }, [isCurrentCombinationPurchased, notPurchased, routines]);
-
-  const handleCloseOverlay = useCallback(() => {
-    if (isCurrentCombinationPurchased) {
-      setShowOverlayComponent("showOtherRoutinesButton");
-    } else {
-      setShowOverlayComponent("maximizeButton");
-    }
-  }, [isCurrentCombinationPurchased]);
 
   const handleCopyRoutine = useCallback(
     (routineId: string) => {
@@ -239,10 +201,6 @@ export default function ClubRoutines(props: Props) {
   );
 
   useEffect(() => {
-    manageOverlays();
-  }, [isCurrentCombinationPurchased, notPurchased, routines]);
-
-  useEffect(() => {
     const payload: GetRoutinesProps = {
       userName: userName,
       routinesLength: (routines && routines.length) || 0,
@@ -253,26 +211,31 @@ export default function ClubRoutines(props: Props) {
     handleFetchRoutines(payload);
   }, [sort, part, concern, userName]);
 
-  useGetAvailablePartsAndConcerns({
-    purchaseOverlayData,
-    setConcerns: setAvailableConcerns,
-    setParts: setAvailableParts,
-    userName,
-  });
-
-  const showButton =
-    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
-    routines &&
-    routines.length > 0;
+  useEffect(() => {
+    getFilters({
+      collection: "routines",
+      fields: ["part", "concerns"],
+    }).then((result) => {
+      const { part, concerns } = result;
+      setAvailableParts(part);
+      setAvailableConcerns(concerns);
+    });
+  }, []);
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+
+  const titles = clubPageTypeItems.map((item) => ({
+    label: item.label,
+    addQuery: true,
+    value: `club/${item.value}/${userName}`,
+  }));
 
   return (
     <ClubModerationLayout
       header={
         <PageHeaderClub
           pageType="routines"
-          title={"Club"}
+          titles={titles}
           userName={userName}
           filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
@@ -299,23 +262,7 @@ export default function ClubRoutines(props: Props) {
       />
       {accordionItems ? (
         <Stack className={classes.wrapper}>
-          <Stack
-            className={cn(classes.content, "scrollbar", {
-              [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
-            })}
-          >
-            {purchaseOverlayData && (
-              <>
-                {showOverlayComponent === "purchaseOverlay" && (
-                  <PurchaseOverlay
-                    userName={userName}
-                    notPurchasedParts={notPurchased}
-                    purchaseOverlayData={purchaseOverlayData}
-                    handleCloseOverlay={handleCloseOverlay}
-                  />
-                )}
-              </>
-            )}
+          <Stack className={cn(classes.content, "scrollbar")}>
             {accordionItems.length > 0 ? (
               <>
                 <Accordion
@@ -332,7 +279,6 @@ export default function ClubRoutines(props: Props) {
                 >
                   {accordionItems}
                 </Accordion>
-
                 {hasMore && (
                   <ActionIcon
                     variant="default"

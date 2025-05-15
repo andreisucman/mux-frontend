@@ -27,7 +27,7 @@ export default function DiaryAccordionItem({
   const { _id: recordId, part, concern } = data;
   const [isLoading, setIsLoading] = useState(false);
 
-  const icon = getPartIcon(part || "");
+  const icon = getPartIcon(part || "", 18);
   const label = normalizeString(concern || "");
 
   return (

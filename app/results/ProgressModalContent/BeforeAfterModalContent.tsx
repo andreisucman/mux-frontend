@@ -22,7 +22,8 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
 
-  const { userName, images, initialImages, updatedAt, isPublic, initialDate } = record;
+  const { userName, images, initialImages, part, concern, updatedAt, isPublic, initialDate } =
+    record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || new Date() });
@@ -32,7 +33,10 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
   const handleRedirect = () => {
     if (isLoading) return;
     setIsLoading(true);
-    const query = searchParams.toString();
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("part", part);
+    newParams.set("concern", concern);
+    const query = newParams.toString();
     router.push(`${redirectUrl}${query ? `?${query}` : ""}`);
     modals.closeAll();
   };
