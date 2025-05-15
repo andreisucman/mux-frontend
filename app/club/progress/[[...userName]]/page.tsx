@@ -19,7 +19,6 @@ import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
 import { PurchaseOverlayDataType } from "@/types/global";
-import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./progress.module.css";
 
@@ -144,11 +143,6 @@ export default function ClubProgress(props: Props) {
     userName,
   });
 
-  const showButton =
-    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
-    progress &&
-    progress.length > 0;
-
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 
   return (
@@ -179,12 +173,6 @@ export default function ClubProgress(props: Props) {
         type={isSelf ? "you" : "member"}
         data={publicUserData}
         customStyles={{ flex: 0 }}
-      />
-      <MaximizeOverlayButton
-        isDisabled={!showButton}
-        showOverlayComponent={showOverlayComponent}
-        notPurchased={notPurchased}
-        setShowOverlayComponent={setShowOverlayComponent}
       />
       <Stack className={classes.wrapper}>
         {progress ? (

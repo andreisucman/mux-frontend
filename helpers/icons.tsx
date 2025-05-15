@@ -30,12 +30,12 @@ export const statusIcons = {
   canceled: <IconCancel className="icon" style={{ display: "flex" }} />,
 };
 
-const getPartIcon = (key: string, className = "") => {
+const getPartIcon = (key: string, size:number) => {
   switch (key) {
     case "face":
-      return <IconMoodNeutral className={`icon ${className}`} />;
+      return <IconMoodNeutral size={size} />;
     case "hair":
-      return <IconWhirl className={`icon ${className}`} />;
+      return <IconWhirl size={size} />;
   }
 };
 

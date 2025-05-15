@@ -1,6 +1,4 @@
 .container {
-  cursor: pointer;
-
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -12,24 +10,9 @@
   height: unset;
 }
 
-.cursorDefault {
-  cursor: default;
-}
-
-.name {
+.cell {
   display: flex;
   align-items: center;
   gap: rem(8);
   font-weight: 600;
-}
-
-.subscribe {
-  margin-left: rem(8);
-}
-
-.button {
-  @media (max-width: $mantine-breakpoint-xs) {
-    min-width: rem(150);
-    flex: 1;
-  }
 }

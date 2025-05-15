@@ -18,7 +18,6 @@ import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
-import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./proof.module.css";
 
@@ -163,12 +162,6 @@ export default function ClubProof(props: Props) {
         type={isSelf ? "you" : "member"}
         data={publicUserData}
         customStyles={{ flex: 0 }}
-      />
-      <MaximizeOverlayButton
-        isDisabled={!showButton}
-        showOverlayComponent={showOverlayComponent}
-        notPurchased={notPurchased}
-        setShowOverlayComponent={setShowOverlayComponent}
       />
       <Stack className={classes.wrapper}>
         <Stack

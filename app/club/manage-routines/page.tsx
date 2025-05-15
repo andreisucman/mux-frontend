@@ -24,8 +24,6 @@ export type RoutineDataType = {
   name: string;
   status: string;
   description: string;
-  price: number;
-  updatePrice: number;
   stats?: {
     routines: number;
     completedTasks: number;
@@ -46,15 +44,11 @@ export default function ManageRoutines() {
     description: "",
     name: "",
     status: "hidden",
-    price: 5,
-    updatePrice: 2,
   });
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [status, setStatus] = useState<string>("hidden");
-  const [price, setPrice] = useState<number>(5);
-  const [updatePrice, setUpdatePrice] = useState<number>(2);
   const [pageLoaded, setPageLoaded] = useState(false);
 
   const concern = searchParams.get("concern") || routineConcerns[0]?.value;
@@ -67,7 +61,7 @@ export default function ManageRoutines() {
       setError: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>
     ) => {
       setIsLoading(true);
-      const { name, description, price, updatePrice } = updatedRoutine;
+      const { name, description } = updatedRoutine;
 
       if (!name.trim().length) {
         setError({ name: "Name can't be empty." });
@@ -77,18 +71,6 @@ export default function ManageRoutines() {
 
       if (!description.trim().length) {
         setError({ description: "Description can't be empty." });
-        setIsLoading(false);
-        return;
-      }
-
-      if (!price || price < 5) {
-        setError({ price: "The one-time price must be at least $5" });
-        setIsLoading(false);
-        return;
-      }
-
-      if (!updatePrice || updatePrice < 2) {
-        setError({ updatePrice: "The update price must be at least $2" });
         setIsLoading(false);
         return;
       }
@@ -134,11 +116,9 @@ export default function ManageRoutines() {
   );
 
   const setFields = (data?: RoutineDataType) => {
-    const { name, description, price, updatePrice, status } = data || {};
+    const { name, description, status } = data || {};
     setName(name || "");
     setDescription(description || "");
-    setPrice(price || 5);
-    setUpdatePrice(updatePrice || 2);
     setStatus(status || "hidden");
   };
 
@@ -239,15 +219,11 @@ export default function ManageRoutines() {
               name={name}
               part={part}
               description={description}
-              price={price}
-              updatePrice={updatePrice}
               status={status}
               concern={concern}
               defaultRoutineData={defaultRoutineData}
               setName={setName}
               setDescription={setDescription}
-              setPrice={setPrice}
-              setUpdatePrice={setUpdatePrice}
               setStatus={setStatus}
               saveRoutineData={saveRoutineData}
             />

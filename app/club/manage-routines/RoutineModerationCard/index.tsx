@@ -23,15 +23,11 @@ type Props = {
   name: string;
   status: string;
   description: string;
-  price: number;
-  updatePrice: number;
   concern: string;
   part: string;
   defaultRoutineData: RoutineDataType;
   setName: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
-  setPrice: React.Dispatch<React.SetStateAction<number>>;
-  setUpdatePrice: React.Dispatch<React.SetStateAction<number>>;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
   saveRoutineData: (
     obj: RoutineDataType,
@@ -51,14 +47,10 @@ export default function RoutineModerationCard({
   name,
   status,
   description,
-  price,
-  updatePrice,
   defaultRoutineData,
   saveRoutineData,
   setName,
   setDescription,
-  setPrice,
-  setUpdatePrice,
   setStatus,
 }: Props) {
   const router = useRouter();
@@ -94,8 +86,6 @@ export default function RoutineModerationCard({
           part,
           description,
           status: status || "hidden",
-          price,
-          updatePrice,
         },
         setIsLoading,
         setError
@@ -128,11 +118,9 @@ export default function RoutineModerationCard({
     return (
       status === defaultRoutineData.status &&
       name.trim() === defaultRoutineData.name.trim() &&
-      description.trim() === defaultRoutineData.description.trim() &&
-      price === defaultRoutineData.price &&
-      updatePrice === defaultRoutineData.updatePrice
+      description.trim() === defaultRoutineData.description.trim() 
     );
-  }, [name, status, description, price, updatePrice, defaultRoutineData]);
+  }, [name, status, description, defaultRoutineData]);
 
   return (
     <Stack className={classes.container}>
@@ -175,32 +163,6 @@ export default function RoutineModerationCard({
         editable
       />
       <Group className={classes.footer}>
-        <Group wrap="nowrap">
-          <NumberInput
-            label={<Text className={classes.label}>One-time price</Text>}
-            defaultValue={price}
-            onChange={(value) => handleDo(setPrice, Number(value))}
-            clampBehavior="strict"
-            max={10000}
-            allowNegative={false}
-            error={error?.price}
-          />
-          <NumberInput
-            defaultValue={updatePrice}
-            label={<Text className={classes.label}>Price of update</Text>}
-            onChange={(value) => handleDo(setUpdatePrice, Number(value))}
-            clampBehavior="strict"
-            max={10000}
-            allowNegative={false}
-            rightSection={
-              <Text c="dimmed" size="sm">
-                / month
-              </Text>
-            }
-            rightSectionWidth={75}
-            error={error?.updatePrice}
-          />
-        </Group>
         <Select
           label={<Text className={classes.label}>Status</Text>}
           flex={1}

@@ -26,7 +26,6 @@ import fetchRoutines from "@/functions/fetchRoutines";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { getIsRoutineActive } from "@/helpers/utils";
 import { PurchaseOverlayDataType, RoutineType } from "@/types/global";
-import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import useGetAvailablePartsAndConcerns from "./useGetAvailablePartsAndConcerns";
 import classes from "./routines.module.css";
 
@@ -297,12 +296,6 @@ export default function ClubRoutines(props: Props) {
         type={isSelf ? "you" : "member"}
         data={publicUserData}
         customStyles={{ flex: 0 }}
-      />
-      <MaximizeOverlayButton
-        isDisabled={!showButton}
-        showOverlayComponent={showOverlayComponent}
-        notPurchased={notPurchased}
-        setShowOverlayComponent={setShowOverlayComponent}
       />
       {accordionItems ? (
         <Stack className={classes.wrapper}>

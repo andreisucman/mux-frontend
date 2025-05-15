@@ -6,7 +6,6 @@ import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
-import PurchaseOverlay from "@/app/club/PurchaseOverlay";
 import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { DiaryType } from "@/app/diary/type";
 import DiaryContent from "@/components/DiaryContent";
@@ -18,7 +17,6 @@ import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { PurchaseOverlayDataType } from "@/types/global";
-import MaximizeOverlayButton from "../../MaximizeOverlayButton";
 import useGetAvailablePartsAndConcerns from "../../routines/[[...userName]]/useGetAvailablePartsAndConcerns";
 import classes from "./diary.module.css";
 
@@ -109,14 +107,6 @@ export default function DiaryPage(props: Props) {
     }
   }, [diaryRecords, notPurchased, isCurrentCombinationPurchased]);
 
-  const handleCloseOverlay = useCallback(() => {
-    if (isCurrentCombinationPurchased) {
-      setShowOverlayComponent("showOtherRoutinesButton");
-    } else {
-      setShowOverlayComponent("maximizeButton");
-    }
-  }, [isCurrentCombinationPurchased]);
-
   useEffect(() => {
     manageOverlays();
   }, [isCurrentCombinationPurchased]);
@@ -133,11 +123,6 @@ export default function DiaryPage(props: Props) {
     setParts: setAvailableParts,
     userName,
   });
-
-  const showButton =
-    ["maximizeButton", "showOtherRoutinesButton"].includes(showOverlayComponent) &&
-    diaryRecords &&
-    diaryRecords.length > 0;
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 
@@ -170,30 +155,12 @@ export default function DiaryPage(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      <MaximizeOverlayButton
-        isDisabled={!showButton}
-        showOverlayComponent={showOverlayComponent}
-        notPurchased={notPurchased}
-        setShowOverlayComponent={setShowOverlayComponent}
-      />
       <Stack className={classes.wrapper}>
         <Stack
           className={cn(classes.content, "scrollbar", {
             [classes.unbound]: showOverlayComponent !== "purchaseOverlay",
           })}
         >
-          {purchaseOverlayData && (
-            <>
-              {showOverlayComponent === "purchaseOverlay" && (
-                <PurchaseOverlay
-                  userName={userName}
-                  notPurchasedParts={notPurchased}
-                  purchaseOverlayData={purchaseOverlayData}
-                  handleCloseOverlay={handleCloseOverlay}
-                />
-              )}
-            </>
-          )}
           {diaryRecords ? (
             <>
               <DiaryContent

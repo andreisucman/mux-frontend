@@ -1,43 +1,23 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Masonry } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { PurchaseType } from "@/types/global";
-import PurchaseRow from "../PurchaseRow";
-import classes from "./PurchasesList.module.css";
+import ViewsRow from "../ViewsRow";
+import classes from "./ViewsList.module.css";
 
 type Props = {
-  pageType: "buyer" | "seller";
-  hasMore: boolean;
   data?: PurchaseType[];
+  hasMore: boolean;
   handleFetchPurchases: () => void;
-  onRowClick: (args: any) => void;
-  onSubscribeClick: (sellerId: string, sellerName: string, part: string, concern: string) => void;
-  onUnsubscribeClick: () => void;
 };
 
-export default function PurchasesList({
-  pageType,
-  hasMore,
-  data,
-  onRowClick,
-  onSubscribeClick,
-  onUnsubscribeClick,
-  handleFetchPurchases,
-}: Props) {
+export default function ViewsList({ data, hasMore, handleFetchPurchases }: Props) {
   const memoizedPurchaseRow = useCallback(
-    (props: any) => (
-      <PurchaseRow
-        variant={pageType}
-        data={props.data}
-        onRowClick={onRowClick}
-        onSubscribeClick={onSubscribeClick}
-        onUnsubscribeClick={onUnsubscribeClick}
-      />
-    ),
-    [typeof onRowClick, pageType, data?.length]
+    (props: any) => <ViewsRow data={props.data} />,
+    [data?.length]
   );
   return (
     <Stack className={classes.container}>
