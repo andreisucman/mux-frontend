@@ -213,7 +213,7 @@ export default function ClubRoutines(props: Props) {
 
   useEffect(() => {
     getFilters({
-      collection: "routines",
+      collection: "routine",
       fields: ["part", "concerns"],
     }).then((result) => {
       const { part, concerns } = result;

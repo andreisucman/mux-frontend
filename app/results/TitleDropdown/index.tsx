@@ -46,7 +46,6 @@ export default function TitleDropdown({ titles, customDropdownStyles, customHead
           url += `?${searchParams.toString()}`;
         }
       }
-      console.log("url", url);
 
       if (method === "push") {
         router.push(url);
