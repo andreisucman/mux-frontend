@@ -70,7 +70,7 @@ export default function DiaryPage(props: Props) {
           setDiaryRecords(data.slice(0, 20));
         }
         setOpenValue(data[0]?._id);
-        setHasMore(data.length === 9);
+        setHasMore(data.length === 21);
       }
     },
     [diaryRecords, hasMore, userName]
@@ -83,15 +83,17 @@ export default function DiaryPage(props: Props) {
   }, [sort, concern, userName, dateFrom, dateTo, authStatus]);
 
   useEffect(() => {
+    if (!userName) return;
     getFilters({
       collection: "diary",
+      filter: [`userName=${userName}`],
       fields: ["part", "concern"],
     }).then((result) => {
       const { part, concern } = result;
       setAvailableParts(part);
       setAvailableConcerns(concern);
     });
-  }, []);
+  }, [userName]);
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 

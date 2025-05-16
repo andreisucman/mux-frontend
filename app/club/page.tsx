@@ -5,7 +5,7 @@ import cn from "classnames";
 import { Skeleton, Stack, Text } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
-import fetchPurchases from "@/functions/fetchPurchases";
+import fetchViews from "@/functions/fetchViews";
 import { PurchaseType } from "@/types/global";
 import BalancePane from "./BalancePane";
 import ClubProfilePreview from "./ClubProfilePreview";
@@ -16,27 +16,27 @@ export const runtime = "edge";
 
 export default function Club() {
   const [hasMore, setHasMore] = useState(false);
-  const [buyers, setBuyers] = useState<PurchaseType[]>();
+  const [views, setViews] = useState<PurchaseType[]>();
   const { userDetails } = useContext(UserContext);
   const { name, avatar, club } = userDetails || {};
   const { intro, socials } = club || { socials: [] };
 
-  const handleFetchPurchases = useCallback(
+  const handleFetchViews = useCallback(
     async (skip: boolean, existingCount?: number) => {
-      const items = await fetchPurchases({ skip, existingCount, type: "seller" });
+      const items = await fetchViews({ skip, existingCount });
 
       if (skip) {
-        setBuyers((prev) => [...(prev || []), ...items.slice(0, 20)]);
+        setViews((prev) => [...(prev || []), ...items.slice(0, 20)]);
       } else {
-        setBuyers(items.slice(0, 20));
+        setViews(items.slice(0, 20));
       }
       setHasMore(items.length === 21);
     },
-    [buyers]
+    [views]
   );
 
   useEffect(() => {
-    handleFetchPurchases(false, 0);
+    handleFetchViews(false, 0);
   }, []);
   return (
     <Stack className={cn(classes.container, "smallPage")}>
@@ -46,13 +46,13 @@ export default function Club() {
         <BalancePane />
         <Stack className={classes.list}>
           <Text c="dimmed" size="sm">
-            Views
+           Routine views
           </Text>
-
           <ViewsList
-            data={buyers}
+            data={views}
+            userName={name}
             hasMore={hasMore}
-            handleFetchPurchases={() => handleFetchPurchases(hasMore, buyers?.length)}
+            handleFetchViews={() => handleFetchViews(hasMore, views?.length)}
           />
         </Stack>
       </Skeleton>

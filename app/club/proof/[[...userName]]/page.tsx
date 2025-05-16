@@ -76,15 +76,17 @@ export default function ClubProof(props: Props) {
   );
 
   useEffect(() => {
+    if (!userName) return;
     getFilters({
       collection: "proof",
+      filter: [`userName=${userName}`],
       fields: ["part", "concern"],
     }).then((result) => {
       const { part, concern } = result;
       setAvailableParts(part);
       setAvailableConcerns(concern);
     });
-  }, []);
+  }, [userName]);
 
   useEffect(() => {
     handleFetchProof({ userName, sort, part, concern, query });
@@ -105,7 +107,7 @@ export default function ClubProof(props: Props) {
           pageType="proof"
           titles={titles}
           userName={userName}
-          filterNames={["part"]}
+          filterNames={["part", "concern"]}
           disableFilter={!availableConcerns && !availableParts}
           disableSort={noPartsAndConcerns}
           sortItems={proofSortItems}

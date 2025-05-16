@@ -92,17 +92,17 @@ export default function ClubProgress(props: Props) {
   }, [authStatus, userName, sort, concern]);
 
   useEffect(() => {
+    if (!userName) return;
     getFilters({
       collection: "progress",
+      filter: [`userName=${userName}`],
       fields: ["part", "concerns"],
     }).then((result) => {
       const { part, concerns } = result;
       setAvailableParts(part);
       setAvailableConcerns(concerns);
     });
-  }, []);
-
-  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+  }, [userName]);
 
   const titles = clubPageTypeItems.map((item) => ({
     label: item.label,
@@ -120,7 +120,7 @@ export default function ClubProgress(props: Props) {
           filterNames={["part", "concern"]}
           defaultSortValue="-_id"
           disableFilter={!availableConcerns && !availableParts}
-          disableSort={noPartsAndConcerns}
+          disableSort={!progress || progress.length === 0}
           sortItems={progressSortItems}
           onFilterClick={() =>
             openFiltersCard({

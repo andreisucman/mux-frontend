@@ -212,15 +212,17 @@ export default function ClubRoutines(props: Props) {
   }, [sort, part, concern, userName]);
 
   useEffect(() => {
+    if (!userName) return;
     getFilters({
       collection: "routine",
+      filter: [`userName=${userName}`],
       fields: ["part", "concerns"],
     }).then((result) => {
       const { part, concerns } = result;
       setAvailableParts(part);
       setAvailableConcerns(concerns);
     });
-  }, []);
+  }, [userName]);
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
 

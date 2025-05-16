@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { Button, Collapse, Group, rem, Stack, Text, Title } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
@@ -18,13 +18,9 @@ type Props = {
 
 function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const part = searchParams.get("part");
 
   const { name, intro, avatar, socials, latestScoresDifference } = data || { socials: [] };
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
-
-  const partOverall = latestScoresDifference?.[part as "face"];
 
   const handleToggleCollapse = () => {
     setShowCollapsedInfo((prev) => {
@@ -81,9 +77,9 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
           variant={"default"}
           size={showCollapsedInfo ? "sm" : "compact-sm"}
           className={classes.button}
-          onClick={() => router.push("/club/manage-routines")}
+          onClick={() => router.push("/club/publish-routines")}
         >
-          Manage routines
+          Publish routines
         </Button>
       )}
     </Group>

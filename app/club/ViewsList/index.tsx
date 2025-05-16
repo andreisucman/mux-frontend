@@ -1,23 +1,34 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Masonry } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
+import { useRouter } from "@/helpers/custom-router";
 import { PurchaseType } from "@/types/global";
 import ViewsRow from "../ViewsRow";
 import classes from "./ViewsList.module.css";
 
 type Props = {
   data?: PurchaseType[];
+  userName?: string;
   hasMore: boolean;
-  handleFetchPurchases: () => void;
+  handleFetchViews: () => void;
 };
 
-export default function ViewsList({ data, hasMore, handleFetchPurchases }: Props) {
-  const memoizedPurchaseRow = useCallback(
-    (props: any) => <ViewsRow data={props.data} />,
-    [data?.length]
+export default function ViewsList({ data, userName, hasMore, handleFetchViews }: Props) {
+  const router = useRouter();
+  const handleRedirect = useCallback(
+    (part: string, concern: string) => {
+      if (!userName) return;
+      router.push(`/club/routines/${userName}?part=${part}&concern=${concern}`);
+    },
+    [userName]
+  );
+
+  const memoizedViewRow = useCallback(
+    (props: any) => <ViewsRow data={props.data} onClick={handleRedirect} />,
+    [data?.length, handleRedirect]
   );
   return (
     <Stack className={classes.container}>
@@ -34,17 +45,12 @@ export default function ViewsList({ data, hasMore, handleFetchPurchases }: Props
                   />
                 </Stack>
               }
-              loadMore={handleFetchPurchases}
+              loadMore={handleFetchViews}
               useWindow={false}
               hasMore={hasMore}
               pageStart={0}
             >
-              <Masonry
-                items={data}
-                maxColumnCount={1}
-                rowGutter={16}
-                render={memoizedPurchaseRow}
-              />
+              <Masonry items={data} maxColumnCount={2} rowGutter={16} render={memoizedViewRow} />
             </InfiniteScroll>
           ) : (
             <OverlayWithText text="Nobody found" icon={<IconCircleOff className="icon" />} />

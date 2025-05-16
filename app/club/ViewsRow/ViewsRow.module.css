@@ -1,4 +1,5 @@
 .container {
+  cursor: pointer;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -8,11 +9,14 @@
   min-height: rem(60);
   padding: rem(16);
   height: unset;
+
+  &:hover {
+    border: rem(2) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  }
 }
 
 .cell {
   display: flex;
   align-items: center;
   gap: rem(8);
-  font-weight: 600;
 }
