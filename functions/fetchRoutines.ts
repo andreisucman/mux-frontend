@@ -25,21 +25,10 @@ const fetchRoutines = async ({
 
     const parts = [];
 
-    if (part) {
-      parts.push(`part=${part}`);
-    }
-
-    if (concern) {
-      parts.push(`concern=${concern}`);
-    }
-
-    if (sort) {
-      parts.push(`sort=${sort}`);
-    }
-
-    if (skip && routinesLength > 0) {
-      parts.push(`skip=${routinesLength}`);
-    }
+    if (part) parts.push(`part=${part}`);
+    if (concern) parts.push(`concern=${concern}`);
+    if (sort) parts.push(`sort=${sort}`);
+    if (skip && routinesLength > 0) parts.push(`skip=${routinesLength}`);
 
     const query = parts.join("&");
 

@@ -9,6 +9,7 @@ import ClubModerationLayout from "@/app/club/ModerationLayout";
 import ProgressGallery from "@/app/results/ProgressGallery";
 import { SimpleProgressType } from "@/app/results/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
@@ -113,10 +114,8 @@ export default function ClubProgress(props: Props) {
   return (
     <ClubModerationLayout
       header={
-        <PageHeaderClub
-          pageType="progress"
+        <PageHeader
           titles={titles}
-          userName={userName}
           filterNames={["part", "concern"]}
           defaultSortValue="-_id"
           disableFilter={!availableConcerns && !availableParts}

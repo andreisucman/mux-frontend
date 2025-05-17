@@ -123,7 +123,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             className={classes.button}
             variant="default"
           >
-            <IconBrandGoogle className="icon" style={{ marginRight: rem(4) }} />
+            <IconBrandGoogle size={20} style={{ marginRight: rem(4) }} />
             Sign in/up with Google
           </Button>
           <Text c="dimmed" size="xs" ta="center">
@@ -174,7 +174,7 @@ export default function AuthForm({ stateObject, customStyles }: Props) {
             loading={isEmailLoading}
             disabled={isEmailLoading}
           >
-            <IconMail className="icon" style={{ marginRight: rem(6) }} /> {buttonText}
+            <IconMail size={20} style={{ marginRight: rem(6) }} /> {buttonText}
           </Button>
           <UnstyledButton
             className={classes.secondaryButton}

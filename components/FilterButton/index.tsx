@@ -18,7 +18,7 @@ export default function FilterButton({ onFilterClick, activeFiltersCount, isDisa
         disabled={isDisabled}
         className={classes.button}
       >
-        <IconFilter className="icon" />
+        <IconFilter size={20} />
       </ActionIcon>
       {activeFiltersCount > 0 && (
         <Indicator label={activeFiltersCount} size={16} className={classes.indicator} />

@@ -29,7 +29,7 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
     () =>
       status === TaskStatusEnum.COMPLETED ? (
         <ThemeIcon c="green.7" variant="transparent" radius="xl" size="sm">
-          <IconCheck stroke={4} className={"icon icon__small"} />
+          <IconCheck stroke={4} size={16} />
         </ThemeIcon>
       ) : (
         <></>
@@ -59,21 +59,21 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
     if (status === TaskStatusEnum.COMPLETED) {
       if (proofId) {
         label = "View";
-        icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
+        icon = <IconEye size={20} style={{ marginRight: rem(6) }} />;
       } else {
         label = "Undo";
-        icon = <IconArrowBackUp className="icon" style={{ marginRight: rem(6) }} />;
+        icon = <IconArrowBackUp size={20} style={{ marginRight: rem(6) }} />;
       }
     } else if (taskExpired) {
       label = "Expired";
-      icon = <IconEye className="icon" style={{ marginRight: rem(6) }} />;
+      icon = <IconEye size={20} style={{ marginRight: rem(6) }} />;
     } else {
       label = "Mark done";
-      icon = <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} />;
+      icon = <IconSquareRoundedCheck size={20} style={{ marginRight: rem(6) }} />;
 
       if (proofEnabled && proofEnabled) {
         label = "Upload proof";
-        icon = <IconCamera className="icon" style={{ marginRight: rem(6) }} />;
+        icon = <IconCamera size={20} style={{ marginRight: rem(6) }} />;
       }
     }
 

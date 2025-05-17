@@ -1,4 +1,3 @@
-import Link from "@/helpers/custom-router/patch-router/link";
 import {
   IconDoorExit,
   IconListDetails,
@@ -8,6 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { Avatar, Menu, rem, UnstyledButton } from "@mantine/core";
 import AvatarComponent from "@/components/AvatarComponent";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { AvatarType } from "@/types/global";
 import classes from "./UserButton.module.css";
 
@@ -38,22 +38,22 @@ function UserButton({ isClubActive, avatar, handleSignOut }: Props) {
       <Menu.Dropdown>
         {isClubActive && (
           <Menu.Item component={Link} href="/club" style={{ paddingBottom: rem(4) }}>
-            <IconSocial className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+            <IconSocial size={16} style={{ marginRight: rem(6) }} />
             My club
           </Menu.Item>
         )}
         <Menu.Item component={Link} href="/tasks">
-          <IconListDetails className="icon icon__small" style={{ marginRight: rem(6) }} /> My tasks
+          <IconListDetails size={16} style={{ marginRight: rem(6) }} /> My tasks
         </Menu.Item>
         <Menu.Item component={Link} href="/select-part">
-          <IconScan className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+          <IconScan size={16} style={{ marginRight: rem(6) }} />
           Scan
         </Menu.Item>
         <Menu.Item component={Link} href="/settings">
-          <IconSettings className="icon icon__small" style={{ marginRight: rem(6) }} /> Settings
+          <IconSettings size={16} style={{ marginRight: rem(6) }} /> Settings
         </Menu.Item>
         <Menu.Item onClick={handleSignOut}>
-          <IconDoorExit className="icon icon__small" style={{ marginRight: rem(6) }} /> Sign out
+          <IconDoorExit size={16} style={{ marginRight: rem(6) }} /> Sign out
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

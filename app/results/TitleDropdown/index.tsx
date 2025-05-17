@@ -33,9 +33,9 @@ export default function TitleDropdown({ titles, customDropdownStyles, customHead
   );
 
   const icon = collapseOpened ? (
-    <IconChevronUp className="icon" stroke={1.5} />
+    <IconChevronUp size={20} stroke={1.5} />
   ) : (
-    <IconChevronDown className="icon" stroke={1.5} />
+    <IconChevronDown size={20} stroke={1.5} />
   );
 
   const handleRedirect = useCallback(

@@ -38,22 +38,18 @@ export default function DiaryRow({ data, isPublic }: Props) {
   const { audio, transcriptions, activity } = diaryRecord;
 
   const recordingChevron = recordingsOpen ? (
-    <IconChevronUp className="icon icon__small" />
+    <IconChevronUp size={16} />
   ) : (
-    <IconChevronDown className="icon icon__small" />
+    <IconChevronDown size={16} />
   );
 
   const transcriptionChevron = transcriptionOpen ? (
-    <IconChevronUp className="icon icon__small" />
+    <IconChevronUp size={16} />
   ) : (
-    <IconChevronDown className="icon icon__small" />
+    <IconChevronDown size={16} />
   );
 
-  const tasksChevron = tasksOpen ? (
-    <IconChevronUp className="icon icon__small" />
-  ) : (
-    <IconChevronDown className="icon icon__small" />
-  );
+  const tasksChevron = tasksOpen ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />;
 
   const tasksLabel = tasksOpen ? "Hide activity" : "Show activity";
   const transcriptionLabel = transcriptionOpen ? "Hide transcription" : "Show transcription";

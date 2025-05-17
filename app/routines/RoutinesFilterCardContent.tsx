@@ -5,15 +5,20 @@ import { modals } from "@mantine/modals";
 import FilterDropdown from "@/components/FilterDropdown";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import { partIcons } from "@/helpers/icons";
-import classes from "./RoutinesFilterCardContent.module.css";
 import { normalizeString } from "@/helpers/utils";
+import classes from "./RoutinesFilterCardContent.module.css";
 
 type Props = {
   concernFilterItems?: FilterItemType[];
   partFilterItems?: FilterItemType[];
+  hideClear?: boolean;
 };
 
-export default function RoutinesFilterCardContent({ concernFilterItems, partFilterItems }: Props) {
+export default function RoutinesFilterCardContent({
+  concernFilterItems,
+  partFilterItems,
+  hideClear,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -46,16 +51,18 @@ export default function RoutinesFilterCardContent({ concernFilterItems, partFilt
         closeOnSelect
         addToQuery
       />
-      <Button
-        disabled={!searchParams.toString()}
-        variant="default"
-        onClick={() => {
-          modals.closeAll();
-          router.replace(pathname);
-        }}
-      >
-        Clear filters
-      </Button>
+      {!hideClear && (
+        <Button
+          disabled={!searchParams.toString()}
+          variant="default"
+          onClick={() => {
+            modals.closeAll();
+            router.replace(pathname);
+          }}
+        >
+          Clear filters
+        </Button>
+      )}
     </Stack>
   );
 }

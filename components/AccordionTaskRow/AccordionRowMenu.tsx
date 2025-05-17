@@ -55,13 +55,13 @@ export default function AccordionRowMenu({
           onClick={(e) => e.stopPropagation()}
           disabled={!routineId}
         >
-          <IconDots className="icon icon__small icon__gray" />
+          <IconDots size={16} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
         {copyRoutine && (
           <Menu.Item onClick={() => copyRoutine(routineId)}>
-            <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+            <IconCopy size={16} style={{ marginRight: rem(6) }} />
             Copy
           </Menu.Item>
         )}
@@ -69,33 +69,33 @@ export default function AccordionRowMenu({
           <>
             {routineStatus === RoutineStatusEnum.ACTIVE && rescheduleRoutine && (
               <Menu.Item onClick={() => rescheduleRoutine(routineId)}>
-                <IconCalendarClock className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconCalendarClock size={16} style={{ marginRight: rem(6) }} />
                 Reschedule
               </Menu.Item>
             )}
             <Menu.Item onClick={() => redirectToTask({ taskKey, page: "calendar" })}>
-              <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+              <IconCalendar size={16} style={{ marginRight: rem(6) }} />
               See in calendar
             </Menu.Item>
             <Menu.Item onClick={() => redirectToTask({ taskKey, page: "diary" })}>
-              <IconNotebook className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+              <IconNotebook size={16} style={{ marginRight: rem(6) }} />
               See in diary
             </Menu.Item>
             {routineStatus === RoutineStatusEnum.CANCELED && updateRoutine && (
               <Menu.Item onClick={() => updateRoutine(routineId, RoutineStatusEnum.ACTIVE)}>
-                <IconBolt className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconBolt size={16} style={{ marginRight: rem(6) }} />
                 Activate
               </Menu.Item>
             )}
             {routineStatus === RoutineStatusEnum.ACTIVE && updateRoutine && (
               <Menu.Item onClick={() => updateRoutine(routineId, RoutineStatusEnum.CANCELED)}>
-                <IconCancel className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconCancel size={16} style={{ marginRight: rem(6) }} />
                 Cancel
               </Menu.Item>
             )}
             {routineStatus === RoutineStatusEnum.CANCELED && deleteRoutine && (
               <Menu.Item onClick={() => deleteRoutine(routineId)}>
-                <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconTrash size={16} style={{ marginRight: rem(6) }} />
                 Delete
               </Menu.Item>
             )}

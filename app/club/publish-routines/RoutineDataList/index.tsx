@@ -99,13 +99,13 @@ export default function RoutineDataList({
             >
               <Masonry
                 items={routineDataRecords}
-                maxColumnCount={1}
+                maxColumnCount={2}
                 rowGutter={16}
                 render={memoizedDataRow}
               />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="Nobody found" icon={<IconCircleOff className="icon" />} />
+            <OverlayWithText text="Nobody found" icon={<IconCircleOff size={20} />} />
           )}
         </>
       ) : (

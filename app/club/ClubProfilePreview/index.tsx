@@ -36,11 +36,7 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
     });
   }, []);
 
-  const chevron = showCollapsedInfo ? (
-    <IconChevronUp className="icon" />
-  ) : (
-    <IconChevronDown className="icon" />
-  );
+  const chevron = showCollapsedInfo ? <IconChevronUp size={20} /> : <IconChevronDown size={20} />;
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>

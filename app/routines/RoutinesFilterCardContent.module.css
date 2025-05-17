@@ -1,3 +1,3 @@
 .container {
-  border-radius: var(--mantine-border-radius-lg);
+  gap: rem(12);
 }

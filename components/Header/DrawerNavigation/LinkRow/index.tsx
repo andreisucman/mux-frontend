@@ -26,9 +26,9 @@ function LinkRow({ linkClicked, clickLink, closeDrawer, link }: Props) {
   const chevron = useMemo(
     () =>
       active ? (
-        <IconChevronUp className={"icon"} stroke={1.25} />
+        <IconChevronUp size={20} stroke={1.25} />
       ) : (
-        <IconChevronDown className={"icon"} stroke={1.25} />
+        <IconChevronDown size={20} stroke={1.25} />
       ),
     [active]
   );

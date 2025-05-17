@@ -61,7 +61,7 @@ export default function BlurSelectorMenu({
         ))}
         <Menu.Item>
           <Group gap={8} onClick={handleNewBlur}>
-            <IconCirclePlus className="icon icon__small" /> New blur
+            <IconCirclePlus size={16} /> New blur
           </Group>
         </Menu.Item>
       </Menu.Dropdown>

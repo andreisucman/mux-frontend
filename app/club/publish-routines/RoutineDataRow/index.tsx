@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Group, Skeleton, Switch, Text } from "@mantine/core";
+import React, { useMemo, useState } from "react";
+import { Button, Group, Skeleton, Text } from "@mantine/core";
 import { getPartIcon } from "@/helpers/icons";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { normalizeString } from "@/helpers/utils";
@@ -46,6 +46,14 @@ export default function RoutineDataRow({
     }
   };
 
+  const buttonsData = useMemo(() => {
+    const statusText = defaultRoutine.status === "public" ? "Public" : "Publish";
+    const monetizeText = defaultRoutine.monetization === "enabled" ? "Monetized" : "Monetize";
+    const statusColor = defaultRoutine.status === "public" ? "green.7" : undefined;
+    const monetizationColor = defaultRoutine.monetization === "enabled" ? "green.7" : undefined;
+    return { statusText, monetizeText, statusColor, monetizationColor };
+  }, [defaultRoutine]);
+
   return (
     <Skeleton visible={showSkeleton}>
       <Group className={classes.container}>
@@ -55,17 +63,24 @@ export default function RoutineDataRow({
           <Text component="span">-</Text>
           <Text component="span">{normalizeString(concern).toLowerCase()}</Text>
         </Group>
-
-        <Switch
-          checked={defaultRoutine.status === "public"}
-          onChange={() => handleUpdate("status")}
-          label="Public"
-        />
-        <Switch
-          checked={defaultRoutine.monetization === "enabled"}
-          onChange={() => handleUpdate("monetization")}
-          label="Monetize"
-        />
+        <Group gap={12} ml="auto">
+          <Button
+            variant={"default"}
+            c={buttonsData.statusColor}
+            size="compact-sm"
+            onClick={() => handleUpdate("status")}
+          >
+            {buttonsData.statusText}
+          </Button>
+          <Button
+            variant={"default"}
+            c={buttonsData.monetizationColor}
+            size="compact-sm"
+            onClick={() => handleUpdate("monetization")}
+          >
+            {buttonsData.monetizeText}
+          </Button>
+        </Group>
       </Group>
     </Skeleton>
   );

@@ -109,7 +109,7 @@ export default function SearchButton({
               actions.push({
                 id: value as string,
                 label: normalizeString(value as string).toLowerCase(),
-                leftSection: <IconSearch className={"icon"} stroke={1.5} />,
+                leftSection: <IconSearch size={20} stroke={1.5} />,
                 onClick: () => handleActionClick(value as string),
               });
             }
@@ -131,21 +131,21 @@ export default function SearchButton({
           onClick={() => spotlight.open()}
           disabled={disableSpotlight}
         >
-          <IconSearch className="icon" />
+          <IconSearch size={20} />
         </ActionIcon>
       </Group>
       <Spotlight
         disabled={disableSpotlight}
         store={spotlightStore}
         actions={spotlightActions}
-        classNames={{overlay:"overlay"}}
+        classNames={{ overlay: "overlay" }}
         onQueryChange={(query: string) => {
           setSearchQuery(query);
           if (query) getAutocompleteData(collection, query);
         }}
         nothingFound="Nothing found"
         searchProps={{
-          leftSection: <IconSearch className="icon" stroke={1.5} />,
+          leftSection: <IconSearch size={20} stroke={1.5} />,
           placeholder: searchPlaceholder,
           onKeyDown: (e: React.KeyboardEvent) => {
             if (e.key !== "Enter") return;

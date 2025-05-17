@@ -18,11 +18,7 @@ function ContentPublicityIndicator({
   position = "top-right",
 }: Props) {
   const publicityText = isPublic ? "Public" : "Private";
-  const publicityIcon = isPublic ? (
-    <IconLockOpen className="icon" />
-  ) : (
-    <IconLock className="icon" />
-  );
+  const publicityIcon = isPublic ? <IconLockOpen size={20} /> : <IconLock size={20} />;
 
   return (
     <Group

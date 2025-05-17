@@ -44,12 +44,12 @@ export default function SelectPartModalContent({ userId, onClick }: Props) {
       const { part, concern } = result;
       if (part.length > 0) {
         setPart(part[0].value);
-        setAvailableParts(part);
       }
       if (concern.length > 0) {
         setConcern(concern[0]?.value);
-        setAvailableConcerns(concern);
       }
+      setAvailableParts(part);
+      setAvailableConcerns(concern);
     });
   }, [userId, part]);
 
@@ -58,7 +58,7 @@ export default function SelectPartModalContent({ userId, onClick }: Props) {
 
   return (
     <Stack className={classes.container}>
-      {noTasks && <Alert p="0.5rem 1rem">Complete at least one task today to add a note.</Alert>}
+      {noTasks && <Alert p="0.5rem 1rem">To add a note complete at least one task today.</Alert>}
       <FilterDropdown
         data={availableParts}
         icons={partIcons}

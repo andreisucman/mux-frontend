@@ -148,7 +148,7 @@ export default function PublishRoutines() {
       const concernName = normalizeString(concern).toLowerCase();
 
       if (isTurningOff) {
-        body = `This will make you stop earning from the views on your ${concernName} routine. Continue?`;
+        body = `This will make you stop earning from the views on your ${concernName} routines. Continue?`;
       }
 
       if (isTurningOff) {
@@ -174,23 +174,22 @@ export default function PublishRoutines() {
       let endpoint = "getRoutineData";
       const searchParams = new URLSearchParams();
 
-      if (hasMore && routineData) {
-        searchParams.set("skip", String(routineData.length));
-        endpoint = endpoint += `?${searchParams.toString()}`;
-      }
+      if (hasMore && routineData) searchParams.set("skip", String(routineData.length));
+      const query = searchParams.toString();
+
+      if (query) endpoint += `?${query}`;
 
       const response = await callTheServer({ endpoint, method: "GET" });
 
       if (response.status === 200) {
-        const { routineData } = response.message;
+        const data = response.message;
 
-        setHasMore(routineData.length === 21);
+        setHasMore(data.length === 21);
         if (hasMore) {
-          setRoutineData((prev) => [...(prev || []), ...routineData.slice(0, 20)]);
+          setRoutineData((prev) => [...(prev || []), ...data.slice(0, 20)]);
         } else {
-          setRoutineData(routineData.slice(0, 20));
+          setRoutineData(data.slice(0, 20));
         }
-        setRoutineData(routineData);
       }
     } catch (err) {}
   };

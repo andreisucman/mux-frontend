@@ -12,25 +12,25 @@ import {
 } from "@tabler/icons-react";
 
 export const partIcons: { [key: string]: React.ReactNode } = {
-  face: <IconMoodNeutral className="icon" />,
-  hair: <IconWhirl className="icon" />,
-  body: <IconMan className="icon" />,
+  face: <IconMoodNeutral size={20} />,
+  hair: <IconWhirl size={20} />,
+  body: <IconMan size={20} />,
 };
 
 export const pageTypeIcons: { [key: string]: React.ReactNode } = {
-  routines: <IconRoute className="icon" />,
-  progress: <IconTargetArrow className="icon" />,
-  proof: <IconVideo className="icon" />,
-  diary: <IconNotebook className="icon" />,
+  routines: <IconRoute size={20} />,
+  progress: <IconTargetArrow size={20} />,
+  proof: <IconVideo size={20} />,
+  diary: <IconNotebook size={20} />,
 };
 
 export const statusIcons = {
-  completed: <IconCheckbox className="icon" style={{ display: "flex" }} />,
-  expired: <IconClock className="icon" style={{ display: "flex" }} />,
-  canceled: <IconCancel className="icon" style={{ display: "flex" }} />,
+  completed: <IconCheckbox size={20} style={{ display: "flex" }} />,
+  expired: <IconClock size={20} style={{ display: "flex" }} />,
+  canceled: <IconCancel size={20} style={{ display: "flex" }} />,
 };
 
-const getPartIcon = (key: string, size:number) => {
+const getPartIcon = (key: string, size: number) => {
   switch (key) {
     case "face":
       return <IconMoodNeutral size={size} />;

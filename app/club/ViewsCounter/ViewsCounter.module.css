@@ -1,0 +1,5 @@
+.container {
+  cursor: pointer;
+  gap: rem(8);
+  flex-wrap: nowrap;
+}

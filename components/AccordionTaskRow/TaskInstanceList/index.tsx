@@ -10,7 +10,6 @@ type Props = {
   icon: string;
   color: string;
   isSelf: boolean;
-  taskKey: string | null;
   taskIdsObjects: { startsAt: string; status: string; _id: string }[];
   redirectToTaskInstance?: (taskId: string) => void;
   copyTaskInstance: (taskId: string) => void;
@@ -24,7 +23,6 @@ export default function TaskInstanceList({
   icon,
   color,
   isSelf,
-  taskKey,
   taskIdsObjects,
   deleteTaskInstance,
   copyTaskInstance,
@@ -65,7 +63,7 @@ export default function TaskInstanceList({
           </Group>
         );
       })}
-      {taskKey && isSelf && (
+      {isSelf && (
         <Button
           size="compact-sm"
           variant="default"

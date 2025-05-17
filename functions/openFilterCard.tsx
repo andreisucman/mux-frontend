@@ -4,8 +4,8 @@ import RoutinesFilterCardContent from "@/app/routines/RoutinesFilterCardContent"
 import HistoryFilterCardContent from "@/app/tasks/history/HistoryFilterCardContent";
 import DiaryFilterCardContent from "@/components/DiaryFilterCardContent";
 import FilterCardContent from "@/components/FilterCardContent/FilterCardContent";
-import ClubProgressFilterCardContent from "@/components/PageHeaderClub/ClubProgressFilterCardContent";
-import ClubProofFilterCardContent from "@/components/PageHeaderClub/ClubProofFilterCardContent";
+import ClubProgressFilterCardContent from "@/components/PageHeader/ClubProgressFilterCardContent";
+import ClubProofFilterCardContent from "@/components/PageHeader/ClubProofFilterCardContent";
 
 export enum FilterCardNamesEnum {
   "ClubProofFilterCardContent" = "ClubProofFilterCardContent",
@@ -46,6 +46,7 @@ const openFiltersCard = ({ cardName, childrenProps }: Props) => {
       </Title>
     ),
     centered: true,
+    size: "xs",
     innerProps: cardsMap[cardName],
   });
 };

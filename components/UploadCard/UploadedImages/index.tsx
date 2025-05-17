@@ -16,7 +16,7 @@ export default function UploadedImages({ images, onClick, handleRemove, handleAd
       {images.map((image) => (
         <Stack className={classes.imageWrapper} key={image}>
           <ActionIcon size="xs" className={classes.close} onClick={() => handleRemove(image)}>
-            <IconX className="icon" />
+            <IconX size={20} />
           </ActionIcon>
           <Image
             src={image}
@@ -29,7 +29,7 @@ export default function UploadedImages({ images, onClick, handleRemove, handleAd
       ))}
       {images.length < 3 && (
         <div className={classes.addButton} onClick={handleAddMore}>
-          <IconPlus className={"icon icon__large"} />
+          <IconPlus size={24} />
         </div>
       )}
     </Group>

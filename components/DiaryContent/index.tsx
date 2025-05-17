@@ -70,7 +70,7 @@ export default function DiaryContent({
             className={classes.list}
           />
         ) : (
-          <OverlayWithText text={`Nothing found`} icon={<IconCircleOff className="icon" />} />
+          <OverlayWithText text={`Nothing found`} icon={<IconCircleOff size={20} />} />
         )}
       </Accordion>
       {hasMore && (

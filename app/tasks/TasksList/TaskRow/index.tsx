@@ -39,7 +39,7 @@ export default function TaskRow({
     () =>
       status === TaskStatusEnum.COMPLETED ? (
         <ActionIcon c="green.7" variant="transparent" radius="xl">
-          <IconCheck stroke={3} className="icon icon__large" />
+          <IconCheck stroke={3} size={24} />
         </ActionIcon>
       ) : (
         <Text fw={600} ta="center" size="sm">

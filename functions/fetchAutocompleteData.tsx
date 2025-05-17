@@ -71,7 +71,7 @@ const fetchAutocompleteData = async ({
           reply.actions.push({
             id: value as string,
             label: normalizeString(value as string).toLowerCase(),
-            leftSection: <IconSearch className={"icon"} stroke={1.5} />,
+            leftSection: <IconSearch size={20} stroke={1.5} />,
             onClick: () => handleActionClick(value as string),
           });
         }

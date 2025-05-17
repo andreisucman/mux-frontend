@@ -89,11 +89,7 @@ export default function AddClubSocials({ title }: Props) {
     [name, value]
   );
 
-  const chevron = openAddSocial ? (
-    <IconChevronUp className="icon icon__small" />
-  ) : (
-    <IconChevronDown className="icon icon__small" />
-  );
+  const chevron = openAddSocial ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />;
 
   const addSocialText = openAddSocial ? "Hide" : "Show more";
 
@@ -129,7 +125,7 @@ export default function AddClubSocials({ title }: Props) {
             disabled={value.trim().length === 0}
             onClick={() => addSocial({ label: name, value: value.toLowerCase() })}
           >
-            <IconCirclePlus className="icon" />
+            <IconCirclePlus size={20} />
           </ActionIcon>
         </Group>
       </Stack>

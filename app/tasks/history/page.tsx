@@ -147,7 +147,7 @@ export default function RoutinesHistoryPage() {
                   />
                 </InfiniteScroll>
               ) : (
-                <OverlayWithText text={"Nothing found"} icon={<IconCircleOff className="icon" />} />
+                <OverlayWithText text={"Nothing found"} icon={<IconCircleOff size={20} />} />
               )}
             </>
           ) : (

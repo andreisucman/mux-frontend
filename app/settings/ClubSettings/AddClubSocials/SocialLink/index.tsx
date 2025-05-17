@@ -21,7 +21,7 @@ function SocialLink({ label, value, deleteSocial }: Props) {
         <Text lineClamp={1}>{value}</Text>
       </Stack>
       <ActionIcon size="sm" variant="default" onClick={() => deleteSocial(value)}>
-        <IconX className="icon icon__small" />
+        <IconX size={16} />
       </ActionIcon>
     </Group>
   );

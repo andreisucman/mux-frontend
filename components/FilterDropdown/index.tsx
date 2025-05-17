@@ -82,7 +82,7 @@ export default function FilterDropdown({
       <Group className={classes.dropdownRow}>
         {icons && icons[option.value]}
         {upperFirst(option.label)}
-        {checked && <IconCheck style={{ marginInlineStart: "auto" }} className="icon" />}
+        {checked && <IconCheck style={{ marginInlineStart: "auto" }} size={20} />}
       </Group>
     );
   };

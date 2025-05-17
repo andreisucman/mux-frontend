@@ -109,7 +109,7 @@ export default function BlurEditorSlide({
           className={classes.button}
           onClick={() => setSlideIndex((prev) => prev - 1)}
         >
-          <IconArrowLeft className="icon icon__small" />
+          <IconArrowLeft size={16} />
         </ActionIcon>
         <Button
           loading={isLoading}
@@ -125,7 +125,7 @@ export default function BlurEditorSlide({
           disabled={slideIndex + 1 >= totalSlides || isLoading}
           onClick={() => setSlideIndex((prev) => prev + 1)}
         >
-          <IconArrowRight className="icon icon__small" />
+          <IconArrowRight size={16} />
         </ActionIcon>
       </Group>
     </Stack>

@@ -41,7 +41,7 @@ function VideoRecorderResult({
           className={classes.button}
           style={{ flex: 0, minWidth: rem(40) }}
         >
-          <IconX className="icon" />
+          <IconX size={20} />
         </ActionIcon>
         <Button
           onClick={onSubmit}

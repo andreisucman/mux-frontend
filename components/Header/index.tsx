@@ -175,7 +175,7 @@ function Header() {
                 variant={"default"}
                 onClick={() => handleRedirect("signInButton")}
               >
-                <IconDoorEnter stroke={1.75} className="icon" style={{ marginRight: rem(6) }} />
+                <IconDoorEnter stroke={1.75} size={20} style={{ marginRight: rem(6) }} />
                 Sign in
               </Button>
             )}

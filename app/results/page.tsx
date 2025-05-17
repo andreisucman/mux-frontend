@@ -123,7 +123,7 @@ export default function ResultsProgress() {
                 isSelf
               />
             ) : (
-              <OverlayWithText text="No progress data" icon={<IconCircleOff className="icon" />} />
+              <OverlayWithText text="No progress data" icon={<IconCircleOff size={20} />} />
             )}
           </>
         ) : (

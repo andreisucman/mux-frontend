@@ -42,11 +42,11 @@ export default function InactiveTaskRow({
     return (
       <ActionIcon c={taskColor} variant="transparent" radius="xl">
         {status === TaskStatusEnum.COMPLETED ? (
-          <IconCheck stroke={3} className="icon icon__large" />
+          <IconCheck stroke={3} size={24} />
         ) : status === TaskStatusEnum.EXPIRED ? (
-          <IconClock stroke={3} className="icon icon__large" />
+          <IconClock stroke={3} size={24} />
         ) : (
-          <IconCancel stroke={3} className="icon icon__large" />
+          <IconCancel stroke={3} size={24} />
         )}
       </ActionIcon>
     );

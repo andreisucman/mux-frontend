@@ -189,7 +189,7 @@ export default function AccountSettings() {
                   })
                 }
               >
-                <IconDeviceFloppy className="icon icon__small" />{" "}
+                <IconDeviceFloppy size={16} />{" "}
               </ActionIcon>
             }
           />
@@ -203,7 +203,7 @@ export default function AccountSettings() {
               })
             }
           >
-            <IconAsterisk className={cn(classes.icon, "icon")} /> Reset password
+            <IconAsterisk className={classes.icon} size={20} /> Reset password
           </UnstyledButton>
           {!deleteOn && (
             <UnstyledButton
@@ -216,7 +216,7 @@ export default function AccountSettings() {
                 })
               }
             >
-              <IconInfoCircle className={cn(classes.icon, "icon")} /> Delete account
+              <IconInfoCircle className={classes.icon} size={20} /> Delete account
             </UnstyledButton>
           )}
         </Stack>

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import cn from "classnames";
 import { Accordion, Group, Skeleton } from "@mantine/core";
 import { useFocusWithin } from "@mantine/hooks";
@@ -8,7 +8,7 @@ import getReadableDateInterval from "@/helpers/getReadableDateInterval";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
-import { daysFrom } from "@/helpers/utils";
+import { daysFrom, normalizeString } from "@/helpers/utils";
 import { RoutineStatusEnum, RoutineType, TaskStatusEnum } from "@/types/global";
 import AccordionTaskRow from "../AccordionTaskRow";
 import AccordionRowMenu from "../AccordionTaskRow/AccordionRowMenu";
@@ -19,9 +19,9 @@ import classes from "./AccordionRoutineRow.module.css";
 
 type Props = {
   routine: RoutineType;
-  index: number;
   isSelf: boolean;
   selected: boolean;
+  queryConcern: string | null;
   copyRoutine?: (routineId: string) => void;
   rescheduleRoutine?: (routineId: string) => void;
   updateRoutine?: (routineId: string, newStatus: string) => void;
@@ -32,15 +32,15 @@ type Props = {
   updateTask?: (routineId: string, taskKey: string, newStatus: string) => void;
   copyTask: (routineId: string, taskKey: string) => void;
   copyTaskInstance: (taskId: string) => void;
-  addTaskInstance?: (taskId: string, lastDate: Date, selectedRoutineId: string) => void;
+  addTaskInstance: (taskId: string, lastDate: Date, selectedRoutineId: string) => void;
   rescheduleTaskInstance?: (taskId: string) => void;
 };
 
 export default function AccordionRoutineRow({
   routine,
-  index,
   isSelf,
   selected,
+  queryConcern,
   copyTask,
   deleteRoutine,
   updateRoutine,
@@ -59,7 +59,9 @@ export default function AccordionRoutineRow({
   const router = useRouter();
   const { ref, focused } = useFocusWithin();
   const showSkeleton = useShowSkeleton();
-  const [selectedConcerns, setSelectedConcerns] = useState<string[]>(concerns);
+  const [selectedConcerns, setSelectedConcerns] = useState<string[]>(
+    queryConcern ? [queryConcern] : concerns
+  );
 
   const rowLabel = useMemo(
     () => getReadableDateInterval(startsAt, lastDate),
@@ -67,15 +69,7 @@ export default function AccordionRoutineRow({
   );
 
   const totalTotal = useMemo(
-    () =>
-      routine.allTasks.reduce(
-        (a, c) =>
-          a +
-          c.ids.filter((obj) =>
-            [TaskStatusEnum.ACTIVE, TaskStatusEnum.COMPLETED].includes(obj.status as TaskStatusEnum)
-          ).length,
-        0
-      ),
+    () => routine.allTasks.reduce((a, c) => a + c.ids.filter((obj) => !obj.deletedOn).length, 0),
     [routine.allTasks]
   );
 
@@ -202,11 +196,9 @@ export default function AccordionRoutineRow({
   );
 
   const handleAddTaskInstance = useCallback(
-    (taskId: string, lastDate: Date, selectedRoutineId: string) => {
-      if (!addTaskInstance) return;
-      addTaskInstance(taskId, lastDate, selectedRoutineId);
-    },
-    [typeof addTaskInstance]
+    (taskId: string) =>
+      addTaskInstance(taskId, daysFrom({ date: new Date(routine.lastDate), days: 7 }), routine._id),
+    []
   );
 
   const handleDeleteTask = useCallback(
@@ -225,6 +217,11 @@ export default function AccordionRoutineRow({
     [routine._id, typeof updateTask]
   );
 
+  useEffect(() => {
+    if (!queryConcern) return;
+    setSelectedConcerns([queryConcern]);
+  }, [queryConcern]);
+
   return (
     <Skeleton
       visible={showSkeleton}
@@ -234,7 +231,7 @@ export default function AccordionRoutineRow({
     >
       <Accordion.Item
         key={routine._id}
-        value={routine._id || `no_value-${index}`}
+        value={routine._id}
         className={cn(classes.item, {
           [classes.selected]: selected,
           [classes.canceled]: routine.status === RoutineStatusEnum.CANCELED,
@@ -243,8 +240,12 @@ export default function AccordionRoutineRow({
         <Accordion.Control className={classes.control}>
           <Group className={classes.row}>
             <Group className={classes.title}>
-              {partIcons[part]}
-              {rowLabel}
+              <Group gap={8}>
+                {partIcons[part]}
+                <span>{normalizeString(part)}</span>
+                {rowLabel}
+              </Group>
+
               <StatsGroup
                 completed={totalCompleted}
                 completionRate={completionRate}
@@ -256,7 +257,7 @@ export default function AccordionRoutineRow({
               {selectedConcerns.length > 0 && (
                 <InputWithCheckboxes
                   data={selectedConcerns}
-                  placeholder={`Filter tasks by concerns (${selectedConcerns.length})`}
+                  placeholder={`Filter by concerns (${selectedConcerns.length})`}
                   defaultData={[...new Set(allActiveTasks.map((t) => t.concern))]}
                   setData={handleSelectConcern}
                   readOnly
@@ -286,13 +287,7 @@ export default function AccordionRoutineRow({
                   redirectToTask={redirectToTask}
                   redirectToTaskInstance={redirectToTaskInstance}
                   copyTaskInstance={copyTaskInstance}
-                  addTaskInstance={(taskId: string) =>
-                    handleAddTaskInstance(
-                      taskId,
-                      daysFrom({ date: new Date(routine.lastDate), days: 7 }),
-                      routine._id
-                    )
-                  }
+                  addTaskInstance={handleAddTaskInstance}
                   deleteTaskInstance={handleDeleteTaskInstance}
                   updateTaskInstance={handleUpdateTaskInstance}
                   rescheduleTaskInstance={handleRescheduleTaskInstance}

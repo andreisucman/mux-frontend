@@ -94,7 +94,7 @@ export default function ProgressGallery({
           />
         </InfiniteScroll>
       ) : (
-        <OverlayWithText icon={<IconCircleOff className="icon" />} text="Nothing found" />
+        <OverlayWithText icon={<IconCircleOff size={20} />} text="Nothing found" />
       )}
     </Stack>
   );

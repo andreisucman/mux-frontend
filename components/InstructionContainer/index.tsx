@@ -34,7 +34,8 @@ export default function InstructionContainer({
           <Group className={classes.note} style={instruction ? {} : { visibility: "hidden" }}>
             <IconExclamationCircle
               color="var(--mantine-color-orange-6)"
-              className={cn(classes.icon, "icon")}
+              className={classes.icon}
+              size={20}
             />
             <Text size="sm" c="orange.6">
               {description}

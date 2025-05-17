@@ -13,6 +13,7 @@ import classes from "./PageHeader.module.css";
 type Props = {
   title?: string | React.ReactNode;
   titles?: TitleType[];
+  childrenPosition?: "first" | "last";
   hideReturn?: boolean;
   nowrapTitle?: boolean;
   nowrapContainer?: boolean;
@@ -39,6 +40,7 @@ export default function PageHeader({
   hideReturn,
   children,
   center,
+  childrenPosition = "last",
   onFilterClick,
 }: Props) {
   const router = useRouter();
@@ -81,11 +83,11 @@ export default function PageHeader({
     >
       {!hideReturn && (
         <ActionIcon variant="default" onClick={() => router.back()}>
-          <IconChevronLeft className="icon" />
+          <IconChevronLeft size={20} />
         </ActionIcon>
       )}
       {finalTitle}
-      {children}
+      {childrenPosition === "first" && children}
       {sortItems && (
         <SortButton
           sortItems={sortItems}
@@ -100,6 +102,7 @@ export default function PageHeader({
           activeFiltersCount={activeFiltersCount}
         />
       )}
+      {childrenPosition === "last" && children}
     </Group>
   );
 }

@@ -195,7 +195,7 @@ export default function PhotoCapturer({
 
         {handleCancel && (
           <ActionIcon variant="default" className={classes.close} onClick={handleCancel}>
-            <IconX className="icon" />
+            <IconX size={20} />
           </ActionIcon>
         )}
 
@@ -209,7 +209,7 @@ export default function PhotoCapturer({
             miw={rem(50)}
           >
             <Text mr={2}>5</Text>
-            <IconStopwatch className="icon" />
+            <IconStopwatch size={20} />
           </Button>
         )}
 
@@ -223,7 +223,7 @@ export default function PhotoCapturer({
             miw={rem(50)}
           >
             <Text mr={2}>15</Text>
-            <IconStopwatch className="icon" />
+            <IconStopwatch size={20} />
           </Button>
         )}
 
@@ -236,7 +236,7 @@ export default function PhotoCapturer({
             style={{ flexGrow: 0, padding: 0 }}
             miw={rem(50)}
           >
-            <IconCameraRotate className="icon" />
+            <IconCameraRotate size={20} />
           </Button>
         )}
 
@@ -246,7 +246,7 @@ export default function PhotoCapturer({
           onClick={capturePhoto}
           className={classes.button}
         >
-          <IconCamera className="icon" />
+          <IconCamera size={20} />
         </Button>
       </Group>
     </Stack>

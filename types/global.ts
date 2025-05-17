@@ -166,23 +166,12 @@ export type LatestScoresDifferenceType = {
   [key: string]: ScoreDifferenceType[];
 };
 
-export type PurchaseType = {
+export type ViewType = {
   _id: string;
-  name: string;
   part: string;
   concern: string;
-  paid: number;
-  paymentIntentId: string;
-  subscriptionId?: string;
-  contentEndDate: string;
-  createdAt: Date;
-  sellerId: string;
-  sellerName: string;
-  sellerAvatar: AvatarType | null;
-  buyerId: string;
-  buyerName: string;
-  buyerAvatar: AvatarType | null;
-  isDeactivated?: boolean;
+  earned: number;
+  views: number;
 };
 
 export type BuyerType = {

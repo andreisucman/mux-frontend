@@ -9,6 +9,7 @@
 
 .row {
   flex-wrap: nowrap;
+  gap: rem(12)
 }
 
 .rowRight {

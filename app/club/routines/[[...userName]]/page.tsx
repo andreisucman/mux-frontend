@@ -14,6 +14,7 @@ import { GetRoutinesProps, HandleModifyTaskProps } from "@/app/routines/page";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
+import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
@@ -27,6 +28,8 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
+import ViewsCounter from "../../ViewsCounter";
+import SelectPartOrConcern from "./SelectPartOrConcern";
 import classes from "./routines.module.css";
 
 export const runtime = "edge";
@@ -42,7 +45,6 @@ export default function ClubRoutines(props: Props) {
   const { publicUserData } = useContext(ClubContext);
   const { userDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
-  const [openValue, setOpenValue] = useState<string | null>();
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
@@ -146,6 +148,37 @@ export default function ClubRoutines(props: Props) {
     [sort, userName, routines]
   );
 
+  const handleAddTaskInstance = useCallback(
+    (taskId: string, lastDate: Date, selectedRoutineId: string) => {
+      modals.openContextModal({
+        title: (
+          <Title order={5} component={"p"}>
+            Add another instance
+          </Title>
+        ),
+        size: "sm",
+        classNames: { overlay: "overlay" },
+        innerProps: (
+          <SelectDateModalContent
+            buttonText="Add task instance"
+            lastDate={lastDate}
+            onSubmit={async ({ startDate }: HandleModifyTaskProps) =>
+              copyTaskInstance({
+                setRoutines,
+                targetRoutineId: selectedRoutineId,
+                startDate,
+                taskId,
+              })
+            }
+          />
+        ),
+        modal: "general",
+        centered: true,
+      });
+    },
+    []
+  );
+
   const handleCopyTaskInstance = useCallback(
     (taskId: string) => {
       modals.openContextModal({
@@ -186,21 +219,26 @@ export default function ClubRoutines(props: Props) {
         return (
           <AccordionRoutineRow
             key={routine._id || i}
-            index={i}
             routine={routine}
             selected={selected}
             isSelf={isSelf}
+            queryConcern={concern}
             copyTaskInstance={handleCopyTaskInstance}
             copyRoutine={handleCopyRoutine}
+            addTaskInstance={handleAddTaskInstance}
             copyTask={handleCopyTask}
             setRoutines={setRoutines}
           />
         );
       }),
-    [routines, isSelf, handleCopyRoutine]
+    [routines, concern, isSelf, handleCopyRoutine]
   );
 
+  const noPartOrConcern = !part || !concern;
+
   useEffect(() => {
+    if (noPartOrConcern) return;
+
     const payload: GetRoutinesProps = {
       userName: userName,
       routinesLength: (routines && routines.length) || 0,
@@ -235,15 +273,16 @@ export default function ClubRoutines(props: Props) {
   return (
     <ClubModerationLayout
       header={
-        <PageHeaderClub
-          pageType="routines"
+        <PageHeader
           titles={titles}
-          userName={userName}
           filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
+          nowrapContainer
           sortItems={routineSortItems}
           disableFilter={!availableConcerns && !availableParts}
           disableSort={noPartsAndConcerns}
+          children={<ViewsCounter />}
+          childrenPosition="first"
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.RoutinesFilterCardContent,
@@ -262,55 +301,64 @@ export default function ClubRoutines(props: Props) {
         data={publicUserData}
         customStyles={{ flex: 0 }}
       />
-      {accordionItems ? (
-        <Stack className={classes.wrapper}>
-          <Stack className={cn(classes.content, "scrollbar")}>
-            {accordionItems.length > 0 ? (
-              <>
-                <Accordion
-                  value={openValue}
-                  onChange={setOpenValue}
-                  chevron={false}
-                  variant="separated"
-                  classNames={{
-                    root: "accordionRoot scrollbar",
-                    content: "accordionContent",
-                    chevron: "accordionChevron",
-                    item: "accordionItem",
-                  }}
-                >
-                  {accordionItems}
-                </Accordion>
-                {hasMore && (
-                  <ActionIcon
-                    variant="default"
-                    className={classes.getMoreButton}
-                    onClick={() =>
-                      handleFetchRoutines({
-                        skip: true,
-                        userName: userName,
-                        routinesLength: (routines && routines.length) || 0,
-                        concern,
-                        part,
-                        sort,
-                      })
-                    }
-                  >
-                    <IconArrowDown />
-                  </ActionIcon>
-                )}
-              </>
-            ) : (
-              <OverlayWithText text={"Nothing found"} icon={<IconCircleOff className="icon" />} />
-            )}
-          </Stack>
-        </Stack>
-      ) : (
-        <Loader
-          m="0 auto"
-          pt="30%"
-          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+      {noPartOrConcern ? (
+        <SelectPartOrConcern
+          partFilterItems={availableParts}
+          concernFilterItems={availableConcerns}
         />
+      ) : (
+        <>
+          {accordionItems ? (
+            <Stack className={classes.wrapper}>
+              <Stack className={cn(classes.content, "scrollbar")}>
+                {accordionItems.length > 0 ? (
+                  <>
+                    <Accordion
+                      chevron={false}
+                      value={routines?.map((ro) => ro._id)}
+                      variant="separated"
+                      classNames={{
+                        root: "accordionRoot scrollbar",
+                        content: "accordionContent",
+                        chevron: "accordionChevron",
+                        item: "accordionItem",
+                      }}
+                      multiple
+                    >
+                      {accordionItems}
+                    </Accordion>
+                    {hasMore && (
+                      <ActionIcon
+                        variant="default"
+                        className={classes.getMoreButton}
+                        onClick={() =>
+                          handleFetchRoutines({
+                            skip: true,
+                            userName: userName,
+                            routinesLength: (routines && routines.length) || 0,
+                            concern,
+                            part,
+                            sort,
+                          })
+                        }
+                      >
+                        <IconArrowDown />
+                      </ActionIcon>
+                    )}
+                  </>
+                ) : (
+                  <OverlayWithText text={"Nothing found"} icon={<IconCircleOff size={20} />} />
+                )}
+              </Stack>
+            </Stack>
+          ) : (
+            <Loader
+              m="0 auto"
+              pt="30%"
+              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+            />
+          )}
+        </>
       )}
     </ClubModerationLayout>
   );

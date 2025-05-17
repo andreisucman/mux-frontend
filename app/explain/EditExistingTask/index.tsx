@@ -31,7 +31,7 @@ export default function EditExistingTask({
     <Stack flex={1}>
       {readOnly && (
         <Group className={classes.banner}>
-          <IconSquareRoundedCheck className="icon" style={{ marginRight: rem(6) }} /> Task updated
+          <IconSquareRoundedCheck size={20} style={{ marginRight: rem(6) }} /> Task updated
         </Group>
       )}
       <TextareaComponent
@@ -68,7 +68,7 @@ export default function EditExistingTask({
           size="sm"
           closeOnChange
           disabled={readOnly}
-          leftSection={<IconCalendar className="icon" stroke={1.5} />}
+          leftSection={<IconCalendar size={20} stroke={1.5} />}
         />
       </Stack>
     </Stack>

@@ -13,8 +13,8 @@ type Props = {
 function StatsGroup({ total, completed, completionRate }: Props) {
   return (
     <Group className={classes.container}>
-      <StatCell icon={<IconListDetails className="icon icon__small" />} value={total} />
-      <StatCell icon={<IconSquareCheck className="icon icon__small" />} value={completed} />
+      <StatCell icon={<IconListDetails size={16} />} value={total} />
+      <StatCell icon={<IconSquareCheck size={16} />} value={completed} />
       {isNaN(completionRate) ? "% 0" : `% ${completionRate}`}
     </Group>
   );

@@ -58,7 +58,7 @@ export default function SortButton({
           style={customStyles || {}}
           disabled={isDisabled}
         >
-          <IconSortDescending2 className="icon" />
+          <IconSortDescending2 size={20} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>

@@ -9,6 +9,7 @@ import ClubModerationLayout from "@/app/club/ModerationLayout";
 import ProofGallery from "@/app/results/proof/ProofGallery";
 import { SimpleProofType } from "@/app/results/proof/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
@@ -103,10 +104,8 @@ export default function ClubProof(props: Props) {
   return (
     <ClubModerationLayout
       header={
-        <PageHeaderClub
-          pageType="proof"
+        <PageHeader
           titles={titles}
-          userName={userName}
           filterNames={["part", "concern"]}
           disableFilter={!availableConcerns && !availableParts}
           disableSort={noPartsAndConcerns}

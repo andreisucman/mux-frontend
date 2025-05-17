@@ -333,7 +333,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                         miw={rem(50)}
                         disabled={taskExpired}
                       >
-                        <IconCameraRotate className="icon" />
+                        <IconCameraRotate size={20} />
                       </Button>
                     )}
 
@@ -345,10 +345,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                       style={{ flexGrow: 0, padding: 0 }}
                       miw={rem(50)}
                     >
-                      <IconRotateRectangle
-                        className="icon"
-                        style={{ transform: "rotate(190deg)" }}
-                      />
+                      <IconRotateRectangle size={20} style={{ transform: "rotate(190deg)" }} />
                     </Button>
                   </>
                 )}
@@ -369,7 +366,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                         miw={rem(50)}
                       >
                         <Text mr={2}>{s}</Text>
-                        <IconStopwatch className="icon" />
+                        <IconStopwatch size={20} />
                       </Button>
                     ))}
                   </>
@@ -382,7 +379,7 @@ export default function VideoRecorder({ taskId, taskExpired, instruction, upload
                     onClick={handleStop}
                     className={classes.button}
                   >
-                    <IconPlayerStopFilled className="icon" style={{ marginRight: rem(6) }} />
+                    <IconPlayerStopFilled size={20} style={{ marginRight: rem(6) }} />
                     Finish
                   </Button>
                 )}

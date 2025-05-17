@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   IconBrandInstagram,
   IconCalendar,
@@ -18,7 +19,6 @@ import {
 } from "@tabler/icons-react";
 import { Divider, rem, Stack, Text, UnstyledButton } from "@mantine/core";
 import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
 import openFeedbackModal from "@/helpers/openFeedbackModal";
 import { NavigationLinkType } from "./LinkRow";
 import NavigationStack from "./NavigationStack";
@@ -27,18 +27,18 @@ import classes from "./DrawerNavigation.module.css";
 const defaultNavigation = [
   {
     title: "Results",
-    icon: <IconTargetArrow stroke={1.25} className="icon" />,
+    icon: <IconTargetArrow stroke={1.25} size={20} />,
     path: "/",
   },
   {
     title: "Scan",
-    icon: <IconScan stroke={1.35} className="icon" />,
+    icon: <IconScan stroke={1.35} size={20} />,
     path: "/select-part",
   },
   {
     title: "Rewards",
     path: "/rewards",
-    icon: <IconTrophy stroke={1.25} className="icon" />,
+    icon: <IconTrophy stroke={1.25} size={20} />,
   },
   {
     title: "About",
@@ -51,7 +51,7 @@ const defaultAuthenticatedNavigation = [
   {
     title: "My tasks",
     path: "/tasks",
-    icon: <IconListDetails stroke={1.25} className="icon" />,
+    icon: <IconListDetails stroke={1.25} size={20} />,
     children: [
       { title: "Current", path: "/tasks" },
       { title: "History", path: "/tasks/history" },
@@ -60,16 +60,16 @@ const defaultAuthenticatedNavigation = [
   {
     title: "My routines",
     path: "/routines",
-    icon: <IconRoute stroke={1.25} className="icon" />,
+    icon: <IconRoute stroke={1.25} size={20} />,
   },
   {
     title: "My diary",
-    icon: <IconNotebook stroke={1.25} className="icon" />,
+    icon: <IconNotebook stroke={1.25} size={20} />,
     path: "/diary",
   },
   {
     title: "My results",
-    icon: <IconTargetArrow stroke={1.25} className="icon" />,
+    icon: <IconTargetArrow stroke={1.25} size={20} />,
     path: "/results",
     children: [
       { title: "Progress", path: "/results" },
@@ -80,7 +80,7 @@ const defaultAuthenticatedNavigation = [
   {
     title: "My calendar",
     path: "/calendar",
-    icon: <IconCalendar stroke={1.25} className="icon" />,
+    icon: <IconCalendar stroke={1.25} size={20} />,
   },
 ];
 
@@ -88,17 +88,17 @@ const legalLinks = [
   {
     title: "Terms",
     path: "/legal/terms",
-    icon: <IconLicense stroke={1.25} className="icon icon__small" />,
+    icon: <IconLicense stroke={1.25} size={16} />,
   },
   {
     title: "Privacy",
     path: "/legal/privacy",
-    icon: <IconLicense stroke={1.25} className="icon icon__small" />,
+    icon: <IconLicense stroke={1.25} size={16} />,
   },
   {
     title: "Club",
     path: "/legal/club",
-    icon: <IconLicense stroke={1.25} className="icon icon__small" />,
+    icon: <IconLicense stroke={1.25} size={16} />,
   },
 ];
 
@@ -106,7 +106,7 @@ const socialLinks = [
   {
     title: "Instagram",
     path: "https://www.instagram.com/muxout_com/",
-    icon: <IconBrandInstagram stroke={1.25} className="icon icon__small" />,
+    icon: <IconBrandInstagram stroke={1.25} size={16} />,
   },
 ];
 
@@ -142,7 +142,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       finalNavigation.push({
         title: "My club",
         path: "/club",
-        icon: <IconSocial stroke={1.25} className="icon" />,
+        icon: <IconSocial stroke={1.25} size={20} />,
         children: [
           { title: "Profile", path: "/club" },
           { title: "Routines", path: `/club/routines/${name}` },
@@ -155,7 +155,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
       finalNavigation.push({
         title: "Join club",
         path: "/club/join",
-        icon: <IconSocial stroke={1.25} className="icon" />,
+        icon: <IconSocial stroke={1.25} size={20} />,
       });
     }
 
@@ -207,7 +207,7 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         />
         {status !== "authenticated" && (
           <UnstyledButton className={classes.signInButton} onClick={() => handleRedirect("/auth")}>
-            <IconDoorEnter className="icon" stroke={1.25} />
+            <IconDoorEnter size={20} stroke={1.25} />
             Sign in/up
           </UnstyledButton>
         )}
@@ -217,18 +217,18 @@ export default function DrawerNavigation({ closeDrawer, handleSignOut }: Props) 
         <>
           {finalAuthenticatedNavigation}
           <UnstyledButton className={classes.signInButton} onClick={openFeedbackModal}>
-            <IconMessageReply className="icon" stroke={1.25} />
+            <IconMessageReply size={20} stroke={1.25} />
             Feedback ($)
           </UnstyledButton>
           <UnstyledButton
             className={classes.signInButton}
             onClick={() => handleRedirect("/settings")}
           >
-            <IconSettings className="icon" stroke={1.25} />
+            <IconSettings size={20} stroke={1.25} />
             Settings
           </UnstyledButton>
           <UnstyledButton className={classes.signInButton} onClick={handleSignOut}>
-            <IconDoorExit className="icon" stroke={1.25} />
+            <IconDoorExit size={20} stroke={1.25} />
             Sign out
           </UnstyledButton>
         </>

@@ -1,5 +1,6 @@
 .container {
   cursor: pointer;
+  gap: rem(12);
 }
 
 .wrapper {

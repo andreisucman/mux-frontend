@@ -33,16 +33,18 @@ function ViewRow({ data, onClick }: Props) {
           <Text component="span">-</Text>
           <Text component="span">{normalizeString(concern).toLowerCase()}</Text>
         </Text>
-        <Text className={classes.cell}>
-          <IconEye size={18} />
-          <Text component="span">{views}</Text>
-        </Text>
-        {earned && (
+        <Group className={classes.box}>
           <Text className={classes.cell}>
-            <IconCashBanknote size={18} />
-            <Text component="span">${earned.toFixed(3)}</Text>
+            <IconEye size={18} />
+            <Text component="span">{views}</Text>
           </Text>
-        )}
+          {earned && (
+            <Text className={classes.cell}>
+              <IconCashBanknote size={18} />
+              <Text component="span">${earned.toFixed(2)}</Text>
+            </Text>
+          )}
+        </Group>
       </Group>
     </Skeleton>
   );

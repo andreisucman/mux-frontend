@@ -262,7 +262,7 @@ export default function ClubSettings() {
                       handleUpdateClubInfo({ data: userName, type: "name", setIsLoading })
                     }
                   >
-                    <IconDeviceFloppy className="icon icon__small" />
+                    <IconDeviceFloppy size={16} />
                   </ActionIcon>
                 }
               />
@@ -278,7 +278,7 @@ export default function ClubSettings() {
                   disabled={!isIntroDirty || userIntro.length === 0}
                   onClick={() => updateClubInfo({ data: userIntro, type: "intro", setIsLoading })}
                 >
-                  <IconDeviceFloppy className="icon icon__small" />
+                  <IconDeviceFloppy size={16} />
                 </ActionIcon>
               }
             />
@@ -290,19 +290,19 @@ export default function ClubSettings() {
                 Country
               </Text>
               <TextInput
-                leftSection={<IconWorld className="icon" />}
+                leftSection={<IconWorld size={20} />}
                 value={country || ""}
                 readOnly
                 rightSection={
                   <ActionIcon variant="default" size="sm" onClick={openChangeCountryConfirmation}>
-                    <IconPencil className="icon icon__small" />
+                    <IconPencil size={16} />
                   </ActionIcon>
                 }
               />
             </Stack>
           )}
           <UnstyledButton className={classes.item} onClick={openLeaveClubConfirmation}>
-            <IconTargetOff className={cn(classes.icon, "icon")} /> Leave the Club
+            <IconTargetOff className={classes.icon} size={20} /> Leave the Club
           </UnstyledButton>
         </Stack>
       </Stack>

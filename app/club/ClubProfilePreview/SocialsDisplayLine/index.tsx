@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { IconLink } from "@tabler/icons-react";
 import cn from "classnames";
 import { Group, Text, UnstyledButton } from "@mantine/core";
-import { useRouter } from "next/navigation";
 import classes from "./SocialsDisplayLine.module.css";
 
 type Props = {
@@ -25,7 +25,7 @@ export default function SocialsDisplayLine({ socials }: Props) {
           className={cn(classes.link, { [classes.disabledLink]: !item.value })}
           key={`${item.value}-${index}`}
         >
-          <IconLink className={`icon icon__small ${classes.icon}`} />
+          <IconLink className={classes.icon} size={16} />
           <Text size="xs" className={cn({ [classes.disabledLink]: !item.value })}>
             {item.label || item.value}
           </Text>

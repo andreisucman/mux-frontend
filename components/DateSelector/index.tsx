@@ -85,7 +85,7 @@ function DateSelector({ customStyles, showCancelButton, preventDefaultDate }: Pr
       />
       {showCancelButton && (value[0] || value[1]) && (
         <ActionIcon variant="default" onClick={resetDates}>
-          <IconX className="icon" />
+          <IconX size={18} />
         </ActionIcon>
       )}
     </Group>

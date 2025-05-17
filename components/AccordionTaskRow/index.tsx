@@ -53,9 +53,7 @@ export default function AccordionTaskRow({
   const notDeletedIds = useMemo(() => ids.filter((idObj) => !idObj.deletedOn), [ids]);
 
   const analytics = useMemo(() => {
-    const total = ids.filter((obj) =>
-      [TaskStatusEnum.COMPLETED, TaskStatusEnum.ACTIVE].includes(obj.status as TaskStatusEnum)
-    ).length;
+    const total = ids.filter((obj) => !obj.deletedOn).length;
     const completed = ids.filter((io) => io.status === TaskStatusEnum.COMPLETED).length;
     const completionRate = Math.round((completed / total) * 100);
     return { total, completed, completionRate };
@@ -111,7 +109,6 @@ export default function AccordionTaskRow({
           color={color}
           icon={icon}
           isSelf={isSelf}
-          taskKey={key}
           taskIdsObjects={notDeletedIds}
           deleteTaskInstance={deleteTaskInstance}
           copyTaskInstance={copyTaskInstance}

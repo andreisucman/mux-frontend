@@ -5,12 +5,12 @@ import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
 import { useRouter } from "@/helpers/custom-router";
-import { PurchaseType } from "@/types/global";
+import { ViewType } from "@/types/global";
 import ViewsRow from "../ViewsRow";
 import classes from "./ViewsList.module.css";
 
 type Props = {
-  data?: PurchaseType[];
+  data?: ViewType[];
   userName?: string;
   hasMore: boolean;
   handleFetchViews: () => void;
@@ -53,7 +53,7 @@ export default function ViewsList({ data, userName, hasMore, handleFetchViews }:
               <Masonry items={data} maxColumnCount={2} rowGutter={16} render={memoizedViewRow} />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="Nobody found" icon={<IconCircleOff className="icon" />} />
+            <OverlayWithText text="Nothing found" icon={<IconCircleOff size={20} />} />
           )}
         </>
       ) : (

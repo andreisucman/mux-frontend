@@ -26,7 +26,6 @@ import rescheduleRoutine from "@/functions/rescheduleRoutine";
 import rescheduleTask from "@/functions/rescheduleTask";
 import rescheduleTaskInstance from "@/functions/rescheduleTaskInstance";
 import saveTaskFromDescription, { HandleSaveTaskProps } from "@/functions/saveTaskFromDescription";
-import { saveToIndexedDb } from "@/helpers/indexedDb";
 import { getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import SelectDateModalContent from "../explain/[taskId]/SelectDateModalContent";
@@ -57,7 +56,6 @@ export default function MyRoutines() {
   const searchParams = useSearchParams();
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [openValue, setOpenValue] = useState<string | null>();
   const [displayComponent, setDisplayComponent] = useState<
     "loading" | "wait" | "empty" | "createTaskOverlay" | "content"
   >("loading");
@@ -97,11 +95,6 @@ export default function MyRoutines() {
     },
     [routines]
   );
-
-  const handleSetOpenValue = useCallback((part: string | null) => {
-    saveToIndexedDb("openRoutinesRow", part);
-    setOpenValue(part);
-  }, []);
 
   const handleCopyRoutine = useCallback(
     (routineId: string) => {
@@ -404,37 +397,36 @@ export default function MyRoutines() {
     }
   };
 
-  const accordionItems = useMemo(
-    () =>
-      routines
-        ?.map((routine, i) => {
-          if (!routine || routine.deletedOn) return null;
-          const selected = getIsRoutineActive(routine.startsAt, routine.lastDate, routine.allTasks);
-          return (
-            <AccordionRoutineRow
-              key={routine._id}
-              index={i}
-              routine={routine}
-              selected={selected}
-              setRoutines={setRoutines}
-              deleteRoutine={deleteRoutine}
-              updateRoutine={updateRoutine}
-              copyRoutine={handleCopyRoutine}
-              rescheduleRoutine={handleRescheduleRoutine}
-              rescheduleTaskInstance={handleRescheduleTaskInstance}
-              copyTask={handleCopyTask}
-              deleteTask={deleteTask}
-              updateTask={updateTask}
-              rescheduleTask={handleRescheduleTask}
-              copyTaskInstance={handleCopyTaskInstance}
-              addTaskInstance={handleAddTaskInstance}
-              isSelf
-            />
-          );
-        })
-        .filter(Boolean),
-    [routines, handleCopyRoutine]
-  );
+  const accordionItems = useMemo(() => {
+    if (!routines) return;
+    return routines
+      .map((routine, i) => {
+        if (!routine || routine.deletedOn) return null;
+        const selected = getIsRoutineActive(routine.startsAt, routine.lastDate, routine.allTasks);
+        return (
+          <AccordionRoutineRow
+            key={routine._id}
+            routine={routine}
+            selected={selected}
+            queryConcern={concern}
+            setRoutines={setRoutines}
+            deleteRoutine={deleteRoutine}
+            updateRoutine={updateRoutine}
+            copyRoutine={handleCopyRoutine}
+            rescheduleRoutine={handleRescheduleRoutine}
+            rescheduleTaskInstance={handleRescheduleTaskInstance}
+            copyTask={handleCopyTask}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            rescheduleTask={handleRescheduleTask}
+            copyTaskInstance={handleCopyTaskInstance}
+            addTaskInstance={handleAddTaskInstance}
+            isSelf
+          />
+        );
+      })
+      .filter(Boolean);
+  }, [routines, concern, handleCopyRoutine]);
 
   useEffect(() => {
     const payload: GetRoutinesProps = {
@@ -485,7 +477,6 @@ export default function MyRoutines() {
   }, [userId]);
 
   const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
-
   return (
     <Stack className={cn(classes.container, "smallPage")}>
       <SkeletonWrapper>
@@ -516,9 +507,9 @@ export default function MyRoutines() {
         {displayComponent === "content" && (
           <Stack className={classes.wrapper}>
             <Accordion
-              value={openValue}
-              onChange={handleSetOpenValue}
               chevron={false}
+              multiple={true}
+              value={routines?.map((ro) => ro._id)}
               variant="separated"
               classNames={{
                 root: "accordionRoot scrollbar",

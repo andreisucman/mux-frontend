@@ -56,30 +56,30 @@ export default function AccordionTaskMenu({
           onClick={(e) => e.stopPropagation()}
           disabled={!taskKey}
         >
-          <IconDots className="icon icon__small icon__gray" />
+          <IconDots size={16} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
         <Menu.Item onClick={() => copyTask(taskKey)}>
-          <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+          <IconCopy size={16} style={{ marginRight: rem(6) }} />
           Copy
         </Menu.Item>
         {isSelf && (
           <>
             {rescheduleTask && hasActiveTasks && (
               <Menu.Item onClick={() => rescheduleTask(taskKey)}>
-                <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconCalendar size={16} style={{ marginRight: rem(6) }} />
                 Reschedule
               </Menu.Item>
             )}
             {redirectToTask && (
               <>
                 <Menu.Item onClick={() => redirectToTask({ taskKey, page: "calendar" })}>
-                  <IconCalendar className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                  <IconCalendar size={16} style={{ marginRight: rem(6) }} />
                   See in calendar
                 </Menu.Item>
                 <Menu.Item onClick={() => redirectToTask({ taskKey, page: "diary" })}>
-                  <IconNotebook className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                  <IconNotebook size={16} style={{ marginRight: rem(6) }} />
                   See in diary
                 </Menu.Item>
               </>
@@ -88,13 +88,13 @@ export default function AccordionTaskMenu({
               <>
                 {hasActiveTasks && (
                   <Menu.Item onClick={() => updateTask(taskKey, TaskStatusEnum.CANCELED)}>
-                    <IconCancel className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                    <IconCancel size={16} style={{ marginRight: rem(6) }} />
                     Cancel
                   </Menu.Item>
                 )}
                 {hasCanceledTasks && (
                   <Menu.Item onClick={() => updateTask(taskKey, TaskStatusEnum.ACTIVE)}>
-                    <IconBolt className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                    <IconBolt size={16} style={{ marginRight: rem(6) }} />
                     Activate
                   </Menu.Item>
                 )}
@@ -102,7 +102,7 @@ export default function AccordionTaskMenu({
             )}
             {deleteTask && allTasksCanceled && (
               <Menu.Item onClick={() => deleteTask(taskKey)}>
-                <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconTrash size={16} style={{ marginRight: rem(6) }} />
                 Delete
               </Menu.Item>
             )}

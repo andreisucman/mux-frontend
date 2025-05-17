@@ -238,11 +238,11 @@ export default function Calendar() {
   const emptyIcon = useMemo(
     () =>
       selectedStatus === TaskStatusEnum.CANCELED ? (
-        <IconCancel className="icon" />
+        <IconCancel size={20} />
       ) : selectedStatus === TaskStatusEnum.EXPIRED ? (
-        <IconClock className="icon" />
+        <IconClock size={20} />
       ) : (
-        <IconZzz className="icon" />
+        <IconZzz size={20} />
       ),
     [selectedStatus]
   );

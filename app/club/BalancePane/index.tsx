@@ -120,7 +120,7 @@ function BalancePane() {
           p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
-          icon={<IconInfoCircle className="icon" />}
+          icon={<IconInfoCircle size={20} />}
         >
           <Group gap={8}>
             Your withdrawals are inactive. To activate them add a bank account.
@@ -142,7 +142,7 @@ function BalancePane() {
           p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
-          icon={<IconInfoCircle className="icon" />}
+          icon={<IconInfoCircle size={20} />}
         >
           <Stack gap={8}>We're checking your information.</Stack>
         </Alert>
@@ -154,7 +154,7 @@ function BalancePane() {
           p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
-          icon={<IconInfoCircle className="icon" />}
+          icon={<IconInfoCircle size={20} />}
         >
           <Stack gap={8}>
             Sorry, but we can't support your payments. Reach out to info@muxout.com if you have
@@ -169,7 +169,7 @@ function BalancePane() {
           p="0.5rem 1rem"
           variant="light"
           classNames={{ icon: classes.alertIcon }}
-          icon={<IconInfoCircle className="icon" />}
+          icon={<IconInfoCircle size={20} />}
         >
           <Stack gap={8}>Your payouts have been disabled. Check your wallet for more info.</Stack>
         </Alert>
@@ -192,7 +192,7 @@ function BalancePane() {
     <Stack className={classes.container}>
       <Group className={classes.header}>
         <Text c="dimmed" size="sm">
-          Your balance
+          Current balance
         </Text>
         <Group gap={8}>
           <Tooltip
@@ -203,7 +203,7 @@ function BalancePane() {
             multiline
           >
             <ActionIcon variant="default">
-              <IconInfoCircle className="icon icon__small" />
+              <IconInfoCircle size={16} />
             </ActionIcon>
           </Tooltip>
           <Button

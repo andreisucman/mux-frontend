@@ -52,25 +52,25 @@ export default function AccordionTaskInstanceMenu({
           onClick={(e) => e.stopPropagation()}
           disabled={!taskId}
         >
-          <IconDots className="icon icon__small icon__gray" />
+          <IconDots size={16} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
         <Menu.Item onClick={() => copyTaskInstance(taskId)}>
-          <IconCopy className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+          <IconCopy size={16} style={{ marginRight: rem(6) }} />
           Copy
         </Menu.Item>
         {isSelf && (
           <>
             {rescheduleTaskInstance && taskStatus === TaskStatusEnum.ACTIVE && (
               <Menu.Item onClick={() => rescheduleTaskInstance(taskId)}>
-                <IconCalendarClock className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconCalendarClock size={16} style={{ marginRight: rem(6) }} />
                 Reschedule
               </Menu.Item>
             )}
             {redirectToTaskInstance && (
               <Menu.Item onClick={() => redirectToTaskInstance(taskId)}>
-                <IconInfoCircle className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                <IconInfoCircle size={16} style={{ marginRight: rem(6) }} />
                 See info
               </Menu.Item>
             )}
@@ -78,13 +78,13 @@ export default function AccordionTaskInstanceMenu({
               <>
                 {taskStatus === TaskStatusEnum.ACTIVE && (
                   <Menu.Item onClick={() => updateTaskInstance(taskId, TaskStatusEnum.CANCELED)}>
-                    <IconCancel className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                    <IconCancel size={16} style={{ marginRight: rem(6) }} />
                     Cancel
                   </Menu.Item>
                 )}
                 {taskStatus === TaskStatusEnum.CANCELED && (
                   <Menu.Item onClick={() => updateTaskInstance(taskId, TaskStatusEnum.ACTIVE)}>
-                    <IconBolt className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                    <IconBolt size={16} style={{ marginRight: rem(6) }} />
                     Activate
                   </Menu.Item>
                 )}
@@ -95,7 +95,7 @@ export default function AccordionTaskInstanceMenu({
                 taskStatus as TaskStatusEnum
               ) && (
                 <Menu.Item onClick={() => deleteTaskInstance(taskId)}>
-                  <IconTrash className={`icon icon__small`} style={{ marginRight: rem(6) }} />
+                  <IconTrash size={16} style={{ marginRight: rem(6) }} />
                   Delete
                 </Menu.Item>
               )}

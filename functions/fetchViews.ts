@@ -2,21 +2,25 @@ import callTheServer from "./callTheServer";
 
 type FetchPurchasesProps = {
   skip: boolean;
+  interval: "day" | "week" | "month";
   existingCount?: number;
 };
 
 const fetchViews = async (props?: FetchPurchasesProps) => {
-  const { skip, existingCount } = props || {};
+  const { skip, interval = "day", existingCount } = props || {};
 
-  let endpoint = "getViews";
+  let endpoint = "getTotalViews";
 
-  const parts = [];
+  const searchParams = new URLSearchParams();
 
+  if (interval) {
+    searchParams.set("interval", interval);
+  }
   if (skip && existingCount) {
-    parts.push(`skip=${existingCount}`);
+    searchParams.set("skip", String(existingCount));
   }
 
-  const query = parts.join("&");
+  const query = searchParams.toString();
   if (query) endpoint += `?${query}`;
 
   const response = await callTheServer({

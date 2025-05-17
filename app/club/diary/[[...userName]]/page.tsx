@@ -10,6 +10,7 @@ import { HandleFetchDiaryProps } from "@/app/diary/page";
 import { DiaryType } from "@/app/diary/type";
 import DiaryContent from "@/components/DiaryContent";
 import { FilterItemType } from "@/components/FilterDropdown/types";
+import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
 import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
@@ -106,10 +107,8 @@ export default function DiaryPage(props: Props) {
   return (
     <ClubModerationLayout
       header={
-        <PageHeaderClub
-          pageType="diary"
+        <PageHeader
           titles={titles}
-          userName={userName}
           sortItems={diarySortItems}
           defaultSortValue={"-_id"}
           filterNames={["dateFrom", "dateTo", "part", "concern"]}

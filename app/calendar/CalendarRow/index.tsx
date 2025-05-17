@@ -47,7 +47,7 @@ export default function CalendarRow({
               redirectToTask(taskId);
             }}
           >
-            <IconInfoCircle className="icon" />
+            <IconInfoCircle size={20} />
           </ActionIcon>
           {mode === "all" && (
             <ActionIcon
@@ -58,7 +58,7 @@ export default function CalendarRow({
                 changeMode("individual", taskKey);
               }}
             >
-              <IconFilter className="icon" />
+              <IconFilter size={20} />
             </ActionIcon>
           )}
           {mode === "individual" && (
@@ -70,7 +70,7 @@ export default function CalendarRow({
               }}
               className={classes.button}
             >
-              <IconFilterOff className={"icon"} />
+              <IconFilterOff size={20} />
             </ActionIcon>
           )}
         </Group>
