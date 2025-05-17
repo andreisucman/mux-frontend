@@ -16,7 +16,6 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
-import PageHeaderClub from "@/components/PageHeaderClub";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
