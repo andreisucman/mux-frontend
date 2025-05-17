@@ -114,6 +114,7 @@ export default function DiaryPage(props: Props) {
           defaultSortValue={"-_id"}
           filterNames={["dateFrom", "dateTo", "part", "concern"]}
           children={<ViewsCounter userName={userName} page="diary" />}
+          childrenPosition="first"
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
@@ -125,6 +126,7 @@ export default function DiaryPage(props: Props) {
           }
           disableFilter={!availableParts && !availableConcerns}
           disableSort={noPartsAndConcerns}
+          nowrapContainer
         />
       }
     >

@@ -277,11 +277,10 @@ export default function ClubRoutines(props: Props) {
           titles={titles}
           filterNames={["part", "concern"]}
           defaultSortValue="-startsAt"
-          nowrapContainer
           sortItems={routineSortItems}
           disableFilter={!availableConcerns && !availableParts}
-          disableSort={noPartsAndConcerns}
           children={<ViewsCounter userName={userName} page="routines" />}
+          disableSort={noPartsAndConcerns}
           childrenPosition="first"
           onFilterClick={() =>
             openFiltersCard({
@@ -293,6 +292,7 @@ export default function ClubRoutines(props: Props) {
               },
             })
           }
+          nowrapContainer
         />
       }
     >

@@ -111,6 +111,7 @@ export default function ClubProof(props: Props) {
           disableFilter={!availableConcerns && !availableParts}
           disableSort={noPartsAndConcerns}
           children={<ViewsCounter userName={userName} page="proof" />}
+          childrenPosition="first"
           sortItems={proofSortItems}
           defaultSortValue="-_id"
           onFilterClick={() =>
@@ -118,6 +119,7 @@ export default function ClubProof(props: Props) {
               cardName: FilterCardNamesEnum.ClubProofFilterCardContent,
             })
           }
+          nowrapContainer
         />
       }
     >

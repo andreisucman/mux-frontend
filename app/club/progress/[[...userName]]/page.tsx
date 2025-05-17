@@ -120,6 +120,7 @@ export default function ClubProgress(props: Props) {
           titles={titles}
           filterNames={["part", "concern"]}
           defaultSortValue="-_id"
+          childrenPosition="first"
           disableFilter={!availableConcerns && !availableParts}
           disableSort={!progress || progress.length === 0}
           sortItems={progressSortItems}
@@ -133,6 +134,7 @@ export default function ClubProgress(props: Props) {
               },
             })
           }
+          nowrapContainer
         />
       }
     >
