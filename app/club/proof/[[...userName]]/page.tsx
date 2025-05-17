@@ -11,6 +11,7 @@ import { SimpleProofType } from "@/app/results/proof/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
+import TurnstileComponent from "@/components/TurnstileComponent";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { proofSortItems } from "@/data/sortItems";
@@ -18,6 +19,7 @@ import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import ViewsCounter from "../../ViewsCounter";
 import classes from "./proof.module.css";
 
 export const runtime = "edge";
@@ -108,6 +110,7 @@ export default function ClubProof(props: Props) {
           filterNames={["part", "concern"]}
           disableFilter={!availableConcerns && !availableParts}
           disableSort={noPartsAndConcerns}
+          children={<ViewsCounter userName={userName} page="proof" />}
           sortItems={proofSortItems}
           defaultSortValue="-_id"
           onFilterClick={() =>
@@ -147,6 +150,7 @@ export default function ClubProof(props: Props) {
           )}
         </Stack>
       </Stack>
+      <TurnstileComponent userName={userName} concern={concern} part={part} page="proof" />
     </ClubModerationLayout>
   );
 }

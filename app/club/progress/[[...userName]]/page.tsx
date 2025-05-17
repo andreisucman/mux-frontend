@@ -11,6 +11,7 @@ import { SimpleProgressType } from "@/app/results/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
+import TurnstileComponent from "@/components/TurnstileComponent";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { progressSortItems } from "@/data/sortItems";
@@ -19,6 +20,7 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
+import ViewsCounter from "../../ViewsCounter";
 import classes from "./progress.module.css";
 
 export const runtime = "edge";
@@ -43,6 +45,7 @@ export default function ClubProgress(props: Props) {
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
 
+  const part = searchParams.get("part");
   const concern = searchParams.get("concern");
   const sort = searchParams.get("sort");
 
@@ -120,6 +123,7 @@ export default function ClubProgress(props: Props) {
           disableFilter={!availableConcerns && !availableParts}
           disableSort={!progress || progress.length === 0}
           sortItems={progressSortItems}
+          children={<ViewsCounter userName={userName} page="progress" />}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.ClubProgressFilterCardContent,
@@ -158,6 +162,7 @@ export default function ClubProgress(props: Props) {
           />
         )}
       </Stack>
+      <TurnstileComponent userName={userName} concern={concern} part={part} page="progress" />
     </ClubModerationLayout>
   );
 }

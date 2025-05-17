@@ -16,6 +16,7 @@ import { FilterItemType } from "@/components/FilterDropdown/types";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
+import TurnstileComponent from "@/components/TurnstileComponent";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
@@ -280,7 +281,7 @@ export default function ClubRoutines(props: Props) {
           sortItems={routineSortItems}
           disableFilter={!availableConcerns && !availableParts}
           disableSort={noPartsAndConcerns}
-          children={<ViewsCounter />}
+          children={<ViewsCounter userName={userName} page="routines" />}
           childrenPosition="first"
           onFilterClick={() =>
             openFiltersCard({
@@ -359,6 +360,7 @@ export default function ClubRoutines(props: Props) {
           )}
         </>
       )}
+      <TurnstileComponent userName={userName} concern={concern} part={part} page="routines" />
     </ClubModerationLayout>
   );
 }

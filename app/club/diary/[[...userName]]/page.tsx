@@ -12,12 +12,14 @@ import DiaryContent from "@/components/DiaryContent";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
+import TurnstileComponent from "@/components/TurnstileComponent";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import ViewsCounter from "../../ViewsCounter";
 import classes from "./diary.module.css";
 
 export const runtime = "edge";
@@ -111,6 +113,7 @@ export default function DiaryPage(props: Props) {
           sortItems={diarySortItems}
           defaultSortValue={"-_id"}
           filterNames={["dateFrom", "dateTo", "part", "concern"]}
+          children={<ViewsCounter userName={userName} page="diary" />}
           onFilterClick={() =>
             openFiltersCard({
               cardName: FilterCardNamesEnum.DiaryFilterCardContent,
@@ -154,6 +157,7 @@ export default function DiaryPage(props: Props) {
           )}
         </Stack>
       </Stack>
+      <TurnstileComponent userName={userName} concern={concern} part={part} page="diary" />
     </ClubModerationLayout>
   );
 }

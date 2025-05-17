@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
-import { Group, rem, Skeleton, Tooltip } from "@mantine/core";
+import { Group, rem, Skeleton, Text, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import callTheServer from "@/functions/callTheServer";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import classes from "./ViewsCounter.module.css";
 
-export default function ViewsCounter() {
+type Props = {
+  userName: string;
+  page: "routines" | "progress" | "diary" | "proof";
+};
+
+export default function ViewsCounter({ userName, page }: Props) {
   const [views, setViews] = useState(0);
   const [openTooltip, setOpenTooltip] = useState(false);
   const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
 
   useEffect(() => {
-    callTheServer({ endpoint: "getGrandTotalViews?interval=month", method: "GET" }).then((res) => {
+    if (!userName) return;
+
+    callTheServer({
+      endpoint: `getGrandTotalViews/${userName}?page=${page}&interval=month`,
+      method: "GET",
+    }).then((res) => {
       if (res.status === 200) {
         setViews(res.message);
       }
     });
-  }, []);
+  }, [userName]);
 
   const showSkeleton = useShowSkeleton();
 
@@ -32,11 +42,13 @@ export default function ViewsCounter() {
     >
       <Skeleton
         visible={showSkeleton}
-        styles={{ root: { display: "flex", width: "fit-content", minWidth: rem(50), height: rem(32) } }}
+        styles={{
+          root: { display: "flex", width: "fit-content", minWidth: rem(50), height: rem(32) },
+        }}
       >
         <Group className={classes.container}>
           <IconEye size={20} />
-          {views}
+          <Text>{views}</Text>
         </Group>
       </Skeleton>
     </Tooltip>
