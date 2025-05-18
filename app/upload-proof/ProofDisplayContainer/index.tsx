@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import NextImage from "next/image";
-import { Image, LoadingOverlay, Stack, Text } from "@mantine/core";
+import { Image, Stack, Text } from "@mantine/core";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";
 import VideoPlayer from "@/components/VideoPlayer";
 import { formatDate } from "@/helpers/formatDate";

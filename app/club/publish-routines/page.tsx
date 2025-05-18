@@ -76,8 +76,6 @@ export default function PublishRoutines() {
 
       let body = "";
 
-      console.log("oldStatus", oldStatus, "newStatus", newStatus);
-
       const isSwitchingToPublic = oldStatus !== "public" && newStatus === "public";
       const concernName = normalizeString(concern).toLowerCase();
 

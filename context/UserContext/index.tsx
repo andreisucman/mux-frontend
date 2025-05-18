@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+  useContext,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { nprogress } from "@mantine/nprogress";
@@ -8,10 +14,17 @@ import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
 import { getCookieValue } from "@/helpers/cookies";
-import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
+import {
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import { protectedPaths } from "./protectedPaths";
-import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
+import {
+  AuthStateEnum,
+  UserContextProviderProps,
+  UserContextType,
+} from "./types";
 
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
@@ -23,9 +36,13 @@ function registerServiceWorker() {
   }
 }
 
-const defaultSetUser = () => {};
+const defaultSetUser: React.Dispatch<
+  React.SetStateAction<Partial<UserDataType> | null>
+> = () => {};
 
-const defaultSetStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>> = () => {};
+const defaultSetStatus: React.Dispatch<
+  React.SetStateAction<AuthStateEnum>
+> = () => {};
 
 export const UserContext = createContext<UserContextType>({
   status: AuthStateEnum.UNAUTHENTICATED,
@@ -34,24 +51,38 @@ export const UserContext = createContext<UserContextType>({
   setUserDetails: defaultSetUser,
 });
 
-const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) => {
+export const useUserContext = () => useContext(UserContext);
+
+const UserContextProvider: React.FC<UserContextProviderProps> = ({
+  children,
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const code = searchParams.get("code");
   const error = searchParams.get("error");
-  const onProtectedPage = protectedPaths.some((path) => path.includes(pathname) || pathname.includes(path));
+
+  const onProtectedPage = protectedPaths.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  );
+
   const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
 
-  const [status, setStatus] = useState(AuthStateEnum.UNKNOWN);
-  const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
+  const [status, setStatus] = useState<AuthStateEnum>(AuthStateEnum.UNKNOWN);
+  const [userDetailsState, setUserDetailsState] = useState<
+    Partial<UserDataType> | null
+  >(null);
+
   const { emailVerified } = userDetailsState || {};
 
   const setUserDetails = useCallback(
-    (value: React.SetStateAction<Partial<UserDataType | null>>) => {
-      setUserDetailsState((prevState: Partial<UserDataType> | null) => {
-        const newState = typeof value === "function" ? value(prevState as UserDataType) : value;
+    (value: React.SetStateAction<Partial<UserDataType> | null>) => {
+      setUserDetailsState((prevState) => {
+        const newState =
+          typeof value === "function"
+            ? value(prevState ?? ({} as UserDataType))
+            : value;
         saveToLocalStorage("userDetails", newState);
         return newState;
       });
@@ -59,27 +90,29 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
     []
   );
 
-  const updateAuthenticationStatus = useCallback((isLoggedInCookie: boolean) => {
-    setStatus(isLoggedInCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED);
+  const updateAuthenticationStatus = useCallback((hasCookie: boolean) => {
+    setStatus(
+      hasCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED
+    );
   }, []);
 
   const savedState: UserDataType | null = getFromLocalStorage("userDetails");
 
+  // hydrate from localStorage once
   useEffect(() => {
     if (userDetailsState) return;
-
     setUserDetailsState(savedState);
   }, [savedState, userDetailsState]);
 
+  // handle OAuth error
   useEffect(() => {
     if (!error) return;
 
-    if (error) {
-      window.history.go(-3); // when the user declines auth in google return to the page before the auth
-      nprogress.complete();
-    }
+    window.history.go(-3); // fallback for declined Google auth
+    nprogress.complete();
   }, [error]);
 
+  // handle OAuth code
   useEffect(() => {
     if (!code) return;
 
@@ -92,15 +125,19 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
       setStatus,
       setUserDetails,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
+  // keep status in sync with cookie
   useEffect(() => {
     if (code) return;
     updateAuthenticationStatus(!!isLoggedInCookie);
-  }, [isLoggedInCookie, code]);
+  }, [isLoggedInCookie, code, updateAuthenticationStatus]);
 
+  // protect private routes
   useEffect(() => {
-    if (!status || !pathname) return;
+    if (!pathname) return;
+
     const exceptions = [
       "/club/routines",
       "/club/progress",
@@ -112,36 +149,46 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
       "/wait",
       "/analysis",
     ];
-    const isException = exceptions.some((path) => pathname.includes(path));
+    const isException = exceptions.some((p) => pathname.includes(p));
 
-    if (onProtectedPage && pathname !== "/" && !isException) {
-      if (status !== AuthStateEnum.AUTHENTICATED && status !== AuthStateEnum.UNKNOWN) {
+    if (onProtectedPage && !isException && pathname !== "/") {
+      if (
+        status !== AuthStateEnum.AUTHENTICATED &&
+        status !== AuthStateEnum.UNKNOWN
+      ) {
         router.replace("/auth");
       }
     }
-  }, [status, pathname]);
+  }, [status, pathname, onProtectedPage, router]);
 
+  // enforce e‑mail verification
   useEffect(() => {
-    if (!userDetailsState) return;
-    if (code) return;
+    if (!userDetailsState || code) return;
 
     if (onProtectedPage && status === AuthStateEnum.AUTHENTICATED) {
-      if (!userDetailsState.emailVerified) {
+      if (!emailVerified) {
         if (pathname !== "/settings" && pathname !== "/verify-email") {
           router.push("/verify-email");
-          return;
         }
       }
     }
-  }, [emailVerified, pathname, code]);
+  }, [
+    emailVerified,
+    pathname,
+    code,
+    onProtectedPage,
+    status,
+    router,
+    userDetailsState,
+  ]);
 
-  useSWR(`${status}-${code}-${error}`, () => {
-    if (code) return;
-    if (error) return;
-    if (status !== AuthStateEnum.AUTHENTICATED) return;
-    fetchUserData({ setUserDetails });
-  });
+  // keep user data fresh while authenticated
+  useSWR(
+    status === AuthStateEnum.AUTHENTICATED && !code && !error ? "user" : null,
+    () => fetchUserData({ setUserDetails })
+  );
 
+  // register service‑worker once
   useEffect(() => {
     registerServiceWorker();
   }, []);
@@ -151,7 +198,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) =
       value={{
         userDetails: userDetailsState,
         setUserDetails,
-        status: status as AuthStateEnum,
+        status,
         setStatus,
       }}
     >
