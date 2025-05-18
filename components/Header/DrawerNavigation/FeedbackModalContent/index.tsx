@@ -16,6 +16,7 @@ export default function FeedbackModalContent() {
   const [files, setFiles] = useState<File[]>([]);
 
   const handleSubmitFeedback = async () => {
+    if (isLoading) return;
     const body: { [key: string]: any } = { text };
     setIsLoading(true);
 
