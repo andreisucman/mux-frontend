@@ -1,8 +1,10 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { loadConnectAndInitialize } from "@stripe/connect-js";
+import { ConnectBalances, ConnectComponentsProvider } from "@stripe/react-connect-js";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { ActionIcon, Alert, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
-import { useClickOutside } from "@mantine/hooks";
+import { Alert, Button, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
@@ -11,16 +13,60 @@ import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import classes from "./BalancePane.module.css";
 
+type ConnectAppearance = Parameters<typeof loadConnectAndInitialize>[0]["appearance"];
+
+export function makeAppearance(isDark: boolean): ConnectAppearance {
+  return {
+    overlays: "dialog",
+    variables: isDark
+      ? {
+          colorBackground: "#272727",
+          colorText: "#c9c9c9",
+          colorSecondaryText: "#B5B5B5",
+          colorPrimary: "#dc2d3c",
+          borderRadius: "16px",
+          fontFamily: "Open Sans, sans-serif",
+          overlayBackdropColor: "#242424",
+          buttonSecondaryColorBackground: "#B5B5B5",
+        }
+      : {
+          colorBackground: "#f8f9fa",
+          colorText: "#2e2e2d",
+          colorSecondaryText: "#717171",
+          colorPrimary: "#dc2d3c",
+          borderRadius: "16px",
+          fontFamily: "Open Sans, sans-serif",
+          overlayBackdropColor: "#ffffff",
+          buttonSecondaryColorBackground: "#FFFFFF",
+        },
+  };
+}
+
 function BalancePane() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [openTooltip, setOpenTooltip] = useState(false);
-  const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
+  const [balanceLoading, setBalanceLoading] = useState(true);
+  const colorScheme = useColorScheme(undefined, { getInitialValueInEffect: false });
+  const [stripeConnectInstance] = useState(() => {
+    const fetchClientSecret = async () => {
+      const response = await callTheServer({ endpoint: "getBalance", method: "GET" });
+
+      if (response.status === 200) {
+        return response.message;
+      }
+    };
+
+    return loadConnectAndInitialize({
+      publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+      fetchClientSecret: fetchClientSecret,
+      appearance: makeAppearance(colorScheme === "dark"),
+    });
+  });
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
-  const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId } = payouts || {};
+  const { connectId, payoutsEnabled, disabledReason, detailsSubmitted } = payouts || {};
 
   const openCountrySelectModal = useCallback(() => {
     setIsLoading(true);
@@ -93,23 +139,6 @@ function BalancePane() {
     }
   }, []);
 
-  const displayBalance = useMemo(() => {
-    const { pending, available } = balance || {};
-    const pendingAmount = (pending?.amount || 0) / 100;
-    const availableAmount = (available?.amount || 0) / 100;
-    const pendingCurrency = pending?.currency.toUpperCase() || "USD";
-    const availableCurrency = available?.currency.toUpperCase() || "USD";
-
-    return (
-      <Group className={classes.balance}>
-        <Title order={2} className={classes.amount}>
-          {pendingAmount || availableAmount}
-          <Text className={classes.currency}>{pendingCurrency || availableCurrency}</Text>
-        </Title>
-      </Group>
-    );
-  }, [isLoading, balance]);
-
   const alert = useMemo(() => {
     const submittedNotEnabled = detailsSubmitted && !payoutsEnabled && !disabledReason;
     const isRejected = disabledReason === "rejected.other";
@@ -176,49 +205,21 @@ function BalancePane() {
       );
   }, [isLoading, detailsSubmitted, payoutsEnabled, disabledReason]);
 
-  const redirectToWallet = useCallback(async () => {
-    const response = await callTheServer({
-      endpoint: "redirectToWallet",
-      method: "POST",
-      body: { redirectUrl: window.location.href },
-    });
-
-    if (response.status === 200) {
-      location.href = response.message;
-    }
-  }, []);
-
   return (
     <Stack className={classes.container}>
-      <Group className={classes.header}>
-        <Text c="dimmed" size="sm">
-          Current balance
-        </Text>
-        <Group gap={8}>
-          <Tooltip
-            opened={openTooltip}
-            label="The balance is paid out to your bank account automatically. You can change the bank account in the wallet."
-            ref={clickOutsideRef}
-            onClick={() => setOpenTooltip((prev) => !prev)}
-            multiline
-          >
-            <ActionIcon variant="default">
-              <IconInfoCircle size={16} />
-            </ActionIcon>
-          </Tooltip>
-          <Button
-            variant={"default"}
-            size="compact-sm"
-            disabled={!connectId}
-            style={{ position: "relative", zIndex: 1 }}
-            onClick={redirectToWallet}
-          >
-            Go to wallet
-          </Button>
-        </Group>
-      </Group>
+      <Text c="dimmed" size="sm">
+        Current balance
+      </Text>
       {alert && <Stack>{alert}</Stack>}
-      <Stack className={classes.stack}>{displayBalance}</Stack>
+      {connectId && (
+        <Skeleton className="skeleton" visible={balanceLoading}>
+          <Stack className={classes.wrapper}>
+            <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
+              <ConnectBalances onLoaderStart={() => setBalanceLoading(false)} />
+            </ConnectComponentsProvider>
+          </Stack>
+        </Skeleton>
+      )}
     </Stack>
   );
 }

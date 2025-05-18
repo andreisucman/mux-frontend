@@ -30,6 +30,8 @@
     "@mantine/spotlight": "7.15.1",
     "@microsoft/clarity": "^1.0.0",
     "@next/third-parties": "^15.0.3",
+    "@stripe/connect-js": "^3.3.23",
+    "@stripe/react-connect-js": "^3.3.22",
     "@tabler/icons-react": "^3.6.0",
     "classnames": "2.5.1",
     "clientjs": "^0.2.1",
