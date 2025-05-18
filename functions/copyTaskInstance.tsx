@@ -16,7 +16,7 @@ export type CopyTaskInstanceProps = {
   userName?: string;
   inform?: boolean;
   cb?: (newTaskId: string) => void;
-  setTaskInfo?: React.Dispatch<React.SetStateAction<TaskType | null>>;
+  setTaskInfo?: React.Dispatch<React.SetStateAction<TaskType | undefined>>;
   setRoutines?: React.Dispatch<React.SetStateAction<RoutineType[] | undefined>>;
 };
 

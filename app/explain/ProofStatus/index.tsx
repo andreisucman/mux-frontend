@@ -14,8 +14,8 @@ import { TaskStatusEnum, TaskType } from "@/types/global";
 import classes from "./ProofStatus.module.css";
 
 type Props = {
-  expiresAt: string | null;
-  selectedTask: TaskType | null;
+  expiresAt?: string;
+  selectedTask?: TaskType;
   notStarted: boolean;
   proofEnabled?: boolean;
   updateTaskStatus: (newTaskStatus: TaskStatusEnum) => void;
@@ -23,7 +23,7 @@ type Props = {
 
 function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: Props) {
   const router = useRouter();
-  const { _id: taskId, requiresProof, proofEnabled, status, proofId, name } = selectedTask || {};
+  const { _id: taskId, proofEnabled, status, proofId, name } = selectedTask || {};
 
   const ringLabel = useMemo(
     () =>

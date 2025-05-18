@@ -54,7 +54,7 @@ export default function Explain(props: Props) {
   const searchParams = useSearchParams();
   const { userDetails } = useContext(UserContext);
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [taskInfo, setTaskInfo] = useState<TaskType | null>(null);
+  const [taskInfo, setTaskInfo] = useState<TaskType>();
   const [showWaitComponent, setShowWaitComponent] = useState(false);
 
   const { _id: userId } = userDetails || {};
@@ -99,6 +99,7 @@ export default function Explain(props: Props) {
   }, [status, completedAt, startsAt, timeExpired]);
 
   const showBanner = futureStartDate || status !== TaskStatusEnum.ACTIVE;
+  const disableSwitch = taskStatus === TaskStatusEnum.COMPLETED || !!timeExpired;
 
   const switchProofUpload = async (proofEnabled: boolean, taskId?: string | null) => {
     if (!taskId) return;
@@ -257,7 +258,7 @@ export default function Explain(props: Props) {
     });
 
     if (response.status === 200) {
-      setTaskInfo((prev: TaskType | null) => ({
+      setTaskInfo((prev?: TaskType) => ({
         ...(prev as TaskType),
         status: newStatus,
       }));
@@ -345,7 +346,7 @@ export default function Explain(props: Props) {
                 {requiresProof && (
                   <Switch
                     label={"Enable proof"}
-                    disabled={taskStatus === TaskStatusEnum.COMPLETED}
+                    disabled={disableSwitch}
                     checked={proofEnabled || false}
                     onChange={() => switchProofUpload(!proofEnabled, taskId)}
                   />
