@@ -77,17 +77,19 @@ const authenticate = async ({
 
     if (redirectPath) redirectUrl = redirectPath;
     if (redirectQuery) {
-      const query = new URLSearchParams(redirectQuery);
+      const searchParams = new URLSearchParams(redirectQuery);
 
-      const userName = query.get("userName");
+      const userName = searchParams.get("userName");
 
       if (userName) {
-        query.delete("userName");
-        const otherParams = query.toString();
+        searchParams.delete("userName");
+        const otherParams = searchParams.toString();
         redirectUrl += `/${userName}${otherParams ? "?" + otherParams : ""}`;
       } else {
         redirectUrl += `?${redirectQuery}`;
       }
+
+      searchParams.delete("code");
     }
 
     const { emailVerified } = response.message;

@@ -24,7 +24,7 @@ export default function ClubDataContextProvider({ children }: Props) {
   const userName = Array.isArray(params?.userName) ? params.userName?.[0] : params.userName;
   const [pageLoaded, setPageLoaded] = useState(false);
   const [publicUserData, setPublicUserData] = useState<ClubUserType>();
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, status } = useContext(UserContext);
 
   const { club } = userDetails || {};
   const { isActive: isClubActive } = club || {};

@@ -1,9 +1,11 @@
 "use client";
 
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import callTheServer from "@/functions/callTheServer";
 import { PartEnum } from "@/types/global";
+import { UserContext } from "../UserContext";
+import { AuthStateEnum } from "../UserContext/types";
 import { RoutineSuggestionType } from "./types";
 
 const defaultCreateRoutineContext = {
@@ -16,6 +18,7 @@ export const CreateRoutineSuggestionContext = createContext(defaultCreateRoutine
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
+  const { status } = useContext(UserContext);
   const [routineSuggestion, setRoutineSuggestion] = useState<RoutineSuggestionType | null>(null);
 
   const part = searchParams.get("part") || PartEnum.FACE;
@@ -31,8 +34,9 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   };
 
   useEffect(() => {
+    if (status !== AuthStateEnum.AUTHENTICATED) return;
     fetchRoutineSuggestion();
-  }, []);
+  }, [status]);
 
   return (
     <CreateRoutineSuggestionContext.Provider

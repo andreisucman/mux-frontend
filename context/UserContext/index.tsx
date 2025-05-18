@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-  useContext,
-} from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { nprogress } from "@mantine/nprogress";
@@ -14,20 +8,20 @@ import { defaultUser } from "@/data/defaultUser";
 import authenticate from "@/functions/authenticate";
 import fetchUserData from "@/functions/fetchUserData";
 import { getCookieValue } from "@/helpers/cookies";
-import {
-  getFromLocalStorage,
-  saveToLocalStorage,
-} from "@/helpers/localStorage";
+import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
 import { UserDataType } from "@/types/global";
 import { protectedPaths } from "./protectedPaths";
-import {
-  AuthStateEnum,
-  UserContextProviderProps,
-  UserContextType,
-} from "./types";
+import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
+
+function matchBySegments(basePath: string, candidatePath: string) {
+  const baseSegs = basePath.split("/").filter(Boolean);
+  const candSegs = candidatePath.split("/").filter(Boolean);
+  if (candSegs.length < baseSegs.length) return false;
+  return baseSegs.every((seg, idx) => seg === candSegs[idx]);
+}
 
 function registerServiceWorker() {
-  if ("serviceWorker" in navigator) {
+  if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("/sw.js").catch((error) => {
         console.error("Service Worker registration failed:", error);
@@ -36,13 +30,9 @@ function registerServiceWorker() {
   }
 }
 
-const defaultSetUser: React.Dispatch<
-  React.SetStateAction<Partial<UserDataType> | null>
-> = () => {};
+const defaultSetUser: React.Dispatch<React.SetStateAction<Partial<UserDataType> | null>> = () => {};
 
-const defaultSetStatus: React.Dispatch<
-  React.SetStateAction<AuthStateEnum>
-> = () => {};
+const defaultSetStatus: React.Dispatch<React.SetStateAction<AuthStateEnum>> = () => {};
 
 export const UserContext = createContext<UserContextType>({
   status: AuthStateEnum.UNAUTHENTICATED,
@@ -53,9 +43,7 @@ export const UserContext = createContext<UserContextType>({
 
 export const useUserContext = () => useContext(UserContext);
 
-const UserContextProvider: React.FC<UserContextProviderProps> = ({
-  children,
-}) => {
+const UserContextProvider: React.FC<UserContextProviderProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -63,16 +51,13 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({
   const code = searchParams.get("code");
   const error = searchParams.get("error");
 
-  const onProtectedPage = protectedPaths.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`)
-  );
+  const onProtectedPage = protectedPaths.some((p) => matchBySegments(p, pathname));
 
   const isLoggedInCookie = getCookieValue("MUX_isLoggedIn");
 
   const [status, setStatus] = useState<AuthStateEnum>(AuthStateEnum.UNKNOWN);
-  const [userDetailsState, setUserDetailsState] = useState<
-    Partial<UserDataType> | null
-  >(null);
+  const [userDetailsState, setUserDetailsState] = useState<Partial<UserDataType> | null>(null);
+  const [calledAuthenticate, setCalledAuthenticate] = useState(false);
 
   const { emailVerified } = userDetailsState || {};
 
@@ -80,9 +65,7 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({
     (value: React.SetStateAction<Partial<UserDataType> | null>) => {
       setUserDetailsState((prevState) => {
         const newState =
-          typeof value === "function"
-            ? value(prevState ?? ({} as UserDataType))
-            : value;
+          typeof value === "function" ? value(prevState ?? ({} as UserDataType)) : value;
         saveToLocalStorage("userDetails", newState);
         return newState;
       });
@@ -91,20 +74,16 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({
   );
 
   const updateAuthenticationStatus = useCallback((hasCookie: boolean) => {
-    setStatus(
-      hasCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED
-    );
+    setStatus(hasCookie ? AuthStateEnum.AUTHENTICATED : AuthStateEnum.UNAUTHENTICATED);
   }, []);
 
   const savedState: UserDataType | null = getFromLocalStorage("userDetails");
 
-  // hydrate from localStorage once
   useEffect(() => {
     if (userDetailsState) return;
     setUserDetailsState(savedState);
   }, [savedState, userDetailsState]);
 
-  // handle OAuth error
   useEffect(() => {
     if (!error) return;
 
@@ -112,9 +91,9 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({
     nprogress.complete();
   }, [error]);
 
-  // handle OAuth code
   useEffect(() => {
-    if (!code) return;
+    if (!code || calledAuthenticate) return;
+    setCalledAuthenticate(true);
 
     const state = searchParams.get("state");
 
@@ -125,16 +104,13 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({
       setStatus,
       setUserDetails,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
-  // keep status in sync with cookie
   useEffect(() => {
     if (code) return;
     updateAuthenticationStatus(!!isLoggedInCookie);
   }, [isLoggedInCookie, code, updateAuthenticationStatus]);
 
-  // protect private routes
   useEffect(() => {
     if (!pathname) return;
 
@@ -149,46 +125,34 @@ const UserContextProvider: React.FC<UserContextProviderProps> = ({
       "/wait",
       "/analysis",
     ];
-    const isException = exceptions.some((p) => pathname.includes(p));
+    const isException = exceptions.some((p) => matchBySegments(p, pathname));
 
     if (onProtectedPage && !isException && pathname !== "/") {
-      if (
-        status !== AuthStateEnum.AUTHENTICATED &&
-        status !== AuthStateEnum.UNKNOWN
-      ) {
+      if (status !== AuthStateEnum.AUTHENTICATED && status !== AuthStateEnum.UNKNOWN) {
         router.replace("/auth");
       }
     }
   }, [status, pathname, onProtectedPage, router]);
 
-  // enforce e‑mail verification
   useEffect(() => {
     if (!userDetailsState || code) return;
 
     if (onProtectedPage && status === AuthStateEnum.AUTHENTICATED) {
       if (!emailVerified) {
-        if (pathname !== "/settings" && pathname !== "/verify-email") {
+        if (
+          !matchBySegments("/settings", pathname) &&
+          !matchBySegments("/verify-email", pathname)
+        ) {
           router.push("/verify-email");
         }
       }
     }
-  }, [
-    emailVerified,
-    pathname,
-    code,
-    onProtectedPage,
-    status,
-    router,
-    userDetailsState,
-  ]);
+  }, [emailVerified, pathname, code, onProtectedPage, status, router, userDetailsState]);
 
-  // keep user data fresh while authenticated
-  useSWR(
-    status === AuthStateEnum.AUTHENTICATED && !code && !error ? "user" : null,
-    () => fetchUserData({ setUserDetails })
+  useSWR(status === AuthStateEnum.AUTHENTICATED && !code && !error ? "user" : null, () =>
+    fetchUserData({ setUserDetails })
   );
 
-  // register service‑worker once
   useEffect(() => {
     registerServiceWorker();
   }, []);
