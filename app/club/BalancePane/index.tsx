@@ -22,22 +22,25 @@ export function makeAppearance(isDark: boolean): ConnectAppearance {
       ? {
           colorBackground: "#272727",
           colorText: "#c9c9c9",
-          colorSecondaryText: "#B5B5B5",
-          colorPrimary: "#dc2d3c",
+          colorSecondaryText: "#828282",
+          colorPrimary: "#c9c9c9",
           borderRadius: "16px",
           fontFamily: "Open Sans, sans-serif",
           overlayBackdropColor: "#242424",
-          buttonSecondaryColorBackground: "#B5B5B5",
-        }
+          buttonSecondaryColorBackground: "#2e2e2e",
+          buttonSecondaryColorBorder: "#424242",
+          buttonSecondaryColorText: "#c9c9c9",
+      }
       : {
           colorBackground: "#f8f9fa",
           colorText: "#2e2e2d",
-          colorSecondaryText: "#717171",
-          colorPrimary: "#dc2d3c",
+          colorSecondaryText: "#868e96",
+          colorPrimary: "#2e2e2d",
           borderRadius: "16px",
           fontFamily: "Open Sans, sans-serif",
           overlayBackdropColor: "#ffffff",
           buttonSecondaryColorBackground: "#FFFFFF",
+          buttonSecondaryColorBorder: "#ced4da",
         },
   };
 }
@@ -207,9 +210,6 @@ function BalancePane() {
 
   return (
     <Stack className={classes.container}>
-      <Text c="dimmed" size="sm">
-        Current balance
-      </Text>
       {alert && <Stack>{alert}</Stack>}
       {connectId && (
         <Skeleton className="skeleton" visible={balanceLoading}>

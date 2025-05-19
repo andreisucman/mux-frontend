@@ -1,23 +1,69 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Masonry } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
-import { Loader, rem, Stack } from "@mantine/core";
+import { Group, Loader, rem, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import OverlayWithText from "@/components/OverlayWithText";
+import fetchViews from "@/functions/fetchViews";
 import { useRouter } from "@/helpers/custom-router";
 import { ViewType } from "@/types/global";
 import ViewsRow from "../ViewsRow";
 import classes from "./ViewsList.module.css";
 
 type Props = {
-  data?: ViewType[];
   userName?: string;
-  hasMore: boolean;
-  handleFetchViews: () => void;
+};
+type TotalViewReponseType = {
+  _id: string;
+  earnedDay?: number;
+  earnedWeek?: number;
+  earnedMonth?: number;
+  viewsDay?: number;
+  viewsWeek?: number;
+  viewsMonth?: number;
+  concern: string;
+  part: string;
 };
 
-export default function ViewsList({ data, userName, hasMore, handleFetchViews }: Props) {
+const viewSegments = [
+  { label: "Day", value: "day" },
+  { label: "Week", value: "week" },
+  { label: "Month", value: "month" },
+];
+
+export default function ViewsList({ userName }: Props) {
   const router = useRouter();
+  const [hasMore, setHasMore] = useState(false);
+  const [views, setViews] = useState<ViewType[]>();
+  const [selectedInterval, setSelectedInterval] = useState<"day" | "week" | "month">("day");
+
+  const handleFetchViews = useCallback(async () => {
+    const items: TotalViewReponseType[] = await fetchViews({
+      interval: selectedInterval,
+      skip: hasMore,
+      existingCount: views ? views.length : 0,
+    });
+
+    const formattedItems: ViewType[] = items.map((item) => ({
+      _id: item._id,
+      part: item.part,
+      concern: item.concern,
+      earned: item.earnedDay || item.earnedWeek || item.earnedMonth || 0,
+      views: item.viewsDay || item.viewsWeek || item.viewsMonth || 0,
+    }));
+
+    if (hasMore) {
+      setViews((prev) => [...(prev || []), ...formattedItems.slice(0, 20)]);
+    } else {
+      setViews(formattedItems.slice(0, 20));
+    }
+    setHasMore(items.length === 21);
+  }, [views, selectedInterval]);
+
+  useEffect(() => {
+    handleFetchViews();
+  }, [selectedInterval]);
+
   const handleRedirect = useCallback(
     (part: string, concern: string) => {
       if (!userName) return;
@@ -28,13 +74,24 @@ export default function ViewsList({ data, userName, hasMore, handleFetchViews }:
 
   const memoizedViewRow = useCallback(
     (props: any) => <ViewsRow data={props.data} onClick={handleRedirect} />,
-    [data?.length, handleRedirect]
+    [views?.length, handleRedirect]
   );
   return (
     <Stack className={classes.container}>
-      {data ? (
+      <Group align="start" justify="space-between">
+        <Title order={5} c="dimmed" size="sm">
+          Routine views
+        </Title>
+        <SegmentedControl
+          data={viewSegments}
+          value={selectedInterval}
+          onChange={(value) => setSelectedInterval(value as "day")}
+          size="xs"
+        />
+      </Group>
+      {views ? (
         <>
-          {data.length > 0 ? (
+          {views.length > 0 ? (
             <InfiniteScroll
               loader={
                 <Stack mb={rem(16)} key={0}>
@@ -50,10 +107,10 @@ export default function ViewsList({ data, userName, hasMore, handleFetchViews }:
               hasMore={hasMore}
               pageStart={0}
             >
-              <Masonry items={data} maxColumnCount={2} rowGutter={16} render={memoizedViewRow} />
+              <Masonry items={views} maxColumnCount={2} rowGutter={16} render={memoizedViewRow} />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="Nothing found" icon={<IconCircleOff size={20} />} />
+            <OverlayWithText text="Nothing found" outerStyles={{border: "none"}} icon={<IconCircleOff size={20} />} />
           )}
         </>
       ) : (

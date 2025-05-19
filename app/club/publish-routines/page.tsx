@@ -22,7 +22,7 @@ export type RoutineDataType = {
   concern: string;
   part: PartEnum;
   status: string;
-  monetization: "enabled" | "disabled";
+  monetization?: "enabled" | "disabled";
 };
 
 export default function PublishRoutines() {
@@ -45,7 +45,8 @@ export default function PublishRoutines() {
       setIsLoading(true);
 
       const save = async () => {
-        const body = { part, concern, status: newStatus };
+        const body: RoutineDataType = { part, concern, status: newStatus };
+        if (newStatus === "hidden") body.monetization = "disabled";
 
         const response = await callTheServer({
           endpoint: "changeRoutineDataStatus",
