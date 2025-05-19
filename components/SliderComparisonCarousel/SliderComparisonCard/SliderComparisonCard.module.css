@@ -9,3 +9,23 @@
   width: 100%;
   flex: 1;
 }
+
+.slideWrapper {
+  position: relative;
+}
+
+.dateOne,
+.dateTwo {
+  position: absolute;
+  bottom: rem(16);
+}
+
+.dateOne {
+  left: 50%;
+  /* transform: translateX(50%); */
+}
+
+.dateTwo {
+  right: 50%;
+  /* transform: translateX(-50%); */
+}

@@ -9,6 +9,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { getPartIcon } from "@/helpers/icons";
 import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModal";
 import useShowSkeleton from "@/helpers/useShowSkeleton";
+import { normalizeString } from "@/helpers/utils";
 import CardMetaPanel from "../CardMetaPanel";
 import ImageCard from "../ImageCard";
 import classes from "./ComparisonCarousel.module.css";
@@ -18,27 +19,19 @@ type Props = {
 };
 
 export default function ComparisonCarousel({ data }: Props) {
-  const {
-    userName,
-    routineName,
-    part,
-    concern,
-    images,
-    initialImages,
-    initialDate,
-    updatedAt,
-    avatar,
-  } = data;
+  const { userName, part, concern, images, initialImages, initialDate, updatedAt, avatar } = data;
   const [slides, setSlides] = useState<React.ReactNode[]>();
 
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
 
   const redirectUrl = `/club/routines/${userName}?part=${part}&concern=${concern}`;
+  const name = `${normalizeString(part)} - ${concern}`;
 
   const handleClickCarousel = useCallback(() => {
+    const titleText = `${userName} - ${part} - ${concern}`;
     const title = (
       <Title order={5} lineClamp={1}>
-        {upperFirst(routineName || part)}
+        {titleText}
       </Title>
     );
 
@@ -54,7 +47,7 @@ export default function ComparisonCarousel({ data }: Props) {
       title: modalTitle,
       type: "ba",
     });
-  }, [userName, part, routineName, redirectUrl, formattedDate]);
+  }, [userName, part, redirectUrl, formattedDate]);
 
   useEffect(() => {
     const objects = images?.flatMap((obj, i) => [
@@ -92,7 +85,7 @@ export default function ComparisonCarousel({ data }: Props) {
       <Stack className={classes.container}>
         <Title order={5} className={classes.title} lineClamp={1}>
           <Link className={classes.titleLink} href={redirectUrl}>
-            {icon} {upperFirst(routineName || part)}
+            {icon} {name}
           </Link>
         </Title>
         <Carousel
@@ -109,7 +102,12 @@ export default function ComparisonCarousel({ data }: Props) {
         >
           {slides}
         </Carousel>
-        <ActionIcon onClick={handleClickCarousel} size="lg" className={classes.viewButton} variant="light">
+        <ActionIcon
+          onClick={handleClickCarousel}
+          size="lg"
+          className={classes.viewButton}
+          variant="light"
+        >
           <IconSeparatorVertical size={24} />
         </ActionIcon>
         <CardMetaPanel

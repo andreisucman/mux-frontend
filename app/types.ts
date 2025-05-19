@@ -22,7 +22,6 @@ export type BeforeAfterType = {
   createdAt?: Date;
   demographics: DemographicsType;
   avatar: AvatarType | null;
-  routineName?: string;
   userName: string | null;
   progresses?: { progressId: string; createdAt: string }[];
 };

@@ -11,7 +11,7 @@ type Props = {
   showDate?: boolean;
   child?: React.ReactNode;
   position?: "right" | "left";
-  datePosition?: "top-left" | "bottom-right";
+  datePosition?: "top-left" | "bottom-right" | "center-left" | "center-right";
   onClick?: () => void;
   limitMaxHeight?: boolean;
   customStyles?: { [key: string]: any };
@@ -59,7 +59,7 @@ export default function ImageCard({
       {showDate && date && (
         <Text
           className={cn(classes.date, {
-            [classes.topLeft]: datePosition === "top-left",
+            [classes.topLeft]: datePosition === "center-left",
           })}
         >
           {date}

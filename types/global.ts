@@ -6,18 +6,13 @@ export type DefaultUserType = {
   specialConsiderations: string;
 };
 
-type BalanceRecordType = {
-  amount: number;
-  currency: string;
-};
-
 export type ClubDataType = {
   isActive: boolean;
   intro: string;
   socials: { value: string | null; label: string }[];
   payouts: {
     connectId: string;
-    balance: { pending: BalanceRecordType; available: BalanceRecordType };
+    balance: number;
     payoutsEnabled: boolean;
     detailsSubmitted: boolean;
     disabledReason: string;

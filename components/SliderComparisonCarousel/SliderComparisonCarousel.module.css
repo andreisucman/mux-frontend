@@ -11,7 +11,7 @@
   position: absolute;
   left: rem(16);
   right: rem(16);
-  top: rem(12);
+  bottom: rem(12);
   justify-content: space-between;
   z-index: 1;
 }

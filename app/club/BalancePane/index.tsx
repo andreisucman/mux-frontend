@@ -1,9 +1,11 @@
-import React, { memo, useCallback, useContext, useMemo, useState } from "react";
+"use client";
+
+import React, { memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { loadConnectAndInitialize } from "@stripe/connect-js";
+import { loadConnectAndInitialize, StripeConnectInstance } from "@stripe/connect-js";
 import { ConnectBalances, ConnectComponentsProvider } from "@stripe/react-connect-js";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Alert, Button, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { Alert, Button, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
@@ -15,7 +17,7 @@ import classes from "./BalancePane.module.css";
 
 type ConnectAppearance = Parameters<typeof loadConnectAndInitialize>[0]["appearance"];
 
-export function makeAppearance(isDark: boolean): ConnectAppearance {
+function makeAppearance(isDark: boolean): ConnectAppearance {
   return {
     overlays: "dialog",
     variables: isDark
@@ -30,7 +32,7 @@ export function makeAppearance(isDark: boolean): ConnectAppearance {
           buttonSecondaryColorBackground: "#2e2e2e",
           buttonSecondaryColorBorder: "#424242",
           buttonSecondaryColorText: "#c9c9c9",
-      }
+        }
       : {
           colorBackground: "#f8f9fa",
           colorText: "#2e2e2d",
@@ -51,21 +53,7 @@ function BalancePane() {
   const [isLoading, setIsLoading] = useState(false);
   const [balanceLoading, setBalanceLoading] = useState(true);
   const colorScheme = useColorScheme(undefined, { getInitialValueInEffect: false });
-  const [stripeConnectInstance] = useState(() => {
-    const fetchClientSecret = async () => {
-      const response = await callTheServer({ endpoint: "getBalance", method: "GET" });
-
-      if (response.status === 200) {
-        return response.message;
-      }
-    };
-
-    return loadConnectAndInitialize({
-      publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-      fetchClientSecret: fetchClientSecret,
-      appearance: makeAppearance(colorScheme === "dark"),
-    });
-  });
+  const [stripeConnectInstance, setStripeConnectInstance] = useState<StripeConnectInstance>();
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
@@ -208,13 +196,30 @@ function BalancePane() {
       );
   }, [isLoading, detailsSubmitted, payoutsEnabled, disabledReason]);
 
+  useEffect(() => {
+    if (!connectId) return;
+    const fetchClientSecret = async () => {
+      const response = await callTheServer({ endpoint: "getBalance", method: "GET" });
+
+      if (response.status === 200) {
+        return response.message;
+      }
+    };
+    const instance = loadConnectAndInitialize({
+      publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+      fetchClientSecret: fetchClientSecret,
+      appearance: makeAppearance(colorScheme === "dark"),
+    });
+    setStripeConnectInstance(instance);
+  }, [typeof connectId]);
+
   return (
     <Stack className={classes.container}>
       {alert && <Stack>{alert}</Stack>}
-      {connectId && (
+      {stripeConnectInstance && (
         <Skeleton className="skeleton" visible={balanceLoading}>
           <Stack className={classes.wrapper}>
-            <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
+            <ConnectComponentsProvider connectInstance={stripeConnectInstance as any}>
               <ConnectBalances onLoaderStart={() => setBalanceLoading(false)} />
             </ConnectComponentsProvider>
           </Stack>
