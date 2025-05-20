@@ -2,7 +2,7 @@
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
+import { IconArrowDown } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -13,10 +13,8 @@ import MoveTaskModalContent from "@/app/routines/MoveTaskModalContent";
 import { GetRoutinesProps, HandleModifyTaskProps } from "@/app/routines/page";
 import AccordionRoutineRow from "@/components/AccordionRoutineRow";
 import { FilterItemType } from "@/components/FilterDropdown/types";
-import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
-import TurnstileComponent from "@/components/TurnstileComponent";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
@@ -361,7 +359,6 @@ export default function ClubRoutines(props: Props) {
           )}
         </>
       )}
-      <TurnstileComponent userName={userName} concern={concern} part={part} page="routines" />
     </ClubModerationLayout>
   );
 }

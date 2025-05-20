@@ -2,7 +2,6 @@
 
 import React, { use, useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import cn from "classnames";
 import { Loader, Stack } from "@mantine/core";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
@@ -11,7 +10,6 @@ import { SimpleProofType } from "@/app/results/proof/types";
 import { FilterItemType } from "@/components/FilterDropdown/types";
 import PageHeader from "@/components/PageHeader";
 import { clubPageTypeItems } from "@/components/PageHeader/data";
-import TurnstileComponent from "@/components/TurnstileComponent";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { proofSortItems } from "@/data/sortItems";
@@ -158,7 +156,6 @@ export default function ClubProof(props: Props) {
           </>
         )}
       </Stack>
-      <TurnstileComponent userName={userName} concern={concern} part={part} page="proof" />
     </ClubModerationLayout>
   );
 }

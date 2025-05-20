@@ -14,6 +14,7 @@ import CookieDisclaimer from "@/components/CookieDisclaimer";
 import { GeneralContextModal } from "@/components/GeneralContextModal";
 import Header from "@/components/Header";
 import ThemeColorSetter from "@/components/ThemeColorSetter";
+import TurnstileComponent from "@/components/TurnstileComponent";
 import UserContextProvider from "@/context/UserContext";
 import { HandleOnComplete } from "@/helpers/custom-router";
 import { theme } from "../theme";
@@ -69,9 +70,9 @@ export default function RootLayout({ children }: Props) {
                   general: GeneralContextModal,
                 }}
               >
-     
                 <Header />
                 <Stack className={classes.container}>{children}</Stack>
+                <TurnstileComponent />
               </ModalsProvider>
             </UserContextProvider>
           </Suspense>
