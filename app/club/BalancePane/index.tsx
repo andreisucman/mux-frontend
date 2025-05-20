@@ -1,12 +1,8 @@
-"use client";
-
-import React, { memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { loadConnectAndInitialize, StripeConnectInstance } from "@stripe/connect-js";
-import { ConnectBalances, ConnectComponentsProvider } from "@stripe/react-connect-js";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { Alert, Button, Group, Skeleton, Stack, Title } from "@mantine/core";
-import { useColorScheme } from "@mantine/hooks";
+import { ActionIcon, Alert, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
+import { useClickOutside } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
@@ -15,49 +11,16 @@ import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import classes from "./BalancePane.module.css";
 
-type ConnectAppearance = Parameters<typeof loadConnectAndInitialize>[0]["appearance"];
-
-function makeAppearance(isDark: boolean): ConnectAppearance {
-  return {
-    overlays: "dialog",
-    variables: isDark
-      ? {
-          colorBackground: "#272727",
-          colorText: "#c9c9c9",
-          colorSecondaryText: "#828282",
-          colorPrimary: "#c9c9c9",
-          borderRadius: "16px",
-          fontFamily: "Open Sans, sans-serif",
-          overlayBackdropColor: "#242424",
-          buttonSecondaryColorBackground: "#2e2e2e",
-          buttonSecondaryColorBorder: "#424242",
-          buttonSecondaryColorText: "#c9c9c9",
-        }
-      : {
-          colorBackground: "#f8f9fa",
-          colorText: "#2e2e2d",
-          colorSecondaryText: "#868e96",
-          colorPrimary: "#2e2e2d",
-          borderRadius: "16px",
-          fontFamily: "Open Sans, sans-serif",
-          overlayBackdropColor: "#ffffff",
-          buttonSecondaryColorBackground: "#FFFFFF",
-          buttonSecondaryColorBorder: "#ced4da",
-        },
-  };
-}
-
 function BalancePane() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [balanceLoading, setBalanceLoading] = useState(true);
-  const colorScheme = useColorScheme(undefined, { getInitialValueInEffect: false });
-  const [stripeConnectInstance, setStripeConnectInstance] = useState<StripeConnectInstance>();
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
-  const { connectId, payoutsEnabled, disabledReason, detailsSubmitted } = payouts || {};
+  const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId } = payouts || {};
 
   const openCountrySelectModal = useCallback(() => {
     setIsLoading(true);
@@ -130,6 +93,17 @@ function BalancePane() {
     }
   }, []);
 
+  const displayBalance = useMemo(() => {
+    return (
+      <Group className={classes.balance}>
+        <Title order={2} className={classes.amount}>
+          <Text className={classes.currency}>USD</Text>
+          {balance}
+        </Title>
+      </Group>
+    );
+  }, [isLoading, balance]);
+
   const alert = useMemo(() => {
     const submittedNotEnabled = detailsSubmitted && !payoutsEnabled && !disabledReason;
     const isRejected = disabledReason === "rejected.other";
@@ -196,35 +170,49 @@ function BalancePane() {
       );
   }, [isLoading, detailsSubmitted, payoutsEnabled, disabledReason]);
 
-  useEffect(() => {
-    if (!connectId) return;
-    const fetchClientSecret = async () => {
-      const response = await callTheServer({ endpoint: "getBalance", method: "GET" });
-
-      if (response.status === 200) {
-        return response.message;
-      }
-    };
-    const instance = loadConnectAndInitialize({
-      publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-      fetchClientSecret: fetchClientSecret,
-      appearance: makeAppearance(colorScheme === "dark"),
+  const redirectToWallet = useCallback(async () => {
+    const response = await callTheServer({
+      endpoint: "redirectToWallet",
+      method: "POST",
+      body: { redirectUrl: window.location.href },
     });
-    setStripeConnectInstance(instance);
-  }, [typeof connectId]);
+
+    if (response.status === 200) {
+      location.href = response.message;
+    }
+  }, []);
 
   return (
     <Stack className={classes.container}>
+      <Group className={classes.header}>
+        <Text c="dimmed" size="sm">
+          Current balance
+        </Text>
+        <Group gap={8}>
+          <Tooltip
+            opened={openTooltip}
+            label="The balance is paid out to your bank account automatically. You can change the bank account in the wallet."
+            ref={clickOutsideRef}
+            onClick={() => setOpenTooltip((prev) => !prev)}
+            multiline
+          >
+            <ActionIcon variant="default">
+              <IconInfoCircle size={16} />
+            </ActionIcon>
+          </Tooltip>
+          <Button
+            variant={"default"}
+            size="compact-sm"
+            disabled={!connectId}
+            style={{ position: "relative", zIndex: 1 }}
+            onClick={redirectToWallet}
+          >
+            Go to wallet
+          </Button>
+        </Group>
+      </Group>
       {alert && <Stack>{alert}</Stack>}
-      {stripeConnectInstance && (
-        <Skeleton className="skeleton" visible={balanceLoading}>
-          <Stack className={classes.wrapper}>
-            <ConnectComponentsProvider connectInstance={stripeConnectInstance as any}>
-              <ConnectBalances onLoaderStart={() => setBalanceLoading(false)} />
-            </ConnectComponentsProvider>
-          </Stack>
-        </Skeleton>
-      )}
+      <Stack className={classes.stack}>{displayBalance}</Stack>
     </Stack>
   );
 }

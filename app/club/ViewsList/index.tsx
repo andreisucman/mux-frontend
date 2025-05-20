@@ -79,9 +79,9 @@ export default function ViewsList({ userName }: Props) {
   return (
     <Stack className={classes.container}>
       <Group align="start" justify="space-between">
-        <Title order={5} c="dimmed" size="sm">
+        <Text c="dimmed" size="sm">
           Routine views
-        </Title>
+        </Text>
         <SegmentedControl
           data={viewSegments}
           value={selectedInterval}
@@ -110,7 +110,11 @@ export default function ViewsList({ userName }: Props) {
               <Masonry items={views} maxColumnCount={2} rowGutter={16} render={memoizedViewRow} />
             </InfiniteScroll>
           ) : (
-            <OverlayWithText text="Nothing found" outerStyles={{border: "none"}} icon={<IconCircleOff size={20} />} />
+            <OverlayWithText
+              text="Nothing found"
+              outerStyles={{ border: "none" }}
+              icon={<IconCircleOff size={20} />}
+            />
           )}
         </>
       ) : (

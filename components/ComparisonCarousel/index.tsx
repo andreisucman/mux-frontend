@@ -25,7 +25,7 @@ export default function ComparisonCarousel({ data }: Props) {
   const formattedDate = useMemo(() => formatDate({ date: updatedAt || null }), []);
 
   const redirectUrl = `/club/routines/${userName}?part=${part}&concern=${concern}`;
-  const name = `${normalizeString(part)} - ${concern}`;
+  const name = `${normalizeString(part)} - ${normalizeString(concern)}`;
 
   const handleClickCarousel = useCallback(() => {
     const titleText = `${userName} - ${part} - ${concern}`;
