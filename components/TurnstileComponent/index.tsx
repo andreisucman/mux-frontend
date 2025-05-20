@@ -1,6 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
 import { Turnstile } from "next-turnstile";
-import { Stack } from "@mantine/core";
 import classes from "./TurnstileComponent.module.css";
 
 export default function TurnstileComponent() {
