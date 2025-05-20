@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { IconSeparatorVertical } from "@tabler/icons-react";
+import cn from "classnames";
 import { Carousel } from "@mantine/carousel";
-import { ActionIcon, Button, Skeleton, Stack, Title } from "@mantine/core";
-import { upperFirst } from "@mantine/hooks";
+import { ActionIcon, Skeleton, Stack, Title } from "@mantine/core";
 import { BeforeAfterType } from "@/app/types";
 import { formatDate } from "@/helpers/formatDate";
 import { getPartIcon } from "@/helpers/icons";
@@ -11,7 +12,6 @@ import openResultModal, { getRedirectModalTitle } from "@/helpers/openResultModa
 import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { normalizeString } from "@/helpers/utils";
 import CardMetaPanel from "../CardMetaPanel";
-import ImageCard from "../ImageCard";
 import classes from "./ComparisonCarousel.module.css";
 
 type Props = {
@@ -63,14 +63,15 @@ export default function ComparisonCarousel({ data }: Props) {
 
     const newSlides = objects.map((object, index) => (
       <Carousel.Slide key={index} onClick={handleClickCarousel} className={classes.slide}>
-        <ImageCard
-          image={object.image}
-          datePosition="top-left"
-          position={index % 2 === 0 ? "right" : "left"}
-          showDate
-          isRelative
-          limitMaxHeight
-        />
+        <div className={cn(classes.imageWrapper, { [classes.marginLeft]: index % 2 === 0 })}>
+          <Image
+            src={object.image}
+            alt=""
+            height={568}
+            width={320}
+            className={classes.comparisonImage}
+          />
+        </div>
       </Carousel.Slide>
     ));
 
