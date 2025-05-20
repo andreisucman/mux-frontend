@@ -6,6 +6,8 @@ import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import SelectPartOrConcern from "@/app/club/routines/[[...userName]]/SelectPartOrConcern";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { FetchProgressProps } from "@/functions/fetchProgress";
@@ -23,6 +25,8 @@ type Props = {
   isPublicPage?: boolean;
   userName?: string;
   progress?: SimpleProgressType[];
+  availableParts?: FilterItemType[];
+  availableConcerns?: FilterItemType[];
   handleContainerClick: (data: any, showTrackButton: boolean) => void;
   handleFetchProgress: (props: HandleFetchProgressProps) => void;
   setProgress: React.Dispatch<React.SetStateAction<SimpleProgressType[] | undefined>>;
@@ -34,6 +38,8 @@ export default function ProgressGallery({
   userName,
   isSelf,
   isPublicPage,
+  availableParts,
+  availableConcerns,
   setProgress,
   handleContainerClick,
   handleFetchProgress,
@@ -87,14 +93,17 @@ export default function ProgressGallery({
         >
           <MasonryComponent
             maxColumnCount={3}
-            columnGutter={16}
+            columnGutter={12}
             columnWidth={gridColumnWidth}
             render={memoizedProgressCard}
             items={progress}
           />
         </InfiniteScroll>
       ) : (
-        <OverlayWithText icon={<IconCircleOff size={20} />} text="Nothing found" />
+        <SelectPartOrConcern
+          partFilterItems={availableParts || []}
+          concernFilterItems={availableConcerns || []}
+        />
       )}
     </Stack>
   );

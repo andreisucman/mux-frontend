@@ -1,17 +1,20 @@
 import React, { useCallback, useContext, useMemo } from "react";
-import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
-import { Accordion, ActionIcon, Stack } from "@mantine/core";
+import { IconArrowDown } from "@tabler/icons-react";
+import { Accordion, ActionIcon } from "@mantine/core";
+import SelectPartOrConcern from "@/app/club/routines/[[...userName]]/SelectPartOrConcern";
 import { DiaryType } from "@/app/diary/type";
 import ListComponent from "@/components/ListComponent";
-import OverlayWithText from "@/components/OverlayWithText";
 import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
 import DiaryAccordionItem from "../DiaryAccordionItem";
+import { FilterItemType } from "../FilterDropdown/types";
 import classes from "./DiaryContent.module.css";
 
 type Props = {
   hasMore: boolean;
   diaryRecords?: DiaryType[];
+  availableConcerns?: FilterItemType[];
+  availableParts?: FilterItemType[];
   openValue: string | null;
   isPublic?: boolean;
   setDiaryRecords?: React.Dispatch<React.SetStateAction<DiaryType[] | undefined>>;
@@ -23,6 +26,8 @@ export default function DiaryContent({
   hasMore,
   diaryRecords,
   openValue,
+  availableConcerns,
+  availableParts,
   isPublic,
   setDiaryRecords,
   setOpenValue,
@@ -65,12 +70,15 @@ export default function DiaryContent({
         {diaryRecords && diaryRecords.length > 0 ? (
           <ListComponent
             items={diaryRecords}
-            rowGutter={16}
+            rowGutter={12}
             render={memoizedDiaryRow}
             className={classes.list}
           />
         ) : (
-          <OverlayWithText text={`Nothing found`} icon={<IconCircleOff size={20} />} />
+          <SelectPartOrConcern
+            partFilterItems={availableParts || []}
+            concernFilterItems={availableConcerns || []}
+          />
         )}
       </Accordion>
       {hasMore && (

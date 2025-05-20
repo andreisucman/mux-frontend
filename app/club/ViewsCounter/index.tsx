@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IconEye } from "@tabler/icons-react";
 import { Group, rem, Skeleton, Text, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
@@ -11,10 +11,18 @@ type Props = {
   page: "routines" | "progress" | "diary" | "proof";
 };
 
+const formatViews = (views: number): string => {
+  if (views < 1_000) return views.toString();
+  const truncated = Math.floor(views / 100) / 10; // e.g. 25 555 → 255 → 25.5
+  return `${truncated}k`;
+};
+
 export default function ViewsCounter({ userName, page }: Props) {
   const [views, setViews] = useState(0);
   const [openTooltip, setOpenTooltip] = useState(false);
   const clickOutsideRef = useClickOutside(() => setOpenTooltip(false));
+
+  const formattedViews = useMemo(() => formatViews(views), [views]);
 
   useEffect(() => {
     if (!userName) return;
@@ -48,7 +56,7 @@ export default function ViewsCounter({ userName, page }: Props) {
       >
         <Group className={classes.container}>
           <IconEye size={20} />
-          <Text>{views}</Text>
+          <Text>{formattedViews}</Text>
         </Group>
       </Skeleton>
     </Tooltip>

@@ -4,6 +4,8 @@
   border-radius: 0;
   width: 100%;
 
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+
   & video {
     object-fit: contain;
   }

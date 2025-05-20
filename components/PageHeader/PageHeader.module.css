@@ -1,6 +1,7 @@
 .container {
   min-height: rem(32);
   align-items: flex-start;
+  gap: rem(12);
 }
 
 .title {

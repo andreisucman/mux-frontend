@@ -20,6 +20,7 @@ import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
+import SelectPartOrConcern from "../../routines/[[...userName]]/SelectPartOrConcern";
 import ViewsCounter from "../../ViewsCounter";
 import classes from "./progress.module.css";
 
@@ -113,6 +114,8 @@ export default function ClubProgress(props: Props) {
     value: `club/${item.value}/${userName}`,
   }));
 
+  const noPartOrConcern = !part || !concern;
+
   return (
     <ClubModerationLayout
       header={
@@ -122,7 +125,7 @@ export default function ClubProgress(props: Props) {
           defaultSortValue="-_id"
           childrenPosition="first"
           disableFilter={!availableConcerns && !availableParts}
-          disableSort={!progress || progress.length === 0}
+          disableSort={!availableParts && !availableConcerns}
           sortItems={progressSortItems}
           children={<ViewsCounter userName={userName} page="progress" />}
           onFilterClick={() =>
@@ -144,24 +147,33 @@ export default function ClubProgress(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.wrapper}>
-        {progress ? (
-          <Stack className={cn(classes.content, "scrollbar")}>
-            <ProgressGallery
-              progress={progress}
-              hasMore={hasMore}
-              isSelf={isSelf}
-              handleContainerClick={handleContainerClick}
-              handleFetchProgress={handleFetchProgress}
-              setProgress={setProgress}
-              isPublicPage
-            />
-          </Stack>
-        ) : (
-          <Loader
-            m="0 auto"
-            pt="30%"
-            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+        {noPartOrConcern ? (
+          <SelectPartOrConcern
+            partFilterItems={availableParts}
+            concernFilterItems={availableConcerns}
           />
+        ) : (
+          <>
+            {progress ? (
+              <Stack className={cn(classes.content, "scrollbar")}>
+                <ProgressGallery
+                  progress={progress}
+                  hasMore={hasMore}
+                  isSelf={isSelf}
+                  handleContainerClick={handleContainerClick}
+                  handleFetchProgress={handleFetchProgress}
+                  setProgress={setProgress}
+                  isPublicPage
+                />
+              </Stack>
+            ) : (
+              <Loader
+                m="0 auto"
+                pt="30%"
+                color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+              />
+            )}
+          </>
         )}
       </Stack>
       <TurnstileComponent userName={userName} concern={concern} part={part} page="progress" />

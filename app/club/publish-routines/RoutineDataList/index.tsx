@@ -100,8 +100,8 @@ export default function RoutineDataList({
               <Masonry
                 items={routineDataRecords}
                 maxColumnCount={2}
-                columnGutter={16}
-                rowGutter={16}
+                columnGutter={12}
+                rowGutter={12}
                 render={memoizedDataRow}
               />
             </InfiniteScroll>

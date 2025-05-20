@@ -84,8 +84,8 @@ export default function ResultsProof() {
       <SkeletonWrapper>
         <PageHeader
           titles={individualResultTitles}
-          disableFilter={!availableParts}
-          disableSort={availableParts?.length === 0}
+          disableFilter={!availableConcerns && !availableParts}
+          disableSort={!availableConcerns && !availableParts}
           filterNames={["part", "concern"]}
           sortItems={proofSortItems}
           defaultSortValue="-_id"

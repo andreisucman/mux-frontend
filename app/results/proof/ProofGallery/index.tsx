@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
+import SelectPartOrConcern from "@/app/club/routines/[[...userName]]/SelectPartOrConcern";
+import { FilterItemType } from "@/components/FilterDropdown/types";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { FetchProofProps } from "@/functions/fetchProof";
@@ -23,6 +25,8 @@ type Props = {
   isSelf?: boolean;
   isPublicPage?: boolean;
   proof?: SimpleProofType[];
+  availableParts?: FilterItemType[];
+  availableConcerns?: FilterItemType[];
   handleFetchProof: (args: HandleFetchProofProps) => void;
   setProof: React.Dispatch<React.SetStateAction<SimpleProofType[] | undefined>>;
 };
@@ -34,6 +38,8 @@ export default function ProofGallery({
   userName,
   isSelf,
   isPublicPage,
+  availableParts,
+  availableConcerns,
   setProof,
   handleFetchProof,
 }: Props) {
@@ -88,13 +94,16 @@ export default function ProofGallery({
         >
           <MasonryComponent
             columnCount={columns || 1}
-            columnGutter={16}
+            columnGutter={12}
             render={memoizedProofCard}
             items={proof}
           />
         </InfiniteScroll>
       ) : (
-        <OverlayWithText icon={<IconCircleOff size={20} />} text="Nothing found" />
+        <SelectPartOrConcern
+          partFilterItems={availableParts || []}
+          concernFilterItems={availableConcerns || []}
+        />
       )}
     </Stack>
   );

@@ -107,7 +107,7 @@ export default function ViewsList({ userName }: Props) {
               hasMore={hasMore}
               pageStart={0}
             >
-              <Masonry items={views} maxColumnCount={2} rowGutter={16} render={memoizedViewRow} />
+              <Masonry items={views} maxColumnCount={2} rowGutter={12} render={memoizedViewRow} />
             </InfiniteScroll>
           ) : (
             <OverlayWithText

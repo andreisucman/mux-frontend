@@ -139,7 +139,7 @@ export default function RoutinesHistoryPage() {
                 >
                   <ListComponent
                     items={inactiveTasks}
-                    rowGutter={16}
+                    rowGutter={12}
                     render={(props: any) => {
                       const { key, ...rest } = props.data;
                       return <InactiveTaskRow {...rest} key={rest._id} />;

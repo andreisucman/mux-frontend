@@ -19,6 +19,7 @@ import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import SelectPartOrConcern from "../../routines/[[...userName]]/SelectPartOrConcern";
 import ViewsCounter from "../../ViewsCounter";
 import classes from "./proof.module.css";
 
@@ -94,7 +95,7 @@ export default function ClubProof(props: Props) {
     handleFetchProof({ userName, sort, part, concern, query });
   }, [userName, part, concern, sort, concern, query]);
 
-  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+  const noPartOrConcern = !part || !concern;
 
   const titles = clubPageTypeItems.map((item) => ({
     label: item.label,
@@ -109,7 +110,7 @@ export default function ClubProof(props: Props) {
           titles={titles}
           filterNames={["part", "concern"]}
           disableFilter={!availableConcerns && !availableParts}
-          disableSort={noPartsAndConcerns}
+          disableSort={!availableConcerns && !availableParts}
           children={<ViewsCounter userName={userName} page="proof" />}
           childrenPosition="first"
           sortItems={proofSortItems}
@@ -129,9 +130,14 @@ export default function ClubProof(props: Props) {
         customStyles={{ flex: 0 }}
       />
       <Stack className={classes.wrapper}>
-        <Stack className={cn(classes.content, "scrollbar")}>
-          {proof ? (
-            <>
+        {noPartOrConcern ? (
+          <SelectPartOrConcern
+            partFilterItems={availableParts}
+            concernFilterItems={availableConcerns}
+          />
+        ) : (
+          <>
+            {proof ? (
               <ProofGallery
                 proof={proof}
                 hasMore={hasMore}
@@ -142,15 +148,15 @@ export default function ClubProof(props: Props) {
                 isPublicPage
                 columns={2}
               />
-            </>
-          ) : (
-            <Loader
-              m="0 auto"
-              pt="30%"
-              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
-            />
-          )}
-        </Stack>
+            ) : (
+              <Loader
+                m="0 auto"
+                pt="30%"
+                color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+              />
+            )}
+          </>
+        )}
       </Stack>
       <TurnstileComponent userName={userName} concern={concern} part={part} page="proof" />
     </ClubModerationLayout>

@@ -19,6 +19,7 @@ import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import SelectPartOrConcern from "../../routines/[[...userName]]/SelectPartOrConcern";
 import ViewsCounter from "../../ViewsCounter";
 import classes from "./diary.module.css";
 
@@ -97,7 +98,7 @@ export default function DiaryPage(props: Props) {
     });
   }, [userName]);
 
-  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
+  const noPartOrConcern = !part || !concern;
 
   const titles = clubPageTypeItems.map((item) => ({
     label: item.label,
@@ -125,7 +126,7 @@ export default function DiaryPage(props: Props) {
             })
           }
           disableFilter={!availableParts && !availableConcerns}
-          disableSort={noPartsAndConcerns}
+          disableSort={!availableParts && !availableConcerns}
           nowrapContainer
         />
       }
@@ -137,25 +138,36 @@ export default function DiaryPage(props: Props) {
       />
       <Stack className={classes.wrapper}>
         <Stack className={cn(classes.content, "scrollbar")}>
-          {diaryRecords ? (
-            <>
-              <DiaryContent
-                diaryRecords={diaryRecords}
-                openValue={openValue}
-                setOpenValue={setOpenValue}
-                hasMore={hasMore}
-                handleFetchDiaryRecords={() =>
-                  handleFetchDiaryRecords({ dateFrom, dateTo, sort, part, concern })
-                }
-                isPublic={true}
-              />
-            </>
-          ) : (
-            <Loader
-              m="0 auto"
-              pt="30%"
-              color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          {noPartOrConcern ? (
+            <SelectPartOrConcern
+              partFilterItems={availableParts}
+              concernFilterItems={availableConcerns}
             />
+          ) : (
+            <>
+              {diaryRecords ? (
+                <>
+                  <DiaryContent
+                    diaryRecords={diaryRecords}
+                    openValue={openValue}
+                    setOpenValue={setOpenValue}
+                    hasMore={hasMore}
+                    availableParts={availableParts}
+                    availableConcerns={availableConcerns}
+                    handleFetchDiaryRecords={() =>
+                      handleFetchDiaryRecords({ dateFrom, dateTo, sort, part, concern })
+                    }
+                    isPublic={true}
+                  />
+                </>
+              ) : (
+                <Loader
+                  m="0 auto"
+                  pt="30%"
+                  color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+                />
+              )}
+            </>
           )}
         </Stack>
       </Stack>

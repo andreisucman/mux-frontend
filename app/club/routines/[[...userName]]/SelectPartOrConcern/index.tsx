@@ -13,7 +13,7 @@ export default function SelectPartOrConcern({ partFilterItems, concernFilterItem
   return (
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
-        <Title order={5}>Select filters</Title>
+        <Title order={5}>Nothing found</Title>
         <RoutinesFilterCardContent
           partFilterItems={partFilterItems}
           concernFilterItems={concernFilterItems}

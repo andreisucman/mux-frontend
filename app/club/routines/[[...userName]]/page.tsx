@@ -262,8 +262,6 @@ export default function ClubRoutines(props: Props) {
     });
   }, [userName]);
 
-  const noPartsAndConcerns = availableParts?.length === 0 && availableConcerns?.length === 0;
-
   const titles = clubPageTypeItems.map((item) => ({
     label: item.label,
     addQuery: true,
@@ -280,7 +278,7 @@ export default function ClubRoutines(props: Props) {
           sortItems={routineSortItems}
           disableFilter={!availableConcerns && !availableParts}
           children={<ViewsCounter userName={userName} page="routines" />}
-          disableSort={noPartsAndConcerns}
+          disableSort={!availableConcerns && !availableParts}
           childrenPosition="first"
           onFilterClick={() =>
             openFiltersCard({
@@ -347,7 +345,10 @@ export default function ClubRoutines(props: Props) {
                     )}
                   </>
                 ) : (
-                  <OverlayWithText text={"Nothing found"} icon={<IconCircleOff size={20} />} />
+                  <SelectPartOrConcern
+                    partFilterItems={availableParts}
+                    concernFilterItems={availableConcerns}
+                  />
                 )}
               </Stack>
             </Stack>

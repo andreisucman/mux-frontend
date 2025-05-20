@@ -187,7 +187,7 @@ export default function Rewards() {
             >
               <MasonryComponent
                 maxColumnCount={2}
-                columnGutter={16}
+                columnGutter={12}
                 columnWidth={300}
                 render={memoizedRewardCard}
                 items={rewards}

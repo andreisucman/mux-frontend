@@ -1,5 +1,8 @@
 .container {
   cursor: pointer;
-  gap: rem(8);
+  gap: rem(6);
   flex-wrap: nowrap;
+  border: rem(1) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  padding: 0 rem(8);
+  border-radius: rem(16);
 }

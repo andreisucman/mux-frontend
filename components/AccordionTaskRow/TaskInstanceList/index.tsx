@@ -32,7 +32,7 @@ export default function TaskInstanceList({
   updateTaskInstance,
 }: Props) {
   const handleRedirectToTaskInstance = (taskId: string) => {
-    if (!redirectToTaskInstance) return;
+    if (!isSelf || !redirectToTaskInstance) return;
     redirectToTaskInstance(taskId);
   };
   return (
