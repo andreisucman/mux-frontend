@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { IconPlayerPause, IconPlayerPlayFilled } from "@tabler/icons-react";
 import cn from "classnames";
 import ReactPlayer from "react-player";
-import { Stack, Text } from "@mantine/core";
+import { Loader, Stack, Text } from "@mantine/core";
 import { formatDate } from "@/helpers/formatDate";
 import classes from "./VideoPlayer.module.css";
 
@@ -31,6 +31,7 @@ export default function VideoPlayer({
   onClick,
 }: Props) {
   const [playing, setPlaying] = useState(false);
+  const [buffering, setBuffering] = useState(false);
   const playerRef = useRef<ReactPlayer>(null);
 
   const handlePlayerClick = useCallback(() => {
@@ -39,16 +40,19 @@ export default function VideoPlayer({
     } else {
       setPlaying((prev) => !prev);
     }
-  }, [typeof onClick, playing]);
+  }, [onClick]);
 
   const handleEnded = useCallback(() => {
     setPlaying(false);
   }, []);
 
-  const handleOnDuration = (playing: boolean) => {
-    if (playOnBufferEnd && !playing) setPlaying(true);
+  const handleOnDuration = (isPlaying: boolean) => {
+    if (playOnBufferEnd && !isPlaying) setPlaying(true);
     if (onLoad) onLoad();
   };
+
+  const handleBuffer = useCallback(() => setBuffering(true), []);
+  const handleBufferEnd = useCallback(() => setBuffering(false), []);
 
   const playIcon = useMemo(
     () => (
@@ -63,19 +67,36 @@ export default function VideoPlayer({
         )}
       </div>
     ),
-    [playing]
+    [playing, handlePlayerClick]
   );
 
-  const formattedDate = useMemo(() => (createdAt ? formatDate({ date: createdAt }) : null), []);
+  const formattedDate = useMemo(
+    () => (createdAt ? formatDate({ date: createdAt }) : null),
+    [createdAt]
+  );
 
   return (
     <Stack
-      className={cn("skeleton", classes.skeleton, { [classes.relative]: isRelative })}
-      style={customStyles ? customStyles : {}}
+      className={cn("skeleton", classes.skeleton, {
+        [classes.relative]: isRelative,
+      })}
+      style={customStyles ?? {}}
     >
       {onClick && <div className={classes.overlay} onClick={handlePlayerClick} />}
+
+      {buffering && (
+        <Stack m="auto">
+          <Loader
+            size="lg"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
+        </Stack>
+      )}
+
       {playIcon}
+
       <ReactPlayer
+        ref={playerRef}
         url={url}
         style={{
           position: "absolute",
@@ -86,13 +107,15 @@ export default function VideoPlayer({
         onDuration={() => handleOnDuration(playing)}
         playing={playing}
         playIcon={playIcon}
-        width={"100%"}
-        height={"100%"}
+        width="100%"
+        height="100%"
         onClickPreview={(e) => {
           e.stopPropagation();
           e.preventDefault();
         }}
         onEnded={handleEnded}
+        onBuffer={handleBuffer}
+        onBufferEnd={handleBufferEnd}
         config={{
           file: {
             attributes: {
@@ -100,7 +123,6 @@ export default function VideoPlayer({
             },
           },
         }}
-        ref={playerRef}
       />
 
       {showDate && formattedDate && <Text className={classes.date}>{formattedDate}</Text>}

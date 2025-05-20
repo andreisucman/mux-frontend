@@ -16,21 +16,31 @@ export default function TurnstileComponent({ part, concern, userName, page }: Pr
 
   const handleVerify = React.useCallback(
     async (token: string) => {
-      if (!part || !concern) return;
-
-      const { ClientJS } = await import("clientjs");
-      const fingerprint = new ClientJS().getFingerprint();
-
-      await callTheServer({
-        endpoint: "registerView",
+      const response = await callTheServer({
+        endpoint: "verifyTurnstileToekn",
         method: "POST",
-        body: { token, fingerprint, userName, part, concern, page },
+        body: { token },
       });
 
-      setShowComponent(false);
+      if (response.message) {
+        setShowComponent(false);
+      }
     },
     [part, concern, userName, page]
   );
+
+  const handleRecordView = async () => {
+    if (!part || !concern) return;
+
+    const { ClientJS } = await import("clientjs");
+    const fingerprint = new ClientJS().getFingerprint();
+
+    await callTheServer({
+      endpoint: "registerView",
+      method: "POST",
+      body: { fingerprint, userName, part, concern, page },
+    });
+  };
 
   if (!part || !concern) return null;
 
@@ -42,8 +52,7 @@ export default function TurnstileComponent({ part, concern, userName, page }: Pr
             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
             sandbox={process.env.NODE_ENV === "development"}
             onVerify={handleVerify}
-            appearance="execute"
-            execution="execute"
+            appearance="interaction-only"
             theme="auto"
           />
         </Stack>

@@ -50,16 +50,20 @@ export default function ComparisonCarousel({ data }: Props) {
   }, [userName, part, redirectUrl, formattedDate]);
 
   useEffect(() => {
-    const objects = images?.flatMap((obj, i) => [
-      {
-        image: initialImages?.[i].mainUrl.url || "",
-        date: formatDate({ date: updatedAt || null }),
-      },
-      {
-        image: obj.mainUrl.url || "",
-        date: formatDate({ date: initialDate }),
-      },
-    ]);
+    const objects = images?.flatMap((obj, i) => {
+      const latestImage = initialImages?.[i]?.mainUrl?.url;
+      const previousImage = obj.mainUrl.url;
+      return [
+        {
+          image: latestImage || "",
+          date: formatDate({ date: updatedAt || null }),
+        },
+        {
+          image: previousImage || "",
+          date: formatDate({ date: initialDate }),
+        },
+      ];
+    });
 
     const newSlides = objects.map((object, index) => (
       <Carousel.Slide key={index} onClick={handleClickCarousel} className={classes.slide}>
