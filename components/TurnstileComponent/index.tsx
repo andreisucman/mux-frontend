@@ -42,7 +42,8 @@ export default function TurnstileComponent({ part, concern, userName, page }: Pr
             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
             sandbox={process.env.NODE_ENV === "development"}
             onVerify={handleVerify}
-            appearance="invisible"
+            appearance="execute"
+            execution="execute"
             theme="auto"
           />
         </Stack>
