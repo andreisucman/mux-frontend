@@ -9,15 +9,14 @@ export default function TurnstileComponent() {
   return (
     <>
       {showComponent && (
-        <Stack className={classes.container}>
-          <Turnstile
-            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-            sandbox={process.env.NODE_ENV === "development"}
-            onVerify={() => setShowComponent(false)}
-            appearance="interaction-only"
-            theme="auto"
-          />
-        </Stack>
+        <Turnstile
+          className={classes.container}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+          sandbox={process.env.NODE_ENV === "development"}
+          onVerify={() => setShowComponent(false)}
+          appearance="interaction-only"
+          theme="auto"
+        />
       )}
     </>
   );

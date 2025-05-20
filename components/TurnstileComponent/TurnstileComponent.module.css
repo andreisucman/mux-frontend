@@ -1,13 +1,6 @@
 .container {
   position: fixed;
-  inset: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: alpha(
-    light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7)),
-    0.5
-  );
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
