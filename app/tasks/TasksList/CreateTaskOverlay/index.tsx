@@ -19,12 +19,12 @@ export default function CreateTaskOverlay({ customStyles, handleSaveTask }: Prop
   const [showWeeklyButton, setShowWeeklyButton] = useState(false);
   const { userDetails } = useContext(UserContext);
   const { isLoading, onCreateRoutineClick } = useContext(CreateRoutineContext);
-  const { latestProgressImages } = userDetails || {};
+  const { initialProgressImages } = userDetails || {};
 
   const nothingScanned = useMemo(() => {
-    const values = Object.values(latestProgressImages || {});
+    const values = Object.values(initialProgressImages || {});
     return values.filter(Boolean).length === 0;
-  }, [latestProgressImages]);
+  }, [initialProgressImages]);
 
   const handleClick = (cb: () => void) => {
     if (nothingScanned) {

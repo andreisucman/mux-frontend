@@ -213,7 +213,7 @@ export interface UserDataType extends DefaultUserType {
   nextRoutineSuggestion: NextActionType[];
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
-  latestProgressImages: LatestProgressImagesType;
+  initialProgressImages: LatestProgressImagesType;
   latestConcernScores: LatestScoresType;
   latestConcernScoresDifference: LatestScoresDifferenceType;
   deleteOn: Date | null;

@@ -17,11 +17,11 @@ export default function CreateRoutineContextProvider({ children }: { children: R
   const router = useRouter();
   const { userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const { nextRoutine, latestProgressImages } = userDetails || {};
+  const { nextRoutine, initialProgressImages } = userDetails || {};
 
   const onCreateRoutineClick = () => {
     if (!nextRoutine || isLoading) return;
-    const partsScanned = Object.entries(latestProgressImages || {})
+    const partsScanned = Object.entries(initialProgressImages || {})
       .filter(([key, value]) => Boolean(value))
       .map(([key, _]) => key);
     if (partsScanned.length > 1) {

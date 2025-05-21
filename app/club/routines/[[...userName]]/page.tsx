@@ -18,12 +18,14 @@ import { clubPageTypeItems } from "@/components/PageHeader/data";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
+import callTheServer from "@/functions/callTheServer";
 import copyRoutine from "@/functions/copyRoutine";
 import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
 import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import registerView from "@/functions/registerView";
 import { getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import ViewsCounter from "../../ViewsCounter";
@@ -259,6 +261,11 @@ export default function ClubRoutines(props: Props) {
       setAvailableConcerns(concerns);
     });
   }, [userName]);
+
+  useEffect(() => {
+    if (!part || !concern || !userName) return;
+    registerView(part, concern, "routines", userName);
+  }, [typeof part, typeof concern, typeof userName]);
 
   const titles = clubPageTypeItems.map((item) => ({
     label: item.label,

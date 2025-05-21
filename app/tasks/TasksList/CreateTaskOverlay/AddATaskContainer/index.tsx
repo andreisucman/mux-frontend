@@ -50,12 +50,12 @@ export default function AddATaskContainer({ handleSaveTask }: Props) {
     return dates;
   }, [date, frequency]);
 
-  const { latestProgressImages, concerns } = userDetails || {};
+  const { initialProgressImages, concerns } = userDetails || {};
 
   const partsScanned = useMemo(() => {
-    const entries = Object.entries(latestProgressImages || {}).filter((gr) => Boolean(gr[1]));
+    const entries = Object.entries(initialProgressImages || {}).filter((gr) => Boolean(gr[1]));
     return entries.map((gr) => gr[0]);
-  }, [latestProgressImages]);
+  }, [initialProgressImages]);
 
   const handleCreateTask = async () => {
     if (isLoading) return;

@@ -46,7 +46,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   const [showBlur, setShowBlur] = useState(false);
   const [blurDots, setBlurDots] = useState<BlurDotType[]>([]);
 
-  const { _id: userId, toAnalyze, latestProgressImages } = userDetails || {};
+  const { _id: userId, toAnalyze, initialProgressImages } = userDetails || {};
 
   const distinctUploadedParts = [
     ...new Set(toAnalyze?.map((obj) => obj.part).filter(Boolean)),
@@ -61,10 +61,12 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     return toAnalyze.map((obj) => obj.mainUrl.url);
   }, [toAnalyze]);
 
-  const imagesMissingUpdates = useMemo(() => {
-    if (!latestProgressImages || !latestProgressImages[part]) return [];
+  const initialPartProgressImages = (initialProgressImages && initialProgressImages[part]) || [];
 
-    const partProgressImage = latestProgressImages[part];
+  const imagesMissingUpdates = useMemo(() => {
+    if (!initialProgressImages || !initialProgressImages[part]) return [];
+
+    const partProgressImage = initialProgressImages[part];
 
     if (!partProgressImage) return [];
 
@@ -75,7 +77,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
 
     return images.filter((url) => uploadedUrls.includes(url));
-  }, [toAnalyze, latestProgressImages?.[part]]);
+  }, [toAnalyze, initialProgressImages?.[part]]);
 
   const handleToggleBlur = () => {
     setShowBlur((prev: boolean) => {
@@ -170,10 +172,18 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
   }, [part, localUrl, offsets, blurDots, somethingUploaded, toAnalyze]);
 
   const handleStartAnalysis = useCallback(async () => {
-    if (!userId || !somethingUploaded || isButtonLoading) return;
+    if (!toAnalyze || !userId || !somethingUploaded || isButtonLoading) return;
     setIsButtonLoading(true);
 
     try {
+      const differenceInImages = toAnalyze.length - initialPartProgressImages.length;
+
+      if (differenceInImages) {
+        openErrorModal({
+          description: `Take ${differenceInImages} more image(s) to match the initial image count.`,
+        });
+        return;
+      }
       const savedSelectedConcerns: { value: string; label: string; part: string }[] | null =
         getFromLocalStorage("selectedConcerns");
 
@@ -207,7 +217,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     } catch (err) {
       setIsButtonLoading(false);
     }
-  }, [userId, isLoading, pathname, somethingUploaded]);
+  }, [userId, toAnalyze, initialPartProgressImages, isLoading, isButtonLoading, somethingUploaded]);
 
   useEffect(() => {
     const lastObject = toAnalyze?.[toAnalyze.length - 1];
@@ -220,6 +230,11 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     }
   }, [toAnalyze && toAnalyze.length]);
 
+  useEffect(() => {
+    if (imagesMissingUpdates.length === 0) return;
+    setOverlayImage(imagesMissingUpdates[0]);
+  }, [imagesMissingUpdates]);
+
   return (
     <SkeletonWrapper show={displayComponent === "loading"}>
       <Stack className={classes.container}>
@@ -229,6 +244,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
             onClick={handleSetPreviousImage}
             handleRemove={handleRemoveToAnalyze}
             handleAddMore={handleAddMore}
+            maxLength={initialPartProgressImages.length}
           />
         )}
         <Stack className={classes.imageCell}>

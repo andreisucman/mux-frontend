@@ -17,6 +17,7 @@ import { progressSortItems } from "@/data/sortItems";
 import fetchProgress, { FetchProgressProps } from "@/functions/fetchProgress";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import registerView from "@/functions/registerView";
 import openResultModal from "@/helpers/openResultModal";
 import { normalizeString } from "@/helpers/utils";
 import SelectPartOrConcern from "../../routines/[[...userName]]/SelectPartOrConcern";
@@ -106,6 +107,11 @@ export default function ClubProgress(props: Props) {
       setAvailableConcerns(concerns);
     });
   }, [userName]);
+
+  useEffect(() => {
+    if (!part || !concern || !userName) return;
+    registerView(part, concern, "progress", userName);
+  }, [typeof part, typeof concern, typeof userName]);
 
   const titles = clubPageTypeItems.map((item) => ({
     label: item.label,

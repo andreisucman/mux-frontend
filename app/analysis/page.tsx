@@ -42,16 +42,16 @@ export default function Analysis() {
     _id: userId,
     latestConcernScores,
     latestConcernScoresDifference,
-    latestProgressImages,
+    initialProgressImages,
   } = userDetails || {};
 
   const checkPresence = useMemo(() => {
     const partConcerns = latestConcernScores?.[part as "face"];
     const noConcerns = (partConcerns || []).filter((item) => item.value > 0).length === 0;
-    const noAnalysis = !latestProgressImages?.[part];
+    const noAnalysis = !initialProgressImages?.[part];
 
     return { noConcerns, noAnalysis };
-  }, [latestConcernScores, latestProgressImages, part]);
+  }, [latestConcernScores, initialProgressImages, part]);
 
   const { noConcerns, noAnalysis } = checkPresence;
 

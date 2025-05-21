@@ -18,6 +18,7 @@ import { diarySortItems } from "@/data/sortItems";
 import fetchDiaryRecords from "@/functions/fetchDiaryRecords";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import registerView from "@/functions/registerView";
 import SelectPartOrConcern from "../../routines/[[...userName]]/SelectPartOrConcern";
 import ViewsCounter from "../../ViewsCounter";
 import classes from "./diary.module.css";
@@ -96,6 +97,11 @@ export default function DiaryPage(props: Props) {
       setAvailableConcerns(concern);
     });
   }, [userName]);
+
+  useEffect(() => {
+    if (!part || !concern || !userName) return;
+    registerView(part, concern, "diary", userName);
+  }, [typeof part, typeof concern, typeof userName]);
 
   const noPartOrConcern = !part || !concern;
 

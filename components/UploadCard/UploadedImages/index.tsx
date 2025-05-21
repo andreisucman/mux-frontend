@@ -9,8 +9,17 @@ type Props = {
   onClick: (imageUrl: string) => void;
   handleRemove: (imageUrl: string) => void;
   handleAddMore: () => void;
+  maxLength: number;
 };
-export default function UploadedImages({ images, onClick, handleRemove, handleAddMore }: Props) {
+export default function UploadedImages({
+  images,
+  maxLength,
+  onClick,
+  handleRemove,
+  handleAddMore,
+}: Props) {
+  const showAdd = images.length < 3 && images.length < maxLength;
+
   return (
     <Group className={cn("scrollbar", classes.container)}>
       {images.map((image) => (
@@ -27,7 +36,7 @@ export default function UploadedImages({ images, onClick, handleRemove, handleAd
           />
         </Stack>
       ))}
-      {images.length < 3 && (
+      {showAdd && (
         <div className={classes.addButton} onClick={handleAddMore}>
           <IconPlus size={24} />
         </div>

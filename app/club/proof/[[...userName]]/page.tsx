@@ -17,6 +17,7 @@ import { FetchProofProps } from "@/functions/fetchProof";
 import fetchUsersProof from "@/functions/fetchUsersProof";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
+import registerView from "@/functions/registerView";
 import SelectPartOrConcern from "../../routines/[[...userName]]/SelectPartOrConcern";
 import ViewsCounter from "../../ViewsCounter";
 import classes from "./proof.module.css";
@@ -92,6 +93,11 @@ export default function ClubProof(props: Props) {
   useEffect(() => {
     handleFetchProof({ userName, sort, part, concern, query });
   }, [userName, part, concern, sort, concern, query]);
+
+  useEffect(() => {
+    if (!part || !concern || !userName) return;
+    registerView(part, concern, "proof", userName);
+  }, [typeof part, typeof concern, typeof userName]);
 
   const noPartOrConcern = !part || !concern;
 

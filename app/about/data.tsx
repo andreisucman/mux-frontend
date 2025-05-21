@@ -21,10 +21,10 @@ export const data = [
         </Text>
         <Text>
           After you get your feedback you create a routine for improving your concerns. You can
-          either create your routine yourself from scratch by adding individual tasks or use our
-          free routine suggestion service that will suggest you a routine based on your analysis.
+          either create a routine you already know or use our free routine suggestion service that
+          will suggest you a routine based on your appearance analysis.
         </Text>
-        <Text>After you have your routine you can start completing the tasks in it.</Text>
+        <Text>After you have created your routine you can start completing its tasks.</Text>
         <Text>
           When you complete a task you can upload a video or image as proof. Uploading proofs is not
           required, but is important, especially if you plan to monetize your routines.
@@ -34,15 +34,18 @@ export const data = [
           your scans are privately stored on your results page.
         </Text>
         <Text>
-          After you make visible progress you may choose to sell your routines to help others
+          After you make visible progress you may choose to publish your routines to help others
           achieve a similar transformation. When you do that your before-after images will appear on
           the home page.
         </Text>
         <Text>
-          In addition to selling your routines, you can earn rewards for consistently working on
-          improving your appearance.
+          After you publish your routine you can enable monetization. With monetization enabled you
+          will be earning cash each time somebody views your routine, diary, progress or proofs.
         </Text>
-        <Text>Visit the rewards page for more information.</Text>
+        <Text>
+          In addition, you can also earn rewards for consistently working on improving your
+          appearance. Visit the rewards page for more information.
+        </Text>
       </Stack>
     ),
   },
@@ -61,13 +64,10 @@ export const data = [
         <Text>You can earn on Muxout in 2 ways.</Text>
         <Text>
           1. You can create effective routines and complete their tasks to improve your appearance.
-          You can then list your routines for sale to help other people have a similar
-          transformation.
+          You can then publish your routines and enable monetization to help other people have a
+          similar transformation.
         </Text>
-        <Text>
-          2. You can complete your tasks to get achievements. When you have the necessary
-          achievements you can claim rewards on the Rewards page.
-        </Text>
+        <Text>2. You can complete the tasks listed on the rewards page.</Text>
       </Stack>
     ),
   },
@@ -77,7 +77,8 @@ export const data = [
       <Stack>
         <Text>
           You can use Muxout as a native app. To install the app open the menu of your browser and
-          click the 'Add to home screen' or 'Install app' button.
+          click the 'Add to home screen' or 'Install app' button. We recommend doing this using
+          Google Chrome.
         </Text>
       </Stack>
     ),
@@ -88,29 +89,31 @@ export const data = [
       <Stack>
         <Text>None of your images is listed automatically when you start using Muxout.</Text>
         <Text>
-          To display your before-afters on the home page you will have to join the Club and list
-          your routines for sale. Only accounts that explicitly listed their routines for sale are
-          publicly displayed on the home page.
+          To display your before-afters on the home page you will have to join the Club and publish
+          your routins. Only accounts that explicitly published their routines are publicly
+          displayed on the home page.
         </Text>
       </Stack>
     ),
   },
   {
-    question: "How can I publish my routines for sale?",
+    question: "How can I monetize my routines?",
     answer: (
       <Stack>
         <Text>
-          To be able to publish your routines for sale you have to join the Club. The Club is a free
-          opt-in service that lets you buy or sell routines.
+          To be able to publish your routines you have to join the Club. The Club is a free opt-in
+          service that lets you share your progress and routines with others.
         </Text>
         <Text>
-          Next, you have to have at least one set of before-after images taken via our platform with
-          some improvement on the after image. This means that you&apos;ll have to follow your
-          routine for at least one week and it will have to be effectve before you can sell it.
+          After joining the Club click "Publish routines" and then the "Publish" button at the
+          relevant routine row. After publishing your routine you can also enable monetization by
+          clicking the "Monetize" button.
         </Text>
         <Text>
-          Lastly, you will have to add at least one diary record for each routine you have. This
-          means that you should be adding a feedback note into your diary every week.
+          To enable monetization you have to have at least 1 set of before-after images with some
+          improvement between them. This means that you&apos;ll have to follow your routine for at
+          least one week and it will have to be at least somewhat effective before you can monetize
+          it.
         </Text>
       </Stack>
     ),
@@ -120,16 +123,12 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          To be able to withdraw your rewards you have to join the Club. Joining the Club is free
-          and it doesn&apos;t make your data public (unless you publish your routines for sale).
+          Withdraws are processed automatically every day subject to your country's minimum payout
+          amount. It might take up to 7 days for your reward to arrive to your bank account.
         </Text>
         <Text>
-          During the onboarding you provide your name, date of birth and your bank account number
-          (or IBAN).
-        </Text>
-        <Text>
-          After your information is verified your earnings will be automatically sent to your bank
-          account after the processing period of 7 days.
+          Muxout supports payouts to debit cards and bank accounts including Wise, Payoneer and
+          others. Paypal is not supported.
         </Text>
       </Stack>
     ),
@@ -157,13 +156,10 @@ export const data = [
     answer: (
       <Stack>
         <Text>
-          Muxout is available globally. However, our payment processing partners may have their own
-          restrictions with respect to jurisdictions. Therefore, if your country is not supported by
-          our payment processor you won&apos;t be able to earn or withdraw your rewards.
-        </Text>
-        <Text>
-          You will see if your country is not supported when you add your bank account on your Club
-          profile page.
+          Muxout is available globally. However, at the moment monetization is available from the
+          users with the bank accounts in United States, Canada, United Kingdom and Australia. If
+          you live in another country you can use Wise, Payoneer or similar services to open a
+          virtual USD bank account for receiving your payouts.
         </Text>
       </Stack>
     ),
