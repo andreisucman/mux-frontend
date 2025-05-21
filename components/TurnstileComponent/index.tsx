@@ -15,6 +15,8 @@ export default function TurnstileComponent() {
           siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
           sandbox={process.env.NODE_ENV === "development"}
           onVerify={() => setShowComponent(false)}
+          onError={() => setShowComponent(false)}
+          retry="never"
           appearance="interaction-only"
           theme="auto"
         />

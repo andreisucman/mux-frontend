@@ -88,7 +88,6 @@ export default function UploadProof(props: Props) {
         body: {
           taskId,
           url: urlArray[0],
-          blurType: BlurTypeEnum.ORIGINAL,
         },
       });
 
