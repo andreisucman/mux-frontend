@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import NextImage from "next/image";
 import { Image, Stack, Text } from "@mantine/core";
 import ContentPublicityIndicator from "@/components/ContentPublicityIndicator";

@@ -1,7 +1,7 @@
 import {
-  IconCancel,
   IconCheckbox,
   IconClock,
+  IconForbid,
   IconMan,
   IconMoodNeutral,
   IconNotebook,
@@ -27,7 +27,7 @@ export const pageTypeIcons: { [key: string]: React.ReactNode } = {
 export const statusIcons = {
   completed: <IconCheckbox size={20} style={{ display: "flex" }} />,
   expired: <IconClock size={20} style={{ display: "flex" }} />,
-  canceled: <IconCancel size={20} style={{ display: "flex" }} />,
+  canceled: <IconForbid size={20} style={{ display: "flex" }} />,
 };
 
 const getPartIcon = (key: string, size: number) => {

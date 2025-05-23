@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: center;
+  margin-bottom: rem(8);
+}
+
+.wrapper {
+  width: 100%;
+  max-width: rem(600);
+}
+
+.textInput {
+  flex: 1;
+}

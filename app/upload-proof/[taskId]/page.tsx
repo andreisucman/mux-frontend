@@ -8,7 +8,6 @@ import SkeletonWrapper from "@/app/SkeletonWrapper";
 import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import WaitComponent from "@/components/WaitComponent";
-import { BlurTypeEnum } from "@/context/BlurChoicesContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
@@ -57,21 +56,18 @@ export default function UploadProof(props: Props) {
   const taskExpired = new Date(expiresAt || 0) < new Date();
   const taskNotStarted = new Date(startsAt || 0) > new Date();
 
-  const fetchProofInfo = useCallback(
-    async (taskId: string | null) => {
-      if (!taskId) return;
+  const fetchProofInfo = useCallback(async (taskId: string | null) => {
+    if (!taskId) return;
 
-      const response = await callTheServer({
-        endpoint: `getProofRecord/${taskId}`,
-        method: "GET",
-      });
+    const response = await callTheServer({
+      endpoint: `getProofRecord/${taskId}`,
+      method: "GET",
+    });
 
-      if (response.status === 200) {
-        setExistingProofRecord(response.message);
-      }
-    },
-    [taskId]
-  );
+    if (response.status === 200) {
+      setExistingProofRecord(response.message);
+    }
+  }, []);
 
   const uploadProof = async ({ taskId, recordedBlob }: HandleUploadProps) => {
     if (!taskId || !recordedBlob) return;
@@ -167,15 +163,13 @@ export default function UploadProof(props: Props) {
       if (isSetTaskExampleLoading || !taskInfo) return;
       setIsSetTaskExampleLoading(true);
 
-      const response = await callTheServer({
+      await callTheServer({
         endpoint: "updateTaskExamples",
         method: "POST",
         body: { taskId: taskInfo?._id, examples },
       });
 
-      if (response.status === 200) {
-        setIsSetTaskExampleLoading(false);
-      }
+      setIsSetTaskExampleLoading(false);
     },
     [taskInfo, isSetTaskExampleLoading]
   );
@@ -262,7 +256,6 @@ export default function UploadProof(props: Props) {
                 description="Checking your upload"
                 onComplete={() => {
                   handleCompleteUpload(taskId);
-                  setDisplayComponent("loading");
                   setIsAnalysisGoing(false);
                 }}
                 hideDisclaimer

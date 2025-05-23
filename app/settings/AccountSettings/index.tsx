@@ -169,6 +169,7 @@ export default function AccountSettings() {
               />
             }
             p="0.5rem 1rem"
+            color="light-dark(var(--mantine-color-dark-4),var(--mantine-color-gray-2))"
             styles={{ icon: { marginRight: rem(4) } }}
           >
             Your account is {isPublic ? "public" : "private"}

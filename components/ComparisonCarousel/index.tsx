@@ -69,7 +69,7 @@ export default function ComparisonCarousel({ data }: Props) {
       <Carousel.Slide key={index} onClick={handleClickCarousel} className={classes.slide}>
         <div className={cn(classes.imageWrapper, { [classes.marginLeft]: index % 2 === 0 })}>
           <Image
-            src={object.image}
+            src={object.image || "/"}
             alt=""
             height={568}
             width={320}

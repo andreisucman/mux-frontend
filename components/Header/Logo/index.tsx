@@ -1,40 +1,19 @@
-"use client";
-
-import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import cn from "classnames";
-import logoDarkSrc from "@/public/logo-dark.svg";
-import logoLightSrc from "@/public/logo-light.svg";
 import classes from "./Logo.module.css";
 
-type Props = {
-  customStyles?: {
-    [key: string]: unknown;
-  };
-};
-
-function Logo({ customStyles }: Props) {
+export default function Logo(props: React.ComponentProps<"img">) {
   return (
-    <Link href={"/"} className={classes.container} style={customStyles ? customStyles : {}}>
+    <picture>
+      <source srcSet="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
       <Image
-        src={logoDarkSrc}
-        width={190}
-        height={32}
+        src="/logo-light.svg"
+        width={190 as any}
+        height={32 as any}
         alt="Muxout logo"
-        className={cn(classes.logo, classes.dark)}
-        priority={true}
+        className={classes.logo}
+        priority
+        {...props}
       />
-      <Image
-        src={logoLightSrc}
-        width={190}
-        height={32}
-        alt="Muxout logo"
-        className={cn(classes.logo, classes.light)}
-        priority={true}
-      />
-    </Link>
+    </picture>
   );
 }
-
-export default Logo;

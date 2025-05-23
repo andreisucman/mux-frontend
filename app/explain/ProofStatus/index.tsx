@@ -104,16 +104,15 @@ function ProofStatus({ expiresAt, selectedTask, notStarted, updateTaskStatus }: 
 
   return (
     <Group className={classes.container}>
-      <RingProgress
-        size={40}
-        thickness={status === TaskStatusEnum.COMPLETED ? 5 : 6}
-        label={ringLabel}
-        classNames={{ label: classes.ringLabel }}
-        sections={sections}
-        rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
-      />
-
       <Group className={classes.nameGroup}>
+        <RingProgress
+          size={40}
+          thickness={status === TaskStatusEnum.COMPLETED ? 5 : 6}
+          label={ringLabel}
+          classNames={{ label: classes.ringLabel }}
+          sections={sections}
+          rootColor={"light-dark(var(--mantine-color-gray-4),var(--mantine-color-dark-4))"}
+        />
         <Text lineClamp={1}>{upperFirst(name || "")}</Text>
       </Group>
       <Button

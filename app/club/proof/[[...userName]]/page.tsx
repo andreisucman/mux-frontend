@@ -80,8 +80,8 @@ export default function ClubProof(props: Props) {
   useEffect(() => {
     if (!userName) return;
     getFilters({
+      userName,
       collection: "proof",
-      filter: [`userName=${userName}`],
       fields: ["part", "concern"],
     }).then((result) => {
       const { part, concern } = result;

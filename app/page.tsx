@@ -1,19 +1,17 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import ComparisonCarousel from "@/components/ComparisonCarousel";
-import { ExistingFiltersType } from "@/components/FilterCardContent/FilterCardContent";
+import ConcernSearchComponent from "@/components/ConcernSearchComponent";
 import MasonryComponent from "@/components/MasonryComponent";
 import OverlayWithText from "@/components/OverlayWithText";
-import PageHeader from "@/components/PageHeader";
 import callTheServer from "@/functions/callTheServer";
-import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import { BeforeAfterType } from "./types";
 import classes from "./page.module.css";
 
@@ -22,18 +20,11 @@ type FetchBeforeAftersProps = {
   existingCount?: number;
 };
 
-const collectionMap: { [key: string]: string } = {
-  "/": "progress",
-  "/proof": "proof",
-};
-
 export default function BeforeAftersPage() {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();
   const [beforeAfters, setBeforeAfters] = useState<BeforeAfterType[]>();
   const [hasMore, setHasMore] = useState(false);
-  const [filters, setFilters] = useState<ExistingFiltersType>();
 
   const part = searchParams.get("part");
   const sex = searchParams.get("sex");
@@ -41,44 +32,49 @@ export default function BeforeAftersPage() {
   const ethnicity = searchParams.get("ethnicity");
   const bodyType = searchParams.get("bodyType");
   const concern = searchParams.get("concern");
+  const query = searchParams.get("query");
 
   const fetchBeforeAfters = useCallback(
     async (props?: FetchBeforeAftersProps) => {
       const { skip, existingCount } = props || {};
 
       let finalEndpoint = "getBeforeAfters";
-      const queryParams = [];
+      const urlSearchParams = new URLSearchParams();
+
+      if (query) {
+        urlSearchParams.set("query", query);
+      }
 
       if (skip && existingCount && existingCount > 0) {
-        queryParams.push(`skip=${existingCount}`);
+        urlSearchParams.set("skip", String(existingCount));
       }
 
       if (bodyType) {
-        queryParams.push(`bodyType=${bodyType}`);
+        urlSearchParams.set("bodyType", bodyType);
       }
 
       if (part) {
-        queryParams.push(`part=${part}`);
+        urlSearchParams.set("part", part);
       }
 
       if (sex) {
-        queryParams.push(`sex=${sex}`);
+        urlSearchParams.set("sex", sex);
       }
 
       if (ageInterval) {
-        queryParams.push(`ageInterval=${ageInterval}`);
+        urlSearchParams.set("ageInterval", ageInterval);
       }
 
       if (ethnicity) {
-        queryParams.push(`ethnicity=${ethnicity}`);
+        urlSearchParams.set("ethnicity", ethnicity);
       }
 
       if (concern) {
-        queryParams.push(`concern=${concern}`);
+        urlSearchParams.set("concern", concern);
       }
 
-      if (queryParams.length > 0) {
-        finalEndpoint += `?${queryParams.join("&")}`;
+      if (urlSearchParams.toString()) {
+        finalEndpoint += `?${urlSearchParams.toString()}`;
       }
 
       const response = await callTheServer({
@@ -103,87 +99,55 @@ export default function BeforeAftersPage() {
     [searchParams.toString(), width]
   );
 
-  const getExistingFilters = useCallback(async (pathname: string) => {
-    const response = await callTheServer({
-      endpoint: `getExistingFilters/${collectionMap[pathname]}`,
-      method: "GET",
-    });
-
-    if (response.status === 200) {
-      setFilters(response.message);
-    }
-  }, []);
-
-  const noFilters = useMemo(() => {
-    const { concerns, ...rest } = filters || {};
-    return (
-      Object.values(rest)
-        .flat()
-        .filter((arr) => arr?.length).length === 0
-    );
-  }, [filters]);
-
-  useEffect(() => {
-    getExistingFilters(pathname);
-  }, []);
-
   useEffect(() => {
     fetchBeforeAfters();
-  }, [part, sex, ageInterval, ethnicity, bodyType, concern]);
+  }, [part, sex, query, ageInterval, ethnicity, bodyType, concern]);
 
   return (
-    <Stack className={cn(classes.container, "mediumPage")} ref={ref}>
-      <PageHeader
-        title="Results"
-        filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType", "concern"]}
-        disableFilter={noFilters}
-        onFilterClick={() =>
-          openFiltersCard({
-            cardName: FilterCardNamesEnum.FilterCardContent,
-            childrenProps: { filters },
-          })
-        }
-        hideReturn
-        center
-      />
-      {beforeAfters ? (
-        <>
-          {beforeAfters.length > 0 ? (
-            <InfiniteScroll
-              loader={
-                <Stack mb={rem(16)} key={0}>
-                  <Loader
-                    m="auto"
-                    color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
-                  />
-                </Stack>
-              }
-              loadMore={() =>
-                fetchBeforeAfters({ skip: hasMore, existingCount: beforeAfters.length })
-              }
-              useWindow={true}
-              hasMore={hasMore}
-              pageStart={0}
-            >
-              <MasonryComponent
-                maxColumnCount={1}
-                columnGutter={16}
-                columnWidth={300}
-                render={memoizedComparisonCarousel}
-                items={beforeAfters}
-              />
-            </InfiniteScroll>
-          ) : (
-            <OverlayWithText text="Nothing found" icon={<IconCircleOff size={20} />} />
-          )}
-        </>
-      ) : (
-        <Loader
-          m="0 auto"
-          pt="20%"
-          color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+    <>
+      <Stack className={cn(classes.container, "mediumPage")} ref={ref}>
+        <ConcernSearchComponent
+          filterNames={["part", "sex", "ageInterval", "ethnicity", "bodyType", "concern"]}
         />
-      )}
-    </Stack>
+        {beforeAfters ? (
+          <>
+            {beforeAfters.length > 0 ? (
+              <InfiniteScroll
+                loader={
+                  <Stack mb={rem(16)} key={0}>
+                    <Loader
+                      m="auto"
+                      color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+                    />
+                  </Stack>
+                }
+                loadMore={() =>
+                  fetchBeforeAfters({ skip: hasMore, existingCount: beforeAfters.length })
+                }
+                useWindow={true}
+                hasMore={hasMore}
+                pageStart={0}
+              >
+                <MasonryComponent
+                  maxColumnCount={1}
+                  columnGutter={16}
+                  columnWidth={300}
+                  render={memoizedComparisonCarousel}
+                  items={beforeAfters}
+                />
+              </InfiniteScroll>
+            ) : (
+              <OverlayWithText text="Nothing found" icon={<IconCircleOff size={20} />} />
+            )}
+          </>
+        ) : (
+          <Loader
+            m="0 auto"
+            pt="20%"
+            color="light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4))"
+          />
+        )}
+      </Stack>
+    </>
   );
 }

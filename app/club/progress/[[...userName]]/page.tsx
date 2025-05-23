@@ -98,8 +98,8 @@ export default function ClubProgress(props: Props) {
   useEffect(() => {
     if (!userName) return;
     getFilters({
+      userName, 
       collection: "progress",
-      filter: [`userName=${userName}`],
       fields: ["part", "concerns"],
     }).then((result) => {
       const { part, concerns } = result;

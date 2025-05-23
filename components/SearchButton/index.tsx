@@ -70,14 +70,16 @@ export default function SearchButton({
 
       if (userName) finalEndpoint += `/${userName}`;
 
-      const parts = [`collection=${collection}`];
+      const urlSearchParams = new URLSearchParams();
+      urlSearchParams.set("collection", collection);
 
       if (query) {
-        parts.push(`query=${query}`);
+        urlSearchParams.set("query", query);
       }
 
-      if (parts.length > 0) {
-        const queryString = parts.join("&");
+      const queryString = urlSearchParams.toString();
+
+      if (queryString) {
         finalEndpoint += `?${queryString}`;
       }
 

@@ -18,7 +18,6 @@ import { clubPageTypeItems } from "@/components/PageHeader/data";
 import { ClubContext } from "@/context/ClubDataContext";
 import { UserContext } from "@/context/UserContext";
 import { routineSortItems } from "@/data/sortItems";
-import callTheServer from "@/functions/callTheServer";
 import copyRoutine from "@/functions/copyRoutine";
 import copyTask from "@/functions/copyTask";
 import copyTaskInstance from "@/functions/copyTaskInstance";
@@ -252,8 +251,8 @@ export default function ClubRoutines(props: Props) {
   useEffect(() => {
     if (!userName) return;
     getFilters({
+      userName,
       collection: "routine",
-      filter: [`userName=${userName}`],
       fields: ["part", "concerns"],
     }).then((result) => {
       const { part, concerns } = result;

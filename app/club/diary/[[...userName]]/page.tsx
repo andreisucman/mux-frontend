@@ -88,8 +88,8 @@ export default function DiaryPage(props: Props) {
   useEffect(() => {
     if (!userName) return;
     getFilters({
+      userName,
       collection: "diary",
-      filter: [`userName=${userName}`],
       fields: ["part", "concern"],
     }).then((result) => {
       const { part, concern } = result;
