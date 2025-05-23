@@ -32,7 +32,7 @@
     "@next/third-parties": "15.0.3",
     "@stripe/connect-js": "^3.3.23",
     "@stripe/react-connect-js": "3.3.22",
-    "@tabler/icons-react": "3.6.0",
+    "@tabler/icons-react": "^3.33.0",
     "classnames": "2.5.1",
     "clientjs": "0.2.1",
     "embla-carousel-react": "7.1.0",
