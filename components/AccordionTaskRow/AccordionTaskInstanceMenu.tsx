@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import {
   IconBolt,
   IconCalendarClock,
-  IconCancel,
   IconCopy,
   IconDots,
+  IconForbid,
   IconInfoCircle,
   IconTrash,
 } from "@tabler/icons-react";
@@ -78,7 +78,7 @@ export default function AccordionTaskInstanceMenu({
               <>
                 {taskStatus === TaskStatusEnum.ACTIVE && (
                   <Menu.Item onClick={() => updateTaskInstance(taskId, TaskStatusEnum.CANCELED)}>
-                    <IconCancel size={16} style={{ marginRight: rem(6) }} />
+                    <IconForbid size={16} style={{ marginRight: rem(6) }} />
                     Cancel
                   </Menu.Item>
                 )}

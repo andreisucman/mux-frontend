@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IconCancel, IconClock, IconZzz } from "@tabler/icons-react";
+import { IconClock, IconForbid, IconZzz } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Group, Loader, Stack } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
@@ -238,7 +238,7 @@ export default function Calendar() {
   const emptyIcon = useMemo(
     () =>
       selectedStatus === TaskStatusEnum.CANCELED ? (
-        <IconCancel size={20} />
+        <IconForbid size={20} />
       ) : selectedStatus === TaskStatusEnum.EXPIRED ? (
         <IconClock size={20} />
       ) : (

@@ -3,9 +3,9 @@ import {
   IconBolt,
   IconCalendar,
   IconCalendarClock,
-  IconCancel,
   IconCopy,
   IconDots,
+  IconForbid,
   IconNotebook,
   IconTrash,
 } from "@tabler/icons-react";
@@ -89,7 +89,7 @@ export default function AccordionRowMenu({
             )}
             {routineStatus === RoutineStatusEnum.ACTIVE && updateRoutine && (
               <Menu.Item onClick={() => updateRoutine(routineId, RoutineStatusEnum.CANCELED)}>
-                <IconCancel size={16} style={{ marginRight: rem(6) }} />
+                <IconForbid size={16} style={{ marginRight: rem(6) }} />
                 Cancel
               </Menu.Item>
             )}

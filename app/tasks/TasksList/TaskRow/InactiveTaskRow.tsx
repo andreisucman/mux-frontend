@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { IconCancel, IconCheck, IconClock } from "@tabler/icons-react";
+import { IconCheck, IconClock, IconForbid } from "@tabler/icons-react";
 import { ActionIcon, Group, rem, Skeleton, Stack, Text } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { InactiveTaskType } from "@/app/tasks/history/type";
@@ -46,7 +46,7 @@ export default function InactiveTaskRow({
         ) : status === TaskStatusEnum.EXPIRED ? (
           <IconClock stroke={3} size={24} />
         ) : (
-          <IconCancel stroke={3} size={24} />
+          <IconForbid stroke={3} size={24} />
         )}
       </ActionIcon>
     );

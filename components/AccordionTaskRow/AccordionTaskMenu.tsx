@@ -2,9 +2,9 @@ import React from "react";
 import {
   IconBolt,
   IconCalendar,
-  IconCancel,
   IconCopy,
   IconDots,
+  IconForbid,
   IconNotebook,
   IconTrash,
 } from "@tabler/icons-react";
@@ -88,7 +88,7 @@ export default function AccordionTaskMenu({
               <>
                 {hasActiveTasks && (
                   <Menu.Item onClick={() => updateTask(taskKey, TaskStatusEnum.CANCELED)}>
-                    <IconCancel size={16} style={{ marginRight: rem(6) }} />
+                    <IconForbid size={16} style={{ marginRight: rem(6) }} />
                     Cancel
                   </Menu.Item>
                 )}
