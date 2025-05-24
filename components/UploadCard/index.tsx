@@ -342,16 +342,6 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
               </div>
             </Draggable>
           )}
-
-          {/* {!showStartAnalysis && isAbsolute && somethingUploaded && (
-            <Button
-              className={classes.openStartAnalysisButton}
-              disabled={isLoading || !localUrl}
-              onClick={() => setShowStartAnalysis(true)}
-            >
-              Analyze
-            </Button>
-          )} */}
         </Stack>
       </Stack>
     </SkeletonWrapper>
