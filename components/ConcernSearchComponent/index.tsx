@@ -151,7 +151,7 @@ export default function ConcernSearchComponent({ filterNames }: Props) {
   return (
     <Stack className={classes.container}>
       <Title ta="center" order={1}>
-        Search proven routines
+        Find proven routines
       </Title>
       <Group className={classes.wrapper}>
         <HoverCard

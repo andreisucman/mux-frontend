@@ -1,26 +1,8 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  IconHandGrab,
-  IconMinus,
-  IconPlus,
-  IconTrash,
-} from "@tabler/icons-react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { IconHandGrab, IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import cn from "classnames";
 import Draggable from "react-draggable";
-import {
-  ActionIcon,
-  AngleSlider,
-  Button,
-  Group,
-  rem,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon, AngleSlider, Button, Group, rem, Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
 import { OffsetType } from "@/app/select-part/types";
 import { BlurDotType } from "../UploadCard/types";
@@ -31,9 +13,7 @@ import classes from "./DraggableImageContainer.module.css";
  * Per-dot refs are stored here so React-Draggable gets a stable nodeRef.
  */
 function useDotRefs() {
-  const map = useRef<Record<string, React.RefObject<HTMLDivElement>>>(
-    {}
-  );
+  const map = useRef<Record<string, React.RefObject<HTMLDivElement>>>({});
   const get = useCallback((id: string) => {
     if (!map.current[id]) map.current[id] = React.createRef();
     return map.current[id];
@@ -46,6 +26,7 @@ type Props = {
   handleDelete?: () => void;
   setOffsets: (offset: OffsetType) => void;
   image?: string | null;
+  showDelete?: boolean;
   showBlur: boolean;
   blurDots: BlurDotType[];
   disableDelete?: boolean;
@@ -57,6 +38,7 @@ type Props = {
 export default function DraggableImageContainer({
   image,
   blurDots,
+  showDelete,
   disableDelete,
   customImageStyles,
   customStyles,
@@ -69,8 +51,7 @@ export default function DraggableImageContainer({
   const getDotRef = useDotRefs();
   const controlPaneRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const { width: containerWidth, height: containerHeight, ref: containerRef } =
-    useElementSize();
+  const { width: containerWidth, height: containerHeight, ref: containerRef } = useElementSize();
   const [selectedDotId, setSelectedDotId] = useState<string>();
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -169,7 +150,7 @@ export default function DraggableImageContainer({
   return (
     <Stack className={classes.container} ref={containerRef} style={customStyles}>
       {/* delete button */}
-      {handleDelete && image && (
+      {showDelete && handleDelete && image && (
         <ActionIcon
           className={classes.deleteIcon}
           disabled={disableDelete}

@@ -28,7 +28,6 @@ type Props = {
 
 export default function UploadCard({ part, progress, isLoading, handleUpload }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const buttonsRef = useRef(null);
   const { userDetails, setUserDetails } = useContext(UserContext);
@@ -182,6 +181,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
         openErrorModal({
           description: `Take ${differenceInImages} more image(s) to match the initial image count.`,
         });
+        setIsButtonLoading(false);
         return;
       }
       const savedSelectedConcerns: { value: string; label: string; part: string }[] | null =
@@ -266,7 +266,8 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                 blurDots={blurDots}
                 image={localUrl}
                 disableDelete={isLoading}
-                handleDelete={isAbsolute ? undefined : handleDeleteLocalImage}
+                showDelete={true}
+                handleDelete={handleDeleteLocalImage}
                 setBlurDots={setBlurDots}
                 setOffsets={setOffsets}
               />
