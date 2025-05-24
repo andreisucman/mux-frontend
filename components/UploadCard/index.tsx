@@ -34,7 +34,6 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     "loading"
   );
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  const [showStartAnalysis, setShowStartAnalysis] = useState(false);
   const [localUrl, setLocalUrl] = useState("");
   const [overlayImage, setOverlayImage] = useState("");
   const [offsets, setOffsets] = useState({
@@ -94,13 +93,11 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     if (!toAnalyze) return;
     const latestImage = toAnalyze[toAnalyze.length - 1];
     setLocalUrl(latestImage.mainUrl.url);
-    setShowStartAnalysis(true);
     setDisplayComponent("preview");
   }, [toAnalyze]);
 
   const handleAddMore = () => {
     setLocalUrl("");
-    setShowStartAnalysis(false);
     setDisplayComponent("capture");
   };
 
@@ -130,7 +127,6 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
         } else {
           setLocalUrl("");
           setDisplayComponent("capture");
-          setShowStartAnalysis(false);
         }
       }
     },
@@ -148,8 +144,6 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       setLocalUrl("");
       setDisplayComponent("capture");
     }
-    console.log("show start analysis", !!latestImage.mainUrl.url);
-    setShowStartAnalysis(!!latestImage.mainUrl.url);
   }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
@@ -165,7 +159,6 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       onCompleteCb: (lastToAnalyzeObject: ToAnalyzeType) => {
         if (lastToAnalyzeObject) setLocalUrl(lastToAnalyzeObject.mainUrl.url);
         setDisplayComponent("preview");
-        setShowStartAnalysis(true);
         setShowBlur(false);
       },
     });
@@ -178,11 +171,10 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     try {
       const differenceInImages = toAnalyze.length - initialPartProgressImages.length;
 
-      console.log("toAnalyze", toAnalyze);
-
       if (differenceInImages) {
+        const text = differenceInImages > 0 ? `Remove ${differenceInImages}` : `Take ${differenceInImages} more`;
         openErrorModal({
-          description: `Take ${differenceInImages} more image(s) to match the initial image count.`,
+          description: `${text} image(s) to match the initial image count.`,
         });
         setIsButtonLoading(false);
         return;
@@ -190,7 +182,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       const savedSelectedConcerns: { value: string; label: string; part: string }[] | null =
         getFromLocalStorage("selectedConcerns");
 
-      const body: { [key: string]: any } = { userId };
+      const body: { [key: string]: any } = { userId, part };
 
       if (savedSelectedConcerns)
         body.userUploadedConcerns = savedSelectedConcerns.map((i) => ({
@@ -227,10 +219,8 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     if (lastObject) {
       setLocalUrl(lastObject.mainUrl.url);
       setDisplayComponent("preview");
-      setShowStartAnalysis(true);
     } else {
       setDisplayComponent("capture");
-      setShowStartAnalysis(false);
     }
   }, [toAnalyze && toAnalyze.length]);
 
