@@ -64,11 +64,11 @@
   padding: rem(16) rem(8);
   align-items: center;
   justify-content: center;
-  border-radius: rem(16) 0 rem(16) rem(16) ;
+  border-radius: rem(16) 0 rem(16) rem(16);
 }
 
 .selectedNode {
-  border: rem(1) solid white;
+  border: rem(1) solid light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-4));
 }
 
 .dndIcon {

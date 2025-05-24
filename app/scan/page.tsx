@@ -35,7 +35,6 @@ export default function ScanProgress() {
   const searchParams = useSearchParams();
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [progress, setProgress] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [pageLoaded, setPageLoaded] = useState(false);
 
   const query = searchParams.toString();
@@ -83,6 +82,7 @@ export default function ScanProgress() {
       part,
       blurDots,
       offsets,
+      setDisplayComponent,
       onErrorCb,
       onCompleteCb,
     }: UploadProgressProps) => {
@@ -90,7 +90,7 @@ export default function ScanProgress() {
 
       let intervalId: NodeJS.Timeout;
 
-      setIsLoading(true);
+      setDisplayComponent("loading");
 
       const totalDuration = Math.random() * 25000 + 25000;
       const updateInterval = 1000;
@@ -183,7 +183,7 @@ export default function ScanProgress() {
         } catch (err: any) {
           openErrorModal();
         } finally {
-          setIsLoading(false);
+          setDisplayComponent("preview");
           setProgress(0);
           clearInterval(intervalId);
         }
@@ -226,7 +226,6 @@ export default function ScanProgress() {
           <UploadCard
             part={part as PartEnum}
             progress={progress}
-            isLoading={isLoading}
             handleUpload={handleUpload}
           />
         ) : (

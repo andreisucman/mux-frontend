@@ -72,7 +72,7 @@ export default function DraggableImageContainer({
     return ratio > 1
       ? { height: containerHeight, width: containerHeight / ratio }
       : { width: containerWidth, height: containerWidth * ratio };
-  }, [imageLoaded, containerWidth, containerHeight]);
+  }, [imageLoaded]);
 
   /* ---------------------------- offset helper ----------------------------- */
   const calculateOffsets = useCallback((): OffsetType => {

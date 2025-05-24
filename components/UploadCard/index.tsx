@@ -2,7 +2,7 @@
 
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IconHandGrab } from "@tabler/icons-react";
 import Draggable from "react-draggable";
 import { ActionIcon, Button, Checkbox, Group, Progress, Stack, Text } from "@mantine/core";
@@ -22,11 +22,10 @@ import classes from "./UploadCard.module.css";
 type Props = {
   part: PartEnum;
   progress: number;
-  isLoading?: boolean;
   handleUpload: (args: UploadProgressProps) => void;
 };
 
-export default function UploadCard({ part, progress, isLoading, handleUpload }: Props) {
+export default function UploadCard({ part, progress, handleUpload }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const buttonsRef = useRef(null);
@@ -149,6 +148,8 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
       setLocalUrl("");
       setDisplayComponent("capture");
     }
+    console.log("show start analysis", !!latestImage.mainUrl.url);
+    setShowStartAnalysis(!!latestImage.mainUrl.url);
   }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
@@ -159,6 +160,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
       beforeImageUrl: finalOverlayImage,
       blurDots,
       offsets,
+      setDisplayComponent,
       onErrorCb: handleDeleteLocalImage,
       onCompleteCb: (lastToAnalyzeObject: ToAnalyzeType) => {
         if (lastToAnalyzeObject) setLocalUrl(lastToAnalyzeObject.mainUrl.url);
@@ -175,6 +177,8 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
 
     try {
       const differenceInImages = toAnalyze.length - initialPartProgressImages.length;
+
+      console.log("toAnalyze", toAnalyze);
 
       if (differenceInImages) {
         openErrorModal({
@@ -216,7 +220,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
     } catch (err) {
       setIsButtonLoading(false);
     }
-  }, [userId, toAnalyze, initialPartProgressImages, isLoading, isButtonLoading, somethingUploaded]);
+  }, [userId, toAnalyze, initialPartProgressImages, isButtonLoading, somethingUploaded]);
 
   useEffect(() => {
     const lastObject = toAnalyze?.[toAnalyze.length - 1];
@@ -226,6 +230,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
       setShowStartAnalysis(true);
     } else {
       setDisplayComponent("capture");
+      setShowStartAnalysis(false);
     }
   }, [toAnalyze && toAnalyze.length]);
 
@@ -252,7 +257,6 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
               {!isAbsolute && (
                 <Group className={classes.checkboxWrapper}>
                   <Checkbox
-                    disabled={isLoading}
                     className={classes.checkbox}
                     checked={showBlur}
                     onChange={handleToggleBlur}
@@ -264,7 +268,6 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
                 showBlur={showBlur}
                 blurDots={blurDots}
                 image={localUrl}
-                disableDelete={isLoading}
                 showDelete={true}
                 handleDelete={handleDeleteLocalImage}
                 setBlurDots={setBlurDots}
@@ -303,7 +306,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
               />
             </>
           )}
-          {isLoading && (
+          {displayComponent === "loading" && (
             <Stack className={classes.progressCell}>
               <Progress value={progress} w="100%" size={12} mt={4} />
               <Text size="sm" ta="center">
@@ -311,24 +314,19 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
               </Text>
             </Stack>
           )}
-          {!isLoading && localUrl && (
+          {displayComponent === "preview" && (
             <Draggable defaultClassName={classes.dragger} cancel=".no-drag" nodeRef={buttonsRef}>
               <div className={classes.buttons} ref={buttonsRef}>
                 <ActionIcon variant="default" className={classes.dndIcon}>
                   <IconHandGrab size={16} />
                 </ActionIcon>
                 {!isAbsolute && (
-                  <Button
-                    className="no-drag"
-                    loading={isLoading}
-                    disabled={isLoading || !localUrl}
-                    onClick={handleClickUpload}
-                  >
+                  <Button className="no-drag" disabled={!localUrl} onClick={handleClickUpload}>
                     Upload
                   </Button>
                 )}
                 <>
-                  {showStartAnalysis && isAbsolute && (
+                  {isAbsolute && (
                     <Stack className={classes.nextButtons}>
                       <Button
                         disabled={isButtonLoading || !localUrl || uploadedImages.length >= 3}
@@ -355,7 +353,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
             </Draggable>
           )}
 
-          {!showStartAnalysis && isAbsolute && somethingUploaded && (
+          {/* {!showStartAnalysis && isAbsolute && somethingUploaded && (
             <Button
               className={classes.openStartAnalysisButton}
               disabled={isLoading || !localUrl}
@@ -363,7 +361,7 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
             >
               Analyze
             </Button>
-          )}
+          )} */}
         </Stack>
       </Stack>
     </SkeletonWrapper>

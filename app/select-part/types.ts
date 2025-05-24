@@ -15,4 +15,5 @@ export type UploadProgressProps = {
   offsets: OffsetType;
   onErrorCb: () => void;
   onCompleteCb: (lastImage: ToAnalyzeType) => void;
+  setDisplayComponent: React.Dispatch<React.SetStateAction<any>>;
 };
