@@ -16,6 +16,7 @@ export type ClubDataType = {
     payoutsEnabled: boolean;
     detailsSubmitted: boolean;
     disabledReason: string;
+    minPayoutAmount: number;
   };
   nextAvatarUpdateAt: Date | null;
   nextNameUpdateAt: Date | null;

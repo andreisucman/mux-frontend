@@ -19,7 +19,7 @@ type Props = {
 function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Props) {
   const router = useRouter();
 
-  const { name, intro, avatar, socials, latestScoresDifference } = data || { socials: [] };
+  const { name, intro, avatar, socials } = data || { socials: [] };
   const [showCollapsedInfo, setShowCollapsedInfo] = useState(false);
 
   const handleToggleCollapse = () => {
@@ -40,33 +40,35 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
 
   return (
     <Group className={classes.container} style={customStyles ? customStyles : {}}>
-      {showCollapsedInfo && (
-        <AvatarComponent avatar={avatar} customStyles={{ maxWidth: rem(48) }} />
-      )}
+      <Group wrap="nowrap" flex={1}>
+        {showCollapsedInfo && (
+          <AvatarComponent avatar={avatar} customStyles={{ maxWidth: rem(48) }} />
+        )}
 
-      <Stack className={classes.content}>
-        <Group align="center" gap={8}>
-          <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
-            {chevron} {name}{" "}
-          </Title>
-          {type === "you" && (
-            <Text size="xs" fw={"normal"} c="dimmed">
-              (You)
-            </Text>
-          )}
-        </Group>
-
-        {intro && (
-          <Collapse in={showCollapsedInfo}>
-            {!isMini && (
-              <Text size="sm" lineClamp={5} mr={8}>
-                {intro}{" "}
+        <Stack className={classes.content}>
+          <Group align="center" gap={8} wrap="nowrap">
+            <Title order={4} className={classes.name} lineClamp={2} onClick={handleToggleCollapse}>
+              {chevron} {name}{" "}
+            </Title>
+            {type === "you" && (
+              <Text size="xs" fw={"normal"} c="dimmed">
+                (You)
               </Text>
             )}
-            {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
-          </Collapse>
-        )}
-      </Stack>
+          </Group>
+
+          {intro && (
+            <Collapse in={showCollapsedInfo}>
+              {!isMini && (
+                <Text size="sm" lineClamp={5} mr={8}>
+                  {intro}{" "}
+                </Text>
+              )}
+              {socials?.length > 0 && <SocialsDisplayLine socials={socials} />}
+            </Collapse>
+          )}
+        </Stack>
+      </Group>
 
       {showButton && (
         <Button

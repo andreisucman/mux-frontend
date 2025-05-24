@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useContext, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { ActionIcon, Alert, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
@@ -7,6 +6,7 @@ import { modals } from "@mantine/modals";
 import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import { useRouter } from "@/helpers/custom-router";
 import openErrorModal from "@/helpers/openErrorModal";
 import { UserDataType } from "@/types/global";
 import classes from "./BalancePane.module.css";
@@ -20,7 +20,8 @@ function BalancePane() {
 
   const { club, country } = userDetails || {};
   const { payouts } = club || {};
-  const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId } = payouts || {};
+  const { balance, payoutsEnabled, disabledReason, detailsSubmitted, connectId, minPayoutAmount } =
+    payouts || {};
 
   const openCountrySelectModal = useCallback(() => {
     setIsLoading(true);
@@ -102,7 +103,7 @@ function BalancePane() {
         </Title>
       </Group>
     );
-  }, [isLoading, balance]);
+  }, [isLoading, balance, country, minPayoutAmount]);
 
   const alert = useMemo(() => {
     const submittedNotEnabled = detailsSubmitted && !payoutsEnabled && !disabledReason;
@@ -170,17 +171,13 @@ function BalancePane() {
       );
   }, [isLoading, detailsSubmitted, payoutsEnabled, disabledReason]);
 
-  const redirectToWallet = useCallback(async () => {
-    const response = await callTheServer({
-      endpoint: "redirectToWallet",
-      method: "POST",
-      body: { redirectUrl: window.location.href },
-    });
-
-    if (response.status === 200) {
-      location.href = response.message;
-    }
-  }, []);
+  const minPayoutNotice = useMemo(() => {
+    let amountNotice = "";
+    if (country)
+      amountNotice += `The minimum payout for ${country} is USD ${minPayoutAmount}.00.`;
+    amountNotice += ` The balance is paid out to your bank account automatically. You can change the bank account in the wallet.`;
+    return amountNotice;
+  }, [country, minPayoutAmount]);
 
   return (
     <Stack className={classes.container}>
@@ -191,7 +188,7 @@ function BalancePane() {
         <Group gap={8}>
           <Tooltip
             opened={openTooltip}
-            label="The balance is paid out to your bank account automatically. You can change the bank account in the wallet."
+            label={minPayoutNotice}
             ref={clickOutsideRef}
             onClick={() => setOpenTooltip((prev) => !prev)}
             multiline
@@ -205,7 +202,7 @@ function BalancePane() {
             size="compact-sm"
             disabled={!connectId}
             style={{ position: "relative", zIndex: 1 }}
-            onClick={redirectToWallet}
+            onClick={() => router.push("/club/wallet")}
           >
             Go to wallet
           </Button>

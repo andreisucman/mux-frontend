@@ -6,7 +6,6 @@
 
   border-radius: var(--mantine-radius-lg);
   border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
-  flex-wrap: nowrap;
 }
 
 .row {
@@ -40,5 +39,11 @@
 .button {
   flex: 1;
   flex-basis: 25%;
-  min-width: rem(200);
+  margin-left: auto;
+  max-width: rem(200);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex-basis: 100%;
+     max-width: unset;
+  }
 }

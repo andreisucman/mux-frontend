@@ -83,7 +83,7 @@ export default function PageHeader({
     >
       {!hideReturn && (
         <ActionIcon variant="default" onClick={() => router.back()}>
-          <IconChevronLeft size={20} />
+          <IconChevronLeft size={20} style={{ cursor: "pointer" }} />
         </ActionIcon>
       )}
       {finalTitle}

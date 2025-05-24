@@ -9,6 +9,7 @@ export const protectedPaths = [
   "/results/proof",
   "/upload-proof",
   "/club",
+  "/club/wallet",
   "/club/join",
   "/waitroom",
   "/routines",
