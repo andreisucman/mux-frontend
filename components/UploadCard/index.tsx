@@ -147,9 +147,8 @@ export default function UploadCard({ part, progress, isLoading, handleUpload }: 
       setLocalUrl(latestImage.mainUrl.url);
     } else {
       setLocalUrl("");
+      setDisplayComponent("capture");
     }
-
-    setDisplayComponent("capture");
   }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
