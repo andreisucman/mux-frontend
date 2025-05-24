@@ -4,9 +4,9 @@ import classes from "./Logo.module.css";
 
 export default function Logo(props: React.ComponentProps<"img">) {
   const router = useRouter();
-  
+
   return (
-    <picture onClick={() => router.push("/")}>
+    <picture onClick={() => router.push("/")} className={classes.picture}>
       <source srcSet="/logo-dark.svg" media="(prefers-color-scheme: dark)" />
       <Image
         src="/logo-light.svg"

@@ -63,7 +63,7 @@
   );
   padding: rem(16) rem(8);
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
   border-radius: rem(16) 0 rem(16) rem(16);
 }
 
