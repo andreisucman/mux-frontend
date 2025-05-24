@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from "react";
-import { IconArrowDown } from "@tabler/icons-react";
+import { IconArrowDown, IconCircleOff } from "@tabler/icons-react";
 import { Accordion, ActionIcon } from "@mantine/core";
 import SelectPartOrConcern from "@/app/club/routines/[[...userName]]/SelectPartOrConcern";
 import { DiaryType } from "@/app/diary/type";
@@ -8,6 +8,7 @@ import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
 import DiaryAccordionItem from "../DiaryAccordionItem";
 import { FilterItemType } from "../FilterDropdown/types";
+import OverlayWithText from "../OverlayWithText";
 import classes from "./DiaryContent.module.css";
 
 type Props = {
@@ -75,10 +76,16 @@ export default function DiaryContent({
             className={classes.list}
           />
         ) : (
-          <SelectPartOrConcern
-            partFilterItems={availableParts || []}
-            concernFilterItems={availableConcerns || []}
-          />
+          <>
+            {isPublic ? (
+              <SelectPartOrConcern
+                partFilterItems={availableParts || []}
+                concernFilterItems={availableConcerns || []}
+              />
+            ) : (
+              <OverlayWithText icon={<IconCircleOff size={18} />} text="Nothing found" />
+            )}
+          </>
         )}
       </Accordion>
       {hasMore && (

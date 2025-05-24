@@ -264,6 +264,7 @@ export default function DiaryPage() {
         <Stack className={classes.content}>
           {diaryRecords ? (
             <DiaryContent
+              isPublic={false}
               hasMore={hasMore}
               diaryRecords={diaryRecords}
               openValue={openValue}

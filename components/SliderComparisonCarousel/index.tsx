@@ -59,7 +59,7 @@ export default function SliderComparisonCarousel({
         {slides}
       </Carousel>
       {!isPublicPage && isSelf && (
-        <ContentPublicityIndicator isPublic={isPublic} position="bottom-left" showText />
+        <ContentPublicityIndicator isPublic={isPublic} position="top-left" showText />
       )}
     </Stack>
   );
