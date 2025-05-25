@@ -1,8 +1,9 @@
-import React, { memo, useCallback, useContext, useMemo, useState } from "react";
+import React, { memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { ActionIcon, Alert, Button, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { useClickOutside } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
+import { nprogress } from "@mantine/nprogress";
 import SelectCountry from "@/components/SelectCountry";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
@@ -94,6 +95,13 @@ function BalancePane() {
     }
   }, []);
 
+  useEffect(() => {
+    return () => {
+      setIsLoading(false);
+      nprogress.complete();
+    };
+  }, []);
+
   const displayBalance = useMemo(() => {
     return (
       <Group className={classes.balance}>
@@ -173,8 +181,7 @@ function BalancePane() {
 
   const minPayoutNotice = useMemo(() => {
     let amountNotice = "";
-    if (country)
-      amountNotice += `The minimum payout for ${country} is USD ${minPayoutAmount}.00.`;
+    if (country) amountNotice += `The minimum payout for ${country} is USD ${minPayoutAmount}.00.`;
     amountNotice += ` The balance is paid out to your bank account automatically. You can change the bank account in the wallet.`;
     return amountNotice;
   }, [country, minPayoutAmount]);
