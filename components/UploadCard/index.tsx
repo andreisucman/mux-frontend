@@ -12,13 +12,13 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import { getFromLocalStorage } from "@/helpers/localStorage";
 import openErrorModal from "@/helpers/openErrorModal";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 import { PartEnum, ToAnalyzeType, UserDataType } from "@/types/global";
 import DraggableImageContainer from "../DraggableImageContainer";
 import PhotoCapturer from "../PhotoCapturer";
 import { BlurDotType } from "./types";
 import UploadedImages from "./UploadedImages";
 import classes from "./UploadCard.module.css";
-import useShowSkeleton from "@/helpers/useShowSkeleton";
 
 type Props = {
   part: PartEnum;
@@ -137,6 +137,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
 
     if (latestImage) {
       setLocalUrl(latestImage.mainUrl.url);
+      setDisplayComponent("preview");
     } else {
       setLocalUrl("");
       setDisplayComponent("capture");
@@ -169,7 +170,10 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       const differenceInImages = toAnalyze.length - initialPartProgressImages.length;
 
       if (differenceInImages) {
-        const text = differenceInImages > 0 ? `Remove ${differenceInImages}` : `Take ${differenceInImages} more`;
+        const text =
+          differenceInImages > 0
+            ? `Remove ${differenceInImages}`
+            : `Take ${differenceInImages} more`;
         openErrorModal({
           description: `${text} image(s) to match the initial image count.`,
         });
@@ -255,7 +259,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
                 showBlur={showBlur}
                 blurDots={blurDots}
                 image={localUrl}
-                showDelete={true}
+                showDelete={isAbsolute}
                 handleDelete={handleDeleteLocalImage}
                 setBlurDots={setBlurDots}
                 setOffsets={setOffsets}

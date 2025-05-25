@@ -55,10 +55,6 @@ export default function DraggableImageContainer({
   const [selectedDotId, setSelectedDotId] = useState<string>();
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  /**
-   * Reset the loaded flag whenever the source image changes so size
-   * calculations rerun after the new image finishes loading.
-   */
   useEffect(() => setImageLoaded(false), [image]);
 
   /* ---------------------- derived style for <img> wrapper ------------------ */
