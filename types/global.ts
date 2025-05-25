@@ -193,7 +193,7 @@ export enum PartEnum {
   BODY = "body",
 }
 
-export type LatestProgressImagesType = {
+export type InitialProgressImageType = {
   [key: string]: ProgressImageType[];
 };
 
@@ -214,7 +214,7 @@ export interface UserDataType extends DefaultUserType {
   nextRoutineSuggestion: NextActionType[];
   nextRoutine: NextActionType[];
   nextScan: NextActionType[];
-  initialProgressImages: LatestProgressImagesType;
+  initialProgressImages: InitialProgressImageType;
   latestConcernScores: LatestScoresType;
   latestConcernScoresDifference: LatestScoresDifferenceType;
   deleteOn: Date | null;

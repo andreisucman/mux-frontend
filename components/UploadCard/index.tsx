@@ -108,6 +108,17 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     setDisplayComponent("preview");
   }, []);
 
+  const handleCleanup = (toAnalyze: ToAnalyzeType[]) => {
+    if (toAnalyze.length > 0) {
+      const lastObject = toAnalyze[toAnalyze.length - 1];
+      setLocalUrl(lastObject.mainUrl.url);
+      setDisplayComponent("preview");
+    } else {
+      setLocalUrl("");
+      setDisplayComponent("capture");
+    }
+  };
+
   const handleRemoveToAnalyze = useCallback(
     async (url: string) => {
       const res = await callTheServer({
@@ -117,32 +128,11 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       });
       if (res.status === 200) {
         setUserDetails((prev: UserDataType) => ({ ...prev, toAnalyze: res.message }));
-        if (res.message.length > 0) {
-          const lastObject = res.message[res.message.length - 1];
-          setLocalUrl(lastObject.mainUrl.url);
-          setDisplayComponent("preview");
-        } else {
-          setLocalUrl("");
-          setDisplayComponent("capture");
-        }
+        handleCleanup(res.message);
       }
     },
     [toAnalyze, userDetails]
   );
-
-  const handleDeleteLocalImage = useCallback(() => {
-    if (!toAnalyze) return;
-
-    const latestImage = toAnalyze[toAnalyze.length - 1];
-
-    if (latestImage) {
-      setLocalUrl(latestImage.mainUrl.url);
-      setDisplayComponent("preview");
-    } else {
-      setLocalUrl("");
-      setDisplayComponent("capture");
-    }
-  }, [toAnalyze]);
 
   const handleClickUpload = useCallback(async () => {
     const finalOverlayImage = overlayImage || imagesMissingUpdates[0];
@@ -153,10 +143,9 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       blurDots,
       offsets,
       setDisplayComponent,
-      onErrorCb: handleDeleteLocalImage,
+      onErrorCb: () => handleCleanup(toAnalyze || []),
       onCompleteCb: (lastToAnalyzeObject: ToAnalyzeType) => {
-        if (lastToAnalyzeObject) setLocalUrl(lastToAnalyzeObject.mainUrl.url);
-        setDisplayComponent("preview");
+        handleCleanup([lastToAnalyzeObject]);
         setShowBlur(false);
       },
     });
@@ -263,7 +252,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
                 blurDots={blurDots}
                 image={localUrl}
                 showDelete={!isAbsolute}
-                handleDelete={handleDeleteLocalImage}
+                handleDelete={() => handleCleanup(toAnalyze || [])}
                 setBlurDots={setBlurDots}
                 setOffsets={setOffsets}
               />

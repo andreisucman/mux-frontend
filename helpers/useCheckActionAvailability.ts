@@ -18,9 +18,9 @@ function useCheckActionAvailability({ part, nextAction }: Props) {
 
   if (!nextAction || !part) return result;
 
-  const availableParts = nextAction.find((p) => p.part === part);
+  const relevantPart = nextAction.find((p) => p.part === part);
 
-  const partDate = parseScanDate(availableParts);
+  const partDate = parseScanDate(relevantPart);
 
   if (partDate) {
     result.checkBackDate = partDate.toDateString();
