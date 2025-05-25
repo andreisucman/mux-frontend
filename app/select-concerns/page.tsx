@@ -163,19 +163,13 @@ export default function SelectConcernsPage() {
 
   const selectedConcernsPills = useMemo(() => {
     const pills = selectedConcerns.map((concern, index) => (
-      <Pill
-        key={index}
-        withRemoveButton
-        onRemove={() =>
-          setSelectedConcerns((prev) => prev.filter((item) => item.value !== concern.value))
-        }
-      >
+      <Pill key={index} withRemoveButton onRemove={() => handleSelectConcerns(concern)}>
         {upperFirst(concern.label)}
       </Pill>
     ));
 
     return pills;
-  }, [selectedConcerns]);
+  }, [selectedConcerns, handleSelectConcerns]);
 
   useEffect(() => {
     handleFetchConcerns().then((data) => {

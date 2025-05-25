@@ -161,7 +161,6 @@ export default function PhotoCapturer({
     }
   }, [facingMode, isMobile, stopStream]);
 
-  /* Boot up preview and clean up on unmount */
   useEffect(() => {
     startVideoPreview();
 
@@ -194,10 +193,7 @@ export default function PhotoCapturer({
       )}
 
       <div className={classes.grid} />
-
-      {/* Controls */}
       <Group className={classes.buttonGroup}>
-        {/* hidden <audio> for shutter sound */}
         <audio ref={audioRef} hidden preload="auto" src={audioUrl} />
 
         {handleCancel && (
