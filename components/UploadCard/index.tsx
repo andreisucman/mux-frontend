@@ -167,19 +167,22 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     setIsButtonLoading(true);
 
     try {
-      const differenceInImages = toAnalyze.length - initialPartProgressImages.length;
+      if (initialPartProgressImages.length > 0) {
+        const differenceInImages = toAnalyze.length - initialPartProgressImages.length;
 
-      if (differenceInImages) {
-        const text =
-          differenceInImages > 0
-            ? `Remove ${differenceInImages}`
-            : `Take ${differenceInImages} more`;
-        openErrorModal({
-          description: `${text} image(s) to match the initial image count.`,
-        });
-        setIsButtonLoading(false);
-        return;
+        if (differenceInImages) {
+          const text =
+            differenceInImages > 0
+              ? `Remove ${differenceInImages}`
+              : `Take ${differenceInImages} more`;
+          openErrorModal({
+            description: `${text} image(s) to match the initial image count.`,
+          });
+          setIsButtonLoading(false);
+          return;
+        }
       }
+
       const savedSelectedConcerns: { value: string; label: string; part: string }[] | null =
         getFromLocalStorage("selectedConcerns");
 
