@@ -259,7 +259,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
                 showBlur={showBlur}
                 blurDots={blurDots}
                 image={localUrl}
-                showDelete={isAbsolute}
+                showDelete={!isAbsolute}
                 handleDelete={handleDeleteLocalImage}
                 setBlurDots={setBlurDots}
                 setOffsets={setOffsets}
