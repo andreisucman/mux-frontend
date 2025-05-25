@@ -39,7 +39,7 @@ export default function ScanProgress() {
 
   const query = searchParams.toString();
   const part = searchParams.get("part") || PartEnum.FACE;
-  const { _id: userId, toAnalyze, nextScan, initialProgressImages } = userDetails || {};
+  const { _id: userId, toAnalyze, nextScan, timeZone, initialProgressImages } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -132,7 +132,7 @@ export default function ScanProgress() {
             image: originalImageUrl,
           };
 
-          if (userId === "6832e4e78cd48d75799b77fa") {
+          if (timeZone === "Europe/Chisinau") {
             body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/1.jpg";
             if (toAnalyze && toAnalyze.length > 0) {
               body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/2.jpg";
