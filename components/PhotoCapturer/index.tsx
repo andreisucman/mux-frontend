@@ -140,8 +140,8 @@ export default function PhotoCapturer({
       setHasMultipleCameras(numCams > 1);
     } catch (err) {
       const error = err as DOMException;
-      let title = "Camera error";
-      let description = "Camera error occured.";
+      let title = "";
+      let description = "";
 
       if (error?.name === "NotAllowedError" || error?.name === "PermissionDeniedError") {
         title = "Camera access required";
@@ -151,11 +151,13 @@ export default function PhotoCapturer({
         description = "Camera not found.";
       }
 
-      openErrorModal({
-        title,
-        description,
-        onClose: () => modals.closeAll(),
-      });
+      if (title) {
+        openErrorModal({
+          title,
+          description,
+          onClose: () => modals.closeAll(),
+        });
+      }
     }
   }, [facingMode, isMobile, stopStream]);
 
