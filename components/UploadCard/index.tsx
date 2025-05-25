@@ -18,6 +18,7 @@ import PhotoCapturer from "../PhotoCapturer";
 import { BlurDotType } from "./types";
 import UploadedImages from "./UploadedImages";
 import classes from "./UploadCard.module.css";
+import useShowSkeleton from "@/helpers/useShowSkeleton";
 
 type Props = {
   part: PartEnum;
@@ -43,6 +44,8 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
   const [showBlur, setShowBlur] = useState(false);
   const [blurDots, setBlurDots] = useState<BlurDotType[]>([]);
 
+  const showSkeleton = useShowSkeleton();
+
   const { _id: userId, toAnalyze, initialProgressImages } = userDetails || {};
 
   const distinctUploadedParts = [
@@ -62,17 +65,11 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
 
   const imagesMissingUpdates = useMemo(() => {
     if (!initialProgressImages || !initialProgressImages[part]) return [];
-
     const partProgressImage = initialProgressImages[part];
-
     if (!partProgressImage) return [];
-
     const images = partProgressImage.map((obj) => obj.mainUrl.url);
-
     if (!toAnalyze || toAnalyze?.length === 0) return images;
-
     const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
-
     return images.filter((url) => uploadedUrls.includes(url));
   }, [toAnalyze, initialProgressImages?.[part]]);
 
@@ -230,7 +227,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
   }, [imagesMissingUpdates]);
 
   return (
-    <SkeletonWrapper show={displayComponent === "loading"}>
+    <SkeletonWrapper show={showSkeleton}>
       <Stack className={classes.container}>
         {toAnalyze && toAnalyze.length > 0 && (
           <UploadedImages
