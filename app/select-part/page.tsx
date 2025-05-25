@@ -16,7 +16,7 @@ export default function SelectPartPage() {
       <Stack className={classes.wrapper}>
         <Group className={classes.titleWrapper}>
           <Title order={1}>Select part</Title>
-          <Alert p="0.5rem 1rem">Select a part that you are planning to improve</Alert>
+          <Alert p="0.5rem 1rem">Select a part that you are aiming to improve</Alert>
         </Group>
         <Group className={classes.content}>
           <StartButton

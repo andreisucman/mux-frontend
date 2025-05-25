@@ -39,7 +39,7 @@ export default function ScanProgress() {
 
   const query = searchParams.toString();
   const part = searchParams.get("part") || PartEnum.FACE;
-  const { _id: userId, nextScan } = userDetails || {};
+  const { _id: userId, toAnalyze, nextScan, initialProgressImages } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -124,16 +124,33 @@ export default function ScanProgress() {
             };
           });
 
+          const body = {
+            userId,
+            part,
+            blurDots: updatedBlurDots,
+            beforeImage: beforeImageUrl,
+            image: originalImageUrl,
+          };
+
+          if (userId === "6832e4e78cd48d75799b77fa") {
+            body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/1.jpg";
+            if (toAnalyze && toAnalyze.length > 0) {
+              body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/2.jpg";
+            }
+            
+            const initialPartImages = part && initialProgressImages && initialProgressImages[part];
+            if (initialPartImages) {
+              body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/1r.jpg";
+              if (toAnalyze && toAnalyze.length > 0) {
+                body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/2r.jpg";
+              }
+            }
+          }
+
           const response = await callTheServer({
             endpoint: "uploadProgress",
             method: "POST",
-            body: {
-              userId,
-              part,
-              blurDots: updatedBlurDots,
-              beforeImage: beforeImageUrl,
-              image: originalImageUrl,
-            },
+            body,
           });
 
           if (response.status === 200) {
@@ -223,11 +240,7 @@ export default function ScanProgress() {
       />
       <SkeletonWrapper>
         {isActionAvailable ? (
-          <UploadCard
-            part={part as PartEnum}
-            progress={progress}
-            handleUpload={handleUpload}
-          />
+          <UploadCard part={part as PartEnum} progress={progress} handleUpload={handleUpload} />
         ) : (
           <OverlayWithText
             icon={<IconHourglass size={24} />}

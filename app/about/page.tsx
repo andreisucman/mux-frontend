@@ -29,6 +29,7 @@ export default function AnswersPage() {
           item: "accordionItem",
         }}
         multiple
+        pb="20%"
       >
         {accordionRows}
       </Accordion>

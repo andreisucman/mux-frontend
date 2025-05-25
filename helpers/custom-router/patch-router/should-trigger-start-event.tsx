@@ -1,29 +1,36 @@
-import { addBasePath } from "next/dist/client/add-base-path";
+/**
+ * Decide whether a navigation should start NProgress.
+ * – skips hash-only moves (`/page#A` → `/page#B`)
+ * – skips true no-ops (`/page?x=1` → same path & query)
+ * – respects modified-clicks (cmd/ctrl/shift/alt, middle-button)
+ */
+export function shouldTriggerStartEvent(
+  href: string,
+  event?: React.MouseEvent<HTMLElement>
+): boolean {
+  /* special-clicks open a new tab or are otherwise handled by the browser */
+  if (
+    event &&
+    (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
+  ) {
+    return false;
+  }
 
-function getURL(href: string): URL {
-  return new URL(addBasePath(href), location.href);
-}
+  /* During SSR we can’t inspect window.location */
+  if (typeof window === "undefined") return true;
 
-// https://github.com/vercel/next.js/blob/400ccf7b1c802c94127d8d8e0d5e9bdf9aab270c/packages/next/src/client/link.tsx#L169
-function isModifiedEvent(event: React.MouseEvent): boolean {
-  const eventTarget = event.currentTarget as HTMLAnchorElement | SVGAElement;
-  const target = eventTarget.getAttribute("target");
-  return (
-    (target && target !== "_self") ||
-    event.metaKey ||
-    event.ctrlKey ||
-    event.shiftKey ||
-    event.altKey || // triggers resource download
-    (event.nativeEvent && event.nativeEvent.button === 1)
-  );
-}
+  try {
+    const current = new URL(window.location.href);
+    const target = new URL(href, window.location.origin);
 
-export function shouldTriggerStartEvent(href: string, clickEvent?: React.MouseEvent) {
-  const current = window.location;
-  const target = getURL(href);
+    const samePath = current.pathname === target.pathname;
+    const sameSearch = current.search === target.search;
+    const sameHash = current.hash === target.hash;
 
-  if (clickEvent && isModifiedEvent(clickEvent)) return false;
-  if (current.pathname === target.pathname && current.search === target.search) return false;
-
-  return true;
+    /* Hash-only or identical route ⇒ no progress bar. */
+    return !(samePath && sameSearch); // start only if path or search changes
+  } catch {
+    /* Malformed `href` → play it safe and start the bar. */
+    return true;
+  }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconSearch } from "@tabler/icons-react";
 import { ActionIcon, Group, Indicator } from "@mantine/core";
@@ -122,6 +122,10 @@ export default function SearchButton({
     },
     [userName]
   );
+
+  useEffect(() => {
+    getAutocompleteData("user", "");
+  }, []);
 
   return (
     <>

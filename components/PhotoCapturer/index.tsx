@@ -140,17 +140,22 @@ export default function PhotoCapturer({
       setHasMultipleCameras(numCams > 1);
     } catch (err) {
       const error = err as DOMException;
+      let title = "Camera error";
+      let description = "Camera error occured.";
+
       if (error?.name === "NotAllowedError" || error?.name === "PermissionDeniedError") {
-        // User explicitly denied camera access
-        openErrorModal({
-          title: "Camera access required",
-          description: "Please allow access to your camera to take a photo.",
-          onClose: () => modals.closeAll(),
-        });
-      } else {
-        // Other errors (e.g. no camera, already in use, etc.)
-        console.error("Unable to start camera:", err);
+        title = "Camera access required";
+        description = "Please allow access to your camera to take a photo.";
+      } else if (error?.name === "NotFoundError") {
+        title = "Camera error";
+        description = "Camera not found.";
       }
+
+      openErrorModal({
+        title,
+        description,
+        onClose: () => modals.closeAll(),
+      });
     }
   }, [facingMode, isMobile, stopStream]);
 
