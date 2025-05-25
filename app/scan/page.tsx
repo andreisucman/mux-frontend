@@ -137,7 +137,7 @@ export default function ScanProgress() {
             if (toAnalyze && toAnalyze.length > 0) {
               body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/2.jpg";
             }
-            
+
             const initialPartImages = part && initialProgressImages && initialProgressImages[part];
             if (initialPartImages) {
               body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/1r.jpg";
@@ -172,7 +172,7 @@ export default function ScanProgress() {
               if (response.error === "not similar") {
                 openErrorModal({
                   description:
-                    "Your current photo is too different from the previous. Click 'Overlay' in the top left and try to match the previous image when taking the new photo.",
+                    "Your current photo is too different from the previous. Click 'Overlay' in the top left and try to match the previous photo when taking the new photo.",
                 });
                 return;
               }
@@ -196,9 +196,11 @@ export default function ScanProgress() {
             }
           } else {
             openErrorModal();
+            onErrorCb();
           }
         } catch (err: any) {
           openErrorModal();
+          onErrorCb();
         } finally {
           setDisplayComponent("preview");
           setProgress(0);

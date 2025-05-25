@@ -108,7 +108,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     setDisplayComponent("preview");
   }, []);
 
-  const handleCleanup = (toAnalyze: ToAnalyzeType[]) => {
+  const handleCleanup = useCallback((toAnalyze: ToAnalyzeType[]) => {
     if (toAnalyze.length > 0) {
       const lastObject = toAnalyze[toAnalyze.length - 1];
       setLocalUrl(lastObject.mainUrl.url);
@@ -117,7 +117,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       setLocalUrl("");
       setDisplayComponent("capture");
     }
-  };
+  }, []);
 
   const handleRemoveToAnalyze = useCallback(
     async (url: string) => {
@@ -208,13 +208,8 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
   }, [userId, toAnalyze, initialPartProgressImages, isButtonLoading, somethingUploaded]);
 
   useEffect(() => {
-    const lastObject = toAnalyze?.[toAnalyze.length - 1];
-    if (lastObject) {
-      setLocalUrl(lastObject.mainUrl.url);
-      setDisplayComponent("preview");
-    } else {
-      setDisplayComponent("capture");
-    }
+    if (!toAnalyze) return;
+    handleCleanup(toAnalyze);
   }, [toAnalyze && toAnalyze.length]);
 
   useEffect(() => {

@@ -9,8 +9,11 @@ type Props = {
   onSubmit: ({ startDate, selectedRoutineId }: HandleModifyTaskProps) => any;
 };
 
+const defaultDate = new Date();
+defaultDate.setUTCHours(0, 0, 0, 0);
+
 export default function SelectDateModalContent({ buttonText, lastDate, onSubmit }: Props) {
-  const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(new Date());
+  const [recreateTaskOnDate, setRecreateTaskOnDate] = useState<Date | null>(defaultDate);
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
