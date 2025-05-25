@@ -83,7 +83,6 @@ export default function ScanProgress() {
       blurDots,
       offsets,
       setDisplayComponent,
-      onErrorCb,
       onCompleteCb,
     }: UploadProgressProps) => {
       if (!userDetails || !url) return;
@@ -155,8 +154,6 @@ export default function ScanProgress() {
 
           if (response.status === 200) {
             if (response.error) {
-              onErrorCb();
-
               if (response.error === "must login") {
                 openAuthModal({
                   title: "Sign in to continue",
@@ -172,7 +169,7 @@ export default function ScanProgress() {
               if (response.error === "not similar") {
                 openErrorModal({
                   description:
-                    "Your current photo is too different from the previous. Click 'Overlay' in the top left and try to match the previous photo when taking the new photo.",
+                    "Your current photo is too different from the previous. Click 'Overlay' in the top left and try to match the previous photo.",
                 });
                 return;
               }
@@ -196,11 +193,9 @@ export default function ScanProgress() {
             }
           } else {
             openErrorModal();
-            onErrorCb();
           }
         } catch (err: any) {
           openErrorModal();
-          onErrorCb();
         } finally {
           setDisplayComponent("preview");
           setProgress(0);

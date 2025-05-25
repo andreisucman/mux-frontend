@@ -143,7 +143,6 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
       blurDots,
       offsets,
       setDisplayComponent,
-      onErrorCb: () => handleCleanup(toAnalyze || []),
       onCompleteCb: (lastToAnalyzeObject: ToAnalyzeType) => {
         handleCleanup([lastToAnalyzeObject]);
         setShowBlur(false);

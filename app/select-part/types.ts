@@ -13,7 +13,6 @@ export type UploadProgressProps = {
   part: string | null;
   blurDots: BlurDotType[];
   offsets: OffsetType;
-  onErrorCb: () => void;
   onCompleteCb: (lastImage: ToAnalyzeType) => void;
   setDisplayComponent: React.Dispatch<React.SetStateAction<any>>;
 };
