@@ -9,7 +9,7 @@ import { FilterItemType } from "./types";
 import classes from "./FilterDropdown.module.css";
 
 type Props = {
-  size: "xs" | "sm";
+  size?: "xs" | "sm";
   data?: FilterItemType[];
   icons?: { [key: string]: React.ReactNode };
   placeholder: string;

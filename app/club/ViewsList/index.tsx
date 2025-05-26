@@ -70,11 +70,11 @@ export default function ViewsList({ userName }: Props) {
       setViews(formattedItems.slice(0, 20));
     }
     setHasMore(items.length === 21);
-  }, [views, selectedInterval]);
+  }, [views, hasMore, selectedPageType, selectedInterval]);
 
   useEffect(() => {
     handleFetchViews();
-  }, [selectedInterval]);
+  }, [selectedPageType, selectedInterval]);
 
   const handleRedirect = useCallback(
     (part: string, concern: string) => {
@@ -101,6 +101,7 @@ export default function ViewsList({ userName }: Props) {
             data={pageTypeSegments}
             onSelect={(value) => setSelectedPageType(value as "routines")}
             customStyles={{ minWidth: "unset" }}
+            allowDeselect={false}
             size="xs"
           />
           <FilterDropdown
@@ -109,6 +110,7 @@ export default function ViewsList({ userName }: Props) {
             data={viewSegments}
             onSelect={(value) => setSelectedInterval(value as "day")}
             customStyles={{ minWidth: "unset" }}
+            allowDeselect={false}
             size="xs"
           />
         </Group>
