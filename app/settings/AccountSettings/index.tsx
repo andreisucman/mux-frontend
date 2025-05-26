@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   IconAsterisk,
-  IconCreditCard,
   IconDeviceFloppy,
   IconEye,
+  IconEyeOff,
   IconInfoCircle,
 } from "@tabler/icons-react";
 import cn from "classnames";
@@ -27,6 +27,7 @@ import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import sendPasswordResetEmail from "@/functions/startPasswordReset";
 import askConfirmation from "@/helpers/askConfirmation";
+import Link from "@/helpers/custom-router/patch-router/link";
 import { formatDate } from "@/helpers/formatDate";
 import openErrorModal from "@/helpers/openErrorModal";
 import openInfoModal from "@/helpers/openInfoModal";
@@ -38,11 +39,14 @@ export default function AccountSettings() {
   const isMobile = useMediaQuery("(max-width: 36em)");
   const emailChangeModalsStack = useModalsStack(["changeEmail", "confirmNewEmail"]);
   const { userDetails, setUserDetails } = useContext(UserContext);
-  const { deleteOn, isPublic, email: currentEmail, auth } = userDetails || {};
+  const { deleteOn, isPublic, email: currentEmail, auth, club } = userDetails || {};
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState<string>(currentEmail || "");
   const [confirmationCode, setConfirmationCode] = useState("");
+
+  const { payouts } = club || {};
+  const { payoutsEnabled } = payouts || {};
 
   const isEmailDirty = currentEmail !== email.trim();
 
@@ -140,6 +144,30 @@ export default function AccountSettings() {
 
   const showSkeleton = useShowSkeleton();
 
+  const privacyData = useMemo(() => {
+    const color = isPublic ? "var(--mantine-color-green-4)" : "var(--mantine-color-red-4))";
+    const iconColor = isPublic ? "var(--mantine-color-green-8)" : "var(--mantine-color-red-8))";
+    const icon = isPublic ? (
+      <IconEye
+        size={18}
+        stroke={1.5}
+        style={{
+          color: iconColor,
+        }}
+      />
+    ) : (
+      <IconEyeOff
+        size={18}
+        stroke={1.5}
+        style={{
+          color: iconColor,
+        }}
+      />
+    );
+
+    return { color, icon };
+  }, [isPublic]);
+
   return (
     <Skeleton visible={showSkeleton} style={{ width: "unset" }}>
       <Stack className={classes.stack}>
@@ -159,20 +187,17 @@ export default function AccountSettings() {
         )}
         <Stack className={classes.list}>
           <Alert
-            icon={
-              <IconEye
-                size={18}
-                stroke={1.5}
-                style={{
-                  color: "light-dark(var(--mantine-color-dark-4),var(--mantine-color-gray-2))",
-                }}
-              />
-            }
+            icon={privacyData.icon}
             p="0.5rem 1rem"
-            color="light-dark(var(--mantine-color-dark-4),var(--mantine-color-gray-2))"
+            color={privacyData.color}
             styles={{ icon: { marginRight: rem(4) } }}
           >
             Your account is {isPublic ? "public" : "private"}
+            {payoutsEnabled && (
+              <Link className={classes.editLink} href="/club/publish-routines">
+                Edit
+              </Link>
+            )}
           </Alert>
           <TextInput
             maw={425}

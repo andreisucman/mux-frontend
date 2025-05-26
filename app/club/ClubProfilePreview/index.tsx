@@ -51,7 +51,7 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
               {chevron} {name}{" "}
             </Title>
             {type === "you" && (
-              <Text size="xs" fw={"normal"} c="dimmed">
+              <Text size="xs" fw={"normal"} c="dimmed" style={{ cursor: "default" }}>
                 (You)
               </Text>
             )}
@@ -60,7 +60,7 @@ function ClubProfilePreview({ type, data, isMini, showButton, customStyles }: Pr
           {intro && (
             <Collapse in={showCollapsedInfo}>
               {!isMini && (
-                <Text size="sm" lineClamp={5} mr={8}>
+                <Text size="sm" lineClamp={5} mr={8} style={{ cursor: "default" }}>
                   {intro}{" "}
                 </Text>
               )}

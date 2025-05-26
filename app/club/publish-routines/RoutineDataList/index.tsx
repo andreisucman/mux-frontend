@@ -3,6 +3,7 @@ import { IconCircleOff } from "@tabler/icons-react";
 import { Masonry } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Loader, rem, Stack } from "@mantine/core";
+import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import { PartEnum } from "@/types/global";
 import { RoutineDataType } from "../page";
@@ -97,13 +98,7 @@ export default function RoutineDataList({
               hasMore={hasMore}
               pageStart={0}
             >
-              <Masonry
-                items={routineDataRecords}
-                maxColumnCount={2}
-                columnGutter={12}
-                rowGutter={12}
-                render={memoizedDataRow}
-              />
+              <ListComponent items={routineDataRecords} rowGutter={12} render={memoizedDataRow} />
             </InfiniteScroll>
           ) : (
             <OverlayWithText text="Nobody found" icon={<IconCircleOff size={20} />} />

@@ -24,3 +24,12 @@
 
   color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
 }
+
+.editLink {
+  margin-left: rem(16);
+  font-size: rem(12);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

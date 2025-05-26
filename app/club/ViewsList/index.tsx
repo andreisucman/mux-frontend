@@ -4,6 +4,7 @@ import { Masonry } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
 import { Group, Loader, rem, Stack, Text } from "@mantine/core";
 import FilterDropdown from "@/components/FilterDropdown";
+import ListComponent from "@/components/ListComponent";
 import OverlayWithText from "@/components/OverlayWithText";
 import fetchViews from "@/functions/fetchViews";
 import { useRouter } from "@/helpers/custom-router";
@@ -133,13 +134,7 @@ export default function ViewsList({ userName }: Props) {
               hasMore={hasMore}
               pageStart={0}
             >
-              <Masonry
-                items={views}
-                maxColumnCount={1}
-                columnGutter={12}
-                rowGutter={12}
-                render={memoizedViewRow}
-              />
+              <ListComponent items={views} rowGutter={12} render={memoizedViewRow} />
             </InfiniteScroll>
           ) : (
             <OverlayWithText

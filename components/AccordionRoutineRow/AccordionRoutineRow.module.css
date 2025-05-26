@@ -32,7 +32,7 @@
 .skeleton {
   position: relative;
   z-index: 0;
-margin-bottom: rem(12);
+  margin-bottom: rem(12);
   height: unset;
   flex: 0;
 
@@ -58,7 +58,7 @@ margin-bottom: rem(12);
 }
 
 .selected {
-  border-color: light-dark(var(--mantine-color-dark-1), var(--mantine-color-dark-3));
+  border-color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
 }
 
 .canceled {

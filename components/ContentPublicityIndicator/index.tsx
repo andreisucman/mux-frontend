@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { IconLock, IconLockOpen } from "@tabler/icons-react";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import cn from "classnames";
 import { Group, ThemeIcon } from "@mantine/core";
 import classes from "./ContentPublicityIndicator.module.css";
@@ -18,7 +18,7 @@ function ContentPublicityIndicator({
   position = "top-right",
 }: Props) {
   const publicityText = isPublic ? "Public" : "Private";
-  const publicityIcon = isPublic ? <IconLockOpen size={20} /> : <IconLock size={20} />;
+  const publicityIcon = isPublic ? <IconEye size={20} /> : <IconEyeOff size={20} />;
 
   return (
     <Group
