@@ -70,7 +70,7 @@ export default function UploadCard({ part, progress, handleUpload }: Props) {
     const images = partProgressImage.map((obj) => obj.mainUrl.url);
     if (!toAnalyze || toAnalyze?.length === 0) return images;
     const uploadedUrls = toAnalyze.map((tao) => tao.updateUrl.url);
-    return images.filter((url) => uploadedUrls.includes(url));
+    return images.filter((url) => !uploadedUrls.includes(url));
   }, [toAnalyze, initialProgressImages?.[part]]);
 
   const handleToggleBlur = () => {

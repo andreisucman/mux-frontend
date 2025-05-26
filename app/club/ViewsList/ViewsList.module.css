@@ -3,4 +3,5 @@
   flex: 1;
   overflow-y: auto;
   margin: 0 -1px;
+  min-height: rem(250);
 }

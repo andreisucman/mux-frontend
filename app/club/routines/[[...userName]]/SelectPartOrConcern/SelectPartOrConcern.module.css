@@ -12,5 +12,5 @@
   margin: auto;
   padding: rem(16);
   border-radius: var(--mantine-radius-lg);
-  box-shadow: var(--mantine-shadow-xs);
+   border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
 }
