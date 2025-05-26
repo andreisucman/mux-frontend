@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { IconCircleOff } from "@tabler/icons-react";
 import { Masonry } from "masonic";
 import InfiniteScroll from "react-infinite-scroller";
-import { Group, Loader, rem, SegmentedControl, Stack, Text, Title } from "@mantine/core";
+import { Group, Loader, rem, Stack, Text } from "@mantine/core";
+import FilterDropdown from "@/components/FilterDropdown";
 import OverlayWithText from "@/components/OverlayWithText";
 import fetchViews from "@/functions/fetchViews";
 import { useRouter } from "@/helpers/custom-router";
@@ -31,14 +32,25 @@ const viewSegments = [
   { label: "Month", value: "month" },
 ];
 
+const pageTypeSegments = [
+  { label: "Routines", value: "routines" },
+  { label: "Progress", value: "progress" },
+  { label: "Diary", value: "diary" },
+  { label: "Proof", value: "proof" },
+];
+
 export default function ViewsList({ userName }: Props) {
   const router = useRouter();
   const [hasMore, setHasMore] = useState(false);
   const [views, setViews] = useState<ViewType[]>();
   const [selectedInterval, setSelectedInterval] = useState<"day" | "week" | "month">("day");
+  const [selectedPageType, setSelectedPageType] = useState<
+    "routines" | "progress" | "diary" | "proof"
+  >("routines");
 
   const handleFetchViews = useCallback(async () => {
     const items: TotalViewReponseType[] = await fetchViews({
+      page: selectedPageType,
       interval: selectedInterval,
       skip: hasMore,
       existingCount: views ? views.length : 0,
@@ -78,16 +90,28 @@ export default function ViewsList({ userName }: Props) {
   );
   return (
     <Stack className={classes.container}>
-      <Group align="start" justify="space-between">
+      <Group align="start" justify="space-between" wrap="nowrap">
         <Text c="dimmed" size="sm">
-          Routine views
+          Views
         </Text>
-        <SegmentedControl
-          data={viewSegments}
-          value={selectedInterval}
-          onChange={(value) => setSelectedInterval(value as "day")}
-          size="xs"
-        />
+        <Group gap={12}>
+          <FilterDropdown
+            placeholder="Page type"
+            selectedValue={selectedPageType}
+            data={pageTypeSegments}
+            onSelect={(value) => setSelectedPageType(value as "routines")}
+            customStyles={{ minWidth: "unset" }}
+            size="xs"
+          />
+          <FilterDropdown
+            placeholder="Interval"
+            selectedValue={selectedInterval}
+            data={viewSegments}
+            onSelect={(value) => setSelectedInterval(value as "day")}
+            customStyles={{ minWidth: "unset" }}
+            size="xs"
+          />
+        </Group>
       </Group>
       {views ? (
         <>
@@ -107,7 +131,13 @@ export default function ViewsList({ userName }: Props) {
               hasMore={hasMore}
               pageStart={0}
             >
-              <Masonry items={views} maxColumnCount={2} rowGutter={12} render={memoizedViewRow} />
+              <Masonry
+                items={views}
+                maxColumnCount={1}
+                columnGutter={12}
+                rowGutter={12}
+                render={memoizedViewRow}
+              />
             </InfiniteScroll>
           ) : (
             <OverlayWithText

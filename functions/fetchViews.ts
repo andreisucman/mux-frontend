@@ -2,12 +2,13 @@ import callTheServer from "./callTheServer";
 
 type FetchPurchasesProps = {
   skip: boolean;
+  page: "routines" | "progress" | "diary" | "proof";
   interval: "day" | "week" | "month";
   existingCount?: number;
 };
 
 const fetchViews = async (props?: FetchPurchasesProps) => {
-  const { skip, interval = "day", existingCount } = props || {};
+  const { skip, page = "routines", interval = "day", existingCount } = props || {};
 
   let endpoint = "getTotalViews";
 
@@ -15,6 +16,9 @@ const fetchViews = async (props?: FetchPurchasesProps) => {
 
   if (interval) {
     searchParams.set("interval", interval);
+  }
+  if (page) {
+    searchParams.set("page", page);
   }
   if (skip && existingCount) {
     searchParams.set("skip", String(existingCount));

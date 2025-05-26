@@ -74,6 +74,7 @@ export default function RoutineDataRow({
           </Button>
           <Button
             variant={"default"}
+            disabled={defaultRoutine.status === "hidden"}
             c={buttonsData.monetizationColor}
             size="compact-sm"
             onClick={() => handleUpdate("monetization")}

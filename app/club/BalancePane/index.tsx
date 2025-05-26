@@ -207,7 +207,7 @@ function BalancePane() {
           <Button
             variant={"default"}
             size="compact-sm"
-            disabled={!connectId}
+            disabled={!connectId || !payoutsEnabled}
             style={{ position: "relative", zIndex: 1 }}
             onClick={() => router.push("/club/wallet")}
           >
