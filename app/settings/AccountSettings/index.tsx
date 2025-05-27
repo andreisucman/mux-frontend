@@ -45,7 +45,7 @@ export default function AccountSettings() {
   const [email, setEmail] = useState<string>(currentEmail || "");
   const [confirmationCode, setConfirmationCode] = useState("");
 
-  const { payouts } = club || {};
+  const { isActive, payouts } = club || {};
   const { payoutsEnabled } = payouts || {};
 
   const isEmailDirty = currentEmail !== email.trim();
@@ -193,7 +193,7 @@ export default function AccountSettings() {
             styles={{ icon: { marginRight: rem(4) } }}
           >
             Your account is {isPublic ? "public" : "private"}
-            {payoutsEnabled && (
+            {isActive && payoutsEnabled && (
               <Link className={classes.editLink} href="/club/publish-routines">
                 Edit
               </Link>
