@@ -180,6 +180,7 @@ export default function Analysis() {
                         width: "100%",
                         maxWidth: rem(300),
                       }}
+                      elementId="analysis_create_routine_btn"
                       onClick={handleClick}
                     />
                     <Disclaimer

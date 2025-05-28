@@ -33,7 +33,7 @@ export default function AnswersPage() {
         </Text>
         <Text>For a quick walkthrough watch the video above and click 'Next' to start.</Text>
       </Stack>
-      <Button mb="10%" onClick={() => router.push("/select-part")}>Next</Button>
+      <Button id="about_next_btn" mb="10%" onClick={() => router.push("/select-part")}>Next</Button>
     </Stack>
   );
 }

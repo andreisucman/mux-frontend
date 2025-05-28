@@ -10,6 +10,7 @@ type Props = {
   disabled?: boolean;
   loading?: boolean;
   children?: React.ReactNode;
+  elementId: string;
   iconPosition?: "left" | "right";
   onClick?: (props?: any) => void;
   buttonStyles?: { [key: string]: any };
@@ -23,6 +24,7 @@ function GlowingButton({
   addGradient = true,
   loading,
   disabled,
+  elementId,
   iconPosition = "left",
   containerStyles,
   overlayStyles,
@@ -31,7 +33,7 @@ function GlowingButton({
   onClick,
 }: Props) {
   return (
-    <Stack className={classes.container} style={containerStyles ? containerStyles : {}}>
+    <Stack className={classes.container} style={containerStyles ? containerStyles : {}} id={elementId}>
       <div
         className={cn(classes.button, classes.gradient, {
           gradientSpin: addGradient,
