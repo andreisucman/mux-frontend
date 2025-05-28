@@ -9,10 +9,13 @@
 }
 
 .button {
+  cursor: pointer;
+  
   display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
+  border: none;
 
   position: relative;
   min-width: rem(105);
@@ -26,6 +29,8 @@
   color: var(--mantine-color-white);
 
   z-index: 1;
+
+  transition: all 0.25s ease-in-out;
 
   &:hover {
     background-color: var(--mantine-color-brand-8);
