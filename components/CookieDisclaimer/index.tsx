@@ -32,7 +32,13 @@ export default function CookieDisclaimer() {
       callTheServer({ endpoint: "getIsFromEu", method: "GET" })
         .then((res) => {
           if (res.status === 200) {
-            setShowBanner(res.message === true);
+            const isFromEu = res.message === true;
+
+            if (isFromEu) {
+              setShowBanner(isFromEu);
+            } else {
+              setHasConsent(true);
+            }
           }
         })
         .catch(() => setShowBanner(true));
