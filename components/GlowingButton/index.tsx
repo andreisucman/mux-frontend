@@ -10,7 +10,7 @@ type Props = {
   disabled?: boolean;
   loading?: boolean;
   children?: React.ReactNode;
-  elementId: string;
+  elementId?: string;
   iconPosition?: "left" | "right";
   onClick?: (props?: any) => void;
   buttonStyles?: { [key: string]: any };
