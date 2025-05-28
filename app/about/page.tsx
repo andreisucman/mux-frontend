@@ -23,18 +23,17 @@ export default function AnswersPage() {
         </video>
       </Stack>
       <Stack className={classes.explanation}>
+        <Text>On Muxout you can improve your appearance with self-improvement routines.</Text>
         <Text>
-          On Muxout you can improve your appearance with self-improvement routines. You analyze the
-          severity of your concerns, create a routine, complete the routine and analyze your
-          concerns again to see the improvement.
+          Start by analyzing your concerns, then create a routine, complete the routine and analyze
+          your concerns again to see the improvement.
         </Text>
         <Text>
-          If over time your appearance improves you can publish your routines and earn when others
-          view them.
+          If your appearance improves you can publish your routines and earn from views.
         </Text>
         <Text>For a quick walkthrough watch the video above and click 'Next' to start.</Text>
       </Stack>
-      <Button onClick={() => router.push("/select-part")}>Next</Button>
+      <Button mb="10%" onClick={() => router.push("/select-part")}>Next</Button>
     </Stack>
   );
 }

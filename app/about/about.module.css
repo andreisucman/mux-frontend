@@ -12,6 +12,7 @@
   width: fit-content;
   object-fit: contain;
   clip-path: inset(0 3px 0 0);
+  aspect-ratio: 9/16.5;
 }
 
 .explanation {
