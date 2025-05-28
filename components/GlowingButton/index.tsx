@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import cn from "classnames";
-import { Loader, Stack, UnstyledButton } from "@mantine/core";
+import { Loader, UnstyledButton } from "@mantine/core";
 import classes from "./GlowingButton.module.css";
 
 type Props = {
@@ -33,7 +33,7 @@ function GlowingButton({
   onClick,
 }: Props) {
   return (
-    <Stack className={classes.container} style={containerStyles ? containerStyles : {}} id={elementId}>
+    <div className={classes.container} style={containerStyles ? containerStyles : {}} id={elementId}>
       <div
         className={cn(classes.button, classes.gradient, {
           gradientSpin: addGradient,
@@ -61,7 +61,7 @@ function GlowingButton({
           </>
         )}
       </UnstyledButton>
-    </Stack>
+    </div>
   );
 }
 

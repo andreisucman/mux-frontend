@@ -28,12 +28,17 @@ export default function AnswersPage() {
           Start by analyzing your concerns, then create a routine, complete the routine and analyze
           your concerns again to see the improvement.
         </Text>
-        <Text>
-          If your appearance improves you can publish your routines and earn from views.
-        </Text>
+        <Text>If your appearance improves you can publish your routines and earn from views.</Text>
         <Text>For a quick walkthrough watch the video above and click 'Next' to start.</Text>
       </Stack>
-      <Button id="about_next_btn" mb="10%" onClick={() => router.push("/select-part")}>Next</Button>
+      <button
+        id="about_next_btn"
+        style={{ marginBottom: "10%" }}
+        className={classes.button}
+        onClick={() => router.push("/select-part")}
+      >
+        Next
+      </button>
     </Stack>
   );
 }

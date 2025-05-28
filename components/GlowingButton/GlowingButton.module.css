@@ -2,6 +2,10 @@
   position: relative;
   border-radius: var(--mantine-radius-lg);
   flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
 }
 
 .button {
