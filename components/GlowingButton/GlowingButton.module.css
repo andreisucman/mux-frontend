@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
 
   position: relative;
   min-width: rem(105);

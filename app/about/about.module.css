@@ -29,7 +29,7 @@
   background-color: var(--mantine-color-brand-7);
   border-radius: var(--mantine-radius-lg);
   transition: 0.25s ease-in-out;
-  color: var(--mantine-color-gray-0);
+  color: var(--mantine-color-white);
 
   padding: 0 rem(16);
   height: rem(32);
