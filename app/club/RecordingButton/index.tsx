@@ -52,8 +52,11 @@ export default function RecordingButton({
         audio: true,
         video: false,
       });
-      const mediaRecorder = new MediaRecorder(mediaStreamRef.current, { mimeType: "audio/webm" });
+      const mediaRecorder = new MediaRecorder(mediaStreamRef.current, {
+        mimeType: "audio/webm",
+      });
       mediaRecorderRef.current = mediaRecorder;
+
       setIsRecording(true);
 
       const audioChunks: Blob[] = [];
@@ -63,8 +66,7 @@ export default function RecordingButton({
       };
 
       mediaRecorder.onstop = () => {
-        console.log("Recording stopped, processing data...");
-        const audioBlob = new Blob(audioChunks);
+        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
         if (setAudioBlobs) setAudioBlobs((prev) => [...(prev || []), audioBlob]);
         if (setLocalUrl) {
           setLocalUrl(URL.createObjectURL(audioBlob));
@@ -79,7 +81,7 @@ export default function RecordingButton({
       handleStopRecording();
       console.log("Error in handleStartRecording: ", err);
     }
-  }, [transcribeOnEnd, isDisabled, mediaStreamRef.current]);
+  }, [transcribeOnEnd, isDisabled, mediaRecorderRef.current, mediaStreamRef.current]);
 
   const handleStopRecording = useCallback(async () => {
     const mediaRecorder = mediaRecorderRef.current;
@@ -92,7 +94,7 @@ export default function RecordingButton({
     } else {
       console.log("No active recordings to stop.");
     }
-  }, [setLocalUrl]);
+  }, [setLocalUrl, mediaRecorderRef.current]);
 
   const handleTranscribe = useCallback(async (audioBlob: Blob) => {
     try {

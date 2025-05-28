@@ -109,7 +109,7 @@ function Header() {
     }
 
     if (referrer === "startButton") {
-      router.push("/select-part");
+      router.push("/about");
     }
   };
 

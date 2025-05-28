@@ -60,7 +60,7 @@ const saveTaskFromDescription = async ({
       if (response.error === "short") {
         setError("Make your description and instruction at least 50 characters long.");
       } else if (response.error === "long") {
-        setError("Make your description and instruction less than 300 characters long.");
+        setError("Make your description and instruction less than 300 characters.");
       } else if (response.error === "scan") {
         setError(`You need to scan your ${part} first.`);
       } else if (response.error === "inappropriate") {

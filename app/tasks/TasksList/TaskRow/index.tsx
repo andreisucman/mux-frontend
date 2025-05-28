@@ -114,7 +114,7 @@ export default function TaskRow({
           />
         </>
       ),
-    [dates, timerDate, status, timerText]
+    [dates,started, timerDate, status, timerText]
   );
 
   return (

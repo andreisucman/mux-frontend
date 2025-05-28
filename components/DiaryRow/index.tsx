@@ -64,6 +64,7 @@ export default function DiaryRow({ data, isPublic }: Props) {
         setIsUploading(true);
 
         const audioUrls = await uploadToSpaces({ itemsArray: blobs });
+        console.log("audioUrls", audioUrls);
 
         const response = await callTheServer({
           endpoint: "saveDiaryRecord",

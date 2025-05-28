@@ -41,8 +41,8 @@ const defaultNavigation = [
     icon: <IconTrophy stroke={1.25} size={20} />,
   },
   {
-    title: "About",
-    path: "/about",
+    title: "FAQ",
+    path: "/faq",
     icon: <IconInfoSquareRounded stroke={1.35} style={{ maxWidth: rem(19) }} />,
   },
 ];

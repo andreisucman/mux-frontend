@@ -1,0 +1,21 @@
+.videoWrapper {
+  display: flex;
+
+  max-height: 75vh;
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  border-radius: var(--mantine-radius-lg);
+}
+
+.video {
+  margin: auto;
+  height: 100%;
+  width: fit-content;
+  object-fit: contain;
+  clip-path: inset(0 3px 0 0);
+}
+
+.explanation {
+  border-radius: var(--mantine-radius-lg);
+  border: rem(2) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  padding: rem(16);
+}
