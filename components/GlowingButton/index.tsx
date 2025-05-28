@@ -33,7 +33,7 @@ function GlowingButton({
   onClick,
 }: Props) {
   return (
-    <div className={classes.container} style={containerStyles ? containerStyles : {}} id={elementId}>
+    <div className={classes.container} style={containerStyles ? containerStyles : {}}>
       <div
         className={cn(classes.button, classes.gradient, {
           gradientSpin: addGradient,
@@ -41,7 +41,8 @@ function GlowingButton({
         })}
         style={overlayStyles ? overlayStyles : {}}
       />
-      <UnstyledButton
+      <button
+        id={elementId}
         disabled={disabled}
         className={cn(classes.button, {
           [classes.loading]: loading,
@@ -60,7 +61,7 @@ function GlowingButton({
             {iconPosition === "right" && icon}
           </>
         )}
-      </UnstyledButton>
+      </button>
     </div>
   );
 }
