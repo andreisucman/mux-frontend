@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import { IconCheckbox, IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
+import { nanoid } from "nanoid";
 import { Button, rem, Skeleton, Stack, Text, Title } from "@mantine/core";
 import AnalysisCard from "@/components/AnalysisCard";
 import AnalysisLegend from "@/components/AnalysisCard/AnalysisLegend";
@@ -83,6 +84,15 @@ export default function Analysis() {
     if (isLoading) return;
 
     setIsLoading(true);
+
+    if (window.dataLayer) {
+      const conversionId = nanoid();
+
+      window.dataLayer.push({
+        event: "Sign Up",
+        conversionId,
+      });
+    }
 
     if (status === AuthStateEnum.AUTHENTICATED) {
       router.push("/routines");
