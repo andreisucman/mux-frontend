@@ -3,7 +3,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
-import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
+import { Alert, Button, Group, Loader, Stack, Text } from "@mantine/core";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
 import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
@@ -37,14 +37,14 @@ export default function SuggestSelectConcerns() {
   });
 
   const updateRoutineSuggestions = useCallback(
-    async (concernScores: ScoreType[]) => {
+    async (concernScores: ScoreType[], isCreate?: boolean) => {
       if (isLoading) return;
       setIsLoading(true);
 
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, concernScores },
+        body: { part, concernScores, isCreate },
       });
 
       if (response.status === 200) {
@@ -129,15 +129,27 @@ export default function SuggestSelectConcerns() {
             customStyles={{ flex: 0 }}
           />
           {rows}
-          <Button
-            disabled={!concerns || isLoading}
-            loading={isLoading}
-            onClick={() => updateRoutineSuggestions(selectedConcerns || [])}
-            mb={"20%"}
-            className={classes.button}
-          >
-            Next
-          </Button>
+          <Group ml="auto" mb="20%">
+            {isActionAvailable && (
+              <Button
+                variant="default"
+                disabled={!!isLoading}
+                loading={!!isLoading}
+                onClick={() => updateRoutineSuggestions(selectedConcerns || [], true)}
+                className={classes.button}
+              >
+                Create new
+              </Button>
+            )}
+            <Button
+              disabled={!concerns || isLoading}
+              loading={isLoading}
+              onClick={() => updateRoutineSuggestions(selectedConcerns || [])}
+              className={classes.button}
+            >
+              Next
+            </Button>
+          </Group>
         </>
       ) : (
         <Loader

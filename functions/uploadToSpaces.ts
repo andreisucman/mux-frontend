@@ -62,12 +62,10 @@ export default async function uploadToSpaces({ itemsArray, imageSize = 1280, mim
 
       if (item instanceof File || item instanceof Blob) {
         itemMime = item.type;
-        console.log("item", item, "itemMime 65", itemMime);
       } else if (typeof item === "string") {
         // Try a HEAD request first to avoid downloading the asset twice
         const head = await fetch(item, { method: "HEAD" });
         itemMime = head.headers.get("Content-Type") || undefined;
-        console.log("itemMime 70", itemMime);
       }
 
       // ────────────────────────────────────────────────────────────────

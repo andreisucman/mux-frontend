@@ -36,14 +36,18 @@ export default function AddDetails() {
   });
 
   const updateRoutineSuggestions = useCallback(
-    async (previousExperience: { [key: string]: string }, specialConsiderations: string) => {
+    async (
+      previousExperience: { [key: string]: string },
+      specialConsiderations: string,
+      isCreate?: boolean
+    ) => {
       if (isLoading) return;
       setIsLoading(true);
 
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, previousExperience, specialConsiderations },
+        body: { part, previousExperience, specialConsiderations, isCreate },
       });
 
       if (response.status === 200) {
@@ -141,8 +145,10 @@ export default function AddDetails() {
           <Button
             disabled={!concernScores || isLoading || allIsEmpty}
             loading={isLoading}
-            onClick={() => updateRoutineSuggestions(previousExperience || {}, specialConsiderations || "")}
-            mb={"20%"}
+            mb="20%"
+            onClick={() =>
+              updateRoutineSuggestions(previousExperience || {}, specialConsiderations || "")
+            }
             className={classes.button}
           >
             Next

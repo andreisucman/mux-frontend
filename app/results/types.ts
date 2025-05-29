@@ -7,8 +7,8 @@ export type SimpleProgressType = {
   part: string;
   initialImages: ProgressImageType[];
   images: ProgressImageType[];
-  concernScores: ScoreType[];
-  concernScoresDifference: ScoreDifferenceType[];
+  concernScore: ScoreType;
+  concernScoreDifference: ScoreDifferenceType;
   createdAt: string;
   initialDate: string;
   isPublic: boolean;

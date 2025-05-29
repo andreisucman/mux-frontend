@@ -22,7 +22,8 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
 
-  const { userName, images, part, initialImages, createdAt, isPublic, initialDate } = record;
+  const { userName, images, part, initialImages, createdAt, isPublic, initialDate } =
+    record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: createdAt || new Date() });
@@ -50,6 +51,7 @@ export default function ProgressModalContent({ record, isPublicPage }: Props) {
         isPublic={isPublic}
         isSelf={isSelf}
       />
+
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

@@ -1,4 +1,4 @@
 export const individualResultTitles = [
-  { label: "Progress", value: "/results", addQuery: true },
-  { label: "Proof", value: "/results/proof", addQuery: true },
+  { label: "My progress", value: "/results", addQuery: true },
+  { label: "My proof", value: "/results/proof", addQuery: true },
 ];

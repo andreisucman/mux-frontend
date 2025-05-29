@@ -13,7 +13,7 @@ export default function AnswersPage() {
 
   return (
     <Stack className={`smallPage`}>
-      <PageHeader title="About" />
+      <PageHeader title="Getting started" />
       <Stack className={classes.videoWrapper}>
         <video muted autoPlay controls className={classes.video}>
           <source
@@ -23,12 +23,12 @@ export default function AnswersPage() {
         </video>
       </Stack>
       <Stack className={classes.explanation}>
-        <Text>On Muxout you can improve your appearance with self-improvement routines.</Text>
+        <Text>Improve your appearance with self-improvement routines.</Text>
         <Text>
           Start by analyzing your concerns, then create a routine, complete the routine and analyze
           your concerns again to see the improvement.
         </Text>
-        <Text>If your appearance improves you can publish your routines and earn from views.</Text>
+        <Text>After your appearance improves you can publish your routines and earn from views.</Text>
         <Text>For a quick walkthrough watch the video above and click 'Next' to start.</Text>
       </Stack>
       <button

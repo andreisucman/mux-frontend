@@ -289,7 +289,7 @@ export default function SuggestRoutine() {
 
   return (
     <Stack className={cn(classes.container, "smallPage")}>
-      <PageHeader title={"Result"} />
+      <PageHeader title={"Suggest routine"} />
       {displayComponent !== "loading" && (
         <>
           {checkBackNotice && <Alert p="0.5rem 1rem">{checkBackNotice}</Alert>}

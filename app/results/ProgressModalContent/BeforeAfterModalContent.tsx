@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IconEye } from "@tabler/icons-react";
 import { rem, Stack } from "@mantine/core";
@@ -8,6 +8,8 @@ import GlowingButton from "@/components/GlowingButton";
 import SliderComparisonCarousel from "@/components/SliderComparisonCarousel";
 import { UserContext } from "@/context/UserContext";
 import { formatDate } from "@/helpers/formatDate";
+import getReadableDateInterval from "@/helpers/getReadableDateInterval";
+import LineProgressIndicators from "../LineProgressIndicators";
 import classes from "./ProgressModalContent.module.css";
 
 type Props = {
@@ -22,11 +24,25 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
   const { userDetails } = useContext(UserContext);
   const isSelf = record.userId === userDetails?._id;
 
-  const { userName, images, initialImages, part, concern, updatedAt, isPublic, initialDate } =
-    record;
+  const {
+    userName,
+    images,
+    concernScore,
+    concernScoreDifference,
+    initialImages,
+    part,
+    concern,
+    updatedAt,
+    isPublic,
+    initialDate,
+  } = record;
 
   const formattedInitialDate = formatDate({ date: initialDate });
   const formattedCompareDate = formatDate({ date: updatedAt || new Date() });
+  const dateInterval = useMemo(
+    () => getReadableDateInterval(initialDate, updatedAt || new Date()),
+    []
+  );
 
   const redirectUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/club/routines/${userName}`;
 
@@ -52,6 +68,11 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
         isPublic={isPublic}
         isSelf={isSelf}
       />
+      {/* <LineProgressIndicators
+        title={`Improvement (${dateInterval})`}
+        concernScores={[concernScore]}
+        concernScoresDifference={[concernScoreDifference]}
+      /> */}
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

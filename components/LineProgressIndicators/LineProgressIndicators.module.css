@@ -1,0 +1,34 @@
+.container {
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow: auto;
+  padding: rem(16) rem(16) rem(8);
+  gap: rem(12);
+}
+
+.wrapper {
+  gap: rem(8);
+}
+
+.indicatorsWrapper {
+  gap: rem(8);
+  overflow: auto;
+  max-height: rem(100);
+}
+
+.labelGroup {
+  cursor: pointer;
+  gap: rem(8);
+  align-items: center;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.barRoot {
+  position: relative;
+  flex: 1;
+  gap: 0;
+}
+
+.barTotalLabel {
+  overflow: auto;
+}

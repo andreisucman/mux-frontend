@@ -110,7 +110,7 @@ export default function AnswerQuestions() {
       setShowWaitComponent: (verdict?: boolean) => {
         if (!verdict) {
           if (!questionsAndAnswers) {
-            router.replace(`/suggest/add-details${query ? `?${query}` : ""}`);
+            router.replace(`/suggest/result${query ? `?${query}` : ""}`);
             return;
           }
         }
