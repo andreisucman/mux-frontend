@@ -89,7 +89,7 @@ export default function Analysis() {
       const conversionId = nanoid();
 
       window.dataLayer.push({
-        event: "Sign Up",
+        event: "SignUp",
         conversionId,
       });
     }
