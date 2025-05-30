@@ -17,9 +17,4 @@ export const protectedPaths = [
   "/verify-email",
   "/choose-date",
   "/club/publish-routines",
-  "/suggest",
-  "/suggest/select-concerns",
-  "/suggest/add-details",
-  "/suggest/answer-questions",
-  "/suggest/result",
 ];

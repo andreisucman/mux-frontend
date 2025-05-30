@@ -36,7 +36,7 @@ export default function AnswerBox({
           setText={(text: string) => handleType(text)}
           customContainerStyles={{ marginLeft: "auto" }}
           size="compact-xs"
-          buttonText="Answer with voice"
+          buttonText="Quick answer with voice"
           defaultRecordingMs={60000}
           isDisabled={isDisabled}
           transcribeOnEnd

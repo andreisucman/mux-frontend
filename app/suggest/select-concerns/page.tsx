@@ -29,7 +29,7 @@ export default function SuggestSelectConcerns() {
 
   const part = searchParams.get("part") || "face";
 
-  const { concerns, latestConcernScores, nextRoutineSuggestion } = userDetails || {};
+  const { _id: userId, concerns, latestConcernScores, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -44,7 +44,7 @@ export default function SuggestSelectConcerns() {
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, concernScores, isCreate },
+        body: { part, userId, concernScores, isCreate },
       });
 
       if (response.status === 200) {
@@ -54,7 +54,7 @@ export default function SuggestSelectConcerns() {
         router.push(`/suggest/add-details${stringParams ? `?${stringParams}` : ""}`);
       }
     },
-    [router, part, routineSuggestion, isLoading]
+    [router, userId, part, routineSuggestion, isLoading]
   );
 
   const handleSelectConcerns = async (item: ScoreType) => {

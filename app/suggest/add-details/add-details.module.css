@@ -15,10 +15,6 @@
 
 .button {
   margin-left: auto;
-
-  @media (max-width: $mantine-breakpoint-xs) {
-    margin: unset;
-  }
 }
 
 .alert {

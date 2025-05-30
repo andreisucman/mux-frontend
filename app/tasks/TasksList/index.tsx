@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/helpers/custom-router";
 import { IconCircleOff } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Divider, Loader, Stack, Text } from "@mantine/core";
@@ -149,7 +150,6 @@ export default function TasksList({ customStyles }: Props) {
       if (response.status === 200) {
         const tasks: TaskType[] = response.message;
         setTasks(tasks);
-
         handleUpdateTasks({ tasks }, hideCompletedTasks, hideFutureTasks);
       }
     } catch (err) {}
@@ -192,7 +192,7 @@ export default function TasksList({ customStyles }: Props) {
     } else {
       return getTasksWthoutGroups(taskList);
     }
-  }, [taskList]);
+  }, [taskList, groupTasksByConcerns]);
 
   useEffect(() => {
     if (code) return;

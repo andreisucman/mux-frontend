@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
+import AnswerBox from "@/app/suggest/answer-questions/AnswerBox";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
 import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
@@ -13,7 +14,6 @@ import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { normalizeString } from "@/helpers/utils";
-import AnswerBox from "../answer-questions/AnswerBox";
 import classes from "./add-details.module.css";
 
 export const runtime = "edge";
@@ -27,8 +27,9 @@ export default function AddDetails() {
 
   const part = searchParams.get("part") || "face";
 
-  const { previousExperience, concernScores, specialConsiderations } = routineSuggestion || {};
-  const { nextRoutineSuggestion } = userDetails || {};
+  const { previousExperience, questionsAndAnswers, concernScores, specialConsiderations } =
+    routineSuggestion || {};
+  const { _id: userId, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -47,17 +48,23 @@ export default function AddDetails() {
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, previousExperience, specialConsiderations, isCreate },
+        body: { part, userId, previousExperience, specialConsiderations, isCreate },
       });
 
       if (response.status === 200) {
+        const query = searchParams.toString();
+
         setRoutineSuggestion((prev: RoutineSuggestionType) => ({ ...prev, previousExperience }));
 
-        const stringParams = searchParams.toString();
-        router.push(`/suggest/answer-questions${stringParams ? `?${stringParams}` : ""}`);
+        if (!questionsAndAnswers) {
+          router.replace(`/suggest/result${query ? `?${query}` : ""}`);
+          return;
+        } else {
+          router.push(`/suggest/answer-questions${query ? `?${query}` : ""}`);
+        }
       }
     },
-    [router, part, isLoading]
+    [router, userId, part, isLoading, questionsAndAnswers]
   );
 
   const handleType = (concern: string, text: string) => {

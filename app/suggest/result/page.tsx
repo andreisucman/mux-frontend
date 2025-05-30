@@ -4,14 +4,17 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { useSearchParams } from "next/navigation";
 import { IconAnalyze, IconRoute } from "@tabler/icons-react";
 import cn from "classnames";
-import { Alert, Button, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
+import { Alert, Button, Divider, Group, Loader, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
+import GlowingButton from "@/components/GlowingButton";
 import PageHeader from "@/components/PageHeader";
 import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
 import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import fetchUserData from "@/functions/fetchUserData";
 import { useRouter } from "@/helpers/custom-router";
@@ -20,6 +23,7 @@ import {
   getFromLocalStorage,
   saveToLocalStorage,
 } from "@/helpers/localStorage";
+import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { PartEnum } from "@/types/global";
@@ -43,7 +47,7 @@ export default function SuggestRoutine() {
   const { routineSuggestion, setRoutineSuggestion, fetchRoutineSuggestion } = useContext(
     CreateRoutineSuggestionContext
   );
-  const { userDetails, setUserDetails } = useContext(UserContext);
+  const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [thoughts, setThoughts] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);
   const [loaderText, setLoaderText] = useState("");
@@ -60,7 +64,7 @@ export default function SuggestRoutine() {
     tasks,
     isRevised,
   } = routineSuggestion || {};
-  const { nextRoutine, nextRoutineSuggestion } = userDetails || {};
+  const { _id: userId, nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
     useCheckActionAvailability({
@@ -257,9 +261,18 @@ export default function SuggestRoutine() {
     });
   }, [part]);
 
+  const signUp = () =>
+    openAuthModal({
+      stateObject: {
+        redirectPath: "/routines",
+        localUserId: userId,
+        referrer: ReferrerEnum.SUGGESTION,
+      },
+      title: "Sign up",
+    });
+
   useEffect(() => {
     if (!routineSuggestionId) return;
-
     streamRoutineSuggestions(routineSuggestionId);
 
     return () => {
@@ -286,6 +299,56 @@ export default function SuggestRoutine() {
 
     return () => clearTimeout(tId);
   }, [routineSuggestion, query]);
+
+  const ctaButtons = useMemo(() => {
+    return (
+      <Group className={classes.buttonWrapper}>
+        {status === AuthStateEnum.AUTHENTICATED ? (
+          <>
+            {!isCreationAvailable && (
+              <Text size="sm" ta="center" c="dimmed">
+                You can create this routine after {creationCheckBackDate}
+              </Text>
+            )}
+            {!isRevised && (
+              <Button
+                className={classes.button}
+                onClick={handleOpenReviseRoutine}
+                disabled={isRevised}
+                variant="default"
+              >
+                Revise
+              </Button>
+            )}
+            <Button
+              className={classes.button}
+              onClick={handleOpenSelectRoutineDate}
+              disabled={!isCreationAvailable}
+            >
+              Create routine
+            </Button>
+          </>
+        ) : (
+          <>
+            <Text size="sm" c="dimmed" ta="center">
+              Sign up to be able to publish your routines and earn from views.
+            </Text>
+            <GlowingButton
+              text={"Sign up and earn"}
+              containerStyles={{
+                flex: 0,
+                margin: "2rem auto",
+                width: "100%",
+                maxWidth: rem(300),
+              }}
+              elementId="analysis_create_routine_btn"
+              onClick={signUp}
+            />
+          </>
+        )}
+      </Group>
+    );
+  }, [status, isCreationAvailable, isRevised, creationCheckBackDate]);
 
   return (
     <Stack className={cn(classes.container, "smallPage")}>
@@ -328,30 +391,7 @@ export default function SuggestRoutine() {
               </Group>
               <Text>{summary}</Text>
               {taskRows}
-              <Group className={classes.buttonWrapper}>
-                {!isCreationAvailable && (
-                  <Text size="sm" ta="center" c="dimmed">
-                    You can create this routine after {creationCheckBackDate}
-                  </Text>
-                )}
-                {!isRevised && (
-                  <Button
-                    className={classes.button}
-                    onClick={handleOpenReviseRoutine}
-                    disabled={isRevised}
-                    variant="default"
-                  >
-                    Revise
-                  </Button>
-                )}
-                <Button
-                  className={classes.button}
-                  onClick={handleOpenSelectRoutineDate}
-                  disabled={!isCreationAvailable}
-                >
-                  Create routine
-                </Button>
-              </Group>
+              {ctaButtons}
             </Stack>
           )}
         </>

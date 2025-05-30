@@ -29,7 +29,7 @@ export default function AnswersPage() {
     <Stack className={`smallPage`}>
       <PageHeader title="Getting started" />
       <Stack className={classes.videoWrapper}>
-        <video muted autoPlay controls className={classes.video}>
+        <video className={classes.video} muted controls>
           <source
             src={`${process.env.NEXT_PUBLIC_API_SERVER_URL}/getAboutVideo`}
             type="video/mp4"

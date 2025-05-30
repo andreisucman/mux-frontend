@@ -50,7 +50,7 @@ export default function AnswerQuestions() {
       const response = await callTheServer({
         endpoint: "updateRoutineSuggestion",
         method: "POST",
-        body: { part, questionsAndAnswers },
+        body: { part, userId, questionsAndAnswers },
       });
 
       if (response.status === 200) {
@@ -60,7 +60,7 @@ export default function AnswerQuestions() {
         router.push(`/suggest/result${stringParams ? `?${stringParams}` : ""}`);
       }
     },
-    [router, part, isLoading]
+    [router, userId, part, isLoading]
   );
 
   const handleType = (question: string, text: string) => {

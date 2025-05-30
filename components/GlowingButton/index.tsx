@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import cn from "classnames";
-import { Loader, UnstyledButton } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import classes from "./GlowingButton.module.css";
 
 type Props = {

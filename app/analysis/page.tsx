@@ -85,26 +85,19 @@ export default function Analysis() {
 
     setIsLoading(true);
 
-    if (window.dataLayer) {
-      const conversionId = nanoid();
-
-      window.dataLayer.push({
-        event: "SignUp",
-        conversionId,
-      });
-    }
-
     if (status === AuthStateEnum.AUTHENTICATED) {
       router.push("/routines");
     } else {
-      openAuthModal({
-        stateObject: {
-          redirectPath: "/routines",
-          localUserId: userId,
-          referrer: ReferrerEnum.ANALYSIS,
-        },
-        title: "Start your change",
-      });
+      if (window.dataLayer) {
+        const conversionId = nanoid();
+
+        window.dataLayer.push({
+          event: "SignUp",
+          conversionId,
+        });
+      }
+
+      router.push("/suggest/select-concerns");
 
       setIsLoading(false);
     }
