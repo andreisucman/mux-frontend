@@ -81,8 +81,6 @@ export default function SuggestRoutine() {
       nextAction: nextRoutine,
     });
 
-  console.log("routineSuggestion", routineSuggestion);
-
   const streamRoutineSuggestions = async (
     routineSuggestionId: string,
     revisionText?: string,
@@ -212,7 +210,7 @@ export default function SuggestRoutine() {
         </Stack>
       );
     });
-  }, [tasks, setTaskCountMap]);
+  }, [tasks, routineSuggestionId, setTaskCountMap]);
 
   const checkBackNotice = isSuggestionAvailable ? undefined : (
     <Text className={classes.alert}>
@@ -319,11 +317,11 @@ export default function SuggestRoutine() {
   }, [tasks, isStreaming]);
 
   useEffect(() => {
-    // If the context wasn't populated, navigate user back to concerns page
     const tId = setTimeout(() => {
       if (!routineSuggestion) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
       clearTimeout(tId);
     }, 5000);
+
     return () => {
       clearTimeout(tId);
       sourceRef.current?.close();
@@ -377,7 +375,7 @@ export default function SuggestRoutine() {
         )}
       </Group>
     );
-  }, [status, isCreationAvailable, isRevised, creationCheckBackDate]);
+  }, [status, handleOpenReviseRoutine, isCreationAvailable, isRevised, creationCheckBackDate]);
 
   return (
     <Stack className={cn(classes.container, "smallPage")}>
