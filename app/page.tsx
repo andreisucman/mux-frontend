@@ -20,6 +20,8 @@ type FetchBeforeAftersProps = {
   existingCount?: number;
 };
 
+export const runtime = "edge";
+
 export default function BeforeAftersPage() {
   const searchParams = useSearchParams();
   const { ref, width } = useElementSize();

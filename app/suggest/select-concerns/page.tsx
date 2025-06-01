@@ -9,6 +9,7 @@ import PageHeader from "@/components/PageHeader";
 import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestionContext";
 import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
@@ -22,9 +23,9 @@ export const runtime = "edge";
 export default function SuggestSelectConcerns() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { status, userDetails } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedConcerns, setSelectedConcerns] = useState<ScoreType[]>([]);
-  const { userDetails } = useContext(UserContext);
   const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineSuggestionContext);
 
   const part = searchParams.get("part") || "face";
@@ -35,6 +36,8 @@ export default function SuggestSelectConcerns() {
     part,
     nextAction: nextRoutineSuggestion,
   });
+
+  const showCreateNew = isActionAvailable && status === AuthStateEnum.AUTHENTICATED;
 
   const updateRoutineSuggestions = useCallback(
     async (concernScores: ScoreType[], isCreate?: boolean) => {
@@ -77,19 +80,21 @@ export default function SuggestSelectConcerns() {
 
     const relevantScores = latestConcernScores[part];
 
-    return relevantScores.map((cso, i) => {
-      const isSelected = selectedConcerns?.some((co) => co.name === cso.name);
+    return relevantScores
+      .filter((cso) => cso.value)
+      .map((cso, i) => {
+        const isSelected = selectedConcerns?.some((co) => co.name === cso.name);
 
-      return (
-        <ScoreDisplayRow
-          key={i}
-          item={cso}
-          isChecked={!!isSelected}
-          handleSelectConcerns={handleSelectConcerns}
-          isDisabled={!isActionAvailable}
-        />
-      );
-    });
+        return (
+          <ScoreDisplayRow
+            key={i}
+            item={cso}
+            isChecked={!!isSelected}
+            handleSelectConcerns={handleSelectConcerns}
+            isDisabled={!isActionAvailable}
+          />
+        );
+      });
   }, [
     handleSelectConcerns,
     selectedConcerns,
@@ -130,7 +135,7 @@ export default function SuggestSelectConcerns() {
           />
           {rows}
           <Group ml="auto" mb="20%">
-            {isActionAvailable && (
+            {showCreateNew && (
               <Button
                 variant="default"
                 disabled={!!isLoading}
@@ -161,3 +166,5 @@ export default function SuggestSelectConcerns() {
     </Stack>
   );
 }
+
+  

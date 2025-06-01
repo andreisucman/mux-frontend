@@ -15,11 +15,15 @@
 }
 
 .content {
-  margin-right: auto;
   flex-wrap: nowrap;
   padding: 0 rem(16);
+  flex: 1;
 }
 
 .count {
   white-space: nowrap;
+}
+
+.deleted {
+  opacity: 0.5;
 }

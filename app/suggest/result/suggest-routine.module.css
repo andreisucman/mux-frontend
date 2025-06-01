@@ -43,9 +43,6 @@
 }
 
 .buttonWrapper {
-  margin-top: rem(8);
-  margin-left: auto;
-
   @media (max-width: $mantine-breakpoint-xs) {
     margin-left: unset;
     justify-content: center;

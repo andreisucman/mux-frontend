@@ -154,18 +154,6 @@ export default function ScanProgress() {
 
           if (response.status === 200) {
             if (response.error) {
-              if (response.error === "must login") {
-                openAuthModal({
-                  title: "Sign in to continue",
-                  stateObject: {
-                    referrer: ReferrerEnum.SCAN,
-                    redirectPath: "/scan",
-                    localUserId: userId,
-                  },
-                });
-                return;
-              }
-
               if (response.error === "not similar") {
                 openErrorModal({
                   description:

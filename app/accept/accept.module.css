@@ -11,4 +11,8 @@
   margin: 0 auto;
   max-width: rem(200);
   width: 100%;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    max-width: unset;
+  }
 }

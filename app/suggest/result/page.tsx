@@ -36,6 +36,7 @@ export const runtime = "edge";
 export type CreateRoutineProps = {
   startDate: Date | null;
   part: PartEnum;
+  taskCountMap?: { [key: string]: any };
   revisionText?: string;
 };
 
@@ -53,6 +54,7 @@ export default function SuggestRoutine() {
   const [loaderText, setLoaderText] = useState("");
   const [displayComponent, setDisplayComponent] = useState<"loading" | "result">("loading");
   const [createRoutineLoading, setCreateRoutineLoading] = useState(false);
+  const [taskCountMap, setTaskCountMap] = useState<{ [key: string]: any }>();
 
   const part = searchParams.get("part") || "face";
   const query = searchParams.toString();
@@ -78,7 +80,11 @@ export default function SuggestRoutine() {
       nextAction: nextRoutine,
     });
 
-  const streamRoutineSuggestions = async (routineSuggestionId: string, revisionText?: string) => {
+  const streamRoutineSuggestions = async (
+    routineSuggestionId: string,
+    revisionText?: string,
+    userId?: string
+  ) => {
     const API = process.env.NEXT_PUBLIC_API_SERVER_URL;
     const storedId = getFromLocalStorage("routineStreamId");
     const storedOffset = Number(getFromLocalStorage("routineStreamOffset") || 0);
@@ -91,8 +97,18 @@ export default function SuggestRoutine() {
     const headers = storedId ? {} : ({ "Content-Type": "application/json" } as any);
 
     try {
-      const body = revisionText ? JSON.stringify({ revisionText }) : undefined;
-      const response = await fetch(endpoint, { method, body, headers, credentials: "include" });
+      const body: { [key: string]: any } = { userId };
+
+      if (revisionText) {
+        body.revisionText = revisionText;
+        body.taskCountMap = taskCountMap;
+      }
+
+      const payload: { [key: string]: any } = { method, headers, credentials: "include" };
+
+      if (!storedId) payload.body = JSON.stringify(body);
+
+      const response = await fetch(endpoint, payload);
 
       if (revisionText) {
         modals.closeAll();
@@ -139,13 +155,15 @@ export default function SuggestRoutine() {
         }
       }
       fetchUserData({ setUserDetails });
-      fetchRoutineSuggestion().then(() => {
+      fetchRoutineSuggestion(userId).then(() => {
         setIsStreaming(false);
         setLoaderText("");
         deleteFromLocalStorage("routineStreamId");
         deleteFromLocalStorage("routineStreamOffset");
       });
-    } catch (err: any) {}
+    } catch (err: any) {
+      console.log("err", err);
+    }
   };
 
   const taskRows = useMemo(() => {
@@ -172,12 +190,13 @@ export default function SuggestRoutine() {
               name={t.task}
               numberOfTimesInAMonth={t.numberOfTimesInAMonth}
               icon={t.icon}
+              setTaskCountMap={setTaskCountMap}
             />
           ))}
         </Stack>
       );
     });
-  }, [tasks]);
+  }, [tasks, setTaskCountMap]);
 
   const checkBackNotice = isSuggestionAvailable ? undefined : (
     <Text className={classes.alert}>
@@ -186,7 +205,7 @@ export default function SuggestRoutine() {
     </Text>
   );
 
-  const createRoutine = async ({ startDate, part }: CreateRoutineProps) => {
+  const createRoutine = async ({ startDate, taskCountMap, part }: CreateRoutineProps) => {
     if (createRoutineLoading || !startDate) return;
     setCreateRoutineLoading(true);
 
@@ -197,6 +216,7 @@ export default function SuggestRoutine() {
       method: "POST",
       body: {
         part,
+        taskCountMap,
         routineStartDate: startDate,
       },
     });
@@ -234,7 +254,7 @@ export default function SuggestRoutine() {
       modal: "general",
       centered: true,
     });
-  }, [routineSuggestionId]);
+  }, [routineSuggestionId, streamRoutineSuggestions]);
 
   const handleOpenSelectRoutineDate = useCallback(() => {
     modals.openContextModal({
@@ -264,7 +284,7 @@ export default function SuggestRoutine() {
   const signUp = () =>
     openAuthModal({
       stateObject: {
-        redirectPath: "/routines",
+        redirectPath: "/suggest/result",
         localUserId: userId,
         referrer: ReferrerEnum.SUGGESTION,
       },
@@ -273,12 +293,13 @@ export default function SuggestRoutine() {
 
   useEffect(() => {
     if (!routineSuggestionId) return;
-    streamRoutineSuggestions(routineSuggestionId);
+    if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
+    streamRoutineSuggestions(routineSuggestionId, undefined, userId);
 
     return () => {
       sourceRef.current?.close();
     };
-  }, [routineSuggestionId]);
+  }, [routineSuggestionId, status, userId]);
 
   useEffect(() => {
     if (tasks) {
@@ -301,9 +322,13 @@ export default function SuggestRoutine() {
   }, [routineSuggestion, query]);
 
   const ctaButtons = useMemo(() => {
+    const isAuthenticated = status === AuthStateEnum.AUTHENTICATED;
     return (
-      <Group className={classes.buttonWrapper}>
-        {status === AuthStateEnum.AUTHENTICATED ? (
+      <Group
+        className={classes.buttonWrapper}
+        m={isAuthenticated ? undefined : "0.5rem 0.5rem 0.5rem auto"}
+      >
+        {isAuthenticated ? (
           <>
             {!isCreationAvailable && (
               <Text size="sm" ta="center" c="dimmed">
@@ -331,15 +356,13 @@ export default function SuggestRoutine() {
         ) : (
           <>
             <Text size="sm" c="dimmed" ta="center">
-              Sign up to be able to publish your routines and earn from views.
+              Sign up to be able to publish your progress and earn from views.
             </Text>
             <GlowingButton
               text={"Sign up and earn"}
               containerStyles={{
-                flex: 0,
-                margin: "2rem auto",
                 width: "100%",
-                maxWidth: rem(300),
+                maxWidth: rem(350),
               }}
               elementId="analysis_create_routine_btn"
               onClick={signUp}

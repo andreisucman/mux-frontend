@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { Alert, Group, Stack, Title } from "@mantine/core";
+import { Alert, Group, Stack } from "@mantine/core";
+import PageHeader from "@/components/PageHeader";
+import { useRouter } from "@/helpers/custom-router";
 import StartButton from "./StartButton";
 import classes from "./select-part.module.css";
-import { useRouter } from "@/helpers/custom-router";
 
 export const runtime = "edge";
 
@@ -15,7 +16,7 @@ export default function SelectPartPage() {
     <Stack className={classes.container}>
       <Stack className={classes.wrapper}>
         <Group className={classes.titleWrapper}>
-          <Title order={1}>Select part</Title>
+          <PageHeader title="Select part" />
           <Alert p="0.5rem 1rem">Select a part that you are aiming to improve</Alert>
         </Group>
         <Group className={classes.content}>

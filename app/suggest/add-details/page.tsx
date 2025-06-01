@@ -92,20 +92,22 @@ export default function AddDetails() {
   const boxes = useMemo(() => {
     if (!concernScores) return;
 
-    return concernScores.map((co, index) => {
-      const title = normalizeString(co.name || "");
+    return concernScores
+      .filter((co) => co.value > 0)
+      .map((co, index) => {
+        const title = normalizeString(co.name || "");
 
-      return (
-        <AnswerBox
-          key={index}
-          title={title}
-          isDisabled={!isActionAvailable}
-          textObject={previousExperience || {}}
-          textObjectKey={co.name}
-          handleType={(answer) => handleType(co.name, answer)}
-        />
-      );
-    });
+        return (
+          <AnswerBox
+            key={index}
+            title={title}
+            isDisabled={!isActionAvailable}
+            textObject={previousExperience || {}}
+            textObjectKey={co.name}
+            handleType={(answer) => handleType(co.name, answer)}
+          />
+        );
+      });
   }, [concernScores, isActionAvailable, previousExperience]);
 
   const query = searchParams.toString();

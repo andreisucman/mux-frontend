@@ -12,7 +12,7 @@ import { RoutineSuggestionType } from "./types";
 const defaultCreateRoutineContext = {
   routineSuggestion: null as RoutineSuggestionType | null,
   setRoutineSuggestion: (args: any) => {},
-  fetchRoutineSuggestion: async () => {},
+  fetchRoutineSuggestion: async (userId?: string) => {},
 };
 
 export const CreateRoutineSuggestionContext = createContext(defaultCreateRoutineContext);

@@ -1,6 +1,6 @@
 export enum ReferrerEnum {
   SCAN = "scan",
-  SUGGESTION = "suggestopm",
+  SUGGESTION = "suggestion",
   CLUB_ROUTINES = "clubRoutines",
   CLUB_DIARY = "clubDiary",
   CLUB_PROGRESS = "clubProgress",
