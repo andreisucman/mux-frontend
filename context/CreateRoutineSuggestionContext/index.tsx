@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import callTheServer from "@/functions/callTheServer";
 import { useRouter } from "@/helpers/custom-router";
 import { PartEnum } from "@/types/global";
@@ -19,6 +19,7 @@ export const CreateRoutineSuggestionContext = createContext(defaultCreateRoutine
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { status, userDetails } = useContext(UserContext);
   const [routineSuggestion, setRoutineSuggestion] = useState<RoutineSuggestionType | null>(null);
@@ -48,7 +49,7 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
       return;
     }
     fetchRoutineSuggestion(userId);
-  }, [status, userId, pageLoaded]);
+  }, [status, pathname, userId, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 

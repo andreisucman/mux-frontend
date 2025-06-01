@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { useSearchParams } from "next/navigation";
 import { IconAnalyze, IconRoute } from "@tabler/icons-react";
 import cn from "classnames";
-import useSWR from "swr";
 import { Alert, Button, Divider, Group, Loader, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -68,8 +67,6 @@ export default function SuggestRoutine() {
     isRevised,
   } = routineSuggestion || {};
 
-  console.log("routineSuggestion", routineSuggestion);
-
   const { _id: userId, nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
@@ -83,6 +80,8 @@ export default function SuggestRoutine() {
       part,
       nextAction: nextRoutine,
     });
+
+  console.log("routineSuggestion", routineSuggestion);
 
   const streamRoutineSuggestions = async (
     routineSuggestionId: string,
@@ -119,7 +118,7 @@ export default function SuggestRoutine() {
         setRoutineSuggestion((prev: RoutineSuggestionType) => {
           const { tasks, summary, reasoning, ...other } = prev;
           setThoughts("");
-          return other;
+          return other as RoutineSuggestionType;
         });
       }
 
@@ -158,6 +157,7 @@ export default function SuggestRoutine() {
           saveToLocalStorage("routineStreamOffset", offset.toString());
         }
       }
+      // Refresh user data & suggestion meta once the stream finishes
       fetchUserData({ setUserDetails });
       fetchRoutineSuggestion(userId).then(() => {
         setIsStreaming(false);
@@ -166,9 +166,21 @@ export default function SuggestRoutine() {
         deleteFromLocalStorage("routineStreamOffset");
       });
     } catch (err: any) {
-      console.log("err", err);
+      console.error("streamRoutineSuggestions error", err);
     }
   };
+
+  useEffect(() => {
+    if (!routineSuggestionId) return;
+    if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
+
+    streamRoutineSuggestions(routineSuggestionId, undefined, userId);
+
+    return () => {
+      sourceRef.current?.close?.();
+      offsetRef.current = 0;
+    };
+  }, [routineSuggestionId, status, userId]);
 
   const taskRows = useMemo(() => {
     if (!tasks) return;
@@ -239,7 +251,6 @@ export default function SuggestRoutine() {
   };
 
   const handleOpenReviseRoutine = useCallback(() => {
-    console.log("routineSuggestionId", routineSuggestionId);
     if (!routineSuggestionId) return;
 
     modals.openContextModal({
@@ -296,12 +307,6 @@ export default function SuggestRoutine() {
       title: "Sign up",
     });
 
-  useSWR(`${routineSuggestionId}-${status}-${userId}`, () => {
-    if (!routineSuggestionId) return;
-    if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
-    streamRoutineSuggestions(routineSuggestionId, undefined, userId);
-  });
-
   useEffect(() => {
     if (tasks) {
       setDisplayComponent("result");
@@ -314,6 +319,7 @@ export default function SuggestRoutine() {
   }, [tasks, isStreaming]);
 
   useEffect(() => {
+    // If the context wasn't populated, navigate user back to concerns page
     const tId = setTimeout(() => {
       if (!routineSuggestion) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
       clearTimeout(tId);
@@ -371,7 +377,7 @@ export default function SuggestRoutine() {
         )}
       </Group>
     );
-  }, [status, isCreationAvailable, isRevised, routineSuggestionId, creationCheckBackDate]);
+  }, [status, isCreationAvailable, isRevised, creationCheckBackDate]);
 
   return (
     <Stack className={cn(classes.container, "smallPage")}>
