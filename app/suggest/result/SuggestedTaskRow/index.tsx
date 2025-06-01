@@ -78,7 +78,6 @@ export default function SuggestedTaskRow({
             placeholder="Number of times in a week"
             onChange={(number) => handleSetCount(name, Number(number))}
           />
-          <Text>{count === 1 ? "time" : "times"}</Text>
           {actionButton}
         </Group>
       </Group>

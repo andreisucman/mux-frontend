@@ -327,10 +327,7 @@ export default function SuggestRoutine() {
   const ctaButtons = useMemo(() => {
     const isAuthenticated = status === AuthStateEnum.AUTHENTICATED;
     return (
-      <Group
-        className={classes.buttonWrapper}
-        m={isAuthenticated ? undefined : "0.5rem 0.5rem 0.5rem auto"}
-      >
+      <Group className={cn(classes.buttonWrapper, { [classes.extraMargin]: isAuthenticated })}>
         {isAuthenticated ? (
           <>
             {!isCreationAvailable && (
