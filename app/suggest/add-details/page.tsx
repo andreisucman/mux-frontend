@@ -54,7 +54,15 @@ export default function AddDetails() {
       if (response.status === 200) {
         const query = searchParams.toString();
 
-        setRoutineSuggestion((prev: RoutineSuggestionType) => ({ ...prev, previousExperience }));
+        setRoutineSuggestion((prev: RoutineSuggestionType) => {
+          let payload = { ...prev, previousExperience };
+
+          if (response.message) {
+            payload = { ...payload, ...response.message };
+          }
+
+          return payload;
+        });
 
         if (!questionsAndAnswers) {
           router.replace(`/suggest/result${query ? `?${query}` : ""}`);

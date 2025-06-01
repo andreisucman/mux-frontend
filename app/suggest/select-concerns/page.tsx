@@ -37,7 +37,8 @@ export default function SuggestSelectConcerns() {
     nextAction: nextRoutineSuggestion,
   });
 
-  const showCreateNew = isActionAvailable && status === AuthStateEnum.AUTHENTICATED;
+  const showCreateButton = isActionAvailable && status === AuthStateEnum.AUTHENTICATED;
+  const isCreateNew = (!isActionAvailable && !!routineSuggestion) || !routineSuggestion;
 
   const updateRoutineSuggestions = useCallback(
     async (concernScores: ScoreType[], isCreate?: boolean) => {
@@ -51,7 +52,15 @@ export default function SuggestSelectConcerns() {
       });
 
       if (response.status === 200) {
-        setRoutineSuggestion((prev: RoutineSuggestionType) => ({ ...prev, concernScores }));
+        setRoutineSuggestion((prev: RoutineSuggestionType) => {
+          let payload = { ...prev, concernScores };
+
+          if (response.message) {
+            payload = { ...payload, ...response.message };
+          }
+
+          return payload;
+        });
 
         const stringParams = searchParams.toString();
         router.push(`/suggest/add-details${stringParams ? `?${stringParams}` : ""}`);
@@ -135,7 +144,7 @@ export default function SuggestSelectConcerns() {
           />
           {rows}
           <Group ml="auto" mb="20%">
-            {showCreateNew && (
+            {showCreateButton && (
               <Button
                 variant="default"
                 disabled={!!isLoading}
@@ -149,7 +158,7 @@ export default function SuggestSelectConcerns() {
             <Button
               disabled={!concerns || isLoading}
               loading={isLoading}
-              onClick={() => updateRoutineSuggestions(selectedConcerns || [])}
+              onClick={() => updateRoutineSuggestions(selectedConcerns || [], isCreateNew)}
               className={classes.button}
             >
               Next
@@ -166,5 +175,3 @@ export default function SuggestSelectConcerns() {
     </Stack>
   );
 }
-
-  

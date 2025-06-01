@@ -31,7 +31,6 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
   const fetchRoutineSuggestion = async (userId?: string) => {
     let endpoint = `getRoutineSuggestion/${part}`;
     if (userId) endpoint += `?userId=${userId}`;
-
     const response = await callTheServer({
       endpoint,
       method: "GET",

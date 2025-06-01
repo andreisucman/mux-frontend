@@ -66,6 +66,7 @@ export default function SuggestRoutine() {
     tasks,
     isRevised,
   } = routineSuggestion || {};
+
   const { _id: userId, nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
@@ -299,7 +300,7 @@ export default function SuggestRoutine() {
     return () => {
       sourceRef.current?.close();
     };
-  }, [routineSuggestionId, status, userId]);
+  }, [routineSuggestion, status, userId]);
 
   useEffect(() => {
     if (tasks) {

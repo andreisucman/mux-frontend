@@ -54,7 +54,15 @@ export default function AnswerQuestions() {
       });
 
       if (response.status === 200) {
-        setRoutineSuggestion((prev: RoutineSuggestionType) => ({ ...prev, questionsAndAnswers }));
+        setRoutineSuggestion((prev: RoutineSuggestionType) => {
+          let payload = { ...prev, questionsAndAnswers };
+
+          if (response.message) {
+            payload = { ...payload, ...response.message };
+          }
+
+          return payload;
+        });
 
         const stringParams = searchParams.toString();
         router.push(`/suggest/result${stringParams ? `?${stringParams}` : ""}`);

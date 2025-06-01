@@ -73,6 +73,7 @@ export default function SuggestedTaskRow({
             value={count}
             min={0}
             ml="auto"
+            miw={60}
             clampBehavior="strict"
             placeholder="Number of times in a week"
             onChange={(number) => handleSetCount(name, Number(number))}
