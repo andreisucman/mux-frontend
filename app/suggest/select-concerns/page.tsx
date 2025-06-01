@@ -90,7 +90,7 @@ export default function SuggestSelectConcerns() {
     const relevantScores = latestConcernScores[part];
 
     return relevantScores
-      .filter((cso) => cso.value)
+      ?.filter((cso) => cso.value)
       .map((cso, i) => {
         const isSelected = selectedConcerns?.some((co) => co.name === cso.name);
 
@@ -122,7 +122,7 @@ export default function SuggestSelectConcerns() {
   useEffect(() => {
     if (!latestConcernScores) return;
     const exists = (item: { [key: string]: any }, key: string) =>
-      latestConcernScores[part].some((obj) => obj.name === item[key]);
+      latestConcernScores?.[part]?.some((obj) => obj.name === item[key]);
 
     const savedSelectedConcerns: ScoreType[] | null =
       getFromLocalStorage("selectedRoutineConcerns");

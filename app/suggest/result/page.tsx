@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { useSearchParams } from "next/navigation";
 import { IconAnalyze, IconRoute } from "@tabler/icons-react";
 import cn from "classnames";
+import useSWR from "swr";
 import { Alert, Button, Divider, Group, Loader, rem, Stack, Text, Title } from "@mantine/core";
 import { upperFirst } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
@@ -66,6 +67,8 @@ export default function SuggestRoutine() {
     tasks,
     isRevised,
   } = routineSuggestion || {};
+
+  console.log("routineSuggestion", routineSuggestion);
 
   const { _id: userId, nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
@@ -236,6 +239,7 @@ export default function SuggestRoutine() {
   };
 
   const handleOpenReviseRoutine = useCallback(() => {
+    console.log("routineSuggestionId", routineSuggestionId);
     if (!routineSuggestionId) return;
 
     modals.openContextModal({
@@ -292,17 +296,11 @@ export default function SuggestRoutine() {
       title: "Sign up",
     });
 
-  useEffect(() => {
-    console.log("routineSuggestionId", status, userId);
-
+  useSWR(`${routineSuggestionId}-${status}-${userId}`, () => {
     if (!routineSuggestionId) return;
     if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
     streamRoutineSuggestions(routineSuggestionId, undefined, userId);
-
-    return () => {
-      sourceRef.current?.close();
-    };
-  }, [routineSuggestionId, status, userId]);
+  });
 
   useEffect(() => {
     if (tasks) {
@@ -320,8 +318,10 @@ export default function SuggestRoutine() {
       if (!routineSuggestion) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
       clearTimeout(tId);
     }, 5000);
-
-    return () => clearTimeout(tId);
+    return () => {
+      clearTimeout(tId);
+      sourceRef.current?.close();
+    };
   }, [routineSuggestion, query]);
 
   const ctaButtons = useMemo(() => {
@@ -371,7 +371,7 @@ export default function SuggestRoutine() {
         )}
       </Group>
     );
-  }, [status, isCreationAvailable, isRevised, creationCheckBackDate]);
+  }, [status, isCreationAvailable, isRevised, routineSuggestionId, creationCheckBackDate]);
 
   return (
     <Stack className={cn(classes.container, "smallPage")}>
