@@ -5,7 +5,6 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { IconHourglass } from "@tabler/icons-react";
 import cn from "classnames";
 import { Button, Group, Stack } from "@mantine/core";
-import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import SkeletonWrapper from "@/app/SkeletonWrapper";
 import FilterDropdown from "@/components/FilterDropdown";
 import OverlayWithText from "@/components/OverlayWithText";
@@ -19,7 +18,6 @@ import openResetTimerModal from "@/functions/resetTimer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
 import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
-import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
 import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { PartEnum, UserDataType } from "@/types/global";
@@ -39,7 +37,7 @@ export default function ScanProgress() {
 
   const query = searchParams.toString();
   const part = searchParams.get("part") || PartEnum.FACE;
-  const { _id: userId, toAnalyze, nextScan, timeZone, initialProgressImages } = userDetails || {};
+  const { _id: userId, nextScan } = userDetails || {};
 
   const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
     part,
@@ -130,21 +128,6 @@ export default function ScanProgress() {
             beforeImage: beforeImageUrl,
             image: originalImageUrl,
           };
-
-          if (timeZone === "Europe/Chisinau") {
-            body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/1.jpg";
-            if (toAnalyze && toAnalyze.length > 0) {
-              body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/2.jpg";
-            }
-
-            const initialPartImages = part && initialProgressImages && initialProgressImages[part];
-            if (initialPartImages) {
-              body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/1r.jpg";
-              if (toAnalyze && toAnalyze.length > 0) {
-                body.image = "https://mux.nyc3.cdn.digitaloceanspaces.com/example_users/2r.jpg";
-              }
-            }
-          }
 
           const response = await callTheServer({
             endpoint: "uploadProgress",
