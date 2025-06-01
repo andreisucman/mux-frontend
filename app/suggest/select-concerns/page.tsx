@@ -143,7 +143,7 @@ export default function SuggestSelectConcerns() {
             customStyles={{ flex: 0 }}
           />
           {rows}
-          <Group ml="auto" mb="20%">
+          <Group className={classes.buttonWrapper}>
             {showCreateButton && (
               <Button
                 variant="default"

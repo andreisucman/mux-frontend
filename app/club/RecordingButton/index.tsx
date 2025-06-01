@@ -105,7 +105,7 @@ export default function RecordingButton({
       const response = await callTheServer({
         endpoint: "transcribe",
         method: "POST",
-        body: { url: fileUrls?.[0], categoryName: "about" },
+        body: { url: fileUrls?.[0], categoryName: "suggest" },
       });
 
       if (response.status === 200) {

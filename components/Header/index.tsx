@@ -16,6 +16,7 @@ import { clearCookies } from "@/helpers/cookies";
 import { deleteFromLocalStorage } from "@/helpers/localStorage";
 import openAuthModal from "@/helpers/openAuthModal";
 import openFeedbackModal from "@/helpers/openFeedbackModal";
+import { matchBySegments } from "@/helpers/utils";
 import AvatarComponent from "../AvatarComponent";
 import SearchButton from "../SearchButton";
 import Burger from "./Burger";
@@ -63,7 +64,7 @@ function Header() {
   );
 
   const showSignInButton = useMemo(
-    () => showSignInButtonRoutes.some((route) => pathname.includes(route)),
+    () => showSignInButtonRoutes.some((route) => matchBySegments(route, pathname)),
     [pathname]
   );
 

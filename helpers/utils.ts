@@ -109,3 +109,9 @@ export const deduplicateRoutines = (
   return updatedRoutines;
 };
 
+export function matchBySegments(basePath: string, candidatePath: string) {
+  const baseSegs = basePath.split("/").filter(Boolean);
+  const candSegs = candidatePath.split("/").filter(Boolean);
+  if (candSegs.length < baseSegs.length) return false;
+  return baseSegs.every((seg, idx) => seg === candSegs[idx]);
+}

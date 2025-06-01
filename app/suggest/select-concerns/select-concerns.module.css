@@ -14,10 +14,17 @@
 }
 
 .button {
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 100%;
+  }
+}
+
+.buttonWrapper {
   margin-left: auto;
+  margin-bottom: 20%;
 
   @media (max-width: $mantine-breakpoint-xs) {
-    margin: unset;
+    margin-left: unset;
   }
 }
 

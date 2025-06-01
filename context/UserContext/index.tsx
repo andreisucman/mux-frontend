@@ -12,13 +12,7 @@ import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage"
 import { UserDataType } from "@/types/global";
 import { protectedPaths } from "./protectedPaths";
 import { AuthStateEnum, UserContextProviderProps, UserContextType } from "./types";
-
-function matchBySegments(basePath: string, candidatePath: string) {
-  const baseSegs = basePath.split("/").filter(Boolean);
-  const candSegs = candidatePath.split("/").filter(Boolean);
-  if (candSegs.length < baseSegs.length) return false;
-  return baseSegs.every((seg, idx) => seg === candSegs[idx]);
-}
+import { matchBySegments } from "@/helpers/utils";
 
 function registerServiceWorker() {
   if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {

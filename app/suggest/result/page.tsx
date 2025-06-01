@@ -293,6 +293,8 @@ export default function SuggestRoutine() {
     });
 
   useEffect(() => {
+    console.log("routineSuggestionId", status, userId);
+
     if (!routineSuggestionId) return;
     if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
     streamRoutineSuggestions(routineSuggestionId, undefined, userId);
@@ -300,7 +302,7 @@ export default function SuggestRoutine() {
     return () => {
       sourceRef.current?.close();
     };
-  }, [routineSuggestion, status, userId]);
+  }, [routineSuggestionId, status, userId]);
 
   useEffect(() => {
     if (tasks) {
