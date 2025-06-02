@@ -360,7 +360,7 @@ export default function SuggestRoutine() {
         ) : (
           <>
             <Text size="sm" c="dimmed" ta="center">
-              Sign up to be able to publish your progress and earn from views.
+              Sign up to be able to complete tasks, track progress and publish your routines to earn from views.
             </Text>
             <GlowingButton
               text={"Sign up and earn"}

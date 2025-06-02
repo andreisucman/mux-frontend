@@ -85,7 +85,7 @@ export default function AddDetails() {
 
         let url = `/suggest/result${query ? `?${query}` : ""}`;
 
-        if (message.questionsAndAnswers) {
+        if (message && message.questionsAndAnswers) {
           url = `/suggest/answer-questions${query ? `?${query}` : ""}`;
         }
 
