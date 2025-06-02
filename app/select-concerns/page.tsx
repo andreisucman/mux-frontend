@@ -68,13 +68,15 @@ export default function SelectConcernsPage() {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("part", part);
     const query = newSearchParams.toString();
-
     let url = `/scan${query ? `?${query}` : ""}`;
 
-    if (!isActionAvailable) {
+    if (isActionAvailable) {
+      if (status !== "authenticated") {
+        url = `/accept?redirectUrl=${encodeURIComponent(url)}`;
+      }
+    } else {
       url = `/analysis${query ? `?${query}` : ""}`;
     }
-
     router.push(url);
   }, [status, userDetails]);
 
