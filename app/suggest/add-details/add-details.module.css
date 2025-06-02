@@ -18,6 +18,7 @@
 
   @media (max-width: $mantine-breakpoint-xs) {
     margin: unset;
+    width: 100%;
   }
 }
 

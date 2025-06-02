@@ -24,6 +24,7 @@
   gap: rem(16);
   padding: rem(16);
   flex: 1;
+  margin-bottom: 15%;
 }
 
 .healthy {

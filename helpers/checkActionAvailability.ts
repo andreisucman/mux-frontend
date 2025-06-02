@@ -7,12 +7,12 @@ type Props = {
   nextAction?: NextActionType[];
 };
 
-function useCheckActionAvailability({ part, nextAction }: Props) {
+function checkActionAvailability({ part, nextAction }: Props) {
   let result: {
     isActionAvailable: boolean;
     checkBackDate: string | null;
   } = {
-    isActionAvailable: false,
+    isActionAvailable: true,
     checkBackDate: formatDate({ date: new Date() }),
   };
 
@@ -32,4 +32,4 @@ function useCheckActionAvailability({ part, nextAction }: Props) {
   return result;
 }
 
-export default useCheckActionAvailability;
+export default checkActionAvailability;

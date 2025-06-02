@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IconCheck } from "@tabler/icons-react";
 import { Group, Select, SelectProps } from "@mantine/core";
@@ -11,6 +11,7 @@ import classes from "./FilterDropdown.module.css";
 type Props = {
   size?: "xs" | "sm";
   data?: FilterItemType[];
+  title?: any;
   icons?: { [key: string]: React.ReactNode };
   placeholder: string;
   filterType?: string;
@@ -29,6 +30,7 @@ export default function FilterDropdown({
   data,
   size = "sm",
   icons,
+  title,
   searchable,
   allowDeselect,
   searchValue,
@@ -94,6 +96,7 @@ export default function FilterDropdown({
       className={classes.container}
       size={size}
       data={data}
+      label={title || ""}
       disabled={isDisabled}
       placeholder={placeholder}
       renderOption={renderSelectOption}

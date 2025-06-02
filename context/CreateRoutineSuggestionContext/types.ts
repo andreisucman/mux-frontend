@@ -5,7 +5,7 @@ export type RoutineSuggestionTaskType = {
   task: string;
   color: string;
   concern: string;
-  numberOfTimesInAMonth: number;
+  numberOfTimesInAWeek: number;
 };
 
 export type RoutineSuggestionType = {

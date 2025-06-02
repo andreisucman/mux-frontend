@@ -3,10 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import callTheServer from "@/functions/callTheServer";
-import { useRouter } from "@/helpers/custom-router";
 import { PartEnum } from "@/types/global";
 import { UserContext } from "../UserContext";
-import { AuthStateEnum } from "../UserContext/types";
 import { RoutineSuggestionType } from "./types";
 
 const defaultCreateRoutineContext = {
@@ -18,10 +16,9 @@ const defaultCreateRoutineContext = {
 export const CreateRoutineSuggestionContext = createContext(defaultCreateRoutineContext);
 
 export default function CreateRoutineProvider({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { status, userDetails } = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
   const [routineSuggestion, setRoutineSuggestion] = useState<RoutineSuggestionType | null>(null);
   const [pageLoaded, setPageLoaded] = useState(false);
 
@@ -44,12 +41,8 @@ export default function CreateRoutineProvider({ children }: { children: React.Re
 
   useEffect(() => {
     if (!pageLoaded) return;
-    if (status !== AuthStateEnum.AUTHENTICATED && !userId) {
-      router.replace("/select-part");
-      return;
-    }
     fetchRoutineSuggestion(userId);
-  }, [status, pathname, userId, pageLoaded]);
+  }, [pathname, userId, pageLoaded]);
 
   useEffect(() => setPageLoaded(true), []);
 

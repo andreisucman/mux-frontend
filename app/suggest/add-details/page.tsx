@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { useSearchParams } from "next/navigation";
 import cn from "classnames";
 import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
+import { SelectedConcernItemType } from "@/app/select-concerns/page";
 import AnswerBox from "@/app/suggest/answer-questions/AnswerBox";
 import InstructionContainer from "@/components/InstructionContainer";
 import PageHeader from "@/components/PageHeader";
@@ -11,8 +12,9 @@ import { CreateRoutineSuggestionContext } from "@/context/CreateRoutineSuggestio
 import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/types";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import checkActionAvailability from "@/helpers/checkActionAvailability";
 import { useRouter } from "@/helpers/custom-router";
-import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
+import { getFromLocalStorage } from "@/helpers/localStorage";
 import { normalizeString } from "@/helpers/utils";
 import classes from "./add-details.module.css";
 
@@ -24,17 +26,33 @@ export default function AddDetails() {
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails } = useContext(UserContext);
   const { routineSuggestion, setRoutineSuggestion } = useContext(CreateRoutineSuggestionContext);
+  const [selectedConcerns, setSelectedConcerns] = useState<SelectedConcernItemType[]>();
 
   const part = searchParams.get("part") || "face";
 
-  const { previousExperience, questionsAndAnswers, concernScores, specialConsiderations } =
+  const { previousExperience, questionsAndAnswers, specialConsiderations } =
     routineSuggestion || {};
-  const { _id: userId, nextRoutineSuggestion } = userDetails || {};
+  const { _id: userId, nextRoutineSuggestion, latestConcernScores } = userDetails || {};
 
-  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = checkActionAvailability({
     part,
     nextAction: nextRoutineSuggestion,
   });
+
+  const handleRedirect = useCallback(
+    (redirectPath: string) => {
+      const query = searchParams.toString();
+
+      let url = `${redirectPath}${query ? `?${query}` : ""}`;
+
+      if (!isActionAvailable) {
+        url = `/suggest/result${query ? `${query}` : ""}`;
+      }
+
+      router.push(url);
+    },
+    [searchParams.toString()]
+  );
 
   const updateRoutineSuggestions = useCallback(
     async (
@@ -52,24 +70,26 @@ export default function AddDetails() {
       });
 
       if (response.status === 200) {
+        const message = response.message;
         const query = searchParams.toString();
 
         setRoutineSuggestion((prev: RoutineSuggestionType) => {
           let payload = { ...prev, previousExperience };
 
-          if (response.message) {
-            payload = { ...payload, ...response.message };
+          if (message) {
+            payload = { ...payload, ...message };
           }
 
           return payload;
         });
 
-        if (!questionsAndAnswers) {
-          router.replace(`/suggest/result${query ? `?${query}` : ""}`);
-          return;
-        } else {
-          router.push(`/suggest/answer-questions${query ? `?${query}` : ""}`);
+        let url = `/suggest/result${query ? `?${query}` : ""}`;
+
+        if (message.questionsAndAnswers) {
+          url = `/suggest/answer-questions${query ? `?${query}` : ""}`;
         }
+
+        handleRedirect(url);
       }
     },
     [router, userId, part, isLoading, questionsAndAnswers]
@@ -98,27 +118,26 @@ export default function AddDetails() {
   };
 
   const boxes = useMemo(() => {
-    if (!concernScores) return;
+    if (!selectedConcerns) return;
 
-    return concernScores
-      .filter((co) => co.value > 0)
-      .map((co, index) => {
-        const title = normalizeString(co.name || "");
+    return selectedConcerns.map((co, index) => {
+      const title = normalizeString(co.value || "");
 
-        return (
-          <AnswerBox
-            key={index}
-            title={title}
-            isDisabled={!isActionAvailable}
-            textObject={previousExperience || {}}
-            textObjectKey={co.name}
-            handleType={(answer) => handleType(co.name, answer)}
-          />
-        );
-      });
-  }, [concernScores, isActionAvailable, previousExperience]);
-
-  const query = searchParams.toString();
+      return (
+        <AnswerBox
+          key={index}
+          title={title}
+          isDisabled={!isActionAvailable}
+          textObject={previousExperience || {}}
+          textObjectKey={co.value}
+          handleDelete={() =>
+            setSelectedConcerns((prev) => prev?.filter((obj) => obj.value !== co.value))
+          }
+          handleType={(answer) => handleType(co.value, answer)}
+        />
+      );
+    });
+  }, [selectedConcerns, isActionAvailable, previousExperience]);
 
   const checkBackNotice = isActionAvailable ? undefined : (
     <Text className={classes.alert}>
@@ -133,14 +152,23 @@ export default function AddDetails() {
       .filter(Boolean).length === 0 && !specialConsiderations?.trim();
 
   useEffect(() => {
-    if (!routineSuggestion) return;
-    if (!concernScores) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
-  }, [concernScores, routineSuggestion]);
+    if (!latestConcernScores) return;
+    const exists = (item: { [key: string]: any }, key: string) =>
+      latestConcernScores?.[part]?.some((obj) => obj.name === item[key] && obj.value > 0);
+
+    const savedSelectedConcerns: SelectedConcernItemType[] | null =
+      getFromLocalStorage("selectedConcerns");
+
+    if (savedSelectedConcerns) {
+      const filtered = savedSelectedConcerns.filter((item) => exists(item, "value"));
+      setSelectedConcerns(filtered);
+    }
+  }, [part, latestConcernScores]);
 
   return (
     <Stack className={cn(classes.container, "smallPage")}>
       <PageHeader title="Tell your experience" />
-      {concernScores ? (
+      {selectedConcerns ? (
         <>
           {checkBackNotice && <Alert p="0.5rem 1rem">{checkBackNotice}</Alert>}
           <InstructionContainer
@@ -160,9 +188,8 @@ export default function AddDetails() {
             handleType={(text) => handleAddSpecialConsideration(text)}
           />
           <Button
-            disabled={!concernScores || isLoading || allIsEmpty}
+            disabled={!selectedConcerns || isLoading || allIsEmpty}
             loading={isLoading}
-            mb="20%"
             onClick={() =>
               updateRoutineSuggestions(previousExperience || {}, specialConsiderations || "")
             }

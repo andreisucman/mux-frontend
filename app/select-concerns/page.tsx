@@ -12,15 +12,14 @@ import OverlayWithText from "@/components/OverlayWithText";
 import PageHeader from "@/components/PageHeader";
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
+import checkActionAvailability from "@/helpers/checkActionAvailability";
 import {
   deleteFromLocalStorage,
   getFromLocalStorage,
   saveToLocalStorage,
 } from "@/helpers/localStorage";
-import openAuthModal from "@/helpers/openAuthModal";
 import { normalizeString } from "@/helpers/utils";
 import { PartEnum, UserConcernType } from "@/types/global";
-import { ReferrerEnum } from "../auth/AuthForm/types";
 import ConcernRow from "./ConcernRow";
 import NextNoConcernsButton from "./NextNoConcernsButton";
 import classes from "./select-concerns.module.css";
@@ -53,43 +52,31 @@ export default function SelectConcernsPage() {
   const [selectedConcerns, setSelectedConcerns] = useState<SelectedConcernItemType[]>([]);
   const [nextNoConcern, setNextNoConcern] = useState(false);
 
-  const { _id: userId, email } = userDetails || {};
+  const { nextScan } = userDetails || {};
 
   const disableAdd = nextNoConcern || selectedConcerns.length >= 5;
   const part = searchParams.get("part") || "face";
 
-  const handleRedirect = useCallback(
-    (redirectPath: string, redirectQuery?: string) => {
-      let redirectUrl = redirectPath;
-      if (redirectQuery) redirectUrl += `?${redirectQuery}`;
-
-      if (status === "authenticated") {
-        router.push(redirectUrl);
-      } else {
-        if (email) {
-          openAuthModal({
-            title: "Sign in to continue",
-            stateObject: {
-              redirectPath,
-              redirectQuery,
-              localUserId: userId,
-              referrer: ReferrerEnum.CHOOSE_PART,
-            },
-          });
-          setIsButtonLoading(false);
-        } else {
-          const encodedPath = `/accept?redirectUrl=${encodeURIComponent(redirectUrl)}`;
-          router.push(encodedPath);
-        }
-      }
-    },
-    [status, userDetails]
-  );
-
-  const handleNext = () => {
+  const handleRedirect = useCallback(() => {
     setIsButtonLoading(true);
-    handleRedirect(`/scan`, `part=${part}`);
-  };
+
+    const { isActionAvailable } = checkActionAvailability({
+      part,
+      nextAction: nextScan,
+    });
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("part", part);
+    const query = newSearchParams.toString();
+
+    let url = `/scan${query ? `?${query}` : ""}`;
+
+    if (!isActionAvailable) {
+      url = `/analysis${query ? `?${query}` : ""}`;
+    }
+
+    router.push(url);
+  }, [status, userDetails]);
 
   const handleSelectConcerns = async (item: FilterItemType) => {
     let newSelected = null;
@@ -261,7 +248,7 @@ export default function SelectConcernsPage() {
           className={classes.button}
           loading={isButtonLoading}
           disabled={disableNext}
-          onClick={handleNext}
+          onClick={handleRedirect}
         >
           Next
         </Button>

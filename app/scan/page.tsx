@@ -16,10 +16,10 @@ import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import openResetTimerModal from "@/functions/resetTimer";
 import uploadToSpaces from "@/functions/uploadToSpaces";
+import checkActionAvailability from "@/helpers/checkActionAvailability";
 import { useRouter } from "@/helpers/custom-router";
 import { partIcons } from "@/helpers/icons";
 import openErrorModal from "@/helpers/openErrorModal";
-import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { PartEnum, UserDataType } from "@/types/global";
 import { UploadProgressProps } from "../select-part/types";
 import classes from "./scan.module.css";
@@ -39,7 +39,7 @@ export default function ScanProgress() {
   const part = searchParams.get("part") || PartEnum.FACE;
   const { _id: userId, nextScan } = userDetails || {};
 
-  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = checkActionAvailability({
     part,
     nextAction: nextScan,
   });
@@ -54,24 +54,22 @@ export default function ScanProgress() {
   }, [query, part, setUserDetails]);
 
   const scanButtons = useMemo(() => {
-    if (status === AuthStateEnum.AUTHENTICATED) {
-      return (
-        <Group mt={8} gap={12} pb="15%">
+    const nextUrl = `/analysis${query ? `?${query}` : ""}`;
+    return (
+      <Group mt={8} gap={12} pb="15%">
+        {status === AuthStateEnum.AUTHENTICATED && (
           <Button flex={1} miw={175} variant="default" onClick={handleResetTimer}>
             Reset scan timer
           </Button>
-          <Button
-            flex={1}
-            miw={175}
-            variant="default"
-            onClick={() => router.replace(`/analysis?part=${part}`)}
-          >
+        )}
+        {!isActionAvailable && (
+          <Button flex={1} miw={175} variant="default" onClick={() => router.replace(nextUrl)}>
             See latest analysis
           </Button>
-        </Group>
-      );
-    }
-  }, [status, pathname, handleResetTimer]);
+        )}
+      </Group>
+    );
+  }, [query, pathname, handleResetTimer]);
 
   const handleUpload = useCallback(
     async ({

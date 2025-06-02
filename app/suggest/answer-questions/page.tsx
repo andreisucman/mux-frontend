@@ -12,8 +12,8 @@ import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/
 import { UserContext } from "@/context/UserContext";
 import callTheServer from "@/functions/callTheServer";
 import checkIfAnalysisRunning from "@/functions/checkIfAnalysisRunning";
+import checkActionAvailability from "@/helpers/checkActionAvailability";
 import { useRouter } from "@/helpers/custom-router";
-import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { AnalysisStatusEnum } from "@/types/global";
 import AnswerBox from "./AnswerBox";
 import classes from "./answer-questions.module.css";
@@ -37,7 +37,7 @@ export default function AnswerQuestions() {
 
   const part = searchParams.get("part") || "face";
 
-  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = checkActionAvailability({
     part,
     nextAction: nextRoutineSuggestion,
   });
@@ -144,7 +144,7 @@ export default function AnswerQuestions() {
           onComplete={() => {
             fetchRoutineSuggestion().finally(() => setShowDisplayComponent("questions"));
           }}
-          errorRedirectUrl={`/suggest/select-concerns${query ? `?${query}` : ""}`}
+          errorRedirectUrl={`/suggest/add-details${query ? `?${query}` : ""}`}
         />
       )}
       {showDisplayComponent === "questions" && (

@@ -11,9 +11,9 @@ import { RoutineSuggestionType } from "@/context/CreateRoutineSuggestionContext/
 import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
+import checkActionAvailability from "@/helpers/checkActionAvailability";
 import { useRouter } from "@/helpers/custom-router";
 import { getFromLocalStorage, saveToLocalStorage } from "@/helpers/localStorage";
-import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { ScoreType } from "@/types/global";
 import ScoreDisplayRow from "./ScoreDisplayRow";
 import classes from "./select-concerns.module.css";
@@ -32,7 +32,7 @@ export default function SuggestSelectConcerns() {
 
   const { _id: userId, concerns, latestConcernScores, nextRoutineSuggestion } = userDetails || {};
 
-  const { isActionAvailable, checkBackDate } = useCheckActionAvailability({
+  const { isActionAvailable, checkBackDate } = checkActionAvailability({
     part,
     nextAction: nextRoutineSuggestion,
   });

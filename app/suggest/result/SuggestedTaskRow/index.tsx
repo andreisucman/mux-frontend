@@ -11,7 +11,7 @@ type Props = {
   color: string;
   name: string;
   icon?: string;
-  numberOfTimesInAMonth: number;
+  numberOfTimesInAWeek: number;
   setTaskCountMap: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>;
 };
 
@@ -19,11 +19,11 @@ export default function SuggestedTaskRow({
   color,
   name,
   icon,
-  numberOfTimesInAMonth,
+  numberOfTimesInAWeek,
   setTaskCountMap,
 }: Props) {
   const showSkeleton = useShowSkeleton();
-  const [count, setCount] = useState(numberOfTimesInAMonth);
+  const [count, setCount] = useState(numberOfTimesInAWeek);
 
   const handleSetCount = (name: string, newCount: number) => {
     setCount(newCount);
@@ -34,11 +34,11 @@ export default function SuggestedTaskRow({
     return {
       name: normalizeString(name),
       count: Math.max(
-        Math.round(numberOfTimesInAMonth / Number(process.env.NEXT_PUBLIC_WEEKLY_MULTIPLIER)),
+        Math.round(numberOfTimesInAWeek / Number(process.env.NEXT_PUBLIC_WEEKLY_TASKS_MULTIPLIER)),
         1
       ),
     };
-  }, [name, numberOfTimesInAMonth]);
+  }, [name, numberOfTimesInAWeek]);
 
   const actionButton = useMemo(() => {
     if (count > 0) {

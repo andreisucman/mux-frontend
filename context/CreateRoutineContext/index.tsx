@@ -24,12 +24,13 @@ export default function CreateRoutineContextProvider({ children }: { children: R
     const partsScanned = Object.entries(initialProgressImages || {})
       .filter(([key, value]) => Boolean(value))
       .map(([key, _]) => key);
+      
     if (partsScanned.length > 1) {
       const relevantRoutines = nextRoutine.filter((obj) => partsScanned.includes(obj.part));
       if (relevantRoutines) openSelectRoutineType(relevantRoutines);
     } else if (partsScanned.length === 1) {
       setIsLoading(true);
-      router.push(`/suggest/select-concerns?part=${partsScanned[0]}`);
+      router.push(`/suggest/add-details?part=${partsScanned[0]}`);
       modals.closeAll();
     }
   };

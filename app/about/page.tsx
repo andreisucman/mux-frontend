@@ -1,18 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { nanoid } from "nanoid";
-import { Stack, Text } from "@mantine/core";
+import { Loader, Stack, Text } from "@mantine/core";
 import PageHeader from "@/components/PageHeader";
 import { useRouter } from "@/helpers/custom-router";
 import classes from "./about.module.css";
 
 export const runtime = "edge";
 
-export default function AnswersPage() {
+export default function AboutPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClickNext = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     router.push("/select-part");
 
     if (!window.dataLayer) return;
@@ -46,7 +50,7 @@ export default function AnswersPage() {
         className={classes.button}
         onClick={handleClickNext}
       >
-        Next
+        {isLoading ? <Loader color="var(--mantine-color-gray-1)" size={18} /> : <>Next</>}
       </button>
     </Stack>
   );

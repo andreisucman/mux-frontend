@@ -17,6 +17,7 @@ import { UserContext } from "@/context/UserContext";
 import { AuthStateEnum } from "@/context/UserContext/types";
 import callTheServer from "@/functions/callTheServer";
 import fetchUserData from "@/functions/fetchUserData";
+import checkActionAvailability from "@/helpers/checkActionAvailability";
 import { useRouter } from "@/helpers/custom-router";
 import {
   deleteFromLocalStorage,
@@ -25,7 +26,6 @@ import {
 } from "@/helpers/localStorage";
 import openAuthModal from "@/helpers/openAuthModal";
 import openErrorModal from "@/helpers/openErrorModal";
-import useCheckActionAvailability from "@/helpers/useCheckActionAvailability";
 import { PartEnum } from "@/types/global";
 import ReviseRoutineModalContent from "./ReviseRoutineModalContent";
 import SuggestedTaskRow from "./SuggestedTaskRow";
@@ -70,13 +70,13 @@ export default function SuggestRoutine() {
   const { _id: userId, nextRoutine, nextRoutineSuggestion } = userDetails || {};
 
   const { isActionAvailable: isSuggestionAvailable, checkBackDate: suggestionCheckBackDate } =
-    useCheckActionAvailability({
+    checkActionAvailability({
       part,
       nextAction: nextRoutineSuggestion,
     });
 
   const { isActionAvailable: isCreationAvailable, checkBackDate: creationCheckBackDate } =
-    useCheckActionAvailability({
+    checkActionAvailability({
       part,
       nextAction: nextRoutine,
     });
@@ -113,6 +113,7 @@ export default function SuggestRoutine() {
 
       if (revisionText) {
         modals.closeAll();
+
         setRoutineSuggestion((prev: RoutineSuggestionType) => {
           const { tasks, summary, reasoning, ...other } = prev;
           setThoughts("");
@@ -168,18 +169,6 @@ export default function SuggestRoutine() {
     }
   };
 
-  useEffect(() => {
-    if (!routineSuggestionId) return;
-    if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
-
-    streamRoutineSuggestions(routineSuggestionId, undefined, userId);
-
-    return () => {
-      sourceRef.current?.close?.();
-      offsetRef.current = 0;
-    };
-  }, [routineSuggestionId, status, userId]);
-
   const taskRows = useMemo(() => {
     if (!tasks) return;
     const concerns = Object.keys(tasks);
@@ -202,7 +191,7 @@ export default function SuggestRoutine() {
               key={i}
               color={t.color}
               name={t.task}
-              numberOfTimesInAMonth={t.numberOfTimesInAMonth}
+              numberOfTimesInAWeek={t.numberOfTimesInAWeek}
               icon={t.icon}
               setTaskCountMap={setTaskCountMap}
             />
@@ -306,6 +295,18 @@ export default function SuggestRoutine() {
     });
 
   useEffect(() => {
+    if (!routineSuggestionId) return;
+    if (status !== AuthStateEnum.AUTHENTICATED && !userId) return;
+
+    streamRoutineSuggestions(routineSuggestionId, undefined, userId);
+
+    return () => {
+      sourceRef.current?.close?.();
+      offsetRef.current = 0;
+    };
+  }, [routineSuggestionId, status, userId]);
+
+  useEffect(() => {
     if (tasks) {
       setDisplayComponent("result");
       setIsStreaming(false);
@@ -318,7 +319,6 @@ export default function SuggestRoutine() {
 
   useEffect(() => {
     const tId = setTimeout(() => {
-      if (!routineSuggestion) router.replace(`/suggest/select-concerns${query ? `?${query}` : ""}`);
       clearTimeout(tId);
     }, 5000);
 

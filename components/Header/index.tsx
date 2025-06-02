@@ -2,7 +2,7 @@
 
 import { CSSProperties, memo, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { IconBug, IconDoorEnter, IconMessageDollar, IconRocket } from "@tabler/icons-react";
+import { IconDoorEnter, IconMessageDollar, IconRocket } from "@tabler/icons-react";
 import cn from "classnames";
 import { ActionIcon, Button, Drawer, Group, rem, Title } from "@mantine/core";
 import { useDisclosure, useHeadroom } from "@mantine/hooks";
@@ -191,7 +191,6 @@ function Header() {
                   spotlightStore={spotlightStore}
                   customConstructAction={constructUserActions}
                 />
-
                 {displayComponent === "userButton" && (
                   <>
                     <ActionIcon variant="default" onClick={openFeedbackModal} size="lg">
