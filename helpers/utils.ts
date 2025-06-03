@@ -1,4 +1,7 @@
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
+import { AuthStateEnum } from "@/context/UserContext/types";
 import { AllTaskType, RoutineType, TaskStatusEnum } from "@/types/global";
+import openAuthModal from "./openAuthModal";
 
 export function delayExecution(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -115,3 +118,26 @@ export function matchBySegments(basePath: string, candidatePath: string) {
   if (candSegs.length < baseSegs.length) return false;
   return baseSegs.every((seg, idx) => seg === candSegs[idx]);
 }
+
+export const ensureLogin = (
+  status: AuthStateEnum,
+  referrer: ReferrerEnum,
+  userId: string,
+  redirectPath: string,
+  redirectQuery?: string
+) => {
+  if (status !== AuthStateEnum.AUTHENTICATED) {
+    openAuthModal({
+      title: "Sign in",
+      stateObject: {
+        referrer,
+        localUserId: userId,
+        redirectPath,
+        redirectQuery,
+      },
+    });
+
+    return true;
+  }
+  return false;
+};

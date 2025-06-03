@@ -1,11 +1,12 @@
 "use client";
 
 import React, { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IconArrowDown } from "@tabler/icons-react";
 import cn from "classnames";
 import { Accordion, ActionIcon, Loader, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { ReferrerEnum } from "@/app/auth/AuthForm/types";
 import ClubProfilePreview from "@/app/club/ClubProfilePreview";
 import ClubModerationLayout from "@/app/club/ModerationLayout";
 import SelectDateModalContent from "@/app/explain/[taskId]/SelectDateModalContent";
@@ -25,7 +26,7 @@ import fetchRoutines from "@/functions/fetchRoutines";
 import getFilters from "@/functions/getFilters";
 import openFiltersCard, { FilterCardNamesEnum } from "@/functions/openFilterCard";
 import registerView from "@/functions/registerView";
-import { getIsRoutineActive } from "@/helpers/utils";
+import { ensureLogin, getIsRoutineActive } from "@/helpers/utils";
 import { RoutineType } from "@/types/global";
 import ViewsCounter from "../../ViewsCounter";
 import SelectPartOrConcern from "./SelectPartOrConcern";
@@ -40,15 +41,18 @@ type Props = {
 export default function ClubRoutines(props: Props) {
   const params = use(props.params);
   const userName = params?.userName?.[0];
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { publicUserData } = useContext(ClubContext);
-  const { userDetails } = useContext(UserContext);
+  const { status, userDetails } = useContext(UserContext);
   const [routines, setRoutines] = useState<RoutineType[]>();
   const [hasMore, setHasMore] = useState(false);
   const [availableConcerns, setAvailableConcerns] = useState<FilterItemType[]>([]);
   const [availableParts, setAvailableParts] = useState<FilterItemType[]>([]);
 
-  const { name } = userDetails || {};
+  const query = searchParams.toString();
+
+  const { _id: userId, name } = userDetails || {};
 
   const sort = searchParams.get("sort");
   const part = searchParams.get("part");
@@ -86,6 +90,16 @@ export default function ClubRoutines(props: Props) {
     (routineId: string) => {
       type HandleSubmitProps = { startDate: Date | null };
 
+      const shouldStop = ensureLogin(
+        status,
+        ReferrerEnum.CLUB_ROUTINES,
+        userId || "",
+        pathname,
+        query
+      );
+
+      if (shouldStop) return;
+
       const handleSubmit = ({ startDate }: HandleSubmitProps) => {
         modals.closeAll();
         copyRoutine({
@@ -110,11 +124,21 @@ export default function ClubRoutines(props: Props) {
         centered: true,
       });
     },
-    [sort, routines]
+    [sort, routines, query, status, userId]
   );
 
   const handleCopyTask = useCallback(
     (routineId: string, taskKey: string) => {
+      const shouldStop = ensureLogin(
+        status,
+        ReferrerEnum.CLUB_ROUTINES,
+        userId || "",
+        pathname,
+        query
+      );
+
+      if (shouldStop) return;
+
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
@@ -144,11 +168,21 @@ export default function ClubRoutines(props: Props) {
         centered: true,
       });
     },
-    [sort, userName, routines]
+    [sort, userName, routines, query, status, userId]
   );
 
   const handleAddTaskInstance = useCallback(
     (taskId: string, lastDate: Date, selectedRoutineId: string) => {
+      const shouldStop = ensureLogin(
+        status,
+        ReferrerEnum.CLUB_ROUTINES,
+        userId || "",
+        pathname,
+        query
+      );
+
+      if (shouldStop) return;
+
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
@@ -175,11 +209,21 @@ export default function ClubRoutines(props: Props) {
         centered: true,
       });
     },
-    []
+    [query, status, userId]
   );
 
   const handleCopyTaskInstance = useCallback(
     (taskId: string) => {
+      const shouldStop = ensureLogin(
+        status,
+        ReferrerEnum.CLUB_ROUTINES,
+        userId || "",
+        pathname,
+        query
+      );
+
+      if (shouldStop) return;
+
       modals.openContextModal({
         title: (
           <Title order={5} component={"p"}>
@@ -208,7 +252,7 @@ export default function ClubRoutines(props: Props) {
         centered: true,
       });
     },
-    [userName]
+    [userName, query, userId, status]
   );
 
   const accordionItems = useMemo(
@@ -230,7 +274,15 @@ export default function ClubRoutines(props: Props) {
           />
         );
       }),
-    [routines, concern, isSelf, handleCopyRoutine]
+    [
+      routines,
+      concern,
+      isSelf,
+      handleCopyRoutine,
+      handleCopyTaskInstance,
+      handleAddTaskInstance,
+      handleCopyTask,
+    ]
   );
 
   const noPartOrConcern = !part || !concern;
