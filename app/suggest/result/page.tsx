@@ -51,7 +51,7 @@ export default function SuggestRoutine() {
   const { status, userDetails, setUserDetails } = useContext(UserContext);
   const [thoughts, setThoughts] = useState("");
   const [isStreaming, setIsStreaming] = useState(true);
-  const [loaderText, setLoaderText] = useState("");
+  const [loaderText, setLoaderText] = useState("Please wait");
   const [displayComponent, setDisplayComponent] = useState<"loading" | "result">("loading");
   const [createRoutineLoading, setCreateRoutineLoading] = useState(false);
   const [taskCountMap, setTaskCountMap] = useState<{ [key: string]: any }>();
@@ -360,7 +360,7 @@ export default function SuggestRoutine() {
         ) : (
           <>
             <Text size="sm" c="dimmed" ta="center">
-              Sign up to be able to complete tasks, track progress and publish your routines to earn from views.
+              Sign up to be able to complete tasks, track progress and earn from views.
             </Text>
             <GlowingButton
               text={"Sign up and earn"}
@@ -383,7 +383,7 @@ export default function SuggestRoutine() {
       {displayComponent !== "loading" && (
         <>
           {checkBackNotice && <Alert p="0.5rem 1rem">{checkBackNotice}</Alert>}
-          <Stack className={classes.reasoningWrapper}>
+          <Stack className={cn(classes.reasoningWrapper, { [classes.inactive]: isStreaming })}>
             {!isStreaming && (
               <Group align="center" gap={8}>
                 <IconAnalyze size={18} />
@@ -392,7 +392,7 @@ export default function SuggestRoutine() {
             )}
             {isStreaming && (
               <Group align="center" gap={8}>
-                <Loader size={18} type="bars" />
+                <Loader size={18} type="bars" mr={4} />
                 <Text fw={600}>Thinking</Text>
               </Group>
             )}

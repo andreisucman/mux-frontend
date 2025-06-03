@@ -67,3 +67,7 @@
     text-decoration: underline;
   }
 }
+
+.inactive {
+  pointer-events: none;
+}
