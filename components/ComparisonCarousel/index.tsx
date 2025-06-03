@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { IconSeparatorVertical } from "@tabler/icons-react";
+import { IconHandClick, IconSeparatorVertical } from "@tabler/icons-react";
 import cn from "classnames";
 import { Carousel } from "@mantine/carousel";
 import { ActionIcon, Skeleton, Stack, Title } from "@mantine/core";
@@ -28,7 +28,7 @@ export default function ComparisonCarousel({ data }: Props) {
   const name = `${normalizeString(part)} - ${normalizeString(concern)}`;
 
   const handleClickCarousel = useCallback(() => {
-    const titleText = `${userName} - ${part} - ${concern}`;
+    const titleText = `${userName} - ${part} - ${normalizeString(concern).toLowerCase()}`;
     const title = (
       <Title order={5} lineClamp={1}>
         {titleText}
@@ -109,11 +109,11 @@ export default function ComparisonCarousel({ data }: Props) {
         </Carousel>
         <ActionIcon
           onClick={handleClickCarousel}
-          size="lg"
+          size="xl"
           className={classes.viewButton}
-          variant="light"
+          variant="default"
         >
-          <IconSeparatorVertical size={24} />
+          <IconHandClick size={24} />
         </ActionIcon>
         <CardMetaPanel
           redirectUrl={redirectUrl}

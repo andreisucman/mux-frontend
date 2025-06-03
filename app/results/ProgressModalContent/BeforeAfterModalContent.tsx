@@ -68,11 +68,11 @@ export default function BeforeAfterModalContent({ record, isPublicPage }: Props)
         isPublic={isPublic}
         isSelf={isSelf}
       />
-      {/* <LineProgressIndicators
+      <LineProgressIndicators
         title={`Improvement (${dateInterval})`}
         concernScores={[concernScore]}
-        concernScoresDifference={[concernScoreDifference]}
-      /> */}
+        concernScoresDifferences={[concernScoreDifference]}
+      />
       {isPublicPage && (
         <div className={classes.buttonWrapper}>
           <GlowingButton

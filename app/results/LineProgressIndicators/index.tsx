@@ -9,7 +9,7 @@ type Props = {
   showScores?: boolean;
   customStyles?: { [key: string]: any };
   concernScores: ScoreType[];
-  concernScoresDifference: ScoreDifferenceType[];
+  concernScoresDifferences: ScoreDifferenceType[];
   title?: string;
 };
 
@@ -50,7 +50,7 @@ export default function LineProgressIndicators({
   showScores,
   customStyles,
   concernScores,
-  concernScoresDifference,
+  concernScoresDifferences,
 }: Props) {
   const concernIndicator = useMemo(() => {
     if (showScores) concernScores = concernScores.filter((cso) => cso.value !== 0);
@@ -59,14 +59,14 @@ export default function LineProgressIndicators({
       .map((cso) => {
         if (!cso) return null;
 
-        const relevantDifference = concernScoresDifference.find((co) => co.name === cso.name) || {
-          value: 0,
+        const relevantDifference = concernScoresDifferences.find((co) => co.name === cso.name) || {
+          [cso.name]: 0,
         };
 
         const initialValue = cso.value - relevantDifference.value;
 
         let improvementPercent =
-          initialValue > 0 ? Math.round((1 - cso.value / initialValue) * 100) : 0;
+          relevantDifference.value < 0 ? Math.round((1 - cso.value / initialValue) * 100) : 0;
 
         return renderIndicator([cso.name, showScores ? cso.value : improvementPercent], showScores);
       })
